@@ -1,17 +1,27 @@
 import React from 'react';
 import fs from 'fs';
 import path from 'path';
+import Head from 'next/head';
 
 const HomePage = () => {
   const htmlPath = path.join(process.cwd(), 'public', 'index.html');
   const htmlContent = fs.readFileSync(htmlPath, 'utf8');
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    <>
+      <Head>
+        <title>LAZINET - Effective Technologies</title>
+        <meta name="description" content="Your description here" />
+        <meta name="keywords" content="Your keywords here" />
+        <link rel="icon" href="/assets/img/lazinet_LogoOnly.png" />
+      </Head>
+      <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    </>
   );
 };
 
 export default HomePage;
+
 
 
 // import React from 'react';
