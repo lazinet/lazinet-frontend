@@ -9,12 +9,12 @@ const HomePage = () => {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>LAZINET - Effective Technologies</title>
-        <meta name="description" content="Your description here" />
-        <meta name="keywords" content="Your keywords here" />
-        <link rel="icon" href="/assets/img/lazinet_LogoOnly.png" />
-      </Head>
+        <meta name="description" content="LAZINET - The best tech solutions" />
+        <meta name="keywords" content="tech, solutions, effective" />
+        <link rel="icon" href="/images/favicon.ico" />
+      </Head> */}
       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
     </>
   );
@@ -48,3 +48,50 @@ export default HomePage;
 // };
 
 // export default HomePage;
+
+// import React from 'react';
+// import Head from 'next/head';
+
+// const HomePage = () => {
+//   return (
+//     <>
+//       <Head>
+//         <title>LAZINET - Effective Technologies</title>
+//         <meta name="description" content="LAZINET - The best tech solutions" />
+//         <meta name="keywords" content="tech, solutions, effective" />
+//         <link rel="icon" href="/assets/img/lazinet_LogoOnly.png" />
+//       </Head>
+//       <h1>Welcome to LAZINET</h1>
+//     </>
+//   );
+// };
+
+// export default HomePage;
+
+// /src/app/layout.tsx
+
+// export const metadata = {
+//   // Các thuộc tính metadata khác của bạn
+//   title: 'LAZINET - Effective Technologies', // Thay thế title cho trang của bạn
+//   description: 'Your website description', // Mô tả trang
+//   icons: {
+//     icon: [
+//       {
+//         url: "/favicon.ico", // Đường dẫn đến icon trong /public
+//         href: "/favicon.ico", // Đường dẫn đến icon trong /public
+//       },
+//     ],
+//   },
+// };
+
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en">
+//       <body>{children}</body>
+//     </html>
+//   );
+// }
