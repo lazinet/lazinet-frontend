@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleCart.js Test</title>
+    <!-- Thêm CSS -->
+    <link rel="stylesheet" href="simpleCartjs_test.css">
+    <!-- Thêm SimpleCart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplecartjs/3.0.6/simplecart.min.js"></script>
+    <!-- Thêm file JavaScript -->
+    <script src="simpleCartjs_test.js" defer></script>
+</head>
+<body>
+    <h1>Test SimpleCart.js</h1>
+
+    <!-- Hiển thị sản phẩm -->
+    <div class="product">
+        <h2>Product 1</h2>
+        <p>This is a great product!</p>
+        <span class="price">$10.00</span>
+        <button class="simpleCart_add" 
+                data-name="Product 1" 
+                data-price="10.00" 
+                data-quantity="1">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <h2>Product 2</h2>
+        <p>This is another great product!</p>
+        <span class="price">$15.00</span>
+        <button class="simpleCart_add" 
+                data-name="Product 2" 
+                data-price="15.00" 
+                data-quantity="1">Add to Cart</button>
+    </div>
+
+    <!-- Hiển thị giỏ hàng -->
+    <h2>Your Cart</h2>
+    <div class="simpleCart_items"></div>
+    <p>Total: <span class="simpleCart_total"></span></p>
+    <p>Number of Items: <span class="simpleCart_quantity"></span></p>
+    <button class="simpleCart_checkout">Checkout</button>
+
+    <!-- Nút thanh toán custom -->
+    <button onclick="customCheckout()">Custom Checkout</button>
+</body>
+</html>
