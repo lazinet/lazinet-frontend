@@ -1,7 +1,7 @@
 import React from 'react';
 import fs from 'fs';
 import path from 'path';
-import Head from 'next/head';
+// import Head from 'next/head';
 
 const HomePage = () => {
   const htmlPath = path.join(process.cwd(), 'public', 'index.html');
@@ -16,6 +16,7 @@ const HomePage = () => {
 };
 export default HomePage;
 
+// Chat GPT hướng dẫn đoạn thêm icon vào public không ổn
 // import React from 'react';
 // import fs from 'fs';
 // import path from 'path';
