@@ -1,6 +1,6 @@
 <?php
   // Địa chỉ email mà bạn muốn nhận thông tin từ form
-  $receiving_email_address = 'your_email@example.com';
+  $receiving_email_address = 'lazinet.com@gmail.com';
 
   // Kiểm tra nếu form được gửi
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
