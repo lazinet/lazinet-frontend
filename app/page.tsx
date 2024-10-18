@@ -9,18 +9,37 @@ const HomePage = () => {
 
   return (
     <>
-      {/* <Head>
-        <title>LAZINET - Effective Technologies</title>
-        <meta name="description" content="LAZINET - The best tech solutions" />
-        <meta name="keywords" content="tech, solutions, effective" />
-        <link rel="icon" href="/images/favicon.ico" />
-      </Head> */}
+      {/* Chỉnh title trong layout.tsx và copy ảnh logo với tên icon.ico vào thư mục app */}
       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
     </>
   );
 };
-
 export default HomePage;
+
+// import React from 'react';
+// import fs from 'fs';
+// import path from 'path';
+// import Head from 'next/head';
+
+// const HomePage = () => {
+//   const htmlPath = path.join(process.cwd(), 'public', 'index.html');
+//   const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+
+//   return (
+//     <>
+//       {/* Chỉnh title trong layout.tsx và copy ảnh logo với tên icon.ico vào thư mục app */}
+//       <Head>
+//         {/* Thêm title */}
+//         <title>LAZINET - Effective Technologies</title>
+//         {/* Thêm favicon, nằm trong /public/icon.ico */}
+//         {/* <link rel="icon" href="/icon.ico" /> */}
+//       </Head>
+//       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+//     </>
+//   );
+// };
+
+// export default HomePage;
 
 
 
