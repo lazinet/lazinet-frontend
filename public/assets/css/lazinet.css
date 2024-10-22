@@ -55,4 +55,47 @@
   .flipped .flip-card-inner {
     transform: rotateY(180deg); /* Lật thẻ khi được nhấp */
   }
+
+  .wtg-contact {
+    position: fixed; /* Giữ cho nó luôn ở bên phải */
+    right: 20px; /* Cách lề phải 20px */
+    top: 60%; /* Định vị ở giữa theo chiều dọc */
+    transform: translateY(-60%); /* Đẩy nó lên 50% chiều cao của chính nó để căn giữa */
+    display: flex;
+    flex-direction: column; /* Đặt các phần tử thành cột */
+    align-items: center; /* Căn giữa theo chiều ngang */
+  }
   
+  .wtg-contact-list {
+    display: flex;
+    flex-direction: column; /* Đặt các phần tử trong danh sách thành cột */
+    align-items: center; /* Căn giữa theo chiều ngang */
+  }
+  
+  .wtg-contact-list-item {
+    margin-bottom: 15px; /* Khoảng cách giữa các phần tử */
+  }
+  
+  .wtg-contact-list-item img {
+    display: block; /* Đảm bảo hình ảnh căn giữa trong phần tử cha */
+  }
+  
+
+  button {
+    background-color: #007bff; /* Màu nền */
+    color: white; /* Màu chữ */
+    border: none; /* Bỏ viền */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Căn giữa chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    display: inline-block; /* Hiển thị inline-block */
+    font-size: 16px; /* Kích thước chữ */
+    margin: 4px 2px; /* Margin */
+    cursor: pointer; /* Con trỏ chuột */
+    border-radius: 5px; /* Bo góc */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+button:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+}
