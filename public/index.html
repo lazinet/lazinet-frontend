@@ -81,7 +81,7 @@
       <div class="container position-relative d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
           <!-- Uncomment the line below if you also wish to use an image logo -->
-          <img src="assets/img/lazinet_LogoFullv2.png" alt="">
+          <img src="assets/img/lazinet_LogoFullv2.svg" alt="">
           <!-- <h1 class="sitename">LAZINET</h1> -->
         </a>
 
@@ -409,6 +409,10 @@
     </section><!-- /Featured Services Section -->
 
 
+
+
+
+    
     <!-- About Section -->
     <section id="about" class="about section light-background">
 
@@ -1144,6 +1148,7 @@
                 <img src="assets/img/team/Phung-Hoang.png" class="img-fluid" alt="">
                 <div class="social">
                   <!-- <a href=""><i class="bi bi-twitter-x"></i></a> -->
+                  <a href="/lazinet-frontend/public/bizcards/phung.hoang.html"  target="_blank"><i class="bi-person-vcard"></i></a>
                   <a href="https://www.facebook.com/profile.php?id=61567050494124"  target="_blank"><i class="bi bi-facebook"></i></a>
                   <!-- <a href=""><i class="bi bi-instagram"></i></a> -->
                   <a href="https://linkedin.com/in/phunghm/" target="_blank"><i class="bi bi-linkedin"></i></a>
@@ -1569,77 +1574,6 @@
             </div>
           </div>
 
-          <!-- <div class="col-lg-7">
-            <form action="forms/lazinet_contact.php" method="post" class="php-email-form" data-aos="fade-up"
-              data-aos-delay="200">
-              <div class="row gy-4">
-
-                <div class="col-md-6">
-                  <label for="name-field" class="pb-2">Your Name</label>
-                  <input type="text" name="name" id="name-field" class="form-control" required="">
-                </div>
-
-                <div class="col-md-6">
-                  <label for="email-field" class="pb-2">Your Email</label>
-                  <input type="email" class="form-control" name="email" id="email-field" required="">
-                </div>
-
-                <div class="col-md-12">
-                  <label for="subject-field" class="pb-2">Subject</label>
-                  <input type="text" class="form-control" name="subject" id="subject-field" required="">
-                </div>
-
-                <div class="col-md-12">
-                  <label for="message-field" class="pb-2">Message</label>
-                  <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
-                </div>
-
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Send Message</button>
-                </div>
-
-              </div>
-            </form>
-          </div>End Contact Form -->
-
-          <!-- <div class="col-lg-7">
-            <form id="lazinet-contact-form" onsubmit="submitForm(event)">
-              <div class="row gy-4">
-          
-                <div class="col-md-6">
-                  <label for="name-field" class="pb-2">Your Name</label>
-                  <input type="text" name="name" id="name-field" class="form-control" required="">
-                </div>
-          
-                <div class="col-md-6">
-                  <label for="email-field" class="pb-2">Your Email</label>
-                  <input type="email" class="form-control" name="email" id="email-field" required="">
-                </div>
-          
-                <div class="col-md-12">
-                  <label for="subject-field" class="pb-2">Subject</label>
-                  <input type="text" class="form-control" name="subject" id="subject-field" required="">
-                </div>
-          
-                <div class="col-md-12">
-                  <label for="message-field" class="pb-2">Message</label>
-                  <textarea class="form-control" name="message" rows="12" id="message-field" required=""></textarea>
-                </div>
-          
-                <div class="col-md-12 text-center">
-                  <div class="error-message"></div>          
-                  <button type="submit" class="btn btn-primary">Send Message</button>
-
-                </div>
-          
-              </div>
-            </form>
-          </div> -->
-
           <!-- Start Contact Form -->
           <div class="col-lg-7">
             <form id="contact-form" method="post">
@@ -1649,17 +1583,19 @@
                 </div>
                 
                 <div class="col-md-6 form-group mt-3 mt-md-0 d-flex align-items-center" style="gap: 10px;">
-                  <select class="form-control" name="userType" id="user-type" required>
+                  <select class="form-control" name="userType" id="user-type" style="padding-left: 10px;" required>
                     <option value="" disabled selected>Request For</option>
                     <option value="Customer Technical Support">Customer Technical Support</option>
                     <option value="Products & Services Ordering">Products & Services Ordering</option>
                     <option value="New Solution Consulting">New Solution Consulting</option>
-                    <option value="Setup Partnership">Setup Partnership</option>
+                    <option value="Establish Partnership">Establish Partnership</option>
+                    <option value="Request for Training Programs">Request for Training Programs</option>
                     <option value="Career Opportunities">Career Opportunities</option>
                     <option value="Other">Other</option>
                   </select>
-                  <input type="text" class="form-control" name="otherType" id="other-type" placeholder="Please type ..." style="display: none;" required>
+                  <input type="text" class="form-control" name="otherType" id="other-type" placeholder="Please type ..." style="display: none;">
                 </div>
+
                 
             </div>
 
@@ -1689,79 +1625,36 @@
             </form>
           </div>
           <!-- End Contact Form -->
-          
-
         </div>
-
       </div>
-
     </section><!-- /Contact Section -->
 
   </main>
 
   <footer id="footer" class="footer">
-
-    <!-- <div class="footer-newsletter">
+    <div class="footer-newsletter">
       <div class="container">
         <div class="row justify-content-center text-center">
           <div class="col-lg-6">
             <h4>Join Our Newsletter</h4>
             <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-            <form action="forms/newsletter.php" method="post" class="php-email-form">
-              <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe">
+            <form id="newsletter-form" class="php-email-form">
+              <div class="newsletter-form">
+                <input
+                  type="email"
+                  id="email-newsletter"
+                  name="email-newsletter"
+                  required
+                  placeholder="Enter your email"
+                />
+                <button id="newsletter-btn" type="button" onclick="submitNewsletter()">
+                  Subscribe
+                </button>
               </div>
-              <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your subscription request has been sent. Thank you!</div>
             </form>
           </div>
         </div>
       </div>
-    </div> -->
-    <!-- <div class="footer-newsletter">
-      <div class="container">
-          <div class="row justify-content-center text-center">
-              <div class="col-lg-6">
-                  <h4>Join Our Newsletter</h4>
-                  <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-                  <form id="newsletter-form" class="php-email-form" action="http://localhost:8000/api/newsletter" method="POST">
-                    <div class="newsletter-form">
-                        <input type="email" name="email" required placeholder="Enter your email" />
-                        <input type="submit" value="Subscribe" />
-                    </div>
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your subscription request has been sent. Thank you!</div>
-                </form>
-                
-              </div>
-          </div>
-      </div>
-  </div> -->
-
-  <div class="footer-newsletter">
-    <div class="container">
-      <div class="row justify-content-center text-center">
-        <div class="col-lg-6">
-          <h4>Join Our Newsletter</h4>
-          <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-          <form id="newsletter-form" class="php-email-form">
-            <div class="newsletter-form">
-              <input
-                type="email"
-                id="email-newsletter"
-                name="email-newsletter"
-                required
-                placeholder="Enter your email"
-              />
-              <button id="newsletter-btn" type="button" onclick="submitNewsletter()">
-                Subscribe
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
   </div>
   
   
@@ -1774,14 +1667,14 @@
             <!-- <span class="sitename">LAZINET</span> -->
           </a>
           <div class="footer-contact pt-3">
-            <img src="assets/img/lazinet_LogoTextSquare.png" alt="" style="max-height: 140px;">
+            <img src="assets/img/lazinet_LogoTextSquare.svg" alt="" style="max-height: 140px;">
           </div>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Useful Links</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">LAZINET Blogs</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="/lazinet-frontend/public/blog.html">LAZINET Blogs</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="#">Partnership</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="#">Careers</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of Service</a></li>
@@ -1817,7 +1710,7 @@
             style="color: blue;"><b>NET</b></span></strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <script>
-          const startYear = 2023; // Năm bắt đầu
+          const startYear = 2024; // Năm bắt đầu
           const currentYear = new Date().getFullYear(); // Năm hiện tại
           document.write(`${startYear}–${currentYear}`);
         </script>
@@ -1881,6 +1774,7 @@
       email: document.getElementById('email').value,
       subject: document.getElementById('subject').value,
       message: document.getElementById('message').value,
+
     };
 
     try {
@@ -1927,19 +1821,20 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-</script>
-<script>
+
   document.getElementById('user-type').addEventListener('change', function () {
   const otherInputContainer = document.getElementById('other-type');
   const userType = document.getElementById('user-type');
 
   if (this.value === 'Other') {
-    userType.style.width = '30%'; // Thu hẹp dropdown userType
-    otherInputContainer.style.display = 'inline-block'; // Hiển thị input mà không phá vỡ dòng
-  } else {
-    userType.style.width = '100%'; // Trả lại kích thước ban đầu
-    otherInputContainer.style.display = 'none'; // Ẩn trường nhập liệu
-  }
+  userType.style.width = '30%'; // Thu hẹp dropdown userType
+  otherInputContainer.style.display = 'inline-block'; // Hiển thị input
+  otherInputContainer.setAttribute('required', ''); // Thêm thuộc tính required
+} else {
+  userType.style.width = '100%'; // Trả lại kích thước ban đầu
+  otherInputContainer.style.display = 'none'; // Ẩn trường nhập liệu
+  otherInputContainer.removeAttribute('required'); // Xóa thuộc tính required
+}
 });
 
 // HÀM NÀY CỦA NEWSLETTER
@@ -1982,6 +1877,9 @@ async function submitNewsletter() {
     }
 }
 
+// Kiểm tra ngôn ngữ trình duyệt
+const userLang = navigator.language || navigator.userLanguage;
+    switchLanguage(userLang.startsWith('vi') ? 'vi' : 'en');
 </script>  
 
 </body>
