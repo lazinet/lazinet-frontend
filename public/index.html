@@ -63,11 +63,11 @@
         <span class="label">Call Us</span>
         <a rel="nofollow" href="tel:+84-908556220"> </a>
       </div>
-      <div class="wtg-contact-list-item zalo" title="Chat Zalo +84-908556220">
+      <div class="wtg-contact-list-item zalo" title="Chat LAZINET Zalo +84-908556220">
         <span class="label">Chat Zalo</span>
         <a rel="nofollow" target="_blank" href="http://zalo.me/0908556220"></a>
       </div>
-      <div class="wtg-contact-list-item">
+      <div class="wtg-contact-list-item"  title="Chat LAZINET Facebook Messenger">
         <span class="label">Chat FB</span>
         <a target="_blank" href="https://m.me/61567050494124">
           <img width="110" height="110" src="assets/img/others/messenger.png" alt="fb"></a>
@@ -190,17 +190,17 @@
   <div class="video-background">
     <video playsinline autoplay loop muted>
       <source src="https://vlook.vn/wp-content/themes/newvlook/assets/images/main.mp4" type="video/mp4">
+      <!-- <source src="assets\img\background\HCMC.mp4" type="video/mp4"> -->
     </video>
   </div>
 
   <div class="container">
     <div class="row gy-4">
       <div class="col-lg-12 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
-        <h1>Welcome to <span style="color: #ff6302;">LAZI</span><span style="color: blue;">NET</span></h1>
-        <p>A team of technology experts and experienced engineers delivering advanced solutions for practical, impactful applications.</p>
+        <h1>Welcome to <span style="color: #ff6302;">LAZI</span><span style="color: blue;">NET</span></h1><p>A team of technology experts and experienced engineers delivering advanced solutions for practical, impactful applications.</p>
         <div class="d-flex">
           <a href="#about" class="btn-get-started">Get Started</a>
-          <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center">
+          <a href="https://youtu.be/AR6xtkN9ntY" class="glightbox btn-watch-video d-flex align-items-center">
             <i class="bi bi-play-circle"></i><span>Watch Video</span>
           </a>
         </div>
@@ -1558,8 +1558,8 @@
                 <i class="bi bi-geo-alt flex-shrink-0"></i>
                 <div>
                   <h3>Address</h3>
-                  <p>Digital Workspace, Newtecons Office Building.</p>
-                  <p>No. 96 Phan Dang Luu, District Phu Nhuan, Ho Chi Minh City, Vietnam.</p>
+                  <p>Digital Workspace, SAIGON Building.</p>
+                  <p>428 Truong Sa, Ward 2, Phu Nhuan District, HCM City, Vietnam.</p>
                 </div>
               </div><!-- End Info Item -->
 
@@ -1580,7 +1580,7 @@
               </div><!-- End Info Item -->
 
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1959.5466402682555!2d106.68604758714525!3d10.804167404060532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752925df36ecef%3A0x6dd80a71a5b95718!2sNewtecons%20Office%20Building!5e0!3m2!1sen!2s!4v1728809094950!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d979.7959676690106!2d106.68497336790101!3d10.79722521410841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175290057709081%3A0xbc604029390c61c0!2sSaigon%20Building!5e0!3m2!1sen!2s!4v1736648936364!5m2!1sen!2s"
                 frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -1623,7 +1623,7 @@
             </form>
           </div>End Contact Form -->
 
-          <div class="col-lg-7">
+          <!-- <div class="col-lg-7">
             <form id="lazinet-contact-form" onsubmit="submitForm(event)">
               <div class="row gy-4">
           
@@ -1648,17 +1648,64 @@
                 </div>
           
                 <div class="col-md-12 text-center">
-                  <!-- <div class="loading">Loading</div> -->
-                  <div class="error-message"></div>
-                  <!-- <div class="sent-message">Your message has been sent. Thank you!</div> -->
-          
+                  <div class="error-message"></div>          
                   <button type="submit" class="btn btn-primary">Send Message</button>
 
                 </div>
           
               </div>
             </form>
+          </div> -->
+
+          <!-- Start Contact Form -->
+          <div class="col-lg-7">
+            <form id="contact-form" method="post">
+              <div class="form-group mt-3 row g-3">
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                </div>
+                
+                <div class="col-md-6 form-group mt-3 mt-md-0 d-flex align-items-center" style="gap: 10px;">
+                  <select class="form-control" name="userType" id="user-type" required>
+                    <option value="" disabled selected>Request For</option>
+                    <option value="Customer Technical Support">Customer Technical Support</option>
+                    <option value="Products & Services Ordering">Products & Services Ordering</option>
+                    <option value="New Solution Consulting">New Solution Consulting</option>
+                    <option value="Setup Partnership">Setup Partnership</option>
+                    <option value="Career Opportunities">Career Opportunities</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <input type="text" class="form-control" name="otherType" id="other-type" placeholder="Please type ..." style="display: none;" required>
+                </div>
+                
+            </div>
+
+            <div class="form-group mt-3 row g-3">
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone number" required>
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email address" required>
+              </div>
+            </div>
+            
+          
+              <div class="form-group mt-3">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Title" required>
+              </div>
+              
+            
+              
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="message" id="message" placeholder="Message" style="height: 250px;" required></textarea>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" id="submit-btn">Send Message</button>
+              </div>
+            </form>
           </div>
+          <!-- End Contact Form -->
           
 
         </div>
@@ -1688,7 +1735,7 @@
         </div>
       </div>
     </div> -->
-    <div class="footer-newsletter">
+    <!-- <div class="footer-newsletter">
       <div class="container">
           <div class="row justify-content-center text-center">
               <div class="col-lg-6">
@@ -1707,7 +1754,33 @@
               </div>
           </div>
       </div>
+  </div> -->
+
+  <div class="footer-newsletter">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-6">
+          <h4>Join Our Newsletter</h4>
+          <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
+          <form id="newsletter-form" class="php-email-form">
+            <div class="newsletter-form">
+              <input
+                type="email"
+                id="email-newsletter"
+                name="email-newsletter"
+                required
+                placeholder="Enter your email"
+              />
+              <button id="newsletter-btn" type="button" onclick="submitNewsletter()">
+                Subscribe
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
+  
   
   
 
@@ -1718,10 +1791,6 @@
             <!-- <span class="sitename">LAZINET</span> -->
           </a>
           <div class="footer-contact pt-3">
-            <!-- <p>Digital Workspace, Newtecons Office Building.</p>
-            <p>No. 96 Phan Dang Luu, District Phu Nhuan, Ho Chi Minh City, Vietnam.</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+84-908556220</span></p>
-            <p><strong>Email:</strong> <span>email@lazinet.com</span></p> -->
             <img src="assets/img/lazinet_LogoTextSquare.png" alt="" style="max-height: 140px;">
           </div>
         </div>
@@ -1812,6 +1881,126 @@
       });
     });
   </script>
+
+<script>
+  document.getElementById('contact-form').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Ngăn hành vi mặc định của form
+    button = document.getElementById('submit-btn');
+    button.textContent = 'Sending your message ...';
+    button.style.color = '#ffff00'; // Màu vàng
+
+    // Lấy dữ liệu từ form
+    const formData = {
+      name: document.getElementById('name').value,
+      userType: document.getElementById('user-type').value,
+      otherType: document.getElementById('other-type').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      subject: document.getElementById('subject').value,
+      message: document.getElementById('message').value,
+    };
+
+    try {
+      // Gửi yêu cầu POST với no-cors
+      await fetch('https://script.google.com/macros/s/AKfycbwa3emS5Y1wxaTwzaAjvUKlD1_OU3u4Itx7fjV1s-5FR3ELM79zkSCofLFrN0eUYyaPow/exec', {
+        method: 'POST',
+        mode: 'no-cors', // Bỏ qua kiểm tra CORS
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      // Hiển thị thông báo thành công
+      button.textContent = 'Sent successfully, thank you for contacting LAZINET!';
+      button.style.color = '#00FF00'; // Màu xanh lá
+      button.disabled = true; // Khóa nút để tránh gửi lại
+    } catch (error) {
+      // Hiển thị thông báo lỗi
+      button.textContent = `Error: ${error.message}` ;
+      button.style.backgroundColor = '#FF3333'; // Đổi màu nền (màu đỏ)
+      // button.style.color = '#FF6347'; // Màu đỏ
+    }
+  });
+</script>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+    const userTypeSelect = document.getElementById('user-type');
+   
+    // Kiểm tra nếu giá trị mặc định là ""
+    function updateSelectColor() {
+        if (userTypeSelect.value === "") {
+            userTypeSelect.style.color = "#595959"; // Màu của placeholder
+        } else {
+            userTypeSelect.style.color = ""; // Đặt lại màu khi chọn giá trị khác
+        }
+    }
+
+    // Cập nhật màu khi load trang
+    updateSelectColor();
+
+    // Thêm sự kiện khi người dùng chọn một giá trị khác
+    userTypeSelect.addEventListener('change', function() {
+        updateSelectColor(); // Cập nhật màu khi chọn thay đổi
+    });
+});
+
+</script>
+<script>
+  document.getElementById('user-type').addEventListener('change', function () {
+  const otherInputContainer = document.getElementById('other-type');
+  const userType = document.getElementById('user-type');
+
+  if (this.value === 'Other') {
+    userType.style.width = '30%'; // Thu hẹp dropdown userType
+    otherInputContainer.style.display = 'inline-block'; // Hiển thị input mà không phá vỡ dòng
+  } else {
+    userType.style.width = '100%'; // Trả lại kích thước ban đầu
+    otherInputContainer.style.display = 'none'; // Ẩn trường nhập liệu
+  }
+});
+
+// HÀM NÀY CỦA NEWSLETTER
+async function submitNewsletter() {
+  const email = document.getElementById('email-newsletter').value;
+  const button = document.getElementById('newsletter-btn');
+
+  // Kiểm tra email hợp lệ
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    button.textContent = 'Invalid email address!';
+    button.style.color = 'red';
+    button.disabled = false;
+    return;
+  } else {
+    button.textContent = 'Subscribing...';
+    button.style.color = '#ffff00'; // Màu vàng
+    try {
+      // Gửi yêu cầu POST
+      const response = await fetch(
+          'https://script.google.com/macros/s/AKfycbzPQ5vcRpC8djSuD9mSLEm9LP275SyWoItWdeLSxIv3dk_C3L4ED96XQnvhsDJkvZLi/exec',
+          {
+            method: 'POST',
+            mode: 'no-cors', // Bỏ qua kiểm tra CORS
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          }
+        );
+        
+        button.textContent = 'Thank you! You are with LAZINET!';
+        button.style.color = '#00FF00';
+        button.disabled = true;
+
+      } catch (error) {
+        button.textContent = `Error: ${error.message}`;
+        button.style.color = 'red';
+        button.disabled = false;
+      }
+
+    }
+}
+
+</script>  
+
 </body>
 
 </html>

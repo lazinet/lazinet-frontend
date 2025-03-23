@@ -106,3 +106,24 @@ button:hover {
   padding: 10px;
 }
 
+.d-flex {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+#user-type,
+#other-type {
+  height: 40px; /* Đảm bảo chiều cao bằng nhau */
+  box-sizing: border-box; /* Bao gồm padding và border trong kích thước */
+}
+
+#user-type,
+#other-type {
+  line-height: normal; /* Đảm bảo giá trị tương tự */
+  margin: 0; /* Xóa margin mặc định */
+  padding: 5px; /* Đồng nhất padding */
+  vertical-align: middle; /* Căn chỉnh theo dòng */
+}
+
+
