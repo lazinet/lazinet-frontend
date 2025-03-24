@@ -291,19 +291,19 @@
 
     // Xuất card thành vCard
     function exportToVCard() {
-      const vCardData = `
-          BEGIN:VCARD
-          VERSION:3.0
-          N:Hoang;Phung;;;
-          FN:Phung Hoang
-          ORG:LAZINET
-          TITLE:Head of Research & Production
-          ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
-          TEL;TYPE=WORK,VOICE:+84908556220
-          EMAIL:email@lazinet.com
-          URL:https://lazinet.com/
-          END:VCARD
-      `.trim();
+const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+N:Hoang;Phung;;;
+FN:Phung Hoang
+ORG:LAZINET
+TITLE:Head of Research & Production
+ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84908556220
+EMAIL:email@lazinet.com
+URL:https://lazinet.com/
+END:VCARD
+`.trim();
 
       const blob = new Blob([vCardData], { type: "text/vcard" });
       const url = URL.createObjectURL(blob);
