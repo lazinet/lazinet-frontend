@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>LAZINET - Effective Technologies with Ly Nguyen</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
-  <link href="/assets/img/lazinet_LogoOnly.png" rel="icon">
-  <link href="/assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Card - Phung Hoang</title>
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/lazinet-frontend/public/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -40,7 +32,7 @@
     }
     .left-section {
       width: 40%;
-      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 60%, #ff6302 80%, blue 100%);
+      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 40%, blue 70%, #ff6302 100%);
       padding: 10px;
       display: flex;
       flex-direction: column;
@@ -52,6 +44,8 @@
     .left-section .logo img {
       width: 150px;
       height: 150px;
+      padding-top: 20px;
+      margin: 0;
     }
     .left-section .profile-pic img {
       width: 100px;
@@ -68,7 +62,7 @@
       color: #333;
     }
     .right-section {
-      width: 60%;
+      width: 65%;
       padding: 15px;
       display: flex;
       flex-direction: column;
@@ -172,34 +166,33 @@
       }
       .left-section {
         width: 100%;
-        height: 40%;
-        /* padding: 10px; */
-        flex-direction: row; /* Dàn ngang logo và profile-pic */
-        justify-content: center; /* Căn giữa theo chiều ngang */
-        align-items: center; /* Căn giữa theo chiều dọc */
+        height: 35%;
+        padding: 10px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         gap: 10px;
       }
       .right-section {
         width: 100%;
-        height: 60%;
+        height: 65%;
         padding: 10px;
       }
       .left-section .logo img {
-        width: 120px; /* Giảm kích thước để vừa */
-        height: 120px;
-        padding-top: 18px; 
-      }
-      .left-section .profile-pic img {
         width: 100px;
         height: 100px;
-        /* border-radius: 0%; */
+        padding-top: 0;
+      }
+      .left-section .profile-pic img {
+        width: 80px;
+        height: 80px;
       }
       .left-section .intro {
-        display: none; /* Ẩn intro để tiết kiệm không gian */
+        display: none;
       }
       .right-section h2 {
         font-size: 18px;
-        padding-top: 10px; /* Giảm padding-top trên mobile */
+        padding-top: 10px;
       }
       .right-section .position {
         font-size: 12px;
@@ -230,26 +223,28 @@
   <div class="card" id="business-card">
     <div class="left-section">
       <div class="logo">
-        <a href="https://lazinet.com/"><img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
+        <a href="https://lazinet.com/" target="_blank">
+          <img src="/lazinet-frontend/public/assets/img/lazinet_logoFullSquare2.svg" alt="LAZINET Logo">
+        </a>
       </div>
       <div class="profile-pic">
-        <img src="/assets/img/team/Ly-Nguyen-2.jpg" alt="Profile Picture">
+        <img src="/lazinet-frontend/public/assets/img/team/Phung-Hoang.png" alt="Profile Picture">
       </div>
     </div>
     <div class="right-section">
       <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
       <div style="position: relative; z-index: 1;">
         <div>
-          <h2>LY NGUYỄN, LL.M.</h2>
-          <h3 class="position">Commercial Contracts Manager</h3>
+          <h2>PHUNG HOANG</h2>
+          <h3 class="position">Head of Research & Production</h3>
           <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Phu Nhuan, HCMC, VN</a></p>
-          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0905907050">(+84) 0905 907 050</a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0908556220">(+84) 0908 556 220 </a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
         </div>
         <div class="bottom-section">
           <div class="social-links">
             <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
-            <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
+            <a href="https://lazinet.com/" target="_blank"><i class="bi bi-person-vcard" style="color: white;"></i> Business Card</a>
           </div>
           <div class="qr-code" id="qrcode"></div>
         </div>
@@ -259,16 +254,28 @@
 
   <div class="export-buttons">
     <button onclick="exportToPNG()">Export PNG</button>
-    <!-- <button onclick="exportToSVG()">Export SVG</button> -->
     <button onclick="exportToVCard()">Export vCard</button>
     <button onclick="exportToPDF()">Export PDF</button>
   </div>
 
   <script>
-    // Tạo mã QR từ URL và chèn vào div#qrcode
-    const url = "https://lazinet.com/bizcards/ly-nguyen.html";
+    // Tạo mã QR chứa dữ liệu vCard
+    const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+N:Hoang;Phung;;;
+FN:Phung Hoang
+ORG:Lazinet
+TITLE:Head of Research & Production
+ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84908556220
+EMAIL:email@lazinet.com
+URL:https://lazinet.com/
+END:VCARD
+    `.trim();
+
     new QRCode(document.getElementById("qrcode"), {
-      text: url,
+      text: vCardData,
       width: 100,
       height: 100,
       colorDark: "#000000",
@@ -276,14 +283,14 @@
       correctLevel: QRCode.CorrectLevel.M
     });
 
-    // Export card thành PNG
+    // Xuất card thành PNG
     function exportToPNG() {
       html2canvas(document.getElementById("business-card"), {
         scale: 2,
         useCORS: true
       }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Ly-Nguyen.png";
+        link.download = "business-card-phung-hoang.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -294,12 +301,12 @@
       const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
-N:Nguyen;Ly;;;
-FN:Ly Nguyen
-ORG:LAZINET
-TITLE:Commercial Contracts Manager
+N:Hoang;Phung;;;
+FN:Phung Hoang
+ORG:Lazinet
+TITLE:Head of Research & Production
 ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
-TEL;TYPE=WORK,VOICE:+84905907050
+TEL;TYPE=WORK,VOICE:+84908556220
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
 END:VCARD
@@ -309,21 +316,21 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "LAZINET Ly-Nguyen.vcf";
+      link.download = "phung-hoang.vcf";
       link.click();
       URL.revokeObjectURL(url);
     }
 
-    // Xuất card thành PDF (đã sửa để thích ứng màn hình nhỏ)
+    // Xuất card thành PDF
     function exportToPDF() {
       const { jsPDF } = window.jspdf;
       const cardElement = document.getElementById("business-card");
-      const isMobile = window.innerWidth <= 550; // Kiểm tra màn hình nhỏ
+      const isMobile = window.innerWidth <= 550;
 
       const doc = new jsPDF({
-        orientation: isMobile ? "portrait" : "landscape", // Dọc nếu mobile, ngang nếu desktop
+        orientation: isMobile ? "portrait" : "landscape",
         unit: "px",
-        format: isMobile ? [300, 500] : [500, 300] // Kích thước tùy theo layout
+        format: isMobile ? [300, 500] : [500, 300]
       });
 
       html2canvas(cardElement, {
@@ -333,51 +340,27 @@ END:VCARD
         const imgData = canvas.toDataURL("image/png");
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
-        doc.addImage(imgData, "PNG", 0, 0, width, height); // Chèn ảnh với kích thước phù hợp
-        doc.save("LAZINET Ly-Nguyen.pdf");
+        doc.addImage(imgData, "PNG", 0, 0, width, height);
+        doc.save("business-card-phung-hoang.pdf");
       });
-    }
-
-    // Export card thành SVG
-    function exportToSVG() {
-      const element = document.getElementById("business-card");
-      const serializer = new XMLSerializer();
-      const svgData = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${element.offsetWidth}" height="${element.offsetHeight}">
-          <foreignObject width="${element.offsetWidth}" height="${element.offsetHeight}">
-            ${serializer.serializeToString(element)}
-          </foreignObject>
-        </svg>
-      `;
-      const blob = new Blob([svgData], { type: "image/svg+xml" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.download = "LAZINET Ly-Nguyen.svg";
-      link.href = url;
-      link.click();
-      URL.revokeObjectURL(url);
     }
 
     // Tạo lưới công nghệ trong right-section
     const canvas = document.getElementById("tech-grid");
     const ctx = canvas.getContext("2d");
 
-    // Thiết lập kích thước canvas
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Tạo mảng các nút
     const nodes = [];
     const numNodes = 15;
 
-    // Hàm random trong khoảng
     function randomRange(min, max) {
       return min + Math.random() * (max - min);
     }
 
-    // Tạo nút ngẫu nhiên với màu sắc trong suốt
     function initializeNodes() {
-      nodes.length = 0; // Xóa các nút cũ
+      nodes.length = 0;
       for (let i = 0; i < numNodes; i++) {
         nodes.push({
           x: randomRange(10, canvas.width - 10),
@@ -387,7 +370,6 @@ END:VCARD
           color: getRandomColor()
         });
       }
-      // Thêm 4 điểm trượt trên các cạnh
       const edgeNodes = [
         { x: randomRange(10, canvas.width - 10), y: 10, vx: (Math.random() - 0.5) * 1, edge: 'top', color: getRandomColor() },
         { x: canvas.width - 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'right', color: getRandomColor() },
@@ -397,10 +379,8 @@ END:VCARD
       nodes.push(...edgeNodes);
     }
 
-    // Khởi tạo nút ban đầu
     initializeNodes();
 
-    // Hàm tạo màu ngẫu nhiên với độ trong suốt
     function getRandomColor() {
       const avoidColors = ["#000000", "#ff6302", "#0000ff"];
       let r, g, b, color;
@@ -413,7 +393,6 @@ END:VCARD
       return color;
     }
 
-    // Hàm kiểm tra màu có gần với màu cần tránh không
     function isColorClose(color1, color2) {
       const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
       const [r2, g2, b2] = color2.match(/#?([\da-f]{2})([\da-f]{2})([\da-f]{2})/i).slice(1).map(x => parseInt(x, 16));
@@ -421,7 +400,6 @@ END:VCARD
       return diff < 100;
     }
 
-    // Hàm vẽ lưới
     function drawGrid() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < nodes.length; i++) {
@@ -452,7 +430,6 @@ END:VCARD
       });
     }
 
-    // Hàm cập nhật vị trí
     function updateNodes() {
       nodes.forEach(node => {
         if (node.edge) {
@@ -473,21 +450,18 @@ END:VCARD
       });
     }
 
-    // Vòng lặp animation
     function animate() {
       updateNodes();
       drawGrid();
       requestAnimationFrame(animate);
     }
 
-    // Bắt đầu animation
     animate();
 
-    // Điều chỉnh kích thước canvas khi thay đổi kích thước cửa sổ
     window.addEventListener("resize", () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      initializeNodes(); // Tái tạo lại các nút để khớp với kích thước mới
+      initializeNodes();
     });
   </script>
 </body>
