@@ -291,7 +291,7 @@
 
     // Xuất card thành vCard
     function exportToVCard() {
-      const vCardData = `
+const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
 N:Nguyen;Trong;;;
@@ -303,7 +303,7 @@ TEL;TYPE=WORK,VOICE:+84908470682
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
 END:VCARD
-      `.trim();
+`.trim();
 
       const blob = new Blob([vCardData], { type: "text/vcard" });
       const url = URL.createObjectURL(blob);
