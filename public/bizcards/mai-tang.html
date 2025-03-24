@@ -13,6 +13,7 @@
 
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
   <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -258,7 +259,9 @@
 
   <div class="export-buttons">
     <button onclick="exportToPNG()">Export PNG</button>
-    <button onclick="exportToSVG()">Export SVG</button>
+    <!-- <button onclick="exportToSVG()">Export SVG</button> -->
+    <button onclick="exportToVCard()">Export vCard</button>
+    <button onclick="exportToPDF()">Export PDF</button>
   </div>
 
   <script>
@@ -283,6 +286,55 @@
         link.download = "LAZINET Mai-Tang.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
+      });
+    }
+
+    // Xuất card thành vCard
+    function exportToVCard() {
+      const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+N:Tang;Mai;;;
+FN:Mai Tang
+ORG:LAZINET
+TITLE:Business Transformation Advisor
+ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84937664829
+EMAIL:email@lazinet.com
+URL:https://lazinet.com/
+END:VCARD
+      `.trim();
+
+      const blob = new Blob([vCardData], { type: "text/vcard" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "LAZINET Mai-Tang.vcf";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Xuất card thành PDF (đã sửa để thích ứng màn hình nhỏ)
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const cardElement = document.getElementById("business-card");
+      const isMobile = window.innerWidth <= 550; // Kiểm tra màn hình nhỏ
+
+      const doc = new jsPDF({
+        orientation: isMobile ? "portrait" : "landscape", // Dọc nếu mobile, ngang nếu desktop
+        unit: "px",
+        format: isMobile ? [300, 500] : [500, 300] // Kích thước tùy theo layout
+      });
+
+      html2canvas(cardElement, {
+        scale: 2,
+        useCORS: true
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const width = isMobile ? 300 : 500;
+        const height = isMobile ? 500 : 300;
+        doc.addImage(imgData, "PNG", 0, 0, width, height); // Chèn ảnh với kích thước phù hợp
+        doc.save("LAZINET Mai-Tang.pdf");
       });
     }
 
