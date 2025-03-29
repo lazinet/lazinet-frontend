@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website với Google Translate</title>
+    <style>
+        /* CSS chung cho các nút liên hệ */
+        .wtg-contact {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 9999;
+        }
+        
+        .wtg-contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .wtg-contact-list-item {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #4267B2; /* Màu nền mặc định */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        /* Màu sắc cho từng nút */
+        .wtg-contact-list-item.phone {
+            background-color: #25D366; /* Màu điện thoại */
+        }
+        
+        .wtg-contact-list-item.zalo {
+            background-color: #0068FF; /* Màu Zalo */
+        }
+        
+        .wtg-contact-list-item.translate {
+            background-color: #4285F4; /* Màu Google Translate */
+        }
+        
+        .wtg-contact-list-item:hover {
+            transform: scale(1.1);
+        }
+        
+        .wtg-contact-list-item .label {
+            position: absolute;
+            right: 60px;
+            white-space: nowrap;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .wtg-contact-list-item:hover .label {
+            opacity: 1;
+            right: 70px;
+        }
+        
+        /* Icon */
+        .wtg-contact-list-item i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        /* Popup translate */
+        .translate-popup {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 15px;
+            display: none;
+            width: 200px;
+            z-index: 10000;
+        }
+        
+        .translate-popup.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <!-- Font Awesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Nội dung trang web -->
+    <div class="content">
+        <h1>Xin chào! Đây là trang web mẫu</h1>
+        <p>Bạn có thể sử dụng nút Google Translate ở góc dưới bên phải để dịch trang web.</p>
+    </div>
+    
+    <!-- Thanh công cụ liên hệ cố định -->
+    <div class="wtg-contact right">
+        <div class="wtg-contact-list">
+            <!-- Nút điện thoại -->
+            <div class="wtg-contact-list-item phone" title="Call LAZINET +84-908556220">
+                <span class="label">Gọi điện</span>
+                <a rel="nofollow" href="tel:+84-908556220">
+                    <i class="fas fa-phone"></i>
+                </a>
+            </div>
+            
+            <!-- Nút Zalo -->
+            <div class="wtg-contact-list-item zalo" title="Chat LAZINET Zalo +84-908556220">
+                <span class="label">Chat Zalo</span>
+                <a rel="nofollow" target="_blank" href="http://zalo.me/0908556220">
+                    <i class="fab fa-weixin"></i>
+                </a>
+            </div>
+            
+            <!-- Nút Messenger -->
+            <div class="wtg-contact-list-item" title="Chat LAZINET Facebook Messenger">
+                <span class="label">Chat FB</span>
+                <a target="_blank" href="https://m.me/61567050494124">
+                    <i class="fab fa-facebook-messenger"></i>
+                </a>
+            </div>
+            
+            <!-- Nút Google Translate -->
+            <div class="wtg-contact-list-item translate" title="Dịch trang web">
+                <span class="label">Dịch trang</span>
+                <i class="fas fa-language"></i>
+                <div class="translate-popup" id="google_translate_element"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Google Translate -->
+    <script type="text/javascript">
+        // Hàm khởi tạo Google Translate
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ja,ko,zh-CN,fr,es,vi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+            
+            // Ẩn thanh Google branding
+            var googleBranding = document.querySelector('.goog-te-gadget');
+            if (googleBranding) {
+                googleBranding.style.display = 'none';
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <script>
+        // Xử lý click vào nút translate
+        document.querySelector('.translate').addEventListener('click', function(e) {
+            e.preventDefault();
+            var popup = this.querySelector('.translate-popup');
+            popup.classList.toggle('show');
+            
+            // Đóng popup khi click ra ngoài
+            document.addEventListener('click', function closePopup(event) {
+                if (!event.target.closest('.translate')) {
+                    popup.classList.remove('show');
+                    document.removeEventListener('click', closePopup);
+                }
+            });
+        });
+        
+        // Tùy chỉnh dropdown Google Translate
+        function customizeGoogleTranslate() {
+            // Kiểm tra định kỳ cho đến khi phần tử tồn tại
+            var checkExist = setInterval(function() {
+                var googleDropdown = document.querySelector('.goog-te-combo');
+                if (googleDropdown) {
+                    clearInterval(checkExist);
+                    
+                    // Thêm placeholder và style
+                    googleDropdown.style.width = '100%';
+                    googleDropdown.style.padding = '8px';
+                    googleDropdown.style.borderRadius = '4px';
+                    googleDropdown.style.border = '1px solid #ddd';
+                    googleDropdown.style.backgroundColor = '#f9f9f9';
+                    
+                    // Thêm option mặc định
+                    var defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Chọn ngôn ngữ...';
+                    googleDropdown.insertBefore(defaultOption, googleDropdown.firstChild);
+                    googleDropdown.value = '';
+                }
+            }, 100);
+        }
+        
+        // Gọi hàm customize sau khi Google Translate đã tải
+        setTimeout(customizeGoogleTranslate, 1000);
+    </script>
+</body>
+</html>
