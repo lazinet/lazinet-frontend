@@ -169,25 +169,26 @@ align-items: center !important;
   display: none !important;
 } */
 
+/* GPT */
 #google_translate_element {
-  max-width: 200px; /* Điều chỉnh độ rộng tối đa */
+  max-width: 200px;
   white-space: nowrap;
 }
 
 .goog-te-gadget-simple {
   padding: 5px;
   border-radius: 5px;
-  background-color: #CCECFF; /* Màu nền nhẹ */
+  background-color: linear-gradient(to right, #106eea, #FFCC99);
   border: 1px solid #0000ff;
   display: flex;
   align-items: center;
 }
 
 .goog-te-gadget img {
-  display: none !important; /* Ẩn icon mặc định */
+  display: none !important;
 }
 
 .goog-te-gadget span {
-  font-size: 12px; /* Điều chỉnh kích thước chữ */
+  font-size: 12px;
   color: #ff6302;
 }
