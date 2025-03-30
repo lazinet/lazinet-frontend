@@ -177,8 +177,8 @@ align-items: center !important;
 .goog-te-gadget-simple {
   padding: 5px;
   border-radius: 5px;
-  background-color: #FFB180; /* Màu nền nhẹ */
-  border: 1px solid #ffffff;
+  background-color: #CCECFF; /* Màu nền nhẹ */
+  border: 1px solid #0000ff;
   display: flex;
   align-items: center;
 }
@@ -189,5 +189,5 @@ align-items: center !important;
 
 .goog-te-gadget span {
   font-size: 12px; /* Điều chỉnh kích thước chữ */
-  color: #0000ff;
+  color: #ff6302;
 }
