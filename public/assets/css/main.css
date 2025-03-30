@@ -173,7 +173,9 @@ h6 {
   .header .topbar .contact-info i a,
   .header .topbar .contact-info i span {
     font-size: 13px;
+    /* display: none; */
   }
+
 }
 
 .header .topbar .contact-info i a {
