@@ -126,14 +126,13 @@ button:hover {
   vertical-align: middle; /* Căn chỉnh theo dòng */
 }
 
-/* Kiểm soát kích thước và vị trí của Google Translate */
-#google_translate_element {
+/* Qwen */
+/* #google_translate_element {
   display: inline-block;
   vertical-align: middle;
-  margin-left: 10px; /* Khoảng cách từ các phần tử khác */
+  margin-left: 10px;
 }
 
-/* Kiểm soát kích thước của dropdown */
 .goog-te-gadget-simple {
   background-color: transparent !important;
   border: none !important;
@@ -144,10 +143,23 @@ button:hover {
   box-shadow: none !important;
 }
 
-/* Loại bỏ border và padding thừa */
 .goog-te-gadget-icon {
-  display: none !important; /* Ẩn icon nếu không cần thiết */
+  display: none !important;
+} */
+
+#google_translate_element .goog-te-gadget-simple {
+  width: 200px !important; /* Điều chỉnh chiều rộng theo nhu cầu */
+  height: 30px !important; /* Điều chỉnh chiều cao theo nhu cầu */
+  display: flex !important; /* Đảm bảo các phần tử con được căn chỉnh đúng cách */
+  align-items: center !important; /* Căn chỉnh dọc các phần tử con */
 }
 
+#google_translate_element .goog-te-gadget-simple a {
+display: flex !important;
+align-items: center !important;
+}
 
-
+#google_translate_element .goog-te-gadget-simple span {
+display: flex !important;
+align-items: center !important;
+}
