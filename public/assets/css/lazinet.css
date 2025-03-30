@@ -147,11 +147,12 @@ button:hover {
   display: none !important;
 } */
 
+/* Gemini
 #google_translate_element .goog-te-gadget-simple {
-  width: 200px !important; /* Điều chỉnh chiều rộng theo nhu cầu */
-  height: 30px !important; /* Điều chỉnh chiều cao theo nhu cầu */
-  display: flex !important; /* Đảm bảo các phần tử con được căn chỉnh đúng cách */
-  align-items: center !important; /* Căn chỉnh dọc các phần tử con */
+  width: 0px !important;
+  height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 #google_translate_element .goog-te-gadget-simple a {
@@ -162,4 +163,31 @@ align-items: center !important;
 #google_translate_element .goog-te-gadget-simple span {
 display: flex !important;
 align-items: center !important;
+}
+
+.goog-te-gadget-icon {
+  display: none !important;
+} */
+
+#google_translate_element {
+  max-width: 200px; /* Điều chỉnh độ rộng tối đa */
+  white-space: nowrap;
+}
+
+.goog-te-gadget-simple {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #ff6302; /* Màu nền nhẹ */
+  border: 1px solid #0000ff;
+  display: flex;
+  align-items: center;
+}
+
+.goog-te-gadget img {
+  display: none !important; /* Ẩn icon mặc định */
+}
+
+.goog-te-gadget span {
+  font-size: 14px; /* Điều chỉnh kích thước chữ */
+  color: #ff6302;
 }
