@@ -5,39 +5,95 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>LAZINET - Technologies for Efficiency</title>
-  <meta name="description"
-    content="LAZINET - AI, IoT, and Cloud solutions for business growth and digital transformation. Elevate efficiency with cutting-edge technology.">
-  <meta name="keywords"
-    content="AI solutions, IoT, Cloud computing, Digital transformation, Smart technology, AI analytics, AI-powered business, AI and IoT integration">
+  <meta name="description" content="AI, IoT, and Cloud solutions for business growth and digital transformation">
+  <meta name="keywords" content="AI solutions, IoT, Cloud computing, Digital transformation">
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="assets/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/img/lazinet_LogoOnly.png" as="image">
+  <link rel="preload" href="assets/img/Events/processed_HUIT-AI-800.webp" as="image" imagesrcset="assets/img/Events/processed_HUIT-AI-400.webp 400w, assets/img/Events/processed_HUIT-AI-800.webp 800w" imagesizes="(max-width: 600px) 400px, 800px">
+  <link rel="preload" href="assets/css/main.min.css" as="style">
+  
+  <!-- Inline critical CSS -->
+  <style>
+    /* BASE STYLES */
+    :root {
+      --primary: #ff6302;
+      --secondary: #0000ff;
+      --dark: #000000;
+      --light: #ffffff;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 {
+      margin-top: 0;
+      line-height: 1.2;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* LAYOUT STABILITY */
+    .header, .navmenu, .social-links {
+      width: 100%;
+    }
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+    }
+    .social-links {
+      height: 40px;
+    }
+    .bi-phone, .bi-envelope {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+    }
+    
+    /* FONT LOADING */
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('assets/fonts/montserrat.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    .font-montserrat {
+      font-family: 'Montserrat', -apple-system, sans-serif;
+    }
+    
+    /* LAZY LOADING */
+    img[loading="lazy"] {
+      background: #f5f5f5;
+      transition: opacity 0.3s;
+    }
+    img[loading="lazy"][data-src] {
+      opacity: 0;
+    }
+    img[loading="lazy"].loaded {
+      opacity: 1;
+    }
+  </style>
 
   <!-- Favicons -->
-  <link href="assets/img/lazinet_LogoOnly.png" rel="icon">
+  <link href="assets/img/lazinet_LogoOnly.png" rel="icon" type="image/png">
   <link href="assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
 
-  <!-- Fonts -->
-  <!-- <link href="https://fonts.googleapis.com" rel="preconnect"> -->
-  <!-- <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin> -->
-  <!-- <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style"> -->
-
-  <link data-minify="1" rel='stylesheet' id='wtg-contact-css'
-    href='wp-content/cache/min/1/wp-content/plugins/wtg-contact-media/assets/css/style9452.css?ver=1729246314'
-    type='text/css' media='all' />
-  <link data-minify="1" rel='stylesheet' id='qpg-theme-css'
-    href='wp-content/cache/min/1/wp-content/themes/newvlook/assets/css/app9452.css?ver=1729246314' type='text/css'
-    media='all' />
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/lazinet.css" rel="stylesheet">
-
+  <!-- Non-critical CSS -->
+  <link rel="stylesheet" href="assets/css/main.min.css" media="print" onload="this.media='all'">
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
+
 
 <body class="index-page">
 

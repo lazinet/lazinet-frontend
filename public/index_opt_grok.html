@@ -14,19 +14,33 @@
   <link href="assets/img/lazinet_LogoOnly.png" rel="icon">
   <link href="assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
 
-  <!-- Fonts -->
-  <!-- <link href="https://fonts.googleapis.com" rel="preconnect"> -->
-  <!-- <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin> -->
-  <!-- <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style"> -->
+  <!-- Preload quan trọng -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v29/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/img/Events/processed_HUIT-AI.jpeg" as="image">
+  <link rel="preload" href="assets/img/portfolio/Agritech/LAZINET-Smart-Agriculture.webp" as="image">
 
+  <!-- Fonts tối ưu -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Inline CSS quan trọng cho LCP và CLS -->
+  <style>
+    #blog h2 { color: #ffffff; text-align: center; margin-bottom: 30px; font-family: 'Montserrat', sans-serif; }
+    .swiper-wrapper { height: 480px; }
+    .social-links { min-height: 40px; }
+    #navmenu { min-height: 60px; }
+    .blog-item { height: 480px; }
+    .blog-img { width: 100%; height: 230px; object-fit: cover; border-radius: 5px; }
+  </style>
+
+  <!-- Vendor CSS Files -->
   <link data-minify="1" rel='stylesheet' id='wtg-contact-css'
     href='wp-content/cache/min/1/wp-content/plugins/wtg-contact-media/assets/css/style9452.css?ver=1729246314'
     type='text/css' media='all' />
   <link data-minify="1" rel='stylesheet' id='qpg-theme-css'
     href='wp-content/cache/min/1/wp-content/themes/newvlook/assets/css/app9452.css?ver=1729246314' type='text/css'
     media='all' />
-
-  <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
@@ -36,7 +50,6 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
   <link href="assets/css/lazinet.css" rel="stylesheet">
-
 </head>
 
 <body class="index-page">
