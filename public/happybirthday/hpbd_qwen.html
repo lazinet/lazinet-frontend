@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Chúc Mừng Sinh Nhật</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ff6302, #0074d9);
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: red;
+            border-radius: 50%;
+            bottom: -100px;
+            animation: float 5s infinite ease-in-out;
+        }
+        .balloon:nth-child(even) {
+            background: yellow;
+            left: 30%;
+        }
+        .balloon:nth-child(odd) {
+            background: green;
+            left: 70%;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-200px); }
+            100% { transform: translateY(0); }
+        }
+        .gift-box {
+            width: 100px;
+            height: 100px;
+            background: #ff6302;
+            margin: 20px auto;
+            position: relative;
+        }
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: white;
+        }
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 30px;
+            background: #0074d9;
+        }
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 3s infinite;
+        }
+        .star:nth-child(1) { top: 10%; left: 10%; }
+        .star:nth-child(2) { top: 20%; right: 15%; }
+        .star:nth-child(3) { bottom: 30%; left: 40%; }
+        @keyframes twinkle {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        .footer {
+            font-size: 0.9em;
+            margin-top: 20px;
+            color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chúc Mừng Sinh Nhật Nguyễn Thị Xinh Đẹp!</h1>
+        <p>Hôm nay là một ngày đặc biệt dành riêng cho bạn. Hãy tận hưởng từng khoảnh khắc hạnh phúc và tràn đầy yêu thương.</p>
+        <p>Bạn có biết không? Ngày này trùng với sinh nhật của nhà khoa học thiên tài Albert Einstein, người đã cống hiến cả đời mình để thay đổi thế giới bằng những phát minh vĩ đại. Giống như ông ấy, bạn cũng chính là nguồn cảm hứng và ánh sáng cho mọi người xung quanh!</p>
+        <p><strong>Ngày giờ hiện tại:</strong> <span id="currentDateTime"></span></p>
+        <div class="gift-box"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="footer">
+            <p>Thiệp chúc mừng sinh nhật được thiết kế bởi <span style="color: #ff6302;">LAZINET</span> - Mang niềm vui đến mọi người!</p>
+        </div>
+    </div>
+
+    <script>
+        // Hiển thị ngày giờ hiện tại
+        const currentDateTime = document.getElementById('currentDateTime');
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        currentDateTime.textContent = now.toLocaleDateString('vi-VN', options);
+    </script>
+</body>
+</html>

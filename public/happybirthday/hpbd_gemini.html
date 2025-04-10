@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('https://i.imgur.com/your_balloon_background_image.gif'); /* Thay thế bằng ảnh nền bong bóng động */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .birthday-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #ff6302; /* Màu cam LAZINET */
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: confetti-fall 2s linear infinite;
+        }
+
+        .confetti:nth-child(even) {
+            background-color: #2196F3; /* Màu xanh dương LAZINET */
+        }
+
+        .confetti:nth-child(odd) {
+            background-color: #ffc107; /* Một màu vàng tươi vui */
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                top: -20px;
+                opacity: 1;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: 100%;
+                opacity: 0.7;
+                transform: translateX(20px) rotate(720deg);
+            }
+        }
+
+        .greeting {
+            font-size: 2em;
+            color: #ff6302; /* Màu cam LAZINET */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .name {
+            font-size: 2.5em;
+            color: #2196F3; /* Màu xanh dương LAZINET */
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .wish {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .date-time {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .special-info {
+            font-style: italic;
+            color: #008000; /* Màu xanh lá cây tích cực */
+            margin-top: 20px;
+            padding: 15px;
+            border-left: 5px solid #008000;
+            background-color: #f0fff0;
+            border-radius: 5px;
+        }
+
+        .star {
+            position: absolute;
+            color: yellow;
+            font-size: 20px;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.5; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        .gift-box {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #f8bbd0; /* Màu hồng nhạt dễ thương */
+            border: 2px solid #e91e63; /* Màu hồng đậm */
+            transform: rotate(-20deg);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: #fff;
+        }
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background-color: #e91e63;
+            top: 20px;
+        }
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 10px;
+            background-color: #e91e63;
+            left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-card">
+        <div class="confetti" style="left: 10%; animation-delay: 0.5s;"></div>
+        <div class="confetti" style="left: 30%; animation-delay: 1s;"></div>
+        <div class="confetti" style="left: 50%; animation-delay: 0.2s;"></div>
+        <div class="confetti" style="left: 70%; animation-delay: 1.5s;"></div>
+        <div class="confetti" style="left: 90%; animation-delay: 0.8s;"></div>
+
+        <div class="star" style="top: 10%; left: 15%;">⭐</div>
+        <div class="star" style="top: 25%; right: 10%;">✨</div>
+        <div class="star" style="bottom: 15%; left: 20%;">🌟</div>
+        <div class="star" style="bottom: 30%; right: 15%;">💫</div>
+
+        <div class="gift-box" style="top: 15%; left: 80%;">🎁</div>
+        <div class="gift-box" style="bottom: 10%; left: 5%;">🎉</div>
+
+        <div class="greeting">Chúc Mừng Sinh Nhật!</div>
+        <div class="name">Nguyễn Thị Xinh Đẹp</div>
+        <div class="wish">
+            Nguyện cho ngày sinh nhật của bạn tràn ngập niềm vui, hạnh phúc và những điều bất ngờ tuyệt vời nhất! Chúc bạn luôn xinh đẹp, thành công và gặt hái được nhiều may mắn trong cuộc sống. Hãy luôn giữ nụ cười rạng rỡ và trái tim ấm áp nhé!
+        </div>
+        <div class="date-time">
+            Hôm nay, Thứ Năm, ngày 10 tháng 4 năm 2025<br>
+            Thời gian: 10:05 AM
+        </div>
+        <div class="special-info">
+            🎉 Bạn có biết không? Vào ngày này, một sự kiện lớn [**Tìm kiếm và chèn thông tin sự kiện lớn tích cực trùng ngày 10/04**] đã diễn ra, mang lại [**Thông tin tích cực từ sự kiện**]. Thật trùng hợp và ý nghĩa phải không!
+            <br><br>
+            🌟 Thêm vào đó, [**Tìm kiếm và chèn tên người nổi tiếng có cống hiến lớn sinh ngày 10/04**], một người có những đóng góp to lớn cho nhân loại, cũng sinh vào ngày này. Họ là minh chứng cho những điều tuyệt vời có thể xảy ra!
+        </div>
+        <div style="color: #777; font-size: 0.8em; margin-top: 20px;">
+            Gửi từ đội ngũ [**Tên công ty/nhãn hiệu của bạn**] với nhiều yêu thương!
+        </div>
+    </div>
+</body>
+</html>

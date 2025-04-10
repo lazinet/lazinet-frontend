@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Chúc Mừng Sinh Nhật</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            width: 350px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+            color: white;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            animation: sparkle 5s infinite;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-top: 50px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.5;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+        }
+
+        .balloons {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: radial-gradient(circle at 30% 30%, #ffeb3b, #ff5722);
+            border-radius: 50%;
+            animation: rise 6s infinite ease-in;
+        }
+
+        .balloon:nth-child(2) {
+            left: 20%;
+            animation-delay: 1s;
+            background: radial-gradient(circle at 30% 30%, #e91e63, #9c27b0);
+        }
+
+        .balloon:nth-child(3) {
+            left: 70%;
+            animation-delay: 2s;
+            background: radial-gradient(circle at 30% 30%, #2196f3, #03a9f4);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(360deg); }
+        }
+
+        @keyframes rise {
+            0% { bottom: -100px; opacity: 0; }
+            20% { opacity: 1; }
+            100% { bottom: 100%; opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Chúc Mừng Sinh Nhật!</h1>
+        <p>Chúc bạn một ngày sinh nhật thật vui vẻ, tràn đầy hạnh phúc và những điều kỳ diệu. Mong mọi điều tốt đẹp sẽ đến với bạn!</p>
+        <div class="balloons">
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+        </div>
+    </div>
+</body>
+</html>
