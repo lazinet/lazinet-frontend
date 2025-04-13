@@ -17,7 +17,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
   <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->
   
   <style>
     body {
@@ -352,14 +351,13 @@
 <body>
   <!-- Business Card -->
   <div class="card business-card" id="business-card">
-    
-    <div class="left-section"><a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
+    <div class="left-section">
       <div class="logo">
-        <img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo">
+        <a href="https://lazinet.com/"><img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
       </div>
       <div class="profile-pic">
-        <img src="/assets/img/team/Phung-Hoang.png" alt="Profile Picture">
-      </div></a>
+        <a href="/assets/img/team/Phung-Hoang-Wechat.jpeg"><img src="/assets/img/team/Phung-Hoang.png" alt="Profile Picture"></a>
+      </div>
     </div>
     <div class="right-section">
       <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
@@ -375,7 +373,6 @@
           <div class="social-links">
             <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
             <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
-            <a href="/assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
           </div>
           <div class="qr-code" id="qrcode"></div>
         </div>
@@ -446,28 +443,41 @@
       });
     }
 
-    function exportToVCard() {
+    async function exportToVCard() {
+    const imageUrl = "/assets/img/team/Phung-Hoang.png"; // đường dẫn ảnh trong public
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      const base64Image = reader.result.split(',')[1];
+
       const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
 N:Hoang;Phung;;;
 FN:Phung Hoang
 ORG:LAZINET
-TITLE:Founder & CEO | Innovation Principal
+TITLE:Head of Research & Production
 ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
 TEL;TYPE=WORK,VOICE:+84908556220
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
+PHOTO;ENCODING=b;TYPE=PNG:${base64Image}
 END:VCARD
       `.trim();
-      const blob = new Blob([vCardData], { type: "text/vcard" });
-      const url = URL.createObjectURL(blob);
+
+      const vcfBlob = new Blob([vCardData], { type: "text/vcard" });
+      const url = URL.createObjectURL(vcfBlob);
       const link = document.createElement("a");
       link.href = url;
       link.download = "LAZINET Phung-Hoang.vcf";
       link.click();
       URL.revokeObjectURL(url);
-    }
+    };
+
+    reader.readAsDataURL(blob);
+  }
 
     function exportToPDF() {
       const { jsPDF } = window.jspdf;
