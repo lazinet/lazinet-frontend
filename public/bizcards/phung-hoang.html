@@ -281,7 +281,6 @@
         flex-direction: column;
       }
       .left-section {
-        /* display: flex; */
         width: 100%;
         height: 40%;
         flex-direction: row;
@@ -294,14 +293,7 @@
         height: 60%;
         padding: 10px;
       }
-
-      .left-section a {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-      }
+      
       .left-section .logo img {
         width: 120px;
         height: 120px;
@@ -362,13 +354,13 @@
   <!-- Business Card -->
   <div class="card business-card" id="business-card">
     
-    <div class="left-section"><a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
+    <div class="left-section">
       <div class="logo">
-        <img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo">
+        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
       </div>
       <div class="profile-pic">
-        <img src="/assets/img/team/Phung-Hoang.png" alt="Profile Picture">
-      </div></a>
+        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><img src="/assets/img/team/Phung-Hoang.png" alt="Profile Picture"></a>
+      </div>
     </div>
     <div class="right-section">
       <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
