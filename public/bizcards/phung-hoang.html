@@ -667,7 +667,10 @@ END:VCARD
           button.textContent = 'Send Message'; // Reset nút
           button.style.color = '#fff'; // Reset màu
           button.disabled = false; // Mở khóa nút
-          document.getElementById('contact-form').reset(); // Reset form
+          // document.getElementById('contact-form').reset(); // Reset form
+          // window.location.href = 'https://lazinet.com';
+          // Tùy chọn 2: Mở liên kết trong tab mới (bỏ comment nếu muốn dùng)
+          window.open('https://lazinet.com', '_blank');
         }, 2000);
       } catch (error) {
         // Hiển thị thông báo lỗi
