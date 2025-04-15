@@ -17,10 +17,12 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center; /* Căn giữa theo trục dọc */
+            align-items: center; /* Căn giữa theo trục ngang */
             background: linear-gradient(to bottom,      
                 #87CEEB 0%,
-                white 60%,
-                #228B22 100%
+                white 50%,
+                #228B22 80%
             );
             position: relative;
         }
@@ -30,14 +32,13 @@
             body {
                 background: linear-gradient(to bottom,      
                     #87CEEB 0%,
-                    white 70%,
-                    #228B22 100%
+                    white 60%,
+                    #228B22 90%
                 );
             }
             
             .card {
-                margin: 15px auto;
-                padding: 20px;
+                padding: 15px;
                 max-width: 90%;
             }
             
@@ -64,13 +65,13 @@
             }
             
             .logo-container img {
-                width: 250px;
+                height: 75px;
             }
         }
         
         @media (max-width: 480px) {
             .card {
-                padding: 15px;
+                padding: 10px;
             }
             
             h1 {
@@ -78,7 +79,7 @@
             }
             
             .logo-container img {
-                width: 200px;
+                height: 50px;
             }
         }
         
@@ -105,9 +106,9 @@
         
         .grass {
             position: absolute;
-            bottom: 5%;
+            bottom: 2%;
             width: 100%;
-            height: 15%;
+            height: 10%;
             z-index: 2;
         }
         
@@ -115,7 +116,7 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 5%;
+            height: 3%;
             z-index: 3;
         }
         
@@ -123,7 +124,7 @@
             position: absolute;
             z-index: 4;
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
-            bottom: 5%;
+            bottom: 2%;
         }
         
         .flower .bloom {
@@ -243,15 +244,13 @@
         }
         
         .card {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 30px;
+            max-width: 750px;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
             z-index: 10;
-            flex-grow: 1;
         }
         
         h1 {
@@ -268,9 +267,9 @@
         }
         
         .date {
-            font-size: 1.2em;
+            /* font-size: 1.2em; */
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
         }
         
         .message {
@@ -337,7 +336,7 @@
         }
         
         .logo-container img {
-            height: 300px;
+            height: 100px;
             width: auto;
             max-width: 100%;
             object-fit: contain;
@@ -476,7 +475,7 @@
             const flowers = ['🌸', '🌺', '🌼', '🌹', '🌻', '🌷', '🏵️'];
             const name = "Lê Hải (Bob)";
 
-            // Add more clouds
+            // Add clouds
             for (let i = 0; i < 8; i++) {
                 const cloud = document.createElement('div');
                 cloud.className = 'cloud';
@@ -487,8 +486,8 @@
                 container.appendChild(cloud);
             }
             
-            // Add more balloons with SVG strings
-            for (let i = 0; i < 12; i++) {
+            // Add balloons with SVG strings
+            for (let i = 0; i < 8; i++) {
                 const balloonContainer = document.createElement('div');
                 balloonContainer.className = 'balloon-container';
                 balloonContainer.style.left = `${5 + Math.random() * 90}%`;
@@ -515,11 +514,11 @@
                 container.appendChild(balloonContainer);
             }
             
-            // Add more flowers with stems on grass
-            for (let i = 0; i < 15; i++) {
+            // Add flowers with stems on grass
+            for (let i = 0; i < 10; i++) {
                 const flower = document.createElement('div');
                 flower.className = 'flower';
-                flower.style.bottom = `${5 + Math.random() * 10}%`;
+                flower.style.bottom = `${2 + Math.random() * 8}%`;
                 flower.style.left = `${Math.random() * 100}%`;
                 
                 const bloom = document.createElement('div');
@@ -528,15 +527,15 @@
                 
                 const stem = document.createElement('div');
                 stem.className = 'stem';
-                stem.style.height = `${25 + Math.random() * 30}px`;
+                stem.style.height = `${20 + Math.random() * 25}px`;
                 
                 flower.appendChild(bloom);
                 flower.appendChild(stem);
                 container.appendChild(flower);
             }
             
-            // Add more butterflies (SVG)
-            for (let i = 0; i < 5; i++) {
+            // Add butterflies (SVG)
+            for (let i = 0; i < 3; i++) {
                 const butterfly = document.createElement('div');
                 butterfly.className = 'butterfly';
                 butterfly.style.top = `${40 + Math.random() * 40}%`;
