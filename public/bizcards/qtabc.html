@@ -406,7 +406,7 @@
             <button onclick="exportToPDF()">Export PDF</button>
             <button onclick="exportToVCard()">Export vCard</button>
             <button onclick="shareInvite()">Share Invite</button>
-            <button onclick="toggleContactForm()">Contact Us</button>
+            <!-- <button onclick="toggleContactForm()">Contact Us</button> -->
         </div>
     </div>
 
@@ -541,7 +541,7 @@ END:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'QUẢNG TRỊ_Contact.vcf';
+            link.download = 'Lê Minh Phụng_QUẢNG TRỊ BIZ CLUB.vcf';
             link.click();
         }
 
