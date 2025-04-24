@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng Sinh Nhật Nguyễn Thị Xinh Đẹp!</title>
+    <title>Chúc mừng sinh nhật bạn Nên Nguyễn!</title>
+    
+    <!-- Favicons -->
+    <link href="/assets/img/lazinet_LogoOnly.png" rel="icon">
+    <link href="/assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
         
@@ -14,47 +18,73 @@
             overflow-x: hidden;
             text-align: center;
             color: #333;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(to bottom, 
-                #87CEEB 0%,    /* Xanh nhạt */
-                #FFFFFF 40%,   /* Trắng - kéo dài để chuyển đều */
-                #228B22 80%,   /* Xanh lá đậm - kéo dài để chuyển đều */
-                #ff6302 100%   /* Cam đậm */
+            justify-content: center; /* Căn giữa theo trục dọc */
+            align-items: center; /* Căn giữa theo trục ngang */
+            background: linear-gradient(to bottom,      
+                #87CEEB 0%,
+                white 50%,
+                #228B22 80%
             );
-            background-size: 100% 300%;
-            animation: gradientBlend 10s ease infinite;
             position: relative;
-            overflow: hidden;
         }
-
-        @keyframes gradientBlend {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 0% 100%; }
-            100% { background-position: 0% 0%; }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                background: linear-gradient(to bottom,      
+                    #87CEEB 0%,
+                    white 60%,
+                    #228B22 90%
+                );
+            }
+            
+            .card {
+                padding: 15px;
+                max-width: 90%;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            h2 {
+                font-size: 1.4em;
+            }
+            
+            .message {
+                font-size: 1em;
+            }
+            
+            .fact {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+            
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+            
+            .logo-container img {
+                height: 75px;
+            }
         }
-
-        body::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, 
-                rgba(255, 255, 255, 0.2) 0%, 
-                rgba(255, 255, 255, 0) 50%, 
-                rgba(0, 0, 0, 0.1) 100%);
-            animation: lightShift 8s ease infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes lightShift {
-            0% { opacity: 0.5; transform: translateY(-20%); }
-            50% { opacity: 0.8; transform: translateY(20%); }
-            100% { opacity: 0.5; transform: translateY(-20%); }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .logo-container img {
+                height: 50px;
+            }
         }
         
         .sun {
@@ -80,10 +110,9 @@
         
         .grass {
             position: absolute;
-            bottom: 5%;
+            bottom: 2%;
             width: 100%;
-            height: 15%;
-            background: linear-gradient(to top, #228B22, #2E8B57);
+            height: 10%;
             z-index: 2;
         }
         
@@ -91,8 +120,7 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 5%;
-            background: #ff6302;
+            height: 3%;
             z-index: 3;
         }
         
@@ -100,7 +128,7 @@
             position: absolute;
             z-index: 4;
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
-            bottom: 5%; /* Đặt hoa mọc từ lớp cỏ */
+            bottom: 2%;
         }
         
         .flower .bloom {
@@ -113,7 +141,7 @@
         .flower .stem {
             position: absolute;
             width: 2px;
-            background: linear-gradient(to bottom, #1A5F1A, #0A2F0A); /* Xanh đậm đen */
+            background: linear-gradient(to bottom, #0ead0e, #0A2F0A);
             left: 50%;
             transform: translateX(-50%);
             z-index: 0;
@@ -157,26 +185,29 @@
             position: absolute;
             z-index: 5;
             animation: fly 15s linear infinite;
-            transform-origin: center;
+            width: 50px;
+            height: 50px;
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
         }
         
-        .butterfly .left-wing {
-            position: absolute;
-            font-size: 20px;
-            animation: flap-left 0.2s ease-in-out infinite alternate;
+        .butterfly-svg {
+            width: 100%;
+            height: 100%;
         }
         
-        .butterfly .right-wing {
-            position: absolute;
-            font-size: 20px;
-            animation: flap-right 0.2s ease-in-out infinite alternate;
+        .butterfly-wing {
+            animation: flap 0.5s ease-in-out infinite alternate;
         }
         
-        .bird {
+        .greeting {
             position: absolute;
-            z-index: 4;
-            animation: fly-bird 20s linear infinite;
+            font-size: 24px;
+            font-weight: bold;
+            color: #e65c00;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+            pointer-events: none;
+            z-index: 10;
+            animation: sparkle 2s ease-out forwards;
         }
         
         /* Animations */
@@ -199,45 +230,35 @@
         }
         
         @keyframes fly {
-            0% { transform: translate(-100px, 100px) rotate(0deg); opacity: 0; }
+            0% { transform: translate(-100px, 100px); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: translate(calc(100vw + 100px), -100px) rotate(360deg); opacity: 0; }
+            100% { transform: translate(calc(100vw + 100px), -100px); opacity: 0; }
         }
         
-        @keyframes flap-left {
-            0% { transform: rotateY(30deg); }
-            100% { transform: rotateY(0deg); }
+        @keyframes flap {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(0.8); }
         }
         
-        @keyframes flap-right {
-            0% { transform: rotateY(-30deg); }
-            100% { transform: rotateY(0deg); }
-        }
-        
-        @keyframes fly-bird {
-            0% { transform: translate(-100px, 50px) scaleX(1); opacity: 0; }
-            10% { opacity: 1; }
-            50% { transform: translate(50vw, 30px) scaleX(1); }
-            51% { transform: translate(50vw, 30px) scaleX(-1); }
-            90% { opacity: 1; }
-            100% { transform: translate(calc(100vw + 100px), 50px) scaleX(-1); opacity: 0; }
+        @keyframes sparkle {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(1.5); }
         }
         
         .card {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 30px;
+            max-width: 750px;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
             z-index: 10;
-            flex-grow: 1;
         }
         
         h1 {
-            color: #ff6302;
+            color: #e65c00;
             margin-bottom: 10px;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -250,9 +271,9 @@
         }
         
         .date {
-            font-size: 1.2em;
+            /* font-size: 1.2em; */
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
         }
         
         .message {
@@ -278,13 +299,13 @@
         
         .signature {
             font-style: italic;
-            color: #ff6302;
+            color: #e65c00;
             font-weight: bold;
             margin-top: 30px;
         }
         
         .lazinet-logo {
-            color: #ff6302;
+            color: #e65c00;
             font-weight: bold;
         }
         
@@ -294,14 +315,14 @@
         
         .cta-button {
             display: inline-block;
-            background: linear-gradient(to right, #ff6302, #ff9a5a);
+            background: linear-gradient(to right, #e65c00, #ff9a5a);
             color: white;
             padding: 12px 25px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
             margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(255, 99, 2, 0.4);
+            box-shadow: 0 4px 15px rgba(230, 92, 0, 0.4);
             transition: all 0.3s ease;
             position: relative;
             z-index: 20;
@@ -309,7 +330,20 @@
         
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 99, 2, 0.6);
+            box-shadow: 0 6px 20px rgba(230, 92, 0, 0.6);
+        }
+        
+        .logo-container {
+            margin: 20px auto;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .logo-container img {
+            height: 100px;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -324,7 +358,7 @@
     
     <!-- Balloons with SVG strings -->
     <div class="balloon-container" style="left: 15%; top: 40%;">
-        <div class="balloon" style="background-color: #ff6302;"></div>
+        <div class="balloon" style="background-color: #e65c00;"></div>
         <svg class="string-svg" height="350" viewBox="0 0 20 350">
             <path class="string-path" d="M 10 0 Q 5 100 10 200 Q 15 300 10 350" />
         </svg>
@@ -351,20 +385,30 @@
         </svg>
     </div>
     
-    <!-- Butterflies -->
+    <!-- Butterflies (SVG) -->
     <div class="butterfly" style="top: 50%; left: -50px; animation-delay: 0.5s;">
-        <div class="left-wing">🦋</div>
-        <div class="right-wing" style="left: 15px;">🦋</div>
+        <svg class="butterfly-svg" viewBox="0 0 64 64">
+            <path class="butterfly-wing" d="M32,19a.946.946,0,0,1-.166-.014,1,1,0,0,1-.821-1.15C32.029,11.74,38.126,5.155,43.8,4.02A1,1,0,1,1,44.2,5.98c-4.391.878-10.244,6.392-11.21,12.184A1,1,0,0,1,32,19Z" style="fill:#0000ff"/>
+            <path class="butterfly-wing" d="M32,19a1,1,0,0,1-.985-.836C30.048,12.372,24.2,6.858,19.8,5.98A1,1,0,0,1,20.2,4.02c5.678,1.135,11.775,7.72,12.79,13.816a1,1,0,0,1-.821,1.15A.946.946,0,0,1,32,19Z" style="fill:#0000ff"/>
+            <path class="butterfly-wing" d="M48,37H35a1,1,0,0,1-1-1V23A14,14,0,1,1,48,37ZM36,35H48A12,12,0,1,0,36,23Z" style="fill:#e65c00"/>
+            <path class="butterfly-wing" d="M46,59A12.013,12.013,0,0,1,34,47V36a1,1,0,0,1,1-1H46a12,12,0,0,1,0,24ZM36,37V47A10,10,0,1,0,46,37Z" style="fill:#e65c00"/>
+            <path class="butterfly-wing" d="M29,37H16A14,14,0,1,1,30,23V36A1,1,0,0,1,29,37ZM16,11a12,12,0,0,0,0,24H28V23A12.013,12.013,0,0,0,16,11Z" style="fill:#e65c00"/>
+            <path class="butterfly-wing" d="M18,59a12,12,0,0,1,0-24H29a1,1,0,0,1,1,1V47A12.013,12.013,0,0,1,18,59Zm0-22A10,10,0,1,0,28,47V37Z" style="fill:#e65c00"/>
+            <path d="M32,51a4,4,0,0,1-4-4V21a4,4,0,0,1,8,0V47A4,4,0,0,1,32,51Zm0-32a2,2,0,0,0-2,2V47a2,2,0,0,0,4,0V21A2,2,0,0,0,32,19Z" style="fill:#0000ff"/>
+        </svg>
     </div>
     
     <div class="butterfly" style="top: 60%; left: -50px; animation-delay: 3s;">
-        <div class="left-wing">🦋</div>
-        <div class="right-wing" style="left: 15px;">🦋</div>
+        <svg class="butterfly-svg" viewBox="0 0 64 64">
+            <path class="butterfly-wing" d="M32,19a.946.946,0,0,1-.166-.014,1,1,0,0,1-.821-1.15C32.029,11.74,38.126,5.155,43.8,4.02A1,1,0,1,1,44.2,5.98c-4.391.878-10.244,6.392-11.21,12.184A1,1,0,0,1,32,19Z" style="fill:#0000ff"/>
+            <path class="butterfly-wing" d="M32,19a1,1,0,0,1-.985-.836C30.048,12.372,24.2,6.858,19.8,5.98A1,1,0,0,1,20.2,4.02c5.678,1.135,11.775,7.72,12.79,13.816a1,1,0,0,1-.821,1.15A.946.946,0,0,1,32,19Z" style="fill:#0000ff"/>
+            <path class="butterfly-wing" d="M48,37H35a1,1,0,0,1-1-1V23A14,14,0,1,1,48,37ZM36,35H48A12,12,0,1,0,36,23Z" style="fill:#e65c00"/>
+            <path class="butterfly-wing" d="M46,59A12.013,12.013,0,0,1,34,47V36a1,1,0,0,1,1-1H46a12,12,0,0,1,0,24ZM36,37V47A10,10,0,1,0,46,37Z" style="fill:#e65c00"/>
+            <path class="butterfly-wing" d="M29,37H16A14,14,0,1,1,30,23V36A1,1,0,0,1,29,37ZM16,11a12,12,0,0,0,0,24H28V23A12.013,12.013,0,0,0,16,11Z" style="fill:#e65c00"/>
+            <path class="butterfly-wing" d="M18,59a12,12,0,0,1,0-24H29a1,1,0,0,1,1,1V47A12.013,12.013,0,0,1,18,59Zm0-22A10,10,0,1,0,28,47V37Z" style="fill:#e65c00"/>
+            <path d="M32,51a4,4,0,0,1-4-4V21a4,4,0,0,1,8,0V47A4,4,0,0,1,32,51Zm0-32a2,2,0,0,0-2,2V47a2,2,0,0,0,4,0V21A2,2,0,0,0,32,19Z" style="fill:#0000ff"/>
+        </svg>
     </div>
-    
-    <!-- Birds -->
-    <div class="bird" style="top: 20%; left: -50px; animation-delay: 2s;">🐦</div>
-    <div class="bird" style="top: 25%; left: -50px; animation-delay: 5s;">🐦</div>
     
     <!-- Ground elements -->
     <div class="grass"></div>
@@ -404,40 +448,60 @@
     <!-- Main card content -->
     <div class="card">
         <h1>🎉 Chúc Mừng Sinh Nhật 🎉</h1>
-        <h2>Nguyễn Thị Xinh Đẹp!</h2>
-        
-        <div class="date">Ngày <span class="highlight">10 tháng 4 năm 2024</span></div>
+        <h2>bạn Nên Nguyễn!</h2>
         
         <div class="message">
-            <p>Gửi đến <span class="highlight">Nguyễn Thị Xinh Đẹp</span>,</p>
-            <p>Những quả bóng bay đang cất cánh lên trời cao, mang theo những lời chúc tốt đẹp nhất nhân ngày sinh nhật của bạn!</p>
-            <p>Chúc bạn một năm mới hạnh phúc như những cánh bướm dập dìu, vui tươi như tiếng chim hót và rực rỡ như những đóa hoa kia!</p>
+            <p>🎊 Sinh nhật hạnh phúc và trọn vẹn! LAZINET kính chúc bạn luôn vui vẻ, yêu đời và có một cuộc sống thật trọn vẹn, ý nghĩa và tràn đầy những điều may mắn và tốt lành. Chúng tôi luôn mong muốn được cùng bạn tạo ra những thành tựu đáng tự hào và mang lại những giá trị tốt đẹp cho cộng đồng thông qua sự hợp tác hiệu quả. 😊🔥🎂🌿✨</p>
         </div>
+
+        <p>Trân trọng,</p>
+        <a href="https://lazinet.com/bizcards/phung-hoang.html" class="cta-button">Phụng Hoàng</a>
         
         <div class="fact">
-            <p>✨ <strong>Bạn có biết?</strong> Ngày 10/4 là ngày đặc biệt:</p>
+            <p>✨ <strong>Bạn có biết?</strong> Ngày <span id="currentDate"></span> là ngày đặc biệt:</p>
+            <script>
+                // Lấy ngày hiện tại
+                const today = new Date();
+
+                // Định dạng ngày theo kiểu DD/MM
+                const day = String(today.getDate()).padStart(2, '0');
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const formattedDate = `${day}/${month}`;
+                
+                // Cập nhật nội dung vào phần tử có id="currentDate"
+                document.getElementById('currentDate').textContent = formattedDate;
+            </script>
             <ul>
-                <li>Ngày Quốc tế của Niềm vui (International Day of Joy)</li>
-                <li>Sinh nhật nhà văn Margaret Peterson Haddix - tác giả của nhiều cuốn sách bestseller</li>
-                <li>Ngày bắt đầu mùa hoa tulip ở Hà Lan</li>
+                <li>Hà Huy Tập (1906) – Tổng bí thư Đảng Cộng sản Đông Dương, có công lao lớn trong chính trị Việt Nam.</li>
+                <li>Anthony Trollope (1815) – Nhà văn Anh, đóng góp lớn cho văn học thế giới.</li>
             </ul>
-            <p>Bạn sinh ra trong một ngày tràn đầy cảm hứng như vậy đó!</p>
         </div>
         
-        <p class="message">Mong rằng mỗi ngày của bạn sẽ rực rỡ như màu sắc những quả bóng bay, ngọt ngào như hương thơm của hoa cỏ, và tự do như những cánh chim trời!</p>
-        
-        <a href="#" class="cta-button">Gửi quà tặng đặc biệt ngay!</a>
-        
-        <p class="signature">Trân trọng,<br><span class="lazinet-logo">LAZI<span class="blue">NET</span></span></p>
+        <div class="logo-container">
+            <a href="https://lazinet.com/"><img src="https://lazinet.com/assets/img/lazinet_LogoFullv2.png" alt="LAZINET Logo"></a>
+        </div>
+
+        <!-- <div class="date">Ngày 15 tháng 4 năm 2025</div> -->
+        <div class="date">Ngày <span id="currentFullDate"></span></div>
+        <script>
+          
+          // Định dạng ngày theo kiểu DD tháng MM năm YYYY
+          const year = today.getFullYear();
+          const formattedFullDate = `${day} tháng ${month} năm ${year}`;
+          
+          // Cập nhật nội dung vào phần tử có id="currentFullDate"
+          document.getElementById('currentFullDate').textContent = formattedFullDate;
+        </script>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.body;
-            const colors = ['#ff6302', '#0066cc', '#4CAF50', '#9C27B0', '#FFD700', '#FF6347'];
-            const flowers = ['🌸', '🌺', '🌼', '🌹', '🌻', '🌷', '💐', '🏵️'];
-            
-            // Add more clouds
+            const colors = ['#e65c00', '#0066cc', '#4CAF50', '#9C27B0', '#FFD700', '#FF6347'];
+            const flowers = ['🌸', '🌺', '🌼', '🌹', '🌻', '🌷', '🏵️'];
+            const name = "Dr. Dương Thịnh";
+
+            // Add clouds
             for (let i = 0; i < 8; i++) {
                 const cloud = document.createElement('div');
                 cloud.className = 'cloud';
@@ -448,8 +512,8 @@
                 container.appendChild(cloud);
             }
             
-            // Add more balloons with SVG strings
-            for (let i = 0; i < 12; i++) {
+            // Add balloons with SVG strings
+            for (let i = 0; i < 8; i++) {
                 const balloonContainer = document.createElement('div');
                 balloonContainer.className = 'balloon-container';
                 balloonContainer.style.left = `${5 + Math.random() * 90}%`;
@@ -476,11 +540,11 @@
                 container.appendChild(balloonContainer);
             }
             
-            // Add more flowers with stems on grass
-            for (let i = 0; i < 15; i++) {
+            // Add flowers with stems on grass
+            for (let i = 0; i < 10; i++) {
                 const flower = document.createElement('div');
                 flower.className = 'flower';
-                flower.style.bottom = `${5 + Math.random() * 10}%`; /* Trong phạm vi lớp cỏ */
+                flower.style.bottom = `${2 + Math.random() * 8}%`;
                 flower.style.left = `${Math.random() * 100}%`;
                 
                 const bloom = document.createElement('div');
@@ -489,45 +553,60 @@
                 
                 const stem = document.createElement('div');
                 stem.className = 'stem';
-                stem.style.height = `${25 + Math.random() * 30}px`;
+                stem.style.height = `${20 + Math.random() * 25}px`;
                 
                 flower.appendChild(bloom);
                 flower.appendChild(stem);
                 container.appendChild(flower);
             }
             
-            // Add more butterflies
-            for (let i = 0; i < 5; i++) {
+            // Add butterflies (SVG)
+            for (let i = 0; i < 3; i++) {
                 const butterfly = document.createElement('div');
                 butterfly.className = 'butterfly';
                 butterfly.style.top = `${40 + Math.random() * 40}%`;
                 butterfly.style.left = `-50px`;
                 butterfly.style.animationDelay = `${Math.random() * 10}s`;
                 
-                const leftWing = document.createElement('div');
-                leftWing.className = 'left-wing';
-                leftWing.textContent = '🦋';
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.className = 'butterfly-svg';
+                svg.setAttribute('viewBox', '0 0 64 64');
                 
-                const rightWing = document.createElement('div');
-                rightWing.className = 'right-wing';
-                rightWing.textContent = '🦋';
-                rightWing.style.left = '15px';
+                const paths = [
+                    ['M32,19a.946.946,0,0,1-.166-.014,1,1,0,0,1-.821-1.15C32.029,11.74,38.126,5.155,43.8,4.02A1,1,0,1,1,44.2,5.98c-4.391.878-10.244,6.392-11.21,12.184A1,1,0,0,1,32,19Z', '#0000ff'],
+                    ['M32,19a1,1,0,0,1-.985-.836C30.048,12.372,24.2,6.858,19.8,5.98A1,1,0,0,1,20.2,4.02c5.678,1.135,11.775,7.72,12.79,13.816a1,1,0,0,1-.821,1.15A.946.946,0,0,1,32,19Z', '#0000ff'],
+                    ['M48,37H35a1,1,0,0,1-1-1V23A14,14,0,1,1,48,37ZM36,35H48A12,12,0,1,0,36,23Z', '#e65c00'],
+                    ['M46,59A12.013,12.013,0,0,1,34,47V36a1,1,0,0,1,1-1H46a12,12,0,0,1,0,24ZM36,37V47A10,10,0,1,0,46,37Z', '#e65c00'],
+                    ['M29,37H16A14,14,0,1,1,30,23V36A1,1,0,0,1,29,37ZM16,11a12,12,0,0,0,0,24H28V23A12.013,12.013,0,0,0,16,11Z', '#e65c00'],
+                    ['M18,59a12,12,0,0,1,0-24H29a1,1,0,0,1,1,1V47A12.013,12.013,0,0,1,18,59Zm0-22A10,10,0,1,0,28,47V37Z', '#e65c00'],
+                    ['M32,51a4,4,0,0,1-4-4V21a4,4,0,0,1,8,0V47A4,4,0,0,1,32,51Zm0-32a2,2,0,0,0-2,2V47a2,2,0,0,0,4,0V21A2,2,0,0,0,32,19Z', '#0000ff']
+                ];
                 
-                butterfly.appendChild(leftWing);
-                butterfly.appendChild(rightWing);
+                paths.forEach(([d, fill]) => {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', d);
+                    path.setAttribute('fill', fill);
+                    if (fill === '#e65c00') path.className = 'butterfly-wing';
+                    svg.appendChild(path);
+                });
+                
+                butterfly.appendChild(svg);
                 container.appendChild(butterfly);
             }
             
-            // Add more birds
-            for (let i = 0; i < 3; i++) {
-                const bird = document.createElement('div');
-                bird.className = 'bird';
-                bird.style.top = `${10 + Math.random() * 20}%`;
-                bird.style.left = `-50px`;
-                bird.style.animationDelay = `${Math.random() * 15}s`;
-                bird.textContent = Math.random() > 0.5 ? '🐦' : '🕊️';
-                container.appendChild(bird);
-            }
+            // Greeting effect on mouse click
+            document.addEventListener('click', function(e) {
+                const greeting = document.createElement('div');
+                greeting.className = 'greeting';
+                greeting.textContent = `Happy Birthday to ${name}!`;
+                greeting.style.left = `${e.clientX - 100}px`;
+                greeting.style.top = `${e.clientY - 20}px`;
+                container.appendChild(greeting);
+                
+                greeting.addEventListener('animationend', () => {
+                    greeting.remove();
+                });
+            });
         });
     </script>
 </body>
