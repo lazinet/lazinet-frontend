@@ -26,8 +26,8 @@
     <link rel="stylesheet" href="css/style.css">
 
       <!-- Main CSS File -->
-  <link href="/assets/css/main.css" rel="stylesheet">
-  <link href="/assets/css/lazinet.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/lazinet.css" rel="stylesheet">
 </head>
 
 <body>
@@ -719,7 +719,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <!-- custom js -->
     <script src="js/custom.js"></script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
-    
+    <script>
+        function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          "includedLanguages": "vi,zh-CN,hi,es,fr,ar,ru,pt,ja,ko,id,ms,th,my,km,lo,tl,de,it,fa,ur,pl,tr,uk,ro,nl,sv,cs,he,el,hu,da,fi",
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+
+    </script>
 </body>
 
 </html>
