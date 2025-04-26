@@ -1,0 +1,179 @@
+{
+  "redparts-footer": {
+    "redparts_sputnik_footer_contacts-2": {
+      "title": "Contact Us",
+      "show_logo": "yes",
+      "text": "Hi, we are always open for cooperation and suggestions, contact us in one of the ways below:",
+      "contacts": [
+        {
+          "order": 0,
+          "caption": "Phone Number",
+          "value": "+1 (800) 060-07-30"
+        },
+        {
+          "order": 0,
+          "caption": "Email Address",
+          "value": "redparts@example.com"
+        },
+        {
+          "order": 0,
+          "caption": "Our Location",
+          "value": "715 Fake Street, New York 10021 USA"
+        },
+        {
+          "order": 0,
+          "caption": "Working Hours",
+          "value": "Mon-Sat 10:00pm - 7:00pm"
+        }
+      ]
+    },
+    "redparts_sputnik_footer_links-2": {
+      "columns": [
+        {
+          "order": 0,
+          "title": "Information",
+          "menu": "277"
+        },
+        {
+          "order": 0,
+          "title": "My Account",
+          "menu": "278"
+        }
+      ]
+    },
+    "redparts_sputnik_footer_newsletter-2": {
+      "title": "Newsletter",
+      "form": "133",
+      "social_text": "Follow us on social networks"
+    }
+  },
+  "redparts-blog": {
+    "search-2": {
+      "title": ""
+    },
+    "categories-3": {
+      "title": "Categories",
+      "count": 1,
+      "hierarchical": 1,
+      "dropdown": 0
+    },
+    "redparts_sputnik_recent_posts-2": {
+      "title": "Latest Posts",
+      "number": 4
+    },
+    "mc4wp_form_widget-2": {
+      "title": "Newsletter"
+    },
+    "redparts_sputnik_recent_comments-2": {
+      "title": "Latest Comments",
+      "number": 3
+    },
+    "tag_cloud-2": {
+      "title": "Tags",
+      "count": 0,
+      "taxonomy": "post_tag"
+    }
+  },
+  "redparts-filters": {
+    "woocommerce_product_categories-2": {
+      "title": "Categories",
+      "orderby": "name",
+      "dropdown": 0,
+      "count": 0,
+      "hierarchical": 1,
+      "show_children_only": 1,
+      "hide_empty": 1,
+      "max_depth": ""
+    },
+    "redparts_sputnik_filter_vehicle-2": {
+      "title": "Vehicle"
+    },
+    "woocommerce_price_filter-2": {
+      "title": "Filter by price"
+    },
+    "woocommerce_layered_nav-2": {
+      "title": "Brand",
+      "attribute": "brand",
+      "display_type": "list",
+      "query_type": "or"
+    },
+    "woocommerce_rating_filter-2": {
+      "title": "Rating"
+    }
+  },
+  "redparts-shop": {
+    "redparts_sputnik_filters-2": {
+      "title": "Filters",
+      "sidebar": "redparts-filters"
+    },
+    "woocommerce_products-2": {
+      "title": "Latest Products",
+      "number": 5,
+      "show": "",
+      "orderby": "date",
+      "order": "desc",
+      "hide_free": 0,
+      "show_hidden": 0
+    }
+  },
+  "redparts-product": {
+    "woocommerce_product_categories-3": {
+      "title": "Categories",
+      "orderby": "name",
+      "dropdown": 0,
+      "count": 0,
+      "hierarchical": 1,
+      "show_children_only": 1,
+      "hide_empty": 1,
+      "max_depth": ""
+    },
+    "woocommerce_products-3": {
+      "title": "Latest Products",
+      "number": 5,
+      "show": "",
+      "orderby": "date",
+      "order": "desc",
+      "hide_free": 0,
+      "show_hidden": 0
+    }
+  },
+  "redparts-product-alt": {
+    "redparts_sputnik_block_features-2": {
+      "layout": "widget",
+      "features": [
+        {
+          "priority": "",
+          "title": "Free Shipping",
+          "subtitle": "For orders from $50",
+          "icon_type": "predefined",
+          "predefined_icon": "fi-free-delivery-48",
+          "custom_icon": 0
+        },
+        {
+          "priority": "",
+          "title": "Support 24\/7",
+          "subtitle": "Call us anytime",
+          "icon_type": "predefined",
+          "predefined_icon": "fi-24-hours-48",
+          "custom_icon": 0
+        },
+        {
+          "priority": "",
+          "title": "100% Safety",
+          "subtitle": "Only secure payments",
+          "icon_type": "predefined",
+          "predefined_icon": "fi-payment-security-48",
+          "custom_icon": 0
+        },
+        {
+          "priority": "",
+          "title": "Hot Offers",
+          "subtitle": "Discounts up to 90%",
+          "icon_type": "predefined",
+          "predefined_icon": "fi-tag-48",
+          "custom_icon": 0
+        }
+      ]
+    }
+  }
+}
