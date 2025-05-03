@@ -1,0 +1,31 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="300" fill="#1a1a1a"/>
+
+  <!-- Outer Circle (Blue Border) -->
+  <circle cx="150" cy="150" r="130" fill="none" stroke="#00f" stroke-width="10"/>
+
+  <!-- Star (Divided Blue and Red) -->
+  <g transform="translate(150 120) scale(0.8)">
+    <path d="M0 -50 L20 -20 L50 -20 L30 0 L40 30 L0 10 L-40 30 L-30 0 L-50 -20 L-20 -20 Z" fill="#00f"/>
+    <path d="M0 -50 L20 -20 L50 -20 L30 0 L40 30 L0 10 L-40 30 L-30 0 L-50 -20 L-20 -20 Z" fill="#f00" clip-path="inset(0 50% 0 0)"/>
+  </g>
+
+  <!-- Number 9 (Left) -->
+  <text x="100" y="180" font-family="Arial" font-size="40" fill="#f00" text-anchor="middle">9</text>
+
+  <!-- Number 9 (Right) -->
+  <text x="200" y="180" font-family="Arial" font-size="40" fill="#f00" text-anchor="middle">9</text>
+
+  <!-- Text "GLOBAL MARKET" -->
+  <text x="150" y="220" font-family="Arial" font-size="20" fill="#f00" text-anchor="middle">GLOBAL MARKET</text>
+
+  <!-- Text "USA" -->
+  <text x="150" y="245" font-family="Arial" font-size="20" fill="#f00" text-anchor="middle">USA</text>
+
+  <!-- Diagonal Lines (for texture effect) -->
+  <g fill="none" stroke="#333" stroke-width="1">
+    <line x1="0" y1="0" x2="300" y2="300"/>
+    <line x1="0" y1="300" x2="300" y2="0"/>
+  </g>
+</svg>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Ty CP Tập Đoàn Hoàng Gia Sài Gòn - Đầu Tư Thương Mại Sản Xuất</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --red: #B31942;       /* Màu đỏ cờ Mỹ */
+            --blue: #0A3161;      /* Màu xanh cờ Mỹ */
+            --light-blue: #F8FAFC;
+            --dark: #212529;
+            --text-color: #333333;
+            --text-light: #6C757D;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            color: var(--text-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Diagram Container */
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .process-diagram {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+        }
+        
+        /* Process Boxes */
+        .process-box {
+            position: absolute;
+            border-radius: 8px;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .process-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .investment-box {
+            background-color: var(--blue);
+            color: var(--white);
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+        }
+        
+        .trade-box {
+            background-color: var(--blue);
+            color: var(--white);
+            top: 200px;
+            left: 30%;
+            width: 120px;
+        }
+        
+        .production-box {
+            background-color: var(--blue);
+            color: var(--white);
+            top: 350px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+        }
+        
+        .plus-circle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: var(--red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 30px;
+            font-weight: bold;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: var(--box-shadow);
+            z-index: 2;
+        }
+        
+        .result-box {
+            position: absolute;
+            background-color: var(--white);
+            border: 2px solid var(--blue);
+            border-radius: 8px;
+            padding: 15px 20px;
+            text-align: center;
+            top: 200px;
+            right: 10%;
+            width: 180px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .result-box h3 {
+            color: var(--blue);
+            margin: 0 0 5px 0;
+        }
+        
+        .result-box p {
+            color: var(--red);
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        /* Arrows */
+        .arrow {
+            position: absolute;
+            background-color: var(--blue);
+        }
+        
+        .arrow-down {
+            width: 2px;
+            height: 80px;
+            top: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .arrow-down::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 10px solid var(--blue);
+        }
+        
+        .arrow-right {
+            width: 120px;
+            height: 2px;
+            top: 220px;
+            left: calc(30% + 120px);
+            background-color: var(--blue);
+        }
+        
+        .arrow-right::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 10px solid var(--blue);
+        }
+        
+        .arrow-right-2 {
+            width: 80px;
+            height: 2px;
+            top: 220px;
+            left: calc(50% + 60px);
+            background-color: var(--blue);
+        }
+        
+        .arrow-right-2::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 10px solid var(--blue);
+        }
+        
+        .arrow-up {
+            width: 2px;
+            height: 80px;
+            top: 270px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .arrow-up::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 10px solid var(--blue);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .process-diagram {
+                height: 500px;
+            }
+            
+            .investment-box {
+                top: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .trade-box {
+                top: 150px;
+                left: 20%;
+            }
+            
+            .production-box {
+                top: 270px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .plus-circle {
+                top: 150px;
+            }
+            
+            .result-box {
+                top: 150px;
+                right: 5%;
+            }
+            
+            .arrow-down {
+                height: 60px;
+                top: 90px;
+            }
+            
+            .arrow-right {
+                width: 80px;
+                top: 170px;
+                left: calc(20% + 120px);
+            }
+            
+            .arrow-right-2 {
+                width: 50px;
+                top: 170px;
+                left: calc(50% + 60px);
+            }
+            
+            .arrow-up {
+                height: 60px;
+                top: 210px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .process-diagram {
+                height: 600px;
+            }
+            
+            .trade-box {
+                left: 10%;
+            }
+            
+            .result-box {
+                width: 150px;
+                right: 2%;
+            }
+            
+            .arrow-right {
+                left: calc(10% + 120px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="diagram-container">
+            <div class="process-diagram">
+                <!-- Đầu tư -->
+                <div class="process-box investment-box">
+                    ĐẦU TƯ
+                </div>
+                
+                <!-- Thương mại -->
+                <div class="process-box trade-box">
+                    THƯƠNG MẠI
+                </div>
+                
+                <!-- Sản xuất -->
+                <div class="process-box production-box">
+                    SẢN XUẤT
+                </div>
+                
+                <!-- Mũi tên từ Đầu tư xuống -->
+                <div class="arrow arrow-down"></div>
+                
+                <!-- Mũi tên từ Thương mại sang -->
+                <div class="arrow arrow-right"></div>
+                
+                <!-- Dấu + -->
+                <div class="plus-circle">
+                    +
+                </div>
+                
+                <!-- Mũi tên từ dấu + sang kết quả -->
+                <div class="arrow arrow-right-2"></div>
+                
+                <!-- Mũi tên từ Sản xuất lên -->
+                <div class="arrow arrow-up"></div>
+                
+                <!-- Kết quả -->
+                <div class="result-box">
+                    <h3>HÀNG HÓA</h3>
+                    <p>CÙNG THẮNG LỢI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
