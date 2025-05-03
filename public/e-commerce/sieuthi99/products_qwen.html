@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Management</title>
+  <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { background-color: #E6ECF5; color: #0A3161; font-family: 'Roboto', sans-serif; }
+    .container { width: 100%; padding: 0 1rem; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #FFFFFF; color: #0A3161; max-height: 80vh; overflow-y: auto; border: 3px solid #0A3161; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); z-index: 1000; width: 90%; max-width: 600px; padding: 2rem; }
+    .popup.active { display: block; }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999; }
+    .overlay.active { display: block; }
+    table { background-color: #FFFFFF; color: #0A3161; table-layout: fixed; width: 100%; margin: 0 auto; }
+    th, td { border: 1px solid #0A3161; padding: 8px; text-align: left; overflow: hidden; text-overflow: ellipsis; }
+    th { background-color: #0A3161; color: #FFFFFF; font-weight: 700; }
+    .image-cell { display: flex; justify-content: center; align-items: center; height: 10vh; }
+    .table-img { max-width: 80px; height: 10vh; object-fit: contain; border-radius: 4px; }
+    .popup-img { width: 90%; max-height: 40vh; object-fit: contain; margin: 0 auto; display: block; }
+    .hover\:bg-red-700:hover { background-color: #B31942; color: #FFFFFF; }
+    h1 { font-size: clamp(1.5rem, 3vw, 2rem); }
+    th, td { font-size: clamp(0.75rem, 2vw, 0.875rem); }
+    .popup h2 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
+    .popup p { font-size: clamp(0.875rem, 2vw, 1rem); }
+    .star-rating { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .star { font-size: 1.5rem; cursor: pointer; color: #d1d5db; transition: all 0.2s ease-in-out; }
+    .star.hovered { color: #f59e0b; transform: scale(1.1); }
+    .star.selected { color: #f59e0b; }
+    .rating-display { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .rating-star { font-size: 1rem; color: #f59e0b; }
+    .tab { padding: 0.5rem 1rem; font-weight: 600; border-top: 2px solid #0A3161; border-left: 2px solid #0A3161; border-right: 2px solid #0A3161; border-bottom: none; border-top-left-radius: 4px; border-top-right-radius: 4px; transition: all 0.3s ease; }
+    .tab.active { background-color: #0A3161; color: white; }
+    .tab.inactive { background-color: white; color: #0A3161; }
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+    .pagination button, .pagination select { padding: 0.5rem 1rem; border: 1px solid #0A3161; border-radius: 4px; background-color: #FFFFFF; color: #0A3161; cursor: pointer; transition: background-color 0.3s; }
+    .pagination button:hover, .pagination select:hover { background-color: #0A3161; color: #FFFFFF; }
+    .pagination button.active { background-color: #0A3161; color: #FFFFFF; font-weight: bold; }
+    .pagination button:disabled { background-color: #d1d5db; cursor: not-allowed; }
+    .error-message { color: #B31942; text-align: center; margin-top: 1rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container py-6">
+    <h1 class="text-center font-bold mb-6 text-[#0A3161]">Product Management</h1>
+    
+    <!-- Tabs -->
+    <div id="tabs" class="flex flex-wrap border-b-2 border-[#0A3161] mb-4"></div>
+    
+    <!-- Tab Contents -->
+    <div id="tab-contents" class="mt-4"></div>
+    
+    <!-- Popup Overlay -->
+    <div id="popup-overlay" class="overlay"></div>
+    
+    <!-- Popup -->
+    <div id="popup" class="popup">
+      <button id="close-popup" class="absolute top-2 right-2 text-[#0A3161] font-bold text-xl">×</button>
+      <h2 id="popup-title" class="font-bold mb-2"></h2>
+      <div id="rating-display" class="rating-display"></div>
+      <img id="popup-image" class="popup-img mb-4 rounded" src="" alt="Product Image" style="display: none;">
+      
+      <div id="popup-details" class="space-y-2">
+        <table class="w-full border-collapse">
+          <tbody id="popup-details-table"></tbody>
+        </table>
+      </div>
+      
+      <div class="star-rating mt-4">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+      
+      <button id="submit-rating" class="mt-2 bg-[#0A3161] text-white px-4 py-2 rounded hover:bg-[#B31942] transition-colors">Submit Rating</button>
+    </div>
+  </div>
+
+  <script>
+    let allProducts = [];
+    let selectedRating = 0;
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyP9rnpcVl4Yc6VQj7XLy_EEhaW6m87-X2-El68FJLe9E5cVzDY2uz66-4RbLZmDC5SgA/exec';
+
+    // Fetch with retry logic
+    async function fetchWithRetry(url, options) {
+      for (let i = 0; i < 3; i++) {
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          if (i < 2) await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+          else throw error;
+        }
+      }
+    }
+
+    // Fetch products
+    async function fetchProducts() {
+      try {
+        const products = await fetchWithRetry(`${API_URL}?action=getProducts`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        allProducts = products;
+        displayProducts(products);
+      } catch (error) {
+        document.getElementById('tab-contents').innerHTML = `<div class="error-message">Failed to load products: ${error.message}</div>`;
+      }
+    }
+
+    // Display products
+    function displayProducts(products) {
+      const origins = [...new Set(products.map(p => p.origin || 'Unknown'))];
+      const tabsContainer = document.getElementById('tabs');
+      const tabContentsContainer = document.getElementById('tab-contents');
+      
+      tabsContainer.innerHTML = '';
+      origins.forEach((origin, index) => {
+        const tab = document.createElement('button');
+        tab.className = `tab ${index === 0 ? 'active' : 'inactive'}`;
+        tab.textContent = origin;
+        tab.onclick = () => switchTab(origin);
+        tabsContainer.appendChild(tab);
+
+        const tabContent = document.createElement('div');
+        tabContent.id = `tab-${origin}`;
+        tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
+        tabContentsContainer.appendChild(tabContent);
+        
+        const filteredProducts = products.filter(p => (p.origin || 'Unknown') === origin);
+        renderTable(tabContent, filteredProducts, index === 0, origin);
+      });
+    }
+
+    // Render table with pagination
+    function renderTable(container, products, isFirstTab, origin) {
+      container.innerHTML = '';
+      
+      // Pagination for first tab
+      if (isFirstTab) {
+        // Controls
+        const controls = document.createElement('div');
+        controls.className = 'flex flex-wrap justify-center gap-4 mb-4';
+        
+        // Items per page
+        const select = document.createElement('select');
+        [10, 20, 30].forEach(val => {
+          const option = document.createElement('option');
+          option.value = val;
+          option.textContent = `${val} per page`;
+          option.selected = val === itemsPerPage;
+          select.appendChild(option);
+        });
+        
+        select.onchange = (e) => {
+          itemsPerPage = parseInt(e.target.value);
+          currentPage = 1;
+          renderTable(container, products, true, origin);
+        };
+        
+        controls.appendChild(select);
+        
+        // Page buttons
+        const totalPages = Math.ceil(products.length / itemsPerPage);
+        const pageButtons = document.createElement('div');
+        pageButtons.className = 'flex gap-2';
+        
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = 'Previous';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderTable(container, products, true, origin);
+          }
+        };
+        
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTable(container, products, true, origin);
+          }
+        };
+        
+        // Page numbers
+        const startPage = Math.max(1, currentPage - 1);
+        const endPage = Math.min(totalPages, currentPage + 1);
+        
+        for (let i = startPage; i <= endPage; i++) {
+          const btn = document.createElement('button');
+          btn.textContent = i;
+          btn.className = currentPage === i ? 'bg-[#0A3161] text-white' : '';
+          btn.onclick = () => {
+            currentPage = i;
+            renderTable(container, products, true, origin);
+          };
+          pageButtons.appendChild(btn);
+        }
+        
+        controls.appendChild(prevBtn);
+        controls.appendChild(pageButtons);
+        controls.appendChild(nextBtn);
+        container.appendChild(controls);
+        
+        // Paginate data
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        products = products.slice(start, end);
+      }
+
+      // Table
+      const table = document.createElement('table');
+      table.className = 'w-full border-collapse';
+      
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th class="w-1/12">ID</th>
+            <th class="w-2/12">Image</th>
+            <th class="w-2/12">Product Code</th>
+            <th class="w-3/12">Product Name</th>
+            <th class="w-1/12">Net Weight</th>
+            <th class="w-1/12">Case Quantity</th>
+            <th class="w-1/12">Unit Price</th>
+            <th class="w-1/12">Case Price</th>
+          </tr>
+        </thead>
+        <tbody id="table-body-${container.id}">
+          ${products.map(product => `
+            <tr class="cursor-pointer hover:bg-red-700" onclick="showPopup(${allProducts.findIndex(p => p.id === product.id)})">
+              <td class="text-center">${product.id}</td>
+              <td class="image-cell">${product.image_url ? `<img class="table-img" src="${product.image_url}" alt="${product.product_name}">` : 'No Image'}</td>
+              <td>${product.product_code}</td>
+              <td>${product.product_name}</td>
+              <td>${product.net_weight}</td>
+              <td>${product.case_quantity}</td>
+              <td>${product.unit_price}</td>
+              <td>${product.case_price}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+      
+      container.appendChild(table);
+    }
+
+    // Switch tabs
+    function switchTab(origin) {
+      currentPage = 1;
+      document.querySelectorAll('#tabs button').forEach(tab => {
+        tab.className = tab.textContent === origin ? 'tab active' : 'tab inactive';
+      });
+      
+      document.querySelectorAll('.tab-content').forEach(content => {
+        const isActive = content.id === `tab-${origin}`;
+        content.className = isActive ? 'tab-content active' : 'tab-content';
+        
+        if (isActive) {
+          const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
+          renderTable(content, filteredProducts, content.id === 'tab-' + document.querySelector('#tabs button.active').textContent, origin);
+        }
+      });
+    }
+
+    // Show product popup
+    function showPopup(index) {
+      const product = allProducts[index];
+      const popup = document.getElementById('popup');
+      const overlay = document.getElementById('popup-overlay');
+      const popupTitle = document.getElementById('popup-title');
+      const popupImage = document.getElementById('popup-image');
+      const popupDetailsTable = document.getElementById('popup-details-table');
+      const ratingDisplay = document.getElementById('rating-display');
+      
+      popupTitle.textContent = product.product_name || 'Unknown Product';
+      popupImage.src = product.image_url || '';
+      popupImage.style.display = product.image_url ? 'block' : 'none';
+      
+      // Rating display
+      const averageRating = parseFloat(product.average_rating) || 0;
+      ratingDisplay.innerHTML = `
+        <span>${averageRating.toFixed(1)}</span>
+        ${Array.from({length: 5}).map((_, i) => `
+          <span class="rating-star">${i < Math.round(averageRating) ? '★' : '☆'}</span>
+        `).join('')}
+        <span>(${product.total_rating_count || 0} reviews)</span>
+      `;
+      
+      // Product details
+      popupDetailsTable.innerHTML = Object.entries(product)
+        .filter(([key, value]) => value && value !== '' && key !== 'image_url' && key !== 'product_name' && key !== 'average_rating' && key !== 'total_rating_count')
+        .map(([key, value]) => `
+          <tr>
+            <td class="border border-[#0A3161] p-2 font-bold">${key.replace('_', ' ').toUpperCase()}</td>
+            <td class="border border-[#0A3161] p-2">${value}</td>
+          </tr>
+        `).join('');
+      
+      // Show popup
+      popup.className = 'popup active';
+      overlay.className = 'overlay active';
+      
+      // Rating logic
+      const stars = document.querySelectorAll('.star');
+      stars.forEach(star => {
+        star.onclick = () => {
+          selectedRating = parseInt(star.dataset.value);
+          stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
+        };
+        
+        star.addEventListener('mouseover', () => {
+          const value = parseInt(star.dataset.value);
+          stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
+        });
+        
+        star.addEventListener('mouseout', () => {
+          stars.forEach((s, i) => {
+            s.classList.remove('hovered');
+            s.classList.toggle('selected', i < selectedRating);
+          });
+        });
+      });
+      
+      // Submit rating
+      document.getElementById('submit-rating').onclick = async () => {
+        if (selectedRating > 0) {
+          try {
+            const response = await fetch(API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'submitRating',
+                productId: product.id,
+                rating: selectedRating
+              })
+            });
+            
+            if (!response.ok) throw new Error('HTTP error!');
+            const result = await response.json();
+            
+            if (result.success) {
+              // Update local data
+              product.average_rating = result.newAverage;
+              product.total_rating_count = result.newCount;
+              
+              // Refresh popup
+              showPopup(index);
+              
+              // Refresh table
+              await fetchProducts();
+              const tabContent = document.getElementById(`tab-${product.origin || 'Unknown'}`);
+              const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === (product.origin || 'Unknown'));
+              tabContent.innerHTML = '';
+              renderTable(tabContent, filteredProducts, tabContent.className.includes('active'), product.origin || 'Unknown');
+              
+              alert('Rating submitted successfully!');
+            } else {
+              alert('Failed to submit rating: ' + result.error);
+            }
+          } catch (error) {
+            alert('Failed to submit rating: ' + error.message);
+          }
+        } else {
+          alert('Please select a rating');
+        }
+      };
+    }
+
+    // Close popup
+    document.getElementById('close-popup').onclick = () => {
+      document.getElementById('popup').className = 'popup';
+      document.getElementById('popup-overlay').className = 'overlay';
+      selectedRating = 0;
+      document.querySelectorAll('.star').forEach(star => star.className = 'star');
+    };
+    
+    document.getElementById('popup-overlay').onclick = () => {
+      document.getElementById('popup').className = 'popup';
+      document.getElementById('popup-overlay').className = 'overlay';
+      selectedRating = 0;
+      document.querySelectorAll('.star').forEach(star => star.className = 'star');
+    };
+
+    // Initialize
+    fetchProducts();
+  </script>
+</body>
+</html>

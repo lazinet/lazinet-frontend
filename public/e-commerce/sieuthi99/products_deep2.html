@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Rating System</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #0A3161; color: white; }
+    tr:hover { background-color: #f5f5f5; }
+    .star { font-size: 24px; cursor: pointer; color: #ddd; }
+    .star.selected, .star.hovered { color: gold; }
+    .popup { 
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+      background: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      z-index: 1000; max-width: 500px; width: 90%;
+    }
+    .overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Rating System</h1>
+  
+  <table id="products">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Rating</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="popup" class="popup" style="display: none;">
+    <h2 id="popup-title"></h2>
+    <img id="popup-image" style="max-width: 100%; max-height: 200px; display: none;">
+    <div id="popup-rating" style="margin: 10px 0;"></div>
+    <div class="star-rating">
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
+    </div>
+    <button id="close-popup" style="margin-top: 10px;">Close</button>
+  </div>
+  <div id="overlay" class="overlay" style="display: none;"></div>
+
+  <script>
+    const API_URL = 'YOUR_DEPLOYED_WEB_APP_URL';
+    let products = [];
+    let selectedProduct = null;
+    let selectedRating = 0;
+
+    // Load products
+    async function loadProducts() {
+      try {
+        const response = await fetch(`${API_URL}?action=getProducts`);
+        const data = await response.json();
+        if (data.success) {
+          products = data.data;
+          renderProducts();
+        } else {
+          console.error('Error:', data.error);
+        }
+      } catch (error) {
+        console.error('Failed to load products:', error);
+      }
+    }
+
+    // Render products table
+    function renderProducts() {
+      const tbody = document.querySelector('#products tbody');
+      tbody.innerHTML = products.map(product => `
+        <tr>
+          <td>${product.id}</td>
+          <td>
+            ${product.image_url ? `<img src="${product.image_url}" style="max-height: 50px;">` : 'No Image'}
+          </td>
+          <td>${product.product_name}</td>
+          <td>
+            ${'★'.repeat(Math.round(product.average_rating || 0))}${'☆'.repeat(5 - Math.round(product.average_rating || 0))}
+            (${product.total_rating_count || 0})
+          </td>
+          <td><button onclick="showPopup(${product.id - 1})">Rate</button></td>
+        </tr>
+      `).join('');
+    }
+
+    // Show popup
+    function showPopup(index) {
+      selectedProduct = products[index];
+      selectedRating = 0;
+      
+      document.getElementById('popup-title').textContent = selectedProduct.product_name;
+      const img = document.getElementById('popup-image');
+      if (selectedProduct.image_url) {
+        img.src = selectedProduct.image_url;
+        img.style.display = 'block';
+      } else {
+        img.style.display = 'none';
+      }
+      
+      document.getElementById('popup-rating').innerHTML = `
+        Current Rating: ${selectedProduct.average_rating || 'N/A'} 
+        (${selectedProduct.total_rating_count || 0} ratings)
+      `;
+      
+      // Reset stars
+      document.querySelectorAll('.star').forEach(star => {
+        star.classList.remove('selected', 'hovered');
+      });
+      
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Close popup
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    // Submit rating
+    async function submitRating() {
+      if (!selectedProduct || !selectedRating) return;
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'submitRating',
+            productId: selectedProduct.id,
+            rating: selectedRating
+          })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          // Update local data
+          selectedProduct.average_rating = parseFloat(data.data.newAverage);
+          selectedProduct.total_rating_count = data.data.newCount;
+          
+          // Refresh display
+          renderProducts();
+          closePopup();
+          alert('Rating submitted successfully!');
+        } else {
+          console.error('Error:', data.error);
+          alert('Failed to submit rating: ' + (data.error || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Failed to submit rating:', error);
+        alert('Failed to submit rating. Please try again.');
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProducts();
+      
+      // Star rating
+      document.querySelectorAll('.star').forEach(star => {
+        star.addEventListener('click', () => {
+          selectedRating = parseInt(star.dataset.value);
+          document.querySelectorAll('.star').forEach((s, i) => {
+            s.classList.toggle('selected', i < selectedRating);
+          });
+          submitRating(); // Auto-submit when star is clicked
+        });
+        
+        star.addEventListener('mouseover', () => {
+          const value = parseInt(star.dataset.value);
+          document.querySelectorAll('.star').forEach((s, i) => {
+            s.classList.toggle('hovered', i < value);
+          });
+        });
+        
+        star.addEventListener('mouseout', () => {
+          document.querySelectorAll('.star').forEach(s => {
+            s.classList.remove('hovered');
+          });
+        });
+      });
+      
+      document.getElementById('close-popup').addEventListener('click', closePopup);
+    });
+
+    // Make showPopup globally available
+    window.showPopup = showPopup;
+  </script>
+</body>
+</html>
