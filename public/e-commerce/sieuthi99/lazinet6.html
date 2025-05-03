@@ -208,7 +208,7 @@
     let selectedRating = 0;
     let currentPage = 1;
     let itemsPerPage = 10;
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzmxKtOgjjT3avgrjKInNZnukYC10-OPFg1nbqp74weprlpr5N_wmn6dTiwJVfsSWNL6Q/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwnBcpE-KZFw19Ii9j-HKlmv4gaMwbYF3SqN1lnSxcunAYy_MIB3PhrZ_Phj9roKW1JgQ/exec'; // Replace with new Web App URL after redeploy
 
     async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
       for (let i = 0; i < retries; i++) {
@@ -227,6 +227,18 @@
       }
     }
 
+    async function testNoCors() {
+      try {
+        const response = await fetch(`${API_URL}?action=getProducts`, { mode: 'no-cors' });
+        const text = await response.text();
+        console.log('No-cors response:', text);
+        return text;
+      } catch (error) {
+        console.error('No-cors failed:', error);
+        return null;
+      }
+    }
+
     async function testApi() {
       try {
         const response = await fetch(`${API_URL}?action=getProducts`, { method: 'GET' });
@@ -239,11 +251,15 @@
       }
     }
     testApi();
+    testNoCors();
 
     async function fetchProducts() {
       const tabContents = document.getElementById('tab-contents');
       tabContents.innerHTML = '<div class="text-center">Loading...</div>';
       try {
+        if (!API_URL || API_URL.includes('YOUR_NEW_API_URL_HERE')) {
+          throw new Error('API_URL not set. Please redeploy Apps Script and update API_URL.');
+        }
         allProducts = await fetchWithRetry(`${API_URL}?action=getProducts`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
@@ -254,7 +270,7 @@
         displayProducts(allProducts);
       } catch (error) {
         console.error('Error fetching data:', error);
-        tabContents.innerHTML = `<div class="error-message">Failed to load products: ${error.message}. Check API URL, CORS settings, or Sheet permissions. Try hosting on HTTPS (e.g., GitHub Pages).</div>`;
+        tabContents.innerHTML = `<div class="error-message">Failed to load products: ${error.message}. Check API URL, CORS settings, or Sheet permissions. Ensure API is deployed correctly.</div>`;
       }
     }
     fetchProducts();

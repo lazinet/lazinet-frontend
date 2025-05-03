@@ -98,28 +98,6 @@
       background-color: #B31942;
       color: #FFFFFF;
     }
-    .star-rating {
-      display: flex;
-      gap: 0.5rem;
-      margin: 1rem 0;
-    }
-    .star {
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #d1d5db;
-      transition: all 0.2s;
-    }
-    .star.hovered, .star.selected {
-      color: #f59e0b;
-    }
-    .star.hovered {
-      transform: scale(1.1);
-    }
-    .rating-display {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
     .tab {
       padding: 0.5rem 1rem;
       font-weight: 600;
@@ -183,28 +161,19 @@
     <div id="popup" class="popup">
       <button id="close-popup" class="absolute top-2 right-2 text-[#0A3161] font-bold text-xl">×</button>
       <h2 id="popup-title" class="font-bold mb-2"></h2>
-      <div id="rating-display" class="rating-display"></div>
       <img id="popup-image" class="popup-img mb-4" src="" alt="Product Image" style="display: none;">
       <div id="popup-details" class="space-y-2">
         <table class="w-full">
           <tbody id="popup-details-table"></tbody>
         </table>
       </div>
-      <div class="star-rating">
-        <span class="star" data-value="1">★</span>
-        <span class="star" data-value="2">★</span>
-        <span class="star" data-value="3">★</span>
-        <span class="star" data-value="4">★</span>
-        <span class="star" data-value="5">★</span>
-      </div>
     </div>
   </div>
 
   <script>
     // Configuration
-    const API_URL = 'https://script.google.com/macros/s/AKfycbx_JA_pKRsZty24h48YEEwvhubxqk_ujirN2rGEzk0M31fLQDTmdoIhunIU8M4MHqcuQQ/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxhxNuS-jp70oyke_nwsEKlueIQorpNbnggL6pZ1w5SLXE6sDtU8rIsxrrBNoIKFkw6iA/exec';
     let allProducts = [];
-    let selectedRating = 0;
     let currentProductIndex = -1;
     let paginationConfig = {
       currentPage: 1,
@@ -253,7 +222,7 @@
         const tab = document.createElement('button');
         tab.className = `tab ${index === 0 ? 'active' : 'inactive'}`;
         tab.textContent = origin;
-        tab.onclick = () => switchTab(origin, index === 0);
+        tab.onclick = () => switchTab(origin);
         tabsContainer.appendChild(tab);
 
         // Create tab content
@@ -264,12 +233,12 @@
 
         // Render products for this tab
         const filteredProducts = products.filter(p => (p.origin || 'Unknown') === origin);
-        renderProducts(tabContent, filteredProducts, index === 0);
+        renderProducts(tabContent, filteredProducts);
       });
     }
 
     // Render products table with pagination
-    function renderProducts(container, products, isFirstTab) {
+    function renderProducts(container, products) {
       container.innerHTML = '';
 
       if (products.length === 0) {
@@ -277,19 +246,13 @@
         return;
       }
 
-      // Apply pagination only to first tab
-      if (isFirstTab) {
-        const totalPages = Math.ceil(products.length / paginationConfig.itemsPerPage);
-        const startIndex = (paginationConfig.currentPage - 1) * paginationConfig.itemsPerPage;
-        const endIndex = Math.min(startIndex + paginationConfig.itemsPerPage, products.length);
-        const paginatedProducts = products.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(products.length / paginationConfig.itemsPerPage);
+      const startIndex = (paginationConfig.currentPage - 1) * paginationConfig.itemsPerPage;
+      const endIndex = Math.min(startIndex + paginationConfig.itemsPerPage, products.length);
+      const paginatedProducts = products.slice(startIndex, endIndex);
 
-        renderTable(container, paginatedProducts);
-        renderPagination(container, products.length, totalPages);
-      } else {
-        // Show all products for other tabs
-        renderTable(container, products);
-      }
+      renderTable(container, paginatedProducts);
+      renderPagination(container, products.length, totalPages);
     }
 
     // Render products table
@@ -341,7 +304,9 @@
       select.addEventListener('change', (e) => {
         paginationConfig.itemsPerPage = parseInt(e.target.value);
         paginationConfig.currentPage = 1;
-        renderProducts(container, allProducts.filter(p => (p.origin || 'Unknown') === container.id.replace('tab-', '')), true);
+        const origin = container.id.replace('tab-', '');
+        const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
+        renderProducts(container, filteredProducts);
       });
 
       // Previous button
@@ -351,7 +316,9 @@
       prevButton.addEventListener('click', () => {
         if (paginationConfig.currentPage > 1) {
           paginationConfig.currentPage--;
-          renderProducts(container, allProducts.filter(p => (p.origin || 'Unknown') === container.id.replace('tab-', '')), true);
+          const origin = container.id.replace('tab-', '');
+          const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
+          renderProducts(container, filteredProducts);
         }
       });
 
@@ -366,7 +333,9 @@
         pageButton.className = i === paginationConfig.currentPage ? 'active' : '';
         pageButton.addEventListener('click', () => {
           paginationConfig.currentPage = i;
-          renderProducts(container, allProducts.filter(p => (p.origin || 'Unknown') === container.id.replace('tab-', '')), true);
+          const origin = container.id.replace('tab-', '');
+          const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
+          renderProducts(container, filteredProducts);
         });
         pageButtons.push(pageButton);
       }
@@ -378,7 +347,9 @@
       nextButton.addEventListener('click', () => {
         if (paginationConfig.currentPage < totalPages) {
           paginationConfig.currentPage++;
-          renderProducts(container, allProducts.filter(p => (p.origin || 'Unknown') === container.id.replace('tab-', '')), true);
+          const origin = container.id.replace('tab-', '');
+          const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
+          renderProducts(container, filteredProducts);
         }
       });
 
@@ -400,11 +371,9 @@
     }
 
     // Switch between tabs
-    function switchTab(origin, isFirstTab) {
+    function switchTab(origin) {
       // Reset pagination when switching tabs
-      if (isFirstTab) {
-        paginationConfig.currentPage = 1;
-      }
+      paginationConfig.currentPage = 1;
 
       // Update active tab
       document.querySelectorAll('#tabs button').forEach(tab => {
@@ -419,7 +388,7 @@
       // Re-render products for the active tab
       const activeTabContent = document.getElementById(`tab-${origin}`);
       const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
-      renderProducts(activeTabContent, filteredProducts, isFirstTab);
+      renderProducts(activeTabContent, filteredProducts);
     }
 
     // Show product details popup
@@ -431,32 +400,18 @@
       const popupTitle = document.getElementById('popup-title');
       const popupImage = document.getElementById('popup-image');
       const popupDetailsTable = document.getElementById('popup-details-table');
-      const ratingDisplay = document.getElementById('rating-display');
 
       // Set popup content
       popupTitle.textContent = product.product_name || 'Unknown Product';
       popupImage.src = product.image_url || '';
       popupImage.style.display = product.image_url ? 'block' : 'none';
 
-      // Display average rating
-      const avgRating = parseFloat(product.average_rating) || 0;
-      const ratingCount = parseInt(product.total_rating_count) || 0;
-      ratingDisplay.innerHTML = `
-        <span>Rating:</span>
-        <div class="flex items-center">
-          ${Array(5).fill().map((_, i) => `
-            <span class="text-xl ${i < Math.round(avgRating) ? 'text-yellow-500' : 'text-gray-300'}">★</span>
-          `).join('')}
-          <span class="ml-2 text-sm">${avgRating.toFixed(1)} (${ratingCount} reviews)</span>
-        </div>
-      `;
-
       // Display product details
       popupDetailsTable.innerHTML = Object.entries(product)
         .filter(([key, value]) => 
           value !== undefined && 
           value !== '' && 
-          !['id', 'image_url', 'product_name', 'average_rating', 'total_rating_count'].includes(key)
+          !['id', 'image_url', 'product_name'].includes(key)
         )
         .map(([key, value]) => `
           <tr>
@@ -464,12 +419,6 @@
             <td class="py-1">${formatValue(value)}</td>
           </tr>
         `).join('');
-
-      // Reset star rating
-      selectedRating = 0;
-      document.querySelectorAll('.star').forEach(star => {
-        star.className = 'star';
-      });
 
       // Show popup
       popup.classList.remove('hidden');
@@ -495,7 +444,6 @@
       document.getElementById('popup').classList.add('hidden');
       document.getElementById('popup-overlay').classList.add('hidden');
       currentProductIndex = -1;
-      selectedRating = 0;
     }
 
     // Show error message
@@ -506,84 +454,12 @@
 
     // Setup event listeners
     function setupEventListeners() {
-      // Star rating interaction
-      document.querySelectorAll('.star').forEach(star => {
-        star.addEventListener('mouseover', function() {
-          const value = parseInt(this.dataset.value);
-          document.querySelectorAll('.star').forEach((s, i) => {
-            s.classList.toggle('hovered', i < value);
-          });
-        });
-
-        star.addEventListener('mouseout', function() {
-          document.querySelectorAll('.star').forEach(s => {
-            s.classList.remove('hovered');
-          });
-        });
-
-        star.addEventListener('click', async function() {
-          selectedRating = parseInt(this.dataset.value);
-          document.querySelectorAll('.star').forEach((s, i) => {
-            s.classList.toggle('selected', i < selectedRating);
-          });
-
-          // Submit rating immediately
-          await submitRating();
-        });
-      });
-
       // Close popup buttons
       document.getElementById('close-popup').addEventListener('click', closePopup);
       document.getElementById('popup-overlay').addEventListener('click', closePopup);
 
       // Make functions available globally
       window.showProductDetail = showProductDetail;
-    }
-
-    // Submit rating to backend
-    async function submitRating() {
-      if (!selectedRating || currentProductIndex === -1) return;
-
-      const product = allProducts[currentProductIndex];
-      
-      try {
-        // Use FormData to avoid CORS preflight issues
-        const formData = new FormData();
-        formData.append('action', 'submitRating');
-        formData.append('productId', product.id);
-        formData.append('rating', selectedRating);
-
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          body: formData
-        });
-
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const result = await response.json();
-        if (!result.success) throw new Error(result.error || 'Failed to submit rating');
-
-        // Update local data
-        product.average_rating = result.newAverage;
-        product.total_rating_count = result.newCount;
-        
-        // Refresh display
-        showProductDetail(currentProductIndex);
-        
-        // Refresh table for the current tab
-        const activeTab = document.querySelector('#tabs button.active');
-        if (activeTab) {
-          const origin = activeTab.textContent;
-          const tabContent = document.getElementById(`tab-${origin}`);
-          const filteredProducts = allProducts.filter(p => (p.origin || 'Unknown') === origin);
-          const isFirstTab = activeTab === document.querySelector('#tabs button:first-child');
-          renderProducts(tabContent, filteredProducts, isFirstTab);
-        }
-
-      } catch (error) {
-        console.error('Error submitting rating:', error);
-        alert('Failed to submit rating: ' + error.message);
-      }
     }
   </script>
 </body>
