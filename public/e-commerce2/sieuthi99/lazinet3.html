@@ -85,12 +85,11 @@
       max-width: 80px;
       max-height: 80px;
       object-fit: contain;
-      border: none;
       border-radius: 4px;
     }
     .popup-img {
-      width: 100%;
-      max-height: 400px;
+      width: 90%;
+      max-height: 200px;
       object-fit: contain;
       margin: 0 auto;
       display: block;
@@ -143,16 +142,6 @@
       margin: 1rem 0;
       font-weight: bold;
     }
-    .rating-display {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .rating-star {
-      font-size: 1rem;
-      color: #f59e0b;
-    }
   </style>
 </head>
 <body>
@@ -172,7 +161,6 @@
     <div id="popup" class="popup">
       <button id="close-popup" class="absolute top-2 right-2 text-[#0A3161] font-bold text-xl">×</button>
       <h2 id="popup-title" class="font-bold mb-2"></h2>
-      <div id="rating-display" class="rating-display"></div>
       <img id="popup-image" class="popup-img mb-4" src="" alt="Product Image" style="display: none;">
       <div id="popup-details" class="space-y-2">
         <table class="w-full">
@@ -412,23 +400,11 @@
       const popupTitle = document.getElementById('popup-title');
       const popupImage = document.getElementById('popup-image');
       const popupDetailsTable = document.getElementById('popup-details-table');
-      const ratingDisplay = document.getElementById('rating-display');
 
       // Set popup content
       popupTitle.textContent = product.product_name || 'Unknown Product';
       popupImage.src = product.image_url || '';
       popupImage.style.display = product.image_url ? 'block' : 'none';
-
-      // Display average rating and review count
-      const averageRating = parseFloat(product.average_rating) || 0;
-      const totalRatingCount = parseInt(product.total_rating_count) || 0;
-      ratingDisplay.innerHTML = `
-        <span>${averageRating.toFixed(1)}</span>
-        ${[...Array(5)].map((_, i) => `
-          <span class="rating-star">${i < Math.round(averageRating) ? '★' : '☆'}</span>
-        `).join('')}
-        <span>(${totalRatingCount} reviews)</span>
-      `;
 
       // Display product details
       popupDetailsTable.innerHTML = Object.entries(product)
@@ -445,8 +421,8 @@
         `).join('');
 
       // Show popup
-      popup.className = 'popup active';
-      overlay.className = 'overlay active';
+      popup.classList.remove('hidden');
+      overlay.classList.remove('hidden');
     }
 
     // Format table key
@@ -465,8 +441,8 @@
 
     // Close popup
     function closePopup() {
-      document.getElementById('popup').className = 'popup';
-      document.getElementById('popup-overlay').className = 'overlay';
+      document.getElementById('popup').classList.add('hidden');
+      document.getElementById('popup-overlay').classList.add('hidden');
       currentProductIndex = -1;
     }
 
