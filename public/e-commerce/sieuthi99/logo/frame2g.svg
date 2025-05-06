@@ -1,0 +1,149 @@
+<svg width="100%" height="300" viewBox="0 0 560 325" xmlns="http://www.w3.org/2000/svg" class="process-flow-svg">
+    <!-- <rect x="0" y="0" width="560" height="325" fill="#4472C4" class="background"/> -->
+  <!-- ĐẦU TƯ -->
+  <g class="process-box delay-1">
+    <rect x="220" y="20" width="100" height="60" rx="8" fill="#0a3161" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="270" y="55" font-family="Montserrat" font-weight="700" fill="#FFFFFF" text-anchor="middle" class="process-text">ĐẦU TƯ</text>
+  </g>
+
+  <!-- Mũi tên xuống -->
+  <g class="arrow delay-2">
+    <line x1="270" y1="80" x2="270" y2="125" stroke="#FFFFFF" stroke-width="2"/>
+    <polygon points="270,130 265,120 275,120" fill="#FFFFFF"/>
+  </g>
+
+  <!-- THƯƠNG MẠI -->
+  <g class="process-box delay-3">
+    <rect x="40" y="130" width="140" height="60" rx="8" fill="#0a3161" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="110" y="165" font-family="Montserrat" font-weight="700" fill="#FFFFFF" text-anchor="middle" class="process-text">THƯƠNG MẠI</text>
+  </g>
+
+  <!-- Mũi tên ngang phải -->
+  <g class="arrow delay-4">
+    <line x1="180" y1="160" x2="240" y2="160" stroke="#FFFFFF" stroke-width="2"/>
+    <polygon points="240,160 230,155 230,165" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Dấu + -->
+  <g class="plus-circle delay-5">
+    <circle cx="270" cy="160" r="30" fill="#B31942" stroke="#FFFFFF" stroke-width="1"/>
+    <text x="270" y="168" font-family="Arial" font-weight="bold" fill="#FFFFFF" text-anchor="middle" class="plus-text">+</text>
+  </g>
+
+  <!-- Mũi tên ngang phải tiếp -->
+  <g class="arrow delay-6">
+    <line x1="300" y1="160" x2="360" y2="160" stroke="#FFFFFF" stroke-width="5"/>
+    <polygon points="365,160 350,152 350,168" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Kết quả -->
+  <g class="result-box delay-7">
+    <rect x="365" y="125" width="160" height="70" rx="8" fill="#FFFFFF" stroke="#B31942" stroke-width="2"/>
+    <text x="445" y="155" font-family="Montserrat" font-weight="700" fill="#0A3161" text-anchor="middle" class="result-text">HÀNG HÓA</text>
+    <text x="445" y="175" font-family="Montserrat" font-weight="700" fill="#B31942" text-anchor="middle" class="result-subtext">CÙNG THẮNG LỢI</text>
+  </g>
+
+  <!-- Mũi tên lên -->
+  <g class="arrow delay-8">
+    <line x1="270" y1="195" x2="270" y2="240" stroke="#FFFFFF" stroke-width="2"/>
+    <polygon points="270,190 265,200 275,200" fill="#FFFFFF"/>
+  </g>
+
+  <!-- SẢN XUẤT -->
+  <g class="process-box delay-9">
+    <rect x="220" y="240" width="100" height="60" rx="8" fill="#0a3161" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="270" y="275" font-family="Montserrat" font-weight="700" fill="#FFFFFF" text-anchor="middle" class="process-text">SẢN XUẤT</text>
+  </g>
+
+  <!-- Animation and Styling -->
+  <style>
+    .process-flow-svg {
+      max-width: 650px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .process-box {
+      fill-opacity: 0.1;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+    }
+
+    .process-box:hover {
+      fill-opacity: 0.9;
+      fill: #B31942;
+      transform: translateY(-5px);
+    }
+
+    .result-box {
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+      transition: transform 0.3s ease;
+    }
+
+    .result-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .plus-circle {
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+    }
+
+    .arrow {
+      transition: stroke 0.3s ease;
+    }
+
+    .arrow:hover {
+      stroke: #B31942;
+    }
+
+    .process-text {
+      font-size: 2.5vmin;
+    }
+
+    .result-text {
+      font-size: 2.5vmin;
+    }
+
+    .result-subtext {
+      font-size: 2vmin;
+    }
+
+    .plus-text {
+      font-size: 4vmin;
+    }
+
+    /* Animation Delays */
+    .delay-1 { animation: fadeIn 0.5s ease forwards 0.1s; opacity: 0; }
+    .delay-2 { animation: fadeIn 0.5s ease forwards 0.2s; opacity: 0; }
+    .delay-3 { animation: fadeIn 0.5s ease forwards 0.3s; opacity: 0; }
+    .delay-4 { animation: fadeIn 0.5s ease forwards 0.4s; opacity: 0; }
+    .delay-5 { animation: fadeIn 0.5s ease forwards 0.5s; opacity: 0; }
+    .delay-6 { animation: fadeIn 0.5s ease forwards 0.6s; opacity: 0; }
+    .delay-7 { animation: fadeIn 0.5s ease forwards 0.7s; opacity: 0; }
+    .delay-8 { animation: fadeIn 0.5s ease forwards 0.8s; opacity: 0; }
+    .delay-9 { animation: fadeIn 0.5s ease forwards 0.9s; opacity: 0; }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .process-flow-svg {
+        width: 100%;
+        height: auto;
+      }
+
+      .process-text, .result-text {
+        font-size: 2vmin;
+      }
+
+      .result-subtext {
+        font-size: 1.5vmin;
+      }
+
+      .plus-text {
+        font-size: 3vmin;
+      }
+    }
+  </style>
+</svg>
