@@ -1,0 +1,78 @@
+<!-- Thêm audio player và nút điều khiển -->
+<audio id="wedding-music" loop>
+    <source src="./wedding/landuc/music/Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION].mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  
+  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <button id="music-toggle" class="music-control playing"></button>
+  </div>
+  
+  <style>
+    .music-control {
+      background-color: #F9667E;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    .music-control:hover {
+      background-color: #fff;
+      color: #F9667E;
+      border: 2px solid #F9667E;
+    }
+    .music-control.playing::before {
+      content: '🎵';
+      font-size: 24px;
+    }
+    .music-control.paused::before {
+      content: '🔇';
+      font-size: 24px;
+    }
+    @media (max-width: 600px) {
+      .music-control {
+        width: 40px;
+        height: 40px;
+      }
+      .music-control::before {
+        font-size: 20px;
+      }
+    }
+  </style>
+  
+  <script>
+    // JSON configuration
+    const biicore = {
+      bgMusic: "./wedding/landuc/music/Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION].mp3",
+      isAutoPlay: true
+    };
+  
+    // Music control
+    const musicPlayer = document.getElementById('wedding-music');
+    const toggleButton = document.getElementById('music-toggle');
+  
+    if (biicore.isAutoPlay) {
+      musicPlayer.play().catch(() => {
+        toggleButton.classList.replace('playing', 'paused');
+      });
+    }
+  
+    toggleButton.addEventListener('click', () => {
+      if (musicPlayer.paused) {
+        musicPlayer.play().catch(() => {
+          console.error('Failed to play music');
+        });
+        toggleButton.classList.replace('paused', 'playing');
+      } else {
+        musicPlayer.pause();
+        toggleButton.classList.replace('playing', 'paused');
+      }
+    });
+  </script>
