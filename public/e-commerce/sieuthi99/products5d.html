@@ -7,7 +7,7 @@
   <title>Product Management</title>
   <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <style>
     body {
       background-color: #E6ECF5;
@@ -58,11 +58,17 @@
     .overlay.active {
       display: block;
     }
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
     table {
       background-color: #FFFFFF;
       color: #0A3161;
       table-layout: fixed;
       width: 100%;
+      min-width: 1000px;
       margin: 0 auto;
       border-collapse: collapse;
     }
@@ -70,9 +76,6 @@
       border: 1px solid #0A3161;
       padding: 8px;
       text-align: left;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     th {
       background-color: #0A3161;
@@ -86,7 +89,7 @@
       height: 80px;
       padding: 4px;
     }
-    .table-img, .barcode-img {
+    .table-img {
       max-width: 80px;
       max-height: 80px;
       object-fit: contain;
@@ -100,64 +103,34 @@
       margin: 0 auto;
       display: block;
     }
-    .popup-barcode-img {
-      max-width: 200px;
-      max-height: 80px;
-      margin-top: 10px;
-    }
     .hover\:bg-red-700:hover {
       background-color: #B31942;
       color: #FFFFFF;
     }
-    .tab, .category-tab {
+    .tab {
       padding: 0.5rem 1rem;
       font-weight: 600;
       border: 1px solid #0A3161;
       border-bottom: none;
       border-radius: 4px 4px 0 0;
       margin-right: 0.25rem;
-      flex: 1;
-      text-align: center;
     }
-    .tab.active, .category-tab.active {
+    .tab.active {
       background-color: #0A3161;
       color: white;
     }
-    .tab.inactive, .category-tab.inactive {
+    .tab.inactive {
       background-color: white;
       color: #0A3161;
     }
-    .filter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-      margin-bottom: 1rem;
-    }
-    .search-row {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .search-row input {
-      flex: 1;
-      padding: 0.5rem;
-      border: 1px solid #0A3161;
-      border-radius: 4px;
-    }
-    .search-row button {
-      padding: 0.5rem 1rem;
-      background-color: #0A3161;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    .pagination-container {
+      margin-top: 1rem;
     }
     .pagination {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
-      margin-top: 1rem;
     }
     .pagination button, .pagination select {
       padding: 0.25rem 0.5rem;
@@ -190,20 +163,118 @@
       font-size: 1rem;
       color: #f59e0b;
     }
-    /* Responsive Design for Filters */
+    /* Origin filter styles */
+    .origin-filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .origin-all {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #0A3161;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .origin-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .origin-option {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.5rem;
+      background-color: #A3C4F3;
+      color: #0A3161;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .origin-option.active {
+      background-color: #0A3161;
+      color: white;
+    }
+    /* Category filter styles */
+    .category-filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .category-all {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #B31942;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .category-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .category-option {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.5rem;
+      background-color: #F4A4B3;
+      color: #B31942;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .category-option.active {
+      background-color: #B31942;
+      color: white;
+    }
+    /* Search styles */
+    .search-container {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .search-input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #0A3161;
+      border-radius: 4px;
+    }
+    .search-button {
+      padding: 0.5rem 1rem;
+      background-color: #0A3161;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .barcode-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .barcode-svg {
+      height: 40px;
+      width: 100%;
+    }
     @media (max-width: 768px) {
-      .filter-row .tab, .filter-row .category-tab {
-        flex: 1 1 calc(25% - 0.25rem); /* 4 per row */
+      .origin-option, .category-option {
+        flex: 1 0 calc(50% - 0.5rem);
       }
     }
     @media (max-width: 480px) {
-      .filter-row .tab, .filter-row .category-tab {
-        flex: 1 1 calc(50% - 0.25rem); /* 2 per row */
-      }
-    }
-    @media (max-width: 320px) {
-      .filter-row .tab, .filter-row .category-tab {
-        flex: 1 1 100%; /* 1 per row */
+      .origin-option, .category-option {
+        flex: 1 0 100%;
       }
     }
   </style>
@@ -212,20 +283,33 @@
   <div class="container py-6">
     <h1 class="text-center font-bold mb-6 text-[#0A3161]">Product Management</h1>
 
-    <!-- Origin Filter (Tabs) -->
-    <div id="origin-tabs" class="filter-row"></div>
+    <!-- Origin Filters -->
+    <div id="origin-filters" class="origin-filter-row">
+      <button id="all-origins" class="origin-all">All Origins</button>
+      <div id="origin-options" class="origin-options"></div>
+    </div>
 
-    <!-- Category Filter -->
-    <div id="category-tabs" class="filter-row"></div>
+    <!-- Category Filters -->
+    <div id="category-filters" class="category-filter-row">
+      <button id="all-categories" class="category-all">All Categories</button>
+      <div id="category-options" class="category-options"></div>
+    </div>
 
-    <!-- Search Row -->
-    <div class="search-row">
-      <input type="text" id="search-input" placeholder="Search by product name..." />
-      <button id="search-button">Search</button>
+    <!-- Search -->
+    <div class="search-container">
+      <input type="text" id="search-input" class="search-input" placeholder="Search by product name...">
+      <button id="search-button" class="search-button">Search</button>
     </div>
 
     <!-- Tab Contents -->
-    <div id="tab-contents" class="mt-4"></div>
+    <div id="tab-contents" class="mt-4">
+      <div class="table-wrapper">
+        <!-- Table will be inserted here by JavaScript -->
+      </div>
+      <div id="pagination-container" class="pagination-container">
+        <!-- Pagination will be inserted here by JavaScript -->
+      </div>
+    </div>
 
     <!-- Popup Overlay -->
     <div id="popup-overlay" class="overlay"></div>
@@ -248,16 +332,17 @@
     // Configuration
     const API_URL = 'https://script.google.com/macros/s/AKfycbxhxNuS-jp70oyke_nwsEKlueIQorpNbnggL6pZ1w5SLXE6sDtU8rIsxrrBNoIKFkw6iA/exec';
     let allProducts = [];
+    let filteredProducts = [];
     let currentProductIndex = -1;
-    let filterConfig = {
-      currentOrigin: null,
-      currentCategory: null,
-      searchQuery: ''
-    };
     let paginationConfig = {
       currentPage: 1,
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 20, 30]
+    };
+    let currentFilters = {
+      origin: null,
+      category: null,
+      search: null
     };
 
     // Initialize the application
@@ -280,83 +365,138 @@
         if (data.error) throw new Error(data.error);
         
         allProducts = Array.isArray(data) ? data : [];
-        displayProducts(allProducts);
+        filteredProducts = [...allProducts];
+        initializeFilters();
+        displayProducts();
       } catch (error) {
         console.error('Error loading products:', error);
         showError('Error loading products: ' + error.message);
       }
     }
 
-    // Display products with origin and category filters
-    function displayProducts(products) {
-      const origins = [...new Set(products.map(p => p.origin || 'Unknown'))];
-      const categories = [...new Set(products.map(p => p.category || 'Unknown'))];
-      const originTabsContainer = document.getElementById('origin-tabs');
-      const categoryTabsContainer = document.getElementById('category-tabs');
-      const tabContentsContainer = document.getElementById('tab-contents');
-
-      originTabsContainer.innerHTML = '';
-      categoryTabsContainer.innerHTML = '';
-      tabContentsContainer.innerHTML = '';
-
-      // Create origin tabs
-      origins.forEach((origin, index) => {
-        const tab = document.createElement('button');
-        tab.className = `tab ${index === 0 && !filterConfig.currentOrigin ? 'active' : 'inactive'}`;
-        tab.textContent = origin;
-        tab.onclick = () => switchOrigin(origin);
-        originTabsContainer.appendChild(tab);
+    // Initialize filter options
+    function initializeFilters() {
+      // Origin filters
+      const origins = [...new Set(allProducts.map(p => p.origin || 'Unknown'))];
+      const originOptions = document.getElementById('origin-options');
+      
+      // Add origin options
+      origins.forEach(origin => {
+        const button = document.createElement('button');
+        button.className = 'origin-option';
+        button.textContent = origin;
+        button.onclick = () => {
+          currentFilters.origin = origin;
+          updateActiveFilterButtons();
+          applyFilters();
+        };
+        originOptions.appendChild(button);
       });
 
-      // Create category tabs
-      categories.forEach((category, index) => {
-        const tab = document.createElement('button');
-        tab.className = `category-tab ${index === 0 && !filterConfig.currentCategory ? 'active' : 'inactive'}`;
-        tab.textContent = category;
-        tab.onclick = () => switchCategory(category);
-        categoryTabsContainer.appendChild(tab);
+      // Category filters
+      const categories = [...new Set(allProducts.map(p => p.category || 'Unknown'))];
+      const categoryOptions = document.getElementById('category-options');
+      
+      // Add category options
+      categories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = 'category-option';
+        button.textContent = category;
+        button.onclick = () => {
+          currentFilters.category = category;
+          updateActiveFilterButtons();
+          applyFilters();
+        };
+        categoryOptions.appendChild(button);
       });
 
-      // Create tab content for each origin
-      origins.forEach((origin, index) => {
-        const tabContent = document.createElement('div');
-        tabContent.id = `tab-${origin}`;
-        tabContent.className = `tab-content ${index === 0 && !filterConfig.currentOrigin ? 'active' : ''}`;
-        tabContentsContainer.appendChild(tabContent);
+      // Set up "All" buttons
+      document.getElementById('all-origins').onclick = () => {
+        currentFilters.origin = null;
+        updateActiveFilterButtons();
+        applyFilters();
+      };
 
-        // Apply filters and render products
-        const filteredProducts = applyFilters(products, origin);
-        renderProducts(tabContent, filteredProducts);
+      document.getElementById('all-categories').onclick = () => {
+        currentFilters.category = null;
+        updateActiveFilterButtons();
+        applyFilters();
+      };
+    }
+
+    // Update active filter buttons
+    function updateActiveFilterButtons() {
+      // Update origin buttons
+      const originOptions = document.querySelectorAll('.origin-option');
+      originOptions.forEach(button => {
+        button.className = button.textContent === currentFilters.origin 
+          ? 'origin-option active' 
+          : 'origin-option';
+      });
+
+      // Update category buttons
+      const categoryOptions = document.querySelectorAll('.category-option');
+      categoryOptions.forEach(button => {
+        button.className = button.textContent === currentFilters.category 
+          ? 'category-option active' 
+          : 'category-option';
       });
     }
 
-    // Apply origin, category, and search filters
-    function applyFilters(products, currentOrigin) {
-      return products.filter(product => {
-        const matchesOrigin = !filterConfig.currentOrigin || (product.origin || 'Unknown') === filterConfig.currentOrigin;
-        const matchesCategory = !filterConfig.currentCategory || (product.category || 'Unknown') === filterConfig.currentCategory;
-        const matchesSearch = !filterConfig.searchQuery || 
-                             (product.product_name || '').toLowerCase().includes(filterConfig.searchQuery.toLowerCase());
-        return matchesOrigin && matchesCategory && matchesSearch && (product.origin || 'Unknown') === currentOrigin;
-      });
+    // Apply all filters
+    function applyFilters() {
+      filteredProducts = [...allProducts];
+      
+      // Apply origin filter
+      if (currentFilters.origin) {
+        filteredProducts = filteredProducts.filter(p => 
+          (p.origin || 'Unknown') === currentFilters.origin
+        );
+      }
+      
+      // Apply category filter
+      if (currentFilters.category) {
+        filteredProducts = filteredProducts.filter(p => 
+          (p.category || 'Unknown') === currentFilters.category
+        );
+      }
+      
+      // Apply search filter
+      if (currentFilters.search) {
+        const searchTerm = currentFilters.search.toLowerCase();
+        filteredProducts = filteredProducts.filter(p => 
+          p.product_name && p.product_name.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      // Reset to first page when filters change
+      paginationConfig.currentPage = 1;
+      
+      // Update display
+      displayProducts();
     }
 
-    // Render products table with pagination
-    function renderProducts(container, products) {
-      container.innerHTML = '';
+    // Display products with pagination
+    function displayProducts() {
+      const tableWrapper = document.querySelector('.table-wrapper');
+      const paginationContainer = document.getElementById('pagination-container');
+      
+      // Clear previous content
+      tableWrapper.innerHTML = '';
+      paginationContainer.innerHTML = '';
 
-      if (products.length === 0) {
-        container.innerHTML = '<p class="text-center py-4">No products found</p>';
+      if (filteredProducts.length === 0) {
+        tableWrapper.innerHTML = '<p class="text-center py-4">No products found matching your criteria</p>';
         return;
       }
 
-      const totalPages = Math.ceil(products.length / paginationConfig.itemsPerPage);
+      const totalPages = Math.ceil(filteredProducts.length / paginationConfig.itemsPerPage);
       const startIndex = (paginationConfig.currentPage - 1) * paginationConfig.itemsPerPage;
-      const endIndex = Math.min(startIndex + paginationConfig.itemsPerPage, products.length);
-      const paginatedProducts = products.slice(startIndex, endIndex);
+      const endIndex = Math.min(startIndex + paginationConfig.itemsPerPage, filteredProducts.length);
+      const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
-      renderTable(container, paginatedProducts);
-      renderPagination(container, products.length, totalPages);
+      renderTable(tableWrapper, paginatedProducts);
+      renderPagination(paginationContainer, filteredProducts.length, totalPages);
     }
 
     // Render products table
@@ -369,14 +509,14 @@
             <th style="width: 10%">Image</th>
             <th style="width: 10%">Code</th>
             <th style="width: 15%">Name</th>
+            <th style="width: 10%">Category</th>
             <th style="width: 8%">Weight</th>
-            <th style="width: 8%">Case Qty</th>
             <th style="width: 8%">Unit Price</th>
             <th style="width: 8%">Case Price</th>
+            <th style="width: 8%">Case Qty</th>
             <th style="width: 8%">Case Stock</th>
-            <th style="width: 10%">Origin</th>
-            <th style="width: 10%">Category</th>
-            <th style="width: 10%">Barcode</th>
+            <th style="width: 8%">Origin</th>
+            <th style="width: 7%">Barcode</th>
           </tr>
         </thead>
         <tbody>
@@ -388,19 +528,19 @@
               </td>
               <td>${product.product_code || '-'}</td>
               <td>${product.product_name || '-'}</td>
+              <td>${product.category || '-'}</td>
               <td>${product.net_weight || '-'}</td>
-              <td>${product.case_quantity || '-'}</td>
               <td>${product.unit_price || '-'}</td>
               <td>${product.case_price || '-'}</td>
+              <td>${product.case_quantity || '-'}</td>
               <td>${product.case_stock || '-'}</td>
               <td>${product.origin || '-'}</td>
-              <td>${product.category || '-'}</td>
-              <td class="image-cell">
+              <td class="text-center">
                 ${product.barcode ? `
-                  ${product.barcode.startsWith('http') ? 
-                    `<img src="${product.barcode}" alt="Barcode" class="barcode-img">` : 
-                    `<canvas id="barcode-${product.id}"></canvas>`
-                  }
+                  <div class="barcode-container">
+                    <svg class="barcode-svg" id="barcode-${product.id}"></svg>
+                    <span class="text-xs">${product.barcode}</span>
+                  </div>
                 ` : '-'}
               </td>
             </tr>
@@ -408,16 +548,21 @@
         </tbody>
       `;
       container.appendChild(table);
-
-      // Generate barcodes for non-URL barcodes
+      
+      // Generate barcodes
       products.forEach(product => {
-        if (product.barcode && !product.barcode.startsWith('http')) {
-          JsBarcode(`#barcode-${product.id}`, product.barcode, {
-            format: "CODE128",
-            width: 2,
-            height: 40,
-            displayValue: false
-          });
+        if (product.barcode) {
+          try {
+            JsBarcode(`#barcode-${product.id}`, product.barcode, {
+              format: "CODE128",
+              lineColor: "#0A3161",
+              width: 1,
+              height: 40,
+              displayValue: false
+            });
+          } catch (e) {
+            console.error("Barcode generation error:", e);
+          }
         }
       });
     }
@@ -437,9 +582,7 @@
       select.addEventListener('change', (e) => {
         paginationConfig.itemsPerPage = parseInt(e.target.value);
         paginationConfig.currentPage = 1;
-        const origin = container.id.replace('tab-', '');
-        const filteredProducts = applyFilters(allProducts, origin);
-        renderProducts(container, filteredProducts);
+        displayProducts();
       });
 
       // Previous button
@@ -449,9 +592,7 @@
       prevButton.addEventListener('click', () => {
         if (paginationConfig.currentPage > 1) {
           paginationConfig.currentPage--;
-          const origin = container.id.replace('tab-', '');
-          const filteredProducts = applyFilters(allProducts, origin);
-          renderProducts(container, filteredProducts);
+          displayProducts();
         }
       });
 
@@ -466,9 +607,7 @@
         pageButton.className = i === paginationConfig.currentPage ? 'active' : '';
         pageButton.addEventListener('click', () => {
           paginationConfig.currentPage = i;
-          const origin = container.id.replace('tab-', '');
-          const filteredProducts = applyFilters(allProducts, origin);
-          renderProducts(container, filteredProducts);
+          displayProducts();
         });
         pageButtons.push(pageButton);
       }
@@ -480,9 +619,7 @@
       nextButton.addEventListener('click', () => {
         if (paginationConfig.currentPage < totalPages) {
           paginationConfig.currentPage++;
-          const origin = container.id.replace('tab-', '');
-          const filteredProducts = applyFilters(allProducts, origin);
-          renderProducts(container, filteredProducts);
+          displayProducts();
         }
       });
 
@@ -501,45 +638,6 @@
       paginationDiv.appendChild(infoText);
 
       container.appendChild(paginationDiv);
-    }
-
-    // Switch origin filter
-    function switchOrigin(origin) {
-      filterConfig.currentOrigin = origin;
-      paginationConfig.currentPage = 1;
-
-      // Update active origin tab
-      document.querySelectorAll('#origin-tabs .tab').forEach(tab => {
-        tab.className = tab.textContent === origin ? 'tab active' : 'tab inactive';
-      });
-
-      // Update tab content visibility
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.className = content.id === `tab-${origin}` ? 'tab-content active' : 'tab-content';
-      });
-
-      // Re-render products for the active origin
-      const activeTabContent = document.getElementById(`tab-${origin}`);
-      const filteredProducts = applyFilters(allProducts, origin);
-      renderProducts(activeTabContent, filteredProducts);
-    }
-
-    // Switch category filter
-    function switchCategory(category) {
-      filterConfig.currentCategory = category;
-      paginationConfig.currentPage = 1;
-
-      // Update active category tab
-      document.querySelectorAll('#category-tabs .category-tab').forEach(tab => {
-        tab.className = tab.textContent === category ? 'category-tab active' : 'category-tab inactive';
-      });
-
-      // Re-render all tab contents with updated category filter
-      document.querySelectorAll('.tab-content').forEach(content => {
-        const origin = content.id.replace('tab-', '');
-        const filteredProducts = applyFilters(allProducts, origin);
-        renderProducts(content, filteredProducts);
-      });
     }
 
     // Show product details popup
@@ -576,25 +674,41 @@
           value !== '' && 
           !['id', 'image_url', 'product_name'].includes(key)
         )
-        .map(([key, value]) => `
-          <tr>
-            <td class="font-medium py-1">${formatKey(key)}</td>
-            <td class="py-1">${
-              key === 'barcode' && value ? 
-                `${formatValue(value)}<br><canvas id="popup-barcode"></canvas>` : 
-                formatValue(value)
-            }</td>
-          </tr>
-        `).join('');
+        .map(([key, value]) => {
+          if (key === 'barcode' && value) {
+            return `
+              <tr>
+                <td class="font-medium py-1">${formatKey(key)}</td>
+                <td class="py-1">
+                  <div class="barcode-container">
+                    <svg class="barcode-svg" id="popup-barcode"></svg>
+                    <span>${value}</span>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }
+          return `
+            <tr>
+              <td class="font-medium py-1">${formatKey(key)}</td>
+              <td class="py-1">${formatValue(value)}</td>
+            </tr>
+          `;
+        }).join('');
 
-      // Generate barcode for popup if not a URL
-      if (product.barcode && !product.barcode.startsWith('http')) {
-        JsBarcode('#popup-barcode', product.barcode, {
-          format: "CODE128",
-          width: 2,
-          height: 40,
-          displayValue: false
-        });
+      // Generate barcode for popup if exists
+      if (product.barcode) {
+        try {
+          JsBarcode('#popup-barcode', product.barcode, {
+            format: "CODE128",
+            lineColor: "#0A3161",
+            width: 1,
+            height: 40,
+            displayValue: true
+          });
+        } catch (e) {
+          console.error("Barcode generation error:", e);
+        }
       }
 
       // Show popup
@@ -635,21 +749,18 @@
       document.getElementById('close-popup').addEventListener('click', closePopup);
       document.getElementById('popup-overlay').addEventListener('click', closePopup);
 
-      // Search button
+      // Search functionality
       document.getElementById('search-button').addEventListener('click', () => {
-        filterConfig.searchQuery = document.getElementById('search-input').value.trim();
-        paginationConfig.currentPage = 1;
-        document.querySelectorAll('.tab-content').forEach(content => {
-          const origin = content.id.replace('tab-', '');
-          const filteredProducts = applyFilters(allProducts, origin);
-          renderProducts(content, filteredProducts);
-        });
+        const searchTerm = document.getElementById('search-input').value.trim();
+        currentFilters.search = searchTerm || null;
+        applyFilters();
       });
 
-      // Search input (trigger on Enter)
-      document.getElementById('search-input').addEventListener('keypress', (e) => {
+      document.getElementById('search-input').addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
-          document.getElementById('search-button').click();
+          const searchTerm = document.getElementById('search-input').value.trim();
+          currentFilters.search = searchTerm || null;
+          applyFilters();
         }
       });
 
