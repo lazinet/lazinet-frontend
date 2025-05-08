@@ -101,22 +101,6 @@
       background-color: #B31942;
       color: #FFFFFF;
     }
-    .tab {
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border: 1px solid #0A3161;
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
-      margin-right: 0.25rem;
-    }
-    .tab.active {
-      background-color: #0A3161;
-      color: white;
-    }
-    .tab.inactive {
-      background-color: white;
-      color: #0A3161;
-    }
     .pagination {
       display: flex;
       justify-content: center;
@@ -155,17 +139,77 @@
       font-size: 1rem;
       color: #f59e0b;
     }
-    .filter-row {
+    /* Origin filter styles */
+    .origin-filter-row {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 0.5rem;
       margin-bottom: 1rem;
-      justify-content: space-between;
     }
-    .filter-item {
-      flex: 1 0 calc(25% - 0.5rem);
-      min-width: 120px;
+    .origin-all {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #0A3161;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
     }
+    .origin-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+    .origin-option {
+      padding: 0.25rem 0.5rem;
+      background-color: #A3C4F3;
+      color: #0A3161;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .origin-option.active {
+      background-color: #0A3161;
+      color: white;
+    }
+    /* Category filter styles */
+    .category-filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .category-all {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #B31942;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .category-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+    .category-option {
+      padding: 0.25rem 0.5rem;
+      background-color: #F4A4B3;
+      color: #B31942;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .category-option.active {
+      background-color: #B31942;
+      color: white;
+    }
+    /* Search styles */
     .search-container {
       display: flex;
       gap: 0.5rem;
@@ -196,12 +240,15 @@
       width: 100%;
     }
     @media (max-width: 768px) {
-      .filter-item {
+      .origin-options, .category-options {
+        gap: 0.5rem;
+      }
+      .origin-option, .category-option {
         flex: 1 0 calc(50% - 0.5rem);
       }
     }
     @media (max-width: 480px) {
-      .filter-item {
+      .origin-option, .category-option {
         flex: 1 0 100%;
       }
     }
@@ -212,10 +259,16 @@
     <h1 class="text-center font-bold mb-6 text-[#0A3161]">Product Management</h1>
 
     <!-- Origin Filters -->
-    <div id="origin-filters" class="filter-row"></div>
+    <div id="origin-filters" class="origin-filter-row">
+      <button id="all-origins" class="origin-all">All Origins</button>
+      <div id="origin-options" class="origin-options"></div>
+    </div>
 
     <!-- Category Filters -->
-    <div id="category-filters" class="filter-row"></div>
+    <div id="category-filters" class="category-filter-row">
+      <button id="all-categories" class="category-all">All Categories</button>
+      <div id="category-options" class="category-options"></div>
+    </div>
 
     <!-- Search -->
     <div class="search-container">
@@ -293,68 +346,68 @@
     function initializeFilters() {
       // Origin filters
       const origins = [...new Set(allProducts.map(p => p.origin || 'Unknown'))];
-      const originContainer = document.getElementById('origin-filters');
-      
-      // Add "All" option
-      const allOriginButton = document.createElement('button');
-      allOriginButton.className = 'filter-item tab active';
-      allOriginButton.textContent = 'All Origins';
-      allOriginButton.onclick = () => {
-        currentFilters.origin = null;
-        updateActiveFilterButton('origin-filters', allOriginButton);
-        applyFilters();
-      };
-      originContainer.appendChild(allOriginButton);
+      const originOptions = document.getElementById('origin-options');
       
       // Add origin options
       origins.forEach(origin => {
         const button = document.createElement('button');
-        button.className = 'filter-item tab inactive';
+        button.className = 'origin-option';
         button.textContent = origin;
         button.onclick = () => {
           currentFilters.origin = origin;
-          updateActiveFilterButton('origin-filters', button);
+          updateActiveFilterButtons();
           applyFilters();
         };
-        originContainer.appendChild(button);
+        originOptions.appendChild(button);
       });
 
       // Category filters
       const categories = [...new Set(allProducts.map(p => p.category || 'Unknown'))];
-      const categoryContainer = document.getElementById('category-filters');
-      
-      // Add "All" option
-      const allCategoryButton = document.createElement('button');
-      allCategoryButton.className = 'filter-item tab active';
-      allCategoryButton.textContent = 'All Categories';
-      allCategoryButton.onclick = () => {
-        currentFilters.category = null;
-        updateActiveFilterButton('category-filters', allCategoryButton);
-        applyFilters();
-      };
-      categoryContainer.appendChild(allCategoryButton);
+      const categoryOptions = document.getElementById('category-options');
       
       // Add category options
       categories.forEach(category => {
         const button = document.createElement('button');
-        button.className = 'filter-item tab inactive';
+        button.className = 'category-option';
         button.textContent = category;
         button.onclick = () => {
           currentFilters.category = category;
-          updateActiveFilterButton('category-filters', button);
+          updateActiveFilterButtons();
           applyFilters();
         };
-        categoryContainer.appendChild(button);
+        categoryOptions.appendChild(button);
       });
+
+      // Set up "All" buttons
+      document.getElementById('all-origins').onclick = () => {
+        currentFilters.origin = null;
+        updateActiveFilterButtons();
+        applyFilters();
+      };
+
+      document.getElementById('all-categories').onclick = () => {
+        currentFilters.category = null;
+        updateActiveFilterButtons();
+        applyFilters();
+      };
     }
 
-    // Update active filter button
-    function updateActiveFilterButton(containerId, activeButton) {
-      const container = document.getElementById(containerId);
-      container.querySelectorAll('button').forEach(button => {
-        button.className = button === activeButton 
-          ? 'filter-item tab active' 
-          : 'filter-item tab inactive';
+    // Update active filter buttons
+    function updateActiveFilterButtons() {
+      // Update origin buttons
+      const originOptions = document.querySelectorAll('.origin-option');
+      originOptions.forEach(button => {
+        button.className = button.textContent === currentFilters.origin 
+          ? 'origin-option active' 
+          : 'origin-option';
+      });
+
+      // Update category buttons
+      const categoryOptions = document.querySelectorAll('.category-option');
+      categoryOptions.forEach(button => {
+        button.className = button.textContent === currentFilters.category 
+          ? 'category-option active' 
+          : 'category-option';
       });
     }
 
@@ -419,7 +472,8 @@
             <th style="width: 5%">ID</th>
             <th style="width: 10%">Image</th>
             <th style="width: 10%">Code</th>
-            <th style="width: 20%">Name</th>
+            <th style="width: 15%">Name</th>
+            <th style="width: 10%">Category</th>
             <th style="width: 8%">Weight</th>
             <th style="width: 8%">Unit Price</th>
             <th style="width: 8%">Case Price</th>
@@ -438,6 +492,7 @@
               </td>
               <td>${product.product_code || '-'}</td>
               <td>${product.product_name || '-'}</td>
+              <td>${product.category || '-'}</td>
               <td>${product.net_weight || '-'}</td>
               <td>${product.unit_price || '-'}</td>
               <td>${product.case_price || '-'}</td>
