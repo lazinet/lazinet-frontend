@@ -13,10 +13,11 @@
       background-color: #E6ECF5;
       color: #0A3161;
       font-family: 'Roboto', sans-serif;
+      margin: 0; /* Remove default browser margin */
     }
     .container {
       width: 100%;
-      padding: 0 0.5rem;
+      padding: 0 0.25rem; /* Reduced padding for wider appearance */
     }
     .tab-content {
       display: none;
@@ -82,7 +83,6 @@
       font-weight: 700;
       font-size: clamp(0.8rem, 1.1vw, 1rem);
     }
-
     .image-cell {
       display: flex;
       justify-content: center;
@@ -265,6 +265,18 @@
       white-space: nowrap;
       font-size: clamp(0.65rem, 0.8vw, 0.75rem);
     }
+    /* Popup table styles */
+    #popup-details table {
+      table-layout: auto; /* Allow columns to size based on content */
+    }
+    #popup-details td:first-child {
+      width: auto;
+      white-space: nowrap; /* Prevent title wrapping */
+      font-weight: 500;
+    }
+    #popup-details td:nth-child(2) {
+      width: 100%; /* Expand to fill remaining space */
+    }
     /* Responsive Adjustments */
     @media (max-width: 768px) {
       .origin-option, .category-option {
@@ -286,6 +298,10 @@
       th:nth-child(9), td:nth-child(9), /* Case Qty */
       th:nth-child(10), td:nth-child(10) /* Case Stock */ {
         display: none;
+      }
+      /* Reduce main table min-width for small screens */
+      table {
+        min-width: 500px;
       }
     }
     @media (max-width: 480px) {
@@ -317,8 +333,9 @@
   </style>
 </head>
 <body>
+  <!-- <div class="container py-4"> -->
   <div style="padding: 1vw">
-    <h1 class="text-center font-bold mb-4 text-[#0A3161]">Product Management</h1>
+    <h1 class="text-center font-bold mb-4 text-[#0A3161]">INTERNATIONAL KIM LONG DAI A CORPORATION: PRODUCT CATEGORIES</h1>
 
     <!-- Origin Filters -->
     <div id="origin-filters" class="origin-filter-row">
@@ -572,14 +589,15 @@
               <td>${product.case_quantity || '-'}</td>
               <td>${product.case_stock || '-'}</td>
               <td>${product.origin || '-'}</td>
-              <td class="text-center">
-                ${product.barcode ? `
-                  <div class="barcode-container">
-                    <svg class="barcode-svg" id="barcode-${product.id}"></svg>
-                    <span class="barcode-number">${product.barcode}</span>
-                  </div>
-                ` : '-'}
-              </td>
+              <td class="text-left">
+            ${product.barcode ? `
+                <div class="barcode-container">
+                <svg class="barcode-svg" id="barcode-${product.id}"></svg>
+                <span class="barcode-number">${product.barcode}</span>
+                <span class="barcode-number-large">${product.barcode}</span>
+                </div>
+            ` : '-'}
+            </td>
             </tr>
           `).join('')}
         </tbody>
@@ -805,5 +823,6 @@
       window.showProductDetail = showProductDetail;
     }
   </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c9274708cfbcaa',t:'MTc0NjcwOTM2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
