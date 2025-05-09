@@ -16,11 +16,11 @@
       background-color: #E6ECF5;
       color: #0A3161;
       font-family: 'Roboto', sans-serif;
-      margin: 0; /* Remove default browser margin */
+      margin: 0;
     }
     .container {
       width: 100%;
-      padding: 0 0.25rem; /* Reduced padding for wider appearance */
+      padding: 0 0.25rem;
     }
     .tab-content {
       display: none;
@@ -46,7 +46,6 @@
       max-width: 600px;
       padding: 1rem;
     }
-    
     .popup.active {
       display: block;
     }
@@ -71,7 +70,7 @@
       color: #0A3161;
       table-layout: fixed;
       width: 100%;
-      min-width: 600px;
+      min-width: 500px;
       margin: 0 auto;
       border-collapse: collapse;
     }
@@ -88,12 +87,16 @@
       font-size: clamp(0.8rem, 1.1vw, 1rem);
     }
     .image-cell {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 60px;
+      /* display: flex; cần bật để align hoạt động */
+      justify-content: center; /* căn giữa theo chiều ngang */
+      align-items: center;     /* căn giữa theo chiều dọc */
+      text-align: center;
+      height: 100%;
       padding: 2px;
+      max-width: 8vw;
+      /* border: none; */
     }
+
     .table-img {
       max-width: 60px;
       max-height: 60px;
@@ -103,7 +106,7 @@
     }
     .popup-img {
       width: 100%;
-      max-height: 300px;
+      /* max-height: 300px; */
       object-fit: contain;
       margin: 0 auto;
       display: block;
@@ -154,7 +157,6 @@
       font-size: clamp(0.8rem, 1vw, 0.9rem);
       color: #f59e0b;
     }
-    /* Origin filter styles */
     .origin-filter-row {
       display: flex;
       flex-direction: column;
@@ -193,7 +195,6 @@
       background-color: #0A3161;
       color: white;
     }
-    /* Category filter styles */
     .category-filter-row {
       display: flex;
       flex-direction: column;
@@ -232,7 +233,6 @@
       background-color: #B31942;
       color: white;
     }
-    /* Search styles */
     .search-container {
       display: flex;
       gap: 0.5rem;
@@ -262,17 +262,23 @@
     }
     .barcode-svg {
       height: 28px;
-      width: 100%;
-      max-width: 100%;
+      max-width: 150px;
+    }
+    #popup-barcode {
+      transform: scale(1.5);
+      transform-origin: top left;
     }
     .barcode-number {
       white-space: nowrap;
       font-size: clamp(0.65rem, 0.8vw, 0.75rem);
     }
-    /* Popup table styles */
+    .barcode-number-large {
+      white-space: nowrap;
+      font-size: clamp(0.8rem, 1vw, 0.9rem);
+    }
     #popup-details table {
       table-layout: auto;
-      width: 95%;
+      width: 100%;
       margin: 0 auto;
     }
     #popup-details td:first-child {
@@ -285,7 +291,6 @@
       word-break: break-word;
       width: 100%;
     }
-    /* Responsive Adjustments */
     @media (max-width: 768px) {
       .origin-option, .category-option {
         flex: 1 0 calc(50% - 0.5rem);
@@ -300,18 +305,13 @@
       .barcode-svg {
         height: 24px;
       }
-      
-      /* Hide less critical columns */
-      /* th:nth-child(7), td:nth-child(7), Unit Price */
-      /* th:nth-child(8), td:nth-child(8), Case Price */
-      /* th:nth-child(9), td:nth-child(9), Case Qty */
-      /* th:nth-child(10), td:nth-child(10) Case Stock { */
-        /* display: none; */
-      /* } */
-      
-      /* Reduce main table min-width for small screens */
+      th:nth-child(8), td:nth-child(8),
+      th:nth-child(9), td:nth-child(9),
+      th:nth-child(10), td:nth-child(10) {
+        display: none;
+      }
       table {
-        min-width: 700px;
+        min-width: 500px;
       }
     }
     @media (max-width: 480px) {
@@ -328,9 +328,9 @@
         padding: 0.75rem;
         width: 98%;
       }
-      .popup-img {
+      /* .popup-img {
         max-height: 200px;
-      }
+      } */
       h1 {
         font-size: clamp(1.2rem, 3vw, 1.5rem);
       }
@@ -343,57 +343,38 @@
   </style>
 </head>
 <body>
-  <!-- <div class="container py-4"> -->
   <div style="padding: 1vw">
     <h1 class="text-center font-bold mb-4 text-[#0A3161]">INTERNATIONAL KIM LONG DAI A CORPORATION: PRODUCT CATEGORIES</h1>
-
-    <!-- Origin Filters -->
     <div id="origin-filters" class="origin-filter-row">
       <button id="all-origins" class="origin-all">All Origins</button>
       <div id="origin-options" class="origin-options"></div>
     </div>
-
-    <!-- Category Filters -->
     <div id="category-filters" class="category-filter-row">
       <button id="all-categories" class="category-all">All Categories</button>
       <div id="category-options" class="category-options"></div>
     </div>
-
-    <!-- Search -->
     <div class="search-container">
       <input type="text" id="search-input" class="search-input" placeholder="Search by product name...">
       <button id="search-button" class="search-button">Search</button>
     </div>
-
-    <!-- Tab Contents -->
     <div id="tab-contents" class="mt-2">
-      <div class="table-wrapper">
-        <!-- Table will be inserted here by JavaScript -->
-      </div>
-      <div id="pagination-container" class="pagination-container">
-        <!-- Pagination will be inserted here by JavaScript -->
-      </div>
+      <div class="table-wrapper"></div>
+      <div id="pagination-container" class="pagination-container"></div>
     </div>
-
-    <!-- Popup Overlay -->
     <div id="popup-overlay" class="overlay"></div>
-
-    <!-- Popup -->
     <div id="popup" class="popup">
-      <button id="close-popup" class="absolute top-1 right-1 text-[#0A3161] font-bold text-lg">×</button>
+      <button id="close-popup" class="absolute top-1 right-1 text-[#B31942] font-bold text-lg">×</button>
       <h2 id="popup-title" class="font-bold mb-2 text-lg"></h2>
       <div id="rating-display" class="rating-display"></div>
       <img id="popup-image" class="popup-img mb-2" src="" alt="Product Image" style="display: none;">
       <div id="popup-details" class="space-y-1">
-        <table class="w-full">
+        <table style="width: 100%; min-width: 200px;">
           <tbody id="popup-details-table"></tbody>
         </table>
       </div>
     </div>
   </div>
-
   <script>
-    // Configuration
     const API_URL = 'https://script.google.com/macros/s/AKfycbxhxNuS-jp70oyke_nwsEKlueIQorpNbnggL6pZ1w5SLXE6sDtU8rIsxrrBNoIKFkw6iA/exec';
     let allProducts = [];
     let filteredProducts = [];
@@ -408,8 +389,6 @@
       category: null,
       search: null
     };
-
-    // Initialize the application
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         await loadProducts();
@@ -418,16 +397,12 @@
         showError('Failed to initialize application: ' + error.message);
       }
     });
-
-    // Load products from API
     async function loadProducts() {
       try {
         const response = await fetch(`${API_URL}?action=getProducts`);
         if (!response.ok) throw new Error('Network response was not ok');
-        
         const data = await response.json();
         if (data.error) throw new Error(data.error);
-        
         allProducts = Array.isArray(data) ? data : [];
         filteredProducts = [...allProducts];
         initializeFilters();
@@ -437,14 +412,9 @@
         showError('Error loading products: ' + error.message);
       }
     }
-
-    // Initialize filter options
     function initializeFilters() {
-      // Origin filters
       const origins = [...new Set(allProducts.map(p => p.origin || 'Unknown'))];
       const originOptions = document.getElementById('origin-options');
-      
-      // Add origin options
       origins.forEach(origin => {
         const button = document.createElement('button');
         button.className = 'origin-option';
@@ -456,12 +426,8 @@
         };
         originOptions.appendChild(button);
       });
-
-      // Category filters
       const categories = [...new Set(allProducts.map(p => p.category || 'Unknown'))];
       const categoryOptions = document.getElementById('category-options');
-      
-      // Add category options
       categories.forEach(category => {
         const button = document.createElement('button');
         button.className = 'category-option';
@@ -473,147 +439,106 @@
         };
         categoryOptions.appendChild(button);
       });
-
-      // Set up "All" buttons
       document.getElementById('all-origins').onclick = () => {
         currentFilters.origin = null;
         updateActiveFilterButtons();
         applyFilters();
       };
-
       document.getElementById('all-categories').onclick = () => {
         currentFilters.category = null;
         updateActiveFilterButtons();
         applyFilters();
       };
     }
-
-    // Update active filter buttons
     function updateActiveFilterButtons() {
-      // Update origin buttons
       const originOptions = document.querySelectorAll('.origin-option');
       originOptions.forEach(button => {
-        button.className = button.textContent === currentFilters.origin 
-          ? 'origin-option active' 
-          : 'origin-option';
+        button.className = button.textContent === currentFilters.origin ? 'origin-option active' : 'origin-option';
       });
-
-      // Update category buttons
       const categoryOptions = document.querySelectorAll('.category-option');
       categoryOptions.forEach(button => {
-        button.className = button.textContent === currentFilters.category 
-          ? 'category-option active' 
-          : 'category-option';
+        button.className = button.textContent === currentFilters.category ? 'category-option active' : 'category-option';
       });
     }
-
-    // Apply all filters
     function applyFilters() {
       filteredProducts = [...allProducts];
-      
-      // Apply origin filter
       if (currentFilters.origin) {
-        filteredProducts = filteredProducts.filter(p => 
-          (p.origin || 'Unknown') === currentFilters.origin
-        );
+        filteredProducts = filteredProducts.filter(p => (p.origin || 'Unknown') === currentFilters.origin);
       }
-      
-      // Apply category filter
       if (currentFilters.category) {
-        filteredProducts = filteredProducts.filter(p => 
-          (p.category || 'Unknown') === currentFilters.category
-        );
+        filteredProducts = filteredProducts.filter(p => (p.category || 'Unknown') === currentFilters.category);
       }
-      
-      // Apply search filter
       if (currentFilters.search) {
         const searchTerm = currentFilters.search.toLowerCase();
-        filteredProducts = filteredProducts.filter(p => 
-          p.product_name && p.product_name.toLowerCase().includes(searchTerm)
-        );
+        filteredProducts = filteredProducts.filter(p => p.product_name && p.product_name.toLowerCase().includes(searchTerm));
       }
-      
-      // Reset to first page when filters change
       paginationConfig.currentPage = 1;
-      
-      // Update display
       displayProducts();
     }
-
-    // Display products with pagination
     function displayProducts() {
       const tableWrapper = document.querySelector('.table-wrapper');
       const paginationContainer = document.getElementById('pagination-container');
-      
-      // Clear previous content
       tableWrapper.innerHTML = '';
       paginationContainer.innerHTML = '';
-
       if (filteredProducts.length === 0) {
         tableWrapper.innerHTML = '<p class="text-center py-4">No products found matching your criteria</p>';
         return;
       }
-
       const totalPages = Math.ceil(filteredProducts.length / paginationConfig.itemsPerPage);
       const startIndex = (paginationConfig.currentPage - 1) * paginationConfig.itemsPerPage;
       const endIndex = Math.min(startIndex + paginationConfig.itemsPerPage, filteredProducts.length);
       const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
-
       renderTable(tableWrapper, paginatedProducts);
       renderPagination(paginationContainer, filteredProducts.length, totalPages);
     }
-
-    // Render products table
     function renderTable(container, products) {
       const table = document.createElement('table');
       table.innerHTML = `
         <thead>
           <tr>
-            <th style="width: 6%">ID</th>
-            <th style="width: 9%">Image</th>
-            <th style="width: 9%">Code</th>
-            <th style="width: 14%">Name</th>
-            <th style="width: 10%">Category</th>
-            <th style="width: 8%">Weight</th>
+            <th style="width: 5%">ID</th>
+            <th style="width: 8%">Image</th>
+            <th style="width: 8%">Code</th>
+            <th style="width: 12%">Name</th>
+            <th style="width: 9%">Category</th>
+            <th style="width: 7%">Weight</th>
+            <th style="width: 7%">Case Qty</th>
             <th style="width: 7%">Unit Price</th>
             <th style="width: 7%">Case Price</th>
-            <th style="width: 7%">Case Qty</th>
             <th style="width: 7%">Case Stock</th>
-            <th style="width: 9%">Origin</th>
-            <th style="width: 12%">Barcode</th>
+            <th style="width: 8%">Origin</th>
+            <th style="width: 15%">Barcode</th>
           </tr>
         </thead>
         <tbody>
           ${products.map(product => `
             <tr class="hover:bg-red-700 cursor-pointer" onclick="showProductDetail(${allProducts.indexOf(product)})">
-              <td class="text-center">${product.id}</td>
+              <td class="text-center">${product.id || '-'}</td>
               <td class="image-cell">
-                ${product.image_url ? `<img src="${product.image_url}" alt="${product.product_name}" class="table-img" onerror="this.style.display='none'">` : 'No Image'}
+                ${product.image_url ? `<img src="${product.image_url}" alt="${product.product_name}" class="table-img" style="max-height: 100%; max-width: 100%;" onerror="this.style.display='none'">` : 'No Image'}
               </td>
               <td>${product.product_code || '-'}</td>
               <td>${product.product_name || '-'}</td>
               <td>${product.category || '-'}</td>
               <td>${product.net_weight || '-'}</td>
+              <td>${product.case_quantity || '-'}</td>
               <td>${product.unit_price || '-'}</td>
               <td>${product.case_price || '-'}</td>
-              <td>${product.case_quantity || '-'}</td>
               <td>${product.case_stock || '-'}</td>
               <td>${product.origin || '-'}</td>
               <td class="text-left">
-            ${product.barcode ? `
+                ${product.barcode ? `
                 <div class="barcode-container">
                 <svg class="barcode-svg" id="barcode-${product.id}"></svg>
                 <span class="barcode-number">${product.barcode}</span>
                 </div>
-            ` : '-'}
-            </td>
+                ` : '-'}
+              </td>
             </tr>
           `).join('')}
         </tbody>
       `;
       container.appendChild(table);
-      
-      // Generate barcodes
       products.forEach(product => {
         if (product.barcode) {
           try {
@@ -630,26 +555,19 @@
         }
       });
     }
-
-    // Render pagination controls
     function renderPagination(container, totalItems, totalPages) {
       const paginationDiv = document.createElement('div');
       paginationDiv.className = 'pagination';
-
-      // Items per page dropdown
       const select = document.createElement('select');
       select.className = 'mr-4';
       select.innerHTML = paginationConfig.itemsPerPageOptions.map(option => 
         `<option value="${option}" ${option === paginationConfig.itemsPerPage ? 'selected' : ''}>${option} per page</option>`
       ).join('');
-      
       select.addEventListener('change', (e) => {
         paginationConfig.itemsPerPage = parseInt(e.target.value);
         paginationConfig.currentPage = 1;
         displayProducts();
       });
-
-      // Previous button
       const prevButton = document.createElement('button');
       prevButton.textContent = 'Previous';
       prevButton.disabled = paginationConfig.currentPage === 1;
@@ -659,12 +577,9 @@
           displayProducts();
         }
       });
-
-      // Page buttons
       const pageButtons = [];
       const startPage = Math.max(1, paginationConfig.currentPage - 1);
       const endPage = Math.min(totalPages, paginationConfig.currentPage + 1);
-
       for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
@@ -675,8 +590,6 @@
         });
         pageButtons.push(pageButton);
       }
-
-      // Next button
       const nextButton = document.createElement('button');
       nextButton.textContent = 'Next';
       nextButton.disabled = paginationConfig.currentPage === totalPages;
@@ -686,25 +599,18 @@
           displayProducts();
         }
       });
-
-      // Info text
       const infoText = document.createElement('span');
       const startItem = (paginationConfig.currentPage - 1) * paginationConfig.itemsPerPage + 1;
       const endItem = Math.min(paginationConfig.currentPage * paginationConfig.itemsPerPage, totalItems);
       infoText.textContent = `Showing ${startItem}-${endItem} of ${totalItems}`;
       infoText.className = 'ml-4';
-
-      // Assemble pagination controls
       paginationDiv.appendChild(select);
       paginationDiv.appendChild(prevButton);
       pageButtons.forEach(button => paginationDiv.appendChild(button));
       paginationDiv.appendChild(nextButton);
       paginationDiv.appendChild(infoText);
-
       container.appendChild(paginationDiv);
     }
-
-    // Show product details popup
     function showProductDetail(index) {
       currentProductIndex = index;
       const product = allProducts[index];
@@ -714,13 +620,9 @@
       const popupImage = document.getElementById('popup-image');
       const popupDetailsTable = document.getElementById('popup-details-table');
       const ratingDisplay = document.getElementById('rating-display');
-
-      // Set popup content
       popupTitle.textContent = product.product_name || 'Unknown Product';
       popupImage.src = product.image_url || '';
       popupImage.style.display = product.image_url ? 'block' : 'none';
-
-      // Display average rating and review count
       const averageRating = parseFloat(product.average_rating) || 0;
       const totalRatingCount = parseInt(product.total_rating_count) || 0;
       ratingDisplay.innerHTML = `
@@ -730,14 +632,9 @@
         `).join('')}
         <span>(${totalRatingCount} reviews)</span>
       `;
-
-      // Display product details
       popupDetailsTable.innerHTML = Object.entries(product)
-        .filter(([key, value]) => 
-          value !== undefined && 
-          value !== '' && 
-          !['id', 'image_url', 'product_name'].includes(key)
-        )
+        // .filter(([key, value]) => value !== undefined && value !== '' && !['id', 'image_url', 'product_name'].includes(key))
+        .filter(([key, value]) => value !== undefined && value !== '' && !['id', 'image_url'].includes(key))
         .map(([key, value]) => {
           if (key === 'barcode' && value) {
             return `
@@ -759,8 +656,6 @@
             </tr>
           `;
         }).join('');
-
-      // Generate barcode for popup if exists
       if (product.barcode) {
         try {
           JsBarcode('#popup-barcode', product.barcode, {
@@ -768,58 +663,41 @@
             lineColor: "#0A3161",
             width: 1,
             height: 28,
-            displayValue: true
+            displayValue: false
           });
         } catch (e) {
           console.error("Barcode generation error:", e);
         }
       }
-
-      // Show popup
       popup.className = 'popup active';
       overlay.className = 'overlay active';
     }
-
-    // Format table key
     function formatKey(key) {
-      return key.replace(/_/g, ' ')
-               .replace(/\b\w/g, l => l.toUpperCase());
+      return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
-
-    // Format table value
     function formatValue(value) {
       if (typeof value === 'string' && value.match(/^https?:\/\//)) {
         return `<a href="${value}" target="_blank" class="text-blue-600 hover:underline">Link</a>`;
       }
       return value || '-';
     }
-
-    // Close popup
     function closePopup() {
       document.getElementById('popup').className = 'popup';
       document.getElementById('popup-overlay').className = 'overlay';
       currentProductIndex = -1;
     }
-
-    // Show error message
     function showError(message) {
       const tabContents = document.getElementById('tab-contents');
       tabContents.innerHTML = `<div class="error-message">${message}</div>`;
     }
-
-    // Setup event listeners
     function setupEventListeners() {
-      // Close popup buttons
       document.getElementById('close-popup').addEventListener('click', closePopup);
       document.getElementById('popup-overlay').addEventListener('click', closePopup);
-
-      // Search functionality
       document.getElementById('search-button').addEventListener('click', () => {
         const searchTerm = document.getElementById('search-input').value.trim();
         currentFilters.search = searchTerm || null;
         applyFilters();
       });
-
       document.getElementById('search-input').addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
           const searchTerm = document.getElementById('search-input').value.trim();
@@ -827,11 +705,10 @@
           applyFilters();
         }
       });
-
-      // Make functions available globally
       window.showProductDetail = showProductDetail;
     }
   </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c9274708cfbcaa',t:'MTc0NjcwOTM2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93cd407afb19adf4',t:'MTc0Njc1MjM0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
