@@ -261,8 +261,10 @@
       gap: 0.25rem;
     }
     .barcode-svg {
-      height: 28px;
-      max-width: 150px;
+      /* height: 28px;
+      max-width: 150px; */
+      width: 100%;
+      /* min-width: 150px; */
     }
     #popup-barcode {
       transform: scale(1.5);
@@ -270,7 +272,7 @@
     }
     .barcode-number {
       white-space: nowrap;
-      font-size: clamp(0.65rem, 0.8vw, 0.75rem);
+      font-size: clamp(0.75rem, 1vw, 0.95rem);
     }
     .barcode-number-large {
       white-space: nowrap;
@@ -302,9 +304,9 @@
         max-width: 50px;
         max-height: 50px;
       }
-      .barcode-svg {
+      /* .barcode-svg {
         height: 24px;
-      }
+      } */
       th:nth-child(8), td:nth-child(8),
       th:nth-child(9), td:nth-child(9),
       th:nth-child(10), td:nth-child(10) {
@@ -507,7 +509,7 @@
             <th style="width: 7%">Case Price</th>
             <th style="width: 7%">Case Stock</th>
             <th style="width: 8%">Origin</th>
-            <th style="width: 15%">Barcode</th>
+            <th style="min-width: 150px;">Barcode</th>
           </tr>
         </thead>
         <tbody>
