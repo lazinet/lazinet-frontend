@@ -400,6 +400,14 @@
                         <a href="#wishes" class="accessibility-btn theme-btn album btn btn-primary btn-lg">
                             <span class="content-button">
                                 <img class="access-section-icon"
+                                    src="../public/wedding/landuc/landscapes/party-liqueur-svgrepo-com.svg" alt="access-btn">
+                                BÁO HỶ TẠI ĐÀ NẴNG
+                                <!-- Grok ơi Tôi cần bấm nút này thì bật lên iframe hiển thị như các sự kiện trên -->
+                            </span>
+                        </a>
+                        <a href="#wishes" class="accessibility-btn theme-btn album btn btn-primary btn-lg">
+                            <span class="content-button">
+                                <img class="access-section-icon"
                                     src="https://cdn.biihappy.com/ziiweb/images/static/common/wishes.png" alt="access-btn">
                                 THAM DỰ & LỜI CHÚC
                             </span>
@@ -410,8 +418,187 @@
         </div>
     </section>
 
-  </script>
-  
+  <!-- </script> -->
+
+  <!-- Modal for BÁO HỶ TẠI ĐÀ NẴNG -->
+<div id="danangModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div class="grid-item">
+            <div class="img-holder">
+                <img src="../public/wedding/landuc/landscapes/vanphuc2.jpeg" alt="Báo Hỷ Đà Nẵng">
+            </div>
+            <div class="datails">
+                <h3>BÁO HỶ TẠI ĐÀ NẴNG</h3>
+                <ul>
+                    <li><strong><i class="ti-time"></i> 11:00 29/06/2025 (Dương lịch)</strong></li>
+                    <li style="margin-top: 5px;">
+                        <i class="ti-location-pin"></i>
+                        <p>Nhà hàng tiệc cưới <strong>VẠN PHÚC 2</strong></p>
+                        <p>Lô 79A-79B, Đường 30/4, P. Hòa Cường Bắc, Hải Châu, Đà Nẵng</p>
+                    </li>
+                </ul>
+                <div class="calendar-button">
+                    <div class="atcb" style="display:none;">
+                        {
+                        "name":"BÁO HỶ TẠI ĐÀ NẴNG (Đám cưới Đình Đức và Hoàng Lan)",
+                        "description":"Cảm ơn bạn đã dành thời gian tham dự báo hỷ của chúng tôi tại Đà Nẵng! Thông tin chi tiết xem tại website:<br>[url]https://lazinet.com/landucwedding.html[/url]",
+                        "startDate":"2025-06-29",
+                        "endDate":"2025-06-29",
+                        "startTime":"11:00",
+                        "endTime":"13:00",
+                        "location":"Nhà hàng tiệc cưới VẠN PHÚC 2, Lô 79A-79B, Đường 30/4, P. Hòa Cường Bắc, Q. Hải Châu, Tp. Đà Nẵng",
+                        "options":["Apple","Google","iCal","Microsoft365","MicrosoftTeams","Outlook.com","Yahoo"],
+                        "timeZone":"Asia/Ho_Chi_Minh",
+                        "iCalFileName":"Reminder-Danang-Event",
+                        "listStyle":"modal",
+                        "label":"Thêm vào lịch",
+                        "trigger":"click"
+                        }
+                    </div>
+                </div>
+                <a class="see-location-btn popup-gmaps" href="https://maps.app.goo.gl/P93ts7HrdxmGVhTP7" target="_blank">
+                    xem bản đồ <i class="fa fa-angle-right"></i>
+                </a>
+                <!-- Iframe for additional content -->
+                <!-- <div class="iframe-container" style="margin-top: 20px;">
+                    <iframe src="https://lazinet.com/landucwedding.html" width="100%" height="400px" frameborder="0" allowfullscreen></iframe>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+.iframe-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.iframe-container iframe {
+    width: 100%;
+    border: none;
+}
+
+/* Ensure modal content aligns with event section styling */
+.modal-content .grid-item {
+    text-align: center;
+}
+
+.modal-content .img-holder img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.modal-content .datails {
+    padding: 20px;
+}
+
+.modal-content .datails h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #F9667E;
+}
+
+.modal-content .datails ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.modal-content .datails ul li {
+    font-size: 1em;
+    color: #555;
+}
+
+.modal-content .see-location-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #F9667E;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+.modal-content .see-location-btn:hover {
+    background-color: #0056b3;
+}
+
+.calendar-button {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 20px 0 !important;
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const danangButton = document.querySelector('a[href="#wishes"].album:first-child');
+    const modal = document.getElementById('danangModal');
+    const closeButton = document.querySelector('.close-button');
+
+    // Open modal when button is clicked
+    danangButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+    });
+
+    // Close modal when close button is clicked
+    closeButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
+
     
     <!-- ĐỒNG HỒ ĐẾM XUỐNG -->
     <section id="counter" class="img-bg" data-stellar-background-ratio="0.5" style="background:url(./wedding/landuc/landscapes/bar1.webp) no-repeat;">
@@ -949,20 +1136,20 @@
 
                 <!-- Row 2: Guest Type Radio Buttons -->
                 <div class="form-group mt-3" style="text-align: center;">
-                    <label style="display: block; margin-bottom: 8px;">Khách mời tiệc cưới:</label>
+                    <label style="display: block; margin-bottom: 8px; color: #555;">Khách mời tiệc cưới:</label>
                     <div class="radio-group"
                         style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                         <label style="display: flex; align-items: center;">
                             <input type="radio" name="guestType" value="Nhà gái" required style="margin-right: 5px;">
-                            Nhà gái
+                            Nhà gái (Quảng Trị)
                         </label>
                         <label style="display: flex; align-items: center;">
                             <input type="radio" name="guestType" value="Nhà trai" required style="margin-right: 5px;">
-                            Nhà trai
+                            Nhà trai (Quảng Bình)
                         </label>
                         <label style="display: flex; align-items: center;">
-                            <input type="radio" name="guestType" value="Cả hai" required style="margin-right: 5px;">
-                            Cả hai
+                            <input type="radio" name="guestType" value="Báo hỷ" required style="margin-right: 5px;">
+                            Báo hỷ (Đà Nẵng)
                         </label>
                     </div>
                 </div>
