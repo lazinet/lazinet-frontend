@@ -1,0 +1,14 @@
+<svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+
+  <!-- <rect x="0" y="0" width="1024" height="1024" fill="white" /> -->
+  <circle cx="512" cy="512" r="502" stroke="#8C8C8C" stroke-width="20" fill="#FFF8C6 " />
+  <line x1="250" y1="200" x2="518" y2="70" stroke="#DAA520" stroke-width="30" />
+  <line x1="750" y1="200" x2="506" y2="70" stroke="#DAA520" stroke-width="30" />
+  <line x1="150" y1="350" x2="518" y2="170" stroke="#DAA520" stroke-width="30" />
+  <line x1="850" y1="350" x2="506" y2="170" stroke="#DAA520" stroke-width="30" />
+  <text x="210" y="600" font-family="Arial" font-size="500" fill="#8C8C8C">p</text>
+  <text x="520" y="600" font-family="Arial" font-size="500" fill="#8C8C8C">q</text>
+  <line x1="200" y1="710" x2="800" y2="710" stroke="#8C8C8C" stroke-width="30" />
+  <text x="130" y="810" font-family="Arial Black" font-size="80" fill="#DAA520">PHÚ QUÝ AN GIA</text>
+
+</svg>
