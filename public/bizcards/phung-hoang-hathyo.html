@@ -142,18 +142,20 @@
       height: 100px;
     }
     .export-buttons {
-      margin: 20px 0;
-      display: flex;
-      gap: 10px;
+      margin: 10px;
+      /* display: flex; */
+      gap: clamp(10px, 2vw, 20px);
     }
     .export-buttons button {
-      padding: 10px 20px;
+      padding: clamp(10px, 1vw, 20px);
       background: #0a703f;
       color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s ease;
+      font-size: clamp(10px, 2vw, 16px);
+      flex-wrap: nowrap;
     }
     .export-buttons button:hover {
       background: #ff6302;
@@ -245,7 +247,7 @@
     .contact-card textarea.form-control {
       flex: 1;
       resize: none;
-      min-height: 100px; /* Giảm chiều cao để nhường chỗ cho dòng mới */
+      min-height: 80px; /* Giảm chiều cao để nhường chỗ cho dòng mới */
     }
     .contact-card button[type="submit"] {
       background: #0a703f;
@@ -395,7 +397,7 @@
   <!-- Contact Section -->
   <div class="card contact-card" id="contact">
     <form id="contact-form" method="post">
-      <h3 style="align-self: center; color: #ff6302;">Hãy để lại tin nhắn, tôi sẽ liên hệ ngay!</h3>
+      <h3 style="align-self: center; color: #ff6302; font-size: clamp(12px, 2.9vw, 20px);">Hãy để lại tin nhắn, tôi sẽ liên hệ ngay!</h3>
       <div class="input-row">
         <div class="input-group">
           <i class="bi bi-person icon-orange"></i>
