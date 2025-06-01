@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiểm tra trạng thái - HATHYO</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="query-contact.css">
+</head>
+<body>
+  <div class="container">
+    <div class="query-section">
+      <h2>Kiểm tra trạng thái xử lý yêu cầu bạn đã gửi bản tin</h2>
+      <p class="description">Nhập email bạn đã sử dụng khi liên hệ</p>
+      <form id="queryForm">
+        <input type="hidden" name="action" value="verifyAndQuery">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <button type="button" id="getCodeBtn" class="btn primary">
+          <span>Lấy mã xác thực</span>
+          <span class="spinner" style="display: none;"></span>
+        </button>
+        <div class="form-group">
+          <label for="verificationCode">Mã xác thực:</label>
+          <input type="text" id="verificationCode" name="verificationCode" required>
+        </div>
+        <button type="submit" id="verifyBtn" class="btn primary">
+          <span>Xác thực</span>
+          <span class="spinner" style="display: none;"></span>
+        </button>
+      </form>
+      <div id="statusContainer" class="status-container">
+        <h3>Trạng thái mẫu tin</h3>
+        <div class="table-wrapper">
+          <table id="statusTable">
+            <thead>
+              <tr>
+                <th>Thời gian</th>
+                <th>Quý danh</th>
+                <th>Mục đích</th>
+                <th>Tiêu đề</th>
+                <th>Nội dung</th>
+                <th>Phụ trách</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentAction = '';
+    const API_URL = 'https://script.google.com/macros/s/AKfycby8RrgkU3tafx5KQD4eBaCtyEeNCAiKdc921gHdQ5_rz8lQZOyZDHn_exwRjoXBBpAn/exec';
+
+    function getVerificationCode() {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        alert('Vui lòng nhập email!');
+        return;
+      }
+
+      const btn = document.getElementById('getCodeBtn');
+      btn.disabled = true;
+      showSpinner(btn, true);
+      btn.querySelector('span').textContent = 'HATHYO đang gửi mã xác thực về email của bạn';
+      btn.style.color = '#ffff00';
+
+      currentAction = 'getVerificationCode';
+      
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=getVerificationCode&email=${encodeURIComponent(email)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          btn.querySelector('span').textContent = 'HATHYO đã gửi email, hãy dán mã vào ô Mã xác thực ở dưới';
+          btn.style.color = '#ffff00';
+        } else {
+          btn.querySelector('span').textContent = 'Lấy mã xác thực';
+          btn.style.color = '#ffffff';
+          alert(data.message || 'Có lỗi xảy ra');
+        }
+      })
+      .catch(error => {
+        btn.querySelector('span').textContent = 'Lấy mã xác thực';
+        btn.style.color = '#ffffff';
+        alert('Lỗi kết nối. Vui lòng thử lại sau.');
+      })
+      .finally(() => {
+        btn.disabled = false;
+        showSpinner(btn, false);
+      });
+    }
+
+    document.getElementById('queryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const verificationCode = document.getElementById('verificationCode').value.trim();
+      
+      if (!email || !verificationCode) {
+        alert('Vui lòng nhập đầy đủ thông tin!');
+        return;
+      }
+
+      const btn = document.getElementById('getCodeBtn');
+      const btn2 = document.getElementById('verifyBtn');
+      btn.disabled = true;
+      btn2.disabled = true;
+      showSpinner(btn2, true);
+      btn.querySelector('span').textContent = 'Đã dùng mã xác thực';
+      btn.style.color = '#ffffff';
+      btn2.querySelector('span').textContent = 'Đang xác thực';
+      btn2.style.color = '#ffff00';
+
+      currentAction = 'verifyAndQuery';
+      
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=verifyAndQuery&email=${encodeURIComponent(email)}&verificationCode=${encodeURIComponent(verificationCode)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          btn2.querySelector('span').textContent = 'Xác thực thành công';
+          btn2.style.color = '#ffffff';
+          
+          const statusContainer = document.getElementById('statusContainer');
+          const statusTableBody = document.getElementById('statusTable').querySelector('tbody');
+          
+          if (data.data && data.data.length > 0) {
+            statusContainer.style.display = 'block';
+            let rows = '';
+            data.data.forEach(row => {
+              let statusText = row[9] || 'Đang xử lý';
+              let statusClass = '';
+              if (statusText === 'Chưa xử lý') {
+                statusClass = 'status-not-processed';
+              } else if (statusText === 'Đang xử lý') {
+                statusClass = 'status-processing';
+              } else if (statusText === 'Đã xử lý') {
+                statusClass = 'status-processed';
+              }
+              
+              rows += `<tr>
+                <td>${new Date(row[0]).toLocaleString('vi-VN')}</td>
+                <td>${row[1] || ''}</td>
+                <td>${row[2] || ''}</td>
+                <td>${row[5] || ''}</td>
+                <td>${row[6] || ''}</td>
+                <td>${row[8] || 'CSKH HATHYO'}</td>
+                <td class="${statusClass}">${statusText}</td>
+              </tr>`;
+            });
+            statusTableBody.innerHTML = rows;
+          } else {
+            statusContainer.style.display = 'none';
+            statusTableBody.innerHTML = '';
+          }
+        } else {
+          btn2.querySelector('span').textContent = 'Xác thực';
+          btn2.style.color = '#ffffff';
+          document.getElementById('statusContainer').style.display = 'none';
+          alert(data.message || 'Có lỗi xảy ra');
+        }
+      })
+      .catch(error => {
+        btn2.querySelector('span').textContent = 'Xác thực';
+        btn2.style.color = '#ffffff';
+        alert('Lỗi kết nối. Vui lòng thử lại sau.');
+      })
+      .finally(() => {
+        btn2.disabled = false;
+        showSpinner(btn2, false);
+      });
+    });
+
+    function showSpinner(btn, show) {
+      const spinner = btn.querySelector('.spinner');
+      spinner.style.display = show ? 'inline-block' : 'none';
+    }
+
+    document.getElementById('getCodeBtn').addEventListener('click', getVerificationCode);
+  </script>
+</body>
+</html>
