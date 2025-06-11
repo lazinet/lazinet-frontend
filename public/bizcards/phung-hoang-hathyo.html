@@ -16,7 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->
   
   <style>
@@ -518,6 +518,7 @@
           <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/9fsyrQdAEaw3Uot97" target="_blank">82 Phan Đăng Lưu, Phú Nhuận, HCM</a></p>
           <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0908556220" target="_blank">(+84) 0908 556 220 </a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@hathyo.com">email@hathyo.com</a></p>
+          <!-- <p><strong><i class="bi bi-globe flex-shrink-0 icon-orange"></i> </strong> <a href="https://hathyo.com/">hathyo.com</a></p> -->
         </div>
         <div class="bottom-section">
           <div class="social-links">
@@ -625,7 +626,7 @@
 
     // Export Functions
     function exportToPNG() {
-      html2canvas(document.getElementById("business-card"), { scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
         link.download = "HATHYO Phung-Hoang.png";
         link.href = canvas.toDataURL("image/png");
@@ -665,7 +666,7 @@ END:VCARD
         unit: "px",
         format: isMobile ? [300, 500] : [500, 300]
       });
-      html2canvas(cardElement, { scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(cardElement, { scale: 4, useCORS: true }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;

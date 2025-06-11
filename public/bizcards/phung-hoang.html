@@ -6,6 +6,7 @@
   <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
+  <!-- <meta name="viewport" content="width=1200, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> -->
 
   <!-- Favicons -->
   <link href="../assets/img/lazinet_LogoOnly.png" rel="icon">
@@ -16,7 +17,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->
   
   <style>
@@ -46,8 +47,8 @@
     }
     .left-section {
       width: 40%;
-      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 60%, #ff6302 80%, blue 100%);
-      padding: 10px;
+      background: linear-gradient(to bottom, white 40%,rgb(245, 184, 137) 100%);
+      padding: 0px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -56,12 +57,14 @@
       gap: 10px;
     }
     .left-section .logo img {
-      width: 150px;
-      height: 150px;
+      width: 130px;
+      height: 130px;
+      padding-top: 30px;
+      padding-bottom: 0;
     }
     .left-section .profile-pic img {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 10%;
       border: 2px solid #fff;
       object-fit: cover;
@@ -295,9 +298,9 @@
       }
       
       .left-section .logo img {
-        width: 120px;
-        height: 120px;
-        padding-top: 18px;
+        width: 142px;
+        height: 142px;
+        padding-top: 20px;
       }
       .left-section .profile-pic img {
         width: 100px;
@@ -356,10 +359,16 @@
     
     <div class="left-section">
       <div class="logo">
-        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
+        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
+          <img src="../assets/img/lazinet_logoFullSquare2.svg" alt="LAZINET Logo">
+        </a>
       </div>
-      <div class="profile-pic">
-        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><img src="/assets/img/team/Phung-Hoang.png" alt="Profile Picture"></a>
+      <div class="profile-pic" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
+          <img src="../assets/img/team/Phung-Hoang.png" alt="Profile Picture">
+          <!-- <div style="font-size: 10.5px; color: blue;">lazinet.com</div> -->
+          <div style="padding: 0; margin: 0;"><strong><i class="bi bi-globe flex-shrink-0 icon-orange"  style="font-size: 10px; color: blue;"></i> </strong> <a href="https://lazinet.com/"  style="font-size: 10px; color: blue; text-decoration: none;">lazinet.com</a></div>
+        </a>
       </div>
     </div>
     <div class="right-section">
@@ -376,7 +385,7 @@
           <div class="social-links">
             <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
             <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
-            <a href="/assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
+            <a href="../assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
           </div>
           <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><div class="qr-code" id="qrcode"></div></a>
         </div>
@@ -439,7 +448,7 @@
 
     // Export Functions
     function exportToPNG() {
-      html2canvas(document.getElementById("business-card"), { scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
         link.download = "LAZINET Phung-Hoang.png";
         link.href = canvas.toDataURL("image/png");
@@ -479,7 +488,7 @@ END:VCARD
         unit: "px",
         format: isMobile ? [300, 500] : [500, 300]
       });
-      html2canvas(cardElement, { scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(cardElement, { scale: 4, useCORS: true }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
