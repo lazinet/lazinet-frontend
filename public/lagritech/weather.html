@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ứng dụng Thời tiết Cà Phê - LAZINET</title>
+    <title>Ứng dụng Thời tiết cho Cà Phê - LAZINET</title>
     <meta name="description" content="Theo dõi thời tiết tối ưu cho cây cà phê tại Việt Nam với bản đồ tương tác, dự báo chi tiết, và khuyến nghị nông nghiệp từ LAZINET.">
     <meta name="keywords" content="thời tiết cà phê, dự báo thời tiết Việt Nam, nông nghiệp cà phê, LAZINET, thời tiết nông nghiệp">
     <meta name="author" content="LAZINET">
@@ -181,7 +181,7 @@
 
                 <!-- Title - Responsive text and layout -->
                 <div class="flex-1 text-center xs:text-left px-2 min-w-0">
-<h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-lazinet-blue leading-tight text-center">                        <span class="whitespace-nowrap">Ứng dụng Thời tiết Cà Phê</span>
+<h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-lazinet-blue leading-tight text-center">                        <span class="whitespace-nowrap">ỨNG DỤNG THỜI TIẾT CHO CÀ PHÊ</span>
                         <!-- <span class="block xs:inline"> - <span class="text-lazinet-orange">LAZI</span>NET</span> -->
                     </h1>
                 </div>
@@ -352,7 +352,7 @@
             zoom: 6,
             minZoom: 4,
             maxZoom: 18,
-            maxBounds: [[8.0, 102.0], [23.0, 110.0]],
+            // maxBounds: [[8.0, 102.0], [23.0, 110.0]],
             worldCopyJump: true
         });
 
@@ -434,7 +434,7 @@
 
         // Add layer control
         L.control.layers(baseMaps, overlayMaps, {
-            position: 'topright',
+            position: 'bottomright',
             collapsed: true
         }).addTo(map);
 
@@ -545,7 +545,7 @@
             weatherChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: [],
+                    labels: Array.from({ length: 25 }, (_, i) => ((i + 6) % 24)),
                     datasets: [
                         {
                             label: 'Nhiệt độ (°C)',
@@ -560,9 +560,9 @@
                             label: 'Lượng mưa (mm/h)',
                             data: [],
                             borderColor: '#0000FF',
-                            backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                            backgroundColor: 'rgba(0, 0, 255, 0.2)',
                             borderWidth: 1,
-                            tension: 0.1,
+                            tension: 0.4,
                             fill: true,
                             yAxisID: 'y1'
                         }
@@ -585,19 +585,16 @@
                         },
                         legend: {
                             position: 'top',
-                            labels: {
-                                boxWidth: 12
-                            }
                         }
                     },
                     scales: {
                         x: {
-                            grid: {
-                                display: false
+                            title: {
+                                display: true,
+                                text: 'Giờ trong ngày'
                             },
-                            ticks: {
-                                maxRotation: 45,
-                                minRotation: 45
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
                             }
                         },
                         y: {
@@ -607,6 +604,11 @@
                             title: {
                                 display: true,
                                 text: 'Nhiệt độ (°C)'
+                            },
+                            min: 0,
+                            max: 40,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
                             }
                         },
                         y1: {
@@ -617,10 +619,14 @@
                                 display: true,
                                 text: 'Lượng mưa (mm/h)'
                             },
+                            min: 0,
                             grid: {
                                 drawOnChartArea: false
                             }
                         }
+                    },
+                    annotation: {
+                        annotations: []
                     }
                 }
             });
