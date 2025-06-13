@@ -1,0 +1,79 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Meta Tags -->
+    <title>Ứng dụng Thời tiết Cà Phê - LAZINET</title>
+    <meta name="description" content="Theo dõi thời tiết tối ưu cho cây cà phê tại Việt Nam với bản đồ tương tác, dự báo chi tiết, và khuyến nghị nông nghiệp từ LAZINET.">
+    <meta name="keywords" content="thời tiết cà phê, dự báo thời tiết Việt Nam, nông nghiệp cà phê, LAZINET, thời tiết nông nghiệp">
+    <meta name="author" content="LAZINET">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Ứng dụng Thời tiết Cà Phê - LAZINET">
+    <meta property="og:description" content="Ứng dụng thời tiết giúp nông dân cà phê theo dõi thời tiết, dự báo, và nhận khuyến nghị tối ưu từ LAZINET.">
+    <meta property="og:image" content="https://lazinet.com/assets/img/lazinet_logoFullSquare2.png">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:type" content="website">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://lazinet.com/assets/img/lazinet_LogoOnly.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lazinet-orange': '#FF6F00',
+                        'lazinet-blue': '#0000FF',
+                        'lazinet-green': '#00FF00'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Plotly JS -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <!-- Leaflet Plugins -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.css" />
+    <script src="https://unpkg.com/leaflet-rotate@0.2.8/dist/leaflet-rotate.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.js"></script>
+    <style>
+        #map { height: 500px; width: 100%; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .table-container { overflow-x: auto; }
+        .icon-hover:hover { color: #FF6F00; transform: scale(1.2); }
+        @media (min-width: 1024px) {
+            #map { height: calc(100% - 1.5rem); }
+        }
+        @media (max-width: 1023px) {
+            #map { height: 50vh; width: 100%; }
+            .map-container { overflow: visible; width: 100%; margin-left: 0; margin-right: 0; }
+        }
+        /* Style Leaflet controls */
+        .leaflet-control-layers, .leaflet-control-measure, .leaflet-control-geocoder {
+            border: 2px solid #FF6F00; /* lazinet-orange */
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        .leaflet-control-layers label, .leaflet-control-measure label, .leaflet-control-geocoder input {
+            color: #0000FF; /* lazinet-blue */
+            font-weight: 500;
+        }
+        .leaflet-control-layers input[type="radio"]:checked + span {
+            color: #FF6F00; /* lazinet-orange */
+        }
+        .leaflet-measure-resultpopup {
+            color: #0000FF; /* lazinet-blue */
+        }
+        .leaflet-control-geocoder-form input {
+            border: 1px solid #FF6F00; /* lazinet-orange */
+        }
+    </style>
+</head>

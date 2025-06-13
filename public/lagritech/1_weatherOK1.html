@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Meta Tags -->
+    <title>Ứng dụng Thời tiết Cà Phê - LAZINET</title>
+    <meta name="description" content="Theo dõi thời tiết tối ưu cho cây cà phê tại Việt Nam với bản đồ tương tác, dự báo chi tiết, và khuyến nghị nông nghiệp từ LAZINET.">
+    <meta name="keywords" content="thời tiết cà phê, dự báo thời tiết Việt Nam, nông nghiệp cà phê, LAZINET, thời tiết nông nghiệp">
+    <meta name="author" content="LAZINET">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Ứng dụng Thời tiết Cà Phê - LAZINET">
+    <meta property="og:description" content="Ứng dụng thời tiết giúp nông dân cà phê theo dõi thời tiết, dự báo, và nhận khuyến nghị tối ưu từ LAZINET.">
+    <meta property="og:image" content="https://lazinet.com/assets/img/lazinet_LogoFullv2.png">
+    <meta property="og:url" content="https://lazinet.com">
+    <meta property="og:type" content="website">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://lazinet.com/assets/img/lazinet_LogoOnly.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lazinet-orange': '#FF6F00',
+                        'lazinet-blue': '#0000FF',
+                        'lazinet-green': '#00FF00'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Plotly JS -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+        #map { height: 500px; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .table-container { overflow-x: auto; }
+        .icon-hover:hover { color: #FF6F00; transform: scale(1.2); }
+        @media (min-width: 1024px) {
+            #map { height: calc(100% - 1.5rem); }
+        }
+        @media (max-width: 1023px) {
+            #map { height: 50vh; }
+            .map-container { overflow: visible; }
+        }
+        .custom-arrow {
+            font-size: 0.8rem; /* Adjust arrow size */
+            line-height: 1; /* Center arrow vertically */
+            width: 1.2rem; /* Circle diameter */
+            height: 1.2rem; /* Circle diameter */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-white text-blue py-4 shadow-md">
+    <div class="container mx-auto flex items-center">
+        <div class="w-1/5 flex justify-start">
+            <img src="https://lazinet.com/assets/img/lazinet_LogoFullv2.png" alt="LAZINET Logo" class="h-14">
+        </div>
+        <div class="w-3/5 flex justify-center">
+            <h1 class="text-3xl font-bold text-lazinet-blue">Ứng dụng Thời tiết Cà Phê - <span class="text-3xl font-bold text-lazinet-orange">LAZI</span>NET</h1>
+        </div>
+        <div class="w-1/5 flex justify-end">
+            <span class="text-lg font-semibold text-lazinet-orange">CÔNG NGHỆ HIỆU QUẢ</span>
+        </div>
+    </div>
+</header>
+
+    <div class="container mx-auto p-4">
+        <p class="text-center text-gray-600 mb-6">Nhấp vào bản đồ để chọn vị trí và xem thông tin thời tiết</p>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Map -->
+            <div class="lg:col-span-2 map-container">
+                <div id="map" class="rounded-lg shadow-lg"></div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div id="sidebar" class="space-y-4">
+                <!-- Location Card -->
+                <div id="location-card" class="card bg-white p-6 rounded-lg shadow-md fade-in">
+                    <h2 class="text-xl font-semibold text-lazinet-orange mb-4 flex items-center">
+                        <i class="bi bi-geo-alt-fill mr-2 icon-hover transition-transform"></i> THÔNG TIN VỊ TRÍ
+                    </h2>
+                    <ul class="space-y-2">
+                        <li id="address" class="text-gray-700 flex items-center">
+                            <i class="bi bi-map-fill mr-2 text-lazinet-blue"></i>
+                            <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="lat" class="text-gray-700 flex items-center">
+                            <i class="bi bi-geo-alt mr-2 text-lazinet-blue"></i>
+                            <strong>Vĩ độ:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="lon" class="text-gray-700 flex items-center">
+                            <i class="bi bi-geo-alt mr-2 text-lazinet-blue"></i>
+                            <strong>Kinh độ:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Weather Card -->
+                <div id="weather-card" class="card bg-white p-6 rounded-lg shadow-md fade-in">
+                    <h2 class="text-xl font-semibold text-lazinet-orange mb-4 flex items-center">
+                        <i class="bi bi-cloud-fill mr-2 icon-hover transition-transform"></i> THỜI TIẾT HIỆN TẠI
+                    </h2>
+                    <ul class="space-y-2">
+                        <li id="weather-location" class="text-gray-700 flex items-center">
+                            <i class="bi bi-map-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Địa điểm:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-time" class="text-gray-700 flex items-center">
+                            <i class="bi bi-clock-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Thời gian:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-condition" class="text-gray-700 flex items-center">
+                            <i class="bi bi-cloud-sun-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Mô tả:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-temp" class="text-gray-700 flex items-center">
+                            <i class="bi bi-thermometer-half mr-2 text-lazinet-blue"></i>
+                            <strong>Nhiệt độ:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-humidity" class="text-gray-700 flex items-center">
+                            <i class="bi bi-droplet-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Độ ẩm:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-precip" class="text-gray-700 flex items-center">
+                            <i class="bi bi-cloud-rain-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Lượng mưa:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-wind" class="text-gray-700 flex items-center">
+                            <i class="bi bi-wind mr-2 text-lazinet-blue"></i>
+                            <strong>Mức gió:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-cloud" class="text-gray-700 flex items-center">
+                            <i class="bi bi-clouds-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Mây phủ:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-vis" class="text-gray-700 flex items-center">
+                            <i class="bi bi-eye-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Tầm nhìn:</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                        <li id="weather-uv" class="text-gray-700 flex items-center">
+                            <i class="bi bi-sun-fill mr-2 text-lazinet-blue"></i>
+                            <strong>Tử ngoại (UV):</strong> <span class="ml-2"><span></span></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Recommendations Card -->
+                <div id="recommendations-card" class="card bg-white p-6 rounded-lg shadow-md fade-in">
+                    <h2 class="text-xl font-semibold text-lazinet-orange mb-4 flex items-center">
+                        <i class="bi bi-leaf-fill mr-2 icon-hover transition-transform"></i> KHUYẾN NGHỊ CHO CÀ PHÊ
+                    </h2>
+                    <ul id="recommendations">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chart -->
+        <div id="chart-card" class="card bg-white p-6 rounded-lg shadow-md mt-6 fade-in">
+            <h2 class="text-xl font-semibold text-lazinet-orange mb-4 flex items-center">
+                <i class="bi bi-graph-up mr-2 icon-hover transition-transform"></i> BIỂU ĐỒ THỜI TIẾT
+            </h2>
+            <div id="weather-chart"></div>
+        </div>
+        
+        <!-- Forecast Table -->
+        <div id="table-card" class="card bg-white p-6 rounded-lg shadow-md mt-6 fade-in">
+            <h2 class="text-xl font-semibold text-lazinet-orange mb-4 flex items-center">
+                <i class="bi bi-table mr-2 icon-hover transition-transform"></i> DỰ BÁO THỜI TIẾT
+            </h2>
+            <div class="table-container">
+                <table id="forecast-table" class="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr class="bg-lazinet-orange text-white">
+                            <th class="py-2 px-4 border-b text-left">Thời gian</th>
+                            <th class="py-2 px-4 border-b text-left">Nhiệt độ (°C)</th>
+                            <th class="py-2 px-4 border-b text-left">Độ ẩm (%)</th>
+                            <th class="py-2 px-4 border-b text-left">Lượng mưa (mm/h)</th>
+                            <th class="py-2 px-4 border-b text-left">Thời tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody id="forecast-table-body"></tbody>
+                </table>
+                </div>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="error-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mt-6 fade-in" role="alert">
+                <span id="error-text"></span>
+            </div>
+        </div>
+    
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            // Initialize map
+            const map = L.map('map').setView([17.002871, 107.052361], 6);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+    
+            let marker = L.marker([17.002871, 107.052361]).addTo(map);
+    
+            // Threshold mapping function
+            function thresMap(x, thresList) {
+                for (let i = 0; i < thresList.length; i += 2) {
+                    const value_low = thresList[i];
+                    const text = thresList[i + 1];
+                    const value_high = i + 2 < thresList.length ? thresList[i + 2] : Infinity;
+                    if (value_low <= x && x < value_high) {
+                        return text;
+                    }
+                }
+                return null;
+            }
+    
+            // Thresholds
+            const nhietDoThres = [
+                -10, "Nhiệt độ thấp cực đoan, cây cà phê dễ bị tổn hại hoặc chết.",
+                5, "Nhiệt độ lạnh, giảm sinh trưởng, đặc biệt trong giai đoạn ra hoa.",
+                15, "Nhiệt độ hài hòa, phù hợp cho cây cà phê sinh trưởng tốt.",
+                25, "Trời ấm, phù hợp cho cây cà phê phát triển.",
+                35, "Trời nóng, cần tưới nước nếu nắng nóng kéo dài.", 70
+            ];
+            const doAmThres = [
+                0, "Độ ẩm thấp, cây cà phê mất nước nhanh, cần tưới gấp!",
+                40, "Độ ẩm thấp, giảm quang hợp, cần theo dõi tưới nước.",
+                60, "Độ ẩm tối ưu, cây cà phê hấp thụ nước và dinh dưỡng hiệu quả.",
+                90, "Độ ẩm cao, quả cà phê dễ bị nấm mốc.", 100
+            ];
+            const luongMuaThres = [
+                0, "Không mưa, cần tưới nước định kỳ.",
+                0.1, "Mưa nhỏ, tốt cho cây cà phê.",
+                1, "Mưa tốt, lưu ý đắp gốc bảo vệ cây con.",
+                2, "Mưa to, cần thoát nước và bù phân.",
+                4, "Mưa xối xả, cây cà phê dễ bị úng, cần thoát nước gấp.", 100
+            ];
+            const mucGioThres = [
+                0, "Gió nhẹ, không gây hại.",
+                20, "Gió vừa, kiểm tra cây con và hoa quả.",
+                40, "Gió mạnh, cây cà phê dễ rụng lá, cần che chắn.",
+                60, "Gió giật mạnh, cây có thể nghiêng ngã, cần chống đỡ.",
+                80, "Bão tố, cây cà phê dễ bật gốc, cần xử lý khẩn cấp.", 500
+            ];
+            const uvThres = [
+                0, "UV an toàn.",
+                3, "UV nhẹ, cần mũ nón khi làm việc ngoài trời.",
+                5, "UV cao, hạn chế ra ngoài từ 11h-15h.",
+                7, "UV rất cao, tránh ra ngoài từ 10h-16h.",
+                11, "UV cực cao, tránh ra ngoài hoàn toàn.", 500
+            ];
+    
+            // Plotly chart function
+            function plotChart2(a, c, diaChi) {
+                if (!a || !c || a.length !== 25 || c.length !== 25) {
+                    showError("Dữ liệu nhiệt độ hoặc lượng mưa không hợp lệ!");
+                    return;
+                }
+                const trace1 = {
+                    x: Array.from({length: 25}, (_, i) => i),
+                    y: a,
+                    mode: 'lines',
+                    line: { color: '#FF6F00', width: 1.5, shape: 'spline' },
+                    name: 'Nhiệt độ',
+                    hovertemplate: 'Nhiệt độ: %{y:.1f}°C<extra></extra>'
+                };
+                const trace2 = {
+                    x: Array.from({length: 25}, (_, i) => i),
+                    y: c,
+                    mode: 'lines',
+                    line: { color: '#0000FF', width: 0.5, shape: 'spline' },
+                    fill: 'tozeroy',
+                    fillcolor: '#0000FF80',
+                    name: 'Lượng mưa',
+                    hovertemplate: 'Lượng mưa: %{y:.1f}mm/h<extra></extra>'
+                };
+                const max_a = Math.max(...a);
+                const max_a_index = a.indexOf(max_a);
+                const max_c = Math.max(...c);
+                const max_c_index = c.indexOf(max_c);
+                const annotations = [
+                    {
+                        x: max_a_index,
+                        y: max_a,
+                        xref: 'x',
+                        yref: 'y',
+                        text: `Đỉnh nhiệt: ${max_a.toFixed(1)}°C`,
+                        showarrow: true,
+                        arrowhead: 7,
+                        ax: 0,
+                        ay: -20
+                    }
+                ];
+                if (max_c > 0) {
+                    annotations.push({
+                        x: max_c_index,
+                        y: max_c,
+                        xref: 'x',
+                        yref: 'y',
+                        text: `Đỉnh mưa: ${max_c.toFixed(1)}mm/h`,
+                        showarrow: true,
+                        arrowhead: 7,
+                        ax: 0,
+                        ay: -20
+                    });
+                }
+                const layout = {
+                    xaxis: {
+                        title: 'Giờ',
+                        tickvals: Array.from({length: 25}, (_, i) => i),
+                        ticktext: Array.from({length: 25}, (_, i) => ((i + 6) % 24)),
+                        dtick: 1
+                    },
+                    title: `Biểu đồ thời tiết ngày ${new Date().toLocaleDateString('vi-VN')} tại khu vực ${diaChi}`,
+                    legend: { x: 0.85, y: 1.2 },
+                    plot_bgcolor: 'rgba(255, 111, 0, 0.06)',
+                    paper_bgcolor: 'rgba(255, 111, 0, 0.06)',
+                    shapes: [6, 12, 18].map(x => ({
+                        type: 'line',
+                        x0: x,
+                        x1: x,
+                        y0: 0,
+                        y1: 45,
+                        line: { color: '#0000FF', width: 0.5, dash: 'dash' }
+                    })),
+                    annotations: [
+                        ...annotations,
+                        ...[3, 9, 15, 21].map((x, i) => ({
+                            x: x,
+                            y: 45,
+                            xref: 'x',
+                            yref: 'y',
+                            text: ['Sáng', 'Chiều', 'Tối', 'Đêm'][i],
+                            showarrow: false,
+                            textposition: 'top center'
+                        }))
+                    ]
+                };
+                Plotly.newPlot('weather-chart', [trace1, trace2], layout);
+                document.getElementById('chart-card').classList.remove('hidden');
+            }
+    
+            // Show error message
+            function showError(message) {
+                const errorDiv = document.getElementById('error-message');
+                document.getElementById('error-text').textContent = message;
+                errorDiv.classList.remove('hidden');
+                setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+            }
+    
+            // Fetch address
+            async function latlon2Adress(lat, lon) {
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lon=${lon}&lat=${lat}&format=json&zoom=18&addressdetails=1`, {
+                        headers: { 'User-Agent': 'Mozilla/5.0' }
+                    });
+                    if (!response.ok) {
+                        throw new Error('Không thể truy cập API địa chỉ');
+                    }
+                    const data = await response.json();
+                    let detail = data.address.state || '';
+                    const keys = ['city', 'county', 'city_district', 'town', 'suburb', 'village', 'road', 'neighbourhood'];
+                    for (const key of keys) {
+                        if (data.address[key]) {
+                            detail = data.address[key];
+                            break;
+                        }
+                    }
+                    return [detail, data.display_name || ''];
+                } catch (e) {
+                    showError(`Lỗi khi truy cập API địa chỉ: ${e.message}`);
+                    return ['', ''];
+                }
+            }
+    
+            // Sync map height with sidebar
+            function syncMapHeight() {
+                if (window.innerWidth >= 1024) {
+                    const sidebar = document.getElementById('sidebar');
+                    const mapDiv = document.getElementById('map');
+                    mapDiv.style.height = `${sidebar.offsetHeight}px`;
+                    map.invalidateSize();
+                }
+            }
+    
+            // Fetch weather data
+            async function fetchWeatherData(lat, lon) {
+                // Update marker
+                if (marker) map.removeLayer(marker);
+                const [diaChi, fullAddress] = await latlon2Adress(lat, lon);
+                marker = L.marker([lat, lon]).addTo(map)
+                    .bindPopup(`<b>Địa chỉ: ${diaChi}</b><br>Vĩ độ: ${lat.toFixed(6)}<br>Kinh độ: ${lon.toFixed(6)}`)
+                    .openPopup();
+                map.setView([lat, lon], 12);
+                
+                // Update location card
+                document.querySelector('#address span').textContent = fullAddress || 'Không xác định';
+                document.querySelector('#lat span').textContent = lat.toFixed(6);
+                document.querySelector('#lon span').textContent = lon.toFixed(6);
+                document.getElementById('location-card').classList.remove('hidden');
+                
+                // Fetch weather data
+                const apiKey = '5f1bd39bf15c4f4694a145604251202'; // Replace with your API key
+                const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${lon}&days=3&aqi=yes&alerts=yes&lang=vi`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status} - ${await response.text()}`);
+                    }
+                    const data = await response.json();
+                    
+                    // Update weather card
+                    document.querySelector('#weather-location span').textContent = diaChi;
+                    document.querySelector('#weather-time span').textContent = data.current.last_updated;
+                    document.querySelector('#weather-condition span').textContent = data.current.condition.text;
+                    document.querySelector('#weather-temp span').textContent = `${data.current.temp_c} °C`;
+                    document.querySelector('#weather-humidity span').textContent = `${data.current.humidity} %`;
+                    document.querySelector('#weather-precip span').textContent = `${data.current.precip_mm} mm/h`;
+                    document.querySelector('#weather-wind span').textContent = `${data.current.wind_kph} km/h`;
+                    document.querySelector('#weather-cloud span').textContent = `${data.current.cloud} %`;
+                    document.querySelector('#weather-vis span').textContent = `${data.current.vis_km} km`;
+                    document.querySelector('#weather-uv span').textContent = data.current.uv;
+                    document.getElementById('weather-card').classList.remove('hidden');
+                    
+                    // Update recommendations
+                    const recommendations = document.getElementById('recommendations');
+                    recommendations.innerHTML = '';
+                    if (data.alerts.alert.length > 0) {
+                        const li = document.createElement('li');
+                        li.innerHTML = '<i class="bi bi-exclamation-triangle-fill mr-2 text-lazinet-orange"></i> Có cảnh báo thời tiết bất thường, kiểm tra chi tiết để xử lý.';
+                        recommendations.appendChild(li);
+                    }
+                    const nd0 = data.forecast.forecastday[0].day.maxtemp_c;
+                    const da0 = data.forecast.forecastday[0].day.avghumidity;
+                    const lm0 = (data.forecast.forecastday[0].day.totalprecip_mm / 24).toFixed(1);
+                    const mg0 = data.forecast.forecastday[0].day.maxwind_kph;
+                    const uv0 = data.forecast.forecastday[0].day.uv;
+                    [thresMap(nd0, nhietDoThres), thresMap(da0, doAmThres), thresMap(lm0, luongMuaThres),
+                     thresMap(mg0, mucGioThres), thresMap(uv0, uvThres)].forEach(text => {
+                        if (text) {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<i class="bi bi-arrow-right mr-2 text-white bg-lazinet-blue rounded-full p-1 custom-arrow"></i> ${text}`;
+                            recommendations.appendChild(li);
+                        }
+                    });
+                    document.getElementById('recommendations-card').classList.remove('hidden');
+                    
+                    // Update chart
+                    const nhietDo = [
+                        ...data.forecast.forecastday[0].hour.map(h => h.temp_c),
+                        ...data.forecast.forecastday[1].hour.slice(0, 7).map(h => h.temp_c)
+                    ].slice(6, 31);
+                    const luongMua = [
+                        ...data.forecast.forecastday[0].hour.map(h => h.precip_mm),
+                        ...data.forecast.forecastday[1].hour.slice(0, 7).map(h => h.precip_mm)
+                    ].slice(6, 31);
+                    plotChart2(nhietDo, luongMua, diaChi);
+                    
+                    // Update forecast table
+                    const tbody = document.getElementById('forecast-table-body');
+                    tbody.innerHTML = '';
+                    const periods = [
+                        {
+                            time: 'Sáng',
+                            temp: (nhietDo.slice(0, 6).reduce((a, b) => a + b, 0) / 6).toFixed(1),
+                            humidity: Math.round(data.forecast.forecastday[0].hour.slice(6, 12).reduce((a, b) => a + b.humidity, 0) / 6),
+                            precip: (luongMua.slice(0, 6).reduce((a, b) => a + b, 0) / 6).toFixed(2),
+                            condition: [...new Set(data.forecast.forecastday[0].hour.slice(6, 12).map(h => h.condition.text))].join(', ')
+                        },
+                        {
+                            time: 'Chiều',
+                            temp: (nhietDo.slice(6, 12).reduce((a, b) => a + b, 0) / 6).toFixed(1),
+                            humidity: Math.round(data.forecast.forecastday[0].hour.slice(12, 18).reduce((a, b) => a + b.humidity, 0) / 6),
+                            precip: (luongMua.slice(6, 12).reduce((a, b) => a + b, 0) / 6).toFixed(2),
+                            condition: [...new Set(data.forecast.forecastday[0].hour.slice(12, 18).map(h => h.condition.text))].join(', ')
+                        },
+                        {
+                            time: 'Tối',
+                            temp: (nhietDo.slice(12, 18).reduce((a, b) => a + b, 0) / 6).toFixed(1),
+                            humidity: Math.round(data.forecast.forecastday[0].hour.slice(18, 24).reduce((a, b) => a + b.humidity, 0) / 6),
+                            precip: (luongMua.slice(12, 18).reduce((a, b) => a + b, 0) / 6).toFixed(2),
+                            condition: [...new Set(data.forecast.forecastday[0].hour.slice(18, 24).map(h => h.condition.text))].join(', ')
+                        },
+                        {
+                            time: 'Đêm',
+                            temp: (nhietDo.slice(18, 24).reduce((a, b) => a + b, 0) / 6).toFixed(1),
+                            humidity: Math.round((
+                                data.forecast.forecastday[0].hour.slice(0, 6).reduce((a, b) => a + b.humidity, 0) +
+                                data.forecast.forecastday[1].hour.slice(0, 6).reduce((a, b) => a + b.humidity, 0)
+                            ) / 12),
+                            precip: (luongMua.slice(18, 24).reduce((a, b) => a + b, 0) / 6).toFixed(2),
+                            condition: [...new Set([
+                                ...data.forecast.forecastday[0].hour.slice(0, 6).map(h => h.condition.text),
+                                ...data.forecast.forecastday[1].hour.slice(0, 6).map(h => h.condition.text)
+                            ])].join(', ')
+                        },
+                        {
+                            time: 'Ngày MAI',
+                            temp: `${data.forecast.forecastday[1].day.mintemp_c}-${data.forecast.forecastday[1].day.maxtemp_c}`,
+                            humidity: data.forecast.forecastday[1].day.avghumidity,
+                            precip: (data.forecast.forecastday[1].day.totalprecip_mm / 24).toFixed(1),
+                            condition: data.forecast.forecastday[1].day.condition.text
+                        },
+                        {
+                            time: 'Ngày MỐT',
+                            temp: `${data.forecast.forecastday[2].day.mintemp_c}-${data.forecast.forecastday[2].day.maxtemp_c}`,
+                            humidity: data.forecast.forecastday[2].day.avghumidity,
+                            precip: (data.forecast.forecastday[2].day.totalprecip_mm / 24).toFixed(1),
+                            condition: data.forecast.forecastday[2].day.condition.text
+                        }
+                    ];
+                    periods.forEach(p => {
+                        const tr = document.createElement('tr');
+                        tr.classList.add('hover:bg-lazinet-orange', 'hover:bg-opacity-10');
+                        tr.innerHTML = `
+                            <td class="py-2 px-4 border-b">${p.time}</td>
+                            <td class="py-2 px-4 border-b">${p.temp}</td>
+                            <td class="py-2 px-4 border-b">${p.humidity}</td>
+                            <td class="py-2 px-4 border-b">${p.precip}</td>
+                            <td class="py-2 px-4 border-b">${p.condition}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    document.getElementById('table-card').classList.remove('hidden');
+                    
+                    // Sync map height
+                    syncMapHeight();
+                } catch (e) {
+                    showError(`Lỗi khi lấy dữ liệu thời tiết: ${e.message}`);
+                }
+            }
+    
+            // Handle map click
+            map.on('click', function(e) {
+                fetchWeatherData(e.latlng.lat, e.latlng.lng);
+            });
+    
+            // Initial load
+            fetchWeatherData(17.002871, 107.052361);
+    
+            // Resize listener
+            window.addEventListener('resize', syncMapHeight);
+        </script>
+    </body>
+    </html>
