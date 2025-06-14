@@ -175,7 +175,7 @@
         }
         .leaflet-control-layers-toggle {
             background-image: url("data:image/svg+xml,%3Csvg fill='%23000000' height='800px' width='800px' version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 48.698 48.698' xml:space='preserve'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cpath d='M24.349,0L0.914,13.309l23.436,13.39l23.435-13.39L24.349,0z M8.996,13.319L24.349,4.6l15.354,8.719l-15.354,8.772 L8.996,13.319z' fill='blue'/%3E%3Cpolygon points='24.349,29.002 8.548,19.974 0.914,24.309 24.349,37.698 47.784,24.309 40.151,19.974 ' fill='%23FF6F00'/%3E%3Cpolygon points='24.349,40.002 8.548,30.974 0.914,35.309 24.349,48.698 47.784,35.309 40.151,30.974 ' fill='blue' /%3E%3C/g%3E%3C/svg%3E") !important;
-            background-size: 22px 22px;
+            background-size: 30px 30px;
             background-position: center;
             background-repeat: no-repeat;
             width: 30px;
@@ -212,6 +212,11 @@
         /* Hiệu ứng khi hover */
         .leaflet-control-measure-toggle:hover {
             background-color: rgba(255, 111, 0, 0.2); /* Màu cam nhạt khi hover */
+        }
+        /* Giảm độ nổi của logo Leaflet mặc định */
+        .leaflet-control-attribution {
+        opacity: 0.1;
+        /* background: rgba(255, 255, 255, 1) !important; */
         }
     </style>
 </head>
