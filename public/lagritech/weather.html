@@ -46,12 +46,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    
     <!-- Fullscreen Control CSS + JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@2.0.0/dist/Control.FullScreen.min.css" />
-    <script src="https://unpkg.com/leaflet.fullscreen@2.0.0/dist/Control.FullScreen.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@2.0.0/dist/Control.FullScreen.min.css" /> -->
 
     <!-- Thêm CSS và JS Marker đẹp -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+
+    <!-- Thêm CSS và JS Vẽ đẹp -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
     
     <style>
         /* Base styles */
@@ -179,6 +181,38 @@
             width: 30px;
             height: 30px;
         }
+        #map {
+            border: 1px solid blue !important; /* Viền màu xanh dương */
+            border-radius: 8px; /* Bo góc */
+            box-shadow: 0 0 10px rgba(0, 0, 255, 0.3); /* Hiệu ứng đổ bóng */
+        }
+        
+        /* Thay đổi icon measure control */
+        .leaflet-control-measure-toggle {
+            background-image: none !important; /* Ẩn icon mặc định */
+            position: relative;
+            width: 30px !important;
+            height: 30px !important;
+        }
+
+        .leaflet-control-measure-toggle:before {
+            content: "";
+            display: block;
+            width: 22px;
+            height: 22px;
+            background-image: url("data:image/svg+xml,%3Csvg fill='%23000000' height='800px' width='800px' version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 490 490'%3E%3Cpath d='M488.185,474.254l-330.001-470c-2.506-3.57-7.038-5.103-11.197-3.789S140,5.637,140,10v470c0,5.523,4.477,10,10,10h330 c3.731,0,7.152-2.078,8.873-5.388C490.594,481.301,490.328,477.307,488.185,474.254z M160,470v-30h30v-20h-30v-50h30v-20h-30v-50 h30v-20h-30v-50h30v-20h-30v-50h30v-20h-30V41.645L460.76,470H160z' fill='blue'/%3E%3Cpath d='M225,400h105c3.788,0,7.25-2.14,8.944-5.528c1.694-3.388,1.328-7.442-0.944-10.472L233,244 c-2.583-3.444-7.078-4.849-11.162-3.487C217.755,241.874,215,245.696,215,250v140C215,395.523,219.477,400,225,400z M235,280 l75,100h-75V280z' fill='%23FF6F00'/%3E%3Cpath d='M110,0H10C4.477,0,0,4.477,0,10v470c0,5.523,4.477,10,10,10h100c5.523,0,10-4.477,10-10V10C120,4.477,115.523,0,110,0z M100,470H20v-45h40v-20H20v-60h40v-20H20v-70h40v-20H20v-70h40v-20H20V85h40V65H20V20h80V470z' fill='blue'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Hiệu ứng khi hover */
+        .leaflet-control-measure-toggle:hover {
+            background-color: rgba(255, 111, 0, 0.2); /* Màu cam nhạt khi hover */
+        }
     </style>
 </head>
 
@@ -226,7 +260,7 @@
             <!-- Sidebar with cards -->
             <div id="sidebar" class="space-y-4 sm:space-y-6">
                 <!-- Location Card -->
-                <div id="location-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md fade-in">
+                <div id="location-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md fade-in border border-[blue]">
                     <h2 class="text-lg sm:text-xl font-semibold text-lazinet-orange mb-3 sm:mb-4 flex items-center">
                         <i class="bi bi-geo-alt-fill mr-2 icon-hover transition-transform"></i> THÔNG TIN VỊ TRÍ
                     </h2>
@@ -247,7 +281,7 @@
                 </div>
 
                 <!-- Weather Card -->
-                <div id="weather-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md fade-in">
+                <div id="weather-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md fade-in border border-[blue]">
                     <h2 class="text-lg sm:text-xl font-semibold text-lazinet-orange mb-3 sm:mb-4 flex items-center">
                         <i class="bi bi-cloud-fill mr-2 icon-hover transition-transform"></i> THỜI TIẾT HIỆN TẠI
                     </h2>
@@ -296,7 +330,7 @@
                 </div>
 
                 <!-- Recommendations Card -->
-                <div id="recommendations-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md fade-in">
+                <div id="recommendations-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md fade-in border border-[blue]">
                     <h2 class="text-lg sm:text-xl font-semibold text-lazinet-orange mb-3 sm:mb-4 flex items-center">
                         <i class="bi bi-leaf-fill mr-2 icon-hover transition-transform"></i> KHUYẾN NGHỊ CHO CÀ PHÊ
                     </h2>
@@ -312,7 +346,8 @@
         </div>
 
         <!-- Chart Section -->
-        <div id="chart-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 sm:mt-6 fade-in">
+        <!-- <div id="chart-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 sm:mt-6 fade-in"> -->
+        <div id="chart-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 sm:mt-6 fade-in border border-[blue]">
             <h2 class="text-lg sm:text-xl font-semibold text-lazinet-orange mb-3 sm:mb-4 flex items-center">
                 <i class="bi bi-graph-up mr-2 icon-hover transition-transform"></i> BIỂU ĐỒ THỜI TIẾT
             </h2>
@@ -322,7 +357,7 @@
         </div>
 
         <!-- Forecast Table -->
-        <div id="table-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 sm:mt-6 fade-in">
+        <div id="table-card" class="card bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 sm:mt-6 fade-in border border-[blue]">
             <h2 class="text-lg sm:text-xl font-semibold text-lazinet-orange mb-3 sm:mb-4 flex items-center">
                 <i class="bi bi-table mr-2 icon-hover transition-transform"></i> DỰ BÁO THỜI TIẾT
             </h2>
@@ -361,15 +396,18 @@
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script src="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.js"></script>
     <script src="https://unpkg.com/leaflet.locatecontrol@0.78.0/dist/L.Control.Locate.min.js"></script>
+    <!-- <script src="https://unpkg.com/leaflet.fullscreen@2.0.0/dist/Control.FullScreen.min.js"></script> -->
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 
     <script>
         // Initialize map
         const map = L.map('map', {
             center: [17.002871, 107.052361],
             zoom: 6,
-            minZoom: 4,
-            maxZoom: 18,
+            // minZoom: 4,
+            // maxZoom: 18,
             // maxBounds: [[8.0, 102.0], [23.0, 110.0]],
+            zoomControl: false,
             worldCopyJump: true
         });
 
@@ -489,7 +527,7 @@ let marker = L.marker([17.002871, 107.052361], {
             position: 'topright',
             metric: true,
             imperial: false,
-            maxWidth: 200
+            maxWidth: 100
         }).addTo(map);  
 
         // Add search control
@@ -517,11 +555,42 @@ let marker = L.marker([17.002871, 107.052361], {
         L.control.layers(baseMaps, overlayMaps, {
             position: 'bottomright',
             collapsed: true
+        }).addTo(map);        
+        
+        // Add measure control       
+        L.control.measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares',
+            activeColor: '#FF6F00',
+            completedColor: '#0000FF',
+            popupOptions: {
+                className: 'leaflet-measure-resultpopup',
+                autoPanPadding: [10, 10]
+            }
         }).addTo(map);
-     
+
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        var drawControl = new L.Control.Draw({
+            position: 'topleft',
+            draw: { polyline: true, polygon: true, circle: true },
+            edit: { featureGroup: drawnItems }
+        });
+        map.addControl(drawControl);
+
+        map.on('draw:created', function (e) {
+            drawnItems.addLayer(e.layer);
+        });
+
+        // L.control.fullscreen().addTo(map);
+        L.control.zoom({ position: 'topright' }).addTo(map);
         // Add locate control
         L.control.locate({
-            position: 'topleft',
+            position: 'topright',
             strings: {
                 title: "Định vị vị trí của tôi",
                 popup: "Bạn đang ở trong bán kính {distance} mét từ điểm này",
@@ -542,22 +611,6 @@ let marker = L.marker([17.002871, 107.052361], {
                 fetchWeatherData(e.latlng.lat, e.latlng.lng);
             }
         }).addTo(map);
-        
-
-        // Add measure control
-        L.control.measure({
-            position: 'topleft',
-            primaryLengthUnit: 'meters',
-            secondaryLengthUnit: 'kilometers',
-            primaryAreaUnit: 'sqmeters',
-            secondaryAreaUnit: 'hectares',
-            activeColor: '#FF6F00',
-            completedColor: '#0000FF',
-            popupOptions: {
-                className: 'leaflet-measure-resultpopup',
-                autoPanPadding: [10, 10]
-            }
-        }).addTo(map);  
 
         // Add logo to map
         L.Control.Logo = L.Control.extend({

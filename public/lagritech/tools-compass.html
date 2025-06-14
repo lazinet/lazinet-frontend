@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaflet Map with Compass</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; transition: transform 0.3s ease; }
+        .leaflet-control-compass a { text-decoration: none; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([10.762622, 106.660172], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Hàm xoay bản đồ
+        let rotationAngle = 0;
+        function rotateMap(angle) {
+            rotationAngle = angle;
+            document.getElementById('map').style.transform = `rotate(${angle}deg)`;
+        }
+
+        // Control la bàn
+        L.Control.Compass = L.Control.extend({
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-control-compass leaflet-bar');
+                container.innerHTML = '<a href="#" title="Reset hướng Bắc">🧭</a>';
+                container.style.background = '#fff';
+                container.style.width = '30px';
+                container.style.height = '30px';
+                container.style.textAlign = 'center';
+                container.style.lineHeight = '30px';
+                container.style.cursor = 'pointer';
+
+                L.DomEvent.on(container, 'click', function (e) {
+                    rotateMap(0);
+                    L.DomEvent.preventDefault(e);
+                });
+
+                return container;
+            }
+        });
+
+        L.control.compass = function (opts) {
+            return new L.Control.Compass(opts);
+        };
+
+        L.control.compass({ position: 'topright' }).addTo(map);
+
+        // Ví dụ: Nút xoay bản đồ (cho mục đích thử nghiệm)
+        L.control.custom({
+            position: 'topright',
+            content: '<button onclick="rotateMap(45)">Xoay 45°</button>',
+            classes: 'leaflet-bar'
+        }).addTo(map);
+    </script>
+</body>
+</html>
