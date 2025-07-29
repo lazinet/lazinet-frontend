@@ -2,10 +2,12 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"> -->
+  <title>LAZINET - Effective Technologies with Dr. Bao Phung</title>
+  <meta name="description"
+    content="LAZINET - AI, IoT, and Cloud solutions for business growth and digital transformation. Elevate efficiency with cutting-edge technology.">
+  <meta name="keywords"
+    content="AI solutions, IoT, Cloud computing, Digital transformation, Smart technology, AI analytics, AI-powered business, AI and IoT integration">
   <meta name="viewport" content="width=1200, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Favicons -->
@@ -365,7 +367,7 @@
       </div>
       <div class="profile-pic" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
         <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
-          <img src="../assets/img/team/Phung-Hoang.png" alt="Profile Picture">
+          <img src="../assets/img/team/Bao-Phung-S.jpeg" alt="Profile Picture">
           <!-- <div style="font-size: 10.5px; color: blue;">lazinet.com</div> -->
           <div style="padding: 0; margin: 0;"><strong><i class="bi bi-globe flex-shrink-0 icon-orange"  style="font-size: 10px; color: blue;"></i> </strong> <a href="https://lazinet.com/"  style="font-size: 10px; color: blue; text-decoration: none;">lazinet.com</a></div>
         </a>
@@ -375,9 +377,9 @@
       <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
       <div style="position: relative; z-index: 1;">
         <div>
-          <h2>HOÀNG MINH PHỤNG</h2>
-          <h3 class="position">Founder & CEO | Innovation Principal</h3>
-          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Phu Nhuan, HCMC, VN</a></p>
+          <h2>Dr. PHÙNG THẾ BẢO</h2>
+          <h3 class="position">Technology Director | Data & AI Principal</h3>
+          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Cau Kieu, HCMC, VN</a></p>
           <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0908556220">(+84) 0908 556 220 </a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
         </div>
@@ -385,7 +387,7 @@
           <div class="social-links">
             <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
             <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
-            <a href="../assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
+            <a href="../assets/img/team/Bao-Phung-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
           </div>
           <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><div class="qr-code" id="qrcode"></div></a>
         </div>
@@ -436,7 +438,7 @@
 
   <script>
     // QR Code Generation
-    const url = "https://lazinet.com/bizcards/phung-hoang.html";
+    const url = "https://lazinet.com/bizcards/Bao-Phung.html";
     new QRCode(document.getElementById("qrcode"), {
       text: url,
       width: 100,
@@ -450,7 +452,7 @@
     function exportToPNG() {
       html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Phung-Hoang.png";
+        link.download = "LAZINET Bao-Phung.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -464,7 +466,7 @@ N:Hoang;Phung;;;
 FN:Phung Hoang
 ORG:LAZINET
 TITLE:Founder & CEO | Innovation Principal
-ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
+ADR;TYPE=WORK:;;428 Truong Sa, Cau Kieu;HCMC;;Vietnam
 TEL;TYPE=WORK,VOICE:+84908556220
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
@@ -474,7 +476,7 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "LAZINET Phung-Hoang.vcf";
+      link.download = "LAZINET Bao-Phung.vcf";
       link.click();
       URL.revokeObjectURL(url);
     }
@@ -493,7 +495,7 @@ END:VCARD
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height);
-        doc.save("LAZINET Phung-Hoang.pdf");
+        doc.save("LAZINET Bao-Phung.pdf");
       });
     }
 
