@@ -25,7 +25,7 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: white;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -33,14 +33,18 @@
       min-height: 100vh;
       margin: 0;
       padding: 20px;
+      
     }
     .card {
       width: 500px;
-      background: #fff;
+      /* background: #fff; */
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 20px;  
+      background-image: url('/lazinet-frontend/public/assets/img/background/pngwing_001.png');
+      background-size: cover;
+      background-position: center;                 
     }
     .business-card {
       height: 300px;
@@ -48,8 +52,13 @@
       flex-direction: row;
     }
     .left-section {
-      width: 40%;
-      background: linear-gradient(to bottom, white 40%,rgb(245, 184, 137) 100%);
+      width: 40%;     
+      /* background: linear-gradient(to bottom, white 0%, #f5b889 50%, blue 75%,#f5b889 100%); */
+      /* background-image: url('/lazinet-frontend/public/assets/img/background/pngwing_001.png');
+      background-size: cover;
+      background-position: center; */
+      /* background-position: 0 30px; Dịch xuống 30px */
+
       padding: 0px;
       display: flex;
       flex-direction: column;
@@ -59,19 +68,20 @@
       gap: 10px;
     }
     .left-section .logo img {
-      width: 130px;
-      height: 130px;
+      width: 140px;
+      height: 140px;
       padding-top: 30px;
       padding-bottom: 0;
     }
     .left-section .profile-pic img {
-      width: 90px;
-      height: 90px;
-      border-radius: 10%;
-      border: 2px solid #fff;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #ff6302;
       object-fit: cover;
     }
     .right-section {
+     
       width: 60%;
       padding: 15px;
       display: flex;
@@ -122,7 +132,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 0;
+      margin-top: 10;
     }
     .social-links {
       display: flex;
@@ -358,7 +368,7 @@
 <body>
   <!-- Business Card -->
   <div class="card business-card" id="business-card">
-    
+    <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
     <div class="left-section">
       <div class="logo">
         <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
@@ -367,27 +377,26 @@
       </div>
       <div class="profile-pic" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
         <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
-          <img src="../assets/img/team/Bao-Phung-S.jpeg" alt="Profile Picture">
+          <img src="../assets/img/team/Bao-Phung-S-Bubble.png" alt="Profile Picture">
           <!-- <div style="font-size: 10.5px; color: blue;">lazinet.com</div> -->
           <div style="padding: 0; margin: 0;"><strong><i class="bi bi-globe flex-shrink-0 icon-orange"  style="font-size: 10px; color: blue;"></i> </strong> <a href="https://lazinet.com/"  style="font-size: 10px; color: blue; text-decoration: none;">lazinet.com</a></div>
         </a>
       </div>
     </div>
     <div class="right-section">
-      <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
       <div style="position: relative; z-index: 1;">
         <div>
           <h2>Dr. PHÙNG THẾ BẢO</h2>
-          <h3 class="position">Technology Director | Data & AI Principal</h3>
+          <h3 class="position">CTO | Data Science & AI Researcher</h3>
           <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Cau Kieu, HCMC, VN</a></p>
-          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0908556220">(+84) 0908 556 220 </a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0964771122">(+84) 0964 77 1122 </a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
         </div>
         <div class="bottom-section">
           <div class="social-links">
             <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
             <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
-            <a href="../assets/img/team/Bao-Phung-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
+            <a href="../assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
           </div>
           <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><div class="qr-code" id="qrcode"></div></a>
         </div>
@@ -438,7 +447,7 @@
 
   <script>
     // QR Code Generation
-    const url = "https://lazinet.com/bizcards/Bao-Phung.html";
+    const url = "https://lazinet.com/bizcards/lazinet_bao-phung.html";
     new QRCode(document.getElementById("qrcode"), {
       text: url,
       width: 100,

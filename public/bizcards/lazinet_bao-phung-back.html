@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>LAZINET - Effective Technologies with Dr. Bao Phung</title>
+  <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -38,6 +38,9 @@
       /* border-radius: 10px; */
       overflow: hidden;
       margin-bottom: 20px;
+      background-image: url('/lazinet-frontend/public/assets/img/background/pngwing_017.png');
+      background-size: cover;
+      background-position: center;         
     }
     .business-card {
       padding: 20px;
@@ -139,7 +142,7 @@
   <div class="card business-card" id="business-card">
     <div class="logo">
       <a href="https://lazinet.com/">
-        <img src="../assets/img/lazinet_LogoFullv2_vi.svg" alt="LAZINET Logo">
+        <img src="../assets/img/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo">
       </a>
     </div>
 
@@ -154,7 +157,7 @@
         <li><i class="bi bi-bezier icon-orange"></i> <strong>RPA & Process Automation</strong></li>
         <li><i class="bi bi-robot icon-orange"></i> <strong>AI & Data Analytics</strong></li>
         <li><i class="bi bi-cloud icon-orange"></i> <strong>Cloud & Networking</strong></li> -->
-        <li><i class="bi bi-code-square icon-orange"></i> <strong>Phát triển phần mềm</strong></li>
+        <li><i class="bi bi-code-square icon-orange"></i> <strong>Phần mềm, Web/ App</strong></li>
         <li><i class="bi bi-arrows-move icon-orange"></i> <strong>Chuyển đổi số thực hành</strong></li>
         <li><i class="bi bi-cart-check icon-orange"></i> <strong>Thương mại điện tử</strong></li>
         <li><i class="bi bi-cpu icon-orange"></i> <strong>IoT & Giải pháp thông minh</strong></li>
@@ -168,11 +171,11 @@
     <div class="contact-info">
       <p>
         <i class="bi bi-geo-alt icon-orange"></i>
-        <a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Trường Sa, Cầu Kiệu, TP. HCM</a>
+        <a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">Tòa nhà Sài Gòn Building, số 428 Trường Sa, Cầu Kiệu, TP. HCM</a>
       </p>
       <p>
         <i class="bi bi-phone icon-orange"></i>
-        <a href="http://zalo.me/0964771122">(+84) 0964 771122</a>
+        <a href="http://zalo.me/0964771122">(+84) 0964 77 1122</a>
         <i class="bi bi-envelope icon-orange"></i>
         <a href="mailto:email@lazinet.com">email@lazinet.com</a>
         <i class="bi bi-globe icon-orange"></i>
@@ -191,7 +194,7 @@
     function exportToPNG() {
       html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Bao-Phung Back.png";
+        link.download = "LAZINET Phung-Hoang Back.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -210,7 +213,7 @@
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height);
-        doc.save("LAZINET Bao-Phung Back.pdf");
+        doc.save("LAZINET Phung-Hoang Back.pdf");
       });
     }
   </script>
