@@ -146,8 +146,13 @@
       color: white;
     }
     .qr-code img {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
+      border: 2px solid blue; /* Khớp với màu QR (dark green) */
+      border-radius: 5px; /* Bo góc nếu muốn */
+      padding: 5px; /* Tạo khoảng cách giữa border và QR */
+      background: white; /* Nền trắng để đảm bảo màu sắc QR rõ ràng */
+      display: inline-block; /* Phù hợp với kích thước QR */       
     }
     .export-buttons {
       margin: 20px 0;

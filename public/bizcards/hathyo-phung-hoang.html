@@ -641,7 +641,7 @@
     function exportToPNG() {
       html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "HATHYO Phung-Hoang.png";
+        link.download = "HATHYO PHUNG-HOANG.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -665,7 +665,7 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "HATHYO Phung-Hoang.vcf";
+      link.download = "HATHYO PHUNG-HOANG.vcf";
       link.click();
       URL.revokeObjectURL(url);
     }
@@ -684,7 +684,7 @@ END:VCARD
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height);
-        doc.save("HATHYO Phung-Hoang.pdf");
+        doc.save("HATHYO PHUNG-HOANG.pdf");
       });
     }
 

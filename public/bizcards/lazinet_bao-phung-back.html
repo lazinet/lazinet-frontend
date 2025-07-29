@@ -194,7 +194,7 @@
     function exportToPNG() {
       html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Phung-Hoang Back.png";
+        link.download = "LAZINET Bao-Phung Back.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -213,7 +213,7 @@
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height);
-        doc.save("LAZINET Phung-Hoang Back.pdf");
+        doc.save("LAZINET Bao-Phung Back.pdf");
       });
     }
   </script>
