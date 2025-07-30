@@ -2,21 +2,24 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>LAZINET - Effective Technologies with Director Trinh LE</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"> -->
+  <title>LAZINET - Effective Technologies with Software Developer Hùng Lê</title>
+  <meta name="description"
+    content="LAZINET - AI, IoT, and Cloud solutions for business growth and digital transformation. Elevate efficiency with cutting-edge technology.">
+  <meta name="keywords"
+    content="AI solutions, IoT, Cloud computing, Digital transformation, Smart technology, AI analytics, AI-powered business, AI and IoT integration">
+  <meta name="viewport" content="width=1200, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Favicons -->
-  <link href="/assets/img/lazinet_LogoOnly.png" rel="icon">
-  <link href="/assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
+  <link href="../assets/img/lazinet_LogoOnly.png" rel="icon">
+  <link href="../assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
 
   <!-- Vendor Files -->
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->
   
   <style>
@@ -32,38 +35,43 @@
       padding: 20px;
     }
     .card {
+      background-image: url('../assets/img/background/pngwing_003.png');
+      background-size: cover;
+      background-position: center;    
       width: 500px;
-      background: #fff;
+      /* background: #fff; */
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       position: relative;
       margin-bottom: 20px;
     }
-    .business-card {
+    .business-card {     
       height: 300px;
       display: flex;
       flex-direction: row;
     }
     .left-section {
       width: 40%;
-      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 60%, #ff6302 80%, blue 100%);
-      padding: 10px;
+      /* background: linear-gradient(to bottom, white 40%,rgb(245, 184, 137) 100%); */
+      padding: 0px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      /* color: #fff; */
       gap: 10px;
     }
     .left-section .logo img {
-      width: 150px;
-      height: 150px;
+      width: 140px;
+      height: 140px;
+      padding-top: 30px;
+      padding-bottom: 0;
     }
     .left-section .profile-pic img {
-      width: 100px;
-      height: 100px;
-      border-radius: 10%;
-      border: 2px solid #fff;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid white;
       object-fit: cover;
     }
     .right-section {
@@ -138,8 +146,13 @@
       color: white;
     }
     .qr-code img {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
+      border: 2px solid blue; /* Khớp với màu QR (dark green) */
+      border-radius: 5px; /* Bo góc nếu muốn */
+      padding: 5px; /* Tạo khoảng cách giữa border và QR */
+      background: white; /* Nền trắng để đảm bảo màu sắc QR rõ ràng */
+      display: inline-block; /* Phù hợp với kích thước QR */       
     }
     .export-buttons {
       margin: 20px 0;
@@ -295,9 +308,9 @@
       }
       
       .left-section .logo img {
-        width: 120px;
-        height: 120px;
-        padding-top: 18px;
+        width: 142px;
+        height: 142px;
+        padding-top: 20px;
       }
       .left-section .profile-pic img {
         width: 100px;
@@ -353,29 +366,35 @@
 <body>
   <!-- Business Card -->
   <div class="card business-card" id="business-card">
-    
+    <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
     <div class="left-section">
       <div class="logo">
-        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
+        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
+          <img src="../assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo">
+        </a>
       </div>
-      <div class="profile-pic">
-        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><img src="../assets/img/team/Trinh-Le.jpeg" alt="Profile Picture"></a>
+      <div class="profile-pic" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
+          <img src="../assets/img/team/Hung-Le-2-RB1.png" alt="Profile Picture">
+          <!-- <div style="font-size: 10.5px; color: blue;">lazinet.com</div> -->
+          <div style="padding: 0; margin: 0;"><strong><i class="bi bi-globe flex-shrink-0 icon-orange"  style="font-size: 10px; color: blue;"></i> </strong> <a href="https://lazinet.com/"  style="font-size: 10px; color: blue; text-decoration: none;">lazinet.com</a></div>
+        </a>
       </div>
     </div>
     <div class="right-section">
-      <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
       <div style="position: relative; z-index: 1;">
         <div>
-          <h2>LÊ NGUYỄN CHÍ TRÌNH</h2>
-          <h3 class="position">Premium Account Director</h3>
-          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Phu Nhuan, HCMC, VN</a></p>
-          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="https://wa.me/84903252595">0903 252 595</a></p>
+          <h2>LÊ VĂN HÙNG</h2>
+          <h3 class="position">Software Developer</h3>
+          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Cau Kieu, HCMC, VN</a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0818216498">(+84) 0818 216 498</a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
         </div>
         <div class="bottom-section">
           <div class="social-links">
             <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
             <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
+            <a href="../assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
           </div>
           <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;"><div class="qr-code" id="qrcode"></div></a>
         </div>
@@ -426,7 +445,7 @@
 
   <script>
     // QR Code Generation
-    const url = "https://lazinet.com";
+    const url = "https://lazinet.com.html";
     new QRCode(document.getElementById("qrcode"), {
       text: url,
       width: 100,
@@ -438,9 +457,9 @@
 
     // Export Functions
     function exportToPNG() {
-      html2canvas(document.getElementById("business-card"), { scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(document.getElementById("business-card"), { scale: 4, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Trinh-LE.png";
+        link.download = "LAZINET Hung-Le.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -450,12 +469,12 @@
       const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
-N:LE;Trinh;;;
-FN:Trinh LE
+N:Hoang;Phung;;;
+FN:Phung Hoang
 ORG:LAZINET
-TITLE:Premium Account Director
-ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
-TEL;TYPE=WORK,VOICE:+84903252595
+TITLE:Founder & CEO | Innovation Principal
+ADR;TYPE=WORK:;;Sai Gon Building, 428 Truong Sa, Ward Cau Kieu;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84908556220
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
 END:VCARD
@@ -464,7 +483,7 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "LAZINET Trinh-LE.vcf";
+      link.download = "LAZINET Hung-Le.vcf";
       link.click();
       URL.revokeObjectURL(url);
     }
@@ -478,12 +497,12 @@ END:VCARD
         unit: "px",
         format: isMobile ? [300, 500] : [500, 300]
       });
-      html2canvas(cardElement, { scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(cardElement, { scale: 4, useCORS: true }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height);
-        doc.save("LAZINET Trinh-LE.pdf");
+        doc.save("LAZINET Hung-Le.pdf");
       });
     }
 
