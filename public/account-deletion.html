@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://request-delete-account-hathyo.netlify.app/ -->
+<html lang="vi"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu cầu xóa tài khoản - HATHYO</title>
+    <link rel="stylesheet" href="./account-deletion/styles.css">
+    <link href="./account-deletion/css2" rel="stylesheet">
+    <link rel="stylesheet" href="./account-deletion/all.min.css">
+    <script type="text/javascript" src="./account-deletion/email.min.js.download"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="./account-deletion/logo.png" alt="HATHYO - Happy Healthy You!" class="logo-image">
+            </div>
+            <div class="language-switcher">
+                <button id="lang-vi" class="lang-btn active" onclick="switchLanguage(&#39;vi&#39;)">
+                    <i class="fas fa-globe"></i> Tiếng Việt
+                </button>
+                <button id="lang-en" class="lang-btn" onclick="switchLanguage(&#39;en&#39;)">
+                    <i class="fas fa-globe"></i> English
+                </button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="form-header">
+                <i class="fas fa-user-times"></i>
+                <h2 data-lang="vi" style="">Yêu cầu xóa tài khoản</h2>
+                <h2 data-lang="en" style="display: none;">Account Deletion Request</h2>
+                <p data-lang="vi" style="">Chúng tôi rất tiếc khi bạn muốn rời khỏi HATHYO. Vui lòng điền thông tin bên dưới để gửi yêu cầu xóa tài khoản.</p>
+                <p data-lang="en" style="display: none;">We're sorry to see you go. Please fill out the information below to submit your account deletion request.</p>
+            </div>
+
+            <form id="deleteAccountForm" class="delete-form">
+                <div class="form-group">
+                    <label for="contact" data-lang="vi" style="">Email hoặc Số điện thoại *</label>
+                    <label for="contact" data-lang="en" style="display: none;">Email or Phone Number *</label>
+                    <input type="text" id="contact" name="contact" required="" data-placeholder-vi="Nhập email hoặc số điện thoại của bạn" data-placeholder-en="Enter your email or phone number" placeholder="Nhập email hoặc số điện thoại của bạn">
+                    <div class="error-message" id="contact-error" style="display: none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reason" data-lang="vi" style="">Lý do xóa tài khoản *</label>
+                    <label for="reason" data-lang="en" style="display: none;">Reason for Account Deletion *</label>
+                    <select id="reason" name="reason" required=""><option value="">Chọn lý do</option><option value="privacy_concerns">Quan ngại về quyền riêng tư</option><option value="not_using">Không sử dụng nữa</option><option value="poor_experience">Trải nghiệm không tốt</option><option value="found_alternative">Tìm được giải pháp thay thế</option><option value="other">Lý do khác</option></select>
+                    <div class="error-message" id="reason-error" style="display: none;"></div>
+                </div>
+
+                <div class="form-group" id="other-reason-group" style="display: none;">
+                    <label for="other-reason" data-lang="vi" style="">Vui lòng mô tả chi tiết</label>
+                    <label for="other-reason" data-lang="en" style="display: none;">Please describe in detail</label>
+                    <textarea id="other-reason" name="other-reason" rows="4" data-placeholder-vi="Mô tả lý do cụ thể..." data-placeholder-en="Describe your specific reason..." placeholder="Mô tả lý do cụ thể..."></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="confirm" name="confirm" required="">
+                        <span data-lang="vi" style="">Tôi hiểu rằng việc xóa tài khoản sẽ không thể hoàn tác và tất cả dữ liệu sẽ bị mất vĩnh viễn.</span>
+                        <span data-lang="en" style="display: none;">I understand that account deletion is irreversible and all data will be permanently lost.</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span data-lang="vi" style="">Gửi yêu cầu</span>
+                        <span data-lang="en" style="display: none;">Submit Request</span>
+                    </button>
+                    <button type="button" class="cancel-btn" onclick="window.history.back()">
+                        <i class="fas fa-times"></i>
+                        <span data-lang="vi" style="">Hủy</span>
+                        <span data-lang="en" style="display: none;">Cancel</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="info-section">
+            <div class="info-card">
+                <i class="fas fa-info-circle"></i>
+                <h3 data-lang="vi" style="">Thông tin quan trọng</h3>
+                <h3 data-lang="en" style="display: none;">Important Information</h3>
+                <ul>
+                    <li data-lang="vi" style="">Yêu cầu sẽ được xử lý trong vòng 7-14 ngày làm việc</li>
+                    <li data-lang="en" style="display: none;">Request will be processed within 7-14 business days</li>
+
+                    <li data-lang="vi" style="">Tất cả dữ liệu cá nhân sẽ bị xóa vĩnh viễn</li>
+                    <li data-lang="en" style="display: none;">All personal data will be permanently deleted</li>
+
+                    <li data-lang="vi" style="">Bạn sẽ nhận được email xác nhận khi hoàn tất</li>
+                    <li data-lang="en" style="display: none;">You will receive a confirmation email when completed</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p data-lang="vi" style="">
+                © 2025 HATHYO - Cùng Bạn Vui Khỏe Hơn Với Sản Phẩm Chất Lượng &amp; Dịch Vụ Chuyên Nghiệp
+                <br>
+                <a href="https://hathyo.com/">hathyo.com</a> |
+                <a href="mailto:email@hathyo.com">email@hathyo.com</a>
+            </p>
+            <p data-lang="en" style="display: none;">
+                © 2025 HATHYO - Together for Better Health with Quality Products &amp; Professional Services
+                <br>
+                <a href="https://hathyo.com/">hathyo.com</a> |
+                <a href="mailto:email@hathyo.com">email@hathyo.com</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p data-lang="vi" style="">Đang gửi yêu cầu...</p>
+            <p data-lang="en" style="display: none;">Sending request...</p>
+        </div>
+    </div>
+
+    <!-- Success modal -->
+    <div id="success-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h3 data-lang="vi" style="">Yêu cầu đã được gửi thành công!</h3>
+            <h3 data-lang="en" style="display: none;">Request sent successfully!</h3>
+            <p data-lang="vi" style="">Chúng tôi sẽ xử lý yêu cầu của bạn trong vòng 7-14 ngày làm việc và gửi email xác nhận.</p>
+            <p data-lang="en" style="display: none;">We will process your request within 7-14 business days and send a confirmation email.</p>
+            <button onclick="closeModal()" class="modal-btn">
+                <span data-lang="vi" style="">Đóng</span>
+                <span data-lang="en" style="display: none;">Close</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Dynamic popup modal -->
+    <div id="popup-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <i id="popup-icon" class="fas fa-check-circle" style="font-size: 48px; margin-bottom: 20px; color: rgb(39, 174, 96);"></i>
+            <h3 id="popup-title">Yêu cầu đã được gửi thành công!</h3>
+            <p id="popup-message" style="margin-bottom: 25px; line-height: 1.6;">Email đã được gửi đến HATHYO. Chúng tôi sẽ xử lý trong vòng 7-14 ngày làm việc.</p>
+            <button id="popup-button" onclick="closeModal()" class="modal-btn" style="background: rgb(39, 174, 96);">Close</button>
+        </div>
+    </div>
+
+<!-- DUY DÙNG ĐÚNG SCRIPT NÀY, ĐẨY LÊN LANDING, GẮN VÀO URL https://hathyo.com/account/deletion -->
+ <!-- URL này tồn tại, gắn vào nơi đâu cần (ví dụ Google/ Apple, hoặc điều khoản sử dụng) chứ không cần hiển thị trực tiếp vào Footer -->
+<script>
+    document.getElementById('deleteAccountForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Hiển thị loading
+    document.getElementById('loading-overlay').style.display = 'flex';
+    
+    // Lấy dữ liệu form
+    const formData = new FormData();
+    formData.append('action', 'submitDeleteRequest');
+    formData.append('contact', document.getElementById('contact').value);
+    formData.append('reason', document.getElementById('reason').value);
+    formData.append('language', document.querySelector('.lang-btn.active').id.replace('lang-', ''));
+    formData.append('otherReason', document.getElementById('other-reason').value);
+    
+    // Gửi đến Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbwR6smJeK26EZvu-HXzOlVsF0xLJ8B0y96TnFShTicOrdz_9kyX9LlUQ2yxls_pt5ToOA/exec', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('loading-overlay').style.display = 'none';
+        
+        if (data.status === 'success') {
+        document.getElementById('success-modal').style.display = 'flex';
+        } else {
+        alert(data.message || 'Có lỗi xảy ra khi gửi yêu cầu');
+        }
+    })
+    .catch(error => {
+        document.getElementById('loading-overlay').style.display = 'none';
+        alert('Lỗi kết nối. Vui lòng thử lại sau.');
+        console.error('Error:', error);
+    });
+    });
+</script>
+
+<!-- <script src="./account-deletion/script.js.download"></script> -->
+
+
+</body></html>
