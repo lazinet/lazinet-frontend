@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LAZINET - Effective Technologies</title>
+  <meta content="LAZINET - Công nghệ hiệu quả cho doanh nghiệp và tổ chức" name="description">
+  <meta content="AI, IoT, Software Development, Cloud, Networking, Smart Solutions, Digital Transformation" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./assets/img/lazinet_LogoOnly.ico" rel="icon">
+  <link href="./assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="./assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./assets/vendor/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="./assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="./assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="./assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="./assets/css/lazinet.css" rel="stylesheet">
+
+  <!-- Custom LAZINET Styles -->
+  <style>
+    :root {
+      --lazinet-blue: #0000ff;
+      --lazinet-orange: #FF6300;
+      --lazinet-light-blue: #4d4dff;
+      --lazinet-light-orange: #ff8533;
+      --lazinet-dark-blue: #0000cc;
+      --lazinet-dark-orange: #cc5000;
+      --lazinet-gray: #f8f9fa;
+      --lazinet-dark-gray: #343a40;
+    }
+
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      overflow: hidden;
+      background: #fff;
+      transition: all 0.6s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #preloader > div {
+      width: 33px;
+      height: 33px;
+      position: relative;
+      border-radius: 50%;
+      margin: 0 5px;
+      background-color: var(--lazinet-blue);
+      animation: preloader 1.7s infinite ease-in-out;
+    }
+    
+    #preloader > div:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    #preloader > div:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    #preloader > div:nth-child(4) {
+      animation-delay: 0.6s;
+      background-color: var(--lazinet-orange);
+    }
+    
+    @keyframes preloader {
+      0%, 100% {
+        transform: scale(0.2);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Custom Button Styles */
+    .btn-primary {
+      background-color: var(--lazinet-blue);
+      border-color: var(--lazinet-blue);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--lazinet-light-blue);
+      border-color: var(--lazinet-light-blue);
+    }
+    
+    .btn-secondary {
+      background-color: var(--lazinet-orange);
+      border-color: var(--lazinet-orange);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--lazinet-light-orange);
+      border-color: var(--lazinet-light-orange);
+      color: white;
+    }
+
+    /* Section Titles */
+    .section-title {
+      text-align: center;
+      padding-bottom: 30px;
+    }
+    
+    .section-title h2 {
+      font-size: 32px;
+      font-weight: 700;
+      position: relative;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      color: var(--lazinet-dark-gray);
+    }
+    
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: var(--lazinet-orange);
+      bottom: 0;
+      left: calc(50% - 25px);
+    }
+    
+    .section-title p {
+      margin-bottom: 0;
+    }
+
+    /* Logo Colors */
+    .logo-blue {
+      color: var(--lazinet-blue);
+      font-weight: bold;
+    }
+    
+    .logo-orange {
+      color: var(--lazinet-orange);
+      font-weight: bold;
+    }
+
+    /* Tech Grid Animation */
+    #tech-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    /* Improved Responsive Design */
+    @media (max-width: 768px) {
+      .section-title h2 {
+        font-size: 28px;
+      }
+      
+      .hero h1 {
+        font-size: 28px;
+        line-height: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Contact Info Section -->
+  <section id="contact-info" class="d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="bi bi-envelope-fill"><a href="mailto:contact@lazinet.com">contact@lazinet.com</a></i>
+        <i class="bi bi-phone-fill phone-icon"><span>+84 28 7300 7586</span></i>
+      </div>
+      <div class="social-links d-none d-md-block">
+        <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="https://linkedin.com/company/lazinet" class="linkedin" target="_blank"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Header -->
+  <header id="header" class="sticky-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="./assets/img/lazinet_LogoOnly.svg" alt="LAZINET Logo">
+        <span><span class="logo-orange">LAZI</span><span class="logo-blue">NET</span></span>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Trang chủ</a></li>
+          <li><a class="nav-link scrollto" href="#about">Giới thiệu</a></li>
+          <li><a class="nav-link scrollto" href="#services">Dịch vụ</a></li>
+          <li><a class="nav-link scrollto" href="#portfolio">Sản phẩm</a></li>
+          <li><a class="nav-link scrollto" href="#team">Đội ngũ</a></li>
+          <li><a class="nav-link scrollto" href="#testimonials">Đánh giá</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Liên hệ</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="d-flex align-items-center position-relative">
+    <canvas id="tech-grid"></canvas>
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Giải pháp công nghệ <span class="logo-orange">hiệu quả</span> cho doanh nghiệp</h1>
+          <h2>Chúng tôi cung cấp các giải pháp AI, IoT và phát triển phần mềm tùy chỉnh</h2>
+          <div class="d-flex">
+            <a href="#about" class="btn-primary scrollto">Tìm hiểu thêm</a>
+            <a href="#services" class="btn-secondary scrollto ms-3">Dịch vụ của chúng tôi</a>
+          </div>
+        </div>
+        <div class="col-lg-6 hero-img" data-aos="zoom-in" data-aos-delay="200">
+          <img src="./assets/img/lazinet_logoFullSquare2.svg" class="img-fluid" alt="LAZINET Logo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+    <!-- Blog Section -->
+    <section id="blog" class="blog position-relative">
+      <canvas id="tech-grid"></canvas>
+      <div class="container position-relative" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Tin tức & Sự kiện</h2>
+          <p>Cập nhật những tin tức mới nhất về LAZINET và các xu hướng công nghệ</p>
+        </div>
+
+        <div class="swiper blog-slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="blog-item">
+                <div class="blog-img">
+                  <img src="./assets/img/Events/HUIT-AI.webp" class="img-fluid" alt="HUIT AI Event">
+                </div>
+                <div class="blog-content">
+                  <h3>Hợp tác AI với Đại học Công nghiệp TPHCM</h3>
+                  <div class="meta">
+                    <span><i class="bi bi-calendar"></i> 15/05/2024</span>
+                  </div>
+                  <p>LAZINET và Đại học Công nghiệp TPHCM ký kết hợp tác nghiên cứu và phát triển các giải pháp AI...</p>
+                  <a href="#" class="read-more">Xem thêm <i class="bi bi-arrow-right"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="blog-item">
+                <div class="blog-img">
+                  <img src="./assets/img/Events/HUIT-MOU.webp" class="img-fluid" alt="HUIT MOU">
+                </div>
+                <div class="blog-content">
+                  <h3>Ký kết biên bản ghi nhớ với Đại học Công nghiệp TPHCM</h3>
+                  <div class="meta">
+                    <span><i class="bi bi-calendar"></i> 10/04/2024</span>
+                  </div>
+                  <p>LAZINET và Đại học Công nghiệp TPHCM ký kết biên bản ghi nhớ về việc hợp tác đào tạo và nghiên cứu...</p>
+                  <a href="#" class="read-more">Xem thêm <i class="bi bi-arrow-right"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="blog-item">
+                <div class="blog-img">
+                  <img src="./assets/img/Events/OK_AIoT.webp" class="img-fluid" alt="AIoT Event">
+                </div>
+                <div class="blog-content">
+                  <h3>Hội thảo AIoT cho nông nghiệp thông minh</h3>
+                  <div class="meta">
+                    <span><i class="bi bi-calendar"></i> 20/03/2024</span>
+                  </div>
+                  <p>LAZINET tổ chức hội thảo về ứng dụng AIoT trong nông nghiệp thông minh, giới thiệu các giải pháp mới...</p>
+                  <a href="#" class="read-more">Xem thêm <i class="bi bi-arrow-right"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Services Section -->
+    <section id="featured-services" class="featured-services">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Điểm nổi bật</h2>
+          <p>Những giá trị cốt lõi tạo nên sự khác biệt của LAZINET</p>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
+            <div class="service-box" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon"><i class="bi bi-gear-fill" style="color: var(--lazinet-blue);"></i></div>
+              <h4>Tùy chỉnh</h4>
+              <p>Giải pháp được thiết kế riêng theo nhu cầu cụ thể của từng doanh nghiệp</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
+            <div class="service-box" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon"><i class="bi bi-cpu-fill" style="color: var(--lazinet-orange);"></i></div>
+              <h4>Công nghệ</h4>
+              <p>Áp dụng các công nghệ tiên tiến nhất trong lĩnh vực AI, IoT và phát triển phần mềm</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
+            <div class="service-box" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon"><i class="bi bi-graph-up-arrow" style="color: var(--lazinet-blue);"></i></div>
+              <h4>Hiệu quả</h4>
+              <p>Tối ưu hóa quy trình, giảm chi phí và tăng năng suất cho doanh nghiệp</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
+            <div class="service-box" data-aos="fade-up" data-aos-delay="400">
+              <div class="icon"><i class="bi bi-tree-fill" style="color: var(--lazinet-orange);"></i></div>
+              <h4>Bền vững</h4>
+              <p>Phát triển các giải pháp thân thiện với môi trường và bền vững lâu dài</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Giới thiệu</h2>
+          <p>Tìm hiểu thêm về LAZINET và sứ mệnh của chúng tôi</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+            <img src="./assets/img/about.jpg" class="img-fluid rounded" alt="About LAZINET">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left" data-aos-delay="100">
+            <h3>Công nghệ hiệu quả cho doanh nghiệp và tổ chức</h3>
+            <p class="fst-italic">
+              LAZINET tập trung vào việc phát triển và cung cấp các giải pháp công nghệ hiệu quả, đáp ứng nhu cầu thực tế của doanh nghiệp và tổ chức.
+            </p>
+            <p>
+              Chúng tôi kết hợp chuyên môn trong lĩnh vực AI, IoT và phát triển phần mềm để tạo ra các giải pháp tùy chỉnh, giúp khách hàng tối ưu hóa quy trình, giảm chi phí và tăng năng suất.
+            </p>
+            <p>
+              Với đội ngũ chuyên gia giàu kinh nghiệm và đam mê công nghệ, LAZINET cam kết mang đến những sản phẩm và dịch vụ chất lượng cao, đáp ứng nhu cầu ngày càng tăng của thị trường trong kỷ nguyên số.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats">
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-box">
+              <i class="bi bi-emoji-smile" style="color: var(--lazinet-orange);"></i>
+              <span data-purecounter-start="0" data-purecounter-end="45" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Khách hàng hài lòng</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+            <div class="stats-box">
+              <i class="bi bi-journal-richtext" style="color: var(--lazinet-blue);"></i>
+              <span data-purecounter-start="0" data-purecounter-end="68" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Dự án</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="stats-box">
+              <i class="bi bi-headset" style="color: var(--lazinet-orange);"></i>
+              <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Hệ thống triển khai</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="stats-box">
+              <i class="bi bi-people" style="color: var(--lazinet-blue);"></i>
+              <span data-purecounter-start="0" data-purecounter-end="35" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Sản phẩm đã bàn giao</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services section-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Dịch vụ</h2>
+          <p>Khám phá các dịch vụ chuyên nghiệp của LAZINET</p>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+              <div class="icon"><i class="bi bi-robot" style="color: var(--lazinet-blue);"></i></div>
+              <h4>AI & Phân tích dữ liệu</h4>
+              <p>Phát triển các giải pháp AI và phân tích dữ liệu thông minh, giúp doanh nghiệp khai thác giá trị từ dữ liệu và tự động hóa quy trình.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+              <div class="icon"><i class="bi bi-cpu" style="color: var(--lazinet-orange);"></i></div>
+              <h4>Internet of Things</h4>
+              <p>Thiết kế và triển khai các hệ thống IoT tùy chỉnh, kết nối thiết bị và thu thập dữ liệu thời gian thực cho nhiều lĩnh vực.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+              <div class="icon"><i class="bi bi-code-square" style="color: var(--lazinet-blue);"></i></div>
+              <h4>Phát triển phần mềm</h4>
+              <p>Phát triển các ứng dụng web, mobile và desktop tùy chỉnh, đáp ứng nhu cầu cụ thể của doanh nghiệp với công nghệ hiện đại.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="400">
+              <div class="icon"><i class="bi bi-cloud" style="color: var(--lazinet-orange);"></i></div>
+              <h4>Cloud & Networking</h4>
+              <p>Cung cấp dịch vụ cloud computing và giải pháp mạng tiên tiến, đảm bảo hệ thống hoạt động ổn định và an toàn.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="500">
+              <div class="icon"><i class="bi bi-lightbulb" style="color: var(--lazinet-blue);"></i></div>
+              <h4>Giải pháp thông minh</h4>
+              <p>Phát triển các giải pháp thông minh cho nhà ở, nông nghiệp, thủy sản và các lĩnh vực khác, tối ưu hóa hiệu suất và tiết kiệm chi phí.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="600">
+              <div class="icon"><i class="bi bi-arrow-repeat" style="color: var(--lazinet-orange);"></i></div>
+              <h4>Chuyển đổi số</h4>
+              <p>Hỗ trợ doanh nghiệp trong quá trình chuyển đổi số, từ tư vấn chiến lược đến triển khai các giải pháp công nghệ phù hợp.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Sản phẩm</h2>
+          <p>Khám phá các sản phẩm và dự án tiêu biểu của LAZINET</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center">
+            <ul id="portfolio-filters">
+              <li data-filter="*" class="filter-active">Tất cả</li>
+              <li data-filter=".filter-agritech">Nông nghiệp</li>
+              <li data-filter=".filter-aquatech">Thủy sản</li>
+              <li data-filter=".filter-network">Mạng</li>
+              <li data-filter=".filter-software">Phần mềm</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row portfolio-container">
+          <div class="col-lg-4 col-md-6 portfolio-item filter-agritech">
+            <div class="portfolio-wrap">
+              <img src="./assets/img/portfolio/app-1.webp" class="img-fluid" alt="Smart Agriculture">
+              <div class="portfolio-info">
+                <h4>LAZINET Smart Agriculture Systems</h4>
+                <p>Hệ thống nông nghiệp thông minh</p>
+                <div class="portfolio-links">
+                  <a href="./assets/img/portfolio/app-1.webp" data-gallery="portfolioGallery" class="portfolio-lightbox" title="LAZINET Smart Agriculture Systems"><i class="bi bi-plus"></i></a>
+                  <a href="#" title="More Details"><i class="bi bi-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-aquatech">
+            <div class="portfolio-wrap">
+              <img src="./assets/img/portfolio/product-1.webp" class="img-fluid" alt="Smart Aquaculture">
+              <div class="portfolio-info">
+                <h4>LAZINET Smart Aquaculture Systems</h4>
+                <p>Hệ thống thủy sản thông minh</p>
+                <div class="portfolio-links">
+                  <a href="./assets/img/portfolio/product-1.webp" data-gallery="portfolioGallery" class="portfolio-lightbox" title="LAZINET Smart Aquaculture Systems"><i class="bi bi-plus"></i></a>
+                  <a href="#" title="More Details"><i class="bi bi-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-network">
+            <div class="portfolio-wrap">
+              <img src="./assets/img/portfolio/Network-5G-Fronthaul-Semi-Active-WDM-Solution.webp" class="img-fluid" alt="Network Management">
+              <div class="portfolio-info">
+                <h4>LAZINET Network Management System</h4>
+                <p>Hệ thống quản lý mạng</p>
+                <div class="portfolio-links">
+                  <a href="./assets/img/portfolio/Network-5G-Fronthaul-Semi-Active-WDM-Solution.webp" data-gallery="portfolioGallery" class="portfolio-lightbox" title="LAZINET Network Management System"><i class="bi bi-plus"></i></a>
+                  <a href="#" title="More Details"><i class="bi bi-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-network">
+            <div class="portfolio-wrap">
+              <img src="./assets/img/portfolio/Network-5G-Fronthaul-Semi-Active-WDM-Solution.webp" class="img-fluid" alt="5G Fronthaul">
+              <div class="portfolio-info">
+                <h4>5G Fronthaul Semi-Active WDM Solution</h4>
+                <p>Giải pháp WDM bán chủ động cho 5G Fronthaul</p>
+                <div class="portfolio-links">
+                  <a href="./assets/img/portfolio/Network-5G-Fronthaul-Semi-Active-WDM-Solution.webp" data-gallery="portfolioGallery" class="portfolio-lightbox" title="5G Fronthaul Semi-Active WDM Solution"><i class="bi bi-plus"></i></a>
+                  <a href="#" title="More Details"><i class="bi bi-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
+            <div class="portfolio-wrap">
+              <img src="./assets/img/portfolio/books-1.webp" class="img-fluid" alt="E-Commerce Software">
+              <div class="portfolio-info">
+                <h4>Customized e-Commerce Software Systems</h4>
+                <p>Hệ thống phần mềm thương mại điện tử tùy chỉnh</p>
+                <div class="portfolio-links">
+                  <a href="./assets/img/portfolio/books-1.webp" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Customized e-Commerce Software Systems"><i class="bi bi-plus"></i></a>
+                  <a href="#" title="More Details"><i class="bi bi-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
+            <div class="portfolio-wrap">
+              <img src="./assets/img/portfolio/branding-1.webp" class="img-fluid" alt="Smart Home App">
+              <div class="portfolio-info">
+                <h4>Smart Home Control Application</h4>
+                <p>Ứng dụng điều khiển nhà thông minh</p>
+                <div class="portfolio-links">
+                  <a href="./assets/img/portfolio/branding-1.webp" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Smart Home Control Application"><i class="bi bi-plus"></i></a>
+                  <a href="#" title="More Details"><i class="bi bi-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team section-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Đội ngũ</h2>
+          <p>Đội ngũ chuyên gia của LAZINET</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="member">
+              <div class="member-img">
+                <img src="./assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>HOÀNG MINH PHỤNG</h4>
+                <span>Founder & CEO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="member">
+              <div class="member-img">
+                <img src="./assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Dr. Phùng Thế Bảo</h4>
+                <span>CTO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+            <div class="member">
+              <div class="member-img">
+                <img src="./assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Ánh Văn</h4>
+                <span>COO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+            <div class="member">
+              <div class="member-img">
+                <img src="./assets/img/team/team-4.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Trọng Nguyễn</h4>
+                <span>Lead Engineer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Đánh giá</h2>
+          <p>Khách hàng nói gì về LAZINET</p>
+        </div>
+
+        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="./assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                <h3>PhD. Hiển Tạ</h3>
+                <h4>Giám đốc Viện KHCN Quân sự</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  LAZINET đã cung cấp cho chúng tôi giải pháp IoT tiên tiến, giúp tối ưu hóa quy trình nghiên cứu và phát triển. Đội ngũ kỹ thuật chuyên nghiệp và đáp ứng nhanh chóng mọi yêu cầu.
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="./assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                <h3>PhD. Bảo Phùng</h3>
+                <h4>Giảng viên Đại học Công nghiệp TPHCM</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  Hợp tác với LAZINET trong các dự án nghiên cứu AI đã mang lại kết quả xuất sắc. Họ không chỉ cung cấp giải pháp công nghệ mà còn đóng góp ý tưởng sáng tạo và thiết thực.
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="./assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                <h3>PhD. Điệp Nguyễn</h3>
+                <h4>Giám đốc Công ty Phong Hải</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  Giải pháp quản lý mạng của LAZINET đã giúp chúng tôi tối ưu hóa hệ thống IT, giảm đáng kể thời gian downtime và chi phí vận hành. Đội ngũ hỗ trợ kỹ thuật luôn sẵn sàng giải quyết mọi vấn đề.
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="./assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                <h3>Lăng Nguyễn</h3>
+                <h4>Chủ trang trại</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  Hệ thống nông nghiệp thông minh của LAZINET đã giúp tôi tiết kiệm 30% chi phí vận hành và tăng năng suất cây trồng. Đầu tư vào giải pháp này là quyết định đúng đắn nhất của tôi trong năm qua.
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Liên hệ</h2>
+          <p>Liên hệ với chúng tôi</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-5 d-flex align-items-stretch">
+            <div class="info">
+              <div class="address">
+                <i class="bi bi-geo-alt"></i>
+                <h4>Địa chỉ:</h4>
+                <p>Tầng 5, Tòa nhà Hà Đô, 756 Trường Sa, Phường 14, Quận 3, TP.HCM</p>
+              </div>
+
+              <div class="email">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>contact@lazinet.com</p>
+              </div>
+
+              <div class="phone">
+                <i class="bi bi-phone"></i>
+                <h4>Điện thoại:</h4>
+                <p>+84 28 7300 7586</p>
+              </div>
+
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.3193500366574!2d106.68271827469749!3d10.786840089318513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f2f20a729a5%3A0x7e2b8c1c2c9a7cd!2zNzU2IMSQLiBUcsaw4budbmcgU2EsIFBoxrDhu51uZyAxNCwgUXXhuq1uIDMsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1684123456789!5m2!1svi!2s" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+            <form id="contact-form" class="php-email-form">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="name">Họ tên</label>
+                  <input type="text" name="name" class="form-control" id="name" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="user-type">Bạn là</label>
+                  <select id="user-type" name="userType" class="form-control" required>
+                    <option value="" selected disabled>-- Chọn --</option>
+                    <option value="Business">Doanh nghiệp</option>
+                    <option value="Individual">Cá nhân</option>
+                    <option value="Government">Cơ quan nhà nước</option>
+                    <option value="Educational">Đơn vị giáo dục</option>
+                    <option value="Other">Khác</option>
+                  </select>
+                  <input type="text" id="other-type" name="otherType" class="form-control mt-2" placeholder="Vui lòng nêu rõ" style="display: none;">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="phone">Điện thoại</label>
+                  <input type="text" class="form-control" name="phone" id="phone">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subject">Tiêu đề</label>
+                <input type="text" class="form-control" name="subject" id="subject" required>
+              </div>
+              <div class="form-group">
+                <label for="message">Nội dung</label>
+                <textarea class="form-control" name="message" id="message" rows="10" required></textarea>
+              </div>
+              <div class="text-center">
+                <button type="submit" id="submit-btn">Gửi tin nhắn</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="footer-newsletter">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <h4>Đăng ký nhận bản tin</h4>
+            <p>Đăng ký để nhận thông tin mới nhất về sản phẩm, dịch vụ và khuyến mãi từ LAZINET</p>
+            <form>
+              <input type="email" id="email-newsletter" name="email" required>
+              <input type="button" id="newsletter-btn" value="Đăng ký" onclick="submitNewsletter()">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <h3><span class="logo-orange">LAZI</span><span class="logo-blue">NET</span></h3>
+            <p>
+              Tầng 5, Tòa nhà Hà Đô<br>
+              756 Trường Sa, Phường 14<br>
+              Quận 3, TP.HCM<br><br>
+              <strong>Điện thoại:</strong> +84 28 7300 7586<br>
+              <strong>Email:</strong> contact@lazinet.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Liên kết hữu ích</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#hero">Trang chủ</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#about">Giới thiệu</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#services">Dịch vụ</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#portfolio">Sản phẩm</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#contact">Liên hệ</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-12">
+            <h4>Theo dõi chúng tôi</h4>
+            <p>Kết nối với LAZINET để cập nhật tin tức, xu hướng công nghệ, khuyến mãi và ưu đãi đặc biệt!</p>
+            <div class="social-links d-flex">
+              <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook"></i></a>
+              <a href="https://linkedin.com/company/lazinet" class="linkedin" target="_blank"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename"><span class="logo-orange">LAZI</span><span class="logo-blue">NET</span></strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        2024–2025
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#contact" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="./assets/vendor/aos/aos.js" defer></script>
+  <script src="./assets/vendor/glightbox/js/glightbox.min.js" defer></script>
+  <script src="./assets/vendor/purecounter/purecounter_vanilla.js" defer></script>
+  <script src="./assets/vendor/swiper/swiper-bundle.min.js" defer></script>
+  <script src="./assets/vendor/isotope-layout/isotope.pkgd.min.js" defer></script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+
+  <!-- Main JS File -->
+  <script src="./assets/js/main.js" defer></script>
+  <!-- LAZINET -->
+  <script src="./assets/js/lazinet.js" defer></script>
+
+  <!-- Optimized JavaScript -->
+  <script>
+    // Use DOMContentLoaded for better performance and consolidate all inline scripts
+    document.addEventListener('DOMContentLoaded', function() {
+      // User type form handling
+      const userTypeSelect = document.getElementById('user-type');
+      const otherInput = document.getElementById('other-type');
+      
+      if (userTypeSelect) {
+        function updateSelectColor() {
+          userTypeSelect.style.color = userTypeSelect.value === "" ? "#595959" : "";
+        }
+        
+        updateSelectColor();
+        userTypeSelect.addEventListener('change', function() {
+          updateSelectColor();
+          
+          if (otherInput) {
+            if (this.value === 'Other') {
+              userTypeSelect.style.width = '30%';
+              otherInput.style.display = 'inline-block';
+              otherInput.setAttribute('required', '');
+            } else {
+              userTypeSelect.style.width = '100%';
+              otherInput.style.display = 'none';
+              otherInput.removeAttribute('required');
+            }
+          }
+        });
+      }
+
+      // Contact form handling with error handling
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const button = document.getElementById('submit-btn');
+          if (!button) return;
+
+          button.textContent = 'Đang gửi tin nhắn...';
+          button.style.color = '#ffff00';
+
+          const formData = {
+            name: document.getElementById('name')?.value || '',
+            userType: document.getElementById('user-type')?.value || '',
+            otherType: document.getElementById('other-type')?.value || '',
+            phone: document.getElementById('phone')?.value || '',
+            email: document.getElementById('email')?.value || '',
+            subject: document.getElementById('subject')?.value || '',
+            message: document.getElementById('message')?.value || ''
+          };
+
+          try {
+            await fetch('https://script.google.com/macros/s/AKfycbz4t2LtIb1In7obXC_EKujEH3ZJGbvrz3uevuqVw4d-zErIj3Tf10QWwxlWH2-5IJ7KqA/exec', {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData),
+            });
+
+            button.textContent = 'Gửi thành công, cảm ơn bạn đã liên hệ với LAZINET!';
+            button.style.color = '#00FF00';
+            button.disabled = true;
+          } catch (error) {
+            button.textContent = `Lỗi: ${error.message}`;
+            button.style.color = '#FF3333';
+          }
+        });
+      }
+
+      // Newsletter subscription function
+      window.submitNewsletter = async function() {
+        const emailInput = document.getElementById('email-newsletter');
+        const button = document.getElementById('newsletter-btn');
+        
+        if (!emailInput || !button) return;
+        
+        const email = emailInput.value;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+        if (!emailRegex.test(email)) {
+          button.value = 'Email không hợp lệ!';
+          button.style.color = 'red';
+          return;
+        }
+
+        button.value = 'Đang đăng ký...';
+        button.style.color = '#ffff00';
+        
+        try {
+          await fetch('https://script.google.com/macros/s/AKfycbz38pxrAZj7NprlijMQszw3k1tRL1YC8Phzlcl7v7mAZfd8_JGqOgAP6rusC2ZkrK2E/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+
+          button.value = 'Cảm ơn bạn đã đăng ký!';
+          button.style.color = '#00FF00';
+          button.disabled = true;
+        } catch (error) {
+          button.value = `Lỗi: ${error.message}`;
+          button.style.color = 'red';
+        }
+      };
+
+      // Copyright year script
+      const startYear = 2024;
+      const currentYear = new Date().getFullYear();
+      const creditsDiv = document.querySelector('.credits');
+      if (creditsDiv) {
+        creditsDiv.innerHTML = `${startYear}–${currentYear}`;
+      }
+    });
+  </script>
+
+  <!-- Optimized tech grid animation script -->
+  <script>
+    // Optimized tech grid animation with performance improvements
+    (function() {
+      const canvas = document.getElementById("tech-grid");
+      const section = document.getElementById("blog");
+      
+      if (!canvas || !section) return;
+      
+      const ctx = canvas.getContext("2d");
+      let nodes = [];
+      let animationId;
+      
+      // Throttle resize events for better performance
+      let resizeTimeout;
+      function handleResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(resizeCanvas, 100);
+      }
+
+      function resizeCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = section.offsetWidth * dpr;
+        canvas.height = section.offsetHeight * dpr;
+        canvas.style.width = `${section.offsetWidth}px`;
+        canvas.style.height = `${section.offsetHeight}px`;
+        ctx.scale(dpr, dpr);
+        initializeNodes();
+      }
+
+      function randomRange(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function initializeNodes() {
+        nodes.length = 0;
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        const height = canvas.height / (window.devicePixelRatio || 1);
+        const area = width * height;
+        const baseArea = 320 * 480;
+        const baseNodes = 20;
+        const numNodes = Math.min(Math.floor(Math.sqrt(area / baseArea) * baseNodes), 50); // Limit nodes for performance
+
+        for (let i = 0; i < numNodes; i++) {
+          nodes.push({
+            x: randomRange(10, width - 10),
+            y: randomRange(10, height - 10),
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            color: getRandomColor(),
+            brightness: Math.random()
+          });
+        }
+      }
+
+      function getRandomColor() {
+        const colors = ["#ffffff", "#0000ff", "#ff6300"];
+        return colors[Math.floor(Math.random() * colors.length)] + (Math.random() > 0.5 ? "cc" : "ff");
+      }
+
+      function updateNodes() {
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        const height = canvas.height / (window.devicePixelRatio || 1);
+        
+        nodes.forEach(node => {
+          node.x += node.vx;
+          node.y += node.vy;
+
+          if (node.x < 0 || node.x > width) node.vx *= -1;
+          if (node.y < 0 || node.y > height) node.vy *= -1;
+        });
+      }
+
+      function drawGrid() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const maxDist = 100;
+        
+        // Draw connections
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < maxDist) {
+              ctx.strokeStyle = `rgba(0, 0, 255, ${(1 - distance / maxDist) * 0.3})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw nodes
+        nodes.forEach(node => {
+          ctx.fillStyle = node.color;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      function animate() {
+        updateNodes();
+        drawGrid();
+        animationId = requestAnimationFrame(animate);
+      }
+
+      // Initialize
+      resizeCanvas();
+      animate();
+      
+      // Event listeners
+      window.addEventListener("resize", handleResize);
+      
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', () => {
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+        }
+        window.removeEventListener("resize", handleResize);
+      });
+    })();
+  </script>
+
+</body>
+
+</html>
