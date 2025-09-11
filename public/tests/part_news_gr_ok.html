@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Section</title>
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <!-- AOS CSS for animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    /* Basic styles for blog section */
+    .blog.section {
+      padding: 60px 0;
+      position: relative;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    .blog-item {
+      transition: transform 0.3s ease;
+    }
+    .blog-item:hover {
+      transform: translateY(-5px);
+    }
+    .swiper-pagination-bullet {
+      background: #ffffff;
+    }
+    .swiper-pagination-bullet-active {
+      background: #ff6302;
+    }
+  </style>
+</head>
+<body>
+  <section id="blog" class="blog section" style="background: linear-gradient(135deg, #000000 0%, #0000ff 50%, #ff6302 100%); position: relative;">
+    <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px;">Latest News & Events</h2>
+      <div class="swiper init-swiper">
+        <script type="application/json" class="swiper-config">
+          {
+            "loop": true,
+            "speed": 600,
+            "autoplay": {
+              "delay": 5000
+            },
+            "slidesPerView": 1,
+            "spaceBetween": 20,
+            "pagination": {
+              "el": ".swiper-pagination",
+              "type": "bullets",
+              "clickable": true
+            },
+            "lazy": true,
+            "breakpoints": {
+              "768": {
+                "slidesPerView": 2,
+                "spaceBetween": 30
+              },
+              "1200": {
+                "slidesPerView": 3,
+                "spaceBetween": 30
+              }
+            }
+          }
+        </script>
+        <div class="swiper-wrapper">
+          <!-- Blog items will be rendered dynamically here -->
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init();
+
+    // Simple function to sanitize HTML (basic XSS prevention)
+    function sanitizeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str; // Convert to text first
+      return div.innerHTML; // Escape special characters
+    }
+
+    async function renderBlogItems() {
+      const apiUrl = 'https://script.google.com/macros/s/AKfycbwFtcc9fMSUlY56lYHJbTuggl_vXarpMIbYnp3hm1JxXV9RbFRqVZ7MlYLeif61jiIibA/exec'; // Replace with your Google Apps Script Web App URL
+
+      try {
+        const response = await fetch(apiUrl);
+        const blogItems = await response.json();
+
+        const swiperWrapper = document.querySelector('.swiper-wrapper');
+        swiperWrapper.innerHTML = ''; // Clear any existing content
+
+        blogItems.forEach(item => {
+          const slide = document.createElement('div');
+          slide.classList.add('swiper-slide');
+
+          // Combine locationName and locationURL into HTML link
+          const location = item.locationURL 
+            ? `@ <a href="${sanitizeHTML(item.locationURL)}" target="_blank" style="color: #ff6302;">${sanitizeHTML(item.locationName)}</a>` 
+            : `@ ${sanitizeHTML(item.locationName)}`;
+
+          // Combine summary and readMoreURL into description with HTML link
+          const description = `${sanitizeHTML(item.summary)} <a href="${sanitizeHTML(item.readMoreURL)}" target="_blank" style="color: #ff6302;">Read More</a>`;
+
+          slide.innerHTML = `
+            <div class="blog-item" style="position: relative; z-index: 1; background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; height: 480px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <img src="${sanitizeHTML(item.imageSrc)}" class="blog-img" alt="" style="width: 100%; height: 230px; object-fit: cover; border-radius: 5px;">
+                <h4 style="color: #ffffff; padding-top: 20px; margin-bottom: 10px; font-size: 18px;">${sanitizeHTML(item.title)}</h4>
+                <p style="color: #cccccc; margin-bottom: 10px; font-size: 14px;">${item.date} ${location}</p>
+              </div>
+              <p style="color: #dddddd; margin: 0; font-size: 14px;">
+                ${description}
+              </p>
+            </div>
+          `;
+
+          swiperWrapper.appendChild(slide);
+        });
+
+        // Initialize Swiper after adding items
+        const swiper = new Swiper('.init-swiper', {
+          loop: true,
+          speed: 600,
+          autoplay: { delay: 5000 },
+          slidesPerView: 1,
+          spaceBetween: 20,
+          pagination: { el: '.swiper-pagination', type: 'bullets', clickable: true },
+          lazy: true,
+          breakpoints: {
+            768: { slidesPerView: 2, spaceBetween: 30 },
+            1200: { slidesPerView: 3, spaceBetween: 30 }
+          }
+        });
+
+      } catch (error) {
+        console.error('Error fetching blog data:', error);
+        const swiperWrapper = document.querySelector('.swiper-wrapper');
+        swiperWrapper.innerHTML = '<p style="color: #ffffff; text-align: center;">Failed to load blog posts. Please try again later.</p>';
+      }
+    }
+
+    // Call render function on page load
+    document.addEventListener('DOMContentLoaded', renderBlogItems);
+  </script>
+</body>
+</html>
