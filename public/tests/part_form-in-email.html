@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form trong Email với AMP và Google Apps Script</title>
+    <script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
+    <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f8fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .email-preview, .explanation {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #4285f4;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .email-content {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #3367d6;
+        }
+        
+        .steps {
+            list-style-position: inside;
+        }
+        
+        .steps li {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .note {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+        }
+        
+        .success-message {
+            color: #4caf50;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error-message {
+            color: #f44336;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Form trong Email với AMP for Email</h1>
+            <p class="subtitle">Giải pháp tương tác trực tiếp trong email với Google Apps Script</p>
+        </header>
+        
+        <div class="content">
+            <div class="email-preview">
+                <h2 class="section-title">Mẫu AMP Email Form</h2>
+                <div class="email-content">
+                    <form id="ampEmailForm" method="post" action-xhr="https://script.google.com/macros/s/AKfycbyXYPdCI64JiZhgxoZ3Zz-eAph4D8nEjht1zKXqx0ay9XlPAHHIY55fJAJ5zp6j1Akk/exec" target="_top">
+                        <div class="form-group">
+                            <label for="name">Họ và tên:</label>
+                            <input type="text" id="name" name="name" placeholder="Nhập họ và tên của bạn" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" placeholder="Nhập địa chỉ email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="rating">Đánh giá dịch vụ:</label>
+                            <select id="rating" name="rating" required>
+                                <option value="">-- Chọn đánh giá --</option>
+                                <option value="5">Rất tốt ⭐⭐⭐⭐⭐</option>
+                                <option value="4">Tốt ⭐⭐⭐⭐</option>
+                                <option value="3">Bình thường ⭐⭐⭐</option>
+                                <option value="2">Không hài lòng ⭐⭐</option>
+                                <option value="1">Rất không hài lòng ⭐</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="comments">Ý kiến đóng góp:</label>
+                            <textarea id="comments" name="comments" rows="4" placeholder="Nhập ý kiến của bạn..."></textarea>
+                        </div>
+                        
+                        <button type="submit">Gửi phản hồi</button>
+                        
+                        <div submit-success>
+                            <template type="amp-mustache">
+                                <div class="success-message">
+                                    Cảm ơn bạn đã gửi phản hồi! Chúng tôi đã nhận được thông tin của bạn.
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <div submit-error>
+                            <template type="amp-mustache">
+                                <div class="error-message">
+                                    Đã xảy ra lỗi khi gửi biểu mẫu. Vui lòng thử lại sau.
+                                </div>
+                            </template>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="explanation">
+                <h2 class="section-title">Hướng dẫn triển khai</h2>
+                <ol class="steps">
+                    <li>Tạo Google Sheets để lưu trữ dữ liệu</li>
+                    <li>Tạo Google Apps Script với hàm doPost để xử lý dữ liệu form</li>
+                    <li>Tạo template email với AMP HTML</li>
+                    <li>Gửi email chứa form đến người dùng</li>
+                    <li>Dữ liệu sẽ được gửi đến script và lưu vào Sheets</li>
+                </ol>
+                
+                <div class="warning">
+                    <strong>Lưu ý quan trọng:</strong> AMP for Email chỉ được hỗ trợ bởi một số nhà cung cấp email (Gmail, Outlook, Mail.ru). Bạn cần xác thực domain và đáp ứng các yêu cầu kỹ thuật để sử dụng.
+                </div>
+                
+                <h3 class="section-title">Mã Google Apps Script</h3>
+                <div class="code-block">
+// Hàm xử lý dữ liệu từ AMP form
+function doPost(e) {
+  try {
+    var data = e.parameter;
+    
+    // Mở Google Sheets
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Thêm dữ liệu vào sheet
+    sheet.appendRow([
+      new Date(),
+      data.name,
+      data.email,
+      data.rating,
+      data.comments
+    ]);
+    
+    // Trả về response cho AMP Email
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        'message': 'Cảm ơn bạn đã gửi phản hồi!'
+      }))
+      .setMimeType(ContentService.MimeType.JSON)
+      .setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'AMP-Access-Control-Allow-Source-Origin': 'https://your-domain.com',
+        'Access-Control-Allow-Headers': 'Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token',
+        'Access-Control-Expose-Headers': 'AMP-Access-Control-Allow-Source-Origin'
+      });
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        'error': 'Đã xảy ra lỗi khi gửi biểu mẫu.'
+      }))
+      .setMimeType(ContentService.MimeType.JSON)
+      .setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'AMP-Access-Control-Allow-Source-Origin': 'https://your-domain.com',
+        'Access-Control-Allow-Headers': 'Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token',
+        'Access-Control-Expose-Headers': 'AMP-Access-Control-Allow-Source-Origin'
+      });
+  }
+}
+
+// Hàm gửi email chứa AMP form
+function sendAMPMail() {
+  var recipient = "nguoinhan@example.com";
+  var subject = "Khảo sát ý kiến khách hàng (AMP)";
+  
+  // Lấy URL triển khai Web App
+  var scriptUrl = ScriptApp.getService().getUrl();
+  
+  var htmlBody = createAMPEmail(scriptUrl);
+  var ampHtmlBody = createAMPEmailBody(scriptUrl);
+  
+  // Gửi email với cả HTML và AMP parts
+  GmailApp.sendEmail(recipient, subject, "Phiên bản thường của email (dành cho client không hỗ trợ AMP)", {
+    htmlBody: htmlBody,
+    ampHtmlBody: ampHtmlBody
+  });
+}
+
+// Hàm tạo AMP HTML cho email
+function createAMPEmailBody(scriptUrl) {
+  var ampHtml = `
+    <!doctype html>
+    <html amp4email>
+    <head>
+      <meta charset="utf-8">
+      <script async src="https://cdn.ampproject.org/v0.js"></script>
+      <script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
+      <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+      <style amp4email-boilerplate>body{visibility:hidden}</style>
+      <style amp-custom>
+        body {
+          font-family: Arial, sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        .form-group {
+          margin-bottom: 15px;
+        }
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+        }
+        input, select, textarea {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+        button {
+          background: #4285f4;
+          color: white;
+          border: none;
+          padding: 12px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .success-message {
+          color: #4caf50;
+          padding: 10px;
+          margin-top: 10px;
+        }
+        .error-message {
+          color: #f44336;
+          padding: 10px;
+          margin-top: 10px;
+        }
+      </style>
+    </head>
+    <body>
+      <h2>Khảo sát ý kiến khách hàng</h2>
+      <p>Vui lòng điền thông tin dưới đây:</p>
+      
+      <form method="post" action-xhr="${scriptUrl}" target="_top">
+        <div class="form-group">
+          <label for="name">Họ và tên:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="rating">Đánh giá dịch vụ:</label>
+          <select id="rating" name="rating" required>
+            <option value="">-- Chọn đánh giá --</option>
+            <option value="5">Rất tốt</option>
+            <option value="4">Tốt</option>
+            <option value="3">Bình thường</option>
+            <option value="2">Không hài lòng</option>
+            <option value="1">Rất không hài lòng</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="comments">Ý kiến đóng góp:</label>
+          <textarea id="comments" name="comments" rows="4"></textarea>
+        </div>
+        
+        <button type="submit">Gửi phản hồi</button>
+        
+        <div submit-success>
+          <template type="amp-mustache">
+            <div class="success-message">
+              Cảm ơn bạn đã gửi phản hồi! Chúng tôi đã nhận được thông tin của bạn.
+            </div>
+          </template>
+        </div>
+        
+        <div submit-error>
+          <template type="amp-mustache">
+            <div class="error-message">
+              Đã xảy ra lỗi khi gửi biểu mẫu. Vui lòng thử lại sau.
+            </div>
+          </template>
+        </div>
+      </form>
+    </body>
+    </html>
+  `;
+  
+  return ampHtml;
+}
+
+// Hàm tạo HTML thông thường cho email (fallback)
+function createAMPEmail(scriptUrl) {
+  var html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Khảo sát ý kiến khách hàng</title>
+      <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #4285f4; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; }
+      </style>
+    </head>
+    <body>
+      <h2>Khảo sát ý kiến khách hàng</h2>
+      <p>Vui lòng điền thông tin dưới đây:</p>
+      
+      <form action="${scriptUrl}" method="POST">
+        <div class="form-group">
+          <label for="name">Họ và tên:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="rating">Đánh giá dịch vụ:</label>
+          <select id="rating" name="rating" required>
+            <option value="">-- Chọn đánh giá --</option>
+            <option value="5">Rất tốt</option>
+            <option value="4">Tốt</option>
+            <option value="3">Bình thường</option>
+            <option value="2">Không hài lòng</option>
+            <option value="1">Rất không hài lòng</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="comments">Ý kiến đóng góp:</label>
+          <textarea id="comments" name="comments" rows="4"></textarea>
+        </div>
+        
+        <button type="submit">Gửi phản hồi</button>
+      </form>
+      
+      <p><em>Lưu ý: Nếu bạn thấy form này không hoạt động, vui lòng sử dụng phiên bản AMP của email.</em></p>
+    </body>
+    </html>
+  `;
+  
+  return html;
+}
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 - Form trong Email với AMP for Email và Google Apps Script</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('ampEmailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.querySelector('.success-message').style.display = 'block';
+            setTimeout(function() {
+                document.querySelector('.success-message').style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
