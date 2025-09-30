@@ -67,7 +67,7 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, #2A5C9A 0%, #F15E22 50%, #3A7D44 100%);
+            background: linear-gradient(90deg, #EA2035 0%, #7030A0 100%);
         }
 
         .card::before { top: 0; }
@@ -79,7 +79,7 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #2A5C9A;
+            /* border-bottom: 2px solid #EA2035; */
         }
 
         .logo-container {
@@ -89,7 +89,7 @@
         }
 
         .viettel-logo {
-            height: 80px;
+            height: 50px;
             width: auto;
         }
 
@@ -103,7 +103,7 @@
         .company-name {
             font-size: 24px;
             font-weight: 700;
-            color: #2A5C9A;
+            color: #000;
             text-align: center;
             flex-grow: 1;
         }
@@ -111,10 +111,10 @@
         .title {
             font-family: 'Playfair Display', serif;
             font-size: 32px;
-            color: #F15E22;
+            color: #000;
             text-align: center;
             margin: 20px 0;
-            text-decoration: underline;
+            /* text-decoration: underline; */
         }
 
         .section {
@@ -124,23 +124,23 @@
         .section-title {
             font-size: 20px;
             font-weight: 700;
-            color: #2A5C9A;
+            color: #EA2035;
             margin-bottom: 10px;
             padding-bottom: 5px;
-            border-bottom: 1px solid #F15E22;
+            border-bottom: 1px solid #000;
         }
 
         .content-editable {
             min-height: 50px;
             padding: 10px;
-            border: 1px dashed #ccc;
+            /* border: 1px dashed #ccc; */
             margin-bottom: 10px;
             border-radius: 5px;
         }
 
         .content-editable:focus {
             outline: none;
-            border: 1px solid #2A5C9A;
+            border: 1px solid #EA2035;
             background-color: #f8f9fa;
         }
 
@@ -161,20 +161,20 @@
         }
 
         .contact-card {
-            padding: 15px;
+            padding: 10px;
             background: #f8f9fa;
             border-radius: 5px;
-            border-left: 4px solid #2A5C9A;
+            border-left: 4px solid #EA2035;
         }
 
         .contact-card h3 {
             margin-top: 0;
-            color: #F15E22;
+            color: #EA2035;
             font-size: 16px;
         }
 
         .contact-details {
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .contact-details p {
@@ -192,7 +192,7 @@
 
         .toolbar button {
             padding: 10px 15px;
-            background: #2A5C9A;
+            background: #000;
             color: white;
             border: none;
             border-radius: 5px;
@@ -203,7 +203,7 @@
         }
 
         .toolbar button:hover {
-            background: #E67E22;
+            background: #EA2035;
             transform: translateY(-2px);
         }
 
@@ -229,18 +229,27 @@
             border-radius: 5px;
         }
 
+        .logo-input input:focus {
+            outline: none;
+            border: 2px solid #EA2035;
+        }
+
         .logo-input button {
             padding: 8px 15px;
-            background: #3A7D44;
+            background: #000;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
+        .logo-input button:hover {
+            background: #EA2035;
+            transform: translateY(-2px);
+        }
 
         .upload-btn {
             padding: 8px 15px;
-            background: #3A7D44;
+            background: #000;
             color: white;
             border: none;
             border-radius: 5px;
@@ -248,7 +257,10 @@
             font-size: 14px;
             width: 100%;
         }
-
+        .upload-btn:hover {
+            background: #EA2035;
+            transform: translateY(-2px);
+        }
         .appointment-form {
             display: none;
             position: fixed;
@@ -286,7 +298,7 @@
         }
 
         .form-group input, .form-group textarea {
-            width: 100%;
+            width: 95%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -300,11 +312,11 @@
         }
 
         .close-form {
-            background: #ccc !important;
+            background: #000 !important;
         }
 
         .submit-form {
-            background: #2A5C9A !important;
+            background: #EA2035 !important;
         }
 
         .corner-decoration {
@@ -317,29 +329,29 @@
         .corner-1 {
             top: 20px;
             left: 20px;
-            border-top: 3px solid #2A5C9A;
-            border-left: 3px solid #2A5C9A;
+            border-top: 3px solid #EA2035;
+            border-left: 3px solid #EA2035;
         }
 
         .corner-2 {
             top: 20px;
             right: 20px;
-            border-top: 3px solid #F15E22;
-            border-right: 3px solid #F15E22;
+            border-top: 3px solid #7030A0;
+            border-right: 3px solid #7030A0;
         }
 
         .corner-3 {
             bottom: 20px;
             left: 20px;
-            border-bottom: 3px solid #3A7D44;
-            border-left: 3px solid #3A7D44;
+            border-bottom: 3px solid #EA2035;
+            border-left: 3px solid #EA2035;
         }
 
         .corner-4 {
             bottom: 20px;
             right: 20px;
-            border-bottom: 3px solid #d35400;
-            border-right: 3px solid #d35400;
+            border-bottom: 3px solid #7030A0;
+            border-right: 3px solid #7030A0;
         }
 
         @media print {
@@ -385,6 +397,7 @@
 
 <body>
     <div class="container">
+        
         <div class="card" id="brochure-card">
             <div class="corner-decoration corner-1"></div>
             <div class="corner-decoration corner-2"></div>
@@ -392,12 +405,10 @@
             <div class="corner-decoration corner-4"></div>
 
             <div class="header">
-                <img class="viettel-logo" src="https://www.viettelsoftware.com/images/logo-1-2x-1.png" alt="Viettel Logo">
-                <div class="company-name">VIETTEL SOFTWARE</div>
+                <img class="viettel-logo" src="https://hr1tech.com/htdocs/images/owners/hr1tech/logo/202311/logo-jfif.png" alt="Viettel Logo">
+                <div class="company-name">GIỚI THIỆU TÓM TẮT</div>
                 <img id="partnerLogo" class="partner-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iODAiIGZpbGw9IiNlZWUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zNWVtIj5Mb2dvIMSOhOG7mWMgVOG7iyBUw6FjPC90ZXh0Pjwvc3ZnPg==" alt="Logo đối tác">
             </div>
-
-            <div class="title" contenteditable="true">GIỚI THIỆU TÓM TẮT</div>
 
             <div class="section">
                 <div class="section-title">VỀ VIETTEL SOFTWARE</div>
@@ -435,8 +446,8 @@
                 <div class="section-title">KINH NGHIỆM CỦA VIETTEL SOFTWARE</div>
                 <div class="content-editable" contenteditable="true">
                     <ul>
-                        <li><strong>Viễn thông & công nghệ mới</strong>: OSS, BSS, RMS, VAS, Big Data & Analytics, AI/ OCR/ LLM/ Callbot & Chatbot, Hàng không (SMS, EFB, FMS, AMS), SDS (Smart City, e-Government, AgriTech, Edutech/HIS).</li>
-                        <li><strong>Quản trị doanh nghiệp</strong>: ERP/ EAS, CRM, Super App/Portal, SMOS, MES, e-OFFICE, QPMS/LIMS.</li>
+                        <li><strong>Viễn thông & công nghệ mới</strong>: OSS, BSS, RMS, VAS, Big Data & Analytics, AI/ OCR/ LLM/ Agent/ Callbot & Chatbot, IoT/ RPA, Hàng không (SMS, EFB, FMS, AMS), SDS (Smart City, e-Government, AgriTech, Edutech/HIS).</li>
+                        <li><strong>Quản trị doanh nghiệp</strong>: ERP/ EAS, CRM, Super App/Portal, SMOS, MES-AIOT, e-OFFICE, QA/QC/LIMS.</li>
                         <li><strong>Tài chính số</strong>: Ví điện tử, Ngân hàng số, Cổng tài chính, Thu hồi/ Xử lý nợ, Bảo hiểm, Xổ số, Phiếu tặng.</li>
                     </ul>
                 </div>
@@ -444,13 +455,17 @@
 
             <div class="section">
                 <div class="section-title">LIÊN HỆ VỚI VIETTEL SOFTWARE</div>
+                <div>
+                    <p style="width: 100%; text-align: center; font-size: 16.5px;"><strong>CÔNG TY TNHH MTV ĐẦU TƯ CÔNG NGHỆ VIETTEL (VTIT) - VIETTEL SOFTWARE</strong></p>
+                    <p style="width: 100%; text-align: center;"><i class="bi bi-globe" style="color: #EA2035;"></i> <a href="httpts://viettelsoftware.com" target="_blank" style="text-decoration: none; color: inherit;">httpts://viettelsoftware.com</a>  |  <i class="bi bi-shield-check" style="color: #EA2035;"></i> <a href="https://thuvienphapluat.vn/ma-so-thue/cong-ty-trach-nhiem-huu-han-mot-thanh-vien-dau-tu-cong-nghe-viettel-mst-2801045888.html" target="_blank" style="text-decoration: none; color: inherit;">Mã số thuế: 2801045888</a></p>
+                </div>
                 <div class="two-column">
                     <div class="column">
                         <div class="contact-card">
                             <h3>TRỤ SỞ CHÍNH</h3>
-                            <div class="contact-details">
+                            <div class="contact-details" contenteditable="true" id="editHaNoi">
                                 <p><i class="bi bi-geo-alt"></i> 36A Dịch Vọng Hậu, Cầu Giấy, Hà Nội</p>
-                                <p><i class="bi bi-telephone"></i> +84 988889446</p>
+                                <p><i class="bi bi-telephone"></i> +84-988889446</p>
                                 <p><i class="bi bi-envelope"></i> contact@viettelsoftware.com</p>
                             </div>
                         </div>
@@ -460,16 +475,15 @@
                             <h3>VĂN PHÒNG MIỀN NAM</h3>
                             <div class="contact-details">
                                 <p><i class="bi bi-geo-alt"></i> Tòa nhà Viettel, 285 CMT8, Hòa Hưng, HCM</p>
-                                <p><i class="bi bi-telephone"></i> +84-983667248 (Mr. Phụng)</p>
-                                <p><i class="bi bi-envelope"></i> phunghm2@viettel.com.vn</p>
-                                <p><i class="bi bi-envelope"></i> phunghm@viettelsoftware.com</p>
+                                <p><i class="bi bi-telephone"></i> <strong>Mr. Phụng</strong> +84-983667248 
+                                    <a href="http://zalo.me/84983667248" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/50px-Icon_of_Zalo.svg.png" style="height: 14px; width: auto;"></a>
+                                    <a href="viber://chat?number=%2B84983667248" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Viber_logo.svg/2560px-Viber_logo.svg.png" style="height: 14px; width: auto;"></a>
+                                    <a href="https://wa.me/84983667248" target="_blank"><img src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg" style="height: 14px; width: auto;"></a>
+                                </p>
+                                <p><i class="bi bi-envelope"></i> <a href="mailto:phunghm@viettelsoftware.com" target="_blank" style="text-decoration: none; color: inherit;">phunghm@viettelsoftware.com</a></p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="content-editable" contenteditable="true" style="margin-top: 15px;">
-                    <p><strong>Website:</strong> https://www.viettelsoftware.com</p>
-                    <p><strong>MST:</strong> 2801045888</p>
                 </div>
             </div>
         </div>
@@ -499,7 +513,7 @@
     <!-- Form đặt lịch hẹn -->
     <div class="form-overlay" id="formOverlay"></div>
     <div class="appointment-form" id="appointmentForm">
-        <h2>Đặt lịch hẹn với Viettel Software</h2>
+        <h2 style="color: #EA2035;">Đặt lịch hẹn với Viettel Software</h2>
         <form id="appointmentFormData">
             <div class="form-group">
                 <label for="name">Họ và tên *</label>
@@ -530,8 +544,8 @@
                 <textarea id="purpose" rows="3" required></textarea>
             </div>
             <div class="form-buttons">
-                <button type="button" class="close-form" id="closeFormBtn">Đóng</button>
-                <button type="submit" class="submit-form">Gửi yêu cầu</button>
+                <button type="button" class="upload-btn" id="closeFormBtn">Đóng</button>
+                <button type="submit" class="upload-btn">Gửi yêu cầu</button>
             </div>
         </form>
     </div>
@@ -728,12 +742,12 @@ Mục đích: ${purpose}
         // Export to Word
         exportWordBtn.addEventListener('click', function() {
             // Lấy nội dung từ thẻ contenteditable
-            const title = document.querySelector('.title').innerText;
+            // const title = document.querySelector('.title').innerText;
             const aboutContent = document.querySelectorAll('.content-editable')[0].innerHTML;
             const reasonsContent = document.querySelectorAll('.content-editable')[1].innerHTML;
             const servicesContent = document.querySelectorAll('.content-editable')[2].innerHTML;
             const experienceContent = document.querySelectorAll('.content-editable')[3].innerHTML;
-            const contactContent = document.querySelectorAll('.content-editable')[4].innerHTML;
+            const contactContent = document.getElementById('editHaNoi').innerHTML;
             
             // Tạo nội dung HTML cho Word
             const htmlContent = `
@@ -743,20 +757,20 @@ Mục đích: ${purpose}
                     <meta charset="UTF-8">
                     <style>
                         body { font-family: Arial, sans-serif; margin: 20px; }
-                        h1 { color: #F15E22; text-align: center; }
-                        h2 { color: #2A5C9A; border-bottom: 1px solid #F15E22; padding-bottom: 5px; }
+                        h1 { color: #000; text-align: center; }
+                        h2 { color: #EA2035; border-bottom: 1px solid #000; padding-bottom: 5px; }
                         ul { padding-left: 20px; }
                         li { margin-bottom: 8px; }
                         .contact-card { 
                             background: #f8f9fa; 
                             padding: 15px; 
                             margin: 10px 0; 
-                            border-left: 4px solid #2A5C9A; 
+                            border-left: 4px solid #EA2035; 
                         }
                     </style>
                 </head>
                 <body>
-                    <h1>${title}</h1>
+                    
                     
                     <h2>VỀ VIETTEL SOFTWARE</h2>
                     ${aboutContent}
@@ -788,18 +802,18 @@ Mục đích: ${purpose}
         exportVCardBtn.addEventListener('click', function() {
             const vCardData = `BEGIN:VCARD
 VERSION:3.0
-FN:Mr. Lê Minh Phụng
+FN:Mr. Hoàng Minh Phụng
 ORG:Viettel Software
 TEL;TYPE=CELL,WORK:+84983667248
-EMAIL;TYPE=WORK:phunghm2@viettel.com.vn
 EMAIL;TYPE=WORK:phunghm@viettelsoftware.com
+EMAIL;TYPE=WORK:phunghm2@viettel.com.vn
 ADR;TYPE=WORK:;;Tòa nhà Viettel, 285 CMT8;Hòa Hưng;Hồ Chí Minh;;Việt Nam
 URL:https://www.viettelsoftware.com
 END:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'Lê Minh Phụng_Viettel Software.vcf';
+            link.download = 'Hoàng Minh Phụng_Viettel Software.vcf';
             link.click();
         });
         
