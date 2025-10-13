@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>HATHYO Appreciation Certificate for Van Thi Ngoc Anh</title>
+  
+  <!-- Favicons -->
+  <link href="../assets/img/Logo_Hathyo/favicon_io/favicon.ico" rel="icon">
+  <link href="../assets/img/Logo_Hathyo/favicon_io/favicon.ico" rel="apple-touch-icon">
+  
+  <!-- Mã hóa ký tự -->
+  <meta charset="UTF-8">
+
+  <!-- Mô tả trang (SEO) -->
+  <meta name="description" content="HATHYO Appreciation Certificate for Van Thi Ngoc Anh">
+
+  <!-- Từ khóa (SEO) -->
+  <meta name="keywords" content="LAZINET, HATHYO">
+
+  <!-- Tác giả -->
+  <meta name="author" content="LAZINET Technologies, LAZINET, HATHYO">
+
+  <!-- Robots (cho phép các công cụ tìm kiếm lập chỉ mục) -->
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph (hiển thị tốt trên mạng xã hội như Facebook) -->
+  <meta property="og:title" content="HATHYO Appreciation Certificate for Van Thi Ngoc Anh">
+  <meta property="og:description" content="HATHYO Appreciation Certificate for Van Thi Ngoc Anh">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hathyo.com">
+  <meta property="og:image" content="">
+
+  <!-- Twitter Card (hiển thị trên Twitter) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HATHYO Appreciation Certificate for Van Thi Ngoc Anh">
+  <meta name="twitter:description" content="HATHYO Appreciation Certificate for Van Thi Ngoc Anh">
+  <meta name="twitter:image" content="../assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Square_LogoOnly_NarrowBufffer.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(0deg, #500050, #7030A0, #FFFFCC);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      z-index: 10;
+      position: relative;
+    }
+    
+    h2 {
+      color: #0A703F;
+      margin-top: 10px;
+      /* text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); */
+      font-size: 1.2rem;
+    }
+    h3 {
+      color: #FF6300;
+      margin-bottom: 10px;
+      /* text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); */
+      font-size: 0.9rem;
+    }
+    .certificate-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      background: #fff;
+    }
+    
+    .certificate-container:hover {
+      transform: scale(1.02);
+    }
+    
+    .certificate-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .certificate-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .certificate-container:hover .certificate-overlay {
+      opacity: 1;
+    }
+    
+    .message {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #8B4513;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7);
+      padding: 15px 25px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease 0.2s;
+    }
+    
+    .certificate-container.active .message {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .click-instruction {
+      font-size: 0.8rem;
+      color: white;
+      text-align: center;
+      font-style: italic;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* Hiệu ứng sao */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .star {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.7);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      opacity: 0;
+      animation: twinkle 4s infinite ease-in-out;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5) translate(0, 0); }
+      25% { opacity: 0.7; transform: scale(1) translate(5px, 5px); }
+      50% { opacity: 1; transform: scale(1.1) translate(-3px, 8px); }
+      75% { opacity: 0.7; transform: scale(1) translate(7px, -5px); }
+    }
+    
+    /* Hiệu ứng hoa */
+    .flowers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .flower {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      opacity: 0;
+      animation: bloom 6s infinite ease-in-out;
+    }
+    
+    .flower::before, .flower::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    
+    .flower::before {
+      transform: translateX(-50%) rotate(45deg);
+    }
+    
+    .flower::after {
+      transform: translateX(-50%) rotate(-45deg);
+    }
+    
+    @keyframes bloom {
+      0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg) translate(0, 0); }
+      25% { opacity: 0.6; transform: scale(0.8) rotate(90deg) translate(10px, 5px); }
+      50% { opacity: 0.8; transform: scale(1) rotate(180deg) translate(-5px, 10px); }
+      75% { opacity: 0.6; transform: scale(0.8) rotate(270deg) translate(5px, -5px); }
+    }
+    
+    /* Hiệu ứng hoa rơi toàn màn hình */
+    .falling-flowers {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    
+    .falling-flower {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0;
+      z-index: 5;
+      animation: falling linear forwards;
+    }
+    
+    @keyframes falling {
+      0% {
+        opacity: 1;
+        transform: translateY(-100px) rotate(0deg) scale(0.8);
+      }
+      80% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(360deg) scale(1.2);
+      }
+    }
+    
+    /* Hiệu ứng trái tim */
+    .hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      animation: float 8s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { opacity: 0; transform: translateY(0) scale(0.5) translateX(0); }
+      20% { opacity: 0.7; transform: translateY(-20px) scale(1) translateX(10px); }
+      40% { opacity: 1; transform: translateY(-40px) scale(1.1) translateX(-5px); }
+      60% { opacity: 0.8; transform: translateY(-30px) scale(1) translateX(8px); }
+      80% { opacity: 0.6; transform: translateY(-10px) scale(0.9) translateX(-3px); }
+    }
+    
+    /* Nút hành động */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .action-button {
+      padding: 12px 20px;
+      background: #0A703F;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .action-button:hover {
+      background: #F15E22;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Contact Form Styles */
+    .contact-card {
+      width: 800px;
+      height: auto;
+      padding: 15px;
+      display: none;
+      flex-direction: column;
+      margin: 20px auto;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    
+    .contact-card.active {
+      display: flex;
+    }
+    
+    :root {
+      --primary-color: #0A703F;
+      --secondary-color: #F15E22;
+      --background-color: #f9f9f9;
+      --text-color: #333;
+      --light-gray: #f0f0f0;
+      --border-color: #ddd;
+      --success-color: #4caf50;
+      --error-color: #f44336;
+      --warning-color: #ff9800;
+    }
+    
+    .contact-container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    
+    .contact-logo {
+      text-align: center;
+      padding: 15px;
+      background-color: var(--background-color);
+    }
+    
+    .contact-logo img {
+      width: 200px;
+      height: auto;
+      max-width: 100%;
+    }
+    
+    .contact-section {
+      padding: 20px;
+    }
+    
+    .contact-section h2 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 25px;
+      font-size: 24px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .contact-section h2::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background-color: var(--secondary-color);
+      margin: 10px auto 0;
+    }
+    
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    
+    .form-group label {
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--primary-color);
+      font-size: 14px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(25, 101, 143, 0.1);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .contact-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .contact-button:hover {
+      background-color: #144a6d;
+    }
+    
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .message-box {
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .message-box.success {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--success-color);
+      border: 1px solid var(--success-color);
+    }
+    
+    .message-box.error {
+      background-color: rgba(244, 67, 54, 0.1);
+      color: var(--error-color);
+      border: 1px solid var(--error-color);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .message {
+        font-size: 1.6rem;
+        padding: 10px 15px;
+      }
+      
+      .click-instruction {
+        font-size: 0.6rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .action-button {
+        width: 250px;
+        justify-content: center;
+      }
+      
+      .contact-card {
+        width: 300px;
+      }
+      
+      .contact-section {
+        padding: 15px !important;
+      }
+      
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .form-row .form-group {
+        flex: 1 1 100%;
+      }
+      
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 10px 12px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+      
+      .message {
+        font-size: 1.3rem;
+      }
+      
+      .click-instruction {
+        font-size: 0.7rem;
+      }
+    }
+    
+    .footer {
+      margin-top: 30px;
+      color: white;
+      font-size: 1rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="../assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Full.png" alt="Logo" style="width: 300px; height: auto;">
+    <h2>Sàn TMĐT Sức khỏe & Lành mạnh HATHYO</h2>
+    <h3>Cám ơn sự đóng góp của bạn vào sự phát triển của dự án HATHYO</h3>
+    
+    <div class="certificate-container" id="certificate">
+      <!-- Hình ảnh giấy chứng nhận với logo CLB -->
+      <div style="position: relative; width: 100%; height: 100%;">
+        <img src="../competence/AnhVanOM2509.png" alt="Giấy Chứng Nhận" class="certificate-image">
+        
+
+      </div>
+      
+      <!-- Hiệu ứng sao -->
+      <div class="stars" id="stars"></div>
+      
+      <!-- Hiệu ứng hoa -->
+      <div class="flowers" id="flowers"></div>
+      
+      <!-- Hiệu ứng trái tim -->
+      <div class="hearts" id="hearts"></div>
+      
+      <!-- Lớp phủ với thông điệp -->
+      <div class="certificate-overlay">
+        <div class="message" id="message">Chúc mừng Ngọc Ánh!</div>
+      </div>
+    </div>
+    
+    <div class="click-instruction">
+      Nhấp vào màn hình để tung hoa chúc mừng!
+    </div>
+    
+    <div class="action-buttons">
+      <button class="action-button" onclick="shareCertificate()">
+        <i class="fas fa-share-alt"></i> Chia sẻ
+      </button>
+      <button class="action-button" onclick="downloadCertificate()">
+        <i class="fas fa-download"></i> Tải ảnh
+      </button>
+      <button class="action-button" onclick="toggleContactForm()">
+        <i class="fas fa-envelope"></i> Nhắn tin
+      </button>
+    </div>
+    
+    <!-- Contact Section -->
+    <div class="contact-card" id="contact">
+      <div class="contact-container">     
+        <div class="contact-section">
+          <h2><span style="color: #F15E22;">Liên hệ </span><span style="color: #0A703F;">HATHYO</span></h2>
+          <form id="contactForm" method="POST">
+            <div class="form-row">
+              <div class="form-group" style="flex: 1 1 calc(50% - 8px);">
+                <label for="name">Quý danh:</label>
+                <input type="text" id="name" name="name" required placeholder="Nhập họ tên của bạn">
+              </div>
+              
+              <div class="form-group" style="flex: 1 1 calc(50% - 8px);">
+                <label for="userType">Mục đích:</label>
+                <select id="userType" name="userType" required>
+                  <option value="" disabled selected>Chọn mục đích</option>
+              <option value="Bán hàng">Bán hàng</option>
+              <option value="Mua hàng">Mua hàng</option>
+              <option value="Vận chuyển">Vận chuyển</option>
+              <option value="Thanh toán">Thanh toán</option>
+              <option value="Đổi trả">Đổi trả hàng</option>             
+              <option value="Khiếu kiện">Khiếu kiện</option>
+              <option value="Thuế">Thuế</option>
+              <option value="Phí">Phí</option>
+              <option value="Phản ánh TCXH">Phản ánh của TCXH</option>
+              <option value="Hợp tác kinh doanh">Hợp tác kinh doanh</option>
+              <option value="Cộng tác nội dung">Cộng tác nội dung</option>
+              <option value="Sản phẩm, dịch vụ">Sản phẩm, dịch vụ</option>
+              <option value="Tư vấn sức khỏe">Tư vấn sức khỏe</option>
+              <option value="Cơ hội việc làm">Cơ hội việc làm</option>
+              <option value="Góp ý">Góp ý</option>
+              <option value="Other">Khác</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group" id="otherTypeGroup" style="display: none;">
+              <label for="otherType">Chi tiết mục đích khác:</label>
+              <input type="text" id="otherType" name="otherType" placeholder="Mô tả mục đích liên hệ của bạn">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group" style="flex: 1 1 calc(50% - 8px);">
+                <label for="phone">Số điện thoại:</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Nhập số điện thoại">
+              </div>
+              
+              <div class="form-group" style="flex: 1 1 calc(50% - 8px);">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="Nhập địa chỉ email">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Tiêu đề:</label>
+              <input type="text" id="subject" name="subject" required placeholder="Nhập tiêu đề liên hệ">
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Nội dung:</label>
+              <textarea id="message" name="message" rows="5" required placeholder="Nhập nội dung chi tiết bạn muốn gửi đến CLB"></textarea>
+            </div>
+            
+            <button type="submit" class="contact-button" id="submitBtn">
+              <span class="button-text">Gửi HATHYO</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p style="border-radius:10px; background-color: #ddd; color: #0A703F; text-shadow: none;">
+        <b>HATHYO</b> &copy; 2025-
+        <script>document.write(new Date().getFullYear());</script>. Supported by 
+        <a href="https://lazinet.com/bizcards/phung-hoang.html" target="_blank" style="text-decoration: none; color: inherit;">
+        <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span></a>
+    </p>
+    </div>
+  </div>
+
+  <!-- Container cho hoa rơi toàn màn hình -->
+  <div class="falling-flowers" id="fallingFlowers"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const certificate = document.getElementById('certificate');
+      const message = document.getElementById('message');
+      const starsContainer = document.getElementById('stars');
+      const flowersContainer = document.getElementById('flowers');
+      const heartsContainer = document.getElementById('hearts');
+      const fallingFlowersContainer = document.getElementById('fallingFlowers');
+      const contactCard = document.getElementById('contact');
+      
+      // Mảng màu sắc nhạt hơn
+      const pastelColors = [
+        '#FFB6C1', '#FFD700', '#98FB98', '#87CEEB', '#DDA0DD', '#F0E68C',
+        '#FFA07A', '#20B2AA', '#FF69B4', '#00CED1', '#FFDAB9', '#B0E0E6',
+        '#FFC0CB', '#E6E6FA', '#FFFACD', '#F5DEB3', '#D8BFD8', '#F0FFF0'
+      ];
+      
+      // Mảng màu sắc rực rỡ cho hoa rơi
+      const vibrantColors = [
+        '#FF0000', '#FF4500', '#FF8C00', '#FFD700', '#ADFF2F', '#32CD32',
+        '#00FF00', '#00FA9A', '#00CED1', '#1E90FF', '#0000FF', '#8A2BE2',
+        '#FF00FF', '#DC143C', '#FF1493', '#FF69B4', '#DA70D6', '#BA55D3'
+      ];
+      
+      // Mảng biểu tượng hoa
+      const flowerIcons = ['❀', '✿', '❁', '🌸', '🌺', '🌼', '🌷', '💮', '🏵️'];
+      
+      // Tạo các ngôi sao với màu sắc và vị trí ngẫu nhiên
+      for (let i = 0; i < 20; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        const size = Math.random() * 10 + 8;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 4 + 's';
+        star.style.backgroundColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+        starsContainer.appendChild(star);
+      }
+      
+      // Tạo các bông hoa với màu sắc và vị trí ngẫu nhiên
+      for (let i = 0; i < 15; i++) {
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.style.left = Math.random() * 60 + '%';
+        flower.style.top = Math.random() * 60 + '%';
+        flower.style.animationDelay = Math.random() * 6 + 's';
+        
+        const flowerColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+        
+        const before = document.createElement('div');
+        before.style.position = 'absolute';
+        before.style.width = '50%';
+        before.style.height = '50%';
+        before.style.borderRadius = '50%';
+        before.style.backgroundColor = flowerColor;
+        before.style.opacity = '0.5';
+        before.style.transform = 'translateX(-50%) rotate(45deg)';
+        
+        const after = document.createElement('div');
+        after.style.position = 'absolute';
+        after.style.width = '100%';
+        after.style.height = '100%';
+        after.style.borderRadius = '50%';
+        after.style.backgroundColor = flowerColor;
+        after.style.opacity = '0.5';
+        after.style.transform = 'translateX(-50%) rotate(-45deg)';
+        
+        flower.appendChild(before);
+        flower.appendChild(after);
+        flowersContainer.appendChild(flower);
+      }
+      
+      // Tạo các trái tim với màu sắc và vị trí ngẫu nhiên
+      for (let i = 0; i < 12; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤';
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.top = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 8 + 's';
+        heart.style.color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+        heart.style.fontSize = (Math.random() * 15 + 8) + 'px';
+        heartsContainer.appendChild(heart);
+      }
+      
+      // Xử lý sự kiện click toàn bộ body
+      document.body.addEventListener('click', function(e) {
+        // Tạo hiệu ứng hoa rơi
+        createFallingFlowers();
+        
+        // Hiển thị thông điệp nếu click vào certificate
+        if (e.target.closest('#certificate')) {
+          certificate.classList.add('active');
+          setTimeout(() => {
+            certificate.classList.remove('active');
+          }, 3000);
+        }
+      });
+      
+      // Hàm tạo hiệu ứng hoa rơi toàn màn hình
+      function createFallingFlowers() {
+        const flowerCount = 30 + Math.floor(Math.random() * 20);
+        
+        for (let i = 0; i < flowerCount; i++) {
+          const flower = document.createElement('div');
+          flower.classList.add('falling-flower');
+          
+          // Chọn ngẫu nhiên một biểu tượng hoa
+          const flowerIcon = flowerIcons[Math.floor(Math.random() * flowerIcons.length)];
+          flower.innerHTML = flowerIcon;
+          
+          // Màu sắc rực rỡ
+          flower.style.color = vibrantColors[Math.floor(Math.random() * vibrantColors.length)];
+          
+          // Kích thước ngẫu nhiên
+          const size = Math.random() * 30 + 20;
+          flower.style.fontSize = size + 'px';
+          
+          // Vị trí bắt đầu ngẫu nhiên
+          flower.style.left = Math.random() * 100 + 'vw';
+          
+          // Thời gian rơi ngẫu nhiên
+          const duration = Math.random() * 3 + 3;
+          flower.style.animation = `falling ${duration}s linear forwards`;
+          
+          // Độ trễ ngẫu nhiên
+          flower.style.animationDelay = Math.random() * 2 + 's';
+          
+          fallingFlowersContainer.appendChild(flower);
+          
+          // Xóa hoa sau khi animation kết thúc
+          setTimeout(() => {
+            if (flower.parentNode) {
+              flower.parentNode.removeChild(flower);
+            }
+          }, (duration + 2) * 1000);
+        }
+      }
+      
+      // Hàm chia sẻ giấy chứng nhận
+      window.shareCertificate = function() {
+        if (navigator.share) {
+          navigator.share({
+            title: 'Giấy chứng nhận kinh nghiệm',
+            text: 'Ánh Văn - HATHYO Operation Manager!',
+            url: window.location.href
+          })
+          .catch(error => console.log('Lỗi chia sẻ:', error));
+        } else {
+          // Fallback cho trình duyệt không hỗ trợ Web Share API
+          alert('Chức năng chia sẻ không khả dụng trên trình duyệt này. Vui lòng sao chép đường link và chia sẻ thủ công.');
+        }
+      };
+      
+      // Hàm tải ảnh giấy chứng nhận (không có hiệu ứng)
+      window.downloadCertificate = function() {
+        // Tạm thời ẩn các hiệu ứng
+        const effects = document.querySelectorAll('.stars, .flowers, .hearts, .certificate-overlay');
+        effects.forEach(effect => effect.style.display = 'none');
+        
+        html2canvas(document.getElementById('certificate'), { 
+          scale: 2, 
+          useCORS: true,
+          backgroundColor: null
+        }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'HATHYO-Appreciation-Certificate-AnhVan.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          
+          // Hiển thị lại các hiệu ứng
+          effects.forEach(effect => effect.style.display = '');
+        });
+      };
+      
+      // Hàm toggle form liên hệ
+      window.toggleContactForm = function() {
+        contactCard.classList.toggle("active");
+      };
+      
+      // Contact Form Script
+      const elements = {
+        contactForm: document.getElementById('contactForm'),
+        userTypeSelect: document.getElementById('userType'),
+        otherTypeGroup: document.getElementById('otherTypeGroup'),
+        otherType: document.getElementById('otherType'),
+        submitBtn: document.getElementById('submitBtn'),
+        buttonText: document.querySelector('#submitBtn .button-text'),
+        spinner: document.querySelector('#submitBtn .spinner'),
+      };
+
+      // Toggle other type input visibility and required attribute
+      const handleUserTypeChange = () => {
+        const isOther = elements.userTypeSelect.value === 'Other';
+        elements.otherTypeGroup.style.display = isOther ? 'block' : 'none';
+        elements.otherType.toggleAttribute('required', isOther);
+      };
+
+      // Update button state (text, color, disabled, spinner)
+      const updateButtonState = ({ text, color, disabled = false, showSpinner = false }) => {
+        elements.buttonText.textContent = text;
+        elements.submitBtn.style.color = color;
+        elements.submitBtn.disabled = disabled;
+        elements.spinner.style.display = showSpinner ? 'inline-block' : 'none';
+      };
+
+      // Handle form submission
+      const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        updateButtonState({ text: 'Đang gửi...', color: '#ffff00', disabled: true, showSpinner: true });
+
+        try {
+          const formData = new FormData(elements.contactForm);
+          formData.append('action', 'submitContactForm');
+
+          // THAY THẾ ĐƯỜNG DẪN SCRIPT CỦA BẠN VÀO ĐÂY
+          const response = await fetch(
+            'https://script.google.com/macros/s/AKfycbyetL0f1MIif2VbKw05PnT4c0d-ASsFEAoJOGS3sp467W-0ndoDkTszau_AXHqGtcrt/exec',
+            {
+              method: 'POST',
+              body: formData,
+              headers: { 'Origin': window.location.origin },
+            }
+          );
+
+          const result = await response.json();
+          const success = result.status === 'success';
+          const message = result.message || (success ? 'Đã gửi thành công!' : 'Có lỗi xảy ra khi gửi mẫu tin');
+
+          updateButtonState({ text: message, color: success ? '#00FF00' : '#FF6300' });
+
+          if (success) {
+            setTimeout(() => elements.contactForm.reset(), 3000);
+          }
+        } catch (error) {
+          updateButtonState({ text: 'Lỗi kết nối. Vui lòng thử lại sau.', color: '#FF6300' });
+          console.error('Error:', error);
+        } finally {
+          setTimeout(() => updateButtonState({ text: 'Gửi HATHYO', color: '' }), 3000);
+        }
+      };
+
+      // Attach event listeners
+      elements.userTypeSelect.addEventListener('change', handleUserTypeChange);
+      elements.contactForm.addEventListener('submit', handleFormSubmit);
+    });
+  </script>
+</body>
+</html>
