@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>LAZINET - Effective Technologies with Anh Van</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="/assets/img/lazinet_LogoOnly.png" rel="icon">
+  <link href="/assets/img/lazinet_LogoOnly.png" rel="apple-touch-icon">
+
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      width: 500px;
+      height: 300px;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+      position: relative;
+    }
+    .left-section {
+      width: 40%;
+      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 60%, #ff6302 80%, blue 100%);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      gap: 10px;
+    }
+    .left-section .logo img {
+      width: 150px;
+      height: 150px;
+    }
+    .left-section .profile-pic img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10%;
+      border: 2px solid #fff;
+      object-fit: cover;
+    }
+    .left-section .intro {
+      font-style: italic;
+      font-size: 11px;
+      text-align: center;
+      margin-top: 5px;
+      color: #333;
+    }
+    .right-section {
+      width: 60%;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .right-section h2 {
+      font-size: 22px;
+      color: #ff6302;
+      position: relative;
+      margin: 0;
+      padding-top: 20px;
+    }
+    .right-section h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 2px;
+      background-color: #ff6302;
+    }
+    .right-section .position {
+      font-size: 14px;
+      color: blue;
+      margin-bottom: 10px;
+    }
+    .right-section p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .right-section p strong {
+      color: blue;
+    }
+    .right-section a {
+      color: blue;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .right-section a:hover {
+      color: #ff6302;
+      text-decoration: underline;
+    }
+    .bottom-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0;
+    }
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .social-links a {
+      text-decoration: none;
+      color: #fff;
+      background: blue;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      transition: background 0.3s ease;
+      text-align: left;
+    }
+    .social-links a:hover {
+      background: #ff6302;
+      color: white;
+    }
+    .qr-code {
+      text-align: center;
+    }
+    .qr-code img {
+      width: 100px;
+      height: 100px;
+    }
+    .export-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .export-buttons button {
+      padding: 10px 20px;
+      background: blue;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .export-buttons button:hover {
+      background: #ff6302;
+    }
+    @media (max-width: 550px) {
+      .card {
+        width: 300px;
+        height: 500px;
+        flex-direction: column;
+        margin: 0 auto;
+      }
+      .left-section {
+        width: 100%;
+        height: 40%;
+        /* padding: 10px; */
+        flex-direction: row; /* Dàn ngang logo và profile-pic */
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        gap: 10px;
+      }
+      .right-section {
+        width: 100%;
+        height: 60%;
+        padding: 10px;
+      }
+      .left-section .logo img {
+        width: 120px; /* Giảm kích thước để vừa */
+        height: 120px;
+        padding-top: 18px; 
+      }
+      .left-section .profile-pic img {
+        width: 100px;
+        height: 100px;
+        /* border-radius: 0%; */
+      }
+      .left-section .intro {
+        display: none; /* Ẩn intro để tiết kiệm không gian */
+      }
+      .right-section h2 {
+        font-size: 18px;
+        padding-top: 10px; /* Giảm padding-top trên mobile */
+      }
+      .right-section .position {
+        font-size: 12px;
+      }
+      .right-section p {
+        font-size: 12px;
+      }
+      .bottom-section {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .social-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 5px;
+      }
+      .qr-code img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    .icon-orange {
+      color: #ff6302;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="business-card">
+    <div class="left-section">
+      <div class="logo">
+        <a href="https://lazinet.com/"><img src="/assets/img/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
+      </div>
+      <div class="profile-pic">
+        <img src="/assets/img/team/Anh-Van-2.jpg" alt="Profile Picture">
+      </div>
+    </div>
+    <div class="right-section">
+      <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+      <div style="position: relative; z-index: 1;">
+        <div>
+          <h2>VĂN THỊ NGỌC ÁNH</h2>
+          <h3 class="position">Operation Manager</h3>
+          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Phu Nhuan, HCMC, VN</a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0973022327">(+84) 0973 022 327</a></p>
+          <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
+        </div>
+        <div class="bottom-section">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/company/lazinet" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
+            <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
+          </div>
+          <div class="qr-code" id="qrcode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="export-buttons">
+    <button onclick="exportToPNG()">Export PNG</button>
+    <!-- <button onclick="exportToSVG()">Export SVG</button> -->
+    <button onclick="exportToVCard()">Export vCard</button>
+    <button onclick="exportToPDF()">Export PDF</button>
+  </div>
+
+  <script>
+    // Tạo mã QR từ URL và chèn vào div#qrcode
+    const url = "https://lazinet.com/bizcards/anh-van.html";
+    new QRCode(document.getElementById("qrcode"), {
+      text: url,
+      width: 100,
+      height: 100,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    // Export card thành PNG
+    function exportToPNG() {
+      html2canvas(document.getElementById("business-card"), {
+        scale: 2,
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "LAZINET Anh-Van.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    // Xuất card thành vCard
+    function exportToVCard() {
+const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+N:Van;Anh;;;
+FN:Anh Van
+ORG:LAZINET
+TITLE:Operation Manager
+ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84973022327
+EMAIL:email@lazinet.com
+URL:https://lazinet.com/
+END:VCARD
+`.trim();
+
+      const blob = new Blob([vCardData], { type: "text/vcard" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "LAZINET Anh-Van.vcf";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Xuất card thành PDF (đã sửa để thích ứng màn hình nhỏ)
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const cardElement = document.getElementById("business-card");
+      const isMobile = window.innerWidth <= 550; // Kiểm tra màn hình nhỏ
+
+      const doc = new jsPDF({
+        orientation: isMobile ? "portrait" : "landscape", // Dọc nếu mobile, ngang nếu desktop
+        unit: "px",
+        format: isMobile ? [300, 500] : [500, 300] // Kích thước tùy theo layout
+      });
+
+      html2canvas(cardElement, {
+        scale: 2,
+        useCORS: true
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const width = isMobile ? 300 : 500;
+        const height = isMobile ? 500 : 300;
+        doc.addImage(imgData, "PNG", 0, 0, width, height); // Chèn ảnh với kích thước phù hợp
+        doc.save("LAZINET Anh-Van.pdf");
+      });
+    }
+
+    // Export card thành SVG
+    function exportToSVG() {
+      const element = document.getElementById("business-card");
+      const serializer = new XMLSerializer();
+      const svgData = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${element.offsetWidth}" height="${element.offsetHeight}">
+          <foreignObject width="${element.offsetWidth}" height="${element.offsetHeight}">
+            ${serializer.serializeToString(element)}
+          </foreignObject>
+        </svg>
+      `;
+      const blob = new Blob([svgData], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = "LAZINET Anh-Van.svg";
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Tạo lưới công nghệ trong right-section
+    const canvas = document.getElementById("tech-grid");
+    const ctx = canvas.getContext("2d");
+
+    // Thiết lập kích thước canvas
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    // Tạo mảng các nút
+    const nodes = [];
+    const numNodes = 15;
+
+    // Hàm random trong khoảng
+    function randomRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    // Tạo nút ngẫu nhiên với màu sắc trong suốt
+    function initializeNodes() {
+      nodes.length = 0; // Xóa các nút cũ
+      for (let i = 0; i < numNodes; i++) {
+        nodes.push({
+          x: randomRange(10, canvas.width - 10),
+          y: randomRange(10, canvas.height - 10),
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          color: getRandomColor()
+        });
+      }
+      // Thêm 4 điểm trượt trên các cạnh
+      const edgeNodes = [
+        { x: randomRange(10, canvas.width - 10), y: 10, vx: (Math.random() - 0.5) * 1, edge: 'top', color: getRandomColor() },
+        { x: canvas.width - 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'right', color: getRandomColor() },
+        { x: randomRange(10, canvas.width - 10), y: canvas.height - 10, vx: (Math.random() - 0.5) * 1, edge: 'bottom', color: getRandomColor() },
+        { x: 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'left', color: getRandomColor() }
+      ];
+      nodes.push(...edgeNodes);
+    }
+
+    // Khởi tạo nút ban đầu
+    initializeNodes();
+
+    // Hàm tạo màu ngẫu nhiên với độ trong suốt
+    function getRandomColor() {
+      const avoidColors = ["#000000", "#ff6302", "#0000ff"];
+      let r, g, b, color;
+      do {
+        r = Math.floor(Math.random() * 256);
+        g = Math.floor(Math.random() * 256);
+        b = Math.floor(Math.random() * 256);
+        color = `rgba(${r}, ${g}, ${b}, 0.5)`;
+      } while (avoidColors.some(c => isColorClose(color, c)));
+      return color;
+    }
+
+    // Hàm kiểm tra màu có gần với màu cần tránh không
+    function isColorClose(color1, color2) {
+      const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
+      const [r2, g2, b2] = color2.match(/#?([\da-f]{2})([\da-f]{2})([\da-f]{2})/i).slice(1).map(x => parseInt(x, 16));
+      const diff = Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2);
+      return diff < 100;
+    }
+
+    // Hàm vẽ lưới
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dist = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+          if (dist < 100) {
+            const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
+            gradient.addColorStop(0, nodes[i].color.replace(/[\d.]+\)$/, "0.1)"));
+            gradient.addColorStop(1, nodes[j].color.replace(/[\d.]+\)$/, "0.1)"));
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 1 + Math.sin(Date.now() / 500) * 0.5;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      nodes.forEach(node => {
+        const size = node.edge ? 3 : 2 + Math.sin(Date.now() / 300) * 1;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = node.color.replace(/[\d.]+\)$/, "0.1)");
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    }
+
+    // Hàm cập nhật vị trí
+    function updateNodes() {
+      nodes.forEach(node => {
+        if (node.edge) {
+          if (node.edge === 'top' || node.edge === 'bottom') {
+            node.x += node.vx;
+            if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          } else if (node.edge === 'left' || node.edge === 'right') {
+            node.y += node.vy;
+            if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+          }
+        } else {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+        }
+        if (Math.random() < 0.02) node.color = getRandomColor();
+      });
+    }
+
+    // Vòng lặp animation
+    function animate() {
+      updateNodes();
+      drawGrid();
+      requestAnimationFrame(animate);
+    }
+
+    // Bắt đầu animation
+    animate();
+
+    // Điều chỉnh kích thước canvas khi thay đổi kích thước cửa sổ
+    window.addEventListener("resize", () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      initializeNodes(); // Tái tạo lại các nút để khớp với kích thước mới
+    });
+  </script>
+</body>
+</html>

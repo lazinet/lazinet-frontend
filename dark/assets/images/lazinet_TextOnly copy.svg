@@ -1,0 +1,5 @@
+<svg width="1024" height="256" xmlns="http://www.w3.org/2000/svg">
+  <!-- <rect x="0" y="0" width="1024" height="256" fill="white" /> -->
+  <text x="35" y="200" font-family="Arial Black" font-size="200" fill="#ff6300" stroke="white">LAZI</text>
+  <text x="535" y="200" font-family="Arial Black" font-size="200" fill="#0000FF" stroke="white">NET</text>
+</svg>
