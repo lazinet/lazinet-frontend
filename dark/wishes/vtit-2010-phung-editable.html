@@ -72,7 +72,7 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            background-image: url('https://lazinet.com/assets/img/background/HATHYO_TransBG_032.png'); /* Giữ background chung hoặc thay đổi nếu cần */
+            background-image: url('/lazinet-frontend/public/vtit/vecteezy_beautiful-natural-flower-background_6.jpg'); /* Giữ background chung hoặc thay đổi nếu cần */
             background-size: cover;
             background-position: center;
         }
@@ -156,7 +156,7 @@
 
         .sender {
             font-weight: 600;
-            color: #7030A0;
+            color: #000;
             font-size: 16px;
         }
 
@@ -180,18 +180,19 @@
         .recipient-org {
             font-size: 16px;
             font-weight: 600;
-            color: #7030A0;
+            color: #000;
         }
 
         .occasion {
             font-weight: 600;
-            color: #333;
+            color: #7030A0;
             margin: 3px 0;
             font-size: 16px;
         }
 
         .wish {
             line-height: 1.5;
+            font-style: italic;
             color: #444;
             font-size: 14px;
             margin: 4px 0;
@@ -234,7 +235,7 @@
 
         .signature-name {
             font-weight: 700;
-            color: #7030A0;
+            color: #000;
             font-size: 16px;
             margin-bottom: 0;
         }
@@ -701,32 +702,32 @@
             <div class="corner-decoration corner-4"></div>
 
             <div class="header">
-                <img class="viettel-logo" src="https://www.viettelsoftware.com/images/logo-1-2x-1.png" alt="Viettel Software Logo">
-                <div class="card-title" contenteditable="true" id="cardTitle">CHÚC MỪNG</div>
-                <img id="recipientLogo" class="recipient-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuMzVlbSI+TG9nbzwvdGV4dD48L3N2Zz4=" alt="Logo người nhận">
+                <img class="viettel-logo" src="/lazinet-frontend/public/vtit/logo.png" alt="Viettel Software Logo">
+                <div class="card-title" contenteditable="true" id="cardTitle"></div>
+                <img id="recipientLogo" class="recipient-logo" src="/lazinet-frontend/public/vtit/flower.jpg" alt="Logo người nhận">
             </div>
 
             <div class="content">
                 <div class="greeting-content">
-                    <div class="sender content-editable" contenteditable="true" id="senderName">VIETTEL SOFTWARE (VTIT) - PKD MIỀN NAM</div>
+                    <div class="sender content-editable" contenteditable="true" id="senderName">VIETTEL SOFTWARE (VTIT)</div>
                     <div class="presentation content-editable" contenteditable="true" id="presentationText">Trân trọng kính chúc</div>
                     
                     <div class="recipient">
-                        <div class="recipient-name content-editable" contenteditable="true" id="recipientName">Chị PHẠM THỊ PHƯƠNG TRANG</div>
-                        <div class="recipient-org content-editable" contenteditable="true" id="recipientOrg">Trưởng phòng Điều Hành Kinh Doanh</div>
+                        <div class="recipient-name content-editable" contenteditable="true" id="recipientName">QUÝ KHÁCH HÀNG (ĐỔI TÊN)</div>
+                        <div class="recipient-org content-editable" contenteditable="true" id="recipientOrg">Trung Tâm Kinh Doanh (Đổi Công ty)</div>
                     </div>
                     
                     <div class="occasion content-editable" contenteditable="true" id="occasionText">NGÀY PHỤ NỮ VIỆT NAM 2025</div>
                     
-                    <div class="wish content-editable" contenteditable="true" id="wishText">Chúc chị có một ngày lễ kỷ niệm tràn đầy niềm vui và ý nghĩa, chúc chị luôn khỏe mạnh và tiếp tục những cống hiến quý giá đối với công ty và ngày càng thành công, hạnh phúc với sự nghiệp trồng người</div>
+                    <div class="wish content-editable" contenteditable="true" id="wishText">Chúc bạn có một ngày 20/10 tràn đầy niềm vui và ý nghĩa, chúc bạn luôn khỏe mạnh, tiếp tục những cống hiến quý giá đối với VTIT, và ngày càng hạnh phúc trong cuộc sống!</div>
                 </div>
                 
                 <div class="signature">
                     <div class="signature-left">
                         <div class="signature-date content-editable" contenteditable="true" id="signatureDate">TP.HCM 20/10/2025</div>
                         <div class="signature-greeting content-editable" contenteditable="true" id="signatureGreeting">Trân trọng,</div>
-                        <div class="signature-name"><a href="https://www.viettelsoftware.com" target="_blank">Mr. Hoàng Minh Phụng</a></div>
-                        <div class="signature-title">Viettel Software</div>
+                        <div class="signature-name"><a href="https://www.viettelsoftware.com" target="_blank">Hoàng Minh Phụng</a></div>
+                        <div class="signature-title">PKDMN - Viettel Software</div>
                     </div>
                     <div class="qr-code" id="qrcode"></div>
                 </div>
@@ -858,7 +859,7 @@
         const messageFormData = document.getElementById('messageFormData');
         
         // QR Code Generation
-        const url = "https://www.viettelsoftware.com";
+        const url = "https://wa.me/84983667248";
         new QRCode(document.getElementById("qrcode"), {
             text: url,
             width: 80,
@@ -866,6 +867,162 @@
             colorDark: "#EA2035",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Function to preload image as base64
+        async function preloadImage(src) {
+            return new Promise((resolve, reject) => {
+                if (!src || src.startsWith('data:')) {
+                    resolve(src); // Already base64 or no src
+                    return;
+                }
+                const img = new Image();
+                img.crossOrigin = 'anonymous'; // Try CORS
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.onerror = () => {
+                    // Fallback: use original src if preload fails
+                    console.warn(`Failed to preload ${src}, using original`);
+                    resolve(src);
+                };
+                img.src = src;
+            });
+        }
+        
+        // Function to preload all images in card for export
+        async function preloadImagesForExport() {
+            const images = [
+                document.querySelector('.viettel-logo'), // Viettel logo
+                recipientLogo, // Recipient logo
+                document.querySelector('.qr-code img') // QR code
+            ];
+            
+            // Store original srcs
+            const originalSrcs = {};
+            for (let img of images) {
+                if (img) {
+                    originalSrcs[img.src] = img.src;
+                    img.dataset.originalSrc = img.src; // Store original
+                }
+            }
+            
+            // Preload and set base64
+            const promises = images.map(async (img) => {
+                if (img && img.src) {
+                    const base64 = await preloadImage(img.src);
+                    img.src = base64;
+                }
+            });
+            
+            await Promise.all(promises);
+            
+            // Handle background if it's image
+            const bgUrl = greetingCard.style.backgroundImage.slice(5, -2); // Extract url()
+            if (bgUrl && !bgUrl.startsWith('data:')) {
+                const base64Bg = await preloadImage(bgUrl);
+                greetingCard.style.backgroundImage = `url(${base64Bg})`;
+                greetingCard.dataset.originalBg = bgUrl; // Store original
+            }
+            
+            return { originalSrcs, originalBg: greetingCard.dataset.originalBg };
+        }
+        
+        // Restore original images after export
+        function restoreImages({ originalSrcs, originalBg }) {
+            // Restore images
+            document.querySelectorAll('img').forEach(img => {
+                if (img.dataset.originalSrc) {
+                    img.src = img.dataset.originalSrc;
+                    delete img.dataset.originalSrc;
+                }
+            });
+            
+            // Restore background
+            if (originalBg) {
+                greetingCard.style.backgroundImage = `url(${originalBg})`;
+                delete greetingCard.dataset.originalBg;
+            }
+        }
+        
+        // Hàm tắt hiệu ứng trước khi export
+        function disableEffectsBeforeExport() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                body, .card, * {
+                    opacity: 1 !important;
+                    animation: none !important;
+                    transform: none !important;
+                    box-shadow: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+            return style;
+        }
+        
+        // Export to PNG (updated with preload)
+        exportPngBtn.addEventListener('click', async function() {
+            const styleElement = disableEffectsBeforeExport();
+            const imageData = await preloadImagesForExport();
+            
+            html2canvas(greetingCard, {
+                scale: 3,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Thiep-Chuc-Mung-Viettel-Software.png';
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+            }).catch(err => {
+                console.error('Export PNG error:', err);
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+                alert('Lỗi xuất PNG. Vui lòng thử lại.');
+            });
+        });
+        
+        // Export to PDF (updated with preload)
+        exportPdfBtn.addEventListener('click', async function() {
+            const styleElement = disableEffectsBeforeExport();
+            const imageData = await preloadImagesForExport();
+            
+            html2canvas(greetingCard, {
+                scale: 2,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: [150, 150]
+                });
+                
+                const imgWidth = 150;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+                pdf.save('Thiep-Chuc-Mung-Viettel-Software.pdf');
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+            }).catch(err => {
+                console.error('Export PDF error:', err);
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+                alert('Lỗi xuất PDF. Vui lòng thử lại.');
+            });
         });
         
         // Xử lý upload logo/ảnh người nhận
@@ -1005,71 +1162,6 @@
             // Attach event listeners
             elements.userTypeSelect.addEventListener('change', handleUserTypeChange);
             elements.contactForm.addEventListener('submit', handleFormSubmit);
-        });
-        
-        // Hàm tắt hiệu ứng trước khi export
-        function disableEffectsBeforeExport() {
-            const style = document.createElement('style');
-            style.innerHTML = `
-                body, .card, * {
-                    opacity: 1 !important;
-                    animation: none !important;
-                    transform: none !important;
-                    box-shadow: none !important;
-                    transition: none !important;
-                }
-            `;
-            document.head.appendChild(style);
-            return style;
-        }
-        
-        // Export to PNG
-        exportPngBtn.addEventListener('click', function() {
-            const styleElement = disableEffectsBeforeExport();
-            
-            setTimeout(() => {
-                html2canvas(greetingCard, {
-                    scale: 3,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = 'Thiep-Chuc-Mung-Viettel-Software.png';
-                    link.href = canvas.toDataURL('image/png', 1.0);
-                    link.click();
-                    document.head.removeChild(styleElement);
-                });
-            }, 500);
-        });
-        
-        // Export to PDF
-        exportPdfBtn.addEventListener('click', function() {
-            const styleElement = disableEffectsBeforeExport();
-            
-            setTimeout(() => {
-                html2canvas(greetingCard, {
-                    scale: 2,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const pdf = new jsPDF({
-                        orientation: 'portrait',
-                        unit: 'mm',
-                        format: [150, 150]
-                    });
-                    
-                    const imgWidth = 150;
-                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                    
-                    pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
-                    pdf.save('Thiep-Chuc-Mung-Viettel-Software.pdf');
-                    document.head.removeChild(styleElement);
-                });
-            }, 500);
         });
         
         // Export to vCard

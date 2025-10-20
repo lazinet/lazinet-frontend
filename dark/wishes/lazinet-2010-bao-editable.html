@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp Chúc Mừng - HATHYO</title>
-    <meta name="description" content="Thiệp chúc mừng tương tác từ HATHYO">
-    <meta name="keywords" content="thiệp chúc mừng, HATHYO, lời chúc">
-    <meta name="author" content="HATHYO">
+    <title>Thiệp Chúc Mừng - LAZINET Technologies</title>
+    <meta name="description" content="Thiệp chúc mừng tương tác từ LAZINET Technologies">
+    <meta name="keywords" content="thiệp chúc mừng, LAZINET Technologies, lời chúc">
+    <meta name="author" content="LAZINET Technologies">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Thiệp Chúc Mừng - HATHYO">
-    <meta property="og:description" content="Thiệp chúc mừng tương tác từ HATHYO">
+    <meta property="og:title" content="Thiệp Chúc Mừng - LAZINET Technologies">
+    <meta property="og:description" content="Thiệp chúc mừng tương tác từ LAZINET Technologies">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png">
+    <meta property="og:image" content="https://lazinet.com/assets/img/lazinet_LogoFullv2_vi.png">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
         body {
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #e9ecef 0%, #faf9f8 100%);
             font-family: 'Montserrat', sans-serif;
             opacity: 0;
             animation: fadeIn 0.5s ease-in-out forwards;
@@ -66,6 +66,7 @@
             box-sizing: border-box;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(42, 92, 154, 0.2);
             border-radius: 10px;
             overflow: hidden;
             margin: 0 auto;
@@ -82,7 +83,7 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, #FF6300 0%, #0A703F 100%);
+            background: linear-gradient(90deg, #FF6500 0%, blue 100%);
         }
 
         .card::before { top: 0; }
@@ -94,7 +95,7 @@
             justify-content: space-between;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #FF6300;
+            border-bottom: 2px solid #FF6500;
         }
 
         .logo-container {
@@ -103,23 +104,25 @@
             gap: 15px;
         }
 
-        .hathyo-logo {
-            height: 80px;
+        .lazinet-logo {
+            padding-left: 20px;
+            height: 50px;
             width: auto;
         }
 
         .recipient-logo {
+            margin-right: 5px;
             height: 80px;
             width: 80px;
             object-fit: contain;
             border-radius: var(--logo-radius, 50%);
-            border: 2px solid #0A703F;
+            border: 2px solid #FF6500;
         }
 
         .card-title {
             font-family: 'Playfair Display', serif;
             font-size: 24px;
-            color: #0A703F;
+            color: blue;
             text-align: center;
             flex-grow: 1;
             font-weight: 700;
@@ -148,13 +151,13 @@
 
         .content-editable:focus {
             outline: none;
-            border: 1px solid #FF6300;
+            border: 1px solid #FF6500;
             background-color: #f8f9fa;
         }
 
         .sender {
             font-weight: 600;
-            color: #0A703F;
+            color: blue;
             font-size: 16px;
         }
 
@@ -171,25 +174,26 @@
         .recipient-name {
             font-size: 22px;
             font-weight: 700;
-            color: #FF6300;
+            color: #FF6500;
             margin-bottom: 2px;
         }
 
         .recipient-org {
             font-size: 16px;
             font-weight: 600;
-            color: #0A703F;
+            color: #FF6500;
         }
 
         .occasion {
             font-weight: 600;
-            color: #333;
+            color: blue;
             margin: 3px 0;
             font-size: 16px;
         }
 
         .wish {
             line-height: 1.5;
+            font-style: italic;
             color: #444;
             font-size: 14px;
             margin: 4px 0;
@@ -201,7 +205,7 @@
             align-items: flex-end;
             margin-top: 10px;
             padding-top: 15px;
-            border-top: 1px dashed #0A703F;
+            border-top: 1px dashed blue;
         }
 
         .signature-left {
@@ -232,7 +236,7 @@
 
         .signature-name {
             font-weight: 700;
-            color: #0A703F;
+            color: blue;
             font-size: 16px;
             margin-bottom: 0;
         }
@@ -256,14 +260,13 @@
             width: 80px;
             height: 80px;
             flex-shrink: 0;
-            /* margin-left: auto; */
             margin-right: 10px;
         }
 
         .qr-code img {
             width: 100%;
             height: 100%;
-            border: 2px solid #0A703F;
+            border: 2px solid #FF6500;
             border-radius: 5px;
             padding: 3px;
             background: white;
@@ -280,7 +283,7 @@
 
         .toolbar button {
             padding: 10px 15px;
-            background: #0A703F;
+            background: blue;
             color: white;
             border: none;
             border-radius: 5px;
@@ -291,7 +294,7 @@
         }
 
         .toolbar button:hover {
-            background: #FF6300;
+            background: #FF6500;
             transform: translateY(-2px);
         }
 
@@ -320,19 +323,19 @@
 
         .logo-input input:focus {
             outline: none;
-            border: 2px solid #FF6300;
+            border: 2px solid #FF6500;
         }
 
         .logo-input button {
             padding: 8px 15px;
-            background: #0A703F;
+            background: blue;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         .logo-input button:hover {
-            background: #FF6300;
+            background: #FF6500;
             transform: translateY(-2px);
         }
 
@@ -351,12 +354,12 @@
 
         .radius-input input:focus {
             outline: none;
-            border: 2px solid #FF6300;
+            border: 2px solid #FF6500;
         }
 
         .upload-btn {
             padding: 8px 15px;
-            background: #0A703F;
+            background: blue;
             color: white;
             border: none;
             border-radius: 5px;
@@ -365,7 +368,7 @@
             width: 100%;
         }
         .upload-btn:hover {
-            background: #FF6300;
+            background: #FF6500;
             transform: translateY(-2px);
         }
 
@@ -405,7 +408,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
-            color: #0A703F;
+            color: blue;
         }
 
         .form-group input, .form-group select, .form-group textarea {
@@ -418,8 +421,8 @@
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            border-color: #0A703F;
-            box-shadow: 0 0 0 3px rgba(10, 112, 63, 0.1);
+            border-color: #FF6500;
+            box-shadow: 0 0 0 3px rgba(234, 32, 53, 0.1);
         }
 
         .form-group textarea {
@@ -447,15 +450,15 @@
         }
 
         .close-form {
-            background: #0A703F !important;
+            background: blue !important;
         }
 
         .submit-form {
-            background: #FF6300 !important;
+            background: #FF6500 !important;
         }
 
         .contact-button {
-            background-color: #0A703F;
+            background-color: blue;
             color: white;
             border: none;
             padding: 14px;
@@ -473,7 +476,7 @@
         }
 
         .contact-button:hover {
-            background-color: #085a33;
+            background-color: #FF6500;
         }
 
         .spinner {
@@ -520,29 +523,29 @@
         .corner-1 {
             top: 10px;
             left: 10px;
-            border-top: 3px solid #FF6300;
-            border-left: 3px solid #FF6300;
+            border-top: 3px solid #FF6500;
+            border-left: 3px solid #FF6500;
         }
 
         .corner-2 {
             top: 10px;
             right: 10px;
-            border-top: 3px solid #0A703F;
-            border-right: 3px solid #0A703F;
+            border-top: 3px solid blue;
+            border-right: 3px solid blue;
         }
 
         .corner-3 {
             bottom: 10px;
             left: 10px;
-            border-bottom: 3px solid #FF6300;
-            border-left: 3px solid #FF6300;
+            border-bottom: 3px solid #FF6500;
+            border-left: 3px solid #FF6500;
         }
 
         .corner-4 {
             bottom: 10px;
             right: 10px;
-            border-bottom: 3px solid #0A703F;
-            border-right: 3px solid #0A703F;
+            border-bottom: 3px solid blue;
+            border-right: 3px solid blue;
         }
 
         @media print {
@@ -605,7 +608,7 @@
                 flex: 1 1 100%;
             }
 
-            .hathyo-logo {
+            .lazinet-logo {
                 height: 60px;
             }
 
@@ -700,32 +703,32 @@
             <div class="corner-decoration corner-4"></div>
 
             <div class="header">
-                <img class="hathyo-logo" src="https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png" alt="HATHYO Logo">
-                <div class="card-title" contenteditable="true" id="cardTitle">CHÚC MỪNG</div>
+                <img class="lazinet-logo" src="https://lazinet.com/assets/img/lazinet_LogoFullv2_vi.png" alt="LAZINET Technologies Logo">
+                <div class="card-title" contenteditable="true" id="cardTitle"></div>
                 <img id="recipientLogo" class="recipient-logo" src="/lazinet-frontend/public/vtit/flower.jpg" alt="Logo người nhận">
             </div>
 
             <div class="content">
                 <div class="greeting-content">
-                    <div class="sender content-editable" contenteditable="true" id="senderName">CÔNG TY TNHH CUỘC SỐNG VUI KHỎE</div>
-                    <div class="presentation content-editable" contenteditable="true" id="presentationText">Trân trọng kính chúc</div>
+                    <div class="sender content-editable" contenteditable="true" id="senderName">CÔNG TY TNHH CÔNG NGHỆ ỨNG DỤNG LAZINET</div>
+                    <div class="presentation content-editable" contenteditable="true" id="presentationText">Trân trọng kính chúc cô giáo</div>
                     
                     <div class="recipient">
-                        <div class="recipient-name content-editable" contenteditable="true" id="recipientName">Chị ABC</div>
-                        <div class="recipient-org content-editable" contenteditable="true" id="recipientOrg">công ty XYZ</div>
+                        <div class="recipient-name content-editable" contenteditable="true" id="recipientName">TS. NGUYỄN THỊ LIÊN NHI</div>
+                        <div class="recipient-org content-editable" contenteditable="true" id="recipientOrg">Trường Đại học Công thương TP.HCM</div>
                     </div>
                     
-                    <div class="occasion content-editable" contenteditable="true" id="occasionText">Nhân dịp kỷ niệm NGÀY PHỤ NỮ VIỆT NAM 20/10/2025</div>
+                    <div class="occasion content-editable" contenteditable="true" id="occasionText">NGÀY PHỤ NỮ VIỆT NAM 2025</div>
                     
-                    <div class="wish content-editable" contenteditable="true" id="wishText">Chúc chị có một ngày lễ kỷ niệm tràn đầy niềm vui và ý nghĩa, chúc chị luôn khỏe mạnh và tiếp tục những cống hiến quý giá đối với công ty và ngày càng thành công, hạnh phúc với sự nghiệp trồng người</div>
+                    <div class="wish content-editable" contenteditable="true" id="wishText">Chúc cô có một ngày 20/10 tràn đầy niềm vui và ý nghĩa, chúc cô luôn khỏe mạnh và tiếp tục với những niềm vui dạy học và ngày càng thành công, hạnh phúc trong cuộc sống!</div>
                 </div>
                 
                 <div class="signature">
                     <div class="signature-left">
                         <div class="signature-date content-editable" contenteditable="true" id="signatureDate">TP.HCM 20/10/2025</div>
                         <div class="signature-greeting content-editable" contenteditable="true" id="signatureGreeting">Trân trọng,</div>
-                        <div class="signature-name"><a href="https://hathyo.com/contacts/phung-hoang" target="_blank">Hoàng Minh Phụng</a></div>
-                        <div class="signature-title">CEO, HATHYO</div>
+                        <div class="signature-name"><a href="http://zalo.me/0964771122" target="_blank">Phùng Thế Bảo</a></div>
+                        <div class="signature-title">CTO, LAZINET</div>
                     </div>
                     <div class="qr-code" id="qrcode"></div>
                 </div>
@@ -761,10 +764,10 @@
         </div>
     </div>
 
-    <!-- Form nhắn tin (tái sử dụng từ hathyo-phung-hoang.html) -->
+    <!-- Form nhắn tin -->
     <div class="form-overlay" id="formOverlay"></div>
     <div class="contact-form" id="contactForm">
-        <h2 style="color: #FF6300;">Biểu mẫu liên hệ HATHYO</h2>
+        <h2 style="color: #FF6500;">Biểu mẫu liên hệ LAZINET Technologies</h2>
         <form id="messageFormData" method="POST">
             <div class="form-row">
                 <div class="form-group">
@@ -820,11 +823,11 @@
             
             <div class="form-group">
                 <label for="message">Nội dung:</label>
-                <textarea id="message" name="message" rows="5" required placeholder="Nhập nội dung chi tiết bạn muốn gửi đến HATHYO"></textarea>
+                <textarea id="message" name="message" rows="5" required placeholder="Nhập nội dung chi tiết bạn muốn gửi đến LAZINET Technologies"></textarea>
             </div>
             
             <button type="submit" class="contact-button" id="submitBtn">
-                <span class="button-text">Gửi HATHYO</span>
+                <span class="button-text">Gửi LAZINET Technologies</span>
                 <span class="spinner" style="display: none;"></span>
             </button>
 
@@ -857,14 +860,170 @@
         const messageFormData = document.getElementById('messageFormData');
         
         // QR Code Generation
-        const url = "https://hathyo.com/contacts/phung-hoang";
+        const url = "https://lazinet.com/bizcards/lazinet_bao-phung.html";
         new QRCode(document.getElementById("qrcode"), {
             text: url,
             width: 80,
             height: 80,
-            colorDark: "#0A703F",
+            colorDark: "blue",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Function to preload image as base64
+        async function preloadImage(src) {
+            return new Promise((resolve, reject) => {
+                if (!src || src.startsWith('data:')) {
+                    resolve(src); // Already base64 or no src
+                    return;
+                }
+                const img = new Image();
+                img.crossOrigin = 'anonymous'; // Try CORS
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.onerror = () => {
+                    // Fallback: use original src if preload fails
+                    console.warn(`Failed to preload ${src}, using original`);
+                    resolve(src);
+                };
+                img.src = src;
+            });
+        }
+        
+        // Function to preload all images in card for export
+        async function preloadImagesForExport() {
+            const images = [
+                document.querySelector('.lazinet-logo'), // Lazinet logo
+                recipientLogo, // Recipient logo
+                document.querySelector('.qr-code img') // QR code
+            ];
+            
+            // Store original srcs
+            const originalSrcs = {};
+            for (let img of images) {
+                if (img) {
+                    originalSrcs[img.src] = img.src;
+                    img.dataset.originalSrc = img.src; // Store original
+                }
+            }
+            
+            // Preload and set base64
+            const promises = images.map(async (img) => {
+                if (img && img.src) {
+                    const base64 = await preloadImage(img.src);
+                    img.src = base64;
+                }
+            });
+            
+            await Promise.all(promises);
+            
+            // Handle background if it's image
+            const bgUrl = greetingCard.style.backgroundImage.slice(5, -2); // Extract url()
+            if (bgUrl && !bgUrl.startsWith('data:')) {
+                const base64Bg = await preloadImage(bgUrl);
+                greetingCard.style.backgroundImage = `url(${base64Bg})`;
+                greetingCard.dataset.originalBg = bgUrl; // Store original
+            }
+            
+            return { originalSrcs, originalBg: greetingCard.dataset.originalBg };
+        }
+        
+        // Restore original images after export
+        function restoreImages({ originalSrcs, originalBg }) {
+            // Restore images
+            document.querySelectorAll('img').forEach(img => {
+                if (img.dataset.originalSrc) {
+                    img.src = img.dataset.originalSrc;
+                    delete img.dataset.originalSrc;
+                }
+            });
+            
+            // Restore background
+            if (originalBg) {
+                greetingCard.style.backgroundImage = `url(${originalBg})`;
+                delete greetingCard.dataset.originalBg;
+            }
+        }
+        
+        // Hàm tắt hiệu ứng trước khi export
+        function disableEffectsBeforeExport() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                body, .card, * {
+                    opacity: 1 !important;
+                    animation: none !important;
+                    transform: none !important;
+                    box-shadow: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+            return style;
+        }
+        
+        // Export to PNG (updated with preload)
+        exportPngBtn.addEventListener('click', async function() {
+            const styleElement = disableEffectsBeforeExport();
+            const imageData = await preloadImagesForExport();
+            
+            html2canvas(greetingCard, {
+                scale: 3,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Thiep-Chuc-Mung-LAZINET.png';
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+            }).catch(err => {
+                console.error('Export PNG error:', err);
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+                alert('Lỗi xuất PNG. Vui lòng thử lại.');
+            });
+        });
+        
+        // Export to PDF (updated with preload)
+        exportPdfBtn.addEventListener('click', async function() {
+            const styleElement = disableEffectsBeforeExport();
+            const imageData = await preloadImagesForExport();
+            
+            html2canvas(greetingCard, {
+                scale: 2,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: [150, 150]
+                });
+                
+                const imgWidth = 150;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+                pdf.save('Thiep-Chuc-Mung-LAZINET.pdf');
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+            }).catch(err => {
+                console.error('Export PDF error:', err);
+                restoreImages(imageData);
+                document.head.removeChild(styleElement);
+                alert('Lỗi xuất PDF. Vui lòng thử lại.');
+            });
         });
         
         // Xử lý upload logo/ảnh người nhận
@@ -933,7 +1092,7 @@
             contactForm.style.display = 'none';
         });
         
-        // Xử lý form liên hệ (tái sử dụng từ hathyo-phung-hoang.html)
+        // Xử lý form liên hệ
         document.addEventListener('DOMContentLoaded', function() {
             const elements = {
                 contactForm: document.getElementById('messageFormData'),
@@ -997,7 +1156,7 @@
                     elements.messageBox.style.display = 'block';
                     console.error('Error:', error);
                 } finally {
-                    setTimeout(() => updateButtonState({ text: 'Gửi HATHYO', color: '#0A703F' }), 3000);
+                    setTimeout(() => updateButtonState({ text: 'Gửi LAZINET Technologies', color: 'blue' }), 3000);
                 }
             };
 
@@ -1006,87 +1165,21 @@
             elements.contactForm.addEventListener('submit', handleFormSubmit);
         });
         
-        // Hàm tắt hiệu ứng trước khi export
-        function disableEffectsBeforeExport() {
-            const style = document.createElement('style');
-            style.innerHTML = `
-                body, .card, * {
-                    opacity: 1 !important;
-                    animation: none !important;
-                    transform: none !important;
-                    box-shadow: none !important;
-                    transition: none !important;
-                }
-            `;
-            document.head.appendChild(style);
-            return style;
-        }
-        
-        // Export to PNG
-        exportPngBtn.addEventListener('click', function() {
-            const styleElement = disableEffectsBeforeExport();
-            
-            setTimeout(() => {
-                html2canvas(greetingCard, {
-                    scale: 3,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = 'Thiep-Chuc-Mung-HATHYO.png';
-                    link.href = canvas.toDataURL('image/png', 1.0);
-                    link.click();
-                    document.head.removeChild(styleElement);
-                });
-            }, 500);
-        });
-        
-        // Export to PDF
-        exportPdfBtn.addEventListener('click', function() {
-            const styleElement = disableEffectsBeforeExport();
-            
-            setTimeout(() => {
-                html2canvas(greetingCard, {
-                    scale: 2,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const pdf = new jsPDF({
-                        orientation: 'portrait',
-                        unit: 'mm',
-                        format: [150, 150]
-                    });
-                    
-                    const imgWidth = 150;
-                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                    
-                    pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
-                    pdf.save('Thiep-Chuc-Mung-HATHYO.pdf');
-                    document.head.removeChild(styleElement);
-                });
-            }, 500);
-        });
-        
         // Export to vCard
         exportVCardBtn.addEventListener('click', function() {
             const vCardData = `BEGIN:VCARD
 VERSION:3.0
-FN:Hoàng Minh Phụng
-ORG:HATHYO
-TITLE:CEO
-TEL;TYPE=CELL,WORK:+84908556220
-EMAIL;TYPE=WORK:email@hathyo.com
-ADR;TYPE=WORK:;;82 Phan Đăng Lưu, Đức Nhuận;TP. HCM;;Việt Nam
-URL:https://hathyo.com/
+FN:Mr. Phùng Thế Bảo
+ORG:LAZINET Technologies
+TEL;TYPE=CELL,WORK:+84964771122
+EMAIL;TYPE=WORK:email@lazinet.com
+ADR;TYPE=WORK:;;Tòa nhà MORE, 89 Phan Đình Phùng;HPhú Nhuận;Hồ Chí Minh;;Việt Nam
+URL:https://lazinet.com
 END:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'Hoang-Minh-Phung-HATHYO.vcf';
+            link.download = 'Phung-The-Bao-LAZINET.vcf';
             link.click();
         });
         
@@ -1094,8 +1187,8 @@ END:VCARD`;
         shareBtn.addEventListener('click', function() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'Thiệp Chúc Mừng - HATHYO',
-                    text: 'Thiệp chúc mừng tương tác từ HATHYO',
+                    title: 'Thiệp Chúc Mừng - LAZINET Technologies',
+                    text: 'Thiệp chúc mừng tương tác từ LAZINET Technologies',
                     url: window.location.href,
                 }).catch(err => console.error('Lỗi chia sẻ:', err));
             } else {
