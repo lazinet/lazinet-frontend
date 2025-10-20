@@ -3358,6 +3358,11 @@ header.main-header .container-fluid{
     margin-bottom: 25px;
 }
 
+.page-category-list ul li.active {
+    border-left-color: #007bff; /* Màu highlight */
+    background-color: rgba(0, 123, 255, 0.1); /* Màu nền nhẹ */
+}
+
 .page-category-list ul li:last-child{
     border-bottom: none;
     margin: 0;
