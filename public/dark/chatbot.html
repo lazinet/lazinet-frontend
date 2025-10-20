@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Tích Hợp DeepSeek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #2575fc;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .input-container {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-container input:focus {
+            border-color: #2575fc;
+        }
+
+        .input-container button {
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .input-container button:hover {
+            background-color: #1a68e8;
+        }
+
+        .info-form {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-form h3 {
+            color: #2575fc;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+
+        .submit-btn {
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #1a68e8;
+        }
+
+        .chat-bubble {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .chat-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-bubble i {
+            color: white;
+            font-size: 24px;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .chat-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 16px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background-color: #f0f0f0;
+            padding: 12px 16px;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #999;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .chat-window {
+                width: calc(100vw - 40px);
+                right: 20px;
+                bottom: 80px;
+            }
+            
+            .chat-bubble {
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Ứng dụng Chatbot Tích Hợp DeepSeek API</h1>
+            <p>Giao diện mẫu với khả năng thu thập thông tin và tích hợp API</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Xin chào! Tôi là trợ lý ảo. Tôi có thể giúp gì cho bạn?
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="Nhập tin nhắn của bạn...">
+                <button id="sendButton">Gửi</button>
+            </div>
+        </div>
+        
+        <div class="info-form" id="infoForm">
+            <h3>Vui lòng cung cấp thông tin của bạn</h3>
+            <div class="form-group">
+                <label for="userName">Họ và tên</label>
+                <input type="text" id="userName" placeholder="Nhập họ tên của bạn">
+            </div>
+            <div class="form-group">
+                <label for="userEmail">Email</label>
+                <input type="email" id="userEmail" placeholder="Nhập email của bạn">
+            </div>
+            <div class="form-group">
+                <label for="userPhone">Số điện thoại</label>
+                <input type="tel" id="userPhone" placeholder="Nhập số điện thoại của bạn">
+            </div>
+            <button class="submit-btn" id="submitInfo">Bắt đầu trò chuyện</button>
+        </div>
+        
+        <div class="status" id="status">
+            Kết nối: Đang chờ thông tin người dùng
+        </div>
+    </div>
+    
+    <div class="chat-bubble" id="chatBubble">
+        <i>💬</i>
+    </div>
+    
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>Trợ lý ảo</h3>
+            <button class="close-btn" id="closeChat">×</button>
+        </div>
+        <div class="chat-messages" id="popupChatMessages">
+            <div class="message bot-message">
+                Xin chào! Tôi có thể giúp gì cho bạn?
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="input-container">
+            <input type="text" id="popupUserInput" placeholder="Nhập tin nhắn...">
+            <button id="popupSendButton">Gửi</button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Ứng dụng demo tích hợp DeepSeek API | Lưu trữ lịch sử với Google Apps Script</p>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatBubble = document.getElementById('chatBubble');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const popupChatMessages = document.getElementById('popupChatMessages');
+        const popupUserInput = document.getElementById('popupUserInput');
+        const popupSendButton = document.getElementById('popupSendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const infoForm = document.getElementById('infoForm');
+        const submitInfo = document.getElementById('submitInfo');
+        const status = document.getElementById('status');
+        
+        // Biến toàn cục
+        let userInfo = {};
+        let chatHistory = [];
+        
+        // Mở cửa sổ chat khi click vào bong bóng chat
+        chatBubble.addEventListener('click', () => {
+            chatWindow.classList.add('active');
+        });
+        
+        // Đóng cửa sổ chat
+        closeChat.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+        });
+        
+        // Xử lý gửi tin nhắn trong cửa sổ popup
+        popupSendButton.addEventListener('click', sendMessage);
+        popupUserInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        // Xử lý gửi thông tin người dùng
+        submitInfo.addEventListener('click', () => {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const phone = document.getElementById('userPhone').value;
+            
+            if (!name || !email || !phone) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+            
+            userInfo = { name, email, phone };
+            infoForm.style.display = 'none';
+            status.textContent = 'Kết nối: Đã xác thực thông tin người dùng';
+            
+            // Thêm tin nhắn chào mừng
+            addMessage(`Xin chào ${name}! Tôi có thể giúp gì cho bạn?`, 'bot');
+            
+            // Lưu thông tin người dùng (giả lập)
+            saveUserInfo(userInfo);
+        });
+        
+        // Hàm gửi tin nhắn
+        function sendMessage() {
+            const message = popupUserInput.value.trim();
+            if (!message) return;
+            
+            // Thêm tin nhắn của người dùng
+            addMessage(message, 'user');
+            popupUserInput.value = '';
+            
+            // Hiển thị indicator đang nhập
+            typingIndicator.style.display = 'flex';
+            
+            // Giả lập phản hồi từ API (trong thực tế sẽ gọi DeepSeek API)
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                const botResponse = generateBotResponse(message);
+                addMessage(botResponse, 'bot');
+                
+                // Lưu lịch sử chat
+                saveChatHistory(userInfo.email, message, botResponse);
+            }, 1500);
+        }
+        
+        // Hàm thêm tin nhắn vào giao diện
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+            
+            popupChatMessages.appendChild(messageDiv);
+            popupChatMessages.scrollTop = popupChatMessages.scrollHeight;
+            
+            // Lưu vào lịch sử
+            chatHistory.push({ sender, text, timestamp: new Date().toISOString() });
+        }
+        
+        // Hàm tạo phản hồi từ bot (giả lập)
+        function generateBotResponse(userMessage) {
+            const responses = [
+                "Cảm ơn bạn đã hỏi. Tôi có thể giúp gì thêm cho bạn?",
+                "Tôi hiểu câu hỏi của bạn. Bạn có muốn tôi giải thích chi tiết hơn không?",
+                "Đây là một câu hỏi thú vị. Tôi sẽ tìm hiểu thêm và trả lời bạn sau.",
+                "Tôi đã ghi nhận yêu cầu của bạn. Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.",
+                "Cảm ơn bạn đã quan tâm. Bạn có câu hỏi nào khác không?"
+            ];
+            
+            // Trong thực tế, đây là nơi bạn sẽ gọi DeepSeek API
+            // const response = await callDeepSeekAPI(userMessage);
+            
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+        
+        // Hàm lưu thông tin người dùng (giả lập)
+        function saveUserInfo(info) {
+            console.log('Lưu thông tin người dùng:', info);
+            // Trong thực tế, bạn sẽ gửi thông tin này đến Google Apps Script
+            // fetch('YOUR_APPS_SCRIPT_URL', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ action: 'saveUser', data: info })
+            // });
+        }
+        
+        // Hàm lưu lịch sử chat (giả lập)
+        function saveChatHistory(email, userMessage, botResponse) {
+            console.log('Lưu lịch sử chat:', { email, userMessage, botResponse });
+            // Trong thực tế, bạn sẽ gửi thông tin này đến Google Apps Script
+            // fetch('YOUR_APPS_SCRIPT_URL', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ 
+            //         action: 'saveChat', 
+            //         data: { email, userMessage, botResponse, timestamp: new Date().toISOString() }
+            //     })
+            // });
+        }
+        
+        // Khởi tạo
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hiển thị form thông tin ban đầu
+            infoForm.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

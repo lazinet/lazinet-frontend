@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>HATHYO - Cùng Bạn Vui Khỏe Hơn! CEO PHUNG HOANG</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="../assets/img/HathyoV1_Square_LogoOnly_NarrowBufffer.png" rel="icon">
+  <link href="../assets/img/HathyoV1_Square_LogoOnly_NarrowBufffer.png" rel="apple-touch-icon">
+
+  <!-- Vendor Files -->
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->
+  
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      width: 500px;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .business-card {
+      height: 300px;
+      display: flex;
+      flex-direction: row;
+    }
+    .left-section {
+      width: 40%;
+      background: linear-gradient(to bottom, #ffffff 0%, #ffffff 60%, #ff6302 80%, #0a703f 100%);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      gap: 10px;
+    }
+    .left-section .logo img {
+      width: 150px;
+      height: auto;
+    }
+    .left-section .profile-pic img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10%;
+      border: 2px solid #fff;
+      object-fit: cover;
+    }
+    .right-section {
+      width: 60%;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .right-section h2 {
+      font-size: 22px;
+      color: #ff6302;
+      position: relative;
+      margin: 0;
+      padding-top: 20px;
+    }
+    .right-section h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 2px;
+      background-color: #ff6302;
+    }
+    .right-section .position {
+      font-size: 14px;
+      color: #0a703f;
+      margin-bottom: 10px;
+    }
+    .right-section p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .right-section p strong {
+      color: #0a703f;
+    }
+    .right-section a {
+      color: #0a703f;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .right-section a:hover {
+      color: #ff6302;
+      text-decoration: underline;
+    }
+    .bottom-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0;
+    }
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .social-links a {
+      text-decoration: none;
+      color: #fff;
+      background: #0a703f;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      transition: background 0.3s ease;
+    }
+    .social-links a:hover {
+      background: #ff6302;
+      color: white;
+    }
+    .qr-code img {
+      width: 100px;
+      height: 100px;
+    }
+    .export-buttons {
+      margin: 10px;
+      /* display: flex; */
+      gap: clamp(10px, 2vw, 20px);
+    }
+    .export-buttons button {
+      padding: clamp(10px, 1vw, 20px);
+      background: #0a703f;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: clamp(10px, 2vw, 16px);
+      flex-wrap: nowrap;
+    }
+    .export-buttons button:hover {
+      background: #ff6302;
+    }
+    /* Contact Form Styles */
+    .contact-card {
+      width: 500px; /* Đồng bộ chiều rộng với business-card */
+      height: 300px;
+      padding: 15px;
+      display: none; /* Ẩn mặc định */
+      flex-direction: column;
+    }
+    .contact-card.active {
+      display: flex; /* Hiện khi active */
+    }
+    .contact-card h2 {
+      font-size: 22px;
+      color: #ff6302;
+      text-align: center;
+      margin: 0 0 10px 0;
+      position: relative;
+    }
+    .contact-card h2::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -2px;
+      width: 50%;
+      height: 2px;
+      background-color: #ff6302;
+    }
+    .contact-card form {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .contact-card .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .contact-card .input-group {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    .contact-card .input-group i {
+      font-size: 18px;
+      color: #ff6302;
+      width: 20px;
+      text-align: center;
+      margin-right: 5px;
+    }
+    .contact-card .form-control {
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+      padding: 8px;
+      font-size: 14px;
+      font-family: 'Arial', sans-serif;
+      flex: 1;
+      transition: border-color 0.3s ease;
+    }
+    .contact-card .form-control:focus {
+      border-color: #ff6302;
+      box-shadow: 0 0 5px rgba(255, 99, 2, 0.5);
+      outline: none;
+    }
+    .contact-card .form-control::placeholder {
+      font-family: 'Arial', sans-serif;
+      color: #999;
+      font-size: 14px;
+    }
+    .contact-card .message-group {
+      display: flex;
+      align-items: flex-start;
+      flex: 1;
+      margin-bottom: 10px;
+    }
+    .contact-card .message-group i {
+      font-size: 18px;
+      color: #ff6302;
+      width: 20px;
+      text-align: center;
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+    .contact-card textarea.form-control {
+      flex: 1;
+      resize: none;
+      min-height: 80px; /* Giảm chiều cao để nhường chỗ cho dòng mới */
+    }
+    .contact-card button[type="submit"] {
+      background: #0a703f;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 100%;
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+    }
+    .contact-card button[type="submit"]:hover {
+      background: #ff6302;
+    }
+    .contact-card .success-message {
+      display: none;
+      color: green;
+      text-align: center;
+      font-size: 14px;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    @media (max-width: 550px) {
+      .card {
+        width: 300px;
+        height: 500px;
+      }
+      .business-card {
+        flex-direction: column;
+      }
+      .left-section {
+        width: 100%;
+        height: 40%;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .right-section {
+        width: 100%;
+        height: 60%;
+        padding: 10px;
+      }
+      
+      .left-section .logo img {
+        width: 120px;
+        height: auto;
+        padding-top: 18px;
+      }
+      .left-section .profile-pic img {
+        width: 100px;
+        height: 100px;
+      }
+      .right-section h2 {
+        font-size: 18px;
+        padding-top: 10px;
+      }
+      .right-section .position {
+        font-size: 12px;
+      }
+      .right-section p {
+        font-size: 12px;
+      }
+      .bottom-section {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .social-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 5px;
+      }
+      .qr-code img {
+        width: 80px;
+        height: 80px;
+      }
+      .contact-card {
+        width: 300px; /* Đồng bộ chiều rộng trên mobile */
+        height: 500px;
+      }
+      .contact-card .input-row {
+        flex-direction: column;
+        gap: 5px;
+      }
+      .contact-card .message-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .contact-card .message-group i {
+        margin-bottom: 5px;
+      }
+      .contact-card textarea.form-control {
+        min-height: 180px; /* Giảm chiều cao trên mobile */
+      }
+    }
+    .icon-orange {
+      color: #ff6302;
+    }
+  </style>
+</head>
+<body>
+  <!-- Business Card -->
+  <div class="card business-card" id="business-card">
+    
+    <div class="left-section">
+      <div class="logo">
+        <a href="https://hathyo.com/" style="text-decoration: none; color: inherit;"><img src="../assets/img/HathyoV1_Square_Full.png" alt="HATHYO Logo"></a>
+      </div>
+      <div class="profile-pic">
+        <a href="https://hathyo.com/product" style="text-decoration: none; color: inherit;"><img src="../assets/img/team/Phung-Hoang.png" alt="Profile Picture"></a>
+      </div>
+    </div>
+    <div class="right-section">
+      <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+      <div style="position: relative; z-index: 1;">
+        <div>
+          <h2>HOÀNG MINH PHỤNG</h2>
+          <h3 class="position">Founder & CEO | Wellness Architect</h3>
+          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/9fsyrQdAEaw3Uot97" target="_blank">82 Phan Đăng Lưu, Phú Nhuận, HCM</a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0908556220" target="_blank">(+84) 0908 556 220 </a></p>
+          <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@hathyo.com">email@hathyo.com</a></p>
+        </div>
+        <div class="bottom-section">
+          <div class="social-links">
+            <a href="https://www.linkedin.com/company/hathyo" target="_blank"><i class="bi bi-linkedin" style="color: white;"></i> LinkedIn</a>
+            <a href="https://www.facebook.com/hathyoVN" target="_blank"><i class="bi bi-facebook" style="color: white;"></i> Facebook</a>
+            <a href="/assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" style="color: white;"><i class="fab fa-weixin"></i> WeChat</a>
+          </div>
+          <a href="https://hathyo.com/" style="text-decoration: none; color: inherit;"><div class="qr-code" id="qrcode"></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Buttons -->
+  <div class="export-buttons">
+    <button onclick="exportToPNG()">Xuất ảnh</button>
+    <button onclick="exportToVCard()">Xuất vCard</button>
+    <button onclick="exportToPDF()">Xuất PDF</button>
+    <button onclick="toggleContactForm()">Nhắn tin</button>
+  </div>
+
+  <!-- Contact Section -->
+  <div class="card contact-card" id="contact">
+    <form id="contact-form" method="post">
+      <h3 style="align-self: center; color: #ff6302; font-size: clamp(12px, 2.9vw, 20px);">Hãy để lại tin nhắn, tôi sẽ liên hệ ngay!</h3>
+      <div class="input-row">
+        <div class="input-group">
+          <i class="bi bi-person icon-orange"></i>
+          <input type="text" class="form-control" name="name" id="name" placeholder="Quý danh" required>
+        </div>
+        <div class="input-group">
+          <i class="bi bi-briefcase icon-orange"></i>
+          <input type="text" class="form-control" name="title" id="title" placeholder="Chức vị" required>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <i class="bi bi-phone icon-orange"></i>
+          <input type="tel" class="form-control" name="phone" id="phone" placeholder="Số điện thoại" required>
+        </div>
+        <div class="input-group">
+          <i class="bi bi-envelope icon-orange"></i>
+          <input type="email" class="form-control" name="email" id="email" placeholder="Địa chỉ email" required>
+        </div>
+      </div>
+      <div class="message-group">
+        <!-- <i class="bi bi-chat-left-text icon-orange"></i> -->
+        <textarea class="form-control" name="message" id="message" placeholder="Nội dung lời nhắn" required></textarea>
+      </div>
+      <button type="submit" id="submit-btn">Gửi tin nhắn</button>
+      <div class="success-message" id="success-message">Tin nhắn đã được gửi thành công!</div>
+    </form>
+  </div>
+
+  <script>
+    // QR Code Generation
+    const url = "https://lazinet.com/bizcards/phung-hoang-hathyo.html";
+    new QRCode(document.getElementById("qrcode"), {
+      text: url,
+      width: 100,
+      height: 100,
+      colorDark: "#0a703f",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    // Export Functions
+    function exportToPNG() {
+      html2canvas(document.getElementById("business-card"), { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "HATHYO Phung-Hoang.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    function exportToVCard() {
+      const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+N:Hoang;Phung;;;
+FN:Phung Hoang
+ORG:HATHYO
+TITLE:Founder & CEO | Wellness Architect
+ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84908556220
+EMAIL:email@hathyo.com
+URL:https://hathyo.com/
+END:VCARD
+      `.trim();
+      const blob = new Blob([vCardData], { type: "text/vcard" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "HATHYO Phung-Hoang.vcf";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const cardElement = document.getElementById("business-card");
+      const isMobile = window.innerWidth <= 550;
+      const doc = new jsPDF({
+        orientation: isMobile ? "portrait" : "landscape",
+        unit: "px",
+        format: isMobile ? [300, 500] : [500, 300]
+      });
+      html2canvas(cardElement, { scale: 2, useCORS: true }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const width = isMobile ? 300 : 500;
+        const height = isMobile ? 500 : 300;
+        doc.addImage(imgData, "PNG", 0, 0, width, height);
+        doc.save("HATHYO Phung-Hoang.pdf");
+      });
+    }
+
+    // Tech Grid Animation
+    const canvas = document.getElementById("tech-grid");
+    const ctx = canvas.getContext("2d");
+    const card = document.getElementById("business-card");
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    const nodes = [];
+    const numNodes = 15;
+    let mouseNode = null;
+
+    function randomRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function initializeNodes() {
+      nodes.length = 0;
+      for (let i = 0; i < numNodes; i++) {
+        nodes.push({
+          x: randomRange(10, canvas.width - 10),
+          y: randomRange(10, canvas.height - 10),
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          color: getRandomColor()
+        });
+      }
+      const edgeNodes = [
+        { x: randomRange(10, canvas.width - 10), y: 10, vx: (Math.random() - 0.5) * 1, edge: 'top', color: getRandomColor() },
+        { x: canvas.width - 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'right', color: getRandomColor() },
+        { x: randomRange(10, canvas.width - 10), y: canvas.height - 10, vx: (Math.random() - 0.5) * 1, edge: 'bottom', color: getRandomColor() },
+        { x: 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'left', color: getRandomColor() }
+      ];
+      nodes.push(...edgeNodes);
+    }
+
+    function getRandomColor() {
+      const avoidColors = ["#000000", "#ff6302", "#0000ff"];
+      let r, g, b, color;
+      do {
+        r = Math.floor(Math.random() * 256);
+        g = Math.floor(Math.random() * 256);
+        b = Math.floor(Math.random() * 256);
+        color = `rgba(${r}, ${g}, ${b}, 0.5)`;
+      } while (avoidColors.some(c => isColorClose(color, c)));
+      return color;
+    }
+
+    function isColorClose(color1, color2) {
+      const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
+      const [r2, g2, b2] = color2.match(/#?([\da-f]{2})([\da-f]{2})([\da-f]{2})/i).slice(1).map(x => parseInt(x, 16));
+      return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2) < 100;
+    }
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const allNodes = mouseNode ? [...nodes, mouseNode] : nodes;
+      for (let i = 0; i < allNodes.length; i++) {
+        for (let j = i + 1; j < allNodes.length; j++) {
+          const dist = Math.hypot(allNodes[i].x - allNodes[j].x, allNodes[i].y - allNodes[j].y);
+          if (dist < 100) {
+            const gradient = ctx.createLinearGradient(allNodes[i].x, allNodes[i].y, allNodes[j].x, allNodes[j].y);
+            gradient.addColorStop(0, allNodes[i].color.replace(/[\d.]+\)$/, "0.1)"));
+            gradient.addColorStop(1, allNodes[j].color.replace(/[\d.]+\)$/, "0.1)"));
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 1 + Math.sin(Date.now() / 500) * 0.5;
+            ctx.beginPath();
+            ctx.moveTo(allNodes[i].x, allNodes[i].y);
+            ctx.lineTo(allNodes[j].x, allNodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      allNodes.forEach(node => {
+        const size = node.isMouse ? 4 : (node.edge ? 3 : 2 + Math.sin(Date.now() / 300) * 1);
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.shadowBlur = node.isMouse ? 15 : 10;
+        ctx.shadowColor = node.color.replace(/[\d.]+\)$/, "0.3)");
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    }
+
+    function updateNodes() {
+      nodes.forEach(node => {
+        if (node.edge) {
+          if (node.edge === 'top' || node.edge === 'bottom') {
+            node.x += node.vx;
+            if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          } else if (node.edge === 'left' || node.edge === 'right') {
+            node.y += node.vy;
+            if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+          }
+        } else {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+        }
+        if (Math.random() < 0.02) node.color = getRandomColor();
+      });
+    }
+
+    card.addEventListener('mousemove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const canvasX = event.clientX - rect.left;
+      const canvasY = event.clientY - rect.top;
+      if (canvasX >= 0 && canvasX <= canvas.width && canvasY >= 0 && canvasY <= canvas.height) {
+        if (!mouseNode) {
+          mouseNode = { x: canvasX, y: canvasY, color: 'rgba(255, 99, 2, 0.8)', isMouse: true };
+        } else {
+          mouseNode.x = canvasX;
+          mouseNode.y = canvasY;
+        }
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      mouseNode = null;
+    });
+
+    function animate() {
+      updateNodes();
+      drawGrid();
+      requestAnimationFrame(animate);
+    }
+
+    initializeNodes();
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      initializeNodes();
+      mouseNode = null;
+    });
+
+    // Contact Form Handling
+    const contactCard = document.getElementById("contact");
+
+    function toggleContactForm() {
+      contactCard.classList.toggle("active");
+    }
+
+    document.getElementById('contact-form').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Ngăn hành vi mặc định của form
+      const button = document.getElementById('submit-btn');
+      button.textContent = 'Đang gửi ... đến HATHYO';
+      button.style.color = '#ffff00'; // Màu vàng
+
+      // Lấy dữ liệu từ form
+      const formData = {
+        name: document.getElementById('name').value,
+        userType: "", // Để trống
+        otherType: "", // Để trống
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        subject: document.getElementById('title').value, // Dùng "Title" thay cho "subject"
+        message: document.getElementById('message').value,
+      };
+
+      try {
+        // Gửi yêu cầu POST với no-cors
+        await fetch('https://script.google.com/macros/s/AKfycbyetL0f1MIif2VbKw05PnT4c0d-ASsFEAoJOGS3sp467W-0ndoDkTszau_AXHqGtcrt/exec', {
+          method: 'POST',
+          mode: 'no-cors', // Bỏ qua kiểm tra CORS
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        // Hiển thị thông báo thành công
+        button.textContent = 'Đã gửi thành công đến HATHYO!';
+        button.style.color = '#00FF00'; // Màu xanh lá
+        button.disabled = true; // Khóa nút để tránh gửi lại
+        setTimeout(() => {
+          contactCard.classList.remove("active"); // Ẩn form sau 2 giây
+          button.textContent = 'Send Message'; // Reset nút
+          button.style.color = '#fff'; // Reset màu
+          button.disabled = false; // Mở khóa nút
+          // document.getElementById('contact-form').reset(); // Reset form
+          // window.location.href = 'https://hathyo.com';
+          // Tùy chọn 2: Mở liên kết trong tab mới (bỏ comment nếu muốn dùng)
+          window.open('https://hathyo.com', '_blank');
+        }, 2000);
+      } catch (error) {
+        // Hiển thị thông báo lỗi
+        button.textContent = `Error: ${error.message}`;
+        button.style.backgroundColor = '#FF3333'; // Đổi màu nền (màu đỏ)
+      }
+    });
+  </script>
+</body>
+</html>
