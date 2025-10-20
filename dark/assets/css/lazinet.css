@@ -325,13 +325,13 @@ align-items: center !important;
 /* Pulse animation for main button */
 @keyframes lazinetPulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(15, 36, 83, 0.7);
+        box-shadow: 0 0 0 0 rgba(0, 0, 255, 0.7);
     }
-    70% {
-        box-shadow: 0 0 0 15px rgba(15, 36, 83, 0);
+    90% {
+        box-shadow: 0 0 0 15px rgba(0, 0, 255, 0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(15, 36, 83, 0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 255, 0);
     }
 }
 

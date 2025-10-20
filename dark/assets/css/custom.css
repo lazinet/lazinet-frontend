@@ -61,7 +61,7 @@
 	--black-color					: #000000;
 	--divider-color					: #FFFFFF1A;
 	--error-color					: rgb(230, 87, 87);
-	--default-font					: "Sora", sans-serif;
+	--default-font					: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
 }
 
 /************************************/
@@ -1109,7 +1109,8 @@ header.main-header .container-fluid{
 
 .scrolling-content span img{
 	width: 100%;
-	max-width: 170px;
+	/* max-width: 170px; */
+	max-height: 40px;
 }
 
 /************************************/
@@ -1117,7 +1118,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .about-us{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .about-image-box{
@@ -1263,7 +1264,7 @@ header.main-header .container-fluid{
 	background-size: 100% auto;
 	backdrop-filter: blur(180px);
 	-webkit-backdrop-filter: blur(180px);
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .service-item{
@@ -1492,7 +1493,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .why-choose-us{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .why-choose-content{
@@ -1748,7 +1749,7 @@ header.main-header .container-fluid{
 	background-position: center center;
 	backdrop-filter: blur(180px);
 	-webkit-backdrop-filter: blur(180px);
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .how-it-work .section-title h2 .work-title-images{
@@ -1857,7 +1858,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .our-case-study{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .case-study-item{
@@ -2075,7 +2076,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .our-features{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .feature-item-box{
@@ -2175,7 +2176,7 @@ header.main-header .container-fluid{
     background-size: cover;
 	backdrop-filter: blur(180px);
     -webkit-backdrop-filter: blur(180px);
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .our-pricing-swich{
@@ -2343,7 +2344,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .our-faqs{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .our-faqs-content{
@@ -2423,7 +2424,7 @@ header.main-header .container-fluid{
 	background: url('../images/testimonial-bg.jpg') no-repeat;
 	background-position: center center;
 	background-size: cover;
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .our-testimonials::before{
@@ -2844,6 +2845,7 @@ header.main-header .container-fluid{
 	list-style: none;
 	margin: 0;
 	padding: 0;
+	align-items: center;
 }
 
 .footer-menu ul li{
@@ -2869,7 +2871,7 @@ header.main-header .container-fluid{
 	background: url('../images/page-header-bg.png') no-repeat;
 	background-position: top center;
 	background-size: cover;
-	padding: 265px 0 140px;
+	padding: 150px 0 50px;
 	overflow: hidden;
 }
 
@@ -2918,7 +2920,7 @@ header.main-header .container-fluid{
 	background-size: cover;
 	backdrop-filter: blur(180px);
     -webkit-backdrop-filter: blur(180px);
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .our-value-image-box{
@@ -3085,7 +3087,7 @@ header.main-header .container-fluid{
 }
 
 .our-awards{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .awards-info{
@@ -3185,7 +3187,7 @@ header.main-header .container-fluid{
 }
 
 .our-team{
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 .team-item{
@@ -3319,7 +3321,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-service-single{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .page-single-sidebar{
@@ -3660,7 +3662,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-blog{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .page-pagination{
@@ -3702,7 +3704,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-single-post{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .post-single-meta{
@@ -3964,7 +3966,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-case-study-single{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .case-study-category-list ul li{
@@ -4146,7 +4148,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-team-single{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .team-single-image figure{
@@ -4334,7 +4336,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-pricing{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 /************************************/
@@ -4469,7 +4471,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-faqs{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .page-faqs .page-single-faqs{
@@ -4485,7 +4487,7 @@ header.main-header .container-fluid{
 /************************************/
 
 .page-contact-us{
-	padding: 100px 0;
+	padding: 50px 0;
 }
 
 .page-contact-us .container{
@@ -5025,7 +5027,7 @@ header.main-header .container-fluid{
 	}
 
 	.intro-video{
-		padding: 100px 0;
+		padding: 50px 0;
 	}
 
 	.intro-video-list ul{
@@ -5510,7 +5512,8 @@ header.main-header .container-fluid{
 	}
 
 	.scrolling-content span img{
-		max-width: 140px;
+		/* max-width: 140px; */
+		max-height: 40px;
 	}
 	
 	.about-us{
@@ -6007,7 +6010,8 @@ header.main-header .container-fluid{
     }
 
 	.scrolling-content span img{
-        max-width: 120px;
+        /* max-width: 120px; */
+		max-height: 40px;
     }
 
 	.about-review-box{
