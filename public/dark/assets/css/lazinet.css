@@ -112,63 +112,6 @@ button:hover {
   gap: 10px; /* Khoảng cách giữa các phần tử */
 }
 
-#user-type,
-#other-type {
-  height: 40px; /* Đảm bảo chiều cao bằng nhau */
-  box-sizing: border-box; /* Bao gồm padding và border trong kích thước */
-}
-
-#user-type,
-#other-type {
-  line-height: normal; /* Đảm bảo giá trị tương tự */
-  margin: 0; /* Xóa margin mặc định */
-  padding: 5px; /* Đồng nhất padding */
-  vertical-align: middle; /* Căn chỉnh theo dòng */
-}
-
-/* Qwen */
-/* #google_translate_element {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 10px;
-}
-
-.goog-te-gadget-simple {
-  background-color: transparent !important;
-  border: none !important;
-  padding: 5px 10px !important;
-  font-size: 14px !important;
-  line-height: 1.5 !important;
-  color: #000 !important;
-  box-shadow: none !important;
-}
-
-.goog-te-gadget-icon {
-  display: none !important;
-} */
-
-/* Gemini
-#google_translate_element .goog-te-gadget-simple {
-  width: 0px !important;
-  height: 30px !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-#google_translate_element .goog-te-gadget-simple a {
-display: flex !important;
-align-items: center !important;
-}
-
-#google_translate_element .goog-te-gadget-simple span {
-display: flex !important;
-align-items: center !important;
-}
-
-.goog-te-gadget-icon {
-  display: none !important;
-} */
-
 /* GPT */
 #google_translate_element {
   max-width: 200px;
@@ -410,4 +353,112 @@ align-items: center !important;
     .lazinet-contact-btn:hover .lazinet-contact-label {
         right: 55px;
     }
+}
+
+/* CONTACT FORM DARK Add*/
+/* Select Box Styles for Contact Form */
+#user-type {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+    /* padding: 12px 15px; */
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+#user-type:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #ff6302 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 99, 2, 0.25) !important;
+    color: #ffffff !important;
+    outline: none;
+}
+
+/* Select options styling */
+#user-type option {
+    background: #2a2a2a !important;
+    color: #ffffff !important;
+    /* padding: 10px; */
+}
+
+/* Placeholder color for select */
+#user-type:invalid {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+#user-type option[value=""][disabled] {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Other input fields to match the theme */
+#contact-form .form-control {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+#contact-form .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#contact-form .form-control:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #ff6302 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 99, 2, 0.25) !important;
+    color: #ffffff !important;
+    outline: none;
+}
+
+/* Other type input field */
+#other-type {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+#other-type::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#other-type:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #ff6302 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 99, 2, 0.25) !important;
+    color: #ffffff !important;
+    outline: none;
+}
+
+/* Textarea specific styles */
+#contact-form textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+/* For dark background sections - ensure contrast */
+.dark-background #contact-form .form-control,
+.dark-background #user-type,
+.dark-background #other-type {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark-background #contact-form .form-control:focus,
+.dark-background #user-type:focus,
+.dark-background #other-type:focus {
+    background: rgba(0, 0, 0, 0.4) !important;
 }
