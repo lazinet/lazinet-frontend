@@ -166,555 +166,170 @@
     </div>
     <!-- Scrolling Ticker Section End -->
 
-    <!-- Page Testimonials Start -->
+    <!-- Testimonials Section -->
     <div class="page-testimonials">
         <div class="container">
             <div class="row">
-                <div class="col-xl-4 col-md-6">
-                    <!-- Testimonial Item Start -->
-                     <div class="testimonial-item wow fadeInUp">
-                        <div class="testimonial-header">
-                            <div class="testimonial-logo">
-                                <img src="assets/images/testimonial-company-logo-1.svg" alt="">
+                <div class="col-xl-7 col-lg-6">
+                    <!-- Testimonial Slider Start -->
+                    <div class="testimonial-slider">
+                        <div class="swiper">
+                            <div class="swiper-wrapper" data-cursor-text="Drag" id="testimonialsWrapper">
+                                <!-- Testimonials will be loaded dynamically -->
                             </div>
-                            <div class="testimonial-quote">
-                                <img src="assets/images/testimonial-quote.svg" alt="">
+                            
+                            <!-- Loading State -->
+                            <div class="loading-testimonials" id="loadingTestimonials">
+                                <div class="spinner"></div>
+                                <p>Đang tải đánh giá...</p>
                             </div>
-                        </div>
-                        <div class="testimonial-body">
-                            <div class="testimonial-content">
-                                <p>“Partnering with this cybersecurity team has completely transformed the way we protect our digital.”</p>
-                            </div>
-                            <div class="testimonial-author-content">
-                                <h3>Sarah Johnson</h3>
-                                <p>CEO, FinTech Innovations</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial Item End -->
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <!-- Testimonial Item Start -->
-                     <div class="testimonial-item wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="testimonial-header">
-                            <div class="testimonial-logo">
-                                <img src="assets/images/testimonial-company-logo-2.svg" alt="">
-                            </div>
-                            <div class="testimonial-quote">
-                                <img src="assets/images/testimonial-quote.svg" alt="">
+                            
+                            <!-- Error State -->
+                            <div class="error-testimonials" id="errorTestimonials" style="display: none;">
+                                <p>Không thể tải đánh giá. Vui lòng thử lại sau.</p>
                             </div>
                         </div>
-                        <div class="testimonial-body">
-                            <div class="testimonial-content">
-                                <p>"We faced constant compliance challenges in healthcare data. Their expertise helped us achieve.”</p>
-                            </div>
-                            <div class="testimonial-author-content">
-                                <h3>Michael Lee</h3>
-                                <p>IT Director, HealthSecure Systems</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial Item End -->
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <!-- Testimonial Item Start -->
-                     <div class="testimonial-item wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="testimonial-header">
-                            <div class="testimonial-logo">
-                                <img src="assets/images/testimonial-company-logo-1.svg" alt="">
-                            </div>
-                            <div class="testimonial-quote">
-                                <img src="assets/images/testimonial-quote.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="testimonial-body">
-                            <div class="testimonial-content">
-                                <p>“The team helped us strengthen our cybersecurity infrastructure while ensuring compliance.”</p>
-                            </div>
-                            <div class="testimonial-author-content">
-                                <h3>John Carter</h3>
-                                <p>CTO, FinSecure Ltd.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial Item End -->
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <!-- Testimonial Item Start -->
-                     <div class="testimonial-item wow fadeInUp" data-wow-delay="0.6s">
-                        <div class="testimonial-header">
-                            <div class="testimonial-logo">
-                                <img src="assets/images/testimonial-company-logo-2.svg" alt="">
-                            </div>
-                            <div class="testimonial-quote">
-                                <img src="assets/images/testimonial-quote.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="testimonial-body">
-                            <div class="testimonial-content">
-                                <p>"Cyber threats were a huge concern for our online store. With their tailored solutions.”</p>
-                            </div>
-                            <div class="testimonial-author-content">
-                                <h3>Emily Davis</h3>
-                                <p>Founder, E-Commerce Hub</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial Item End -->
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <!-- Testimonial Item Start -->
-                     <div class="testimonial-item wow fadeInUp" data-wow-delay="0.8s">
-                        <div class="testimonial-header">
-                            <div class="testimonial-logo">
-                                <img src="assets/images/testimonial-company-logo-1.svg" alt="">
-                            </div>
-                            <div class="testimonial-quote">
-                                <img src="assets/images/testimonial-quote.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="testimonial-body">
-                            <div class="testimonial-content">
-                                <p>"What sets them apart is not just the technology but the people behind it.”</p>
-                            </div>
-                            <div class="testimonial-author-content">
-                                <h3>James Wilson</h3>
-                                <p>COO, Global Logistics Corp</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial Item End -->
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <!-- Testimonial Item Start -->
-                     <div class="testimonial-item wow fadeInUp" data-wow-delay="1s">
-                        <div class="testimonial-header">
-                            <div class="testimonial-logo">
-                                <img src="assets/images/testimonial-company-logo-2.svg" alt="">
-                            </div>
-                            <div class="testimonial-quote">
-                                <img src="assets/images/testimonial-quote.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="testimonial-body">
-                            <div class="testimonial-content">
-                                <p>"We were struggling with data protection in the healthcare sector, but their tailored solutions.”</p>
-                            </div>
-                            <div class="testimonial-author-content">
-                                <h3>Sarah Mitchell</h3>
-                                <p>MD</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial Item End -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page Testimonials End -->
-
-    <!-- How It Work Section Start -->
-    <div class="how-it-work">
-        <div class="container">
-            <div class="row section-row">
-                <div class="col-lg-12">
-                    <!-- Section Title Start -->
-                    <div class="section-title section-title-center">
-                        <h3 class="wow fadeInUp">How It Works</h3>
-                        <h2 class="wow fadeInUp">Smart cybersecurity strategies designed to defend, <span class="work-title-images"><img src="assets/images/author-1.jpg" alt=""><img src="assets/images/author-2.jpg" alt=""><img src="assets/images/author-3.jpg" alt=""><img src="assets/images/author-4.jpg" alt=""></span> respond, <span>and evolve</span></h2>
-                    </div>
-                    <!-- Section Title End -->
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <!-- How Work Item Start -->
-                    <div class="how-work-item wow fadeInUp">
-                        <!-- How Work Item Header Start -->
-                        <div class="how-work-item-header">
-                            <div class="icon-box">
-                                <img src="assets/images/icon-how-it-work-1.svg" alt="">
-                            </div>
-                            <div class="how-work-item-no">
-                                <h3>01</h3>
-                            </div>
-                        </div>
-                        <!-- How Work Item Header End -->
-
-                        <!-- How Work Item Body Start -->
-                        <div class="how-work-item-body">
-                            <div class="how-work-item-content">
-                                <h3>Risk Assessment</h3>
-                                <p>We start with a full evaluation of your IT infrastructure.</p>
-                            </div>                            
-                            <div class="how-work-btn">
-                                <a href="contact.html" class="readmore-btn">Read More</a>
-                            </div>
-                        </div>                        
-                        <!-- How Work Item Body End -->
-                    </div>
-                    <!-- How Work Item End -->
-                </div>
-
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <!-- How Work Item Start -->
-                    <div class="how-work-item wow fadeInUp" data-wow-delay="0.2s">
-                        <!-- How Work Item Header Start -->
-                        <div class="how-work-item-header">
-                            <div class="icon-box">
-                                <img src="assets/images/icon-how-it-work-2.svg" alt="">
-                            </div>
-                            <div class="how-work-item-no">
-                                <h3>02</h3>
-                            </div>
-                        </div>
-                        <!-- How Work Item Header End -->
-
-                        <!-- How Work Item Body Start -->
-                        <div class="how-work-item-body">
-                            <div class="how-work-item-content">
-                                <h3>Threat Detection</h3>
-                                <p>Self-learning algorithms for continuous improvement</p>
-                            </div>                            
-                            <div class="how-work-btn">
-                                <a href="contact.html" class="readmore-btn">Read More</a>
-                            </div>
-                        </div>                        
-                        <!-- How Work Item Body End -->
-                    </div>
-                    <!-- How Work Item End -->
-                </div>
-
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <!-- How Work Item Start -->
-                    <div class="how-work-item wow fadeInUp" data-wow-delay="0.4s">
-                        <!-- How Work Item Header Start -->
-                        <div class="how-work-item-header">
-                            <div class="icon-box">
-                                <img src="assets/images/icon-how-it-work-3.svg" alt="">
-                            </div>
-                            <div class="how-work-item-no">
-                                <h3>03</h3>
-                            </div>
-                        </div>
-                        <!-- How Work Item Header End -->
-
-                        <!-- How Work Item Body Start -->
-                        <div class="how-work-item-body">
-                            <div class="how-work-item-content">
-                                <h3>Protection Deployment</h3>
-                                <p>We implement advanced defense measures-firewalls, encryption.</p>
-                            </div>                            
-                            <div class="how-work-btn">
-                                <a href="contact.html" class="readmore-btn">Read More</a>
-                            </div>
-                        </div>                        
-                        <!-- How Work Item Body End -->
-                    </div>
-                    <!-- How Work Item End -->
-                </div>
-
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <!-- How Work Item Start -->
-                    <div class="how-work-item wow fadeInUp" data-wow-delay="0.6s">
-                        <!-- How Work Item Header Start -->
-                        <div class="how-work-item-header">
-                            <div class="icon-box">
-                                <img src="assets/images/icon-how-it-work-4.svg" alt="">
-                            </div>
-                            <div class="how-work-item-no">
-                                <h3>04</h3>
-                            </div>
-                        </div>
-                        <!-- How Work Item Header End -->
-
-                        <!-- How Work Item Body Start -->
-                        <div class="how-work-item-body">
-                            <div class="how-work-item-content">
-                                <h3>Security Evolution</h3>
-                                <p>We continually refine, update & strengthen your defenses.</p>
-                            </div>                            
-                            <div class="how-work-btn">
-                                <a href="contact.html" class="readmore-btn">Read More</a>
-                            </div>
-                        </div>                        
-                        <!-- How Work Item Body End -->
-                    </div>
-                    <!-- How Work Item End -->
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Section Footer Text Start -->
-                    <div class="section-footer-text section-footer-contact wow fadeInUp" data-wow-delay="0.8s">
-                        <p><span><img src="assets/images/icon-phone-white.svg" alt=""></span> Building resilience step by step - <a href="contact.html">Explore how our process protects you!</a></p>
-                        <ul>
-                            <li>4.9/5</li>
-                            <li><i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </li>
-                            <li>Over 5000 Reviews</li>
-                        </ul>
-                    </div>
-                    <!-- Section Footer Text End -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- How It Work Section Start -->
-     
-    <!-- Our Faqs Section Start -->
-    <div class="our-faqs">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-5">
-                    <!-- Our Faqs Content Start -->
-                    <div class="our-faqs-content">
-                        <!-- Section Title Start -->
-                        <div class="section-title">
-                            <h3 class="wow fadeInUp">Frequently Asked Questions</h3>
-                            <h2 class="wow fadeInUp">Everything you want to <span>know cybersecurity</span></h2>
-                            <p class="wow fadeInUp" data-wow-delay="0.2s">From service details to protection strategies, we provide clear explanations to help you make informed decisions.</p>
-                        </div>
-                        <!-- Section Title End -->
                         
-                        <!-- Faq Button Start -->
-                        <div class="faq-btn wow fadeInUp" data-wow-delay="0.4s">
-                            <a href="faqs.html" class="btn-default">View all FAQs</a>
-                        </div>
-                        <!-- Faq Button End -->
-                    </div>
-                    <!-- Our Faqs Content End -->
-                </div>
-
-                <div class="col-xl-7">
-                    <!-- FAQ Accordion Start -->
-                    <div class="faq-accordion" id="accordion">
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp">
-                            <h2 class="accordion-header" id="heading1">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-                                    Q1: Why is cybersecurity important for my business?
-                                </button>
-                            </h2>
-                            <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>We work with business across various industr including finance, healthcare, e-commerce, and technology, tailoring solutions to meet each sector's unique security needs.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.2s">
-                            <h2 class="accordion-header" id="heading2">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
-                                    Q2: What industries do you provide cybersecurity services for?
-                                </button>
-                            </h2>
-                            <div id="collapse2" class="accordion-collapse collapse show" aria-labelledby="heading2" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>We work with business across various industr including finance, healthcare, e-commerce, and technology, tailoring solutions to meet each sector's unique security needs.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.4s">
-                            <h2 class="accordion-header" id="heading3">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                    Q3: Do small businesses really need cybersecurity?
-                                </button>
-                            </h2>
-                            <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>We work with business across various industr including finance, healthcare, e-commerce, and technology, tailoring solutions to meet each sector's unique security needs.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.6s">
-                            <h2 class="accordion-header" id="heading4">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                                    Q4: How quickly can you respond to a cyber threat?
-                                </button>
-                            </h2>
-                            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>We work with business across various industr including finance, healthcare, e-commerce, and technology, tailoring solutions to meet each sector's unique security needs.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
+                        <!-- Navigation -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
                         
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.8s">
-                            <h2 class="accordion-header" id="heading5">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-                                    Q5: Is your solution customizable for my industry?
-                                </button>
-                            </h2>
-                            <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>We work with business across various industr including finance, healthcare, e-commerce, and technology, tailoring solutions to meet each sector's unique security needs.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
+                        <!-- Pagination -->
+                        <div class="swiper-pagination"></div>
                     </div>
-                    <!-- FAQ Accordion End -->
+                    <!-- Testimonial Slider End -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- Our Faqs Section End -->
 
-    <!-- Footer Start -->
-    <footer class="main-footer">
-        <!-- Footer Scrolling Ticker Box Start -->
-        <div class="footer-scrolling-ticker-box">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Footer Scrolling Ticker Start -->
-                        <div class="footer-scrolling-ticker">
-                            <!-- Scrolling Ticker Box Start -->
-                            <div class="scrolling-ticker-box">
-                                <!-- Scrolling Ticker Content Start -->
-                                <div class="scrolling-content">
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                </div>
-                                <!-- Scrolling Ticker Content End -->
+
+        <script>
+        // Configuration
+        const TESTIMONIALS_CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbySMe3ICU-9UrPjeWMd4hEp80QXmkcEA7aKZ-vgE3NMAJbrvr98YHO0nBr9GNknMPXYHg/exec'
+        };
+
+        // Initialize testimonials when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTestimonials();
+        });
+
+        async function loadTestimonials() {
+            const wrapper = document.getElementById('testimonialsWrapper');
+            const loading = document.getElementById('loadingTestimonials');
+            const error = document.getElementById('errorTestimonials');
+
+            try {
+                // Show loading state
+                loading.style.display = 'block';
+                error.style.display = 'none';
+                wrapper.innerHTML = '';
+
+                const response = await fetch(TESTIMONIALS_CONFIG.API_URL);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.data.length > 0) {
+                    renderTestimonials(result.data);
+                    initializeSwiper();
+                } else {
+                    throw new Error(result.error || 'No testimonials data');
+                }
+                
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function renderTestimonials(testimonials) {
+            const wrapper = document.getElementById('testimonialsWrapper');
             
-                                <!-- Scrolling Ticker Content Start -->
-                                <div class="scrolling-content">
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                </div>
-                                <!-- Scrolling Ticker Content End -->
+            wrapper.innerHTML = testimonials.map(testimonial => `
+                <div class="swiper-slide">
+                    <div class="testimonial-item">
+                        <div class="testimonial-header">
+                            ${testimonial.subUrl ? `
+                            <div class="testimonial-logo">
+                                <img src="${escapeHtml(testimonial.subUrl)}" alt="${escapeHtml(testimonial.author)}">
                             </div>
-                            <!-- Scrolling Ticker Box End -->
-            
-                            <!-- Footer Contact Button Start -->
-                            <div class="footer-contact-btn">
-                                <a href="contact.html" class="schedule-btn">Contact Us <img src="assets/images/arrow-white.svg" alt=""></a>
+                            ` : ''}
+                            <div class="testimonial-quote">
+                                <img src="assets/images/testimonial-quote.svg" alt="">
                             </div>
-                            <!-- Footer Contact Button End -->
+                        </div>                                         
+                        <div class="testimonial-body">
+                            <div class="testimonial-content">
+                                <p>${escapeHtml(testimonial.content)}</p>
+                            </div>
+                            <div class="testimonial-author-content">
+                                <h3>${escapeHtml(testimonial.author)}</h3>
+                                <p>${escapeHtml(testimonial.position)}</p>
+                            </div>
                         </div>
-                        <!-- Footer Scrolling Ticker End -->
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Footer Scrolling Ticker Box End -->
-        
-		<div class="container">
-            <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <!-- About Footer Start -->
-                    <div class="about-footer">
-                        <!-- Footer Logo Start -->
-                        <div class="footer-logo">
-                            <img src="assets/images/footer-logo.svg" alt="">
-                        </div>
-                        <!-- Footer Logo End -->
+            `).join('');
+        }
 
-                        <!-- About Footer Content Start -->
-                        <div class="about-footer-content">
-                            <p>Secure your cloud environments & ensure safe migration with compliance-ready.</p>
-                        </div>
-                        <!-- About Footer Content End -->
-                    </div>
-                    <!-- About Footer End -->
-                </div>
+        function initializeSwiper() {
+            // Initialize Swiper if it exists
+            if (typeof Swiper !== 'undefined') {
+                new Swiper('.testimonial-slider .swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    loop: true,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 1,
+                        },
+                        1024: {
+                            slidesPerView: 1,
+                        }
+                    }
+                });
+            }
+        }
 
-                <div class="col-xl-3 col-md-6">
-                    <!-- Footer Location Link Start -->
-                    <div class="footer-location footer-links">
-                        <h3>Our Location</h3>
-                        <p>4517 Washington Ave. Manchester, Kentucky 39495</p>
-                    </div>
-                    <!-- Footer Location Link End -->
-                </div>
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
-                <div class="col-xl-3 col-md-6">
-                    <!-- Footer Contact Start -->
-                    <div class="footer-contact footer-links">
-                        <h3>Liên hệ</h3>
-                        <ul>
-                            <li><a href="tel:+84908556220">+84 908 556 220</a></li>
-                            <li><a href="mailto:email@lazinet.com">email@lazinet.com</a></li>
-                        </ul>
-                    </div>
-                    <!-- Footer Contact End -->
-                </div>
+        // Fallback: Retry loading if failed
+        function retryLoading() {
+            document.getElementById('errorTestimonials').style.display = 'none';
+            loadTestimonials();
+        }
 
-                <div class="col-xl-3 col-md-6">
-                    <!-- Footer Newsletter Form Start -->
-                    <div class="footer-newsletter-form footer-links">
-                        <h3>Subscribe To Newsletter</h3>
-                        <p>Stay informe with the latest cybersecurity news, expert tips.</p>
-                        <form id="newslettersForm" action="#" method="POST">
-                            <div class="form-group">
-                                <input type="email" name="mail" class="form-control" id="mail" placeholder="Email Address *" required>
-                                <button type="submit" class="newsletter-btn">Subscribe</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Footer Newsletter Form End -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Copyright Start -->
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Footer Copyright Box Start -->
-                        <div class="footer-copyright-box">
-                            <div class="footer-copyright-text">
-                                <p>Copyright © 2025 All Rights Reserved.</p>
-                            </div>
-
-                            <!-- Footer Menu Start -->
-                            <div class="footer-menu">
-                                <ul>
-                                    <li><a href="index-2.html">Home</a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="services.html">services</a></li>
-                                    <li><a href="blog.html">Blogs</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <!-- Footer Menu End -->
-                        </div>
-                        <!-- Footer Copyright  -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer Copyright End -->
-    </footer>
-    <!-- Footer End -->
+        // Add retry button to error state (optional)
+        </script>
 
     <!-- Jquery Library File -->
     <script src="assets/js/jquery-3.7.1.min.js"></script>
@@ -751,5 +366,4 @@
     <script src="assets/js/function.js"></script>
 </body>
 
-<!-- Mirrored from html.awaikenthemes.com/netzon/dark/testimonials.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Oct 2025 04:48:52 GMT -->
 </html>

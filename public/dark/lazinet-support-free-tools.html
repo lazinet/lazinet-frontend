@@ -807,6 +807,12 @@
                                 <!-- <button id="newsletter-btn" type="submit" class="newsletter-btn">Đăng ký</button> -->
                                 <button id="newsletter-btn" class="newsletter-btn" type="button" onclick="submitNewsletter()">Đăng ký</button>
                             </div>
+
+                            <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
+                            <div style="display: none; position: absolute; left: -9999px;">
+                                <label for="website">Website (để trống)</label>
+                                <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
+                            </div>
                         </form>
                     </div>
                     <!-- Footer Newsletter Form End -->

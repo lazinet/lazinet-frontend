@@ -1,0 +1,33 @@
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="500" height="300">
+          <foreignObject width="500" height="300">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="card" id="business-card">
+    <div class="left-section">
+      <div class="logo">
+        <img src="https://i.ibb.co/2yqW5kL/lazinet-logo.png" alt="LAZINET Logo" />
+      </div>
+      <div class="profile-pic">
+        <img src="https://via.placeholder.com/80" alt="Profile Picture" />
+      </div>
+    </div>
+    <div class="right-section">
+      <div>
+        <h2>Nguyễn Văn A</h2>
+        <p class="position">Trưởng phòng Kỹ thuật | Công nghệ Thông tin</p>
+        <p><strong>Địa chỉ:</strong> 123 Đường Lê Lợi, Quận 1, TP. Hồ Chí Minh</p>
+        <p><strong>Điện thoại:</strong> (+84) 123 456 789</p>
+        <p><strong>Email:</strong> <a href="mailto:nguyen.vana@lazinet.com">nguyen.vana@lazinet.com</a></p>
+        <div class="social-links">
+          <a href="https://linkedin.com/in/nguyenvana" target="_blank">LinkedIn</a>
+          <a href="https://facebook.com/nguyenvana" target="_blank">Facebook</a>
+        </div>
+      </div>
+      <div>
+        <div class="qr-code" id="qrcode" title="https://lazinet.com/nguyenvana"><canvas width="80" height="80" style="display: none;"></canvas><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAABEBJREFUeF7tnO122zAMQ5P3f+jspLU72SV9AVrusob7WckSBYHgh53db7fb4zbp3+Pxd6n7/f6xavS3/d/X7ddnjswZ14vmRWtkNsw49vOUDeAJJL8ApJvN9hhvnG6a2JitNe5NLKVzKHsQnuMaDSChFYw3gAsoxFbF60IGOm5CLkHjLgGc4FSZm9mTyU8DuCBWJU0D+KoAUj5GrpsxYnWlqjQ4WcNo44+7cAN4QBHK556PNoAnAaQyq1r2UWTN3C4qFynx/6cu/NYAksBnpVWUmCpiT+5O47PtofP/SCVCLkP1LblXVkXQhdE4gbfX98tq4bcDUEGe5lwVGK5al86jjL9EP5AiawMYlEtXgeKsqzCM5twf1Z4OrByxiozJxqnQVzoo1b3puQaQECKiNAPPIWi1s6JOyAz3oUQ5yt2oW6PIgZP4Z/s1gDuk3XbXlwYqQl2JN4pBZ5mt2K46qnLGTSm3aqBihLL43tAGcECkAfwEI2wmjMxRGqZRrRu5CTUF3CBEnkKBITtnZIcSqMJSrgH8zrSUYNG3MQ3gSQAVd17nkC4qbqBGyFF/lEt2ysnK3A976Oss0rAGED5vawC/+0eYB1bcSHlGab1HckCu7+SXip2UVaTnqDQTKJVQUgWn/o3WezkAnZctylwC2Wl80twRYOdiqvq92S8q5ZyFHRel6D4jsjaAC8rkos7FKRfjVCIbBq5pzAyDFO07EnQCzQkGylySBpKhTR7YAB7/LCO7EHyx7mhKMzCAWYm4RznUDP1xXI3mKq5NerjZw9FAJzpTcuysRaCQdtJeCqjpHg2gAt+2iRoyUNEvikpO3VzVVmI2wTEjWDaAoPV0SRsAr36plIb/5decVJ08x89qoLMHedk3exrAT3jXS2oAg98sX8rAKArTLVCwcAOSc/uRJFBgoHEH4P3+1qcdJK6Vw7nuU9mjAYTchACi8VMMjDrSMzJ7yvOoXCIZIBv30ZL2i0BWytjwA0syTimNGsDlyigHq+Z5xIj/joHEuswlFJqvYDhv2hRdooBC2QRI62Y41VF6J0IA0fhoxa8G0LkNZS5pII0T8Eqfcd2jqtnSOSvvhaWFjVo3yi8bwHcBkD4uUth2VKFUyz5HL2kPx92V4IX9QAc02pAOR8/vbYnqZtqjARxQfFkAlUhFyS8l3TPyMqfkOhuFFUzwvTC5MyXg5F60fubCWZSmS5xZOT3XagAXRJ28dHN5MxuqRHmHrcRMpQKqSIYbcKY2VBvAAzor6YajPwqDiIVOUKO50bjExqtcmCJgAxiwtRl4sQtXRP1pEuV+matXNXldj4JemsbQQSVtgP9H2tG3BlBktsMkuuSMuUoCfpqBDjsoGND4hxsEbJ15UMdj7GyDvg8kMAkgGm8Ah8YpaVX6YuY3MJCYpoxX05h1bYqaTiPAdsXiJeLPXRXgIgAcXWsAFwTekYF/AGO3cvWv3WXJAAAAAElFTkSuQmCC" style="display: block;" /></div>
+        <p class="intro">"Tôi đam mê xây dựng các giải pháp công nghệ sáng tạo, giúp doanh nghiệp tối ưu hóa hiệu suất."</p>
+      </div>
+    </div>
+  </div>
+          </foreignObject>
+        </svg>
+      

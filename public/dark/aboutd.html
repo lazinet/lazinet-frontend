@@ -1,613 +1,420 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="vi-VN">
 <head>
-	<!-- Meta -->
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-	<meta name="description" content="Dịch vụ Phát triển Phần mềm chuyên nghiệp tại LAZINET - Xây dựng giải pháp công nghệ tối ưu cho doanh nghiệp">
-	<meta name="keywords" content="phát triển phần mềm, lập trình ứng dụng, giải pháp công nghệ, LAZINET, software development">
-	<meta name="author" content="LAZINET">
-	<!-- Page Title -->
-    <title>Phát Triển Phần Mềm | LAZINET - Giải Pháp Công Nghệ Tối Ưu</title>
-	<!-- Favicon Icon -->
-	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
-	<!-- Google Fonts Css-->
-	<link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap" rel="stylesheet">
-	<!-- Bootstrap Css -->
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<!-- SlickNav Css -->
-	<link href="assets/css/slicknav.min.css" rel="stylesheet">
-	<!-- Swiper Css -->
-	<link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
-	<!-- Font Awesome Icon Css-->
-	<link href="assets/css/all.min.css" rel="stylesheet" media="screen">
-	<!-- Animated Css -->
-	<link href="assets/css/animate.css" rel="stylesheet">
-    <!-- Magnific Popup Core Css File -->
-	<link rel="stylesheet" href="assets/css/magnific-popup.css">
-	<!-- Mouse Cursor Css File -->
-	<link rel="stylesheet" href="assets/css/mousecursor.css">
-	<!-- Main Custom Css -->
-	<link href="assets/css/custom.css" rel="stylesheet" media="screen">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh mục Sản phẩm - LAZINET</title>
+    <style>
+        /* CSS từ lazinet-support-pricing.html và products_done.html */
+        .filter-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            color: #ff6500;
+            border-radius: 8px;
+        }
+        
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #0052FF;
+            background: white;
+            color: #0052FF;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #0052FF;
+            color: white;
+        }
+        
+        .filter-btn:hover {
+            background: #0052FF;
+            color: white;
+        }
+        
+        .product-description {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #0052FF;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .pricing-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid #0052FF;
+            transform: scale(1.05);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #0052FF;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0052FF;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        
+        .features-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .order-btn {
+            width: 100%;
+            padding: 10px;
+            background: #0052FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .order-btn:hover {
+            background: #003cb3;
+        }
+        
+        /* Popup styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .popup-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            z-index: 1001;
+            min-width: 400px;
+            max-width: 90vw;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Preloader Start -->
-	<div class="preloader">
-		<div class="loading-container">
-			<div class="loading"></div>
-			<div id="loading-icon"><img src="assets/img/logo-lazinet/lazinet_LogoOnly.svg" alt="LAZINET"></div>
-		</div>
-	</div>
-	<!-- Preloader End -->
-
-    <!-- Header Start -->
-	<header class="main-header">
-		<div class="header-sticky">
-			<nav class="navbar navbar-expand-lg">
-				<div class="container-fluid">
-					<!-- Logo Start -->
-					<a class="navbar-brand" href="index.html">
-						<img src="assets/images/logo-lazinet/lazinet-logo-horizontal-light.svg" alt="LAZINET">
-					</a>
-					<!-- Logo End -->
-
-					<!-- Main Menu Start -->
-					<div class="collapse navbar-collapse main-menu">
-                        <div class="nav-menu-wrapper">
-                            <ul class="navbar-nav mr-auto" id="menu">
-                                <li class="nav-item"><a class="nav-link" href="index-video.html">Trang chủ</a></li>
-                                <li class="nav-item submenu"><a class="nav-link" href="lazinet-solution-customization.html">Giải pháp</a>
-                                    <ul>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-applied-technologies.html">Ứng dụng công nghệ</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-enterprise-management.html">Quản trị doanh nghiệp</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-manufacturing-execution.html">Quản trị sản xuất</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-sale-operation.html">Quản trị kinh doanh</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-digital-transformation.html">Chuyển đổi số</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-green-transformation.html">Chuyển đổi xanh</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-solution-customization.html">Giải pháp tùy chỉnh</a></li>
-                                    </ul>   
-                                </li>
-                                <li class="nav-item submenu"><a class="nav-link" href="lazinet-service-software-development.html">Dịch vụ</a>
-                                    <ul>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-research-development.html">Nghiên cứu & Phát triển</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-solution-consulting.html">Tư vấn giải pháp</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-software-development.html">Phát triển phần mềm</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-iot-device-production.html">Sản xuất thiết bị</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-product-distribution.html">Phân phối sản phẩm</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-system-integration.html">Tích hợp hệ thống</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-tech-expert-dispatch.html">Phái cử chuyên gia</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-service-technologies-training.html">Đào tạo công nghệ</a></li>
-                                    </ul>   
-                                </li>
-                                <li class="nav-item submenu"><a class="nav-link" href="lazinet-support-customers.html">Hỗ trợ</a>
-                                    <ul>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-customers.html">Hỗ trợ khách hàng</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-consulting.html">Tư vấn công nghệ</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-demos.html">Trải nghiệm Demo</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-pricing.html">Bảng giá</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-api-lazinet.html">Cổng API</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-whitepapers.html">Tài liệu</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-tech-docs.html">Bài viết</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-free-tools.html">Công cụ</a></li>
-                                    </ul>   
-                                </li>
-                                <li class="nav-item submenu"><a class="nav-link" href="about.html">Về LAZINET</a>
-                                    <ul>
-                                        <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="core-values.html">Giá trị cốt lõi</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="blog.html">Tin hoạt động</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="framework.html">Khung hợp tác</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="case-study.html">Dự án</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="partners.html">Đối tác</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="members.html">Đội ngũ</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="faqs.html">Hướng dẫn</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="wearehiring.html">Tuyển dụng</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="testimonials.html">Đánh giá</a></li>
-                                    </ul>   
-                                </li>
-                                <li id="google_translate_element"></li>
-                            </ul>
-                        </div>
-
-                        <!-- Header Btn Start -->
-                        <div class="header-btn">
-                            <a class="btn-default" href="contact.html">Liên Hệ Ngay</a>
-                        </div>
-                        <!-- Header Btn End -->                      
-					</div>
-					<!-- Main Menu End -->
-					<div class="navbar-toggle"></div>
-				</div>
-			</nav>
-			<div class="responsive-menu"></div>
-		</div>
-	</header>
-	<!-- Header End -->
-
-    <!-- Page Header Section Start -->
-    <div class="page-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Page Header Box Start -->
-                    <div class="page-header-box">
-                        <h1 class="wow fadeInUp">Phát Triển <span>Phần Mềm</span></h1>
-                        <nav class="wow fadeInUp">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                                <li class="breadcrumb-item"><a href="services.html">Dịch vụ</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Phát Triển Phần Mềm</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <!-- Page Header Box End -->
-                </div>
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <div class="filter-row" id="product-filters">
+                <!-- Product type filters will be loaded here -->
+            </div>
+            <div class="filter-row" id="group-filters">
+                <!-- Group filters will be loaded here -->
             </div>
         </div>
-    </div>
-    <!-- Page Header Section End -->
-
-    <!-- Scrolling Ticker Section Start -->
-    <div class="our-scrolling-ticker">
-        <!-- Scrolling Ticker Start -->
-        <div class="scrolling-ticker-box">
-            <div class="scrolling-content">
-                <span>Công nghệ tiên tiến</span>
-                <span>Đội ngũ chuyên gia</span>
-                <span>Giải pháp tối ưu</span>
-                <span>Hỗ trợ 24/7</span>
-                <span>Bảo mật tuyệt đối</span>
-                <span>Chi phí hợp lý</span>
-            </div>
-
-            <div class="scrolling-content">
-                <span>Công nghệ tiên tiến</span>
-                <span>Đội ngũ chuyên gia</span>
-                <span>Giải pháp tối ưu</span>
-                <span>Hỗ trợ 24/7</span>
-                <span>Bảo mật tuyệt đối</span>
-                <span>Chi phí hợp lý</span>
-            </div>
-        </div>
-        <!-- Scrolling Ticker End -->
-    </div>
-    <!-- Scrolling Ticker Section End -->
-
-    <!-- Page Service Single Start -->
-    <div class="page-service-single">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <!-- Page Single Sidebar Start -->
-                    <div class="page-single-sidebar">
-                        <!-- Page Category List Start -->
-                        <div class="page-category-list wow fadeInUp">
-                            <h3>Dịch Vụ Của Chúng Tôi</h3>
-                            <ul>
-                                <li><a href="lazinet-service-research-development.html">Nghiên cứu & Phát triển</a></li>
-                                <li><a href="lazinet-service-solution-consulting.html">Tư vấn giải pháp</a></li>
-                                <li><a href="lazinet-service-software-development.html">Phát triển phần mềm</a></li>
-                                <li><a href="lazinet-service-iot-device-production.html">Sản xuất thiết bị IoT</a></li>
-                                <li><a href="lazinet-service-product-distribution.html">Phân phối sản phẩm</a></li>
-                                <li><a href="lazinet-service-system-integration.html">Tích hợp hệ thống</a></li>
-                                <li><a href="lazinet-service-tech-expert-dispatch.html">Phái cử chuyên gia</a></li>
-                                <li><a href="lazinet-service-technologies-training.html">Đào tạo công nghệ</a></li>
-                            </ul>
-                        </div>
-                        <!-- Page Category List End -->
-
-                        <!-- Sidebar CTA Box Start -->
-                        <div class="sidebar-cta-box wow fadeInUp" data-wow-delay="0.25s">
-                            <div class="sidebar-cta-content">
-                                <h3>Bắt Đầu Dự Án</h3>
-                                <h2>Liên Hệ Chuyên Gia Phần Mềm</h2>
-                                <p>Để lại thông tin để được tư vấn giải pháp phần mềm tối ưu nhất cho doanh nghiệp của bạn.</p>
-                            </div>
-                            <div class="sidebar-cta-btn">
-                                <a href="contact.html" class="btn-default btn-highlighted">Liên Hệ Ngay</a>
-                            </div>
-                        </div>
-                        <!-- Sidebar CTA Box End -->
-                    </div>
-                    <!-- Page Single Sidebar End -->
-                </div>
-
-                <div class="col-lg-8">
-                    <!-- Service Single Content Start -->
-                    <div class="service-single-content">
-                        <!-- Page Single Image Start -->
-                        <div class="page-single-image">
-                            <figure class="image-anime reveal">
-                                <img src="assets/images/service-software-development.jpg" alt="Phát triển phần mềm tại LAZINET">
-                            </figure>
-                        </div>
-                        <!-- Page Single Image End -->
-                        
-                        <!-- Service Entry Start -->
-                        <div class="service-entry">
-                            <p class="wow fadeInUp">LAZINET cung cấp dịch vụ phát triển phần mềm chuyên nghiệp với đội ngũ kỹ sư giàu kinh nghiệm và am hiểu sâu sắc về công nghệ. Chúng tôi cam kết mang đến những giải pháp phần mềm chất lượng cao, đáp ứng mọi nhu cầu kinh doanh của khách hàng.</p>
-                            <p class="wow fadeInUp" data-wow-delay="0.2s">Với phương châm "Khách hàng là đối tác", chúng tôi không chỉ phát triển phần mềm mà còn đồng hành cùng doanh nghiệp trong suốt quá trình chuyển đổi số, đảm bảo mang lại giá trị bền vững và tăng trưởng ấn tượng.</p>
-
-                            <!-- Service Benefits Box Start -->
-                            <div class="service-benefits-box">
-                                <h2 class="text-anime-style-2">Lợi Ích Nổi Bật Khi <span>Hợp Tác Cùng Chúng Tôi</span></h2>
-                                <p class="wow fadeInUp">Mỗi dự án phần mềm tại LAZINET đều được xây dựng với tiêu chuẩn chất lượng cao nhất, mang lại những giá trị thiết thực cho doanh nghiệp của bạn.</p>
-
-                                <!-- Service Benefits List Start -->
-                                <div class="service-benefit-list">
-                                    <!-- Service Benefits Item Start -->
-                                    <div class="service-benefit-item wow fadeInUp" data-wow-delay="0.2s">
-                                        <div class="icon-box">
-                                            <img src="assets/images/icon-custom-software.svg" alt="Phần mềm tùy chỉnh">
-                                        </div>
-                                        <div class="service-benefit-item-content">
-                                            <h3>Giải Pháp Tùy Chỉnh</h3>
-                                            <p>Phần mềm được thiết kế riêng biệt phù hợp với quy trình và nhu cầu đặc thù của doanh nghiệp bạn.</p>
-                                            <ul>
-                                                <li>Tối ưu hóa quy trình vận hành.</li>
-                                                <li>Nâng cao hiệu suất làm việc.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- Service Benefits Item End -->
-
-                                    <!-- Service Benefits Item Start -->
-                                    <div class="service-benefit-item wow fadeInUp" data-wow-delay="0.4s">
-                                        <div class="icon-box">
-                                            <img src="assets/images/icon-tech-support.svg" alt="Hỗ trợ kỹ thuật">
-                                        </div>
-                                        <div class="service-benefit-item-content">
-                                            <h3>Hỗ Trợ Kỹ Thuật Toàn Diện</h3>
-                                            <p>Đội ngũ kỹ thuật viên chuyên nghiệp sẵn sàng hỗ trợ 24/7, đảm bảo hệ thống vận hành ổn định.</p>
-                                            <ul>
-                                                <li>Giảm thiểu thời gian ngừng hệ thống.</li>
-                                                <li>Đảm bảo tính liên tục trong kinh doanh.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- Service Benefits Item End -->
-                                </div>
-                                <!-- Service Benefits List End -->
-                            </div>
-                            <!-- Service Benefits Box End -->
-                            
-                            <!-- Service Security Box Start -->
-                            <div class="service-security-box">
-                                <h2 class="text-anime-style-2">Quy Trình Phát Triển <span>Chuyên Nghiệp</span></h2>
-                                <p class="wow fadeInUp">Chúng tôi áp dụng quy trình phát triển phần mềm bài bản, đảm bảo chất lượng sản phẩm và tiến độ dự án.</p>
-                                <p class="wow fadeInUp" data-wow-delay="0.2s">Từ khâu phân tích yêu cầu đến triển khai và bảo trì, mỗi bước đều được thực hiện tỉ mỉ với sự tham gia của các chuyên gia giàu kinh nghiệm.</p>
-
-                                <!-- Service Security Steps Start -->
-                                <div class="service-security-steps">
-                                    <!-- Security Step Item Start -->
-                                    <div class="security-step-item wow fadeInUp" data-wow-delay="0.4s">
-                                        <div class="security-step-header">
-                                            <div class="icon-box">
-                                                <img src="assets/images/icon-analysis.svg" alt="Phân tích yêu cầu">
-                                            </div>
-                                            <div class="security-step-no">
-                                                <h3>01</h3>
-                                            </div>
-                                        </div>
-                                        <div class="security-step-body">
-                                            <div class="security-step-content">
-                                                <h3>Phân Tích & Lập Kế Hoạch</h3>
-                                                <p>Phân tích yêu cầu chi tiết và lập kế hoạch phát triển toàn diện.</p>
-                                            </div>
-                                            <div class="security-step-btn">
-                                                <a href="contact.html" class="readmore-btn">Chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Security Step Item End -->
-
-                                    <!-- Security Step Item Start -->
-                                    <div class="security-step-item wow fadeInUp" data-wow-delay="0.6s">
-                                        <div class="security-step-header">
-                                            <div class="icon-box">
-                                                <img src="assets/images/icon-development.svg" alt="Phát triển">
-                                            </div>
-                                            <div class="security-step-no">
-                                                <h3>02</h3>
-                                            </div>
-                                        </div>
-                                        <div class="security-step-body">
-                                            <div class="security-step-content">
-                                                <h3>Thiết Kế & Phát Triển</h3>
-                                                <p>Thiết kế giao diện và phát triển tính năng theo đúng yêu cầu.</p>
-                                            </div>
-                                            <div class="security-step-btn">
-                                                <a href="contact.html" class="readmore-btn">Chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Security Step Item End -->
-
-                                    <!-- Security Step Item Start -->
-                                    <div class="security-step-item wow fadeInUp" data-wow-delay="0.8s">
-                                        <div class="security-step-header">
-                                            <div class="icon-box">
-                                                <img src="assets/images/icon-testing.svg" alt="Kiểm thử">
-                                            </div>
-                                            <div class="security-step-no">
-                                                <h3>03</h3>
-                                            </div>
-                                        </div>
-                                        <div class="security-step-body">
-                                            <div class="security-step-content">
-                                                <h3>Kiểm Thử & Triển Khai</h3>
-                                                <p>Kiểm thử kỹ lưỡng và triển khai hệ thống vào môi trường thực tế.</p>
-                                            </div>
-                                            <div class="security-step-btn">
-                                                <a href="contact.html" class="readmore-btn">Chi tiết</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Security Step Item End -->
-                                </div>
-                                <!-- Service Security Steps End -->
-
-                                <!-- Section Footer Text Start -->
-                                <div class="section-footer-text section-footer-contact wow fadeInUp" data-wow-delay="1s">
-                                    <p><span><img src="assets/images/icon-phone-white.svg" alt=""></span> Sẵn sàng cho dự án tiếp theo của bạn - <a href="contact.html">Liên hệ tư vấn ngay!</a></p>
-                                </div>
-                                <!-- Section Footer Text End -->
-                            </div>
-                            <!-- Service Security Box End -->
-                        </div>
-                        <!-- Service Entry End -->
-
-                        <!-- Page Single FAQs Start -->
-                        <div class="page-single-faqs">
-                            <!-- Section Title Start -->
-                            <div class="section-title">
-                                <h2 class="wow fadeInUp">Câu Hỏi <span>Thường Gặp</span></h2>
-                            </div>
-                            <!-- Section Title End -->
-
-                            <!-- FAQ Accordion Start -->
-                            <div class="faq-accordion" id="faqaccordion">
-                                <!-- FAQ Item Start -->
-                                <div class="accordion-item wow fadeInUp">
-                                    <h2 class="accordion-header" id="heading1">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                                            Q1. Thời gian phát triển một dự án phần mềm thông thường là bao lâu?
-                                        </button>
-                                    </h2>
-                                    <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#faqaccordion">
-                                        <div class="accordion-body">
-                                            <p>Thời gian phát triển phụ thuộc vào độ phức tạp của dự án. Thông thường từ 2-6 tháng cho các dự án vừa và nhỏ. Chúng tôi sẽ cung cấp timeline chi tiết sau khi phân tích yêu cầu.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FAQ Item End -->
-
-                                <!-- FAQ Item Start -->
-                                <div class="accordion-item wow fadeInUp" data-wow-delay="0.2s">
-                                    <h2 class="accordion-header" id="heading2">
-                                        <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                            Q2. LAZINET có cung cấp dịch vụ bảo trì sau khi triển khai không?
-                                        </button>
-                                    </h2>
-                                    <div id="collapse2" class="accordion-collapse collapse show" aria-labelledby="heading2" data-bs-parent="#faqaccordion">
-                                        <div class="accordion-body">
-                                            <p>Có, chúng tôi cung cấp các gói bảo trì từ cơ bản đến cao cấp, bao gồm sửa lỗi, nâng cấp tính năng, và hỗ trợ kỹ thuật 24/7 để đảm bảo hệ thống luôn hoạt động ổn định.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FAQ Item End -->
-
-                                <!-- FAQ Item Start -->
-                                <div class="accordion-item wow fadeInUp" data-wow-delay="0.4s">
-                                    <h2 class="accordion-header" id="heading3">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                            Q3. Chi phí phát triển phần mềm được tính như thế nào?
-                                        </button>
-                                    </h2>
-                                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#faqaccordion">
-                                        <div class="accordion-body">
-                                            <p>Chi phí được tính dựa trên độ phức tạp, thời gian phát triển và công nghệ sử dụng. Chúng tôi cung cấp nhiều mô hình định giá linh hoạt: theo dự án, theo giờ, hoặc theo gói dịch vụ.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FAQ Item End -->
-
-                                <!-- FAQ Item Start -->
-                                <div class="accordion-item wow fadeInUp" data-wow-delay="0.6s">
-                                    <h2 class="accordion-header" id="heading4">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                                            Q4. Tôi có thể yêu cầu thay đổi tính năng trong quá trình phát triển không?
-                                        </button>
-                                    </h2>
-                                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#faqaccordion">
-                                        <div class="accordion-body">
-                                            <p>Hoàn toàn có thể. Chúng tôi áp dụng mô hình phát triển linh hoạt (Agile), cho phép điều chỉnh yêu cầu trong quá trình phát triển với sự đồng thuận của cả hai bên.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FAQ Item End --> 
-                            </div>
-                            <!-- FAQ Accordion End -->
-                        </div>
-                        <!-- Page Single FAQs End -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page Service Single End -->
-
-    <!-- Footer Start -->
-    <footer class="main-footer">
-        <!-- Footer Scrolling Ticker Box Start -->
-        <div class="footer-scrolling-ticker-box">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Footer Scrolling Ticker Start -->
-                        <div class="footer-scrolling-ticker">
-                            <!-- Scrolling Ticker Box Start -->
-                            <div class="scrolling-ticker-box">
-                                <!-- Scrolling Ticker Content Start -->
-                                <div class="scrolling-content">
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                </div>
-                                <!-- Scrolling Ticker Content End -->
-            
-                                <!-- Scrolling Ticker Content Start -->
-                                <div class="scrolling-content">
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Cùng Hợp Tác Phát Triển</span>
-                                </div>
-                                <!-- Scrolling Ticker Content End -->
-                            </div>
-                            <!-- Scrolling Ticker Box End -->
-            
-                            <!-- Footer Contact Button Start -->
-                            <div class="footer-contact-btn">
-                                <a href="contact.html" class="schedule-btn">Liên Hệ Ngay <img src="assets/images/arrow-white.svg" alt=""></a>
-                            </div>
-                            <!-- Footer Contact Button End -->
-                        </div>
-                        <!-- Footer Scrolling Ticker End -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer Scrolling Ticker Box End -->
         
-		<div class="container">
-            <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <!-- About Footer Start -->
-                    <div class="about-footer">
-                        <!-- Footer Logo Start -->
-                        <div class="footer-logo">
-                            <img src="assets/images/logo-lazinet/lazinet-logo-horizontal-light.svg" alt="LAZINET">
-                        </div>
-                        <!-- Footer Logo End -->
-
-                        <!-- About Footer Content Start -->
-                        <div class="about-footer-content">
-                            <p>Đồng hành cùng doanh nghiệp trong hành trình chuyển đổi số với các giải pháp công nghệ tối ưu và hiệu quả.</p>
-                        </div>
-                        <!-- About Footer Content End -->
-                    </div>
-                    <!-- About Footer End -->
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <!-- Footer Location Link Start -->
-                    <div class="footer-location footer-links">
-                        <h3>Địa Chỉ Của Chúng Tôi</h3>
-                        <p>TP. Hồ Chí Minh, Việt Nam</p>
-                    </div>
-                    <!-- Footer Location Link End -->
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <!-- Footer Contact Start -->
-                    <div class="footer-contact footer-links">
-                        <h3>Thông Tin Liên Hệ</h3>
-                        <ul>
-                            <li><a href="tel:+84908556220">+84 908 556 220</a></li>
-                            <li><a href="mailto:contact@lazinet.com">contact@lazinet.com</a></li>
-                        </ul>
-                    </div>
-                    <!-- Footer Contact End -->
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <!-- Footer Newsletter Form Start -->
-                    <div class="footer-newsletter-form footer-links">
-                        <h3>Đăng Ký Nhận Tin</h3>
-                        <p>Cập nhật những xu hướng công nghệ mới nhất và các giải pháp tối ưu cho doanh nghiệp.</p>
-                        <form id="newslettersForm" action="#" method="POST">
-                            <div class="form-group">
-                                <input type="email" name="mail" class="form-control" id="mail" placeholder="Email của bạn *" required>
-                                <button type="submit" class="newsletter-btn">Đăng Ký</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Footer Newsletter Form End -->
-                </div>
-            </div>
+        <!-- Product Description -->
+        <div class="product-description" id="product-description">
+            <!-- Product description will be loaded here -->
         </div>
-
-        <!-- Footer Copyright Start -->
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Footer Copyright Box Start -->
-                        <div class="footer-copyright-box">
-                            <div class="footer-copyright-text">
-                                <p>Bản quyền © 2025 Thuộc về LAZINET. Mọi quyền được bảo lưu.</p>
-                            </div>
-
-                            <!-- Footer Menu Start -->
-                            <div class="footer-menu">
-                                <ul>
-                                    <li><a href="index-video.html">Trang chủ</a></li>
-                                    <li><a href="about.html">Về chúng tôi</a></li>
-                                    <li><a href="services.html">Dịch vụ</a></li>
-                                    <li><a href="blog.html">Tin tức</a></li>
-                                    <li><a href="contact.html">Liên hệ</a></li>
-                                </ul>
-                            </div>
-                            <!-- Footer Menu End -->
-                        </div>
-                        <!-- Footer Copyright  -->
-                    </div>
-                </div>
-            </div>
+        
+        <!-- Pricing Grid -->
+        <div class="pricing-grid" id="pricing-grid">
+            <!-- Product cards will be loaded here -->
         </div>
-        <!-- Footer Copyright End -->
-    </footer>
-    <!-- Footer End -->
+    </div>
+    
+    <!-- Order Popup -->
+    <div class="popup-overlay" id="order-popup-overlay">
+        <div class="popup-content">
+            <button class="close-popup" onclick="closeOrderPopup()">×</button>
+            <h3 id="popup-product-name">Đặt hàng</h3>
+            <div id="popup-product-info"></div>
+            
+            <form id="order-form">
+                <input type="hidden" id="product-code" name="productCode">
+                
+                <div class="form-group">
+                    <label for="customer-name">Quý danh *</label>
+                    <input type="text" id="customer-name" name="customerName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-email">Email *</label>
+                    <input type="email" id="customer-email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-mobile">Số điện thoại *</label>
+                    <input type="tel" id="customer-mobile" name="mobile" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-notes">Ghi chú</label>
+                    <textarea id="customer-notes" name="notes" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="order-btn">Gửi đơn hàng</button>
+            </form>
+        </div>
+    </div>
 
-    <!-- Jquery Library File -->
-    <script src="assets/js/jquery-3.7.1.min.js"></script>
-    <!-- Circle Progress Js File -->
-    <script src="assets/js/circle-progress.min.js"></script>
-    <!-- Bootstrap js file -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- Validator js file -->
-    <script src="assets/js/validator.min.js"></script>
-    <!-- SlickNav js file -->
-    <script src="assets/js/jquery.slicknav.js"></script>
-    <!-- Swiper js file -->
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <!-- Counter js file -->
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <!-- Magnific js file -->
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!-- SmoothScroll -->
-    <script src="assets/js/SmoothScroll.js"></script>
-    <!-- Parallax js -->
-    <script src="assets/js/parallaxie.js"></script>
-    <!-- MagicCursor js file -->
-    <script src="assets/js/gsap.min.js"></script>
-    <script src="assets/js/magiccursor.js"></script>
-    <!-- Text Effect js file -->
-    <script src="assets/js/SplitText.min.js"></script>
-    <script src="assets/js/ScrollTrigger.min.js"></script>
-    <!-- YTPlayer js File -->
-    <script src="assets/js/jquery.mb.YTPlayer.min.js"></script>
-    <!-- Wow js file -->
-    <script src="assets/js/wow.min.js"></script>
-    <!-- Main Custom js file -->
-    <script src="assets/js/function.js"></script>
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx9RrGnD1YS8sUi-vneCa1NLT75134vANge5al4oP5qD7KLZeScJ9FYxjeiUpwr5j3HNw/exec';
+
+        // Proxy function để tránh CORS
+        async function makeRequest(action, data = null) {
+        const url = `${API_URL}?action=${action}`;
+        
+        try {
+            if (data) {
+            // POST request
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+            } else {
+            // GET request - sử dụng no-cors nếu cần
+            const response = await fetch(url, {
+                method: 'GET',
+                mode: 'no-cors' // Thêm dòng này để tránh CORS
+            });
+            
+            // Với no-cors, response sẽ bị limited
+            // Chúng ta cần một cách tiếp cận khác
+            return await fetchWithJSONP(action);
+            }
+        } catch (error) {
+            console.error('Request failed:', error);
+            throw error;
+        }
+        }
+
+        // Fallback sử dụng JSONP cho GET requests
+        function fetchWithJSONP(action) {
+        return new Promise((resolve, reject) => {
+            const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+            
+            window[callbackName] = function(data) {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            resolve(data);
+            };
+
+            const script = document.createElement('script');
+            script.src = `${API_URL}?action=${action}&callback=${callbackName}`;
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
+        }
+
+        // Hoặc sử dụng XMLHttpRequest thay vì fetch
+        function makeXHRRequest(action, data = null) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            const url = data ? `${API_URL}?action=${action}` : `${API_URL}?action=${action}`;
+            
+            xhr.open(data ? 'POST' : 'GET', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    resolve(response);
+                } catch (e) {
+                    reject(new Error('Invalid JSON response'));
+                }
+                } else {
+                reject(new Error(`Request failed with status ${xhr.status}`));
+                }
+            }
+            };
+            
+            xhr.onerror = function() {
+            reject(new Error('Network error'));
+            };
+            
+            if (data) {
+            xhr.send(JSON.stringify(data));
+            } else {
+            xhr.send();
+            }
+        });
+        }
+
+        // Sửa hàm loadProducts
+        async function loadProducts() {
+        try {
+            // Thử XMLHttpRequest trước
+            const products = await makeXHRRequest('getProducts');
+            allProducts = products;
+            initializeFilters();
+            applyFilters();
+        } catch (error) {
+            console.error('Error loading products:', error);
+            
+            // Fallback: thử fetch với no-cors
+            try {
+            const response = await fetch(`${API_URL}?action=getProducts`, {
+                method: 'GET',
+                mode: 'no-cors',
+                cache: 'no-cache'
+            });
+            
+            // Với no-cors, chúng ta không thể đọc response
+            // Cần có giải pháp khác như server proxy
+            showError('Không thể tải danh mục sản phẩm. Vui lòng thử lại sau.');
+            } catch (fallbackError) {
+            showError('Lỗi kết nối: ' + fallbackError.message);
+            }
+        }
+        }
+
+        // Sửa hàm submitOrder
+        async function submitOrder(formData) {
+        try {
+            const result = await makeXHRRequest('submitOrder', formData);
+            
+            if (result.status === 'success') {
+            alert('Đơn hàng đã được gửi thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.');
+            closeOrderPopup();
+            } else {
+            throw new Error(result.message);
+            }
+        } catch (error) {
+            console.error('Error submitting order:', error);
+            
+            // Fallback: sử dụng form submission truyền thống
+            submitOrderFallback(formData);
+        }
+        }
+
+        // Fallback cho submit order
+        function submitOrderFallback(formData) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = API_URL + '?action=submitOrder';
+        form.style.display = 'none';
+        
+        Object.keys(formData).forEach(key => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = formData[key];
+            form.appendChild(input);
+        });
+        
+        document.body.appendChild(form);
+        form.submit();
+        }
+
+        function setupEventListeners() {
+            // Order form submission
+            document.getElementById('order-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const formData = {
+                    productCode: document.getElementById('product-code').value,
+                    customerName: document.getElementById('customer-name').value,
+                    email: document.getElementById('customer-email').value,
+                    mobile: document.getElementById('customer-mobile').value,
+                    notes: document.getElementById('customer-notes').value
+                };
+                
+                await submitOrder(formData);
+            });
+            
+            // Close popup when clicking outside
+            document.getElementById('order-popup-overlay').addEventListener('click', (e) => {
+                if (e.target.id === 'order-popup-overlay') {
+                    closeOrderPopup();
+                }
+            });
+        }
+
+        function showError(message) {
+            const pricingGrid = document.getElementById('pricing-grid');
+            pricingGrid.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+    </script>
 </body>
 </html>

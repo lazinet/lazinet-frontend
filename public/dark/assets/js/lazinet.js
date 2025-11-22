@@ -81,12 +81,12 @@
     const heroContents = [
         {
             subtitle: '<span>Mới!</span> Kiến trúc sư Chuyển đổi Số',
-            title: 'Giải pháp công nghệ <span>mạnh mẽ, mở rộng & thông minh</span> thích ứng <span>với mọi thách thức kinh doanh</span>',
-            description: 'Đội ngũ chuyên gia LAZINET kết hợp công nghệ tiên tiến với kinh nghiệm thực chiến để mang đến giải pháp toàn trình, đảm bảo doanh nghiệp bạn vận hành tối ưu và không gián đoạn.'
+            title: 'Giải pháp công nghệ <span>mạnh mẽ, mở rộng & thông minh</span> thích ứng <span>linh hoạt với nhiều mô hình kinh doanh</span>',
+            description: 'Đội ngũ chuyên gia LAZINET kết hợp công nghệ tiên tiến với kinh nghiệm thực chiến để mang đến giải pháp toàn trình, đảm bảo doanh nghiệp bạn vận hành tối ưu và phát triển đột phá.'
         },
         {
             subtitle: '<span>Đột phá!</span> Kiến tạo Doanh nghiệp Thông minh',
-            title: 'Hệ sinh thái công nghệ <span>linh hoạt, thích ứng & tự động hóa</span> chuyển đổi <span>toàn diện vận hành</span>',
+            title: 'Hệ sinh thái công nghệ <span>linh hoạt, thích ứng & tự động hóa</span> chuyển đổi toàn diện <span>vận hành doanh nghiệp</span>',
             description: 'Chuyên gia LAZINET tích hợp AI, IoT và nền tảng số tiên tiến vào giải pháp toàn diện, giúp doanh nghiệp bạn vận hành thông minh, hiệu quả vượt trội và tăng trưởng bền vững.'
         },
         {
@@ -96,13 +96,13 @@
         },
         {
             subtitle: '<span>Mới!</span> Kiến trúc sư Doanh nghiệp Số',
-            title: 'Giải pháp chuyển đổi số <span>mạnh mẽ, mở rộng & thông minh</span> thích ứng <span>hoàn hảo với tương lai</span>',
-            description: 'Chuyên gia LAZINET kết hợp công nghệ tiên phong với kinh nghiệm đa ngành để cung cấp giải pháp toàn diện, đảm bảo doanh nghiệp bạn chuyển đổi thành công và dẫn đầu thị trường.'
+            title: 'Giải pháp chuyển đổi số <span>mạnh mẽ, mở rộng & thông minh</span> thích ứng <span>nhanh chóng với xu hướng tương lai</span>',
+            description: 'Chuyên gia LAZINET kết hợp công nghệ tiên phong với kinh nghiệm phong phú để cung cấp giải pháp toàn diện, đảm bảo doanh nghiệp bạn chuyển đổi thành công và vươn lên dẫn đầu.'
         },
         {
             subtitle: '<span>Đột phá!</span> Kiến tạo Tương lai Số',
-            title: 'Công nghệ <span>thông minh, linh hoạt & mạnh mẽ</span> chinh phục <span>mọi thách thức kinh doanh</span>',
-            description: 'Đội ngũ chuyên gia LAZINET tích hợp giải pháp công nghệ tiên tiến với chiến lược kinh doanh, mang đến hệ sinh thái số toàn diện giúp doanh nghiệp vận hành hiệu quả và phát triển bền vững.'
+            title: 'Công nghệ <span>thông minh, linh hoạt & mạnh mẽ</span> chinh phục <span>những thành công mới</span>',
+            description: 'Đội ngũ chuyên gia LAZINET tích hợp giải pháp công nghệ tiên tiến với chiến lược kinh doanh, mang đến hệ sinh thái số toàn diện giúp doanh nghiệp vận hành hiệu quả và phát triển vượt bậc.'
         }
     ];
 
@@ -140,127 +140,197 @@
     // randomizeHeroContent();
 
 
+// Biến global (nếu chưa có)
+    const SUBMIT_COOLDOWN_MS = 60000; // 1 phút giữa các submit   
 
-//  FORM LIÊN HỆ
-    
+//  FORM LIÊN HỆ ================================================================================================================================================================================ 
+// Biến global (nếu chưa có)
+
     document.getElementById('contact-form').addEventListener('submit', async (event) => {
-      event.preventDefault(); // Ngăn hành vi mặc định của form
-      button = document.getElementById('submit-btn');
-      button.textContent = 'Đang gửi ... LAZINET';
-      button.style.color = '#ff6500'; // Màu cam
+        event.preventDefault(); // Ngăn hành vi mặc định của form
+        const button = document.getElementById('submit-btn');
 
-      // Lấy dữ liệu từ form
-      const formData = {
-        name: document.getElementById('name').value,
-        userType: document.getElementById('user-type').value,
-        otherType: document.getElementById('other-type').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        subject: document.getElementById('subject').value,
-        message: document.getElementById('message').value,
+        // Kiểm tra rate limiting với localStorage
+        const lastSubmitTime = localStorage.getItem('lastContactSubmitTime');
+        const now = Date.now();
+        if (lastSubmitTime && (now - parseInt(lastSubmitTime)) < SUBMIT_COOLDOWN_MS) {
+            const remainingTime = Math.ceil((SUBMIT_COOLDOWN_MS - (now - parseInt(lastSubmitTime))) / 1000);
+            button.textContent = `Chờ ${remainingTime}s`;
+            button.style.color = 'orange';
+            setTimeout(() => {
+                button.textContent = 'Gửi tin nhắn';
+                button.style.color = '#ff6500';
+            }, 2000);
+            return; // Dừng submit
+        }
 
-      };
+        button.textContent = 'Đang gửi ... LAZINET';
+        button.style.color = '#ff6500'; // Màu cam
+        button.disabled = true;
 
-      try {
-        // Gửi yêu cầu POST với no-cors
-        await fetch('https://script.google.com/macros/s/AKfycbz4t2LtIb1In7obXC_EKujEH3ZJGbvrz3uevuqVw4d-zErIj3Tf10QWwxlWH2-5IJ7KqA/exec', {
-          method: 'POST',
-          mode: 'no-cors', // Bỏ qua kiểm tra CORS
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
+        // Lấy dữ liệu từ form
+        const formData = {
+            name: document.getElementById('name').value.trim(),
+            userType: document.getElementById('user-type').value.trim(),
+            otherType: document.getElementById('other-type').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            subject: document.getElementById('subject').value.trim(),
+            message: document.getElementById('message').value.trim(),
+        };
 
-        // Hiển thị thông báo thành công
-        button.textContent = 'Đã gửi. LAZINET sẽ phản hồi sớm nhất có thể, trân trọng cám ơn!';
-        button.style.color = '#ffffff'; // Màu xanh lá
-        button.disabled = true; // Khóa nút để tránh gửi lại
-      } catch (error) {
-        // Hiển thị thông báo lỗi
-        button.textContent = `Error: ${error.message}`;
-        button.style.backgroundColor = '#FF3333'; // Đổi màu nền (màu đỏ)
-        // button.style.color = '#FF6347'; // Màu đỏ
-      }
+        try {
+            // Honeypot check: Nếu field ẩn có giá trị → spam, chặn submit
+            const honeypotValue = document.getElementById('website-contact').value.trim();
+            if (honeypotValue !== '') {
+                console.warn('Honeypot detected: Potential spam attempt');
+                throw new Error('Yêu cầu không hợp lệ. Vui lòng thử lại.');
+            }
+
+            // Gửi yêu cầu POST với no-cors
+            await fetch('https://script.google.com/macros/s/AKfycbz4t2LtIb1In7obXC_EKujEH3ZJGbvrz3uevuqVw4d-zErIj3Tf10QWwxlWH2-5IJ7KqA/exec', {
+                method: 'POST',
+                mode: 'no-cors', // Bỏ qua kiểm tra CORS
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            // Thành công: Lưu timestamp (honeypot đã pass) và reset form
+            localStorage.setItem('lastContactSubmitTime', now.toString());
+            document.getElementById('contact-form').reset(); // Reset toàn bộ form
+            document.getElementById('other-type').style.display = 'none'; // Reset hidden field
+            document.getElementById('user-type').style.width = '100%'; // Reset select width
+
+            // Hiển thị thông báo thành công
+            button.textContent = 'Đã gửi. LAZINET sẽ phản hồi sớm nhất có thể, trân trọng cám ơn!';
+            button.style.color = '#ffffff'; // Màu xanh lá
+            button.disabled = true; // Khóa nút để tránh gửi lại
+
+            // Tùy chọn: Reset button sau 10 giây để cho phép submit mới
+            setTimeout(() => {
+                button.textContent = 'Gửi tin nhắn';
+                button.style.color = '#ff6500';
+                button.disabled = false;
+            }, 10000);
+
+        } catch (error) {
+            // Hiển thị thông báo lỗi
+            button.textContent = `Error: ${error.message}`;
+            button.style.backgroundColor = '#FF3333'; // Đổi màu nền (màu đỏ)
+            button.disabled = false;
+        }
     });
 
-    
     window.addEventListener('DOMContentLoaded', function () {
-      const userTypeSelect = document.getElementById('user-type');
+        const userTypeSelect = document.getElementById('user-type');
 
-      // Kiểm tra nếu giá trị mặc định là ""
-      function updateSelectColor() {
-        if (userTypeSelect.value === "") {
-          userTypeSelect.style.color = "#595959"; // Màu của placeholder
-        } else {
-          userTypeSelect.style.color = ""; // Đặt lại màu khi chọn giá trị khác
+        // Kiểm tra nếu giá trị mặc định là ""
+        function updateSelectColor() {
+            if (userTypeSelect.value === "") {
+                userTypeSelect.style.color = "#595959"; // Màu của placeholder
+            } else {
+                userTypeSelect.style.color = ""; // Đặt lại màu khi chọn giá trị khác
+            }
         }
-      }
 
-      // Cập nhật màu khi load trang
-      updateSelectColor();
+        // Cập nhật màu khi load trang
+        updateSelectColor();
 
-      // Thêm sự kiện khi người dùng chọn một giá trị khác
-      userTypeSelect.addEventListener('change', function () {
-        updateSelectColor(); // Cập nhật màu khi chọn thay đổi
-      });
+        // Thêm sự kiện khi người dùng chọn một giá trị khác
+        userTypeSelect.addEventListener('change', function () {
+            updateSelectColor(); // Cập nhật màu khi chọn thay đổi
+        });
     });
 
     document.getElementById('user-type').addEventListener('change', function () {
-      const otherInputContainer = document.getElementById('other-type');
-      const userType = document.getElementById('user-type');
+        const otherInputContainer = document.getElementById('other-type');
+        const userType = document.getElementById('user-type');
 
-      if (this.value === 'Other') {
-        userType.style.width = '30%'; // Thu hẹp dropdown userType
-        otherInputContainer.style.display = 'inline-block'; // Hiển thị input
-        otherInputContainer.setAttribute('required', ''); // Thêm thuộc tính required
-      } else {
-        userType.style.width = '100%'; // Trả lại kích thước ban đầu
-        otherInputContainer.style.display = 'none'; // Ẩn trường nhập liệu
-        otherInputContainer.removeAttribute('required'); // Xóa thuộc tính required
-      }
+        if (this.value === 'Other') {
+            userType.style.width = '30%'; // Thu hẹp dropdown userType
+            otherInputContainer.style.display = 'inline-block'; // Hiển thị input
+            otherInputContainer.setAttribute('required', ''); // Thêm thuộc tính required
+        } else {
+            userType.style.width = '100%'; // Trả lại kích thước ban đầu
+            otherInputContainer.style.display = 'none'; // Ẩn trường nhập liệu
+            otherInputContainer.removeAttribute('required'); // Xóa thuộc tính required
+        }
     });
     
 
-    // FORM NEWSLETTER
+    // FORM NEWSLETTER ================================================================================================================================================================================
+    // Biến global (nếu chưa có)
     async function submitNewsletter() {
-      const email = document.getElementById('email-newsletter').value;
-      const button = document.getElementById('newsletter-btn');
+        const email = document.getElementById('email-newsletter').value.trim();
+        const button = document.getElementById('newsletter-btn');
 
-      // Kiểm tra email hợp lệ
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-        button.textContent = 'Lỗi Email!';
-        button.style.color = 'red';
-        button.disabled = false;
-        return;
-      } else {
+        // Kiểm tra rate limiting với localStorage
+        const lastSubmitTime = localStorage.getItem('lastNewsletterSubmitTime');
+        const now = Date.now();
+        if (lastSubmitTime && (now - parseInt(lastSubmitTime)) < SUBMIT_COOLDOWN_MS) {
+            const remainingTime = Math.ceil((SUBMIT_COOLDOWN_MS - (now - parseInt(lastSubmitTime))) / 1000);
+            button.textContent = `Chờ ${remainingTime}s`;
+            button.style.color = 'orange';
+            setTimeout(() => {
+                button.textContent = 'Đăng ký';
+                button.style.color = '#ff5000';
+            }, 2000);
+            return; // Dừng submit
+        }
+
+        // Kiểm tra email hợp lệ
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            button.textContent = 'Lỗi Email!';
+            button.style.color = 'red';
+            button.disabled = false;
+            return;
+        }
+
+        // Honeypot check: Nếu field ẩn có giá trị → spam, chặn submit
+        const honeypotValue = document.getElementById('website-newsletter').value.trim();
+        if (honeypotValue !== '') {
+            console.warn('Honeypot detected: Potential spam attempt');
+            button.textContent = 'Yêu cầu không hợp lệ!';
+            button.style.color = 'red';
+            setTimeout(() => {
+                button.textContent = 'Đăng ký';
+                button.style.color = '#ff5000';
+            }, 3000);
+            return; // Dừng submit
+        }
+
         button.textContent = 'Đang đăng ký';
         button.style.color = '#ff5000'; // Màu cam
-        try {
-          // Gửi yêu cầu POST
-          const response = await fetch(
-            'https://script.google.com/macros/s/AKfycbz38pxrAZj7NprlijMQszw3k1tRL1YC8Phzlcl7v7mAZfd8_JGqOgAP6rusC2ZkrK2E/exec',
-            {
-              method: 'POST',
-              mode: 'no-cors', // Bỏ qua kiểm tra CORS
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email }),
-            }
-          );
+        button.disabled = true;
 
-          button.textContent = 'Đã đăng ký!';
-          button.style.color = '#0000FF';
-          button.disabled = true;
-          document.getElementById('email-newsletter').value = "";
+        try {
+            // Gửi yêu cầu POST
+            const response = await fetch(
+                'https://script.google.com/macros/s/AKfycbz38pxrAZj7NprlijMQszw3k1tRL1YC8Phzlcl7v7mAZfd8_JGqOgAP6rusC2ZkrK2E/exec',
+                {
+                    method: 'POST',
+                    mode: 'no-cors', // Bỏ qua kiểm tra CORS
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                }
+            );
+
+            // Thành công: Lưu timestamp (honeypot đã pass)
+            localStorage.setItem('lastNewsletterSubmitTime', now.toString());
+
+            button.textContent = 'Đã đăng ký!';
+            button.style.color = '#0000FF';
+            document.getElementById('email-newsletter').value = "";
 
         } catch (error) {
-          button.textContent = `Error: ${error.message}`;
-          button.style.color = 'red';
-          button.disabled = false;
+            button.textContent = `Error: ${error.message}`;
+            button.style.color = 'red';
+            button.disabled = false;
         }
-      }
     }
 
-    // Tech Grid Animation
+// Tech Grid Animation =================================================================================================================================================================
     const canvas = document.getElementById("tech-grid");
     const ctx = canvas.getContext("2d");
     const card = document.getElementById("tech-grid-boundary");

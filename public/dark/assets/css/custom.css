@@ -3222,15 +3222,16 @@ header.main-header .container-fluid{
 
 .team-item-body{
     position: absolute;
-    left: 30px;
-    right: 30px;
-    bottom: 30px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
     text-align: center;
-	background: var(--secondary-color);
-	backdrop-filter: blur(180px);
-	-webkit-backdrop-filter: blur(180px);
+	background: var(--accent-secondary-color);
+	/* background: rgba(var(--accent-secondary-color), 0.5);
+	backdrop-filter: blur(50px);
+	-webkit-backdrop-filter: blur(10px); */
 	border-radius: 12px;
-	padding: 18px;
+	padding: 10px;
 	overflow: hidden;
     z-index: 1;
 }

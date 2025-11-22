@@ -462,3 +462,338 @@ button:hover {
 .dark-background #other-type:focus {
     background: rgba(0, 0, 0, 0.4) !important;
 }
+
+/* CSS LAZINET - List Styles với tiếp đầu ngữ lazinet- */
+.lazinet-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.lazinet-list li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+}
+
+.lazinet-list-icon {
+    color: var(--accent-color);
+    margin-right: 10px;
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    flex-shrink: 0;
+}
+
+/* Biến thể màu sắc */
+.lazinet-list-icon--primary {
+    color: var(--primary-color, #0052FF);
+}
+
+.lazinet-list-icon--success {
+    color: var(--success-color, #00C853);
+}
+
+.lazinet-list-icon--warning {
+    color: var(--warning-color, #FF9800);
+}
+
+.lazinet-list-icon--danger {
+    color: var(--danger-color, #F44336);
+}
+
+/* Biến thể kích thước */
+.lazinet-list-icon--sm {
+    font-size: 12px;
+    top: 5px;
+}
+
+.lazinet-list-icon--lg {
+    font-size: 16px;
+    top: 3px;
+}
+
+/* Biến thể khoảng cách */
+.lazinet-list--compact li {
+    margin-bottom: 8px;
+    padding-left: 25px;
+}
+
+.lazinet-list--spacious li {
+    margin-bottom: 16px;
+    padding-left: 35px;
+}
+
+/* Layout alternatives */
+.lazinet-list--inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.lazinet-list--inline li {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+}
+
+/* PRICING & ORDER ===================================================================================================================================================================== */
+    /* Tab Navigation */
+        .tabs-container {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .tabs {
+            display: inline-flex;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            padding: 5px;
+            gap: 5px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: var(--accent-color);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .product-card {
+            background: var(--secondary-color);
+            backdrop-filter: blur(180px);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .product-card:hover::before {
+            height: 100%;
+        }
+
+        .product-card.highlighted::after {
+            content: 'Phổ biến';
+            position: absolute;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+            color: var(--white-color);
+            top: 20px;
+            right: -35px;
+            width: 140px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--accent-color);
+            transform: rotate(45deg);
+        }
+
+        .product-header {
+            border-bottom: 1px solid var(--divider-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .product-description {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 15px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-features {
+            list-style: none;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-features li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .product-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .product-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--accent-secondary-color) 0%, var(--accent-color) 50%, var(--accent-secondary-color) 100%);
+            background-size: 200% auto;
+            border: none;
+            border-radius: 8px;
+            color: var(--white-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-button:hover {
+            background-position: right center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-color);
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--divider-color);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-color);
+            border: 1px solid var(--divider-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            color: var(--white-color);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-secondary-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                min-width: 120px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }

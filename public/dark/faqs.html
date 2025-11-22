@@ -232,7 +232,7 @@
                                         <li class="nav-item"><a class="nav-link" href="case-study.html">Dự án</a></li>
                                         <li class="nav-item"><a class="nav-link" href="partners.html">Đối tác</a></li>
                                         <li class="nav-item"><a class="nav-link" href="members.html">Đội ngũ</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="faqs.html">Hướng dẫn</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="faqs.html">Hỏi đáp</a></li>
                                         <li class="nav-item"><a class="nav-link" href="wearehiring.html">Tuyển dụng</a></li>
                                         <li class="nav-item"><a class="nav-link" href="testimonials.html">Đánh giá</a></li>
                                     </ul>   
@@ -265,13 +265,13 @@
                 <div class="col-lg-12">
                     <!-- Page Header Box Start -->
                     <div class="page-header-box">
-                        <h1 class="wow fadeInUp">Giải đáp về <span>LAZINET</span></h1>
+                        <h1 class="wow fadeInUp">Hỏi đáp về <span>LAZINET</span></h1>
                         <nav class="wow fadeInUp">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
                                 <li class="breadcrumb-item"><a href="about.html">Về LAZINET</a></li>
                                 <!-- <li class="breadcrumb-item">Về LAZINET</li> -->
-                                 <li class="breadcrumb-item"><a href="#">Câu hỏi thường gặp</a></li>
+                                 <li class="breadcrumb-item"><a href="#">Hỏi đáp thường gặp</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -396,7 +396,7 @@
                                     </h2>
                                     <div id="collapseCustomer1" class="accordion-collapse collapse show" aria-labelledby="headingCustomer1" data-bs-parent="#accordionCustomers">
                                         <div class="accordion-body">
-                                            <p>LAZINET cung cấp các giải pháp công nghệ toàn diện từ tư vấn, phát triển đến triển khai và hỗ trợ. Chúng tôi giúp doanh nghiệp của bạn: tối ưu hóa quy trình vận hành, nâng cao hiệu suất làm việc, số hóa và tự động hóa hoạt động, phát triển hệ thống quản lý thông minh và tăng cường bảo mật dữ liệu.</p>
+                                            <p>LAZINET cung cấp các giải pháp công nghệ toàn diện từ tư vấn, hợp tác đến triển khai và hỗ trợ. Chúng tôi giúp doanh nghiệp của bạn: tối ưu hóa quy trình vận hành, nâng cao hiệu suất làm việc, số hóa và tự động hóa hoạt động, phát triển hệ thống quản lý thông minh và tăng cường bảo mật dữ liệu.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -410,7 +410,8 @@
                                     </h2>
                                     <div id="collapseCustomer2" class="accordion-collapse collapse" aria-labelledby="headingCustomer2" data-bs-parent="#accordionCustomers">
                                         <div class="accordion-body">
-                                            <p>Quy trình làm việc của chúng tôi bao gồm 5 bước chính: (1) Tiếp nhận yêu cầu và phân tích nhu cầu, (2) Đề xuất giải pháp và báo giá, (3) Ký kết hợp đồng và lập kế hoạch triển khai, (4) Phát triển và tích hợp hệ thống, (5) Bàn giao, đào tạo và hỗ trợ sau triển khai. Mỗi dự án đều có quản lý dự án chuyên trách đồng hành cùng khách hàng.</p>
+                                            <p>Quy trình làm việc của chúng tôi bao gồm 4 bước chính: (1) Khảo sát nhu cầu và tư vấn giải pháp, (2) Thống nhất và ký kết hợp đồng,
+                                                (3) Triển khai giải pháp, (4) Bàn giao, đào tạo và hỗ trợ sau triển khai. Mỗi dự án đều có quản lý dự án chuyên trách đồng hành cùng khách hàng.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -822,6 +823,12 @@
                                     placeholder="Nhập email của bạn *" required>
                                 <!-- <button id="newsletter-btn" type="submit" class="newsletter-btn">Đăng ký</button> -->
                                 <button id="newsletter-btn" class="newsletter-btn" type="button" onclick="submitNewsletter()">Đăng ký</button>
+                            </div>
+
+                            <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
+                            <div style="display: none; position: absolute; left: -9999px;">
+                                <label for="website">Website (để trống)</label>
+                                <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
                             </div>
                         </form>
                     </div>

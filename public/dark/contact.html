@@ -214,7 +214,7 @@
                                 <li class="nav-item submenu"><a class="nav-link" href="lazinet-support-customers.html">Hỗ trợ</a>
                                     <ul>
                                         <li class="nav-item"><a class="nav-link" href="lazinet-support-customers.html">Hỗ trợ khách hàng</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="lazinet-support-consulting.html">Tư vấn công nghệ</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="contact.html#section-title">Tư vấn công nghệ</a></li>
                                         <li class="nav-item"><a class="nav-link" href="lazinet-support-demos.html">Trải nghiệm Demo</a></li>
                                         <li class="nav-item"><a class="nav-link" href="lazinet-support-pricing.html">Bảng giá</a></li>
                                         <li class="nav-item"><a class="nav-link" href="lazinet-support-api-lazinet.html">Cổng API</a></li>
@@ -429,7 +429,7 @@
                     <!-- Contact Us Form Start -->
                     <div class="contact-us-form">
                         <!-- Section Title Start -->
-                        <div class="section-title">
+                        <div class="section-title" id="section-title">
                             <h2 class="wow fadeInUp">Hãy điền <span>biễu mẫu liên hệ</span></h2>
                             <p class="wow fadeInUp">Với mọi thắc mắc về ứng dụng công nghệ để gia tăng hiệu suất, đội ngũ LAZINET luôn sẵn sàng lắng nghe để phát triển giải pháp công nghệ phù hợp nhất dành cho doanh nghiệp của bạn.</p>
                         </div>
@@ -476,6 +476,12 @@
 
                             <div class="text-center">
                                 <button type="submit" id="submit-btn" class="btn-default">Gửi tin nhắn</button>
+                            </div>
+
+                            <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
+                            <div style="display: none; position: absolute; left: -9999px;">
+                                <label for="website-contact">Website (để trống)</label>
+                                <input type="text" id="website-contact" name="website" tabindex="-1" autocomplete="off">
                             </div>
                         </form>
                     
@@ -551,6 +557,12 @@
                                     placeholder="Nhập email của bạn *" required>
                                 <!-- <button id="newsletter-btn" type="submit" class="newsletter-btn">Đăng ký</button> -->
                                 <button id="newsletter-btn" class="newsletter-btn" type="button" onclick="submitNewsletter()">Đăng ký</button>
+                            </div>
+
+                            <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
+                            <div style="display: none; position: absolute; left: -9999px;">
+                                <label for="website">Website (để trống)</label>
+                                <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
                             </div>
                         </form>
                     </div>
