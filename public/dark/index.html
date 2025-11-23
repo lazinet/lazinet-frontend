@@ -134,7 +134,18 @@
 	<!-- Main Custom Css -->
 	<link rel="stylesheet" href="assets/css/custom.css" media="screen">
     <link rel="stylesheet" href="assets/css/lazinet.css">
-
+    <style>
+        /* iFRAME BẢNG GIÁ ==================================================================================================================================================================== */
+        iframe {
+            width: 100%;
+            height: 100vh; /* Chiều cao tối đa bằng viewport height */
+            border: none;
+            /* position: fixed; */
+            top: 0;
+            left: 0;
+            overflow: auto; /* Cho phép scroll nếu nội dung iframe dài hơn */
+        }
+    </style>
 </head>
 <body>
     <!-- Preloader Start -->
@@ -491,7 +502,7 @@
 
                                     <!-- About Client Content Start -->
                                     <div class="about-client-content">
-                                        <p>Bộ máy LAZINET với kinh nghiệm triển khai dự án công nghệ mới hiệu quả.</p>
+                                        <p>Đội ngũ LAZINET với kinh nghiệm triển khai dự án công nghệ mới hiệu quả.</p>
                                     </div>
                                     <!-- About Client Content End -->
                                 </div>
@@ -1079,7 +1090,7 @@
                     <div class="case-study-item wow fadeInUp">
                         <!-- Case Study Image Start -->
                         <div class="case-study-image">
-                            <a href="case-study-single.html" data-cursor-text="View">
+                            <a href="case-study-single.html" data-cursor-text="Xem">
                                 <figure>
                                     <img src="assets/images/case-study-image-1.jpg" alt="">
                                 </figure>
@@ -1113,7 +1124,7 @@
                     <div class="case-study-item wow fadeInUp" data-wow-delay="0.2s">
                         <!-- Case Study Image Start -->
                         <div class="case-study-image">
-                            <a href="case-study-single.html" data-cursor-text="View">
+                            <a href="case-study-single.html" data-cursor-text="Xem">
                                 <figure>
                                     <img src="assets/images/case-study-image-2.jpg" alt="">
                                 </figure>
@@ -1148,7 +1159,7 @@
                     <div class="case-study-item wow fadeInUp" data-wow-delay="0.4s">
                         <!-- Case Study Image Start -->
                         <div class="case-study-image">
-                            <a href="case-study-single.html" data-cursor-text="View">
+                            <a href="case-study-single.html" data-cursor-text="Xem">
                                 <figure>
                                     <img src="assets/images/case-study-image-3.jpg" alt="">
                                 </figure>
@@ -1183,7 +1194,7 @@
                     <div class="case-study-item wow fadeInUp" data-wow-delay="0.6s">
                         <!-- Case Study Image Start -->
                         <div class="case-study-image">
-                            <a href="case-study-single.html" data-cursor-text="View">
+                            <a href="case-study-single.html" data-cursor-text="Xem">
                                 <figure>
                                     <img src="assets/images/case-study-image-4.jpg" alt="">
                                 </figure>
@@ -1438,106 +1449,8 @@
                     <!-- Pricing Benifit List End -->
                 </div>
             </div>
-
-            <!-- Page Pricing Start -->
-            <!-- Main Content -->
-            <div class="container">
-                <!-- Tabs Navigation -->
-                <div class="tabs-container">
-                    <div class="tabs" id="categoryTabs">
-                        <!-- Tabs will be dynamically generated -->
-                    </div>
-                </div>
-
-                <!-- Products Grid -->
-                <div class="loading" id="loadingMessage">
-                    
-                </div>
-
-                <div class="error-message" id="errorMessage" style="display: none;">
-                    Có lỗi xảy ra khi tải sản phẩm. Vui lòng thử lại sau.
-                </div>
-
-                <div class="products-grid" id="productsGrid">
-                    <!-- Product cards will be dynamically generated -->
-                </div>
-            </div>
-
-            <!-- Order Modal -->
-            <div class="modal" id="orderModal">
-                <div class="modal-content">
-                    <button class="close-modal" id="closeModal">&times;</button>
-                    <h2 id="modalProductName">Đặt hàng</h2>
-                    <form id="orderForm">
-                        <input type="hidden" id="modalItemCode">
-                    
-                        <div class="form-group">
-                            <label for="customerName">Họ tên *</label>
-                            <input type="text" id="customerName" required>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label for="customerEmail">Email *</label>
-                            <input type="email" id="customerEmail" required>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label for="customerPhone">Số điện thoại *</label>
-                            <input type="tel" id="customerPhone" required>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label for="customerNote">Ghi chú</label>
-                            <input type="text" id="customerNote">
-                        </div>
-
-                        <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
-                        <div style="display: none; position: absolute; left: -9999px;">
-                            <label for="website">Website (để trống)</label>
-                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-                        </div>
-                    
-                        <button type="submit" class="submit-btn">Gửi đơn hàng</button>
-                    </form>
-                </div>
-            </div>   
-            <!-- Page Pricing End -->
-
-            <!-- Order Popup -->
-            <div id="order-popup-overlay" class="popup-overlay" style="display: none;">
-                <div class="popup-content">
-                    <button class="close-popup" onclick="closeOrderPopup()">×</button>
-                    <h3 id="popup-product-name">Đặt hàng</h3>
-                    <div id="popup-product-info" class="mb-3"></div>
-                    
-                    <form id="order-form">
-                        <input type="hidden" id="product-code" name="productCode">
-                        
-                        <div class="form-group">
-                            <label for="customer-name">Quý danh *</label>
-                            <input type="text" id="customer-name" name="customerName" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="customer-email">Email *</label>
-                            <input type="email" id="customer-email" name="email" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="customer-mobile">Số điện thoại *</label>
-                            <input type="tel" id="customer-mobile" name="mobile" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="customer-notes">Ghi chú</label>
-                            <textarea id="customer-notes" name="notes" class="form-control" rows="3"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn-default btn-block">Gửi đơn hàng</button>
-                    </form>
-                </div>
-            </div>
-            <!-- Page Pricing End -->
+            <!-- Nhúng bảng giá kéo cuộn -->
+            <iframe id="pricing-iframe" src="lazinet-support-pricing.html"></iframe>
 
         </div>
     </div>
@@ -1702,7 +1615,7 @@
                     <!-- Testimonial Slider Start -->
                     <div class="testimonial-slider">
                         <div class="swiper">
-                            <div class="swiper-wrapper" data-cursor-text="Drag" id="testimonialsWrapper">
+                            <div class="swiper-wrapper" data-cursor-text="Kéo" id="testimonialsWrapper">
                                 <!-- Testimonials will be loaded dynamically -->
                             </div>
                 
@@ -1860,6 +1773,7 @@
         // Global variables
         let products = [];
         let categories = [];
+        let originalText = ''; // Thêm biến originalText
 
         // DOM Elements
         const categoryTabs = document.getElementById('categoryTabs');
@@ -2260,6 +2174,53 @@
 
         // Add retry button to error state (optional)
         </script>
+    <script>
+        
+
+// XỬ LÝ iFRAME BẢNG GIÁ ====================================================================================================================================================
+    // Chờ iframe tải xong rồi ẩn header, footer và navigation
+    const iframe = document.getElementById('pricing-iframe');
+    iframe.onload = function() {
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            
+            // Ẩn header (navigation và logo)
+            const header = iframeDoc.querySelector('.main-header');
+            if (header) header.style.display = 'none';
+            
+            // Ẩn phần page-header (tiêu đề "Báo giá LAZINET" và breadcrumb)
+            const pageHeader = iframeDoc.querySelector('.page-header');
+            if (pageHeader) pageHeader.style.display = 'none';
+            
+            // Ẩn footer
+            const footer = iframeDoc.querySelector('.main-footer');
+            if (footer) footer.style.display = 'none';
+            
+            // Ẩn preloader nếu có
+            const preloader = iframeDoc.querySelector('.preloader');
+            if (preloader) preloader.style.display = 'none';
+            
+            // Ẩn floating chat button nếu không cần
+            const floatingChat = iframeDoc.querySelector('.lazinet-contact-floating');
+            if (floatingChat) floatingChat.style.display = 'none';
+            
+            // Điều chỉnh margin/padding để nội dung chính bắt đầu từ đầu màn hình
+            const mainContent = iframeDoc.querySelector('.container');
+            if (mainContent) {
+                mainContent.style.marginTop = '0';
+                mainContent.style.paddingTop = '20px';
+                mainContent.style.paddingBottom = '20px';
+            }
+            
+            // Đảm bảo body của iframe không có margin mặc định
+            iframeDoc.body.style.margin = '0';
+            iframeDoc.body.style.padding = '0';
+            
+        } catch (error) {
+            console.warn('Không thể truy cập nội dung iframe (có thể do CORS). Hãy đảm bảo file cùng domain hoặc local.', error);
+        }
+    };
+    </script>
     <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script src="assets/js/circle-progress.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>

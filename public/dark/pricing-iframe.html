@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET - Bảng giá (Nhúng iframe)</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Giới hạn chiều cao body bằng viewport height */
+            overflow: hidden; /* Ngăn scroll toàn trang */
+        }
+        iframe {
+            width: 100%;
+            height: 100vh; /* Chiều cao tối đa bằng viewport height */
+            border: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: auto; /* Cho phép scroll nếu nội dung iframe dài hơn */
+        }
+    </style>
+</head>
+<body>
+    <iframe id="pricing-iframe" src="lazinet-support-pricing.html"></iframe>
+
+    <script>
+        // Chờ iframe tải xong rồi ẩn header, footer và navigation
+        const iframe = document.getElementById('pricing-iframe');
+        iframe.onload = function() {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                // Ẩn header (navigation và logo)
+                const header = iframeDoc.querySelector('.main-header');
+                if (header) header.style.display = 'none';
+                
+                // Ẩn phần page-header (tiêu đề "Báo giá LAZINET" và breadcrumb)
+                const pageHeader = iframeDoc.querySelector('.page-header');
+                if (pageHeader) pageHeader.style.display = 'none';
+                
+                // Ẩn footer
+                const footer = iframeDoc.querySelector('.main-footer');
+                if (footer) footer.style.display = 'none';
+                
+                // Ẩn preloader nếu có
+                const preloader = iframeDoc.querySelector('.preloader');
+                if (preloader) preloader.style.display = 'none';
+                
+                // Ẩn floating chat button nếu không cần
+                const floatingChat = iframeDoc.querySelector('.lazinet-contact-floating');
+                if (floatingChat) floatingChat.style.display = 'none';
+                
+                // Điều chỉnh margin/padding để nội dung chính bắt đầu từ đầu màn hình
+                const mainContent = iframeDoc.querySelector('.container');
+                if (mainContent) {
+                    mainContent.style.marginTop = '0';
+                    mainContent.style.paddingTop = '20px';
+                    mainContent.style.paddingBottom = '20px';
+                }
+                
+                // Đảm bảo body của iframe không có margin mặc định
+                iframeDoc.body.style.margin = '0';
+                iframeDoc.body.style.padding = '0';
+                
+            } catch (error) {
+                console.warn('Không thể truy cập nội dung iframe (có thể do CORS). Hãy đảm bảo file cùng domain hoặc local.', error);
+            }
+        };
+    </script>
+</body>
+</html>

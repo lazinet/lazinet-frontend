@@ -2315,7 +2315,7 @@ header.main-header .container-fluid{
 }
 
 .pricing-benefit-list{
-	margin-top: 30px;
+	margin-bottom: 30px;
 }
 
 .pricing-benefit-list ul{
@@ -5627,7 +5627,7 @@ header.main-header .container-fluid{
 	}
 
 	.pricing-benefit-list{
-        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
 	.pricing-benefit-list ul{

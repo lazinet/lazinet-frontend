@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET - Hệ sinh thái Công nghệ</title>
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --orange-light: #FFbbbb;
+            --blue-main: #3F82FB;
+            --blue-light: #ccccff;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --black-color: #000000;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--default-font);
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .graph-container {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Nucleus (Central Button) */
+        .nucleus {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 50px rgba(63, 130, 251, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            animation: nucleusPulse 3s ease-in-out infinite;
+        }
+
+        .nucleus:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 70px rgba(63, 130, 251, 0.6),
+                inset 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .nucleus-content {
+            text-align: center;
+            color: var(--white-color);
+        }
+
+        .nucleus-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .nucleus-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Electron Orbits */
+        .orbit {
+            position: absolute;
+            border: 1px solid var(--divider-color);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .orbit-1 { width: 300px; height: 300px; }
+        .orbit-2 { width: 450px; height: 450px; }
+        .orbit-3 { width: 600px; height: 600px; }
+
+        /* Electron Nodes */
+        .electron {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .electron-content {
+            font-size: 0.7rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Electron Colors */
+        .electron-1 { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); }
+        .electron-2 { background: linear-gradient(135deg, #4ECDC4, #6CE6DE); }
+        .electron-3 { background: linear-gradient(135deg, #45B7D1, #65D7F1); }
+        .electron-4 { background: linear-gradient(135deg, #96CEB4, #B6EED4); }
+        .electron-5 { background: linear-gradient(135deg, #FFEAA7, #FFFFC7); }
+        .electron-6 { background: linear-gradient(135deg, #DDA0DD, #FDC0FD); }
+        .electron-7 { background: linear-gradient(135deg, #98D8C8, #B8F8E8); }
+        .electron-8 { background: linear-gradient(135deg, #F7DC6F, #FFFC8F); }
+
+        /* Connection Lines */
+        .connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            transform-origin: 0 0;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
+            padding: 30px;
+            background: var(--secondary-color);
+            border-radius: 15px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes nucleusPulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 50px rgba(63, 130, 251, 0.4),
+                    inset 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 70px rgba(63, 130, 251, 0.6),
+                    inset 0 0 30px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .nucleus {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .nucleus-icon {
+                font-size: 2rem;
+            }
+            
+            .nucleus-text {
+                font-size: 0.9rem;
+            }
+            
+            .electron {
+                width: 60px;
+                height: 60px;
+                font-size: 1.4rem;
+            }
+            
+            .orbit-1 { width: 220px; height: 220px; }
+            .orbit-2 { width: 320px; height: 320px; }
+            .orbit-3 { width: 420px; height: 420px; }
+            
+            .legend {
+                gap: 10px;
+                padding: 20px;
+            }
+            
+            .legend-item {
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .header {
+                margin-bottom: 40px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .graph-container {
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HỆ SINH THÁI CÔNG NGHỆ LAZINET</h1>
+            <p>Khám phá toàn bộ giải pháp công nghệ được tích hợp hoàn chỉnh - Nhấp vào trung tâm để xem bảng giá</p>
+        </div>
+
+        <div class="graph-container" id="graph">
+            <!-- Nucleus (Central Button) -->
+            <div class="nucleus" id="nucleus">
+                <div class="nucleus-content">
+                    <span class="nucleus-icon">🚀</span>
+                    <div class="nucleus-text">XEM BÁO GIÁ</div>
+                </div>
+            </div>
+
+            <!-- Orbits -->
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+
+            <!-- Electrons will be generated by JavaScript -->
+        </div>
+
+        <div class="legend" id="legend">
+            <!-- Legend will be generated by JavaScript -->
+        </div>
+
+        <div class="footer">
+            <p>LAZINET - Đối tác Chuyển đổi Số Toàn diện | © 2024</p>
+        </div>
+    </div>
+
+    <script>
+        // Danh sách các electron (công nghệ) với thông tin
+        const techElectrons = [
+            { name: 'Web & App', icon: '🌐', color: '#FF6B6B', orbit: 1, speed: 1.0 },
+            { name: 'AI & ML', icon: '🤖', color: '#4ECDC4', orbit: 1, speed: 1.2 },
+            { name: 'Chữ ký số', icon: '✍️', color: '#45B7D1', orbit: 2, speed: 0.8 },
+            { name: 'Hóa đơn điện tử', icon: '🧾', color: '#96CEB4', orbit: 2, speed: 1.1 },
+            { name: 'Hợp đồng điện tử', icon: '📝', color: '#FFEAA7', orbit: 2, speed: 0.9 },
+            { name: 'IoT & Thiết bị', icon: '📡', color: '#DDA0DD', orbit: 3, speed: 1.0 },
+            { name: 'ERP & Quản trị', icon: '🏢', color: '#98D8C8', orbit: 3, speed: 1.3 },
+            { name: 'CRM & Bán hàng', icon: '👥', color: '#F7DC6F', orbit: 3, speed: 0.7 }
+        ];
+
+        class AtomicTechGraph {
+            constructor(containerId) {
+                this.container = document.getElementById(containerId);
+                this.electrons = [];
+                this.connections = [];
+                this.animationId = null;
+                this.init();
+            }
+
+            init() {
+                this.createElectrons();
+                this.createConnections();
+                this.createLegend();
+                this.setupNucleusClick();
+                this.startAnimation();
+            }
+
+            createElectrons() {
+                techElectrons.forEach((electron, index) => {
+                    const electronEl = document.createElement('div');
+                    electronEl.className = `electron electron-${index + 1}`;
+                    electronEl.innerHTML = `
+                        <div class="electron-content">${electron.name}</div>
+                    `;
+
+                    this.container.appendChild(electronEl);
+                    
+                    this.electrons.push({
+                        element: electronEl,
+                        data: electron,
+                        angle: (index / techElectrons.length) * 2 * Math.PI
+                    });
+                });
+            }
+
+            createConnections() {
+                // Tạo kết nối từ nucleus đến các electron
+                this.electrons.forEach(electron => {
+                    const connection = document.createElement('div');
+                    connection.className = 'connection';
+                    this.container.appendChild(connection);
+                    this.connections.push({
+                        element: connection,
+                        electron: electron
+                    });
+                });
+            }
+
+            createLegend() {
+                const legend = document.getElementById('legend');
+                techElectrons.forEach((electron, index) => {
+                    const legendItem = document.createElement('div');
+                    legendItem.className = 'legend-item';
+                    
+                    const colorBox = document.createElement('div');
+                    colorBox.className = 'legend-color';
+                    colorBox.style.background = electron.color;
+
+                    const text = document.createElement('span');
+                    text.className = 'legend-text';
+                    text.textContent = electron.name;
+
+                    legendItem.appendChild(colorBox);
+                    legendItem.appendChild(text);
+                    legend.appendChild(legendItem);
+                });
+            }
+
+            setupNucleusClick() {
+                const nucleus = document.getElementById('nucleus');
+                nucleus.addEventListener('click', () => {
+                    // Hiệu ứng click
+                    nucleus.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        nucleus.style.transform = 'scale(1)';
+                    }, 150);
+
+                    // Chuyển hướng sau hiệu ứng
+                    setTimeout(() => {
+                        window.location.href = 'lazinet-support-pricing.html';
+                    }, 300);
+                });
+            }
+
+            startAnimation() {
+                const animate = () => {
+                    const centerX = this.container.offsetWidth / 2;
+                    const centerY = this.container.offsetHeight / 2;
+
+                    this.electrons.forEach(electron => {
+                        // Cập nhật góc quay
+                        electron.angle += 0.005 * electron.data.speed;
+                        
+                        // Tính toán bán kính dựa trên orbit
+                        const radius = electron.data.orbit * 120 + 80;
+                        
+                        // Tính toán vị trí
+                        const x = centerX + Math.cos(electron.angle) * radius;
+                        const y = centerY + Math.sin(electron.angle) * radius;
+                        
+                        // Cập nhật vị trí electron
+                        electron.element.style.left = `${x}px`;
+                        electron.element.style.top = `${y}px`;
+                        electron.element.style.transform = 'translate(-50%, -50%)';
+
+                        // Hiệu ứng hiển thị text khi electron gần top
+                        const content = electron.element.querySelector('.electron-content');
+                        if (Math.abs(y - centerY) < radius * 0.3) {
+                            content.style.opacity = '1';
+                        } else {
+                            content.style.opacity = '0';
+                        }
+                    });
+
+                    // Cập nhật connection lines
+                    this.updateConnections(centerX, centerY);
+
+                    this.animationId = requestAnimationFrame(animate);
+                };
+
+                animate();
+            }
+
+            updateConnections(centerX, centerY) {
+                this.connections.forEach(connection => {
+                    const electron = connection.electron;
+                    const electronRect = electron.element.getBoundingClientRect();
+                    const containerRect = this.container.getBoundingClientRect();
+                    
+                    const electronX = electronRect.left - containerRect.left + electronRect.width / 2;
+                    const electronY = electronRect.top - containerRect.top + electronRect.height / 2;
+                    
+                    const dx = electronX - centerX;
+                    const dy = electronY - centerY;
+                    const length = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+                    connection.element.style.width = `${length}px`;
+                    connection.element.style.left = `${centerX}px`;
+                    connection.element.style.top = `${centerY}px`;
+                    connection.element.style.transform = `rotate(${angle}deg)`;
+                });
+            }
+
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+            }
+        }
+
+        // Khởi tạo graph khi trang load
+        document.addEventListener('DOMContentLoaded', () => {
+            new AtomicTechGraph('graph');
+        });
+
+        // Xử lý responsive - restart animation khi resize
+        window.addEventListener('resize', () => {
+            // Animation sẽ tự động điều chỉnh vì sử dụng requestAnimationFrame
+        });
+    </script>
+</body>
+</html>
