@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET - Tuyển Dụng | Gia nhập đội ngũ công nghệ hàng đầu</title>
+    <meta name="description" content="Cơ hội nghề nghiệp tại LAZINET - Đối tác chuyển đổi số toàn diện. Tuyển dụng vị trí AI, IoT, Phát triển phần mềm, và nhiều vị trí hấp dẫn khác.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7ff 0%, #e3eeff 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0052FF 0%, #00C6FF 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 82, 255, 0.15);
+        }
+        
+        .logo {
+            max-width: 200px;
+            margin: 0 auto 1rem;
+        }
+        
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+        }
+        
+        .intro-text {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 3rem;
+        }
+        
+        .intro-text h2 {
+            font-size: 2rem;
+            color: #0052FF;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .intro-text p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 1000px;
+        }
+        
+        .feature {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 82, 255, 0.15);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: #f0f5ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feature-icon img {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .feature h3 {
+            color: #0052FF;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, #0052FF 0%, #00C6FF 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .form-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-content {
+            padding: 2rem;
+        }
+        
+        .google-form {
+            width: 100%;
+            height: 1200px;
+            border: none;
+            border-radius: 8px;
+        }
+        
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .copyright {
+            margin-top: 1.5rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .intro-text h2 {
+                font-size: 1.6rem;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature {
+                max-width: 100%;
+            }
+            
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header fade-in">
+        <div class="logo">
+            <!-- Thay thế bằng logo thực tế của LAZINET -->
+            <svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="200" height="50" rx="10" fill="white"/>
+                <text x="100" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" font-weight="bold" fill="#0052FF">LAZINET</text>
+            </svg>
+        </div>
+        <h1>Tuyển Dụng LAZINET</h1>
+        <p>Cùng chúng tôi kiến tạo tương lai số - Nơi ý tưởng đột phá trở thành hiện thực</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Introduction -->
+        <section class="intro-text fade-in delay-1">
+            <h2>Gia Nhập Đội Ngũ Công Nghệ Hàng Đầu</h2>
+            <p>LAZINET đang tìm kiếm những tài năng xuất sắc cùng chung tầm nhìn về một tương lai số hóa toàn diện. 
+               Chúng tôi cung cấp môi trường làm việc năng động, cơ hội phát triển không giới hạn và những dự án công nghệ đột phá.</p>
+        </section>
+
+        <!-- Features -->
+        <section class="features">
+            <div class="feature fade-in delay-1">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0052FF">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 5.5V7H9V5.5L3 7V9L9 10.5V12L3 13.5V15.5L9 14V16L3 17.5V19.5L9 18V22H15V18L21 19.5V17.5L15 16V14L21 15.5V13.5L15 12V10.5L21 9Z"/>
+                    </svg>
+                </div>
+                <h3>Công Nghệ Đột Phá</h3>
+                <p>Làm việc với các công nghệ tiên tiến nhất trong AI, IoT, và chuyển đổi số</p>
+            </div>
+            
+            <div class="feature fade-in delay-2">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0052FF">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7.07,18.28C7.5,17.38 8.14,16.5 9,15.75C10.26,14.5 11.61,14.13 12.86,14.13C14.14,14.13 15.36,14.56 16.35,15.5C17,16.13 17.57,16.85 18.05,17.63C16.85,19.1 15.5,20 13,20C10.65,20 8.73,19.34 7.07,18.28M6,16.73L6,16.63C5.5,15.66 5.15,14.62 5,13.5C6.3,13.83 7.47,14.5 8.43,15.5C7.63,16.03 6.82,16.35 6,16.73M18,13.5C17.85,14.62 17.5,15.66 17,16.63V16.73C16.18,16.35 15.37,16 14.57,15.5C15.53,14.5 16.7,13.83 18,13.5M12,4C14.5,4 16.5,5.57 17.5,7.78C16.85,8.24 16.13,8.64 15.36,8.93C14.57,7.29 13.5,6 12,6C10.5,6 9.43,7.29 8.64,8.93C7.87,8.64 7.15,8.24 6.5,7.78C7.5,5.57 9.5,4 12,4M12,8C13.1,8 14,8.9 14,10C14,11.1 13.1,12 12,12C10.9,12 10,11.1 10,10C10,8.9 10.9,8 12,8Z"/>
+                    </svg>
+                </div>
+                <h3>Phát Triển Chuyên Môn</h3>
+                <p>Cơ hội học hỏi và phát triển kỹ năng với các chuyên gia hàng đầu</p>
+            </div>
+            
+            <div class="feature fade-in delay-3">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0052FF">
+                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                    </svg>
+                </div>
+                <h3>Môi Trường Năng Động</h3>
+                <p>Văn hóa doanh nghiệp cởi mở, sáng tạo và tôn trọng sự khác biệt</p>
+            </div>
+        </section>
+
+        <!-- Google Form Container -->
+        <section class="form-container fade-in delay-2">
+            <div class="form-header">
+                <h2>Đơn Ứng Tuyển</h2>
+                <p>Điền thông tin để ứng tuyển vào vị trí phù hợp tại LAZINET</p>
+            </div>
+            <div class="form-content">
+                <!-- Thay thế URL dưới đây bằng Google Form thực tế của bạn -->
+                <iframe class="google-form" src="https://docs.google.com/forms/d/e/1FAIpQLSfitS0IndZN_mHCINUZNwtABqGQWyA_kOmAWAoolbZWjeTP5g/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>LAZINET Technologies</h3>
+            <p>Đối tác chuyển đổi số toàn diện cho doanh nghiệp Việt</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white">
+                        <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                    </svg>
+                    <span>+84 908 556 220</span>
+                </div>
+                
+                <div class="contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white">
+                        <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                    </svg>
+                    <span>email@lazinet.com</span>
+                </div>
+                
+                <div class="contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white">
+                        <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/>
+                    </svg>
+                    <span>89 Phan Đình Phùng, Phú Nhuận, HCM</span>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 LAZINET Technologies. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
