@@ -619,7 +619,7 @@
                     <p class="product-description">${escapeHtml(product.cat_intro)}</p>
                 </div>
                 
-                <div class="product-price">${formatPrice(product.item_pay)}</div>
+                <div class="product-price">${formatPrice(product.item_price)}</div>
                 
                 ${features.length > 0 ? `
                 <ul class="product-features">
@@ -653,10 +653,13 @@
 
         // Format price for display
         function formatPrice(price) {
-            if (typeof price === 'number') {
+            // Nếu là số và lớn hơn 0 -> định dạng tiền
+            if (typeof price === 'number' && price > 0) {
                 return price.toLocaleString('vi-VN') + ' ₫';
             }
-            return price; // For "Liên hệ LAZINET" etc.
+            
+            // Mọi trường hợp còn lại -> hiển thị "Liên hệ"
+            return 'Liên hệ LAZINET';
         }
 
         // Escape HTML to prevent XSS
@@ -700,7 +703,7 @@
             const publicProductData = {
                 item_code: product.item_code,
                 item_name: product.item_name,
-                item_pay: product.item_pay
+                item_price: product.item_price
             };
             orderForm.dataset.product = JSON.stringify(publicProductData);
         }
