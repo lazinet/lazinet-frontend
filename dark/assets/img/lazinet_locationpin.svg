@@ -1,8 +1,0 @@
-<svg width="1024" height="1800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1800">
-  <line x1="512" x2="512" y1="1000" y2="1800" stroke="#ff6302" stroke-width="60"/>
-  <circle cx="512" cy="512" r="502" fill="blue" />
-  <circle cx="512" cy="612" r="402" fill="white" />
-  <circle cx="512" cy="712" r="302" fill="blue" />
-  <circle cx="512" cy="812" r="202" fill="white" />
-  <circle cx="512" cy="892" r="122" fill="#ff6302" />
-</svg>
