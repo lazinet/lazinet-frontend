@@ -8,9 +8,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
     <!-- === CORE META TAGS === -->
-    <title>LAZINET - Đối tác | Hợp tác cùng phát triển hệ sinh thái số</title>
-    <meta name="description" content="LAZINET - Mạng lưới đối tác công nghệ chiến lược. Cùng hợp tác phát triển giải pháp AI, IoT, ERP, MES toàn diện cho doanh nghiệp Việt.">
-    <meta name="keywords" content="LAZINET, đối tác công nghệ, hợp tác kinh doanh, hệ sinh thái số, AI, IoT, ERP, MES, giải pháp doanh nghiệp">
+    <title>LAZINET - Đối Tác Của LAZINET | Hợp Tác Chiến Lược Chuyển Đổi Số</title>
+    <meta name="description" content="LAZINET chào đón các đối tác cung cấp sản phẩm và dịch vụ trong lĩnh vực AI, IoT, ERP, MES. Hãy cùng xây dựng hệ sinh thái chuyển đổi số toàn diện. Liên hệ ngay để hợp tác!">
+    <meta name="keywords" content="LAZINET, đối tác, hợp tác, AI, IoT, ERP, MES, CRM, chuyển đổi số, partnership, digital transformation">
     <meta name="author" content="LAZINET Technologies">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -30,29 +30,37 @@
     <link rel="apple-touch-icon" sizes="60x60" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
     
     <!-- === OPEN GRAPH (Facebook, LinkedIn) === -->
-    <meta property="og:title" content="LAZINET - Đối tác | Hợp tác cùng phát triển hệ sinh thái số">
-    <meta property="og:description" content="Kết nối với mạng lưới đối tác công nghệ chiến lược của LAZINET. Cùng hợp tác phát triển giải pháp toàn diện cho doanh nghiệp.">
+    <meta property="og:title" content="LAZINET - Đối Tác Chiến Lược Chuyển Đổi Số">
+    <meta property="og:description" content="Chào đón hợp tác với LAZINET trong lĩnh vực AI, IoT, ERP, MES. Xây dựng hệ sinh thái số toàn diện cùng chúng tôi.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lazinet.com/partners.html">
     <meta property="og:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="LAZINET - Đối tác công nghệ">
+    <meta property="og:image:alt" content="LAZINET - Đối Tác Chiến Lược">
     <meta property="og:site_name" content="LAZINET">
     <meta property="og:locale" content="vi_VN">
     
     <!-- === TWITTER CARD === -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LAZINET - Đối tác | Hợp tác cùng phát triển hệ sinh thái số">
-    <meta name="twitter:description" content="Kết nối với mạng lưới đối tác công nghệ chiến lược của LAZINET.">
+    <meta name="twitter:title" content="LAZINET - Đối Tác Chiến Lược Chuyển Đổi Số">
+    <meta name="twitter:description" content="Hợp tác với LAZINET để mở rộng hệ sinh thái AI, IoT, ERP. Liên hệ ngay!">
     <meta name="twitter:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
-    <meta name="twitter:image:alt" content="LAZINET - Đối tác công nghệ">
+    <meta name="twitter:image:alt" content="LAZINET - Partnership">
     <meta name="twitter:site" content="@lazinet">
     <meta name="twitter:creator" content="@lazinet">
     
     <!-- === ZALO SPECIFIC === -->
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:secure_url" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+    
+    <!-- === TIKTOK SPECIFIC === -->
+    <meta property="al:ios:url" content="lazinet://app">
+    <meta property="al:ios:app_store_id" content="123456789">
+    <meta property="al:ios:app_name" content="LAZINET">
+    <meta property="al:android:url" content="lazinet://app">
+    <meta property="al:android:package" content="com.lazinet.app">
+    <meta property="al:android:app_name" content="LAZINET">
     
     <!-- === ADDITIONAL SEO META === -->
     <meta name="theme-color" content="#0052FF">
@@ -118,18 +126,77 @@
 	<link rel="stylesheet" href="assets/css/custom.css" media="screen">
     <link rel="stylesheet" href="assets/css/lazinet.css">
 
+    <!-- Additional CSS for Partners Animation -->
     <style>
-        /* Partner Network Visualization */
-        .partner-network {
-            position: relative;
-            height: 500px;
-            margin: 50px 0;
-            overflow: hidden;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f5f7ff 0%, #e3eeff 100%);
+        :root {
+            --accent-secondary-color: #0F2453;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
         }
-        
-        .network-canvas {
+
+        .partners-hero {
+            background: var(--accent-secondary-color);
+            color: var(--text-color);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partners-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .partners-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .partners-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .partners-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            color: var(--text-color);
+            opacity: 0.9;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+.graph-container {
+    position: relative;
+    width: 100%;
+    height: min(100vh, 100vw); /* Chiều cao = min(60vh, 100vw) */
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    margin: 50px auto;
+    overflow: hidden;
+}
+
+.graph-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 600px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1; /* Đảm bảo tỷ lệ vuông */
+}
+
+        #partnerCanvas {
             position: absolute;
             top: 0;
             left: 0;
@@ -137,30 +204,64 @@
             height: 100%;
             z-index: 1;
         }
-        
-        .network-center {
+
+        /* Nucleus (Central LAZINET) */
+        .nucleus {
             position: absolute;
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary-color));
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 50px rgba(63, 130, 251, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            animation: nucleusPulse 3s ease-in-out infinite;
+            color: var(--text-color);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
+        }
+
+        .nucleus:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 
+                0 0 70px rgba(63, 130, 251, 0.6),
+                inset 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .nucleus img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .nucleus-text {
+            font-size: 1.1rem;
+            font-weight: 600;
             text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
+        }
+
+        /* Orbits */
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0, 82, 255, 0.15);
-            border: 2px solid #0052FF;
+            pointer-events: none;
+            z-index: 2;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
-        
-        .network-center img {
-            max-width: 80px;
-        }
-        
+
+        /* Partner Nodes (Electrons) */
         .partner-node {
             position: absolute;
             width: 80px;
@@ -169,248 +270,218 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            z-index: 3;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            z-index: 5;
             transition: all 0.3s ease;
-            cursor: pointer;
+            cursor: default;
+            overflow: hidden;
+            top: 0;
+            left: 0;
         }
-        
-        .partner-node:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 82, 255, 0.2);
-        }
-        
+
         .partner-node img {
             max-width: 50px;
-            max-height: 40px;
-        }
-        
-        /* Partnership Benefits */
-        .partnership-benefits {
-            background: linear-gradient(135deg, #0052FF 0%, #00C6FF 100%);
-            color: white;
-            padding: 80px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .benefit-item {
-            text-align: center;
-            padding: 30px 20px;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
+            max-height: 50px;
             transition: transform 0.3s ease;
         }
-        
-        .benefit-item:hover {
-            transform: translateY(-10px);
+
+        .partner-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 82, 255, 0.4);
+            z-index: 15;
         }
-        
-        .benefit-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .partner-node:hover img {
+            transform: scale(1.1);
         }
-        
-        .benefit-icon img {
-            width: 40px;
-            height: 40px;
-        }
-        
-        /* Partnership Form */
-        .partnership-form-container {
-            background: #f8f9ff;
-            padding: 60px 0;
-            border-radius: 20px;
-            margin: 50px 0;
-            box-shadow: 0 20px 60px rgba(0, 82, 255, 0.1);
-        }
-        
-        .form-step {
-            display: none;
-        }
-        
-        .form-step.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .partnership-type-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-            height: 100%;
-        }
-        
-        .partnership-type-card:hover, .partnership-type-card.selected {
-            border-color: #0052FF;
-            background: #f0f5ff;
-            transform: translateY(-5px);
-        }
-        
-        .partnership-type-card.selected {
-            box-shadow: 0 10px 30px rgba(0, 82, 255, 0.15);
-        }
-        
-        .type-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            background: #f0f5ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .type-icon img {
-            width: 30px;
-            height: 30px;
-        }
-        
-        .form-progress {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        .form-progress:before {
-            content: '';
+
+        .node-tooltip {
             position: absolute;
-            top: 15px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #e0e0e0;
-            z-index: 1;
-        }
-        
-        .progress-step {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            flex: 1;
-        }
-        
-        .progress-step:last-child {
-            flex: 0;
-        }
-        
-        .step-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #e0e0e0;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 36, 83, 0.9);
             color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+        }
+
+        .partner-node:hover .node-tooltip {
+            opacity: 1;
+        }
+
+        /* Legend */
+        .legend {
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
-            font-weight: bold;
-        }
-        
-        .progress-step.active .step-number {
-            background: #0052FF;
-        }
-        
-        .progress-step.completed .step-number {
-            background: #00C851;
-        }
-        
-        .form-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Partner Categories */
-        .partner-category {
-            padding: 60px 0;
-        }
-        
-        .category-card {
-            background: white;
-            border-radius: 12px;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
         }
-        
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 82, 255, 0.1);
-        }
-        
-        .category-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: #f0f5ff;
-            border-radius: 50%;
+
+        .legend-item {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
-        
-        .category-icon img {
-            width: 40px;
-            height: 40px;
+
+        .legend-item:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
-        
-        /* Floating Animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-color);
         }
-        
-        .floating {
-            animation: float 5s ease-in-out infinite;
+
+        .legend-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
         }
-        
-        /* Responsive Adjustments */
+
+        /* Animations */
+        @keyframes nucleusPulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 50px rgba(63, 130, 251, 0.4),
+                    inset 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 70px rgba(63, 130, 251, 0.6),
+                    inset 0 0 30px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        @keyframes orbitRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .partner-network {
-                height: 300px;
+            .partners-hero h1 {
+                font-size: 2.5rem;
             }
-            
-            .network-center {
-                width: 100px;
-                height: 100px;
+
+            .nucleus {
+                width: 140px;
+                height: 140px;
             }
-            
-            .network-center img {
-                max-width: 50px;
+
+            .nucleus img {
+                width: 60px;
+                height: 60px;
             }
-            
+
+            .nucleus-text {
+                font-size: 0.9rem;
+            }
+
+            .partner-node {
+                width: 60px;
+                height: 60px;
+            }
+
+            .partner-node img {
+                max-width: 40px;
+                max-height: 40px;
+            }
+
+            .graph-container {
+                height: 50vh;
+                min-height: 350px;
+            }
+
+            .graph-inner {
+                max-width: 400px;
+                max-height: 400px;
+            }
+
+            .legend {
+                gap: 10px;
+                padding: 20px;
+            }
+
+            .legend-item {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .graph-container {
+                height: 40vh;
+                min-height: 300px;
+            }
+
+            .graph-inner {
+                max-width: 300px;
+                max-height: 300px;
+            }
+
+            .nucleus {
+                width: 120px;
+                height: 120px;
+            }
+
             .partner-node {
                 width: 50px;
                 height: 50px;
             }
-            
+        }
+
+        @media (max-width: 360px) {
+            .graph-container {
+                height: 35vh;
+                min-height: 250px;
+            }
+
+            .graph-inner {
+                max-width: 250px;
+                max-height: 250px;
+            }
+
+            .nucleus {
+                width: 100px;
+                height: 100px;
+            }
+
+            .nucleus img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .partner-node {
+                width: 40px;
+                height: 40px;
+            }
+
             .partner-node img {
                 max-width: 30px;
-                max-height: 25px;
+                max-height: 30px;
             }
         }
     </style>
@@ -525,17 +596,16 @@
                                         <li class="nav-item"><a class="nav-link" href="wearehiring.html">Tuyển dụng</a></li>
                                     </ul>
                                 </li>
-                                <!-- <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li> -->
                                 <li id="google_translate_element"></li>
                             </ul>
                         </div>
 
                         <!-- Header Btn Start -->
                         <div class="header-btn">
-                            <!-- <div id="google_translate_element" style="margin-left: 20px;"></div> -->
                             <a class="btn-default" href="contact.html">Liên hệ</a>
                         </div>
                         <!-- Header Btn End -->                      
+
 					</div>
 					<!-- Main Menu End -->
 					<div class="navbar-toggle"></div>
@@ -553,7 +623,7 @@
                 <div class="col-lg-12">
                     <!-- Page Header Box Start -->
                     <div class="page-header-box">
-                        <h1 class="wow fadeInUp">Đối tác <span>LAZINET</span></h1>
+                        <h1 class="wow fadeInUp">Đối Tác Của <span>LAZINET</span></h1>
                         <nav class="wow fadeInUp">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
@@ -569,372 +639,40 @@
     </div>
     <!-- Page Header Section End -->
 
-    <!-- Scrolling Ticker Section Start -->
-    <div class="our-scrolling-ticker">
-        <!-- Scrolling Ticker Start -->
-        <div class="scrolling-ticker-box">
-            <div class="scrolling-content">
-                <span><img src="assets/img/partners/clbdnqtmn.png" alt=""></span>
-                <span><img src="assets/img/partners/bidrico.png" alt=""></span>
-                <span><img src="assets/img/partners/GRfood-header.png" alt=""></span>
-                <span><img src="assets/img/partners/NON-SON-logo.png" alt=""></span>
-                <span><img src="assets/img/partners/techcombank3.webp" alt=""></span>
-                <span><img src="assets/img/partners/Logo-AAA.webp" alt=""></span>
-                <span><img src="assets/img/partners/ajtotal.jpg" alt=""></span>
-                <span><img src="assets/img/partners/ingrid.png" alt=""></span>
-                <span><img src="assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Logo_Name2.png"
-                        alt=""></span>
-                <span><img src="bkgreen/Logo/Nền trắng - Chữ nhật sát tỉ lệ lề đều.png" alt=""></span>
-                <span><img src="assets/img/partners/PhongHai.jpg" alt=""></span>
-                <span><img src="assets/img/partners/vuongcha.jpg" alt=""></span>
-                <span><img src="assets/img/partners/phugiaan.jpg" alt=""></span>
-                <span><img src="assets/img/partners/Logo_Viettel_from_7_January_2021_Slogan.svg" alt=""></span>
-                <span><img src="assets/img/partners/Logo_MB_v2_c.svg" alt=""></span>
-                <span><img src="assets/img/partners/omega.png" alt=""></span>
-                <span><img src="assets/img/partners/nathi.png" alt=""></span>
-                <span><img src="assets/img/partners/voip24h2.jpg" alt=""></span>
-                <span><img src="assets/img/partners/pNetLab.png" alt=""></span>
-                <span><img src="assets/img/partners/DHCongThuong-white.svg" alt=""></span>
-                <span><img src="assets/img/partners/phi&p-w.png" alt=""></span>
-                <span><img src="assets/img/partners/haibatrung.png" alt=""></span>
-
-            </div>
-
-            <div class="scrolling-content">
-                <span><img src="assets/img/partners/clbdnqtmn.png" alt=""></span>
-                <span><img src="assets/img/partners/bidrico.png" alt=""></span>
-                <span><img src="assets/img/partners/GRfood-header.png" alt=""></span>
-                <span><img src="assets/img/partners/NON-SON-logo.png" alt=""></span>
-                <span><img src="assets/img/partners/techcombank3.webp" alt=""></span>
-                <span><img src="assets/img/partners/Logo-AAA.webp" alt=""></span>
-                <span><img src="assets/img/partners/ajtotal.jpg" alt=""></span>
-                <span><img src="assets/img/partners/ingrid.png" alt=""></span>
-                <span><img src="assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Logo_Name2.png"
-                        alt=""></span>
-                <span><img src="bkgreen/Logo/Nền trắng - Chữ nhật sát tỉ lệ lề đều.png" alt=""></span>
-                <span><img src="assets/img/partners/PhongHai.jpg" alt=""></span>
-                <span><img src="assets/img/partners/vuongcha.jpg" alt=""></span>
-                <span><img src="assets/img/partners/phugiaan.jpg" alt=""></span>
-                <span><img src="assets/img/partners/Logo_Viettel_from_7_January_2021_Slogan.svg" alt=""></span>
-                <span><img src="assets/img/partners/Logo_MB_v2_c.svg" alt=""></span>
-                <span><img src="assets/img/partners/omega.png" alt=""></span>
-                <span><img src="assets/img/partners/nathi.png" alt=""></span>
-                <span><img src="assets/img/partners/voip24h2.jpg" alt=""></span>
-                <span><img src="assets/img/partners/pNetLab.png" alt=""></span>
-                <span><img src="assets/img/partners/DHCongThuong-white.svg" alt=""></span>
-                <span><img src="assets/img/partners/phi&p-w.png" alt=""></span>
-                <span><img src="assets/img/partners/haibatrung.png" alt=""></span>
-            </div>
-        </div>
-        <!-- Scrolling Ticker End -->
-    </div>
-    <!-- Scrolling Ticker Section End -->
-
-    <!-- Partner Introduction Section Start -->
-    <div class="about-us">
+    <!-- Partners Hero Section Start -->
+    <section class="partners-hero">
         <div class="container">
-            <div class="row">
-                <div class="col-xl-6">
-                    <!-- About Content Start -->
-                    <div class="about-us-content">
-                        <!-- Section Title Start -->
-                        <div class="section-title">
-                            <h2 class="wow fadeInUp">Cùng xây dựng hệ sinh thái số <span>vững mạnh</span></h2>
-                            <p class="wow fadeInUp">LAZINET tin rằng sự hợp tác chiến lược là chìa khóa để tạo ra những giải pháp công nghệ toàn diện và đột phá. Chúng tôi luôn tìm kiếm các đối tác cùng chung tầm nhìn để mở rộng hệ sinh thái số, mang đến giá trị tối ưu cho khách hàng.</p>
-                            <p class="wow fadeInUp" data-wow-delay="0.2s">Dù bạn là nhà cung cấp sản phẩm công nghệ, dịch vụ chuyên môn hay tổ chức có nguồn lực bổ trợ, hãy cùng LAZINET tạo nên những giải pháp tích hợp hoàn chỉnh, đáp ứng mọi nhu cầu chuyển đổi số của doanh nghiệp Việt.</p>
-                        </div>
-                        <!-- Section Title End -->
-                    </div>
-                    <!-- About Content End -->
-                </div>
-                
-                <div class="col-xl-6">
-                    <!-- Partner Network Visualization -->
-                    <div class="partner-network wow fadeInUp" data-wow-delay="0.4s">
-                        <canvas class="network-canvas" id="networkCanvas"></canvas>
-                        <div class="network-center floating">
-                            <img src="assets/img/logo-lazinet/lazinet_LogoOnly.svg" alt="LAZINET">
-                        </div>
-                        <!-- Partner nodes will be dynamically added here -->
-                    </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center partners-hero-content">
+                    <h1 class="wow fadeInUp">Chào Đón Hợp Tác Chiến Lược</h1>
+                    <p class="wow fadeInUp" data-wow-delay="0.2s">LAZINET tự hào xây dựng hệ sinh thái chuyển đổi số mạnh mẽ. Chúng tôi chào đón các đối tác cung cấp sản phẩm/dịch vụ trong lĩnh vực AI, IoT, ERP, MES hoặc các giải pháp liên quan để cùng hoàn thiện và mở rộng giá trị cho doanh nghiệp Việt Nam.</p>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Partner Introduction Section End -->
+    </section>
+    <!-- Partners Hero Section End -->
 
-    <!-- Partnership Benefits Section Start -->
-    <div class="partnership-benefits">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Section Title Start -->
-                    <div class="section-title section-title-center">
-                        <h3 class="wow fadeInUp">Lợi ích hợp tác</h3>
-                        <h2 class="wow fadeInUp">Cùng phát triển, cùng thành công</h2>
-                    </div>
-                    <!-- Section Title End -->
-                </div>
+    <!-- Graph Container -->
+    <div class="graph-container" id="graphContainer">
+        <div class="graph-inner">
+            <canvas id="partnerCanvas"></canvas>
+            <!-- Nucleus -->
+            <div class="nucleus" id="nucleus">
+                <img src="assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="LAZINET">
+                <div class="nucleus-text">LAZINET</div>
             </div>
-            
-            <div class="row">
-                <div class="col-xl-4 col-md-6">
-                    <div class="benefit-item wow fadeInUp">
-                        <div class="benefit-icon">
-                            <img src="assets/img/svg/network-svgrepo-com.svg" alt="Mạng lưới">
-                        </div>
-                        <h3>Mở rộng mạng lưới</h3>
-                        <p>Tiếp cận hệ thống khách hàng đa dạng của LAZINET và mạng lưới đối tác chiến lược</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="benefit-item wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="benefit-icon">
-                            <img src="assets/img/svg/technology-innovation-svgrepo-com.svg" alt="Công nghệ">
-                        </div>
-                        <h3>Phát triển công nghệ</h3>
-                        <p>Hợp tác nghiên cứu và phát triển các giải pháp công nghệ tiên tiến, sáng tạo</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="benefit-item wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="benefit-icon">
-                            <img src="assets/img/svg/growth-svgrepo-com.svg" alt="Tăng trưởng">
-                        </div>
-                        <h3>Tăng trưởng doanh thu</h3>
-                        <p>Cơ hội kinh doanh mới thông qua các dự án tích hợp và chuyển giao giải pháp</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Orbits -->
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+            <!-- Partner Nodes will be added by JS -->
         </div>
     </div>
-    <!-- Partnership Benefits Section End -->
 
-    <!-- Partner Categories Section Start -->
-    <div class="partner-category">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Section Title Start -->
-                    <div class="section-title section-title-center">
-                        <h3 class="wow fadeInUp">Loại hình đối tác</h3>
-                        <h2 class="wow fadeInUp">Chúng tôi tìm kiếm các đối tác <span>trong các lĩnh vực</span></h2>
-                    </div>
-                    <!-- Section Title End -->
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-xl-4 col-md-6">
-                    <div class="category-card wow fadeInUp">
-                        <div class="category-icon">
-                            <img src="assets/img/svg/software-development-svgrepo-com.svg" alt="Phần mềm">
-                        </div>
-                        <h3>Nhà phát triển phần mềm</h3>
-                        <p>Đối tác cung cấp giải pháp phần mềm chuyên ngành có thể tích hợp với hệ sinh thái LAZINET</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="category-card wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="category-icon">
-                            <img src="assets/img/svg/hardware-chip-svgrepo-com.svg" alt="Thiết bị">
-                        </div>
-                        <h3>Nhà sản xuất thiết bị IoT</h3>
-                        <p>Đối tác sản xuất thiết bị phần cứng, cảm biến và thiết bị IoT cho các giải pháp số</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="category-card wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="category-icon">
-                            <img src="assets/img/svg/consulting-svgrepo-com.svg" alt="Tư vấn">
-                        </div>
-                        <h3>Đơn vị tư vấn</h3>
-                        <p>Đối tác cung cấp dịch vụ tư vấn chuyển đổi số, chiến lược kinh doanh và công nghệ</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="category-card wow fadeInUp" data-wow-delay="0.6s">
-                        <div class="category-icon">
-                            <img src="assets/img/svg/cloud-network-svgrepo-com.svg" alt="Hạ tầng">
-                        </div>
-                        <h3>Nhà cung cấp hạ tầng</h3>
-                        <p>Đối tác cung cấp dịch vụ đám mây, hosting, bảo mật và các dịch vụ hạ tầng CNTT</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="category-card wow fadeInUp" data-wow-delay="0.8s">
-                        <div class="category-icon">
-                            <img src="assets/img/svg/research-development-svgrepo-com.svg" alt="R&D">
-                        </div>
-                        <h3>Viện nghiên cứu & Đào tạo</h3>
-                        <p>Đối tác trong lĩnh vực nghiên cứu phát triển và đào tạo nguồn nhân lực công nghệ</p>
-                    </div>
-                </div>
-                
-                <div class="col-xl-4 col-md-6">
-                    <div class="category-card wow fadeInUp" data-wow-delay="1s">
-                        <div class="category-icon">
-                            <img src="assets/img/svg/business-partnership-svgrepo-com.svg" alt="Đối tác">
-                        </div>
-                        <h3>Đối tác phân phối</h3>
-                        <p>Đối tác có mạng lưới phân phối để mở rộng thị trường cho các giải pháp của LAZINET</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Legend Section -->
+    <div class="legend" id="legend">
+        <!-- Generated by JS -->
     </div>
-    <!-- Partner Categories Section End -->
-
-    <!-- Partnership Form Section Start -->
-    <div class="partnership-form-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <!-- Section Title Start -->
-                    <div class="section-title section-title-center">
-                        <h3 class="wow fadeInUp">Trở thành đối tác</h3>
-                        <h2 class="wow fadeInUp">Hãy cùng chúng tôi <span>xây dựng tương lai số</span></h2>
-                        <p class="wow fadeInUp" data-wow-delay="0.2s">Điền thông tin dưới đây để bắt đầu hành trình hợp tác với LAZINET. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
-                    </div>
-                    <!-- Section Title End -->
-                    
-                    <!-- Partnership Form Start -->
-                    <div class="partnership-form">
-                        <!-- Form Progress -->
-                        <div class="form-progress">
-                            <div class="progress-step active" data-step="1">
-                                <div class="step-number">1</div>
-                                <div class="step-label">Loại hình</div>
-                            </div>
-                            <div class="progress-step" data-step="2">
-                                <div class="step-number">2</div>
-                                <div class="step-label">Thông tin</div>
-                            </div>
-                            <div class="progress-step" data-step="3">
-                                <div class="step-number">3</div>
-                                <div class="step-label">Hoàn tất</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Step 1: Partnership Type -->
-                        <div class="form-step active" id="step1">
-                            <h3 class="text-center mb-4">Chọn loại hình hợp tác</h3>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="partnership-type-card" data-type="technology">
-                                        <div class="type-icon">
-                                            <img src="assets/img/svg/software-development-svgrepo-com.svg" alt="Công nghệ">
-                                        </div>
-                                        <h4>Đối tác Công nghệ</h4>
-                                        <p>Nhà phát triển phần mềm, thiết bị IoT, giải pháp tích hợp</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="partnership-type-card" data-type="distribution">
-                                        <div class="type-icon">
-                                            <img src="assets/img/svg/business-partnership-svgrepo-com.svg" alt="Phân phối">
-                                        </div>
-                                        <h4>Đối tác Phân phối</h4>
-                                        <p>Đơn vị phân phối, đại lý, nhà bán lẻ giải pháp công nghệ</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="partnership-type-card" data-type="consulting">
-                                        <div class="type-icon">
-                                            <img src="assets/img/svg/consulting-svgrepo-com.svg" alt="Tư vấn">
-                                        </div>
-                                        <h4>Đối tác Tư vấn</h4>
-                                        <p>Đơn vị tư vấn chiến lược, chuyển đổi số, đào tạo</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-navigation">
-                                <div></div> <!-- Empty div for spacing -->
-                                <button class="btn-default" id="nextStep1">Tiếp theo</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Step 2: Company Information -->
-                        <div class="form-step" id="step2">
-                            <h3 class="text-center mb-4">Thông tin công ty</h3>
-                            <form id="partnerForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="companyName">Tên công ty *</label>
-                                            <input type="text" class="form-control" id="companyName" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="website">Website</label>
-                                            <input type="url" class="form-control" id="website">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="contactName">Người liên hệ *</label>
-                                            <input type="text" class="form-control" id="contactName" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="position">Chức vụ *</label>
-                                            <input type="text" class="form-control" id="position" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="email">Email *</label>
-                                            <input type="email" class="form-control" id="email" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="phone">Điện thoại *</label>
-                                            <input type="tel" class="form-control" id="phone" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Mô tả về công ty và đề xuất hợp tác *</label>
-                                    <textarea class="form-control" id="description" rows="4" required></textarea>
-                                </div>
-                                <div class="form-navigation">
-                                    <button type="button" class="btn-default btn-outline" id="prevStep2">Quay lại</button>
-                                    <button type="submit" class="btn-default" id="submitPartnerForm">Gửi đề xuất</button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <!-- Step 3: Confirmation -->
-                        <div class="form-step" id="step3">
-                            <div class="text-center">
-                                <div class="mb-4">
-                                    <img src="assets/img/svg/checkmark-circle-svgrepo-com.svg" alt="Thành công" style="width: 80px; height: 80px;">
-                                </div>
-                                <h3 class="mb-3">Đề xuất hợp tác đã được gửi thành công!</h3>
-                                <p class="mb-4">Cảm ơn bạn đã quan tâm đến việc hợp tác với LAZINET. Chúng tôi sẽ xem xét thông tin và liên hệ với bạn trong thời gian sớm nhất.</p>
-                                <a href="index.html" class="btn-default">Về trang chủ</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Partnership Form End -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Partnership Form Section End -->
 
     <!-- Footer Start -->
     <footer class="main-footer">
@@ -1022,8 +760,8 @@
                             <div class="footer-copyright-text">
                                 <p><span id="currentYear"></span> LAZINET &copy; 
                                 <script>
-                                    const startYear = 2024;
-                                    const currentYear = new Date().getFullYear();
+                                    const startYear = 2024; // Năm bắt đầu
+                                    const currentYear = new Date().getFullYear(); // Năm hiện tại
                                     document.write(`${startYear}–${currentYear}`);
                                 </script>
                                 . Tất cả quyền được bảo lưu.
@@ -1073,161 +811,188 @@
     <script src="assets/js/lazinet.js" defer></script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
 
+    <!-- Partners Animation Script -->
     <script>
-        // Partner Network Visualization
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize partner network visualization
-            initPartnerNetwork();
-            
-            // Initialize partnership form
-            initPartnershipForm();
-        });
-        
-        function initPartnerNetwork() {
-            const canvas = document.getElementById('networkCanvas');
-            const ctx = canvas.getContext('2d');
-            const container = document.querySelector('.partner-network');
-            
-            // Set canvas dimensions
-            canvas.width = container.offsetWidth;
-            canvas.height = container.offsetHeight;
-            
-            // Partner data
-            const partners = [
-                { name: 'BIDRICO', logo: 'assets/img/partners/bidrico.png', x: 0, y: 0 },
-                { name: 'GR Food', logo: 'assets/img/partners/GRfood-header.png', x: 0, y: 0 },
-                { name: 'Techcombank', logo: 'assets/img/partners/techcombank3.webp', x: 0, y: 0 },
-                { name: 'AAA', logo: 'assets/img/partners/Logo-AAA.webp', x: 0, y: 0 },
-                { name: 'Viettel', logo: 'assets/img/partners/Logo_Viettel_from_7_January_2021_Slogan.svg', x: 0, y: 0 },
-                { name: 'MB Bank', logo: 'assets/img/partners/Logo_MB_v2_c.svg', x: 0, y: 0 },
-                { name: 'HATHYO', logo: 'assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Logo_Name2.png', x: 0, y: 0 }
-            ];
-            
-            // Calculate positions in a circle
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = Math.min(canvas.width, canvas.height) * 0.35;
-            
-            partners.forEach((partner, index) => {
-                const angle = (index / partners.length) * 2 * Math.PI;
-                partner.x = centerX + radius * Math.cos(angle);
-                partner.y = centerY + radius * Math.sin(angle);
-                
-                // Create partner node
-                const node = document.createElement('div');
-                node.className = 'partner-node';
-                node.style.left = `${partner.x - 40}px`;
-                node.style.top = `${partner.y - 40}px`;
-                node.innerHTML = `<img src="${partner.logo}" alt="${partner.name}">`;
-                
-                container.appendChild(node);
-            });
-            
-            // Draw connecting lines
-            function drawLines() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Draw connecting lines from center to partners
-                ctx.beginPath();
-                ctx.strokeStyle = 'rgba(0, 82, 255, 0.2)';
-                ctx.lineWidth = 2;
-                
-                partners.forEach(partner => {
-                    ctx.moveTo(centerX, centerY);
-                    ctx.lineTo(partner.x, partner.y);
-                });
-                
-                ctx.stroke();
-                
-                requestAnimationFrame(drawLines);
+        // Partner data with logos
+        const partnersData = [
+            { name: 'BIDRICO', logo: 'assets/img/partners/bidrico.png', orbit: 1 },
+            { name: 'GR Food', logo: 'assets/img/partners/GRfood-header.png', orbit: 1 },
+            { name: 'Techcombank', logo: 'assets/img/partners/techcombank3.webp', orbit: 1 },
+            { name: 'AAA', logo: 'assets/img/partners/Logo-AAA.webp', orbit: 2 },
+            { name: 'Viettel', logo: 'assets/img/partners/Logo_Viettel_from_7_January_2021_Slogan.svg', orbit: 2 },
+            { name: 'MB Bank', logo: 'assets/img/partners/Logo_MB_v2_c.svg', orbit: 2 },
+            { name: 'HATHYO', logo: 'assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Logo_Name2.png', orbit: 3 },
+            { name: 'NON-SON', logo: 'assets/img/partners/NON-SON-logo.png', orbit: 3 },
+            { name: 'AJ Total', logo: 'assets/img/partners/ajtotal.jpg', orbit: 3 },
+            { name: 'Ingrid', logo: 'assets/img/partners/ingrid.png', orbit: 3 }
+        ];
+
+        class PartnerAtomicGraph {
+            constructor(containerId) {
+                this.container = document.getElementById(containerId);
+                this.innerContainer = this.container.querySelector('.graph-inner');
+                this.canvas = document.getElementById('partnerCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.nodes = [];
+                this.connections = [];
+                this.animationId = null;
+                this.init();
             }
-            
-            drawLines();
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                canvas.width = container.offsetWidth;
-                canvas.height = container.offsetHeight;
-                
-                // Recalculate positions
-                const newCenterX = canvas.width / 2;
-                const newCenterY = canvas.height / 2;
-                const newRadius = Math.min(canvas.width, canvas.height) * 0.35;
-                
-                partners.forEach((partner, index) => {
-                    const angle = (index / partners.length) * 2 * Math.PI;
-                    partner.x = newCenterX + newRadius * Math.cos(angle);
-                    partner.y = newCenterY + newRadius * Math.sin(angle);
-                    
-                    // Update node positions
-                    const nodes = document.querySelectorAll('.partner-node');
-                    if (nodes[index]) {
-                        nodes[index].style.left = `${partner.x - 40}px`;
-                        nodes[index].style.top = `${partner.y - 40}px`;
-                    }
+
+            init() {
+                this.setupCanvas();
+                this.createNucleus();
+                this.createOrbits();
+                this.createPartnerNodes();
+                this.createLegend();
+                this.startAnimation();
+                window.addEventListener('resize', () => this.handleResize());
+            }
+
+            setupCanvas() {
+                this.updateCanvasSize();
+                this.canvas.style.background = 'transparent';
+            }
+
+            updateCanvasSize() {
+                // Sử dụng kích thước của inner container để đảm bảo vuông
+                const rect = this.innerContainer.getBoundingClientRect();
+                const size = Math.min(rect.width, rect.height);
+                this.canvas.width = size;
+                this.canvas.height = size;
+                this.centerX = size / 2;
+                this.centerY = size / 2;
+            }
+
+            createNucleus() {
+                // Nucleus đã được định vị bằng CSS với top:50%, left:50%, transform:translate(-50%,-50%)
+                // Nên không cần điều chỉnh bằng JS
+                const nucleus = document.getElementById('nucleus');
+                nucleus.addEventListener('click', () => {
+                    // Optional: Redirect or show form
+                    window.location.href = '#partner-form'; // Assuming form ID
                 });
-            });
-        }
-        
-        function initPartnershipForm() {
-            const partnershipCards = document.querySelectorAll('.partnership-type-card');
-            const nextStep1Btn = document.getElementById('nextStep1');
-            const prevStep2Btn = document.getElementById('prevStep2');
-            const partnerForm = document.getElementById('partnerForm');
-            let selectedType = '';
-            
-            // Handle partnership type selection
-            partnershipCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    partnershipCards.forEach(c => c.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedType = this.getAttribute('data-type');
+            }
+
+            createOrbits() {
+                const orbits = [1, 2, 3];
+                orbits.forEach((level, index) => {
+                    const orbit = document.querySelector(`.orbit-${level}`);
+                    const radius = this.getOrbitRadius(level);
+                    orbit.style.width = `${radius * 2}px`;
+                    orbit.style.height = `${radius * 2}px`;
+                    // Orbits đã được định vị bằng CSS với top:50%, left:50%, transform:translate(-50%,-50%)
+                    // Nên không cần điều chỉnh bằng JS
+                    orbit.style.animationDuration = `${(index + 1) * 20}s`;
+                    orbit.style.animation = `orbitRotate ${(index + 1) * 20}s linear infinite`;
                 });
-            });
-            
-            // Step 1 to Step 2
-            nextStep1Btn.addEventListener('click', function() {
-                if (!selectedType) {
-                    alert('Vui lòng chọn loại hình hợp tác');
-                    return;
-                }
-                
-                document.getElementById('step1').classList.remove('active');
-                document.getElementById('step2').classList.add('active');
-                
-                // Update progress
-                document.querySelector('[data-step="1"]').classList.remove('active');
-                document.querySelector('[data-step="1"]').classList.add('completed');
-                document.querySelector('[data-step="2"]').classList.add('active');
-            });
-            
-            // Step 2 to Step 1
-            prevStep2Btn.addEventListener('click', function() {
-                document.getElementById('step2').classList.remove('active');
-                document.getElementById('step1').classList.add('active');
-                
-                // Update progress
-                document.querySelector('[data-step="2"]').classList.remove('active');
-                document.querySelector('[data-step="1"]').classList.add('active');
-                document.querySelector('[data-step="1"]').classList.remove('completed');
-            });
-            
-            // Form submission
-            partnerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // In a real implementation, you would send the form data to your server
-                // For this example, we'll just show the success message
-                
-                document.getElementById('step2').classList.remove('active');
-                document.getElementById('step3').classList.add('active');
-                
-                // Update progress
-                document.querySelector('[data-step="2"]').classList.remove('active');
-                document.querySelector('[data-step="2"]').classList.add('completed');
-                document.querySelector('[data-step="3"]').classList.add('active');
-            });
+            }
+
+            getOrbitRadius(level) {
+                // Tính bán kính dựa trên kích thước canvas
+                const baseRadius = Math.min(this.canvas.width, this.canvas.height) * 0.2;
+                return baseRadius * level;
+            }
+
+            createPartnerNodes() {
+                const orbits = {};
+                partnersData.forEach(p => {
+                    if (!orbits[p.orbit]) orbits[p.orbit] = [];
+                    orbits[p.orbit].push(p);
+                });
+
+                Object.keys(orbits).forEach(orbitLevel => {
+                    const level = parseInt(orbitLevel);
+                    const partnersInOrbit = orbits[orbitLevel];
+                    const radius = this.getOrbitRadius(level);
+                    const angleStep = (2 * Math.PI) / partnersInOrbit.length;
+
+                    partnersInOrbit.forEach((partner, index) => {
+                        const node = document.createElement('div');
+                        node.className = 'partner-node';
+                        node.innerHTML = `
+                            <img src="${partner.logo}" alt="${partner.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRTVFNUU1Ii8+Cjx0ZXh0IHg9IjI1IiB5PSIyOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSIjODg4Ij4KICBMT0cKPC90ZXh0Pgo8L3N2Zz4='">
+                            <div class="node-tooltip">${partner.name}</div>
+                        `;
+                        this.innerContainer.appendChild(node);
+
+                        const initialAngle = index * angleStep;
+                        this.nodes.push({
+                            element: node,
+                            data: partner,
+                            orbit: level,
+                            angle: initialAngle,
+                            radius: radius,
+                            speed: 0.005 / level // Slower for outer orbits
+                        });
+                    });
+                });
+            }
+
+            createLegend() {
+                const legend = document.getElementById('legend');
+                partnersData.forEach(partner => {
+                    const item = document.createElement('div');
+                    item.className = 'legend-item';
+                    item.innerHTML = `
+                        <div class="legend-color" style="background: ${this.getRandomColor()}"></div>
+                        <span class="legend-text">${partner.name}</span>
+                    `;
+                    legend.appendChild(item);
+                });
+            }
+
+            getRandomColor() {
+                const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            startAnimation() {
+                const animate = () => {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                    // Draw connections
+                    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    this.ctx.lineWidth = 1;
+                    this.nodes.forEach(node => {
+                        const x = this.centerX + Math.cos(node.angle) * node.radius;
+                        const y = this.centerY + Math.sin(node.angle) * node.radius;
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(this.centerX, this.centerY);
+                        this.ctx.lineTo(x, y);
+                        this.ctx.stroke();
+                    });
+
+                    // Update and draw nodes
+                    this.nodes.forEach(node => {
+                        node.angle += node.speed;
+
+                        const x = this.centerX + Math.cos(node.angle) * node.radius;
+                        const y = this.centerY + Math.sin(node.angle) * node.radius;
+
+                        node.element.style.left = `${x}px`;
+                        node.element.style.top = `${y}px`;
+                        node.element.style.transform = 'translate(-50%, -50%)';
+                    });
+
+                    this.animationId = requestAnimationFrame(animate);
+                };
+                animate();
+            }
+
+            handleResize() {
+                this.updateCanvasSize();
+                this.createOrbits();
+                this.nodes.forEach(node => {
+                    node.radius = this.getOrbitRadius(node.orbit);
+                });
+            }
         }
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            new PartnerAtomicGraph('graphContainer');
+        });
     </script>
 </body>
 </html>
