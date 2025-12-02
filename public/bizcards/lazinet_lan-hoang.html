@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>LAZINET - Effective Technologies with Anh Van</title>
+  <title>LAZINET - Effective Technologies with Lan Hoang</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoOnly.png" rel="icon">
-  <link href="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoOnly.png" rel="apple-touch-icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="apple-touch-icon">
 
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -233,17 +233,17 @@
         <a href="https://lazinet.com/"><img src="../assets/img/logo-lazinet/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
       </div>
       <div class="profile-pic">
-        <img src="../assets/img/team/Anh-Van-2.jpg" alt="Profile Picture">
+        <img src="../assets/img/team/Lan-Hoang-2.jpg" alt="Profile Picture">
       </div>
     </div>
     <div class="right-section">
       <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
       <div style="position: relative; z-index: 1;">
         <div>
-          <h2>VĂN THỊ NGỌC ÁNH</h2>
-          <h3 class="position">Operation Manager</h3>
-          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Phu Nhuan, HCMC, VN</a></p>
-          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0973022327">(+84) 0973 022 327</a></p>
+          <h2>HOÀNG THỊ HƯƠNG LAN</h2>
+          <h3 class="position">Logistics & Warehouse Manager</h3>
+          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/CCeyNR1RC91fMmeu7">89 Phan Dinh Phung, Phu Nhuan, HCM</a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0907426857">(+84) 0907 426 857</a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
         </div>
         <div class="bottom-section">
@@ -262,11 +262,12 @@
     <!-- <button onclick="exportToSVG()">Export SVG</button> -->
     <button onclick="exportToVCard()">Export vCard</button>
     <button onclick="exportToPDF()">Export PDF</button>
+    <button><a href="lan-hoang-resume.html"  style="color:#ffffff; text-decoration: none;">Lan's CV</a></button>
   </div>
 
   <script>
     // Tạo mã QR từ URL và chèn vào div#qrcode
-    const url = "https://lazinet.com/bizcards/anh-van.html";
+    const url = "https://lazinet.com/bizcards/lan-hoang.html";
     new QRCode(document.getElementById("qrcode"), {
       text: url,
       width: 100,
@@ -283,7 +284,7 @@
         useCORS: true
       }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Anh-Van.png";
+        link.download = "LAZINET Lan-Hoang.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -294,12 +295,12 @@
 const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
-N:Van;Anh;;;
-FN:Anh Van
+N:Hoang;Lan;;;
+FN:Lan Hoang
 ORG:LAZINET
-TITLE:Operation Manager
-ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
-TEL;TYPE=WORK,VOICE:+84973022327
+TITLE:Logistics & Warehouse Manager
+ADR;TYPE=WORK:;;89 Phan Dinh Phung, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84907426857
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
 END:VCARD
@@ -309,7 +310,7 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "LAZINET Anh-Van.vcf";
+      link.download = "LAZINET Lan-Hoang.vcf";
       link.click();
       URL.revokeObjectURL(url);
     }
@@ -334,7 +335,7 @@ END:VCARD
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height); // Chèn ảnh với kích thước phù hợp
-        doc.save("LAZINET Anh-Van.pdf");
+        doc.save("LAZINET Lan-Hoang.pdf");
       });
     }
 
@@ -352,7 +353,7 @@ END:VCARD
       const blob = new Blob([svgData], { type: "image/svg+xml" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.download = "LAZINET Anh-Van.svg";
+      link.download = "LAZINET Lan-Hoang.svg";
       link.href = url;
       link.click();
       URL.revokeObjectURL(url);

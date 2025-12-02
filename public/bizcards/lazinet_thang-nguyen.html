@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>LAZINET - Effective Technologies with Khoa Vu</title>
+  <title>LAZINET - Effective Technologies with Thang Nguyen</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoOnly.png" rel="icon">
-  <link href="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoOnly.png" rel="apple-touch-icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="apple-touch-icon">
 
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -230,20 +230,20 @@
   <div class="card" id="business-card">
     <div class="left-section">
       <div class="logo">
-        <a href="https://lazinet.com/"><img src="/assets/img/logo-lazinet/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
+        <a href="https://lazinet.com/"><img src="../assets/img/logo-lazinet/lazinet_logoFullSquare2.png" alt="LAZINET Logo"></a>
       </div>
       <div class="profile-pic">
-        <img src="/assets/img/team/Khoa-Vu.png" alt="Profile Picture">
+        <img src="../assets/img/team/Thang-Nguyen.png" alt="Profile Picture">
       </div>
     </div>
     <div class="right-section">
       <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
       <div style="position: relative; z-index: 1;">
         <div>
-          <h2>VŨ ANH KHOA</h2>
-          <h3 class="position">Software & GIS Developer</h3>
-          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/2c9j2EPCb49rkSSL9">428 Truong Sa, Phu Nhuan, HCMC, VN</a></p>
-          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0829050499">(+84) 0829 050 499</a></p>
+          <h2>NGUYỄN ĐÌNH THẮNG</h2>
+          <h3 class="position">Key Account Manager</h3>
+          <p><strong><i class="bi bi-geo-alt flex-shrink-0 icon-orange"></i> </strong><a href="https://maps.app.goo.gl/CCeyNR1RC91fMmeu7">89 Phan Dinh Phung, Phu Nhuan, HCM</a></p>
+          <p><strong><i class="bi bi-phone flex-shrink-0 icon-orange"></i> </strong><a href="http://zalo.me/0902489338">(+84) 0902 489 338</a></p>
           <p><strong><i class="bi bi-envelope flex-shrink-0 icon-orange"></i> </strong> <a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
         </div>
         <div class="bottom-section">
@@ -283,7 +283,7 @@
         useCORS: true
       }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "LAZINET Khoa-Vu.png";
+        link.download = "LAZINET Thang-Nguyen.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -294,12 +294,12 @@
 const vCardData = `
 BEGIN:VCARD
 VERSION:3.0
-N:Vu;Khoa;;;
-FN:Khoa Vu
+N:Nguyen;Thang;;;
+FN:Thang Nguyen
 ORG:LAZINET
-TITLE:Software & GIS Developer
-ADR;TYPE=WORK:;;428 Truong Sa, Phu Nhuan;HCMC;;Vietnam
-TEL;TYPE=WORK,VOICE:+84829050499
+TITLE:Key Account Manager
+ADR;TYPE=WORK:;;89 Phan Dinh Phung, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84902489338
 EMAIL:email@lazinet.com
 URL:https://lazinet.com/
 END:VCARD
@@ -309,7 +309,7 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "LAZINET Khoa-Vu.vcf";
+      link.download = "LAZINET Thang-Nguyen.vcf";
       link.click();
       URL.revokeObjectURL(url);
     }
@@ -334,7 +334,7 @@ END:VCARD
         const width = isMobile ? 300 : 500;
         const height = isMobile ? 500 : 300;
         doc.addImage(imgData, "PNG", 0, 0, width, height); // Chèn ảnh với kích thước phù hợp
-        doc.save("LAZINET Khoa-Vu.pdf");
+        doc.save("LAZINET Thang-Nguyen.pdf");
       });
     }
 
@@ -352,7 +352,7 @@ END:VCARD
       const blob = new Blob([svgData], { type: "image/svg+xml" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.download = "LAZINET Khoa-Vu.svg";
+      link.download = "LAZINET Thang-Nguyen.svg";
       link.href = url;
       link.click();
       URL.revokeObjectURL(url);
