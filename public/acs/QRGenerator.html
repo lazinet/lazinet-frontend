@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET ACS - QR Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.css">
+    <style>
+        /* Giữ nguyên CSS từ trước, thêm một chút tùy chỉnh */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --orange-light: #FFbbbb;
+            --blue-main: blue;
+            --blue-light: #ccccff;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F162C;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --black-color: #000000;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --success-color: #34c759;
+            --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--default-font);
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--bg-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--orange-main), var(--accent-color));
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--divider-color);
+            border-radius: 12px;
+            color: var(--white-color);
+            font-size: 1rem;
+            font-family: var(--default-font);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(63, 130, 251, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-family: var(--default-font);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--blue-main));
+            color: var(--white-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(63, 130, 251, 0.3);
+        }
+
+        #qrcode {
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                LAZINET ACS - QR Generator
+            </div>
+            <h1>Hệ Thống Tạo Mã QR Chống Hàng Giả</h1>
+            <p>Công cụ tạo và kiểm tra mã ACS cho hệ thống chống hàng giả LAZINET</p>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>Nhập Mã ACS</h2>
+                <div class="input-group">
+                    <label for="acsCode">Mã ACS (12 ký tự, bắt đầu bằng "ACS"):</label>
+                    <input type="text" id="acsCode" placeholder="VD: ACS1A2B3C4D5E" maxlength="12">
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="generateQR()">
+                        🔍 Tạo QR & Kiểm tra
+                    </button>
+                    <button class="btn" onclick="generateRandomCode()" style="background: rgba(255, 255, 255, 0.1); color: white;">
+                        🎲 Mã Ngẫu Nhiên
+                    </button>
+                    <button class="btn" onclick="testRealCode()" style="background: rgba(52, 199, 89, 0.1); color: var(--success-color);">
+                        ✅ Mã Thật Mẫu
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Mã QR</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Đang kiểm tra mã...</p>
+                </div>
+                
+                <div id="qrcode"></div>
+                <div id="qrInfo" style="margin-top: 20px; text-align: center;">
+                    <p>URL kiểm tra:</p>
+                    <code id="qrUrl" style="display: block; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin: 10px 0; word-break: break-all;"></code>
+                    <button onclick="copyQRUrl()" style="background: var(--accent-color); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+                        📋 Copy URL
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <!-- Kết quả sẽ được hiển thị ở đây -->
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid var(--divider-color); color: rgba(255,255,255,0.6);">
+            <p>© 2024 LAZINET Technologies - Hệ thống ACS Chống hàng giả</p>
+            <p>Đang chạy trên: <span id="currentOrigin"></span></p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // CONFIGURATION - QUAN TRỌNG: Thay YOUR_SCRIPT_ID bằng ID thật
+        const CONFIG = {
+            // API endpoint - THAY ĐỔI CÁI NÀY
+            API_BASE: 'https://script.google.com/macros/s/AKfycbyi2J4JCO9ng70E7mddXeu3K8l4EtXBu_YR7azVRAR1k6aNhnWMe2tw2xvKPgpBPygtJA/exec',
+            
+            // Frontend URLs
+            FRONTEND_BASE: window.location.origin,
+            RESULT_PAGE: 'ResultPage.html', // Tên file result page của bạn
+            
+            // System
+            COMPANY_NAME: 'LAZINET',
+            VERSION: '1.0.0'
+        };
+
+        // Hiển thị origin hiện tại
+        document.getElementById('currentOrigin').textContent = window.location.origin;
+
+        // Tạo URL result page
+        function getResultPageUrl(code) {
+            return `${CONFIG.FRONTEND_BASE}/${CONFIG.RESULT_PAGE}?acs-code=${encodeURIComponent(code)}`;
+        }
+
+        // Tạo QR code
+        function generateQR() {
+            const code = document.getElementById('acsCode').value.trim().toUpperCase();
+            
+            if (!code) {
+                alert('Vui lòng nhập mã ACS');
+                return;
+            }
+
+            if (!code.startsWith('ACS') || code.length !== 12) {
+                alert('Mã ACS phải bắt đầu bằng "ACS" và có 12 ký tự');
+                return;
+            }
+
+            // Clear previous QR
+            document.getElementById('qrcode').innerHTML = '';
+
+            // Tạo URL cho result page
+            const resultUrl = getResultPageUrl(code);
+            document.getElementById('qrUrl').textContent = resultUrl;
+
+            // Generate QR Code
+            new QRCode(document.getElementById('qrcode'), {
+                text: resultUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Check code via API
+            checkCode(code);
+        }
+
+        // Tạo mã ngẫu nhiên
+        function generateRandomCode() {
+            const prefix = 'ACS';
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let code = prefix;
+            
+            for (let i = 0; i < 9; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // Add checksum
+            const mainCode = code.substring(3);
+            const checksum = calculateChecksum(mainCode);
+            code = prefix + mainCode + checksum;
+            
+            document.getElementById('acsCode').value = code;
+            generateQR();
+        }
+
+        // Test với mã mẫu
+        function testRealCode() {
+            const sampleCodes = [
+                'ACS1A2B3C4D5E',
+                'ACS9Z8Y7X6W5V',
+                'ACS3F7G2H8J4K',
+                'ACS7M2N9P4Q6R',
+                'ACS5S8T2U1V3W'
+            ];
+            const randomCode = sampleCodes[Math.floor(Math.random() * sampleCodes.length)];
+            document.getElementById('acsCode').value = randomCode;
+            generateQR();
+        }
+
+        // Kiểm tra mã qua API
+        async function checkCode(code) {
+            showLoading(true);
+            
+            const apiUrl = `${CONFIG.API_BASE}?path=check&acs-code=${encodeURIComponent(code)}&origin=${encodeURIComponent(window.location.origin)}`;
+            
+            try {
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const result = await response.json();
+                showLoading(false);
+                displayResult(result, code);
+                
+            } catch (error) {
+                console.error('API Error:', error);
+                showLoading(false);
+                
+                // Fallback result khi API lỗi
+                displayResult({
+                    success: false,
+                    message: 'Không thể kết nối đến server API. Vui lòng kiểm tra kết nối.'
+                }, code);
+            }
+        }
+
+        // Hiển thị kết quả
+        function displayResult(result, code) {
+            const resultSection = document.getElementById('resultSection');
+            resultSection.classList.add('show');
+            
+            if (result.success) {
+                const data = result.data;
+                resultSection.innerHTML = `
+                    <div style="background: rgba(52, 199, 89, 0.1); border: 2px solid var(--success-color); border-radius: 12px; padding: 24px;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                            <div style="font-size: 2rem;">✅</div>
+                            <div>
+                                <h3 style="margin: 0; color: var(--success-color);">SẢN PHẨM CHÍNH HÃNG</h3>
+                                <p style="margin: 5px 0 0 0; opacity: 0.9;">${data.verification.message || 'Đã xác thực thành công'}</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px;">
+                            <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px;">
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Sản phẩm</div>
+                                <div style="font-weight: 600;">${escapeHtml(data.product.title)}</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px;">
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Mã sản phẩm</div>
+                                <div style="font-weight: 600;">${escapeHtml(data.product.code)}</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px;">
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Số lần quét</div>
+                                <div style="font-weight: 600;">${data.verification.scanCount} lần</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px;">
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Trạng thái</div>
+                                <div style="font-weight: 600; color: var(--success-color);">${data.verification.status}</div>
+                            </div>
+                        </div>
+                        
+                        ${data.product.url && data.product.url !== 'N/A' ? `
+                        <div style="text-align: center; margin-top: 24px;">
+                            <a href="${escapeHtml(data.product.url)}" target="_blank" 
+                               style="background: var(--accent-color); color: white; padding: 12px 24px; 
+                                      border-radius: 8px; text-decoration: none; display: inline-block;">
+                                🔗 Xem chi tiết sản phẩm
+                            </a>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else {
+                resultSection.innerHTML = `
+                    <div style="background: rgba(230, 87, 87, 0.1); border: 2px solid var(--error-color); border-radius: 12px; padding: 24px;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                            <div style="font-size: 2rem;">⚠️</div>
+                            <div>
+                                <h3 style="margin: 0; color: var(--error-color);">CẢNH BÁO</h3>
+                                <p style="margin: 5px 0 0 0;">${escapeHtml(result.message)}</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(230, 87, 87, 0.05); padding: 16px; border-radius: 8px; margin-top: 16px;">
+                            <p style="margin: 0 0 10px 0; font-weight: 600;">Khuyến cáo:</p>
+                            <ul style="margin: 0; padding-left: 20px;">
+                                <li>Không mua sản phẩm này</li>
+                                <li>Liên hệ nhà sản xuất để xác minh</li>
+                                <li>Báo cáo nghi ngờ hàng giả</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Scroll to result
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Utility functions
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('show', show);
+        }
+
+        function calculateChecksum(code) {
+            let sum = 0;
+            for (let i = 0; i < code.length; i++) {
+                const charValue = parseInt(code[i], 36) || 0;
+                sum = (sum + charValue * (i + 1)) % 36;
+            }
+            return sum.toString(36).toUpperCase();
+        }
+
+        function copyQRUrl() {
+            const url = document.getElementById('qrUrl').textContent;
+            navigator.clipboard.writeText(url)
+                .then(() => alert('Đã sao chép URL vào clipboard!'))
+                .catch(err => console.error('Copy failed:', err));
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize với mã ngẫu nhiên
+        window.addEventListener('DOMContentLoaded', () => {
+            generateRandomCode();
+            
+            // Test API connection
+            testAPIConnection();
+        });
+
+        // Test API connection
+        async function testAPIConnection() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}?path=config&origin=${encodeURIComponent(window.location.origin)}`);
+                if (response.ok) {
+                    console.log('API connection OK');
+                }
+            } catch (error) {
+                console.warn('API connection failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>

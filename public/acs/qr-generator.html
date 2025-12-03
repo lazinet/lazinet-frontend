@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Generator - LAZINET ACS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        /* Giữ nguyên CSS như trước */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --orange-light: #FFbbbb;
+            --blue-main: blue;
+            --blue-light: #ccccff;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --black-color: #000000;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --success-color: #34c759;
+            --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--default-font);
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--bg-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .acs-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--secondary-color);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--divider-color);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .acs-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--orange-main), var(--accent-color));
+        }
+
+        /* Giữ nguyên toàn bộ CSS như trước... */
+        
+    </style>
+</head>
+<body>
+    <div class="acs-container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">LAZINET ACS</div>
+            </div>
+            <h1 class="title">QR Generator & Tester</h1>
+            <p class="subtitle">Tạo mã QR và kiểm tra mã chống hàng giả LAZINET</p>
+        </div>
+
+        <div class="main-content">
+            <div class="section">
+                <h2 class="section-title">Nhập Mã ACS</h2>
+                
+                <div class="input-group">
+                    <label for="acsCode">Mã ACS (14 ký tự, bắt đầu bằng "ACS"):</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="acsCode" placeholder="VD: ACS123ABC456D" maxlength="14">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="generateQR()">
+                        <span>🔍</span> Tạo QR & Kiểm tra
+                    </button>
+                    <button class="btn btn-secondary" onclick="generateRandomCode()">
+                        <span>🎲</span> Mã Ngẫu Nhiên
+                    </button>
+                    <button class="btn btn-success" onclick="testRealCode()">
+                        <span>✅</span> Mã Thật Mẫu
+                    </button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Mã QR</h2>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Đang kiểm tra mã...</p>
+                </div>
+
+                <div class="qr-display">
+                    <div id="qrcode"></div>
+                    <div class="qr-info">
+                        <p>Quét mã QR để xác thực sản phẩm:</p>
+                        <div class="qr-url" id="qrUrl"></div>
+                        <button class="copy-btn" onclick="copyQRUrl()">📋 Copy URL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-header">
+                <div class="result-icon" id="resultIcon">✅</div>
+                <h2 class="result-title" id="resultTitle">KẾT QUẢ KIỂM TRA</h2>
+            </div>
+            
+            <div id="resultContent">
+                <!-- Nội dung kết quả sẽ được thêm động -->
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 LAZINET Technologies - Hệ thống ACS Chống hàng giả</p>
+            <p>API: <span id="apiStatus">Đang kiểm tra...</span></p>
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">
+                <button onclick="showAPIDetails()" style="background: none; border: 1px solid var(--divider-color); 
+                       color: var(--text-color); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+                    🔧 Xem chi tiết API
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        // THAY ĐỔI: Script ID của bạn
+        const SCRIPT_ID = 'AKfycbxoN6piDpJSvjFVNGO_TSD3AS3Wfqk1YhjTyvnWVfE-fGfjWL5M1rfJ9oQ8JZensg02qg';
+        
+        const CONFIG = {
+            // Dùng /exec cho web app (không dùng /dev)
+            API_BASE: `https://script.google.com/macros/s/AKfycbwr9ZQaRhsV3SkSrKwUxfsczf436s9i8nc5Ao2WS_RVUWXzP0U7lLz7S9RxxRE-TiVDLg/exec`,
+            FRONTEND_URL: window.location.origin + window.location.pathname.replace('qr-generator.html', ''),
+            COMPANY_NAME: 'LAZINET'
+        };
+
+        // DOM Elements
+        const acsCodeInput = document.getElementById('acsCode');
+        const loading = document.getElementById('loading');
+        const resultSection = document.getElementById('resultSection');
+        const resultContent = document.getElementById('resultContent');
+        const resultIcon = document.getElementById('resultIcon');
+        const resultTitle = document.getElementById('resultTitle');
+        const qrUrlElement = document.getElementById('qrUrl');
+        const apiStatusElement = document.getElementById('apiStatus');
+
+        // ==================== CORS FIXED FUNCTIONS ====================
+
+        // Solution 1: Sử dụng JSONP (works around CORS)
+        function checkCodeJSONP(code) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+                const script = document.createElement('script');
+                
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(data);
+                };
+                
+                script.src = `${CONFIG.API_BASE}/verify?code=${encodeURIComponent(code)}&callback=${callbackName}`;
+                script.onerror = reject;
+                
+                document.body.appendChild(script);
+            });
+        }
+
+        // Solution 2: Sử dụng proxy CORS
+        async function checkCodeWithProxy(code) {
+            // Sử dụng CORS proxy nếu cần
+            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+            const targetUrl = `${CONFIG.API_BASE}/verify?code=${encodeURIComponent(code)}`;
+            
+            try {
+                const response = await fetch(proxyUrl + targetUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                // Fallback: try direct with no-cors
+                return checkCodeDirect(code);
+            }
+        }
+
+        // Solution 3: Thử trực tiếp với mode 'no-cors' (chỉ cho simple requests)
+        async function checkCodeDirect(code) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/verify?code=${encodeURIComponent(code)}`, {
+                    method: 'GET',
+                    mode: 'no-cors', // Chỉ cho simple requests
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                // Với no-cors, response sẽ bị opaque, không đọc được
+                // Chỉ dùng để kiểm tra kết nối
+                return {
+                    success: false,
+                    message: 'API connected but CORS blocked. Please use deployed version.'
+                };
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        // Solution 4: Sử dụng Google Apps Script URL đúng cách
+        async function checkCodeFixed(code) {
+            showLoading(true);
+            
+            // Thử nhiều phương pháp
+            const methods = [
+                checkCodeJSONP,
+                checkCodeWithProxy,
+                checkCodeDirect
+            ];
+            
+            for (const method of methods) {
+                try {
+                    console.log(`Trying method: ${method.name}`);
+                    const result = await method(code);
+                    showLoading(false);
+                    return result;
+                } catch (error) {
+                    console.warn(`Method ${method.name} failed:`, error);
+                    continue;
+                }
+            }
+            
+            throw new Error('All API methods failed');
+        }
+
+        // Test API connection
+        async function testAPIConnection() {
+            try {
+                // Thử lấy config
+                const response = await fetch(`${CONFIG.API_BASE}/config`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                // Kiểm tra nếu request thành công (ngay cả khi opaque)
+                if (response.type === 'opaque' || response.ok) {
+                    apiStatusElement.textContent = '✅ API có thể truy cập';
+                    apiStatusElement.style.color = 'var(--success-color)';
+                    return true;
+                }
+            } catch (error) {
+                // Thử phương pháp khác
+                try {
+                    const script = document.createElement('script');
+                    script.src = `${CONFIG.API_BASE}/config?callback=testAPICallback`;
+                    document.body.appendChild(script);
+                    
+                    window.testAPICallback = function(data) {
+                        apiStatusElement.textContent = `✅ API hoạt động (v${data.data.system.version})`;
+                        apiStatusElement.style.color = 'var(--success-color)';
+                        delete window.testAPICallback;
+                    };
+                    
+                    setTimeout(() => {
+                        if (apiStatusElement.textContent.includes('Đang kiểm tra')) {
+                            apiStatusElement.textContent = '⚠️ API có thể cần authorization';
+                            apiStatusElement.style.color = 'var(--orange-main)';
+                        }
+                    }, 3000);
+                    
+                } catch (jsonpError) {
+                    apiStatusElement.textContent = '❌ Lỗi kết nối API';
+                    apiStatusElement.style.color = 'var(--error-color)';
+                }
+            }
+            
+            return false;
+        }
+
+        // ==================== MAIN FUNCTIONS ====================
+
+        // Generate QR Code
+        function generateQR() {
+            const code = acsCodeInput.value.trim().toUpperCase();
+            
+            if (!code) {
+                alert('Vui lòng nhập mã ACS');
+                return;
+            }
+
+            // Validate format
+            if (!code.startsWith('ACS') || code.length !== 14) {
+                alert('Mã ACS phải bắt đầu bằng "ACS" và có 14 ký tự');
+                return;
+            }
+
+            // Clear previous QR
+            document.getElementById('qrcode').innerHTML = '';
+
+            // Create QR URL (trỏ đến checker.html)
+            const qrUrl = CONFIG.FRONTEND_URL + 'checker.html?code=' + encodeURIComponent(code);
+            qrUrlElement.textContent = qrUrl;
+
+            // Generate QR Code
+            new QRCode(document.getElementById('qrcode'), {
+                text: qrUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Check code
+            checkCode(code);
+        }
+
+        // Check ACS code via API
+        async function checkCode(code) {
+            showLoading(true);
+            resultSection.classList.remove('show');
+            
+            try {
+                // Thử phương pháp fixed
+                const result = await checkCodeFixed(code);
+                showLoading(false);
+                displayResult(result);
+                
+            } catch (error) {
+                console.error('API Error:', error);
+                showLoading(false);
+                
+                // Fallback: Show demo result
+                displayDemoResult(code);
+            }
+        }
+
+        // Display demo result khi API lỗi
+        function displayDemoResult(code) {
+            resultSection.classList.add('show');
+            
+            // Tạo kết quả demo
+            const isEven = code.charCodeAt(3) % 2 === 0;
+            
+            if (isEven) {
+                resultIcon.textContent = '✅';
+                resultIcon.className = 'result-icon valid';
+                resultTitle.textContent = 'SẢN PHẨM CHÍNH HÃNG (DEMO)';
+                resultTitle.className = 'result-title valid';
+                
+                resultContent.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="background: rgba(52, 199, 89, 0.1); padding: 20px; border-radius: 12px; 
+                             border: 1px solid var(--success-color); margin-bottom: 20px;">
+                            <p><strong>⚠️ KẾT QUẢ DEMO (API đang bảo trì)</strong></p>
+                            <p>Mã: ${escapeHtml(code)}</p>
+                            <p>Trạng thái: Hợp lệ</p>
+                            <p>Số lần quét: 3</p>
+                        </div>
+                        <p style="opacity: 0.7; font-size: 0.9rem;">
+                            API đang được cấu hình. Kết quả thật sẽ hiển thị khi API hoạt động.
+                        </p>
+                    </div>
+                `;
+            } else {
+                resultIcon.textContent = '⚠️';
+                resultIcon.className = 'result-icon invalid';
+                resultTitle.textContent = 'CẢNH BÁO (DEMO)';
+                resultTitle.className = 'result-title invalid';
+                
+                resultContent.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="background: rgba(230, 87, 87, 0.1); padding: 20px; border-radius: 12px; 
+                             border: 1px solid var(--error-color); margin-bottom: 20px;">
+                            <p><strong>⚠️ KẾT QUẢ DEMO (API đang bảo trì)</strong></p>
+                            <p>Mã: ${escapeHtml(code)}</p>
+                            <p>Trạng thái: Không hợp lệ</p>
+                            <p>Lý do: Mã demo kiểm tra</p>
+                        </div>
+                        <p style="opacity: 0.7; font-size: 0.9rem;">
+                            API đang được cấu hình. Kết quả thật sẽ hiển thị khi API hoạt động.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display result
+        function displayResult(result) {
+            resultSection.classList.add('show');
+            
+            if (result.success) {
+                resultIcon.textContent = '✅';
+                resultIcon.className = 'result-icon valid';
+                resultTitle.textContent = 'SẢN PHẨM CHÍNH HÃNG';
+                resultTitle.className = 'result-title valid';
+                
+                const data = result.data;
+                
+                resultContent.innerHTML = `
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">Mã sản phẩm</div>
+                            <div class="result-value">${escapeHtml(data.product.productCode)}</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Tên sản phẩm</div>
+                            <div class="result-value">${escapeHtml(data.product.title)}</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Xác thực</div>
+                            <div class="result-value" style="color: var(--success-color);">
+                                ${escapeHtml(data.verification.message)}
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Số lần quét</div>
+                            <div class="result-value">${data.verification.scanCount} lần</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Quét còn lại</div>
+                            <div class="result-value">${data.verification.remainingScans} lần</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Quét gần nhất</div>
+                            <div class="result-value">${formatDate(data.verification.lastScan)}</div>
+                        </div>
+                    </div>
+                    
+                    ${data.product.url ? `
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a href="${escapeHtml(data.product.url)}" target="_blank" 
+                           style="background: var(--accent-color); color: white; padding: 14px 28px; 
+                                  border-radius: 12px; text-decoration: none; display: inline-flex;
+                                  align-items: center; gap: 10px; font-weight: 600;">
+                            🔗 Xem chi tiết sản phẩm
+                        </a>
+                    </div>
+                    ` : ''}
+                `;
+            } else {
+                resultIcon.textContent = '⚠️';
+                resultIcon.className = 'result-icon invalid';
+                resultTitle.textContent = 'CẢNH BÁO';
+                resultTitle.className = 'result-title invalid';
+                
+                resultContent.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <div style="font-size: 1.2rem; margin-bottom: 20px; color: var(--error-color);">
+                            ${escapeHtml(result.message)}
+                        </div>
+                        <div style="background: rgba(230, 87, 87, 0.1); padding: 20px; border-radius: 12px; 
+                             border: 1px solid var(--error-color); text-align: left;">
+                            <p style="font-weight: 600; margin-bottom: 10px;">Khuyến cáo:</p>
+                            <ul style="margin: 10px 0 0 20px;">
+                                <li>Không mua sản phẩm này</li>
+                                <li>Liên hệ nhà sản xuất để xác minh</li>
+                                <li>Báo cáo nghi ngờ hàng giả</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Scroll to result
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+
+        function generateRandomCode() {
+            const prefix = 'ACS';
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let code = prefix;
+            
+            for (let i = 0; i < 10; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // Add checksum
+            const mainCode = code.substring(3);
+            const checksum = calculateChecksum(mainCode);
+            code = prefix + mainCode + checksum;
+            
+            acsCodeInput.value = code;
+            generateQR();
+        }
+
+        function testRealCode() {
+            const sampleCodes = [
+                'ACS1A2B3C4D5E',
+                'ACS9Z8Y7X6W5V',
+                'ACS3F7G2H8J4K'
+            ];
+            const randomCode = sampleCodes[Math.floor(Math.random() * sampleCodes.length)];
+            acsCodeInput.value = randomCode;
+            generateQR();
+        }
+
+        function calculateChecksum(code) {
+            let sum = 0;
+            for (let i = 0; i < code.length; i++) {
+                const charValue = parseInt(code[i], 36) || 0;
+                sum = (sum + charValue * (i + 1)) % 36;
+            }
+            return sum.toString(36).toUpperCase();
+        }
+
+        function showLoading(show) {
+            loading.classList.toggle('show', show);
+        }
+
+        function copyQRUrl() {
+            const url = qrUrlElement.textContent;
+            navigator.clipboard.writeText(url)
+                .then(() => alert('✅ Đã sao chép URL vào clipboard!'))
+                .catch(err => console.error('Copy failed:', err));
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Chưa quét';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return 'Chưa quét';
+            }
+        }
+
+        function showAPIDetails() {
+            const details = `
+API Configuration Details:
+--------------------------
+Script ID: ${SCRIPT_ID}
+API Base URL: ${CONFIG.API_BASE}
+Frontend URL: ${CONFIG.FRONTEND_URL}
+
+Endpoints:
+• ${CONFIG.API_BASE}/verify?code=ACS123ABC456D
+• ${CONFIG.API_BASE}/config
+• ${CONFIG.API_BASE}/stats
+
+CORS Solutions:
+1. JSONP: Add ?callback=functionName
+2. Proxy: Use CORS proxy
+3. Deploy properly: Ensure web app is deployed with "Anyone" access
+
+Troubleshooting:
+1. Deploy as Web App (Execute as: Me, Access: Anyone)
+2. Wait 5-10 minutes after deployment
+3. Clear browser cache
+4. Try different browser
+            `;
+            
+            alert(details);
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            testAPIConnection();
+            generateRandomCode();
+            
+            // Auto-focus input
+            acsCodeInput.focus();
+        });
+    </script>
+</body>
+</html>
