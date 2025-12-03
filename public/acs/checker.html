@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACS Checker - LAZINET</title>
     <style>
-        /* Biến màu Netzone template */
+        /* Giữ nguyên CSS từ document gốc */
         :root {
             --primary-color: #FFFFFF;
             --secondary-color: #FFFFFF0A;
@@ -499,14 +499,12 @@
     </div>
 
     <script>
-        // CONFIG - THAY ĐỔI API_URL THÀNH URL CỦA BẠN
         const CONFIG = {
-            API_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec/verify',
+            API_URL: 'https://script.google.com/macros/s/AKfycbzUlOdXhMxasfDjKxpBQNjNOOYiAhPrqFImDSmCGJj60YFFFEkDqzguraI4mcacKoo/exec/verify',  // CẬP NHẬT URL MỚI SAU DEPLOY
             FRONTEND_URL: window.location.origin + window.location.pathname.replace('checker.html', ''),
             COMPANY_NAME: 'LAZINET'
         };
 
-        // DOM Elements
         const acsCodeInput = document.getElementById('acsCode');
         const checkBtn = document.getElementById('checkBtn');
         const scanBtn = document.getElementById('scanBtn');
@@ -515,20 +513,18 @@
         const resultContent = document.getElementById('resultContent');
         const apiStatusText = document.getElementById('apiStatusText');
 
-        // Get code from URL parameters
         function getCodeFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('code') || '';
         }
 
-        // Test API connection
         async function testAPIConnection() {
             try {
+                // FIXED: Remove Content-Type for GET to avoid preflight
                 const response = await fetch(CONFIG.API_URL.replace('/verify', '/config'), {
                     method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Accept': 'application/json' },  // Only Accept
+                    mode: 'cors'
                 });
                 
                 if (response.ok) {
@@ -545,11 +541,9 @@
             }
         }
 
-        // Check code via API
         async function checkCode() {
             let code = acsCodeInput.value.trim().toUpperCase();
             
-            // If input is empty, check URL parameter
             if (!code) {
                 code = getCodeFromURL();
                 if (code) {
@@ -561,7 +555,6 @@
                 }
             }
             
-            // Validate format
             if (!code.startsWith('ACS') || code.length !== 14) {
                 alert('Mã ACS phải bắt đầu bằng "ACS" và có 14 ký tự');
                 acsCodeInput.focus();
@@ -569,21 +562,18 @@
                 return;
             }
             
-            // Show loading
             showLoading(true);
             resultSection.classList.remove('show');
             
-            // Disable buttons during checking
             checkBtn.disabled = true;
             scanBtn.disabled = true;
             
             try {
-                // Call API with CORS headers
+                // FIXED: Remove Content-Type for GET
                 const response = await fetch(CONFIG.API_URL + '?code=' + encodeURIComponent(code), {
                     method: 'GET',
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Accept': 'application/json'
                     },
                     mode: 'cors'
                 });
@@ -600,19 +590,16 @@
                 console.error('API Error:', error);
                 showLoading(false);
                 
-                // Show error result
                 displayResult({
                     success: false,
                     message: `Không thể kết nối đến hệ thống xác thực: ${error.message}`
                 });
             } finally {
-                // Re-enable buttons
                 checkBtn.disabled = false;
                 scanBtn.disabled = false;
             }
         }
 
-        // Display result
         function displayResult(result) {
             resultSection.classList.add('show');
             
@@ -650,7 +637,7 @@
                                 </div>
                                 <div class="info-item">
                                     <div class="info-label">Lô sản xuất</div>
-                                    <div class="info-value">${escapeHtml(data.product.batch || 'N/A')}</div>
+                                    <div class="info-value">${escapeHtml(data.product.batch)}</div>
                                 </div>
                                 <div class="info-item">
                                     <div class="info-label">Nhà sản xuất</div>
@@ -728,7 +715,7 @@
                             
                             <div style="background: rgba(230, 87, 87, 0.1); border: 1px solid var(--error-color); 
                                  border-radius: 12px; padding: 25px; margin: 25px 0;">
-                                                                <h3 style="color: var(--error-color); margin-bottom: 15px;">⚠️ KHUYẾN CÁO BẢO MẬT</h3>
+                                <h3 style="color: var(--error-color); margin-bottom: 15px;">⚠️ KHUYẾN CÁO BẢO MẬT</h3>
                                 <ul style="list-style: none; padding: 0;">
                                     <li style="margin-bottom: 12px; padding-left: 24px; position: relative;">
                                         <span style="position: absolute; left: 0;">•</span>
@@ -773,21 +760,17 @@
                 `;
             }
             
-            // Scroll to result
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // Start camera scan (simplified version)
         function startCameraScan() {
             alert('Tính năng quét QR sẽ sử dụng API MediaDevices.getUserMedia().\n\n' +
                   'Trên thực tế, bạn có thể tích hợp thư viện như html5-qrcode.\n\n' +
                   'Hiện tại, vui lòng nhập mã thủ công hoặc sử dụng QR Generator.');
             
-            // For demo, generate a random code
             generateRandomCode();
         }
 
-        // Generate random ACS code for testing
         function generateRandomCode() {
             const prefix = 'ACS';
             const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -797,7 +780,6 @@
                 code += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             
-            // Add checksum
             const mainCode = code.substring(3);
             const checksum = calculateChecksum(mainCode);
             code = prefix + mainCode + checksum;
@@ -807,7 +789,6 @@
             acsCodeInput.select();
         }
 
-        // Calculate checksum (for random code generation)
         function calculateChecksum(code) {
             let sum = 0;
             for (let i = 0; i < code.length; i++) {
@@ -817,7 +798,6 @@
             return sum.toString(36).toUpperCase();
         }
 
-        // Share result
         function shareResult(code) {
             if (navigator.share) {
                 navigator.share({
@@ -828,14 +808,12 @@
                     console.log('Share cancelled:', err);
                 });
             } else {
-                // Fallback: Copy to clipboard
                 navigator.clipboard.writeText(window.location.href)
                     .then(() => alert('✅ Đã sao chép link vào clipboard!'))
                     .catch(err => console.error('Copy failed:', err));
             }
         }
 
-        // Report counterfeit
         function reportCounterfeit(code) {
             const email = 'report@lazinet.com';
             const subject = `Báo cáo hàng giả - Mã: ${code}`;
@@ -844,7 +822,6 @@
             window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
 
-        // Utility functions
         function showLoading(show) {
             loading.classList.toggle('show', show);
         }
@@ -872,34 +849,27 @@
             }
         }
 
-        // Keyboard shortcut: Enter to check code
         acsCodeInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 checkCode();
             }
         });
 
-        // Initialize
         window.addEventListener('DOMContentLoaded', function() {
-            // Test API connection
             testAPIConnection();
             
-            // Check if code in URL
             const urlCode = getCodeFromURL();
             if (urlCode) {
                 acsCodeInput.value = urlCode;
-                // Auto-check after 500ms
                 setTimeout(() => {
                     if (acsCodeInput.value === urlCode) {
                         checkCode();
                     }
                 }, 500);
             } else {
-                // Focus input
                 acsCodeInput.focus();
             }
             
-            // Add auto-uppercase and format
             acsCodeInput.addEventListener('input', function(e) {
                 let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
                 if (value.startsWith('ACS')) {
