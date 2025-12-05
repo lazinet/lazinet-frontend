@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure QR Code Checker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
+        input, button { width: 100%; margin: 10px 0; padding: 10px; }
+        #qrcode { margin: 20px 0; text-align: center; }
+        #result { font-size: 18px; font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h2>Nhập mã an toàn để tạo QR và kiểm tra</h2>
+    <input type="text" id="code" placeholder="Nhập mã (10-50 ký tự alphanumeric)" maxlength="50" />
+    <button onclick="generateQR()">Tạo QR Code</button>
+    <div id="qrcode"></div>
+    <button onclick="submitCode()">Submit để kiểm tra</button>
+    <div id="result"></div>
+
+    <script>
+        let publicIp = ''; // Để rate limiting
+
+        // Lấy IP public khi load trang
+        async function getPublicIp() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                publicIp = data.ip;
+            } catch (e) {
+                console.log('Cannot get IP, using unknown');
+                publicIp = 'unknown';
+            }
+        }
+        getPublicIp(); // Gọi ngay
+
+        function generateQR() {
+            var code = document.getElementById('code').value;
+            if (!code || code.length < 10) {
+                alert('Mã phải >=10 ký tự!');
+                return;
+            }
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById('qrcode'), {
+                text: code,
+                width: 200,
+                height: 200
+            });
+        }
+
+        async function submitCode() {
+            var code = document.getElementById('code').value;
+            if (!code || code.length < 10 || !/^[a-zA-Z0-9]+$/.test(code)) {
+                alert('Mã không hợp lệ: Chỉ alphanumeric, 10-50 ký tự!');
+                return;
+            }
+            
+            // URL GAS + query params
+            const url = 'https://script.google.com/macros/s/AKfycbyaiq8bLYdk_zrsbBI__KGLXJ9lpZf_ow-3BWnjWwq8VYPsloVveLl7_EG5r0innrCE/exec?code=' + encodeURIComponent(code) + '&ip=' + encodeURIComponent(publicIp);
+            
+            try {
+                const response = await fetch(url, { method: 'GET' }); // GET đơn giản, no CORS issue
+                
+                if (!response.ok) {
+                    throw new Error('Network error');
+                }
+                
+                const data = await response.json();
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '';
+                
+                if (data.error) {
+                    resultDiv.innerHTML = '<span class="error">Lỗi: ' + data.error + '</span>';
+                } else {
+                    resultDiv.innerHTML = data.valid ? '<span class="success">True</span>' : '<span class="error">False</span>';
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<span class="error">Lỗi kết nối: ' + error.message + '</span>';
+            }
+        }
+    </script>
+</body>
+</html>

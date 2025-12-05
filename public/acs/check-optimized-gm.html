@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator & Scanner Tích Hợp</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load QRCode.js library for Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Load jsQR library for Scanning/Decoding -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.1.0/dist/jsQR.min.js"></script>
+    
+    <style>
+        /* Thiết lập font Inter mặc định và giao diện nền */
+        body { font-family: 'Inter', sans-serif; }
+        .container-layout {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            padding: 1.5rem 1rem;
+        }
+        /* Đảm bảo khung QR không bị tràn */
+        #qrcode img {
+            margin: 0 auto;
+        }
+        /* Ẩn input file mặc định */
+        #qrFileInput {
+            display: none;
+        }
+        /* Custom style cho nút Tải ảnh/Chụp hình */
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            @apply w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out;
+        }
+    </style>
+</head>
+<body class="container-layout flex justify-center items-start lg:items-center">
+
+    <div id="appContainer" class="w-full max-w-5xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-100 transition-all duration-300">
+        
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2 text-center">
+            Công Cụ Quét, Tạo & Kiểm Tra Mã QR
+        </h1>
+        <p class="text-sm text-center text-gray-500 mb-8">
+            Tích hợp tạo mã tức thì, kiểm tra backend và quét/tải ảnh QR.
+        </p>
+
+        <!-- Bố cục 2 cột (hoặc xếp chồng trên mobile) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Cột 1: Tạo Mã & Kiểm Tra Backend -->
+            <div class="space-y-6 p-4 border border-gray-200 rounded-lg bg-white shadow-md">
+                <h2 class="text-xl font-semibold text-blue-600 mb-4 border-b pb-2">1. Tạo Mã QR & Kiểm Tra</h2>
+                
+                <!-- Form nhập liệu -->
+                <div class="space-y-4">
+                    <label for="code" class="block text-sm font-medium text-gray-700">Chuỗi Mã (Text to QR)</label>
+                    <input 
+                        type="text" 
+                        id="code" 
+                        placeholder="Nhập mã ở đây (ví dụ: LAZINET-1234)" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                        maxlength="50"
+                        oninput="generateQR()"
+                    >
+                </div>
+
+                <!-- Khu vực hiển thị QR Code -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 text-center">
+                    <h3 class="text-lg font-medium text-gray-700 mb-4">Mã QR Code</h3>
+                    <div id="qrcode" class="flex justify-center items-center p-2">
+                        <!-- QR Code sẽ được render tại đây -->
+                        <p id="qrPlaceholder" class="text-gray-400 italic">Mã QR sẽ xuất hiện khi bạn nhập chuỗi.</p>
+                    </div>
+                    <p id="qrCodeValue" class="text-xs mt-2 text-gray-500 break-all h-4"></p>
+                </div>
+
+                <!-- Nút Submit và Loading -->
+                <button 
+                    id="submitBtn"
+                    onclick="submitCode()"
+                    class="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out disabled:bg-blue-400"
+                    disabled
+                >
+                    <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span id="buttonText">Kiểm Tra Mã Hợp Lệ (Backend)</span>
+                </button>
+
+                <!-- Khu vực hiển thị kết quả Backend -->
+                <div id="resultBox" class="hidden p-4 text-center rounded-lg transition duration-300 ease-in-out">
+                    <p id="resultElement" class="text-lg font-bold"></p>
+                    <p id="resultDetail" class="text-sm mt-1"></p>
+                </div>
+            </div>
+
+            <!-- Cột 2: Quét Mã QR (Scanner) -->
+            <div class="space-y-6 p-4 border border-gray-200 rounded-lg bg-white shadow-md">
+                <h2 class="text-xl font-semibold text-blue-600 mb-4 border-b pb-2">2. Quét & Tải Ảnh QR</h2>
+
+                <!-- Nút Tải ảnh/Chụp hình -->
+                <input type="file" id="qrFileInput" accept="image/*" capture="camera" onchange="decodeQR(event)">
+                <label for="qrFileInput" class="file-input-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                    </svg>
+                    Tải Ảnh QR Code / Chụp Hình
+                </label>
+
+                <!-- Khu vực hiển thị ảnh được tải lên (hoặc không gian trực quan) -->
+                <div id="scannerArea" class="relative w-full h-64 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg flex justify-center items-center text-center overflow-hidden">
+                    <img id="scannedImagePreview" class="max-w-full max-h-full object-contain hidden" alt="Preview ảnh QR">
+                    <canvas id="qrCanvas" class="hidden w-full h-full"></canvas>
+                    <p id="scannerPlaceholder" class="text-gray-400 italic p-4">
+                        Tải lên ảnh (PNG/JPG) chứa QR Code để giải mã chuỗi mã.
+                    </p>
+                </div>
+
+                <!-- Kết quả quét -->
+                <div id="scanResultBox" class="hidden p-4 text-center rounded-lg border border-gray-300 bg-gray-50">
+                    <p class="text-sm font-medium text-gray-700">Chuỗi mã được quét:</p>
+                    <p id="scanResultText" class="text-base font-bold text-green-600 break-all mt-1"></p>
+                    <button onclick="applyScannedCode()" id="applyBtn" class="mt-3 px-4 py-2 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 transition disabled:bg-green-300" disabled>
+                        Điền vào ô nhập liệu
+                    </button>
+                </div>
+                
+                <!-- Khu vực thông báo lỗi Scanner -->
+                <div id="scanErrorBox" class="hidden p-4 text-center rounded-lg border border-red-300 bg-red-100">
+                    <p id="scanErrorText" class="text-sm font-bold text-red-700"></p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Cấu hình chung và khởi tạo DOM
+        let qrcodeInstance = null;
+        const inputCode = document.getElementById('code');
+        const qrcodeDiv = document.getElementById('qrcode');
+        const qrPlaceholder = document.getElementById('qrPlaceholder');
+        const qrCodeValue = document.getElementById('qrCodeValue');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultBox = document.getElementById('resultBox');
+        const resultElement = document.getElementById('resultElement');
+        const resultDetail = document.getElementById('resultDetail');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const buttonText = document.getElementById('buttonText');
+        
+        // Cấu hình Scanner DOM
+        const qrFileInput = document.getElementById('qrFileInput');
+        const scannerArea = document.getElementById('scannerArea');
+        const scannedImagePreview = document.getElementById('scannedImagePreview');
+        const scannerPlaceholder = document.getElementById('scannerPlaceholder');
+        const qrCanvas = document.getElementById('qrCanvas');
+        const scanResultBox = document.getElementById('scanResultBox');
+        const scanResultText = document.getElementById('scanResultText');
+        const scanErrorBox = document.getElementById('scanErrorBox');
+        const scanErrorText = document.getElementById('scanErrorText');
+        const applyBtn = document.getElementById('applyBtn');
+
+
+        // URL backend TỐT từ test-acs.html
+        // Vui lòng thay YOUR_WEB_APP_URL bằng URL thực của bạn nếu thay đổi
+        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORVjdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
+
+        // --- CHỨC NĂNG TẠO VÀ KIỂM TRA QR ---
+
+        /**
+         * Tạo hoặc cập nhật QR Code ngay lập tức khi người dùng nhập.
+         */
+        function generateQR() {
+            const code = inputCode.value.trim();
+            qrCodeValue.textContent = code; // Hiển thị chuỗi mã dưới QR
+            resultBox.classList.add('hidden'); // Ẩn kết quả cũ
+
+            if (code.length > 0) {
+                // Ẩn placeholder và bật nút Submit
+                qrPlaceholder.classList.add('hidden');
+                submitBtn.disabled = false;
+                
+                // Xóa QR cũ nếu có
+                if (qrcodeInstance) {
+                    qrcodeDiv.innerHTML = '';
+                    qrcodeInstance = null;
+                }
+
+                // Tạo QR mới
+                try {
+                    qrcodeInstance = new QRCode(qrcodeDiv, {
+                        text: code,
+                        width: 200,
+                        height: 200,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                } catch (e) {
+                    console.error("Lỗi khi tạo QR Code:", e);
+                }
+
+            } else {
+                // Không có mã
+                submitBtn.disabled = true;
+                if (qrcodeInstance) {
+                    qrcodeDiv.innerHTML = ''; // Xóa QR
+                    qrcodeInstance = null;
+                }
+                qrPlaceholder.classList.remove('hidden'); // Hiện placeholder
+            }
+        }
+
+        /**
+         * Gửi mã đến Google Apps Script để kiểm tra.
+         */
+        async function submitCode() {
+            const code = inputCode.value.trim();
+            if (!code) {
+                displayMessage("⚠️ Vui lòng nhập mã để kiểm tra!", 'warning');
+                return;
+            }
+
+            toggleLoading(true);
+            resultBox.classList.add('hidden');
+
+            try {
+                // Phương thức fetch đã hoạt động tốt trong test-acs.html
+                const response = await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8', 
+                    },
+                    body: JSON.stringify({ code: code }) // Vẫn gửi dữ liệu JSON
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Lỗi mạng, trạng thái: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                handleResponse(data);
+
+            } catch (error) {
+                displayMessage(`⚠️ Lỗi kết nối hoặc xử lý: ${error.message}`, 'error');
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        /**
+         * Xử lý kết quả trả về từ Apps Script.
+         * @param {Object} data Dữ liệu JSON từ backend.
+         */
+        function handleResponse(data) {
+            if (data.error) {
+                displayMessage(`❌ Lỗi Backend: ${data.error}`, 'error');
+            } else if (data.valid) {
+                displayMessage('✅ MÃ HỢP LỆ!', 'success', `Mã "${data.code}" đã được xác nhận.`);
+            } else {
+                displayMessage('❌ MÃ KHÔNG HỢP LỆ!', 'invalid', `Mã "${data.code}" không được tìm thấy hoặc không hợp lệ.`);
+            }
+        }
+
+        /**
+         * Hiển thị thông báo kết quả kiểm tra Backend.
+         */
+        function displayMessage(title, type, detail = '') {
+            resultBox.classList.remove('hidden');
+            resultElement.textContent = title;
+            resultDetail.textContent = detail;
+            
+            let baseClasses = 'p-4 text-center rounded-lg transition duration-300 ease-in-out';
+            
+            switch (type) {
+                case 'success':
+                    resultElement.className = 'text-lg text-green-700 font-bold';
+                    resultBox.className = `${baseClasses} border border-green-300 bg-green-100`;
+                    break;
+                case 'error': // Lỗi hệ thống/kết nối
+                    resultElement.className = 'text-lg text-red-700 font-bold';
+                    resultBox.className = `${baseClasses} border border-red-300 bg-red-100`;
+                    break;
+                case 'invalid': // Mã không hợp lệ/không tìm thấy
+                    resultElement.className = 'text-lg text-red-600 font-bold';
+                    resultBox.className = `${baseClasses} border border-red-300 bg-red-100`;
+                    break;
+                case 'warning':
+                default:
+                    resultElement.className = 'text-lg text-yellow-700 font-bold';
+                    resultBox.className = `${baseClasses} border border-yellow-300 bg-yellow-100`;
+                    break;
+            }
+        }
+
+        /**
+         * Bật/Tắt trạng thái loading cho nút Submit.
+         */
+        function toggleLoading(isLoading) {
+            submitBtn.disabled = isLoading || !inputCode.value.trim();
+            if (isLoading) {
+                buttonText.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+            } else {
+                buttonText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+        
+        // --- CHỨC NĂNG QUÉT (SCANNER) ---
+
+        /**
+         * Xử lý sự kiện tải file ảnh/chụp hình.
+         */
+        function decodeQR(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Đặt lại trạng thái
+            scanErrorBox.classList.add('hidden');
+            scanResultBox.classList.add('hidden');
+            scannerPlaceholder.classList.add('hidden');
+            scannedImagePreview.classList.add('hidden');
+            qrCanvas.classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Hiển thị ảnh preview
+                    scannedImagePreview.src = e.target.result;
+                    scannedImagePreview.classList.remove('hidden');
+                    
+                    // Xử lý giải mã
+                    try {
+                        processImageForQR(img);
+                    } catch (err) {
+                        displayScanError("Lỗi xử lý ảnh: " + err.message);
+                    }
+                };
+                img.onerror = () => {
+                    displayScanError("Không thể tải ảnh. Vui lòng thử lại.");
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        /**
+         * Dùng Canvas và jsQR để giải mã chuỗi mã QR từ ảnh.
+         * @param {Image} img Đối tượng Image đã tải.
+         */
+        function processImageForQR(img) {
+            const context = qrCanvas.getContext('2d');
+            
+            // Thiết lập kích thước Canvas bằng kích thước ảnh để đảm bảo chất lượng quét
+            qrCanvas.width = img.naturalWidth;
+            qrCanvas.height = img.naturalHeight;
+            
+            context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
+            
+            const imageData = context.getImageData(0, 0, qrCanvas.width, qrCanvas.height);
+            
+            // Sử dụng jsQR để quét
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                displayScanResult(code.data);
+            } else {
+                displayScanError("Không tìm thấy QR Code hợp lệ trong ảnh.");
+            }
+        }
+
+        /**
+         * Hiển thị kết quả quét thành công.
+         * @param {string} text Chuỗi mã QR giải mã được.
+         */
+        function displayScanResult(text) {
+            scanResultBox.classList.remove('hidden');
+            scanResultText.textContent = text;
+            applyBtn.disabled = false;
+        }
+        
+        /**
+         * Hiển thị thông báo lỗi khi quét QR.
+         * @param {string} message Thông báo lỗi.
+         */
+        function displayScanError(message) {
+            scanErrorBox.classList.remove('hidden');
+            scanErrorText.textContent = message;
+            scannerPlaceholder.classList.remove('hidden');
+            scannedImagePreview.classList.add('hidden');
+            scanResultBox.classList.add('hidden');
+            applyBtn.disabled = true;
+        }
+
+        /**
+         * Điền chuỗi mã đã quét vào ô input chính.
+         */
+        function applyScannedCode() {
+            const code = scanResultText.textContent;
+            if (code) {
+                inputCode.value = code;
+                generateQR(); // Tạo QR Code mới ngay lập tức
+                // Cuộn lên để người dùng thấy kết quả
+                inputCode.focus(); 
+            }
+        }
+
+        // Khởi tạo ban đầu
+        window.onload = () => {
+             // Kích hoạt generateQR lần đầu để thiết lập trạng thái nút và placeholder
+            generateQR(); 
+        };
+
+    </script>
+</body>
+</html>
