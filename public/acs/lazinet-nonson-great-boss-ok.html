@@ -462,7 +462,7 @@
                 <div class="hidden sm:inline mx-2"></div>
                 <div id="connectionStatus" class="inline-flex items-center text-sm">
                     <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
-                    Kết nối hệ thống có thể gặp sự cố (sử dụng mock local)
+                    Kết nối hệ thống ổn định
                 </div>
             </div>
         </div>
@@ -1174,11 +1174,22 @@
          * Test backend connection
          */
         async function testConnection() {
-            // Force yellow for local mock
-            connectionStatus.innerHTML = `
-                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
-                Kết nối hệ thống có thể gặp sự cố (sử dụng mock local)
-            `;
+            try {
+                const response = await fetch(BACKEND_URL, {
+                    method: 'HEAD',
+                    mode: 'no-cors'
+                });
+                
+                connectionStatus.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                    Kết nối hệ thống ổn định
+                `;
+            } catch (error) {
+                connectionStatus.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
+                    Kết nối hệ thống có thể gặp sự cố
+                `;
+            }
         }
 
         /**

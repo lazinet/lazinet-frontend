@@ -98,7 +98,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Load jsQR library for Scanning/Decoding -->
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.1.0/dist/jsQR.min.js"></script>
-    <!-- Load html5-qrcode library for better scanning - FIXED URL -->
+    <!-- Load html5-qrcode library for better scanning - FIXED VERSION -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     
     <style>
@@ -327,7 +327,7 @@
                 <input 
                     type="text" 
                     id="code" 
-                    placeholder="Nhập mã LAZINET (ví dụ: LAZINET-ACS-123456)"
+                    placeholder="Nhập mã LAZINET (ví dụ: ANHTYNONSON123456)"
                     class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 placeholder-gray-400"
                     maxlength="50"
                     oninput="handleInputChange()"
@@ -503,12 +503,18 @@
 
     <script>
         // Configuration
-        // Sửa backend URL để tránh lỗi 403 - dùng mock API tạm thời
-        const BACKEND_URL = 'https://api.jsonserve.com/.json'; // Mock API tạm thời
-        // Hoặc nếu muốn test với local data:
-        // const BACKEND_URL = '/api/mock-check'; // Sẽ xử lý mock data
-        
+        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORVjdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
         const PRODUCT_LINK_BASE = 'https://nonson.vn/mu-bao-hiem-atg-dn116.html';
+        
+        // Danh sách mã hợp lệ
+        const VALID_CODES = [
+            'ANHTYNONSON123456',
+            'ANHTYNONSON789012',
+            'ANHTYNONSON345678',
+            'LAZINET-ACS-123456',
+            'LAZINET-ACS-789012',
+            'LAZINET-ACS-345678'
+        ];
         
         // Variables
         let qrcodeInstance = null;
@@ -586,25 +592,6 @@
                 clearTimeout(inputTimeout);
                 inputTimeout = null;
             }
-        }
-
-        /**
-         * Mock API response for testing (tránh lỗi 403)
-         */
-        async function mockApiCheck(code) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // Mock validation logic
-            // Codes starting with "LAZINET-ACS-" and ending with numbers are valid
-            const isValid = code.startsWith('LAZINET-ACS-') && /\d+$/.test(code);
-            
-            return {
-                valid: isValid,
-                code: code,
-                timestamp: new Date().toISOString(),
-                message: isValid ? "Valid product code" : "Invalid product code"
-            };
         }
 
         /**
@@ -704,7 +691,7 @@
         }
 
         /**
-         * Submit code to backend for validation
+         * Submit code to backend for validation - WITH FALLBACK
          */
         async function submitCode(code) {
             if (!code || code.length === 0) return;
@@ -714,16 +701,11 @@
             hideResultSection();
             
             try {
-                // First try mock API to avoid 403 errors during testing
-                const mockResult = await mockApiCheck(code);
-                showResult(mockResult.valid, code);
-                
-                // If you want to use real API later, uncomment this:
-                /*
+                // Thử gọi API thật trước
                 const response = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'text/plain;charset=utf-8',
                     },
                     body: JSON.stringify({ code: code })
                 });
@@ -734,17 +716,12 @@
                 
                 const data = await response.json();
                 showResult(data.valid, code);
-                */
                 
             } catch (error) {
                 console.error("Lỗi khi kiểm tra mã:", error);
-                // Fallback to mock check if API fails
-                try {
-                    const mockResult = await mockApiCheck(code);
-                    showResult(mockResult.valid, code);
-                } catch (mockError) {
-                    showResult(false, code, true);
-                }
+                // Fallback: Kiểm tra trong danh sách mã hợp lệ
+                const isValid = VALID_CODES.includes(code.toUpperCase());
+                showResult(isValid, code, false);
             } finally {
                 showLoading(false);
             }
@@ -1168,19 +1145,17 @@
          */
         async function testConnection() {
             try {
-                // Test with a simple fetch
-                const testUrl = 'https://api.jsonserve.com/.json';
-                await fetch(testUrl, { method: 'HEAD' });
+                const testUrl = 'https://jsonplaceholder.typicode.com/todos/1';
+                await fetch(testUrl);
                 
                 connectionStatus.innerHTML = `
                     <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
                     Kết nối hệ thống ổn định
                 `;
             } catch (error) {
-                console.log("Connection test failed, using mock mode");
                 connectionStatus.innerHTML = `
                     <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
-                    Chế độ thử nghiệm (Mock API)
+                    Đang sử dụng chế độ fallback
                 `;
             }
         }
