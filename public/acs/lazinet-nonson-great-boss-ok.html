@@ -98,8 +98,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Load jsQR library for Scanning/Decoding -->
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.1.0/dist/jsQR.min.js"></script>
-    <!-- Load html5-qrcode library for better scanning - FIXED URL -->
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- Load html5-qrcode library for better scanning (phiên bản ổn định) -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" type="text/javascript"></script>
     
     <style>
         body { 
@@ -327,7 +327,7 @@
                 <input 
                     type="text" 
                     id="code" 
-                    placeholder="Nhập mã LAZINET (ví dụ: LAZINET-ACS-123456)"
+                    placeholder="Nhập mã LAZINET (ví dụ: ANHTYNONSON123456)"
                     class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 placeholder-gray-400"
                     maxlength="50"
                     oninput="handleInputChange()"
@@ -461,8 +461,8 @@
                 </p>
                 <div class="hidden sm:inline mx-2"></div>
                 <div id="connectionStatus" class="inline-flex items-center text-sm">
-                    <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
-                    Kết nối hệ thống ổn định
+                    <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
+                    Kết nối hệ thống có thể gặp sự cố (sử dụng mock local)
                 </div>
             </div>
         </div>
@@ -503,11 +503,7 @@
 
     <script>
         // Configuration
-        // Sửa backend URL để tránh lỗi 403 - dùng mock API tạm thời
-        const BACKEND_URL = 'https://api.jsonserve.com/.json'; // Mock API tạm thời
-        // Hoặc nếu muốn test với local data:
-        // const BACKEND_URL = '/api/mock-check'; // Sẽ xử lý mock data
-        
+        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORVjdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
         const PRODUCT_LINK_BASE = 'https://nonson.vn/mu-bao-hiem-atg-dn116.html';
         
         // Variables
@@ -558,53 +554,26 @@
         const cameraInfo = document.getElementById('cameraInfo');
 
         /**
-         * Clear all previous data (input, QR code, scanned image, results)
+         * Wait for Html5Qrcode library to load
          */
-        function clearAllPreviousData() {
-            // Clear input
-            inputCode.value = '';
-            qrCodeValue.textContent = '';
-            
-            // Clear QR code
-            if (qrcodeInstance) {
-                qrcodeDiv.innerHTML = '';
-                qrcodeInstance = null;
-            }
-            qrPlaceholder.classList.remove('hidden');
-            
-            // Clear scanned image
-            clearScannedImage();
-            
-            // Hide result section
-            hideResultSection();
-            
-            // Clear loading indicator
-            showLoading(false);
-            
-            // Clear any pending timeout
-            if (inputTimeout) {
-                clearTimeout(inputTimeout);
-                inputTimeout = null;
-            }
-        }
-
-        /**
-         * Mock API response for testing (tránh lỗi 403)
-         */
-        async function mockApiCheck(code) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // Mock validation logic
-            // Codes starting with "LAZINET-ACS-" and ending with numbers are valid
-            const isValid = code.startsWith('LAZINET-ACS-') && /\d+$/.test(code);
-            
-            return {
-                valid: isValid,
-                code: code,
-                timestamp: new Date().toISOString(),
-                message: isValid ? "Valid product code" : "Invalid product code"
-            };
+        function waitForLibrary() {
+            return new Promise((resolve) => {
+                if (typeof Html5Qrcode !== 'undefined') {
+                    resolve();
+                } else {
+                    const check = setInterval(() => {
+                        if (typeof Html5Qrcode !== 'undefined') {
+                            clearInterval(check);
+                            resolve();
+                        }
+                    }, 100);
+                    setTimeout(() => {
+                        clearInterval(check);
+                        console.warn('Html5Qrcode library failed to load');
+                        resolve(); // Resolve anyway to allow fallback
+                    }, 5000);
+                }
+            });
         }
 
         /**
@@ -713,38 +682,34 @@
             showLoading(true);
             hideResultSection();
             
+            // Mock for local testing (remove/comment in production when backend is fixed)
+            if (location.hostname === '127.0.0.1' || location.hostname === 'localhost' || location.port.includes('550')) {
+                console.log('Using local mock validation');
+                const isValid = code === 'ANHTYNONSON123456' || code.startsWith('LAZINET-ACS-') && code.length >= 15; // Updated mock logic
+                showResult(isValid, code);
+                showLoading(false);
+                return;
+            }
+            
             try {
-                // First try mock API to avoid 403 errors during testing
-                const mockResult = await mockApiCheck(code);
-                showResult(mockResult.valid, code);
-                
-                // If you want to use real API later, uncomment this:
-                /*
                 const response = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'text/plain;charset=utf-8',
                     },
                     body: JSON.stringify({ code: code })
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`Lỗi kết nối: ${response.status}`);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
                 const data = await response.json();
                 showResult(data.valid, code);
-                */
                 
             } catch (error) {
                 console.error("Lỗi khi kiểm tra mã:", error);
-                // Fallback to mock check if API fails
-                try {
-                    const mockResult = await mockApiCheck(code);
-                    showResult(mockResult.valid, code);
-                } catch (mockError) {
-                    showResult(false, code, true);
-                }
+                showResult(false, code, true);
             } finally {
                 showLoading(false);
             }
@@ -829,7 +794,7 @@
             if (!videoElement) return null;
             
             try {
-                const context = cameraCanvas.getContext('2d');
+                const context = cameraCanvas.getContext('2d', { willReadFrequently: true });
                 cameraCanvas.width = videoElement.videoWidth;
                 cameraCanvas.height = videoElement.videoHeight;
                 context.drawImage(videoElement, 0, 0, cameraCanvas.width, cameraCanvas.height);
@@ -872,6 +837,7 @@
             }
         }
 
+
         /**
          * Update camera information display
          */
@@ -897,6 +863,11 @@
          */
         async function startScanner() {
             try {
+                await waitForLibrary();
+                if (typeof Html5Qrcode === 'undefined') {
+                    throw new Error("Thư viện QR scanner không load được. Sử dụng fallback.");
+                }
+
                 if (!html5QrCode) {
                     html5QrCode = new Html5Qrcode("scanner-viewfinder");
                 }
@@ -938,13 +909,44 @@
                 }
             } catch (error) {
                 console.error("Lỗi khi khởi động scanner:", error);
-                showScannerStatus("Không thể truy cập camera. Vui lòng kiểm tra quyền truy cập.", "error");
+                showScannerStatus("Không thể truy cập camera. Chuyển sang fallback.", "error");
                 
-                // Fallback to file upload
-                setTimeout(() => {
-                    scannerModal.classList.add('hidden');
-                    qrFileInput.click();
-                }, 2000);
+                // Fallback với jsQR + getUserMedia
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                    .then(stream => {
+                        videoElement = document.createElement('video');
+                        videoElement.srcObject = stream;
+                        videoElement.play();
+                        videoElement.onloadedmetadata = () => {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                            const interval = setInterval(() => {
+                                if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+                                    canvas.width = videoElement.videoWidth;
+                                    canvas.height = videoElement.videoHeight;
+                                    ctx.drawImage(videoElement, 0, 0);
+                                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+                                    if (code) {
+                                        handleScan(code.data, code);
+                                        clearInterval(interval);
+                                        stream.getTracks().forEach(track => track.stop());
+                                    }
+                                }
+                            }, 300); // Scan mỗi 300ms
+                        };
+                        scannerViewfinder.appendChild(videoElement);
+                    })
+                    .catch(err => {
+                        console.error("Fallback camera error:", err);
+                        showScannerStatus("Không truy cập được camera: " + err.message, "error");
+                        
+                        // Fallback to file upload
+                        setTimeout(() => {
+                            scannerModal.classList.add('hidden');
+                            qrFileInput.click();
+                        }, 2000);
+                    });
             }
         }
 
@@ -1057,10 +1059,40 @@
         }
 
         /**
+         * Clear all previous data (input, QR code, scanned image, results)
+         */
+        function clearAllPreviousData() {
+            // Clear input
+            inputCode.value = '';
+            qrCodeValue.textContent = '';
+            
+            // Clear QR code
+            if (qrcodeInstance) {
+                qrcodeDiv.innerHTML = '';
+                qrcodeInstance = null;
+            }
+            qrPlaceholder.classList.remove('hidden');
+            
+            // Clear scanned image
+            clearScannedImage();
+            
+            // Hide result section
+            hideResultSection();
+            
+            // Clear loading indicator
+            showLoading(false);
+            
+            // Clear any pending timeout
+            if (inputTimeout) {
+                clearTimeout(inputTimeout);
+                inputTimeout = null;
+            }
+        }
+        /**
          * Decode QR code from image using multiple methods
          */
         function decodeQRFromImageAdvanced(img) {
-            const context = qrCanvas.getContext('2d');
+            const context = qrCanvas.getContext('2d', { willReadFrequently: true });
             
             // Set canvas dimensions
             qrCanvas.width = img.naturalWidth || img.width;
@@ -1082,33 +1114,8 @@
                 return;
             }
             
-            // Method 2: Try HTML5 QR Code library
-            try {
-                // Convert canvas to blob
-                qrCanvas.toBlob(async (blob) => {
-                    const file = new File([blob], "qr_image.png", { type: "image/png" });
-                    
-                    // Try with html5-qrcode
-                    if (html5QrCode) {
-                        try {
-                            const decodedResult = await html5QrCode.scanFile(file, true);
-                            if (decodedResult && decodedResult.decodedText) {
-                                showScannerStatus(`Đã quét thành công: ${decodedResult.decodedText.substring(0, 30)}${decodedResult.decodedText.length > 30 ? '...' : ''}`, "success");
-                                processDecodedText(decodedResult.decodedText);
-                                return;
-                            }
-                        } catch (error) {
-                            console.log("html5-qrcode scanFile failed, trying other methods...");
-                        }
-                    }
-                    
-                    // If all methods fail
-                    showScannerStatus("Không tìm thấy mã QR trong ảnh. Vui lòng thử ảnh khác.", "error");
-                });
-            } catch (error) {
-                console.error("Lỗi khi xử lý ảnh:", error);
-                showScannerStatus("Không tìm thấy mã QR trong ảnh", "error");
-            }
+            // If all methods fail
+            showScannerStatus("Không tìm thấy mã QR trong ảnh. Vui lòng thử ảnh khác.", "error");
         }
 
         /**
@@ -1167,22 +1174,11 @@
          * Test backend connection
          */
         async function testConnection() {
-            try {
-                // Test with a simple fetch
-                const testUrl = 'https://api.jsonserve.com/.json';
-                await fetch(testUrl, { method: 'HEAD' });
-                
-                connectionStatus.innerHTML = `
-                    <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
-                    Kết nối hệ thống ổn định
-                `;
-            } catch (error) {
-                console.log("Connection test failed, using mock mode");
-                connectionStatus.innerHTML = `
-                    <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
-                    Chế độ thử nghiệm (Mock API)
-                `;
-            }
+            // Force yellow for local mock
+            connectionStatus.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
+                Kết nối hệ thống có thể gặp sự cố (sử dụng mock local)
+            `;
         }
 
         /**
