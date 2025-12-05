@@ -299,7 +299,7 @@
         //                 CẤU HÌNH QUAN TRỌNG
         // =================================================================
 
-        // URL Google Apps Script gốc của bạn (KHÔNG SỬ DỤNG PROXY)
+        // URL Google Apps Script gốc của bạn (VUI LÒNG KIỂM TRA LẠI NẾU CÓ LỖI 404)
         const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORJvdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
         
         // Liên kết sản phẩm
@@ -423,9 +423,9 @@
             
             if (isError) {
                 resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-yellow-300 bg-yellow-50';
-                resultTitle.textContent = "⚠️ LỖI KẾT NỐI (CORS)";
+                resultTitle.textContent = "⚠️ LỖI KẾT NỐI & 404";
                 resultTitle.className = "text-xl font-bold mb-2 text-yellow-700";
-                resultDetail.textContent = `Không thể kết nối đến hệ thống kiểm tra. Mã "${code}" chưa được xác thực. Vui lòng kiểm tra lại hướng dẫn chạy trên localhost (Vô hiệu hóa CORS) hoặc triển khai lên hosting công cộng.`;
+                resultDetail.textContent = `Không thể kết nối đến hệ thống kiểm tra. Lỗi 404 Not Found (URL GAS không hợp lệ) hoặc lỗi CORS (chạy trên localhost). Vui lòng kiểm tra lại ID triển khai GAS.`;
                 productInfo.classList.add('hidden');
                 productLink.classList.add('hidden');
                 
@@ -524,8 +524,10 @@
                     body: JSON.stringify({ code: code })
                 });
                 
+                // 1. KIỂM TRA LỖI HTTP (404, 500,...)
                 if (!response.ok) {
-                    throw new Error(`Lỗi HTTP: ${response.status}`);
+                    // Nếu response.status là 404, nó sẽ vào đây
+                    throw new Error(`Lỗi HTTP: ${response.status} (${response.statusText})`);
                 }
                 
                 const data = await response.json();
@@ -539,13 +541,17 @@
             } catch (error) {
                 console.error("Lỗi khi kiểm tra mã:", error);
                 
-                // Lỗi ở đây khả năng cao là CORS khi chạy trên localhost
-                showResult(false, code, true); 
+                // Lỗi ở đây có thể là: 
+                // 1. TypeError: Failed to fetch (Lỗi CORS)
+                // 2. Error: Lỗi HTTP: 404 (Not Found)
+                // 3. SyntaxError: Unexpected token... (Nếu GAS trả về HTML thay vì JSON)
+                
+                showResult(false, code, true); // Hiển thị lỗi kết nối chung
 
                 // Cập nhật trạng thái kết nối thất bại
                 connectionStatus.innerHTML = `
                     <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
-                    ⚠️ Lỗi kết nối hệ thống (Lỗi CORS)
+                    ⚠️ Lỗi kết nối hệ thống (CORS hoặc 404 GAS)
                 `;
             } finally {
                 showLoading(false);
@@ -637,13 +643,11 @@
                 method: 'HEAD',
                 mode: 'no-cors' 
             }).then(response => {
-                // Nếu fetch thành công (dù no-cors mode không cho phép kiểm tra status code)
                 connectionStatus.innerHTML = `
                     <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
                     Kết nối hệ thống ổn định
                 `;
             }).catch(error => {
-                // Nếu xảy ra lỗi mạng hoặc lỗi trình duyệt nghiêm trọng
                 connectionStatus.innerHTML = `
                     <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
                     Kết nối hệ thống có thể gặp sự cố
