@@ -798,7 +798,7 @@
                     scannedImagePreview.src = capturedImage;
                     hasScannedImage = true;
                     adjustContainerLayout();
-                    showScannerStatus(`✅ Đã quét thành công từ camera: ${decodedText.substring(0, 30)}${decodedText.length > 30 ? '...' : ''}`, "success");
+                    showScannerStatus(`Đã quét thành công từ camera: ${decodedText.substring(0, 30)}${decodedText.length > 30 ? '...' : ''}`, "success");
                 }
                 
                 // Auto-fill input and submit
@@ -1026,7 +1026,7 @@
             
             if (code1) {
                 const decodedText = code1.data.trim();
-                showScannerStatus(`✅ Đã quét thành công: ${decodedText.substring(0, 30)}${decodedText.length > 30 ? '...' : ''}`, "success");
+                showScannerStatus(`Đã quét thành công: ${decodedText.substring(0, 30)}${decodedText.length > 30 ? '...' : ''}`, "success");
                 processDecodedText(decodedText);
                 return;
             }
@@ -1042,7 +1042,7 @@
                         try {
                             const decodedResult = await html5QrCode.scanFile(file, true);
                             if (decodedResult && decodedResult.decodedText) {
-                                showScannerStatus(`✅ Đã quét thành công: ${decodedResult.decodedText.substring(0, 30)}${decodedResult.decodedText.length > 30 ? '...' : ''}`, "success");
+                                showScannerStatus(`Đã quét thành công: ${decodedResult.decodedText.substring(0, 30)}${decodedResult.decodedText.length > 30 ? '...' : ''}`, "success");
                                 processDecodedText(decodedResult.decodedText);
                                 return;
                             }
@@ -1052,11 +1052,11 @@
                     }
                     
                     // If all methods fail
-                    showScannerStatus("❌ Không tìm thấy mã QR trong ảnh. Vui lòng thử ảnh khác.", "error");
+                    showScannerStatus("Không tìm thấy mã QR trong ảnh. Vui lòng thử ảnh khác.", "error");
                 });
             } catch (error) {
                 console.error("Lỗi khi xử lý ảnh:", error);
-                showScannerStatus("❌ Không tìm thấy mã QR trong ảnh", "error");
+                showScannerStatus("Không tìm thấy mã QR trong ảnh", "error");
             }
         }
 
