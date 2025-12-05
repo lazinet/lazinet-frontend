@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    
+    <title>LAZINET ACS - Xác Thực Sản Phẩm Chính Hãng NÓN SƠN</title>
+    
+    <meta name="description" content="Sử dụng LAZINET ACS để xác thực sản phẩm chính hãng NÓN SƠN. Nhập mã hoặc quét QR để kiểm tra nguồn gốc và thông tin sản phẩm.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.1.0/dist/jsQR.min.js"></script>
+    
+    <style>
+        body { 
+            font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+        }
+        .container-layout {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            padding: 1.5rem 1rem;
+        }
+        #qrcode img {
+            margin: 0 auto;
+        }
+        /* Ẩn các input file */
+        #qrFileInput, #qrCameraInput {
+            display: none;
+        }
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            margin: 0 auto;
+        }
+        .result-section {
+            transition: all 0.3s ease;
+        }
+        .product-link, .upload-btn {
+            transition: all 0.2s ease;
+        }
+        .product-link:hover, .upload-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .section-divider {
+            border-bottom: 2px solid #e5e7eb;
+            margin: 2rem 0;
+        }
+        .image-qr-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .scanned-image-box, .qr-code-box {
+            background: white;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            min-width: 300px;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+        }
+        .scanned-image-box {
+            flex: 1;
+            max-width: 400px;
+        }
+        .qr-code-box {
+            flex: 1;
+            max-width: 400px;
+        }
+        .content-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .image-qr-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .scanned-image-box, .qr-code-box {
+                width: 100%;
+                max-width: 100%;
+            }
+            .upload-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="container-layout flex justify-center items-start lg:items-center">
+
+    <div id="appContainer" class="w-full max-w-6xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-100 transition-all duration-300">
+        
+        <div class="text-center mb-8">
+            <div class="flex flex-col sm:flex-row items-center justify-center mb-4">
+                <div class="w-24 h-24 sm:w-20 sm:h-20 flex items-center justify-center mb-4 sm:mb-0 sm:mr-4 p-2">
+                    <img src="../assets/img/logo-lazinet/lazinet_LogoOnly.png" 
+                         alt="LAZINET Logo" 
+                         class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">LAZINET ACS</h1>
+                    <h2 class="text-lg sm:text-xl font-semibold text-gray-700">Xác Thực Sản Phẩm Chính Hãng</h2>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500">
+                Hệ thống xác thực sản phẩm chính hãng - Nhập mã hoặc quét QR để kiểm tra
+            </p>
+        </div>
+
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Nhập mã sản phẩm hoặc quét mã</h2>
+                    <p class="text-sm text-gray-500 mt-1">Mã sẽ tự động được kiểm tra sau 5 giây ngừng nhập</p>
+                </div>
+                
+                <div class="mt-3 sm:mt-0 flex flex-wrap gap-2">
+                    <label for="qrCameraInput" id="scanBtnLabel" class="upload-btn inline-flex items-center px-4 py-2.5 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                        </svg>
+                        Quét bằng camera
+                    </label>
+                    
+                    <label for="qrFileInput" class="upload-btn inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                        </svg>
+                        Tải ảnh QR Code
+                    </label>
+                    
+                    <input type="file" id="qrFileInput" accept="image/*">
+                    <input type="file" id="qrCameraInput" accept="image/*" capture="environment">
+                </div>
+            </div>
+            
+            <div class="relative">
+                <input 
+                    type="text" 
+                    id="code" 
+                    placeholder="Nhập mã LAZINET (ví dụ: LAZINET-ACS-123456)"
+                    class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 placeholder-gray-400"
+                    maxlength="50"
+                    oninput="handleInputChange()"
+                />
+                <div class="absolute right-3 top-3 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div id="imageSection" class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">Mã QR và Ảnh quét</h2>
+            
+            <div class="image-qr-container" id="imageQrContainer">
+                <div id="scannedImageBox" class="scanned-image-box hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-700">Ảnh đã quét</h3>
+                    </div>
+                    <div class="p-4 flex-1">
+                        <div class="content-center h-full">
+                            <div class="w-full">
+                                <img id="scannedImagePreview" class="image-preview mb-4 hidden" alt="Ảnh QR đã tải">
+                                <canvas id="qrCanvas" class="hidden"></canvas>
+                                <div id="scannerPlaceholder" class="qr-placeholder mx-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m-12 5h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="text-center text-sm">Ảnh QR vừa quét sẽ hiển thị ở đây</p>
+                                </div>
+                                <div id="scannerStatus" class="text-center mt-2">
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                        <button onclick="clearScannedImage()" class="w-full text-sm text-gray-600 hover:text-gray-800 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Xóa ảnh
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="qrCodeBox" class="qr-code-box">
+                    <div class="p-4 border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-700">Mã QR sản phẩm</h3>
+                    </div>
+                    <div class="p-4 flex-1">
+                        <div class="content-center h-full">
+                            <div id="qrcode" class="w-full">
+                                <div id="qrPlaceholder" class="qr-placeholder mx-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                    </svg>
+                                    <p class="text-center text-sm">Mã QR sẽ hiển thị<br>khi bạn nhập mã</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                        <p id="qrCodeValue" class="text-center text-sm text-gray-500 truncate px-2"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div id="resultSection" class="result-section hidden mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Kết quả kiểm tra</h2>
+            
+            <div class="p-6 border rounded-xl">
+                <div class="flex items-start">
+                    <div class="flex-1">
+                        <h3 id="resultTitle" class="text-xl font-bold mb-2"></h3>
+                        <p id="resultDetail" class="text-gray-600 mb-4"></p>
+                        
+                        <div id="productInfo" class="hidden mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-500 mb-1">Mã sản phẩm</p>
+                                    <p id="productCode" class="font-semibold text-gray-800"></p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 mb-1">Thời gian kiểm tra</p>
+                                    <p id="checkTime" class="font-semibold text-gray-800"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a id="productLink" href="#" target="_blank" class="product-link hidden mt-4 inline-flex items-center px-5 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Xem thông tin sản phẩm chính hãng của NÓN SƠN
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingIndicator" class="hidden mb-8">
+            <div class="flex items-center justify-center p-4 bg-blue-50 rounded-lg">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-3"></div>
+                <p class="text-gray-600 font-medium">Đang kiểm tra mã với hệ thống LAZINET...</p>
+            </div>
+        </div>
+
+        <div class="text-center pt-6 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0">
+                <p class="text-sm text-gray-600">
+                    LAZINET ACS &copy; 
+                    <script>
+                        const startYear = 2024;
+                        const currentYear = new Date().getFullYear();
+                        document.write(`${startYear}–${currentYear}`);
+                    </script>
+                </p>
+                <div class="hidden sm:inline mx-2">•</div>
+                <div id="connectionStatus" class="inline-flex items-center text-sm">
+                    <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                    Kết nối hệ thống ổn định
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =================================================================
+        //                 CẤU HÌNH QUAN TRỌNG
+        // =================================================================
+
+        // URL Google Apps Script gốc của bạn (KHÔNG SỬ DỤNG PROXY)
+        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORJvdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
+        
+        // Liên kết sản phẩm
+        const PRODUCT_LINK_BASE = 'https://nonson.vn/mu-bao-hiem-atg-dn116.html';
+        
+        // Variables
+        let qrcodeInstance = null;
+        let inputTimeout = null;
+        let currentCode = '';
+        let hasScannedImage = false;
+        
+        // =================================================================
+        //                 DOM ELEMENTS - Khai báo toàn cục
+        // =================================================================
+        const inputCode = document.getElementById('code');
+        const qrcodeDiv = document.getElementById('qrcode');
+        const qrPlaceholder = document.getElementById('qrPlaceholder');
+        const qrCodeValue = document.getElementById('qrCodeValue');
+        const loadingIndicator = document.getElementById('loadingIndicator'); 
+        const resultSection = document.getElementById('resultSection');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultDetail = document.getElementById('resultDetail');
+        const productInfo = document.getElementById('productInfo');
+        const productCode = document.getElementById('productCode');
+        const checkTime = document.getElementById('checkTime');
+        const productLink = document.getElementById('productLink');
+        const qrFileInput = document.getElementById('qrFileInput');
+        const qrCameraInput = document.getElementById('qrCameraInput');
+        const scannedImageBox = document.getElementById('scannedImageBox');
+        const scannedImagePreview = document.getElementById('scannedImagePreview');
+        const qrCanvas = document.getElementById('qrCanvas');
+        const scannerPlaceholder = document.getElementById('scannerPlaceholder');
+        const scannerStatus = document.getElementById('scannerStatus');
+        const connectionStatus = document.getElementById('connectionStatus');
+
+
+        // =================================================================
+        //                 UTILITY FUNCTIONS
+        // =================================================================
+        
+        function hideResultSection() {
+            resultSection.classList.add('hidden');
+        }
+
+        function showLoading(show) {
+            if (show) {
+                loadingIndicator.classList.remove('hidden');
+            } else {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        
+        function adjustContainerLayout() {
+            if (hasScannedImage) {
+                scannedImageBox.classList.remove('hidden');
+                scannedImagePreview.classList.remove('hidden');
+                scannerPlaceholder.classList.add('hidden');
+            } else {
+                scannedImageBox.classList.add('hidden');
+                scannedImagePreview.classList.add('hidden');
+                scannerPlaceholder.classList.remove('hidden');
+            }
+        }
+
+        function showScannerStatus(message, type) {
+            let icon, colorClass;
+            
+            if (type === "success") {
+                icon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>`;
+                colorClass = "text-green-700";
+            } else if (type === "error") {
+                icon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>`;
+                colorClass = "text-red-700";
+            } else { // info/loading
+                 icon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>`;
+                colorClass = "text-blue-700";
+            }
+            
+            scannerStatus.innerHTML = `
+                <div class="flex items-center justify-center ${colorClass} mb-2">
+                    ${icon}
+                    <span class="text-sm font-medium">${message}</span>
+                </div>
+            `;
+        }
+
+        function clearScannedImage(resetStatus = true) {
+            hasScannedImage = false;
+            scannedImagePreview.src = '';
+            
+            if(resetStatus) {
+                 scannerStatus.innerHTML = '';
+            }
+            
+            adjustContainerLayout();
+            
+            qrFileInput.value = '';
+            qrCameraInput.value = '';
+        }
+
+        function showResult(isValid, code, isError = false) {
+            resultSection.classList.remove('hidden');
+            
+            const now = new Date();
+            const formattedTime = now.toLocaleString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            checkTime.textContent = formattedTime;
+            productCode.textContent = code;
+            
+            if (isError) {
+                resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-yellow-300 bg-yellow-50';
+                resultTitle.textContent = "⚠️ LỖI KẾT NỐI (CORS)";
+                resultTitle.className = "text-xl font-bold mb-2 text-yellow-700";
+                resultDetail.textContent = `Không thể kết nối đến hệ thống kiểm tra. Mã "${code}" chưa được xác thực. Vui lòng kiểm tra lại hướng dẫn chạy trên localhost (Vô hiệu hóa CORS) hoặc triển khai lên hosting công cộng.`;
+                productInfo.classList.add('hidden');
+                productLink.classList.add('hidden');
+                
+            } else if (isValid) {
+                resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-green-300 bg-green-50';
+                resultTitle.textContent = "✅ MÃ HỢP LỆ";
+                resultTitle.className = "text-xl font-bold mb-2 text-green-700";
+                resultDetail.textContent = `Mã "${code}" đã được xác thực thành công. Đây là sản phẩm chính hãng NÓN SƠN.`;
+                productInfo.classList.remove('hidden');
+                productLink.href = `${PRODUCT_LINK_BASE}?code=${encodeURIComponent(code)}`;
+                productLink.classList.remove('hidden');
+                
+            } else {
+                resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-red-300 bg-red-50';
+                resultTitle.textContent = "❌ MÃ KHÔNG HỢP LỆ";
+                resultTitle.className = "text-xl font-bold mb-2 text-red-700";
+                resultDetail.textContent = `Mã "${code}" không được tìm thấy trong hệ thống NÓN SƠN. Có thể đây là hàng giả.`;
+                productInfo.classList.remove('hidden');
+                productLink.classList.add('hidden');
+            }
+            
+            setTimeout(() => {
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        // =================================================================
+        //                 CORE APPLICATION LOGIC
+        // =================================================================
+
+        function handleInputChange() {
+            const code = inputCode.value.trim();
+            qrCodeValue.textContent = code;
+            
+            generateQR(code);
+            
+            if (inputTimeout) {
+                clearTimeout(inputTimeout);
+            }
+            
+            if (code.length > 0) {
+                inputTimeout = setTimeout(() => {
+                    submitCode(code);
+                }, 5000);
+            } else {
+                hideResultSection();
+            }
+        }
+
+        function generateQR(code) {
+            if (!code || code.length === 0) {
+                if (qrcodeInstance) {
+                    qrcodeDiv.innerHTML = '';
+                    qrcodeInstance = null;
+                }
+                qrPlaceholder.classList.remove('hidden');
+                return;
+            }
+            
+            qrPlaceholder.classList.add('hidden');
+            
+            if (qrcodeInstance) {
+                qrcodeDiv.innerHTML = '';
+                qrcodeInstance = null;
+            }
+            
+            try {
+                qrcodeInstance = new QRCode(qrcodeDiv, {
+                    text: code,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } catch (e) {
+                console.error("Lỗi khi tạo QR Code:", e);
+                qrPlaceholder.classList.remove('hidden');
+            }
+        }
+
+        async function submitCode(code) {
+            if (!code || code.length === 0) return;
+            
+            currentCode = code;
+            showLoading(true); 
+            hideResultSection();
+            
+            try {
+                // Gửi request trực tiếp đến GAS
+                const response = await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8', 
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Lỗi HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                showResult(data.valid, code);
+                
+                // Cập nhật trạng thái kết nối thành công
+                connectionStatus.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                    Kết nối hệ thống ổn định
+                `;
+            } catch (error) {
+                console.error("Lỗi khi kiểm tra mã:", error);
+                
+                // Lỗi ở đây khả năng cao là CORS khi chạy trên localhost
+                showResult(false, code, true); 
+
+                // Cập nhật trạng thái kết nối thất bại
+                connectionStatus.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
+                    ⚠️ Lỗi kết nối hệ thống (Lỗi CORS)
+                `;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // =================================================================
+        //                 SCANNER/UPLOAD LOGIC (jsQR Only)
+        // =================================================================
+
+        function processDecodedText(decodedText) {
+            // Loại bỏ các giá trị URL không phải mã LAZINET
+            const sanitizedCode = (decodedText.startsWith('http') || decodedText.startsWith('https')) ? 
+                                decodedText.split('/').pop() : // Lấy phần cuối của URL (nếu là URL)
+                                decodedText;
+            
+            setTimeout(() => {
+                inputCode.value = sanitizedCode;
+                generateQR(sanitizedCode);
+                submitCode(sanitizedCode);
+            }, 500);
+        }
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            clearScannedImage(false); 
+            showScannerStatus("Đang xử lý ảnh...", "info");
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    scannedImagePreview.src = e.target.result;
+                    hasScannedImage = true;
+                    adjustContainerLayout();
+                    decodeQRFromImage(img);
+                };
+                img.onerror = () => {
+                    showScannerStatus("Không thể tải ảnh. Vui lòng thử lại.", "error");
+                    clearScannedImage();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            
+            event.target.value = ''; // Xóa giá trị input file để có thể chọn lại cùng 1 file
+        }
+
+        function decodeQRFromImage(img) {
+            const context = qrCanvas.getContext('2d');
+            let { width, height } = img;
+            const MAX_SIZE = 1000;
+            
+            // Resize ảnh lớn để tăng tốc độ quét và tiết kiệm bộ nhớ
+            if (width > MAX_SIZE || height > MAX_SIZE) {
+                const ratio = Math.min(MAX_SIZE / width, MAX_SIZE / height);
+                width *= ratio;
+                height *= ratio;
+            }
+            
+            qrCanvas.width = width;
+            qrCanvas.height = height;
+            context.drawImage(img, 0, 0, width, height);
+            
+            const imageData = context.getImageData(0, 0, width, height);
+            
+            // Sử dụng jsQR để decode
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+            
+            if (code) {
+                const decodedText = code.data.trim();
+                showScannerStatus(`✅ Đã quét thành công: ${decodedText.substring(0, 30)}${decodedText.length > 30 ? '...' : ''}`, "success");
+                processDecodedText(decodedText);
+            } else {
+                showScannerStatus("❌ Không tìm thấy mã QR trong ảnh. Vui lòng thử ảnh khác.", "error");
+            }
+        }
+        
+        // =================================================================
+        //                 INIT AND EVENT HANDLERS
+        // =================================================================
+
+        function testConnection() {
+            // Kiểm tra kết nối ban đầu bằng HEAD request (no-cors mode)
+            // Chỉ kiểm tra được server có phản hồi hay không, không kiểm tra được CORS lỗi hay không
+            fetch(BACKEND_URL, {
+                method: 'HEAD',
+                mode: 'no-cors' 
+            }).then(response => {
+                // Nếu fetch thành công (dù no-cors mode không cho phép kiểm tra status code)
+                connectionStatus.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                    Kết nối hệ thống ổn định
+                `;
+            }).catch(error => {
+                // Nếu xảy ra lỗi mạng hoặc lỗi trình duyệt nghiêm trọng
+                connectionStatus.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
+                    Kết nối hệ thống có thể gặp sự cố
+                `;
+            });
+        }
+
+        function init() {
+            // Thêm sự kiện cho input tải ảnh
+            qrFileInput.addEventListener('change', (event) => {
+                handleFileUpload(event);
+            });
+
+            // Thêm sự kiện cho input chụp hình
+            qrCameraInput.addEventListener('change', (event) => {
+                handleFileUpload(event);
+            });
+
+            // Event cho nút Enter
+            inputCode.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const code = inputCode.value.trim();
+                    if (code.length > 0) {
+                        if (inputTimeout) {
+                            clearTimeout(inputTimeout);
+                        }
+                        submitCode(code);
+                    }
+                }
+            });
+            
+            // Test connection on load
+            testConnection();
+            
+            // Focus on input
+            inputCode.focus();
+            
+            // Set initial layout
+            adjustContainerLayout();
+            
+            // Generate initial QR if there's a value (e.g., from URL parameter)
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCode = urlParams.get('code');
+            if (initialCode) {
+                inputCode.value = initialCode;
+                generateQR(initialCode);
+                setTimeout(() => submitCode(initialCode), 1000);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
