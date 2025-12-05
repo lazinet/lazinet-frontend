@@ -266,6 +266,10 @@
                 width: 100%;
             }
         }
+        #qrcode img, #qrcode canvas {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body class="container-layout flex justify-center items-start lg:items-center">
@@ -327,7 +331,7 @@
                 <input 
                     type="text" 
                     id="code" 
-                    placeholder="Nhập mã LAZINET (ví dụ: ANHTYNONSON123456)"
+                    placeholder="Quét, Tải/ Chụp hoặc Nhập chuỗi mã QR vào đây (ví dụ: LAZINET123456)"
                     class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 placeholder-gray-400"
                     maxlength="50"
                     oninput="handleInputChange()"
@@ -412,10 +416,10 @@
                 <div class="flex items-start">
                     <div class="flex-1">
                         <h3 id="resultTitle" class="text-xl font-bold mb-2"></h3>
-                        <p id="resultDetail" class="text-gray-600 mb-4"></p>
+                        <p id="resultDetail" class="text-gray-600 mb-4 break-words"></p>
                         
                         <!-- Product Information -->
-                        <div id="productInfo" class="hidden mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <div id="productInfo" class="hidden mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100 break-words">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <p class="text-sm text-gray-500 mb-1">Mã sản phẩm</p>
