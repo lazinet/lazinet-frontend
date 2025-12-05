@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     
-    <title>LAZINET ACS - Xác Thực Sản Phẩm Chính Hãng NÓN SƠN</title>
+    <title>LACS - LAZINET ACS - Xác Thực Sản Phẩm Chính Hãng NÓN SƠN</title>
     
     <meta name="description" content="Sử dụng LAZINET ACS để xác thực sản phẩm chính hãng NÓN SƠN. Nhập mã hoặc quét QR để kiểm tra nguồn gốc và thông tin sản phẩm.">
     <meta name="keywords" content="LAZINET ACS, xác thực chính hãng, NÓN SƠN, chống hàng giả, quét QR, kiểm tra mã, LAZINET">
@@ -270,6 +270,15 @@
             display: block;
             margin: 0 auto;
         }
+        .product-link {
+            transition: all 0.2s ease;
+            display: block;
+            width: 100%;
+        }
+        .product-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
     </style>
 </head>
 <body class="container-layout flex justify-center items-start lg:items-center">
@@ -285,12 +294,12 @@
                          class="w-full h-full object-contain">
                 </div>
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">LAZINET ACS</h1>
-                    <h2 class="text-lg sm:text-xl font-semibold text-gray-700">Xác Thực Sản Phẩm Chính Hãng</h2>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">LAZINET Anti-Counterfeit System (LACS&trade;)</h1>
+                    <h2 class="text-lg sm:text-xl font-semibold text-gray-700">Hệ Thống Chống Hàng Giả LACS</h2>
                 </div>
             </div>
             <p class="text-sm text-gray-500">
-                Hệ thống xác thực sản phẩm chính hãng - Nhập mã hoặc quét QR để kiểm tra
+                Xác thực hàng chính hãng - Nhập mã hoặc quét QR để kiểm tra
             </p>
         </div>
 
@@ -456,13 +465,13 @@
         <div class="text-center pt-6 border-t border-gray-200">
             <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0">
                 <p class="text-sm text-gray-600">
-                    LAZINET ACS &copy; 
-                    <script>
-                        const startYear = 2024;
-                        const currentYear = new Date().getFullYear();
-                        document.write(`${startYear}–${currentYear}`);
-                    </script>
-                </p>
+    LACS<sup>&trade;</sup> <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span> &copy;
+    <script>
+        const startYear = 2024;
+        const currentYear = new Date().getFullYear();
+        document.write(`${startYear}–${currentYear}`);
+    </script>
+</p>
                 <div class="hidden sm:inline mx-2"></div>
                 <div id="connectionStatus" class="inline-flex items-center text-sm">
                     <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
@@ -509,6 +518,7 @@
         // Configuration
         const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORVjdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
         const PRODUCT_LINK_BASE = 'https://nonson.vn/mu-bao-hiem-atg-dn116.html';
+        const BRAND_LOGO = 'https://nonson.vn/vnt_upload/weblink/logo_Non_Son_doc.svg'
         
         // Danh sách mã hợp lệ
         const VALID_CODES = [
@@ -760,16 +770,35 @@
                 productLink.classList.add('hidden');
                 
             } else if (isValid) {
-                // Valid code
-                resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-green-300 bg-green-50';
-                resultTitle.textContent = "✅ MÃ HỢP LỆ";
-                resultTitle.className = "text-xl font-bold mb-2 text-green-700";
-                resultDetail.textContent = `Mã "${code}" đã được xác thực thành công. Đây là sản phẩm chính hãng NÓN SƠN.`;
-                productInfo.classList.remove('hidden');
-                productLink.href = `${PRODUCT_LINK_BASE}?code=${encodeURIComponent(code)}`;
-                productLink.classList.remove('hidden');
-                
-            } else {
+    // Valid code
+    resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-green-300 bg-green-50';
+    resultTitle.textContent = "✅ MÃ HỢP LỆ";
+    resultTitle.className = "text-xl font-bold mb-2 text-green-700";
+    resultDetail.textContent = `Mã "${code}" đã được xác thực thành công. Đây là sản phẩm chính hãng NÓN SƠN.`;
+    productInfo.classList.remove('hidden');
+    
+    // Thêm logo NÓN SƠN vào productLink
+    productLink.innerHTML = `
+        <div class="flex items-center justify-center">
+            <div class="mr-4">
+                <img src="${BRAND_LOGO}" 
+                     alt="Logo NÓN SƠN" 
+                     class="w-10 h-10 object-contain"
+                     onerror="this.style.display='none'">
+            </div>
+            <div class="flex-1">
+                <div class="font-medium">Xem thông tin sản phẩm</div>
+                <div class="text-sm">Chính hãng NÓN SƠN</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </div>
+    `;
+    
+    productLink.href = `${PRODUCT_LINK_BASE}?code=${encodeURIComponent(code)}`;
+    productLink.classList.remove('hidden');
+} else {
                 // Invalid code
                 resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-red-300 bg-red-50';
                 resultTitle.textContent = "❌ MÃ KHÔNG HỢP LỆ";
