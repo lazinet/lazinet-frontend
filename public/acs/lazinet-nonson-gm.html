@@ -14,22 +14,22 @@
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <link rel="canonical" href="https://lazinet.com/acs/lazinet-nonson-gm.html">
-    <link rel="alternate" hreflang="vi-VN" href="https://lazinet.com/acs/lazinet-nonson-gm.html">
-    <link rel="alternate" hreflang="x-default" href="https://lazinet.com/acs/lazinet-nonson-gm.html">
+    <link rel="canonical" href="https://lazinet.com/acs/nonson/">
+    <link rel="alternate" hreflang="vi-VN" href="https://lazinet.com/acs/nonson/">
+    <link rel="alternate" hreflang="x-default" href="https://lazinet.com/acs/nonson/">
     
-    <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/img/logo-lazinet/lazinet_LogoOnly.png">
     
     <meta property="og:title" content="LAZINET ACS - Xác Thực Sản Phẩm Chính Hãng NÓN SƠN">
     <meta property="og:description" content="Nhập mã hoặc quét QR code để kiểm tra sản phẩm NÓN SƠN chính hãng. Hệ thống chống giả mạo của LAZINET.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lazinet.com/acs/lazinet-nonson-gm.html">
+    <meta property="og:url" content="https://lazinet.com/acs/nonson/">
     <meta property="og:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -356,7 +356,7 @@
                         document.write(`${startYear}–${currentYear}`);
                     </script>
                 </p>
-                <div class="hidden sm:inline mx-2"></div>
+                <div class="hidden sm:inline mx-2">•</div>
                 <div id="connectionStatus" class="inline-flex items-center text-sm">
                     <span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
                     Kết nối hệ thống ổn định
@@ -383,7 +383,6 @@
         const qrCodeValue = document.getElementById('qrCodeValue');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const resultSection = document.getElementById('resultSection');
-        // const resultIcon = document.getElementById('resultIcon');
         const resultTitle = document.getElementById('resultTitle');
         const resultDetail = document.getElementById('resultDetail');
         const productInfo = document.getElementById('productInfo');
@@ -744,12 +743,18 @@
          * Initialize the application
          */
         function init() {
-            // === Logic tối ưu hóa cho nút Tải ảnh/Chụp hình ===
+            // === Logic tối ưu hóa cho nút Tải ảnh/Chụp hình (Đảm bảo ưu tiên) ===
+            // Lưu ý: Thuộc tính 'capture' chỉ là gợi ý cho trình duyệt/HĐH.
+            // Việc có thêm tùy chọn Load/Chụp trong giao diện ưu tiên phụ thuộc hoàn toàn vào Trình duyệt và HĐH.
+            
             if (isMobileDevice()) {
-                // Trên Mobile: Ưu tiên CHỤP HÌNH/CHỌN ẢNH. Thêm thuộc tính `capture`
+                // TRÊN MOBILE: Ưu tiên Camera. 
+                // 'capture="camera"' sẽ kích hoạt camera. Trình duyệt/HĐH sẽ cung cấp tùy chọn Load ảnh.
                 qrFileInput.setAttribute('capture', 'camera');
             } else {
-                // Trên Desktop: Chỉ TẢI ẢNH. Loại bỏ thuộc tính `capture` (nếu có)
+                // TRÊN DESKTOP: Ưu tiên Tải ảnh. 
+                // Loại bỏ 'capture' sẽ mở hộp thoại chọn tệp (File Dialog). 
+                // Tùy chọn Chụp ảnh (nếu máy tính có camera) sẽ do HĐH/Trình duyệt tự động cung cấp trong hộp thoại đó.
                 qrFileInput.removeAttribute('capture');
             }
             

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
+<head><meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     
@@ -111,7 +110,7 @@
         #qrcode img {
             margin: 0 auto;
         }
-        #qrFileInput {
+        #qrFileInput, #captureInputMobile {
             display: none;
         }
         .qr-placeholder {
@@ -231,15 +230,28 @@
                     <p class="text-sm text-gray-500 mt-1">Mã sẽ tự động được kiểm tra sau 5 giây ngừng nhập</p>
                 </div>
                 
-                <div class="mt-3 sm:mt-0">
-                    <!-- Một input file duy nhất, không dùng capture -->
-                    <input type="file" id="qrFileInput" accept="image/*">
+                <div class="mt-3 sm:mt-0 flex flex-col sm:flex-row gap-2">
+                    <!-- Nút chụp hình (hiển thị trên tất cả thiết bị, ưu tiên trên mobile) -->
+                    <button id="captureBtnMobile" class="upload-btn inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                        </svg>
+                        Chụp hình QR Code
+                    </button>
+                    
+                    <!-- Nút tải ảnh (hiển thị trên tất cả thiết bị, ưu tiên trên desktop) -->
                     <label for="qrFileInput" class="upload-btn inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                         </svg>
-                        Tải ảnh QR Code hoặc Chụp hình
+                        Tải ảnh QR Code
                     </label>
+                    
+                    <!-- Input file cho chụp hình -->
+                    <input type="file" id="captureInputMobile" accept="image/*" capture="camera" class="hidden">
+                    
+                    <!-- Input file cho tải ảnh -->
+                    <input type="file" id="qrFileInput" accept="image/*" class="hidden">
                 </div>
             </div>
             
@@ -415,6 +427,8 @@
         
         // Scanner Elements
         const qrFileInput = document.getElementById('qrFileInput');
+        const captureInputMobile = document.getElementById('captureInputMobile');
+        const captureBtnMobile = document.getElementById('captureBtnMobile');
         const scannedImageBox = document.getElementById('scannedImageBox');
         const scannedImagePreview = document.getElementById('scannedImagePreview');
         const qrCanvas = document.getElementById('qrCanvas');
@@ -730,8 +744,9 @@
             scannerStatus.innerHTML = '';
             adjustContainerLayout();
             
-            // Reset file input
+            // Reset cả hai file input
             qrFileInput.value = '';
+            captureInputMobile.value = '';
         }
 
         /**
@@ -760,7 +775,17 @@
          * Initialize the application
          */
         function init() {
-            // Thêm sự kiện cho input file
+            // Thêm sự kiện cho nút chụp hình
+            captureBtnMobile.addEventListener('click', () => {
+                captureInputMobile.click();
+            });
+
+            // Thêm sự kiện cho input chụp hình
+            captureInputMobile.addEventListener('change', (event) => {
+                handleFileUpload(event);
+            });
+
+            // Thêm sự kiện cho input tải ảnh
             qrFileInput.addEventListener('change', (event) => {
                 handleFileUpload(event);
             });
