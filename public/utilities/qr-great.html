@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - LAZINET Enhanced</title>
+    <style>
+        /* Global Variables from custom.css */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --orange-light: #FFbbbb;
+            --blue-main: blue;
+            --blue-light: #ccccff;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --black-color: #000000;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
+        }
+
+        /* General Styles from custom.css adapted */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--default-font);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid var(--divider-color);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.95em;
+        }
+
+        input, select, textarea {
+            padding: 12px 15px;
+            border: 2px solid var(--divider-color);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: var(--secondary-color);
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(63, 130, 251, 0.1);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #qrContainer {
+            background: var(--bg-color);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--divider-color);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        #qrCode {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .qr-info {
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9em;
+            padding: 10px;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--divider-color);
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(to right, var(--accent-secondary-color) 0%, var(--accent-color) 50%, var(--accent-secondary-color) 100%);
+            background-size: 200% auto;
+            color: var(--white-color);
+        }
+
+        button:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(63, 130, 251, 0.3);
+        }
+
+        .btn-reset {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            border: 2px solid var(--divider-color);
+        }
+
+        .btn-reset:hover {
+            background: var(--accent-secondary-color);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .color-input {
+            width: 60px;
+            height: 40px;
+            padding: 2px;
+            border-radius: 8px;
+            border: 2px solid var(--divider-color);
+            cursor: pointer;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .error {
+            color: var(--error-color);
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            color: var(--accent-color);
+            font-style: italic;
+            text-align: center;
+        }
+
+        .advanced-options {
+            display: none;
+            gap: 15px;
+            padding: 15px;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .advanced-options.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .file-input-group input[type="file"] {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--divider-color);
+            color: var(--text-color);
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .color-picker {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .file-input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <!-- QR Code Styling CDN -->
+    <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+    <!-- QR Border Plugin CDN -->
+    <script src="https://unpkg.com/qr-border-plugin"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 QR Code Generator - LAZINET</h1>
+        <p class="subtitle">Tạo QR code tùy chỉnh với AI & Style - Thuần JavaScript Enhanced</p>
+        
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="qrType">Loại dữ liệu:</label>
+                    <select id="qrType">
+                        <option value="text">Văn bản</option>
+                        <option value="url">URL</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Số điện thoại</option>
+                        <option value="wifi">WiFi</option>
+                        <option value="vcard">vCard</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="qrData">Nội dung QR code:</label>
+                    <textarea id="qrData" placeholder="Nhập nội dung... (Tự động format theo loại)">https://lazinet.com</textarea>
+                    <div class="error" id="dataError">Nội dung quá dài! Vui lòng nhập ít hơn 2953 ký tự.</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="qrSize">Kích thước QR code (px):</label>
+                    <input type="range" id="qrSize" min="100" max="500" value="250">
+                    <div class="stats">
+                        <span>100px</span>
+                        <span id="sizeValue">250px</span>
+                        <span>500px</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Màu sắc:</label>
+                    <div class="color-picker">
+                        <label>Màu Module:</label>
+                        <input type="color" id="colorDark" class="color-input" value="#000000">
+                        <label>Màu Nền:</label>
+                        <input type="color" id="colorLight" class="color-input" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="moduleStyle">Style Module:</label>
+                    <select id="moduleStyle">
+                        <option value="square">Vuông</option>
+                        <option value="dots">Chấm</option>
+                        <option value="rounded">Tròn bo góc</option>
+                        <option value="extra-rounded">Tròn lớn</option>
+                        <option value="vertical">Dọc</option>
+                        <option value="horizontal">Ngang</option>
+                        <option value="classy">Classy</option>
+                        <option value="classy-rounded">Classy bo góc</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="qrStyle">Style QR:</label>
+                    <select id="qrStyle" onchange="toggleAdvancedOptions()">
+                        <option value="default">Mặc định</option>
+                        <option value="bordered">Có Border (Trial Plugin)</option>
+                    </select>
+                </div>
+
+                <div class="advanced-options" id="advancedOptions">
+                    <div class="input-group">
+                        <label for="borderWidth">Chiều rộng Border (px):</label>
+                        <input type="number" id="borderWidth" min="1" max="50" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="borderColor">Màu Border:</label>
+                        <input type="color" id="borderColor" value="#ff6302">
+                    </div>
+                    <div class="input-group">
+                        <label for="borderStyle">Style Border:</label>
+                        <select id="borderStyle">
+                            <option value="solid">Solid</option>
+                            <option value="dotted">Dotted</option>
+                            <option value="dashed">Dashed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Ảnh trung tâm:</label>
+                    <div class="file-input-group">
+                        <input type="file" id="centerImageFile" accept="image/*">
+                        <input type="url" id="centerImageUrl" placeholder="Hoặc dán URL ảnh...">
+                    </div>
+                </div>
+
+                <div class="loading" id="loading">Đang tạo QR code...</div>
+            </div>
+            
+            <!-- QR Code Section -->
+            <div class="qr-section">
+                <div id="qrContainer">
+                    <div id="qrCode"></div>
+                </div>
+                <div class="qr-info">
+                    QR code sẽ tự động cập nhật khi bạn thay đổi nội dung
+                </div>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn-download" onclick="downloadQR()">
+                <span>💾</span> Tải xuống
+            </button>
+            <button class="btn-reset" onclick="resetSettings()">
+                <span>🔄</span> Đặt lại
+            </button>
+        </div>
+        
+        <footer>
+            <p>© 2025 LAZINET QR Generator | Enhanced with qr-code-styling & qr-border-plugin (Trial)</p>
+        </footer>
+    </div>
+
+    <script>
+        // QR Code Styling Instance
+        let qrCode;
+        let isBorderApplied = false;
+
+        // Global vars
+        let currentImage = null;
+
+        // Format data based on type
+        function formatData(type, data) {
+            switch (type) {
+                case 'url':
+                    return data.startsWith('http') ? data : 'https://' + data;
+                case 'email':
+                    return 'mailto:' + data;
+                case 'phone':
+                    return 'tel:' + data;
+                case 'wifi':
+                    return 'WIFI:S:' + data + ';T:WPA;P:;;'; // Simple format
+                case 'vcard':
+                    return 'BEGIN:VCARD\nVERSION:3.0\nFN:' + data + '\nEND:VCARD';
+                default:
+                    return data;
+            }
+        }
+
+        // Toggle advanced options for border
+        function toggleAdvancedOptions() {
+            const style = document.getElementById('qrStyle').value;
+            const advanced = document.getElementById('advancedOptions');
+            advanced.classList.toggle('show', style === 'bordered');
+            if (style !== 'bordered' && isBorderApplied) {
+                qrCode.deleteExtension();
+                isBorderApplied = false;
+            }
+        }
+
+        // Update QR
+        function updateQRCode() {
+            const type = document.getElementById('qrType').value;
+            let data = document.getElementById('qrData').value.trim();
+            const size = parseInt(document.getElementById('qrSize').value);
+            const colorDark = document.getElementById('colorDark').value;
+            const colorLight = document.getElementById('colorLight').value;
+            const moduleStyle = document.getElementById('moduleStyle').value;
+            const qrStyle = document.getElementById('qrStyle').value;
+
+            // Format data
+            data = formatData(type, data);
+
+            if (data.length > 2953) {
+                document.getElementById('dataError').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('dataError').style.display = 'none';
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+
+            // Basic options
+            const options = {
+                width: size,
+                height: size,
+                data: data,
+                image: currentImage,
+                dotsOptions: {
+                    color: colorDark,
+                    type: moduleStyle,
+                },
+                backgroundOptions: {
+                    color: colorLight,
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: 10,
+                },
+                cornersSquareOptions: {
+                    color: colorDark,
+                    type: "square",
+                },
+                cornersDotOptions: {
+                    color: colorDark,
+                    type: "dot",
+                },
+            };
+
+            // Apply border if selected
+            if (qrStyle === 'bordered') {
+                const borderWidth = parseInt(document.getElementById('borderWidth').value);
+                const borderColor = document.getElementById('borderColor').value;
+                const borderStyle = document.getElementById('borderStyle').value;
+                let dasharray = undefined;
+                if (borderStyle === 'dashed') dasharray = '5 5';
+                else if (borderStyle === 'dotted') dasharray = '1 3';
+
+                options.extension = QRBorderPlugin({
+                    thickness: borderWidth,
+                    color: borderColor,
+                    dasharray: dasharray,
+                });
+            }
+
+            // Update or init
+            if (qrCode) {
+                qrCode.update(options);
+            } else {
+                qrCode = new QRCodeStyling(options);
+                qrCode.append(document.getElementById('qrCode'));
+            }
+
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 100);
+        }
+
+        // Handle image upload
+        document.getElementById('centerImageFile').addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentImage = e.target.result;
+                    updateQRCode();
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        document.getElementById('centerImageUrl').addEventListener('input', (e) => {
+            if (e.target.value) {
+                currentImage = e.target.value;
+                updateQRCode();
+            } else {
+                currentImage = null;
+                updateQRCode();
+            }
+        });
+
+        // Download
+        function downloadQR() {
+            if (qrCode) {
+                qrCode.download({ name: "qrcode", extension: "png" });
+            }
+        }
+
+        // Reset
+        function resetSettings() {
+            if (confirm('Đặt lại tất cả?')) {
+                document.getElementById('qrType').value = 'text';
+                document.getElementById('qrData').value = 'https://lazinet.com';
+                document.getElementById('qrSize').value = 250;
+                document.getElementById('colorDark').value = '#000000';
+                document.getElementById('colorLight').value = '#ffffff';
+                document.getElementById('moduleStyle').value = 'square';
+                document.getElementById('qrStyle').value = 'default';
+                document.getElementById('centerImageUrl').value = '';
+                document.getElementById('centerImageFile').value = '';
+                currentImage = null;
+                updateSizeValue();
+                toggleAdvancedOptions();
+                updateQRCode();
+            }
+        }
+
+        // Update size display
+        function updateSizeValue() {
+            const size = document.getElementById('qrSize').value;
+            document.getElementById('sizeValue').textContent = `${size}px`;
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            const inputs = ['qrType', 'qrData', 'qrSize', 'colorDark', 'colorLight', 'moduleStyle', 'qrStyle', 'borderWidth', 'borderColor', 'borderStyle'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'TEXTAREA') {
+                        el.addEventListener('input', debounce(updateQRCode, 300));
+                    } else {
+                        el.addEventListener('change', updateQRCode);
+                        if (el.type !== 'file') {
+                            el.addEventListener('input', updateQRCode);
+                        }
+                    }
+                }
+            });
+            document.getElementById('qrSize').addEventListener('input', updateSizeValue);
+        }
+
+        // Debounce utility
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSizeValue();
+            updateQRCode();
+            setupEventListeners();
+        });
+    </script>
+</body>
+</html>

@@ -79,33 +79,25 @@
         // Hiển thị mã đang kiểm tra
         document.getElementById('code-display').textContent = code;
 
-        // === THAY ĐỔI ĐƯỜNG DẪN NÀY BẰNG LINK WEB APP CỦA BẠN ===
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1234567890abcdefghijklmnopqrstuvxyz/exec';
+        // === THAY ĐỔI ĐƯỜNG DẪN NÀY BẰNG LINK WEB APP THẬT CỦA BẠN ===
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYhfBOGssebUSr6bJ2hADtpXsX8bwQqzWy3PoSj_tJKWKeqIrzptx8NuUVXlkYS8DG7A/exec'; // Ví dụ: AKfycbwYhfBOGssebUSr6bJ2hADtpXsX8bwQqzWy3PoSj_tJKWKeqIrzptx8NuUVXlkYS8DG7A
         // =========================================================
 
-        fetch(`${SCRIPT_URL}?c=${encodeURIComponent(code)}`, {
-            method: 'GET',
-            mode: 'no-cors', // nếu bạn deploy Apps Script dạng "Ai cũng có thể truy cập (kể cả ẩn danh)"
-            cache: 'no-cache'
-        })
-        .then(() => {
-            // Vì no-cors nên không đọc được response thật → dùng cách 2 bên dưới sẽ tốt hơn
-            // Nếu bạn muốn đọc được kết quả thật sự, hãy dùng cách 2 (CORS enabled)
-            showResultFromScriptURL(code);
-        })
-        .catch(err => {
-            document.getElementById('result').innerHTML = '<p class="error">Lỗi kết nối</p>';
-            document.querySelector('.loader').style.display = 'none';
-        });
-    }
-
-    // =============== CÁCH TỐT NHẤT (khuyên dùng) ===============
-    // Deploy Apps Script với quyền "Bất kỳ ai, kể cả ẩn danh" và bật CORS
-    function showResultFromScriptURL(code) {
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYhfBOGssebUSr6bJ2hADtpXsX8bwQqzWy3PoSj_tJKWKeqIrzptx8NuUVXlkYS8DG7A/exec';
-
-        fetch(`${SCRIPT_URL}?c=${encodeURIComponent(code)}`)
-            .then(response => response.json())
+        // Gọi script và hiển thị kết quả (cách tốt nhất, hỗ trợ CORS nếu deploy đúng)
+        function checkCode() {
+            fetch(`${SCRIPT_URL}?c=${encodeURIComponent(code)}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                cache: 'no-cache'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 document.querySelector('.loader').style.display = 'none';
 
@@ -127,9 +119,13 @@
             })
             .catch(err => {
                 document.querySelector('.loader').style.display = 'none';
-                document.getElementij('result').innerHTML = '<p class="error">Lỗi kết nối hoặc server</p>';
-                console.error(err);
+                document.getElementById('result').innerHTML = `<p class="error">Lỗi kết nối: ${err.message}. Kiểm tra URL script nhé!</p>`;
+                console.error('Fetch error:', err);
             });
+        }
+
+        // Gọi ngay
+        checkCode();
     }
 </script>
 
