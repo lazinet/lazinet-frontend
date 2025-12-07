@@ -1,9 +1,130 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi-VN">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator - LAZINET Enhanced</title>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <!-- === CORE META TAGS === -->
+    <title>LAZINET - Tạo Mã QR Tùy Chỉnh | Giải pháp AI, IoT, ERP, MES</title>
+    <meta name="description" content="LAZINET QR Generator - Tạo mã QR tùy chỉnh với AI & Style. Giải pháp chuyển đổi số toàn diện: AI, IoT, ERP, MES, CRM. Tư vấn 1:1, Demo trải nghiệm, hỗ trợ 24/7.">
+    <meta name="keywords" content="LAZINET, QR code generator, mã QR tùy chỉnh, chuyển đổi số, AI, IoT, ERP, MES, CRM, giải pháp công nghệ, phần mềm doanh nghiệp, digital transformation, artificial intelligence, internet of things">
+    <meta name="author" content="LAZINET Technologies">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- === CANONICAL & ALTERNATE URLs === -->
+    <link rel="canonical" href="https://lazinet.com/qr.html">
+    <link rel="alternate" hreflang="vi-VN" href="https://lazinet.com/qr.html">
+    <link rel="alternate" hreflang="x-default" href="https://lazinet.com/qr.html">
+    
+    <!-- === FAVICON & APP ICONS === -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    
+    <!-- === OPEN GRAPH (Facebook, LinkedIn) === -->
+    <meta property="og:title" content="LAZINET - Tạo Mã QR Tùy Chỉnh">
+    <meta property="og:description" content="Tạo mã QR tùy chỉnh với AI & Style. Giải pháp AI, IoT, ERP, MES, CRM tùy chỉnh cho doanh nghiệp. Tư vấn 1:1, Demo trải nghiệm.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lazinet.com/qr.html">
+    <meta property="og:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="LAZINET - Tạo Mã QR Tùy Chỉnh">
+    <meta property="og:site_name" content="LAZINET">
+    <meta property="og:locale" content="vi_VN">
+    
+    <!-- === TWITTER CARD === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LAZINET - Tạo Mã QR Tùy Chỉnh">
+    <meta name="twitter:description" content="Tạo mã QR tùy chỉnh với AI & Style. Giải pháp AI, IoT, ERP, MES, CRM tùy chỉnh cho doanh nghiệp.">
+    <meta name="twitter:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+    <meta name="twitter:image:alt" content="LAZINET - Tạo Mã QR">
+    <meta name="twitter:site" content="@lazinet">
+    <meta name="twitter:creator" content="@lazinet">
+    
+    <!-- === ZALO SPECIFIC === -->
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:secure_url" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+    
+    <!-- === TIKTOK SPECIFIC === -->
+    <meta property="al:ios:url" content="lazinet://app">
+    <meta property="al:ios:app_store_id" content="123456789">
+    <meta property="al:ios:app_name" content="LAZINET">
+    <meta property="al:android:url" content="lazinet://app">
+    <meta property="al:android:package" content="com.lazinet.app">
+    <meta property="al:android:app_name" content="LAZINET">
+    
+    <!-- === ADDITIONAL SEO META === -->
+    <meta name="theme-color" content="#0052FF">
+    <meta name="msapplication-TileColor" content="#0052FF">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="apple-mobile-web-app-title" content="LAZINET">
+    <meta name="application-name" content="LAZINET">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- === STRUCTURED DATA (JSON-LD) === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "LAZINET",
+        "alternateName": "LAZINET Technologies",
+        "url": "https://lazinet.com",
+        "logo": "https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoFullv2.png",
+        "description": "Đối tác chuyển đổi số toàn diện cung cấp giải pháp AI, IoT, ERP, MES, CRM tùy chỉnh cho doanh nghiệp",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "89 Phan Dinh Phung",
+            "addressLocality": "Ho Chi Minh City",
+            "addressRegion": "HCMC",
+            "postalCode": "700000",
+            "addressCountry": "VN"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+84-908556220",
+            "contactType": "customer service",
+            "email": "email@lazinet.com",
+            "availableLanguage": "Vietnamese"
+        },
+        "sameAs": [
+            "https://www.facebook.com/profile.php?id=61567050494124",
+            "https://linkedin.com/company/lazinet"
+        ]
+    }
+    </script>
+    
+    <!-- === PRELOAD CRITICAL RESOURCES === -->
+    <link rel="preload" href="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" as="image">
+    
+    <!-- === CSS FILES from OLD LAZINET === -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/vendor/aos/aos.css">
+    <link rel="stylesheet" href="../assets/vendor/glightbox/css/glightbox.min.css">
+    <link rel="stylesheet" href="../assets/vendor/swiper/swiper-bundle.min.css">
+
+	<!-- === CSS FILES from NEW LAZINET === -->
+	<link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Sans:wght@400..700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap">
+	<link rel="stylesheet" href="../assets/css/bootstrap.min.css" media="screen">
+	<link rel="stylesheet" href="../assets/css/slicknav.min.css">
+	<link rel="stylesheet" href="../assets/css/swiper-bundle.min.css">
+	<link rel="stylesheet" href="../assets/css/all.min.css" media="screen">
+	<link rel="stylesheet" href="../assets/css/animate.css">
+	<link rel="stylesheet" href="../assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="../assets/css/mousecursor.css">
+	<link rel="stylesheet" href="../assets/css/custom.css" media="screen">
+    <link rel="stylesheet" href="../assets/css/lazinet.css">
     <style>
         /* Global Variables from custom.css */
         :root {
@@ -22,6 +143,7 @@
             --divider-color: #FFFFFF1A;
             --error-color: rgb(230, 87, 87);
             --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
+            --dropdown-bg: #e0f2fe; /* Light blue for dropdown options */
         }
 
         /* General Styles from custom.css adapted */
@@ -40,6 +162,7 @@
             align-items: center;
             padding: 20px;
             color: var(--text-color);
+            overflow-x: hidden; /* Ngăn scroll ngang */
         }
 
         .container {
@@ -48,7 +171,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 30px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             border: 1px solid var(--divider-color);
         }
 
@@ -67,16 +190,44 @@
             font-size: 1.1em;
         }
 
+        .quick-types {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .quick-types button {
+            padding: 10px 20px;
+            background: var(--accent-secondary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+            min-width: 120px;
+            max-width: 180px;
+            text-align: center;
+            white-space: nowrap; /* Ngăn text wrap */
+        }
+
+        .quick-types button:hover, .quick-types button.active {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
         }
 
         .input-section {
@@ -108,6 +259,23 @@
             backdrop-filter: blur(10px);
         }
 
+        select {
+            background: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        /* Dropdown options styling */
+        select option {
+            background: var(--dropdown-bg);
+            color: var(--black-color);
+            padding: 5px;
+        }
+
+        select option:hover {
+            background: var(--accent-color);
+            color: var(--white-color);
+        }
+
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--accent-color);
@@ -122,7 +290,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: top;
             gap: 20px;
         }
 
@@ -137,12 +305,24 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            position: relative;
         }
 
         #qrCode {
             max-width: 100%;
+            max-height: 100%;
+            width: 100%;
             height: auto;
             border-radius: 10px;
+            display: block;
+        }
+
+        #qrCode canvas {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            object-fit: contain;
         }
 
         .qr-info {
@@ -155,19 +335,20 @@
             border-radius: 10px;
             width: 100%;
         }
-
         .controls {
             display: flex;
-            gap: 15px;
             flex-wrap: wrap;
+            gap: 15px;
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid var(--divider-color);
+            justify-content: center; /* Căn giữa các nút */
         }
 
         button {
-            flex: 1;
+            flex: 1 1 auto; /* Thay đổi từ flex: 1 thành flex: 1 1 auto */
             min-width: 120px;
+            max-width: 250px; /* Giới hạn chiều rộng tối đa */
             padding: 14px 25px;
             border: none;
             border-radius: 10px;
@@ -182,6 +363,8 @@
             background: linear-gradient(to right, var(--accent-secondary-color) 0%, var(--accent-color) 50%, var(--accent-secondary-color) 100%);
             background-size: 200% auto;
             color: var(--white-color);
+            text-align: center;
+            white-space: nowrap; /* Ngăn text wrap */
         }
 
         button:hover {
@@ -233,7 +416,7 @@
         }
 
         .loading {
-            display: none;
+            /* display: none; */
             color: var(--accent-color);
             font-style: italic;
             text-align: center;
@@ -274,6 +457,323 @@
             font-size: 0.9em;
         }
 
+        /* Responsive Design Improvements */
+        /* Large Desktop (1200px+) */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 40px;
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        /* Desktop (992px - 1199px) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .container {
+                padding: 30px;
+            }
+        }
+
+        /* Tablet Landscape (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 25px;
+                max-width: 95%;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .subtitle {
+                font-size: 1em;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .qr-section {
+                order: -1; /* Đặt QR section lên trên input trên tablet */
+            }
+
+            .color-picker {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .file-input-group {
+                flex-direction: row;
+            }
+            .file-input-group input[type="file"],
+            .file-input-group input[type="url"] {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+
+        /* Tablet Portrait & Small Desktop (481px - 767px) */
+        @media (min-width: 481px) and (max-width: 767px) {
+            body {
+                padding: 10px;
+                align-items: flex-start; /* Bắt đầu từ top để tránh overflow */
+                padding-top: 20px;
+            }
+            .container {
+                padding: 20px;
+                max-width: 98%;
+                border-radius: 15px;
+            }
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+            .subtitle {
+                font-size: 0.95em;
+                margin-bottom: 20px;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .qr-section {
+                order: -1;
+            }
+            .input-group {
+                gap: 6px;
+            }
+            label {
+                font-size: 0.9em;
+            }
+            input, select, textarea {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+            .color-picker {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .color-input {
+                width: 50px;
+                height: 35px;
+            }
+            .file-input-group {
+                flex-direction: column;
+            }
+            .file-input-group input[type="file"],
+            .file-input-group input[type="url"] {
+                width: 100%;
+                min-width: auto;
+            }
+            .stats {
+                font-size: 0.8em;
+            }
+            .controls {
+                flex-direction: row;
+                justify-content: space-around;
+                gap: 10px;
+            }
+            button {
+                flex: 1 1 45%;
+                min-width: auto;
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+            footer {
+                margin-top: 20px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Mobile Landscape (361px - 480px) */
+        @media (min-width: 361px) and (max-width: 480px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .container {
+                padding: 15px;
+                border-radius: 10px;
+                margin: 0 auto;
+            }
+            h1 {
+                font-size: 1.6em;
+            }
+            .subtitle {
+                font-size: 0.9em;
+                margin-bottom: 15px;
+            }
+            .main-content {
+                gap: 10px;
+            }
+            #qrContainer {
+                min-height: 250px;
+                padding: 15px;
+            }
+            input, select, textarea {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+            button {
+                width: 100%;
+                max-width: none;
+                padding: 12px;
+            }
+        }
+
+        /* Mobile Portrait (320px - 480px) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 5px;
+                align-items: stretch;
+                justify-content: flex-start;
+                padding-top: 15px;
+            }
+            .container {
+                padding: 15px 10px;
+                max-width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 10px;
+            }
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 15px;
+                line-height: 1.3;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .qr-section {
+                order: -1;
+            }
+            .input-section {
+                gap: 15px;
+            }
+            .input-group {
+                gap: 5px;
+            }
+            label {
+                font-size: 0.85em;
+            }
+            input, select, textarea {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            textarea {
+                min-height: 80px;
+                resize: vertical;
+            }
+            .color-picker {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .color-input {
+                width: 45px;
+                height: 30px;
+            }
+            .file-input-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .file-input-group input {
+                width: 100%;
+                min-width: auto;
+            }
+            #qrContainer {
+                min-height: 200px;
+                padding: 10px;
+            }
+            .qr-info {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            .stats {
+                justify-content: space-around;
+                font-size: 0.75em;
+            }
+            .advanced-options {
+                padding: 12px;
+                gap: 12px;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 15px;
+                padding-top: 15px;
+            }
+            button {
+                width: 100%;
+                max-width: none;
+                min-width: auto;
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+            footer {
+                margin-top: 15px;
+                padding-top: 15px;
+                font-size: 0.8em;
+                text-align: center;
+            }
+        }
+
+        /* Very Small Mobile (under 320px) */
+        @media (max-width: 319px) {
+            body {
+                padding: 5px;
+            }
+            .container {
+                padding: 10px 5px;
+            }
+            h1 {
+                font-size: 1.3em;
+            }
+            input, select, textarea {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+            .color-input {
+                width: 40px;
+                height: 25px;
+            }
+        }
+
+        /* High DPI/Retina Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            #qrCode canvas {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+
+        /* Orientation Changes */
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                align-items: flex-start;
+                padding-top: 10px;
+            }
+            .container {
+                margin-top: 10px;
+            }
+            .main-content {
+                gap: 15px;
+            }
+            #qrContainer {
+                min-height: 200px;
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -286,6 +786,93 @@
             .file-input-group {
                 flex-direction: column;
             }
+            .quick-types {
+                flex-direction: column;
+            }
+        }
+        .quick-types {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .quick-types button {
+            padding: 10px 20px;
+            background: var(--accent-secondary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+            min-width: 120px;
+            max-width: 180px;
+            text-align: center;
+        }
+
+        .quick-types button:hover, .quick-types button.active {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive - Large screens: 1 row */
+        @media (min-width: 992px) {
+            .quick-types {
+                flex-wrap: nowrap;
+            }
+            .quick-types button {
+                flex: 1;
+                min-width: auto;
+            }
+        }
+
+        /* Responsive - Medium screens: 2 rows */
+        @media (max-width: 991px) and (min-width: 577px) {
+            .quick-types {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .quick-types button {
+                width: 100%;
+                min-width: auto;
+                max-width: 100%;
+                padding: 10px 15px;
+            }
+        }
+
+        /* Responsive - Small screens: 2 columns, 3 rows */
+        @media (max-width: 576px) {
+            .quick-types {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .quick-types button {
+                width: 100%;
+                min-width: auto;
+                max-width: 100%;
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        /* Very small screens: full width */
+        @media (max-width: 360px) {
+            .quick-types {
+                grid-template-columns: 1fr;
+            }
+            .quick-types button {
+                padding: 12px 15px;
+            }
         }
     </style>
     <!-- QR Code Styling CDN -->
@@ -294,25 +881,63 @@
     <script src="https://unpkg.com/qr-border-plugin"></script>
 </head>
 <body>
+    
+    <!-- BONG BÓNG CHAT -->
+    <div class="lazinet-contact-floating">
+        <!-- Main Button -->
+        <div class="lazinet-contact-main-btn pulse">
+            <img src="../assets/img/logo-lazinet/lazinet_LogoOnly_extending.svg" alt="Contact Us">
+        </div>
+        
+        <!-- Contact Buttons -->
+        <div class="lazinet-contact-buttons">
+            <!-- AI Bot -->
+            <div class="lazinet-contact-btn ai-bot" title="Chat với trợ lý ảo LAZINET">
+                <img src="../assets/img/others/chatbot.svg" alt="AI Assistant">
+                <span class="lazinet-contact-label">AI Assistant</span>
+            </div>
+            
+            <!-- Messenger -->
+            <div class="lazinet-contact-btn messenger" title="Chat với LAZINET Messenger">
+                <img src="../assets/img/others/messenger.png" alt="Messenger">
+                <span class="lazinet-contact-label">Messenger</span>
+            </div>
+            
+            <!-- Zalo -->
+            <div class="lazinet-contact-btn zalo" title="Chat với LAZINET Zalo 0908556220">
+                <img src="../assets/img/others/zalo.png" alt="Zalo">
+                <span class="lazinet-contact-label">Zalo Chat</span>
+            </div>
+            
+            <!-- Phone -->
+            <div class="lazinet-contact-btn phone" title="Gọi ngay LAZINET 0908556220">
+                <img src="../assets/img/others/call.png" alt="Phone">
+                <span class="lazinet-contact-label">Gọi điện</span>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
-        <h1>🔮 QR Code Generator - LAZINET</h1>
-        <p class="subtitle">Tạo QR code tùy chỉnh với AI & Style - Thuần JavaScript Enhanced</p>
+        <a href="../index.html">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 100px; padding-bottom: 20px;">
+            </div>
+            <h1>QR Code Generator</h1>
+            <p class="subtitle">Tạo QR code với Logo thương hiệu của bạn và nhiều tuỳ chỉnh cho mọi mục đích</p>
+        </a>
+        <!-- Quick Types Buttons -->
+        <div class="quick-types">
+            <button class="active" onclick="setQRType('text', event)">📝 Text</button>
+            <button onclick="setQRType('url', event)">🌐 URL</button>
+            <button onclick="setQRType('wifi', event)">📶 WiFi</button>
+            <button onclick="setQRType('phone', event)">📞 Phone</button>
+            <button onclick="setQRType('email', event)">✉️ Email</button>
+            <button onclick="setQRType('vcard', event)">👤 vCard</button>
+        </div>
         
         <div class="main-content">
             <!-- Input Section -->
             <div class="input-section">
-                <div class="input-group">
-                    <label for="qrType">Loại dữ liệu:</label>
-                    <select id="qrType">
-                        <option value="text">Văn bản</option>
-                        <option value="url">URL</option>
-                        <option value="email">Email</option>
-                        <option value="phone">Số điện thoại</option>
-                        <option value="wifi">WiFi</option>
-                        <option value="vcard">vCard</option>
-                    </select>
-                </div>
-
                 <div class="input-group">
                     <label for="qrData">Nội dung QR code:</label>
                     <textarea id="qrData" placeholder="Nhập nội dung... (Tự động format theo loại)">https://lazinet.com</textarea>
@@ -329,6 +954,21 @@
                     </div>
                 </div>
                 
+                <div class="input-group">
+                    <label for="qrMargin">Margin (Lề ngoài QR, px):</label>
+                    <input type="number" id="qrMargin" min="0" max="50" value="10" style="width: 100px;">
+                </div>
+
+                <div class="input-group">
+                    <label for="errorCorrection">Error Correction:</label>
+                    <select id="errorCorrection">
+                        <option value="L">L (7%)</option>
+                        <option value="M" selected>M (15%)</option>
+                        <option value="Q">Q (25%)</option>
+                        <option value="H">H (30%)</option>
+                    </select>
+                </div>
+
                 <div class="input-group">
                     <label>Màu sắc:</label>
                     <div class="color-picker">
@@ -387,8 +1027,6 @@
                         <input type="url" id="centerImageUrl" placeholder="Hoặc dán URL ảnh...">
                     </div>
                 </div>
-
-                <div class="loading" id="loading">Đang tạo QR code...</div>
             </div>
             
             <!-- QR Code Section -->
@@ -397,23 +1035,35 @@
                     <div id="qrCode"></div>
                 </div>
                 <div class="qr-info">
-                    QR code sẽ tự động cập nhật khi bạn thay đổi nội dung
+                    QR code tự động cập nhật theo nội dung
+                </div>
+                    
+                <div class="loading" id="loading"></div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <button class="btn-download" onclick="downloadQR()">
+                        <span>💾</span> Tải xuống
+                    </button>
+                    <button class="btn-reset" onclick="resetSettings()">
+                        <span>🔄</span> Đặt lại
+                    </button>
                 </div>
             </div>
         </div>
         
-        <!-- Controls -->
-        <div class="controls">
-            <button class="btn-download" onclick="downloadQR()">
-                <span>💾</span> Tải xuống
-            </button>
-            <button class="btn-reset" onclick="resetSettings()">
-                <span>🔄</span> Đặt lại
-            </button>
-        </div>
         
         <footer>
-            <p>© 2025 LAZINET QR Generator | Enhanced with qr-code-styling & qr-border-plugin (Trial)</p>
+            <div class="footer-copyright-text">
+                <p><span id="currentYear"></span> LAZINET &copy; 
+                <script>
+                    const startYear = 2024; // Năm bắt đầu
+                    const currentYear = new Date().getFullYear(); // Năm hiện tại
+                    document.write(`${startYear}–${currentYear}`);
+                </script>
+                . Tất cả quyền được bảo lưu.
+                </p>
+            </div>
         </footer>
     </div>
 
@@ -424,6 +1074,45 @@
 
         // Global vars
         let currentImage = null;
+        let currentType = 'url';
+
+        // Function to handle UTF-8 encoding for QR data
+        function encodeForQR(data) {
+            return unescape(encodeURIComponent(data));
+        }
+
+        // Set QR Type with buttons
+        function setQRType(type, event) {
+            currentType = type;
+            const buttons = document.querySelectorAll('.quick-types button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            let defaultData = '';
+            switch (type) {
+                case 'url':
+                    defaultData = 'https://lazinet.com';
+                    break;
+                case 'wifi':
+                    defaultData = 'LAZINET Network';
+                    break;
+                case 'phone':
+                    defaultData = '+84908556220';
+                    break;
+                case 'email':
+                    defaultData = 'email@lazinet.com';
+                    break;
+                case 'text':
+                    defaultData = 'Chào mừng bạn đến với LAZINET!';
+                    break;
+                case 'vcard':
+                    defaultData = 'Tiến sĩ Phùng Thế Bảo';
+                    break;
+            }
+            document.getElementById('qrData').value = defaultData;
+            updateQRCode();
+        }
 
         // Format data based on type
         function formatData(type, data) {
@@ -449,16 +1138,21 @@
             const advanced = document.getElementById('advancedOptions');
             advanced.classList.toggle('show', style === 'bordered');
             if (style !== 'bordered' && isBorderApplied) {
-                qrCode.deleteExtension();
+                if (qrCode) {
+                    qrCode.deleteExtension('QrBorderPlugin');
+                }
                 isBorderApplied = false;
             }
+            updateQRCode();
         }
 
         // Update QR
         function updateQRCode() {
-            const type = document.getElementById('qrType').value;
+            const type = currentType;
             let data = document.getElementById('qrData').value.trim();
             const size = parseInt(document.getElementById('qrSize').value);
+            const margin = parseInt(document.getElementById('qrMargin').value);
+            const errorLevel = document.getElementById('errorCorrection').value;
             const colorDark = document.getElementById('colorDark').value;
             const colorLight = document.getElementById('colorLight').value;
             const moduleStyle = document.getElementById('moduleStyle').value;
@@ -466,6 +1160,9 @@
 
             // Format data
             data = formatData(type, data);
+
+            // Encode for proper UTF-8 handling in QR (workaround for non-ASCII like Vietnamese)
+            data = encodeForQR(data);
 
             if (data.length > 2953) {
                 document.getElementById('dataError').style.display = 'block';
@@ -475,13 +1172,19 @@
             }
 
             // Show loading
-            document.getElementById('loading').style.display = 'block';
+            const loadingEl = document.getElementById('loading');
+            if (loadingEl) loadingEl.style.display = 'block';
 
             // Basic options
             const options = {
                 width: size,
                 height: size,
+                margin: margin,
                 data: data,
+                qrOptions: {
+                    errorCorrectionLevel: errorLevel,
+                    mode: 'Byte'  // Force Byte mode for proper UTF-8 handling with non-ASCII characters like Vietnamese
+                },
                 image: currentImage,
                 dotsOptions: {
                     color: colorDark,
@@ -493,6 +1196,7 @@
                 imageOptions: {
                     crossOrigin: "anonymous",
                     margin: 10,
+                    imageSize: 0.5
                 },
                 cornersSquareOptions: {
                     color: colorDark,
@@ -518,6 +1222,7 @@
                     color: borderColor,
                     dasharray: dasharray,
                 });
+                isBorderApplied = true;
             }
 
             // Update or init
@@ -529,8 +1234,8 @@
             }
 
             setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-            }, 100);
+                if (loadingEl) loadingEl.style.display = 'none';
+            }, 500);
         }
 
         // Handle image upload
@@ -555,26 +1260,37 @@
             }
         });
 
-        // Download
+        // Download with custom filename
         function downloadQR() {
             if (qrCode) {
-                qrCode.download({ name: "qrcode", extension: "png" });
+                const now = new Date();
+                const yymmddhhmmss = [
+                    now.getFullYear().toString().slice(-2),
+                    (now.getMonth() + 1).toString().padStart(2, '0'),
+                    now.getDate().toString().padStart(2, '0'),
+                    now.getHours().toString().padStart(2, '0'),
+                    now.getMinutes().toString().padStart(2, '0'),
+                    now.getSeconds().toString().padStart(2, '0')
+                ].join('');
+                const fileName = `QR_LAZINET_${yymmddhhmmss}`;
+                qrCode.download({ name: fileName, extension: "png" });
             }
         }
 
         // Reset
         function resetSettings() {
             if (confirm('Đặt lại tất cả?')) {
-                document.getElementById('qrType').value = 'text';
-                document.getElementById('qrData').value = 'https://lazinet.com';
+                setQRType('text', {target: document.querySelector('.quick-types button:first-child')});
                 document.getElementById('qrSize').value = 250;
+                document.getElementById('qrMargin').value = 0;
+                document.getElementById('errorCorrection').value = 'M';
                 document.getElementById('colorDark').value = '#000000';
                 document.getElementById('colorLight').value = '#ffffff';
                 document.getElementById('moduleStyle').value = 'square';
                 document.getElementById('qrStyle').value = 'default';
                 document.getElementById('centerImageUrl').value = '';
                 document.getElementById('centerImageFile').value = '';
-                currentImage = null;
+                currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png";
                 updateSizeValue();
                 toggleAdvancedOptions();
                 updateQRCode();
@@ -585,25 +1301,6 @@
         function updateSizeValue() {
             const size = document.getElementById('qrSize').value;
             document.getElementById('sizeValue').textContent = `${size}px`;
-        }
-
-        // Event listeners
-        function setupEventListeners() {
-            const inputs = ['qrType', 'qrData', 'qrSize', 'colorDark', 'colorLight', 'moduleStyle', 'qrStyle', 'borderWidth', 'borderColor', 'borderStyle'];
-            inputs.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    if (el.tagName === 'TEXTAREA') {
-                        el.addEventListener('input', debounce(updateQRCode, 300));
-                    } else {
-                        el.addEventListener('change', updateQRCode);
-                        if (el.type !== 'file') {
-                            el.addEventListener('input', updateQRCode);
-                        }
-                    }
-                }
-            });
-            document.getElementById('qrSize').addEventListener('input', updateSizeValue);
         }
 
         // Debounce utility
@@ -619,11 +1316,38 @@
             };
         }
 
+        // Event listeners
+        function setupEventListeners() {
+            // For qrData textarea
+            const qrDataEl = document.getElementById('qrData');
+            if (qrDataEl) {
+                const debouncedUpdate = debounce(updateQRCode, 300);
+                qrDataEl.addEventListener('input', debouncedUpdate);
+                qrDataEl.addEventListener('propertychange', debouncedUpdate); // For IE support if needed
+            }
+
+            const inputs = ['qrSize', 'qrMargin', 'errorCorrection', 'colorDark', 'colorLight', 'moduleStyle', 'qrStyle', 'borderWidth', 'borderColor', 'borderStyle'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', updateQRCode);
+                    if (el.type !== 'file' && el.tagName !== 'SELECT') {
+                        el.addEventListener('input', updateQRCode);
+                    }
+                }
+            });
+            const sizeEl = document.getElementById('qrSize');
+            if (sizeEl) sizeEl.addEventListener('input', updateSizeValue);
+        }
+
         // Init
         document.addEventListener('DOMContentLoaded', () => {
             updateSizeValue();
-            updateQRCode();
             setupEventListeners();
+            setQRType('text', {target: document.querySelector('.quick-types button:first-child')});
+            // Thêm dòng này để load logo mặc định (placeholder)
+            currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png";  // Hoặc đường dẫn local của bạn
+            updateQRCode();  // Cập nhật QR để áp dụng logo ngay lập tức
         });
     </script>
 </body>

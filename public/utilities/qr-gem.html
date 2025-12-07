@@ -29,36 +29,6 @@
     <meta property="og:site_name" content="LAZINET">
     <meta property="og:locale" content="vi_VN">
     
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LAZINET - Công cụ tạo Mã QR Nâng cao">
-    <meta name="twitter:description" content="Tạo Mã QR tùy chỉnh miễn phí hỗ trợ tiếng Việt, logo, style và màu sắc đa dạng.">
-    <meta name="twitter:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
-    <meta name="twitter:site" content="@lazinet">
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "LAZINET QR Code Generator",
-        "url": "https://lazinet.com/qr-generator.html",
-        "applicationCategory": "UtilityTool",
-        "operatingSystem": "WEB",
-        "description": "Công cụ tạo mã QR tùy chỉnh nâng cao, hỗ trợ đa dạng định dạng và tiếng Việt.",
-        "offers": {
-            "@type": "Offer",
-            "price": "0.00",
-            "priceCurrency": "VND"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "LAZINET",
-            "url": "https://lazinet.com"
-        }
-    }
-    </script>
-    
-    <!-- <link rel="preload" href="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" as="image"> -->
-    
     <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/vendor/aos/aos.css">
     <link rel="stylesheet" href="../assets/vendor/glightbox/css/glightbox.min.css">
@@ -82,23 +52,16 @@
         :root {
             --primary-color: #FFFFFF;
             --secondary-color: #FFFFFF0A;
-            --orange-main: #ff5000;
-            --orange-light: #FFbbbb;
-            --blue-main: blue;
-            --blue-light: #ccccff;
             --text-color: #FFFFFF;
             --accent-color: #3F82FB;
             --accent-secondary-color: #0F2453;
             --bg-color: #0F162C;
             --white-color: #FFFFFF;
-            --black-color: #000000;
             --divider-color: #FFFFFF1A;
             --error-color: rgb(230, 87, 87);
             --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
-            --dropdown-bg: #e0f2fe; /* Light blue for dropdown options */
         }
 
-        /* General Styles from custom.css adapted */
         * {
             margin: 0;
             padding: 0;
@@ -106,25 +69,19 @@
             font-family: var(--default-font);
         }
 
-        /* Thay đổi body để tránh xung đột với layout contact.html */
-        body {
-            /* Giữ lại body styles cho theme */
-            background: var(--bg-color); 
-            color: var(--text-color);
-            min-height: 100vh;
-        }
-
-        /* Main Wrapper cho nội dung QR */
+        /* Responsive Fix: Thêm padding-top để tránh bị che bởi Fixed Header */
         .qr-page-wrapper {
             background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
             padding: 50px 20px;
+            /* Điều chỉnh padding-top lớn hơn chiều cao header (khoảng 80px) */
+            padding-top: 120px; /* Thêm khoảng đệm 120px để tránh bị che */
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            min-height: 100vh;
         }
 
         .container-qr {
-            /* Tận dụng lại container cũ nhưng đổi tên để tránh xung đột */
             background: var(--bg-color);
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -149,7 +106,37 @@
             font-size: 1.1em;
         }
 
-        /* Menu nhanh */
+        /* KHỐI NỘI DUNG CHÍNH (Input & QR) */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.95em;
+        }
+
+        input, select, textarea {
+            padding: 12px 15px;
+            border: 2px solid var(--divider-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background: var(--secondary-color);
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+            width: 100%; /* Đảm bảo input chiếm đủ width */
+        }
+        
+        /* Menu nhanh (Quick Types) */
         .quick-types {
             display: flex;
             gap: 10px;
@@ -163,6 +150,7 @@
         }
 
         .quick-types button {
+            flex-grow: 1; /* Cho phép các nút giãn ra */
             padding: 8px 15px;
             background: var(--accent-secondary-color);
             color: var(--white-color);
@@ -172,64 +160,7 @@
             transition: all 0.3s;
             font-size: 14px;
             font-weight: 500;
-        }
-
-        .quick-types button:hover, .quick-types button.active {
-            background: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .input-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        label {
-            font-weight: 600;
-            color: var(--primary-color);
-            font-size: 0.95em;
-        }
-
-        input, select, textarea {
-            padding: 12px 15px;
-            border: 2px solid var(--divider-color);
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: var(--secondary-color);
-            color: var(--text-color);
-            backdrop-filter: blur(10px);
-        }
-
-        select option {
-            background: var(--bg-color); /* Sử dụng màu nền tối cho option */
-            color: var(--white-color);
-            padding: 5px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(63, 130, 251, 0.1);
+            min-width: 80px;
         }
 
         .qr-section {
@@ -241,35 +172,19 @@
         }
 
         #qrContainer {
-            background: #ffffff; /* Đặt nền trắng cho QR để rõ hơn trên nền tối của trang */
+            background: #ffffff;
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: 1px solid var(--divider-color);
-            min-height: 300px;
+            min-height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
         }
-
-        #qrCode canvas, #qrCode svg {
-            display: block;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .qr-info {
-            text-align: center;
-            color: var(--text-color);
-            opacity: 0.8;
-            font-size: 0.9em;
-            padding: 10px;
-            background: var(--secondary-color);
-            border-radius: 10px;
-            width: 100%;
-        }
-
+        
+        /* Nút Tải xuống/Đặt lại */
         .controls {
             display: flex;
             gap: 15px;
@@ -278,8 +193,8 @@
             padding-top: 20px;
             border-top: 1px solid var(--divider-color);
         }
-
-        button {
+        
+        .controls button {
             flex: 1;
             min-width: 120px;
             padding: 14px 25px;
@@ -287,83 +202,57 @@
             border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: linear-gradient(to right, var(--accent-secondary-color) 0%, var(--accent-color) 50%, var(--accent-secondary-color) 100%);
-            background-size: 200% auto;
-            color: var(--white-color);
         }
 
-        .btn-reset {
-            background: var(--secondary-color);
-            color: var(--text-color);
-            border: 2px solid var(--divider-color);
-        }
+        /* === MEDIA QUERIES CHO RESPONSIVE === */
 
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            color: var(--text-color);
-            opacity: 0.8;
-            font-size: 0.9em;
-        }
-
-        .error {
-            color: var(--error-color);
-            font-size: 0.9em;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .loading {
-            display: none;
-            color: var(--accent-color);
-            font-style: italic;
-            text-align: center;
-        }
-
-        .advanced-options {
-            display: none;
-            gap: 15px;
-            padding: 15px;
-            background: var(--secondary-color);
-            border-radius: 10px;
-            border: 1px solid var(--divider-color);
-        }
-
-        .advanced-options.show {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .file-input-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        /* 1. Thiết bị Tablet (dưới 992px) */
+        @media (max-width: 992px) {
+            .container-qr {
+                max-width: 760px;
+            }
         }
         
-        /* Responsive */
+        /* 2. Thiết bị Điện thoại / Tablet dọc (dưới 768px) */
         @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr; /* Stack input và QR code */
+            }
             .container-qr {
-                padding: 20px;
+                padding: 20px 15px;
             }
-            .color-picker {
-                flex-direction: column;
-                align-items: flex-start;
+            .page-title {
+                font-size: 2em;
             }
-            .file-input-group {
-                flex-direction: column;
+            
+            .qr-page-wrapper {
+                padding: 100px 10px 40px; /* Giảm padding ngang, giữ padding top */
             }
-            .quick-types {
-                flex-direction: column;
+
+            .quick-types button {
+                flex-basis: calc(33.333% - 10px); /* 3 nút trên 1 hàng */
+                font-size: 13px;
+            }
+            
+            .controls button {
+                flex-basis: 100%; /* 2 nút chiếm toàn bộ chiều ngang */
+            }
+        }
+        
+        /* 3. Thiết bị Điện thoại nhỏ (dưới 480px) */
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.6em;
+            }
+            .subtitle-qr {
+                font-size: 1em;
+            }
+            .quick-types button {
+                flex-basis: calc(50% - 5px); /* 2 nút trên 1 hàng */
+                padding: 10px 8px;
             }
             .qr-page-wrapper {
-                padding: 20px 10px;
+                 padding-top: 90px; /* Giảm padding top nếu header nhỏ hơn */
             }
         }
     </style>
@@ -387,17 +276,14 @@
                 <img src="../assets/img/others/chatbot.svg" alt="AI Assistant">
                 <span class="lazinet-contact-label">AI Assistant</span>
             </div>
-            
             <div class="lazinet-contact-btn messenger" title="Chat với LAZINET Messenger">
                 <img src="../assets/img/others/messenger.png" alt="Messenger">
                 <span class="lazinet-contact-label">Messenger</span>
             </div>
-            
             <div class="lazinet-contact-btn zalo" title="Chat với LAZINET Zalo 0908556220">
                 <img src="../assets/img/others/zalo.png" alt="Zalo">
                 <span class="lazinet-contact-label">Zalo Chat</span>
             </div>
-            
             <div class="lazinet-contact-btn phone" title="Gọi ngay LAZINET 0908556220">
                 <img src="../assets/img/others/call.png" alt="Phone">
                 <span class="lazinet-contact-label">Gọi điện</span>
@@ -489,7 +375,7 @@
                     
                     <div class="input-group">
                         <label for="qrData">Nội dung QR code:</label>
-                        <textarea id="qrData" placeholder="Nhập nội dung... (Tự động format theo loại)">https://lazinet.com</textarea>
+                        <textarea id="qrData" placeholder="Nhập nội dung... (Tự động format theo loại)"></textarea>
                         <div class="error" id="dataError">Nội dung quá dài! Vui lòng nhập ít hơn 2953 ký tự.</div>
                     </div>
                     
@@ -525,11 +411,9 @@
                     
                     <div class="input-group">
                         <label>Màu sắc:</label>
-                        <div class="color-picker">
-                            <label>Màu Module:</label>
-                            <input type="color" id="colorDark" class="color-input" value="#000000">
-                            <label>Màu Nền:</label>
-                            <input type="color" id="colorLight" class="color-input" value="#ffffff">
+                        <div class="color-picker" style="display: flex; gap: 15px;">
+                            <label>Màu Module: <input type="color" id="colorDark" class="color-input" value="#000000" style="width: 50px; height: 35px; padding: 0;"></label>
+                            <label>Màu Nền: <input type="color" id="colorLight" class="color-input" value="#ffffff" style="width: 50px; height: 35px; padding: 0;"></label>
                         </div>
                     </div>
 
@@ -562,7 +446,7 @@
                         </div>
                         <div class="input-group">
                             <label for="borderColor">Màu Border:</label>
-                            <input type="color" id="borderColor" value="#ff6302">
+                            <input type="color" id="borderColor" value="#ff6302" style="width: 100%;">
                         </div>
                         <div class="input-group">
                             <label for="borderStyle">Style Border:</label>
@@ -714,7 +598,7 @@
     <script src="../assets/js/ScrollTrigger.min.js"></script>
     <script src="../assets/js/jquery.mb.YTPlayer.min.js"></script>
     <script src="../assets/js/wow.min.js"></script>
-    <!-- <script src="../assets/js/main.js"></script> -->
+    <script src="../assets/js/main.js"></script>
 
     <script>
         // QR Code Styling Instance
@@ -722,7 +606,7 @@
         let isBorderApplied = false;
 
         // Global vars
-        let currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png"; // Logo mặc định
+        let currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png"; // Logo mặc định dùng đường dẫn tương đối
         let currentType = 'url'; 
 
         // Hàm mới: Xử lý khi nhấn nút loại dữ liệu
@@ -757,11 +641,11 @@
                     defaultData = 'Họ Tên;+84908556220;email@lazinet.com';
                     break;
                 case 'momo':
-                    // Ví dụ: PAY20908556220 - Bỏ tiền, để số điện thoại
+                    // Ví dụ: 20908556220 - Bỏ tiền, để số điện thoại
                     defaultData = '20908556220'; 
                     break;
                 case 'vietqr':
-                    // Ví dụ: 9704030099999999999|001|LAZINET TECHNOLOGY|Thanh toan dich vu
+                    // Ví dụ: 970416|001|0336677777|LAZINET|Thanh toan dich vu
                     defaultData = '970416|001|0336677777|LAZINET|Thanh toan dich vu';
                     break;
             }
@@ -779,18 +663,14 @@
                 case 'phone':
                     return 'tel:' + data;
                 case 'wifi':
-                    // Giả sử data là chuỗi format WIFI:S:SSID;T:TYPE;P:PASS;;
                     if (data.startsWith('WIFI:')) return data;
-                    // Nếu người dùng chỉ nhập SSID:
                     return 'WIFI:S:' + data + ';T:WPA;P:;;'; 
                 case 'vcard':
-                    // Phân tách data (ví dụ: Ten;Phone;Email)
                     const parts = data.split(';');
                     const name = parts[0] || 'Unknown';
                     const phone = parts[1] || '';
                     const email = parts[2] || '';
                     
-                    // Thêm CHARSET=UTF-8 cho FN để đảm bảo tiếng Việt hiển thị đúng
                     let vcard = 'BEGIN:VCARD\nVERSION:3.0\n';
                     vcard += 'FN;CHARSET=UTF-8:' + name + '\n';
                     if (phone) vcard += 'TEL:' + phone + '\n';
@@ -801,19 +681,8 @@
                     // Dùng format MoMo: 2|908556220|0|Loi nhan
                     return `2|${data}|0|Thanh toan dich vu LAZINET`;
                 case 'vietqr':
-                    // Format VietQR chuẩn
-                    const vietqrParts = data.split('|');
-                    if (vietqrParts.length >= 4) {
-                        const bankCode = vietqrParts[0];
-                        const accountNo = vietqrParts[2];
-                        const amount = vietqrParts[3]; // Lấy giá trị tiền
-                        const note = vietqrParts[4] || 'Thanh toan';
-                        // Cấu trúc QR Code for Payment
-                        // Sẽ cần xử lý cấu trúc phức tạp hơn của VietQR nếu cần: 0002010102113857...
-                        // Tạm thời dùng cú pháp chung: Cấu trúc cơ bản cho VietQR (chưa đủ)
-                        return `QR_PAYMENT|${bankCode}|${accountNo}|${amount}|${note}`; 
-                    }
-                    return data; // Trả về data thô nếu format không đúng
+                    // Tạm thời trả về thô, lý tưởng là dùng API của VietQR để tạo chuỗi chính xác
+                    return data; 
                 default:
                     return data;
             }
@@ -826,12 +695,11 @@
             advanced.classList.toggle('show', style === 'bordered');
             if (style !== 'bordered' && isBorderApplied) {
                 if (qrCode && qrCode.deleteExtension) {
-                    // Xóa extension khi chuyển về mặc định
                     qrCode.deleteExtension('QrBorderPlugin');
                 }
                 isBorderApplied = false;
             }
-            updateQRCode(); // Cần update lại để xóa border
+            updateQRCode();
         }
 
         // Update QR
@@ -846,7 +714,6 @@
             const marginSize = parseInt(document.getElementById('marginSize').value); 
             const errorCorrectionLevel = document.getElementById('errorCorrection').value; 
 
-            // Format data
             data = formatData(type, data);
 
             if (data.length > 2953) {
@@ -856,10 +723,8 @@
                 document.getElementById('dataError').style.display = 'none';
             }
 
-            // Show loading
             document.getElementById('loading').style.display = 'block';
 
-            // Basic options
             const options = {
                 width: size,
                 height: size,
@@ -870,7 +735,7 @@
                 // CẤU HÌNH CHO MÃ HÓA UTF-8 (TIẾNG VIỆT)
                 qrOptions: {
                     typeNumber: 0,
-                    mode: 'Byte', // Giữ nguyên để ép dùng mã hóa byte (UTF-8)
+                    mode: 'Byte', 
                     errorCorrectionLevel: errorCorrectionLevel 
                 },
                 
@@ -948,12 +813,12 @@
                 document.getElementById('centerImageFile').value = '';
                 updateQRCode();
             } else {
-                currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png"; // Reset về logo mặc định
+                currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png"; 
                 updateQRCode();
             }
         });
 
-        // Download (CẬP NHẬT TÊN FILE)
+        // Download
         function downloadQR() {
             if (qrCode) {
                 const now = new Date();
@@ -965,7 +830,7 @@
                     now.getMinutes().toString().padStart(2, '0'),
                     now.getSeconds().toString().padStart(2, '0')
                 ].join('');
-                const fileName = `QR_LAZINET_${yymmddhhmmss}`; // Cấu trúc tên file mới
+                const fileName = `QR_LAZINET_${yymmddhhmmss}`; 
                 qrCode.download({ name: fileName, extension: "png" });
             }
         }
@@ -987,7 +852,7 @@
                 document.getElementById('errorCorrection').value = 'H';
                 document.getElementById('centerImageUrl').value = '';
                 document.getElementById('centerImageFile').value = '';
-                currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png"; // Reset về logo mặc định
+                currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png"; 
                 updateSizeValue();
                 updateMarginValue(); 
                 toggleAdvancedOptions();
@@ -1009,22 +874,27 @@
 
         // Event listeners
         function setupEventListeners() {
-            const inputs = ['qrData', 'qrSize', 'colorDark', 'colorLight', 'moduleStyle', 'qrStyle', 'borderWidth', 'borderColor', 'borderStyle', 'marginSize', 'errorCorrection'];
+            const qrDataEl = document.getElementById('qrData');
+            if (qrDataEl) {
+                const debouncedUpdate = debounce(updateQRCode, 300);
+                qrDataEl.addEventListener('input', debouncedUpdate);
+                qrDataEl.addEventListener('propertychange', debouncedUpdate);
+            }
+
+            const inputs = ['qrSize', 'marginSize', 'errorCorrection', 'colorDark', 'colorLight', 'moduleStyle', 'qrStyle', 'borderWidth', 'borderColor', 'borderStyle'];
             inputs.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
-                    if (el.tagName === 'TEXTAREA') {
-                        el.addEventListener('input', debounce(updateQRCode, 300));
-                    } else {
-                        el.addEventListener('change', updateQRCode);
-                        if (el.type !== 'file' && el.tagName !== 'SELECT') {
-                            el.addEventListener('input', updateQRCode);
-                        }
+                    el.addEventListener('change', updateQRCode);
+                    if (el.type !== 'file' && el.tagName !== 'SELECT') {
+                        el.addEventListener('input', updateQRCode);
                     }
                 }
             });
-            document.getElementById('qrSize').addEventListener('input', updateSizeValue);
-            document.getElementById('marginSize').addEventListener('input', updateMarginValue); 
+            const sizeEl = document.getElementById('qrSize');
+            if (sizeEl) sizeEl.addEventListener('input', updateSizeValue);
+            const marginEl = document.getElementById('marginSize');
+            if (marginEl) marginEl.addEventListener('input', updateMarginValue);
         }
 
         // Debounce utility
@@ -1043,11 +913,12 @@
         // Init
         document.addEventListener('DOMContentLoaded', () => {
             const firstButton = document.querySelector('.quick-types button:first-child');
+            // Cần phải set default value trước khi gọi setQRType
+            document.getElementById('qrData').value = 'https://lazinet.com';
             setQRType('url', firstButton); 
             updateSizeValue();
             updateMarginValue(); 
             setupEventListeners();
-            // Khởi tạo logo mặc định và QR code
             updateQRCode();  
         });
     </script>

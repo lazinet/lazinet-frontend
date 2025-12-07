@@ -162,6 +162,7 @@
             align-items: center;
             padding: 20px;
             color: var(--text-color);
+            overflow-x: hidden; /* Ngăn scroll ngang */
         }
 
         .container {
@@ -202,7 +203,7 @@
         }
 
         .quick-types button {
-            padding: 8px 15px;
+            padding: 10px 20px;
             background: var(--accent-secondary-color);
             color: var(--white-color);
             border: none;
@@ -211,6 +212,11 @@
             transition: all 0.3s;
             font-size: 14px;
             font-weight: 500;
+            flex: 1;
+            min-width: 120px;
+            max-width: 180px;
+            text-align: center;
+            white-space: nowrap; /* Ngăn text wrap */
         }
 
         .quick-types button:hover, .quick-types button.active {
@@ -222,12 +228,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
         }
 
         .input-section {
@@ -290,7 +290,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: top;
             gap: 20px;
         }
 
@@ -367,21 +367,6 @@
             white-space: nowrap; /* Ngăn text wrap */
         }
 
-        /* Media query cho màn hình nhỏ */
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column; /* Chuyển thành cột */
-                align-items: center; /* Căn giữa theo chiều ngang */
-            }
-            
-            button {
-                width: 100%; /* Chiếm toàn bộ chiều rộng */
-                max-width: 300px; /* Giới hạn chiều rộng */
-                min-width: 0; /* Xóa min-width */
-                flex: none; /* Xóa flex */
-            }
-        }
-
         button:hover {
             background-position: right center;
             transform: translateY(-2px);
@@ -431,7 +416,7 @@
         }
 
         .loading {
-            display: none;
+            /* display: none; */
             color: var(--accent-color);
             font-style: italic;
             text-align: center;
@@ -472,6 +457,323 @@
             font-size: 0.9em;
         }
 
+        /* Responsive Design Improvements */
+        /* Large Desktop (1200px+) */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 40px;
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        /* Desktop (992px - 1199px) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .container {
+                padding: 30px;
+            }
+        }
+
+        /* Tablet Landscape (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 25px;
+                max-width: 95%;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .subtitle {
+                font-size: 1em;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .qr-section {
+                order: -1; /* Đặt QR section lên trên input trên tablet */
+            }
+
+            .color-picker {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .file-input-group {
+                flex-direction: row;
+            }
+            .file-input-group input[type="file"],
+            .file-input-group input[type="url"] {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+
+        /* Tablet Portrait & Small Desktop (481px - 767px) */
+        @media (min-width: 481px) and (max-width: 767px) {
+            body {
+                padding: 10px;
+                align-items: flex-start; /* Bắt đầu từ top để tránh overflow */
+                padding-top: 20px;
+            }
+            .container {
+                padding: 20px;
+                max-width: 98%;
+                border-radius: 15px;
+            }
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+            .subtitle {
+                font-size: 0.95em;
+                margin-bottom: 20px;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .qr-section {
+                order: -1;
+            }
+            .input-group {
+                gap: 6px;
+            }
+            label {
+                font-size: 0.9em;
+            }
+            input, select, textarea {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+            .color-picker {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .color-input {
+                width: 50px;
+                height: 35px;
+            }
+            .file-input-group {
+                flex-direction: column;
+            }
+            .file-input-group input[type="file"],
+            .file-input-group input[type="url"] {
+                width: 100%;
+                min-width: auto;
+            }
+            .stats {
+                font-size: 0.8em;
+            }
+            .controls {
+                flex-direction: row;
+                justify-content: space-around;
+                gap: 10px;
+            }
+            button {
+                flex: 1 1 45%;
+                min-width: auto;
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+            footer {
+                margin-top: 20px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Mobile Landscape (361px - 480px) */
+        @media (min-width: 361px) and (max-width: 480px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .container {
+                padding: 15px;
+                border-radius: 10px;
+                margin: 0 auto;
+            }
+            h1 {
+                font-size: 1.6em;
+            }
+            .subtitle {
+                font-size: 0.9em;
+                margin-bottom: 15px;
+            }
+            .main-content {
+                gap: 10px;
+            }
+            #qrContainer {
+                min-height: 250px;
+                padding: 15px;
+            }
+            input, select, textarea {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+            button {
+                width: 100%;
+                max-width: none;
+                padding: 12px;
+            }
+        }
+
+        /* Mobile Portrait (320px - 480px) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 5px;
+                align-items: stretch;
+                justify-content: flex-start;
+                padding-top: 15px;
+            }
+            .container {
+                padding: 15px 10px;
+                max-width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 10px;
+            }
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 15px;
+                line-height: 1.3;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .qr-section {
+                order: -1;
+            }
+            .input-section {
+                gap: 15px;
+            }
+            .input-group {
+                gap: 5px;
+            }
+            label {
+                font-size: 0.85em;
+            }
+            input, select, textarea {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            textarea {
+                min-height: 80px;
+                resize: vertical;
+            }
+            .color-picker {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .color-input {
+                width: 45px;
+                height: 30px;
+            }
+            .file-input-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .file-input-group input {
+                width: 100%;
+                min-width: auto;
+            }
+            #qrContainer {
+                min-height: 200px;
+                padding: 10px;
+            }
+            .qr-info {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            .stats {
+                justify-content: space-around;
+                font-size: 0.75em;
+            }
+            .advanced-options {
+                padding: 12px;
+                gap: 12px;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 15px;
+                padding-top: 15px;
+            }
+            button {
+                width: 100%;
+                max-width: none;
+                min-width: auto;
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+            footer {
+                margin-top: 15px;
+                padding-top: 15px;
+                font-size: 0.8em;
+                text-align: center;
+            }
+        }
+
+        /* Very Small Mobile (under 320px) */
+        @media (max-width: 319px) {
+            body {
+                padding: 5px;
+            }
+            .container {
+                padding: 10px 5px;
+            }
+            h1 {
+                font-size: 1.3em;
+            }
+            input, select, textarea {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+            .color-input {
+                width: 40px;
+                height: 25px;
+            }
+        }
+
+        /* High DPI/Retina Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            #qrCode canvas {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+
+        /* Orientation Changes */
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                align-items: flex-start;
+                padding-top: 10px;
+            }
+            .container {
+                margin-top: 10px;
+            }
+            .main-content {
+                gap: 15px;
+            }
+            #qrContainer {
+                min-height: 200px;
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -625,11 +927,11 @@
         </a>
         <!-- Quick Types Buttons -->
         <div class="quick-types">
-            <button class="active" onclick="setQRType('url', event)">🌐 URL</button>
+            <button class="active" onclick="setQRType('text', event)">📝 Text</button>
+            <button onclick="setQRType('url', event)">🌐 URL</button>
             <button onclick="setQRType('wifi', event)">📶 WiFi</button>
             <button onclick="setQRType('phone', event)">📞 Phone</button>
             <button onclick="setQRType('email', event)">✉️ Email</button>
-            <button onclick="setQRType('text', event)">📝 Text</button>
             <button onclick="setQRType('vcard', event)">👤 vCard</button>
         </div>
         
@@ -725,8 +1027,6 @@
                         <input type="url" id="centerImageUrl" placeholder="Hoặc dán URL ảnh...">
                     </div>
                 </div>
-
-                <div class="loading" id="loading">Đang tạo QR code...</div>
             </div>
             
             <!-- QR Code Section -->
@@ -735,17 +1035,20 @@
                     <div id="qrCode"></div>
                 </div>
                 <div class="qr-info">
-                    QR code sẽ tự động cập nhật khi bạn thay đổi nội dung
+                    QR code tự động cập nhật theo nội dung
                 </div>
-        <!-- Controls -->
-            <div class="controls">
-                <button class="btn-download" onclick="downloadQR()">
-                    <span>💾</span> Tải xuống
-                </button>
-                <button class="btn-reset" onclick="resetSettings()">
-                    <span>🔄</span> Đặt lại
-                </button>
-            </div>
+                    
+                <div class="loading" id="loading"></div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <button class="btn-download" onclick="downloadQR()">
+                        <span>💾</span> Tải xuống
+                    </button>
+                    <button class="btn-reset" onclick="resetSettings()">
+                        <span>🔄</span> Đặt lại
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -977,7 +1280,7 @@
         // Reset
         function resetSettings() {
             if (confirm('Đặt lại tất cả?')) {
-                setQRType('url', {target: document.querySelector('.quick-types button:first-child')});
+                setQRType('text', {target: document.querySelector('.quick-types button:first-child')});
                 document.getElementById('qrSize').value = 250;
                 document.getElementById('qrMargin').value = 0;
                 document.getElementById('errorCorrection').value = 'M';
@@ -1041,7 +1344,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateSizeValue();
             setupEventListeners();
-            setQRType('url', {target: document.querySelector('.quick-types button:first-child')});
+            setQRType('text', {target: document.querySelector('.quick-types button:first-child')});
             // Thêm dòng này để load logo mặc định (placeholder)
             currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png";  // Hoặc đường dẫn local của bạn
             updateQRCode();  // Cập nhật QR để áp dụng logo ngay lập tức
