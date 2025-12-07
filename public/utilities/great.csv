@@ -1,0 +1,21 @@
+﻿Type,content,Size,Margin,ErrorCorrection,ColorDark,ColorLight,ModuleStyle,QrStyle,BorderWidth,BorderColor,BorderStyle,Filename,CenterImageUrl
+wifi,LAZINET_WIFI_1,652,47,H,#0052FF,#E0E0E0,vertical,default,17,#FF0000,dashed,QR_1,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+vcard,Contact 2,689,5,L,#0052FF,#F0F0F0,extra-rounded,bordered,29,#FF0000,solid,QR_2,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+vcard,Contact 3,644,35,Q,#4CAF50,#FFFFFF,rounded,default,49,#FF6302,dashed,QR_3,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+url,https://lazinet.com/page4,759,1,H,#000000,#F0F0F0,classy,default,12,#0000FF,dotted,QR_4,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+email,user4@lazinet.com,378,9,Q,#FF5000,#F0F0F0,square,bordered,35,#0000FF,solid,QR_5,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+url,https://lazinet.com/page6,251,11,Q,#FF5000,#FFFFFF,horizontal,bordered,27,#FF0000,dotted,QR_6,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+email,user6@lazinet.com,175,32,Q,#000000,#FFFFFF,rounded,default,30,#0000FF,dotted,QR_7,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+wifi,LAZINET_WIFI_8,485,11,H,#000000,#FFFFFF,classy-rounded,bordered,21,#FF6302,dashed,QR_8,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+wifi,LAZINET_WIFI_9,176,44,M,#4CAF50,#FFFFFF,rounded,default,35,#0000FF,dashed,QR_9,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+url,https://lazinet.com/page10,879,16,Q,#FF5000,#E0E0E0,horizontal,bordered,47,#FF6302,dashed,QR_10,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+wifi,LAZINET_WIFI_11,497,10,Q,#0052FF,#F0F0F0,square,default,26,#0000FF,solid,QR_11,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+vcard,Contact 12,595,22,H,#000000,#FFFFFF,dots,bordered,1,#FF6302,dotted,QR_12,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+email,user12@lazinet.com,549,32,L,#000000,#F0F0F0,square,bordered,14,#0000FF,dotted,QR_13,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+email,user13@lazinet.com,344,41,M,#4CAF50,#E0E0E0,horizontal,bordered,42,#FF0000,solid,QR_14,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+vcard,Contact 15,161,17,Q,#000000,#FFFFFF,horizontal,default,23,#FF6302,dashed,QR_15,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+url,https://lazinet.com/page16,992,34,Q,#FF5000,#F0F0F0,square,bordered,31,#FF0000,dashed,QR_16,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+vcard,Contact 17,273,33,H,#000000,#F0F0F0,vertical,default,31,#0000FF,dashed,QR_17,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+vcard,Contact 18,565,39,M,#0052FF,#E0E0E0,classy-rounded,bordered,4,#FF0000,solid,QR_18,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+wifi,LAZINET_WIFI_19,441,19,L,#000000,#E0E0E0,square,default,6,#FF6302,solid,QR_19,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
+phone,8.41E+11,967,41,H,#000000,#F0F0F0,horizontal,default,44,#0000FF,dashed,QR_20,https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png
