@@ -874,11 +874,52 @@
                 padding: 12px 15px;
             }
         }
+        #qrSize {
+    -webkit-appearance: none; /* Reset style mặc định Webkit */
+    appearance: none;
+    background: transparent; /* Để track dễ tùy chỉnh */
+    height: 8px; /* Độ dày track */
+    outline: none;
+}
+
+#qrSize::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ff5000; /* Màu cam cho thumb */
+    border-radius: 50%; /* Làm tròn thumb */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Hiệu ứng bóng */
+}
+
+#qrSize::-webkit-slider-track {
+    background: #ddd; /* Màu track xám nhạt */
+    border-radius: 4px;
+    height: 8px;
+}
+
+#qrSize::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ff5000; /* Cam cho Firefox */
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+#qrSize::-moz-range-track {
+    background: #ddd;
+    height: 8px;
+    border-radius: 4px;
+}
     </style>
     <!-- QR Code Styling CDN -->
     <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
     <!-- QR Border Plugin CDN -->
     <script src="https://unpkg.com/qr-border-plugin"></script>
+    <!-- Trong phần <head>, thêm sau các CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     
@@ -922,7 +963,7 @@
             <div style="display: flex; justify-content: center; align-items: center;">
                 <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 100px; padding-bottom: 20px;">
             </div>
-            <h1>QR Code Generator</h1>
+            <h1>LAZINET QR Code Generator (QRMS&trade;)</h1>
             <p class="subtitle">Tạo QR code với Logo thương hiệu của bạn và nhiều tuỳ chỉnh cho mọi mục đích</p>
         </a>
         <!-- Quick Types Buttons -->
@@ -946,11 +987,11 @@
                 
                 <div class="input-group">
                     <label for="qrSize">Kích thước QR code (px):</label>
-                    <input type="range" id="qrSize" min="100" max="500" value="250">
+                    <input type="range" id="qrSize" min="100" max="5000" value="512">
                     <div class="stats">
                         <span>100px</span>
-                        <span id="sizeValue">250px</span>
-                        <span>500px</span>
+                        <span id="sizeValue" style="font-weight: bold; color: #ff5000;">512px</span>
+                        <span>5000px</span>
                     </div>
                 </div>
                 
@@ -1055,13 +1096,12 @@
         
         <footer>
             <div class="footer-copyright-text">
-                <p><span id="currentYear"></span> LAZINET &copy; 
-                <script>
-                    const startYear = 2024; // Năm bắt đầu
-                    const currentYear = new Date().getFullYear(); // Năm hiện tại
-                    document.write(`${startYear}–${currentYear}`);
-                </script>
-                . Tất cả quyền được bảo lưu.
+                <p>QRMS<sup>&trade;</sup> <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span> &copy;
+                    <script>
+                        const startYear = 2024;
+                        const currentYear = new Date().getFullYear();
+                        document.write(`${startYear}–${currentYear}`);
+                    </script>
                 </p>
             </div>
         </footer>
@@ -1278,23 +1318,68 @@
         }
 
         // Reset
+        // TÌM: if (confirm('Đặt lại tất cả?')) {
+        // THAY THẰNG:
         function resetSettings() {
-            if (confirm('Đặt lại tất cả?')) {
-                setQRType('text', {target: document.querySelector('.quick-types button:first-child')});
-                document.getElementById('qrSize').value = 250;
-                document.getElementById('qrMargin').value = 0;
-                document.getElementById('errorCorrection').value = 'M';
-                document.getElementById('colorDark').value = '#000000';
-                document.getElementById('colorLight').value = '#ffffff';
-                document.getElementById('moduleStyle').value = 'square';
-                document.getElementById('qrStyle').value = 'default';
-                document.getElementById('centerImageUrl').value = '';
-                document.getElementById('centerImageFile').value = '';
-                currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png";
-                updateSizeValue();
-                toggleAdvancedOptions();
-                updateQRCode();
-            }
+            Swal.fire({
+                title: 'Xác nhận đặt lại',
+                text: 'Bạn có chắc chắn muốn đặt lại tất cả cài đặt?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff5000',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Đặt lại',
+                cancelButtonText: 'Hủy',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Thực hiện reset
+                    setQRType('text', {target: document.querySelector('.quick-types button:first-child')});
+                    document.getElementById('qrSize').value = 512;
+                    document.getElementById('qrMargin').value = 0;
+                    document.getElementById('errorCorrection').value = 'M';
+                    document.getElementById('colorDark').value = '#000000';
+                    document.getElementById('colorLight').value = '#ffffff';
+                    document.getElementById('moduleStyle').value = 'square';
+                    document.getElementById('qrStyle').value = 'default';
+                    document.getElementById('centerImageUrl').value = '';
+                    document.getElementById('centerImageFile').value = '';
+                    currentImage = "../assets/img/logo-lazinet/lazinet_LogoOnly.png";
+                    updateSizeValue();
+                    toggleAdvancedOptions();
+                    updateQRCode();
+                    
+                    // Thông báo thành công
+                    Swal.fire({
+                        title: 'Đã đặt lại!',
+                        html: `
+                            <div style="text-align: center;">
+                                <p style="margin-bottom: 20px;">Tất cả cài đặt đã được đặt về mặc định.</p>
+                                <img 
+                                    src="${currentImage}" 
+                                    alt="LAZINET Logo" 
+                                    style="
+                                        width: 100px;
+                                        height: 100px;
+                                        object-fit: contain;
+                                        border-radius: 10px;
+                                        border: 2px solid var(--accent-color);
+                                        padding: 5px;
+                                        background: white;
+                                        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                                    "
+                                >
+                            </div>
+                        `,
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false,
+                        customClass: {
+                            htmlContainer: 'swal-logo-container'
+                        }
+                    });
+                }
+            });
         }
 
         // Update size display
