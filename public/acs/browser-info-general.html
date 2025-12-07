@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông Tin Nhận Diện Thiết Bị & IP</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.31/ua-parser.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +16,7 @@
             text-align: center;
             color: #333;
         }
+        /* Đã xóa CSS cho button */
         #info {
             background-color: white;
             padding: 20px;
@@ -36,22 +36,43 @@
             margin: 0 0 10px 0;
             color: #007bff;
         }
-        .loading {
-            text-align: center;
-            font-style: italic;
-            color: #666;
-        }
     </style>
 </head>
 <body>
     <h1>Thông Tin Nhận Diện Thiết Bị & Địa Chỉ IP</h1>
-    <p style="text-align: center;">Đang thu thập thông tin chi tiết...</p>
-    <div id="info" class="loading">Đang tải...</div>
+    <div id="info">
+        <p style="text-align: center;">Đang thu thập thông tin...</p>
+    </div>
 
     <script>
+        /**
+         * Hàm phỏng đoán loại thiết bị dựa trên User Agent và các thuộc tính khác
+         */
+        function detectDeviceType() {
+            const ua = navigator.userAgent;
+            let deviceType = 'Máy Tính Bàn/Laptop (Desktop)';
+            
+            // 1. Kiểm tra các từ khóa mobile/tablet phổ biến
+            if (/Mobile|Android|iP(hone|od)|Windows Phone|BlackBerry/i.test(ua)) {
+                deviceType = 'Điện Thoại Di Động (Mobile)';
+            } else if (/iPad|Tablet|Nexus 7|Nexus 10|SM-T|KFAPWI/i.test(ua)) {
+                deviceType = 'Máy Tính Bảng (Tablet)';
+            }
+
+            // 2. Kiểm tra hỗ trợ cảm ứng
+            if (navigator.maxTouchPoints > 0 && ua.includes('Macintosh') && deviceType === 'Máy Tính Bàn/Laptop (Desktop)') {
+                 deviceType = 'Máy Tính (Mac/Desktop) có màn hình cảm ứng';
+            } else if (navigator.maxTouchPoints > 0 && deviceType === 'Máy Tính Bàn/Laptop (Desktop)') {
+                // Nếu hỗ trợ cảm ứng nhưng không phải mobile/tablet, có thể là 2-in-1 laptop/Surface
+                deviceType = 'Thiết Bị Lai/Laptop Cảm Ứng';
+            }
+            
+            return deviceType;
+        }
+
         async function gatherInfo() {
             const infoDiv = document.getElementById('info');
-            infoDiv.innerHTML = '<p class="loading">Đang thu thập thông tin...</p>';
+            infoDiv.innerHTML = '<p style="text-align: center;">Đang thu thập thông tin...</p>';
 
             // Lấy IP qua API
             let ip = 'Không thể lấy IP';
@@ -63,41 +84,12 @@
                 console.error('Lỗi lấy IP:', error);
             }
 
-            // Chuyển đổi IP sang địa chỉ địa lý (sử dụng ipinfo.io để tránh CORS)
-            let geoInfo = { city: 'N/A', region: 'N/A', country: 'N/A', lat: 'N/A', lng: 'N/A', postal: 'N/A' };
-            try {
-                const geoResponse = await fetch(`https://ipinfo.io/${ip}/json`);
-                const geoData = await geoResponse.json();
-                geoInfo = {
-                    city: geoData.city || 'N/A',
-                    region: geoData.region || 'N/A',
-                    country: geoData.country || 'N/A',
-                    lat: (geoData.loc ? geoData.loc.split(',')[0] : 'N/A'),
-                    lng: (geoData.loc ? geoData.loc.split(',')[1] : 'N/A'),
-                    postal: geoData.postal || 'N/A'
-                };
-            } catch (error) {
-                console.error('Lỗi geolocation IP:', error);
-            }
-
-            // Parse User-Agent với UAParser để lấy chi tiết thiết bị
-            const parser = new UAParser();
-            const uaResult = parser.getResult();
-            const browserName = uaResult.browser.name || 'N/A';
-            const browserVersion = uaResult.browser.version || 'N/A';
-            const osName = uaResult.os.name || 'N/A';
-            const osVersion = uaResult.os.version || 'N/A';
-            const deviceType = uaResult.device.type || 'Desktop'; // mobile/tablet/desktop
-            const deviceModel = uaResult.device.model || 'N/A';
-            const deviceVendor = uaResult.device.vendor || 'N/A';
-            const cpuArchitecture = uaResult.cpu.architecture || (navigator.platform.includes('64') ? '64-bit' : '32-bit');
-
-            // Các thông tin khác
+            // Thu thập thông tin trình duyệt và thiết bị
             const userAgent = navigator.userAgent;
-            const language = navigator.language || navigator.languages[0];
+            const language = navigator.language || (navigator.languages && navigator.languages[0]) || 'N/A';
             const platform = navigator.platform;
             const cookieEnabled = navigator.cookieEnabled;
-            const doNotTrack = navigator.doNotTrack;
+            const doNotTrack = navigator.doNotTrack === '1' ? 'Đang Bật' : (navigator.doNotTrack === '0' ? 'Đang Tắt' : 'Không hỗ trợ');
             const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             const screenResolution = `${screen.width}x${screen.height}`;
             const colorDepth = screen.colorDepth;
@@ -107,6 +99,9 @@
             const deviceMemory = navigator.deviceMemory || 'N/A';
             const connectionType = navigator.connection ? navigator.connection.effectiveType : 'N/A';
             const onlineStatus = navigator.onLine ? 'Online' : 'Offline';
+            
+            // THÔNG TIN MỚI: Loại Thiết Bị
+            const deviceType = detectDeviceType();
 
             // Canvas Fingerprint (cơ bản)
             const canvas = document.createElement('canvas');
@@ -137,9 +132,15 @@
             // Fonts (cơ bản - kiểm tra một số font phổ biến)
             const fonts = ['Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Comic Sans MS', 'Impact'];
             const detectedFonts = fonts.filter(font => {
-                const test = new Option().style;
-                test.fontFamily = font;
-                return /monospace/.test(test.fontFamily) || /serif/.test(test.fontFamily) || /sans-serif/.test(test.fontFamily);
+                const test = document.createElement('span');
+                test.style.fontFamily = font;
+                test.textContent = 'M';
+                document.body.appendChild(test);
+                const widthBefore = test.offsetWidth;
+                test.style.fontFamily = font + ', monospace'; // Thử với font khác để so sánh
+                const widthAfter = test.offsetWidth;
+                document.body.removeChild(test);
+                return widthBefore !== widthAfter;
             }).join(', '); // Giản lược
 
             // Local Storage test
@@ -175,9 +176,10 @@
             if ('getBattery' in navigator) {
                 try {
                     const battery = await navigator.getBattery();
-                    batteryInfo = `Level: ${Math.round(battery.level * 100)}%, Charging: ${battery.charging}`;
+                    batteryInfo = `Mức: ${Math.round(battery.level * 100)}%, Sạc: ${battery.charging ? 'Đang Sạc' : 'Không Sạc'}`;
                 } catch (error) {
-                    console.error('Lỗi Battery API:', error);
+                    // console.error('Lỗi Battery API:', error);
+                    batteryInfo = 'Hỗ trợ nhưng không thể truy cập (Lỗi quyền).';
                 }
             }
 
@@ -186,20 +188,13 @@
                 <div class="section">
                     <h3>📍 Thông Tin Mạng</h3>
                     <strong>Địa chỉ IP:</strong> ${ip}<br>
-                    <strong>Thành phố:</strong> ${geoInfo.city}<br>
-                    <strong>Khu vực/Tỉnh:</strong> ${geoInfo.region}<br>
-                    <strong>Quốc gia:</strong> ${geoInfo.country}<br>
-                    <strong>Mã bưu điện:</strong> ${geoInfo.postal}<br>
-                    <strong>Tọa độ (Lat/Lng):</strong> ${geoInfo.lat}, ${geoInfo.lng}<br>
                     <strong>Trạng thái kết nối:</strong> ${onlineStatus}<br>
                     <strong>Loại kết nối:</strong> ${connectionType}
                 </div>
 
                 <div class="section">
                     <h3>🌐 Thông Tin Trình Duyệt</h3>
-                    <strong>Tên trình duyệt:</strong> ${browserName}<br>
-                    <strong>Phiên bản trình duyệt:</strong> ${browserVersion}<br>
-                    <strong>User Agent đầy đủ:</strong> ${userAgent}<br>
+                    <strong>User Agent:</strong> ${userAgent}<br>
                     <strong>Ngôn ngữ:</strong> ${language}<br>
                     <strong>Platform:</strong> ${platform}<br>
                     <strong>Cookies Enabled:</strong> ${cookieEnabled}<br>
@@ -209,13 +204,8 @@
                 </div>
 
                 <div class="section">
-                    <h3>🖥️ Thông Tin Thiết Bị Chi Tiết</h3>
-                    <strong>Hệ điều hành:</strong> ${osName}<br>
-                    <strong>Phiên bản OS:</strong> ${osVersion}<br>
-                    <strong>Loại thiết bị:</strong> ${deviceType}<br>
-                    <strong>Nhà sản xuất thiết bị:</strong> ${deviceVendor}<br>
-                    <strong>Model thiết bị:</strong> ${deviceModel}<br>
-                    <strong>Kiến trúc CPU:</strong> ${cpuArchitecture}<br>
+                    <h3>🕐 Thông Tin Hệ Thống & Thiết Bị</h3>
+                    <strong>Loại Thiết Bị (Phỏng đoán):</strong> ${deviceType}<br>
                     <strong>Múi giờ:</strong> ${timezone}<br>
                     <strong>Độ phân giải màn hình:</strong> ${screenResolution}<br>
                     <strong>Độ sâu màu:</strong> ${colorDepth} bit<br>
@@ -233,17 +223,17 @@
                     <strong>WebGL Vendor:</strong> ${webglVendor}<br>
                     <strong>WebGL Renderer:</strong> ${webglRenderer}<br>
                     <strong>Plugins:</strong> ${plugins || 'None'}<br>
-                    <strong>Detected Fonts:</strong> ${detectedFonts || 'Standard set'}
+                    <strong>Detected Fonts (Cơ bản):</strong> ${detectedFonts || 'Standard set'}
                 </div>
 
                 <p style="text-align: center; font-style: italic; color: #666;">
-                    Lưu ý: Một số thông tin có thể không chính xác 100% do hạn chế bảo mật của trình duyệt. Geolocation IP chỉ chính xác đến mức thành phố/khu vực.
+                    Lưu ý: Một số thông tin có thể không chính xác 100% do hạn chế bảo mật của trình duyệt.
                 </p>
             `;
         }
 
-        // Tự động chạy khi trang load
-        document.addEventListener('DOMContentLoaded', gatherInfo);
+        // Tự động chạy hàm khi trang đã tải xong
+        window.onload = gatherInfo;
     </script>
 </body>
 </html>
