@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
     <!-- === CORE META TAGS === -->
-    <title>LAZINET - Đối tác Chuyển đổi Số Toàn diện | Giải pháp AI, IoT, ERP, MES</title>
+    <title>LAZINET - Liên hệ Chúng tôi | Giải pháp AI, IoT, ERP, MES</title>
     <meta name="description" content="LAZINET - Đối tác chuyển đổi số toàn diện doanh nghiệp. Giải pháp AI, IoT, ERP, MES, CRM tùy chỉnh. Tư vấn 1:1, Demo trải nghiệm, hỗ trợ 24/7.">
     <meta name="keywords" content="LAZINET, chuyển đổi số, AI, IoT, ERP, MES, CRM, giải pháp công nghệ, phần mềm doanh nghiệp, digital transformation, artificial intelligence, internet of things">
     <meta name="author" content="LAZINET Technologies">
@@ -125,56 +125,6 @@
 	<link rel="stylesheet" href="assets/css/mousecursor.css">
 	<link rel="stylesheet" href="assets/css/custom.css" media="screen">
     <link rel="stylesheet" href="assets/css/lazinet.css">
-    <style>
-        /* Thêm vào lazinet.css hoặc trong <style> tag */
-        .swal-high-zindex {
-            z-index: 999999 !important; /* Cao hơn modal (modal thường có z-index 1050) */
-        }
-
-        .swal2-container {
-            z-index: 999999 !important;
-        }
-
-        .swal2-backdrop-show {
-            background-color: rgba(0, 0, 0, 0.5) !important;
-        }
-
-        /* Đảm bảo modal order đang mở có z-index thấp hơn */
-        #orderModal {
-            z-index: 1050; /* Giữ nguyên hoặc thấp hơn */
-        }
-
-        .modal {
-            z-index: 1050;
-        }
-
-        /* CSS cho SweetAlert popup */
-        .swal-custom-popup {
-            border-radius: 15px !important;
-            border: 2px solid #ff6500 !important;
-            font-family: 'Sora', sans-serif !important;
-            padding: 20px !important;
-            z-index: 999999 !important;
-            position: relative;
-        }
-
-        .swal-logo-container {
-            padding: 10px 0 !important;
-        }
-        
-        .swal2-timer-progress-bar-container {
-            margin: 0 4px;
-        }
-
-        .swal2-timer-progress-bar {
-            background-color: #ff6500 !important;
-        }
-
-        .bi-clock::before {
-            content: "🕐";
-            margin-right: 5px;
-        }
-    </style>
 
 </head>
 <body>
@@ -309,18 +259,19 @@
 	<!-- Header End -->
 
     <!-- Page Header Section Start -->
-    <div class="page-header">
+    <div class="page-header" id="tech-grid-boundary">
+    <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <!-- Page Header Box Start -->
                     <div class="page-header-box">
-                        <h1 class="wow fadeInUp">Báo giá <span>LAZINET</span></h1>
+                        <h1 class="wow fadeInUp">Liên hệ <span>LAZINET</span></h1>
                         <nav class="wow fadeInUp">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
                                 <!-- <li class="breadcrumb-item">Về LAZINET</li> -->
-                                 <li class="breadcrumb-item"><a href="#">Báo giá</a></li>
+                                 <li class="breadcrumb-item"><a href="#">Liên hệ LAZINET</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -331,107 +282,223 @@
     </div>
     <!-- Page Header Section End -->
 
-    <!-- Page Pricing Start -->
-     <!-- Main Content -->
-    <div class="container">
-        <!-- Tabs Navigation -->
-        <div class="tabs-container">
-            <div class="tabs" id="categoryTabs">
-                <!-- Tabs will be dynamically generated -->
+    <!-- Scrolling Ticker Section Start -->
+    <div class="our-scrolling-ticker">
+        <!-- Scrolling Ticker Start -->
+        <div class="scrolling-ticker-box">
+            <div class="scrolling-content">
+                <span><img src="assets/img/partners/clbdnqtmn.png" alt=""></span>
+                <span><img src="assets/img/partners/bidrico.png" alt=""></span>
+                <span><img src="assets/img/partners/GRfood-header.png" alt=""></span>
+                <span><img src="assets/img/partners/NON-SON-logo.png" alt=""></span>
+                <span><img src="assets/img/partners/techcombank3.webp" alt=""></span>
+                <span><img src="assets/img/partners/Logo-AAA.webp" alt=""></span>
+                <span><img src="assets/img/partners/ajtotal.jpg" alt=""></span>
+                <span><img src="assets/img/partners/ingrid.png" alt=""></span>
+                <span><img src="assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Logo_Name2.png"
+                        alt=""></span>
+                <span><img src="bkgreen/Logo/Nền trắng - Chữ nhật sát tỉ lệ lề đều.png" alt=""></span>
+                <span><img src="assets/img/partners/PhongHai.jpg" alt=""></span>
+                <span><img src="assets/img/partners/vuongcha.jpg" alt=""></span>
+                <span><img src="assets/img/partners/phugiaan.jpg" alt=""></span>
+                <span><img src="assets/img/partners/Logo_Viettel_from_7_January_2021_Slogan.svg" alt=""></span>
+                <span><img src="assets/img/partners/Logo_MB_v2_c.svg" alt=""></span>
+                <span><img src="assets/img/partners/omega.png" alt=""></span>
+                <span><img src="assets/img/partners/nathi.png" alt=""></span>
+                <span><img src="assets/img/partners/voip24h2.jpg" alt=""></span>
+                <span><img src="assets/img/partners/pNetLab.png" alt=""></span>
+                <span><img src="assets/img/partners/DHCongThuong-white.svg" alt=""></span>
+                <span><img src="assets/img/partners/phi&p-w.png" alt=""></span>
+                <span><img src="assets/img/partners/haibatrung.png" alt=""></span>
+
+            </div>
+
+            <div class="scrolling-content">
+                <span><img src="assets/img/partners/clbdnqtmn.png" alt=""></span>
+                <span><img src="assets/img/partners/bidrico.png" alt=""></span>
+                <span><img src="assets/img/partners/GRfood-header.png" alt=""></span>
+                <span><img src="assets/img/partners/NON-SON-logo.png" alt=""></span>
+                <span><img src="assets/img/partners/techcombank3.webp" alt=""></span>
+                <span><img src="assets/img/partners/Logo-AAA.webp" alt=""></span>
+                <span><img src="assets/img/partners/ajtotal.jpg" alt=""></span>
+                <span><img src="assets/img/partners/ingrid.png" alt=""></span>
+                <span><img src="assets/img/Logo_Hathyo/Dark_Green (Main)/HathyoV1_Rectangle_Logo_Name2.png"
+                        alt=""></span>
+                <span><img src="bkgreen/Logo/Nền trắng - Chữ nhật sát tỉ lệ lề đều.png" alt=""></span>
+                <span><img src="assets/img/partners/PhongHai.jpg" alt=""></span>
+                <span><img src="assets/img/partners/vuongcha.jpg" alt=""></span>
+                <span><img src="assets/img/partners/phugiaan.jpg" alt=""></span>
+                <span><img src="assets/img/partners/Logo_Viettel_from_7_January_2021_Slogan.svg" alt=""></span>
+                <span><img src="assets/img/partners/Logo_MB_v2_c.svg" alt=""></span>
+                <span><img src="assets/img/partners/omega.png" alt=""></span>
+                <span><img src="assets/img/partners/nathi.png" alt=""></span>
+                <span><img src="assets/img/partners/voip24h2.jpg" alt=""></span>
+                <span><img src="assets/img/partners/pNetLab.png" alt=""></span>
+                <span><img src="assets/img/partners/DHCongThuong-white.svg" alt=""></span>
+                <span><img src="assets/img/partners/phi&p-w.png" alt=""></span>
+                <span><img src="assets/img/partners/haibatrung.png" alt=""></span>
             </div>
         </div>
+        <!-- Scrolling Ticker End -->
+    </div>
+    <!-- Scrolling Ticker Section End -->
 
-        <!-- Products Grid -->
-        <div class="loading" id="loadingMessage">
-            
-        </div>
+    <!-- Page Contact Us Start -->
+    <div class="page-contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Contact Info List Start -->
+                    <div class="contact-info-list">
+                        <!-- Contact Info Item Start -->
+                        <div class="contact-info-item wow fadeInUp">
+                            <div class="icon-box">
+                                <img src="assets/images/icon-phone-white.svg" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Điện thoại</h3>
+                                <p><a href="tel:+84908556220">+84 908 556220 (Mr. Phụng)</a></p>
+                                <p><a href="tel:+84964771122">+84 964 771122 (Mr. Bảo)</a></p>
+                            </div>
+                        </div>
+                        <!-- Contact Info Item End -->
 
-        <div class="error-message" id="errorMessage" style="display: none;">
-            Có lỗi xảy ra khi tải sản phẩm. Vui lòng thử lại sau.
-        </div>
+                        <!-- Contact Info Item Start -->
+                        <div class="contact-info-item wow fadeInUp" data-wow-delay="0.2s">
+                            <div class="icon-box">
+                                <img src="assets/images/icon-location-white.svg" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Địa chỉ</h3>
+                                <p><a href = "https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank" style="color: inherit;">89 Phan Đình Phùng, Phường Phú Nhuận, TP. Hồ Chí Minh</a></p>
+                            </div>
+                        </div>
+                        <!-- Contact Info Item End -->
+                        
+                        <!-- Contact Info Item Start -->
+                        <div class="contact-info-item wow fadeInUp" data-wow-delay="0.4s">
+                            <div class="icon-box">
+                                <img src="assets/images/icon-mail-white.svg" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Email/ Website</h3>
+                                <p><a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
+                                <p><a href="mailto:email@lazinet.com">https://lazinet.com</a></p>
+                            </div>
+                        </div>
+                        <!-- Contact Info Item End -->
 
-        <div class="products-grid" id="productsGrid">
-            <!-- Product cards will be dynamically generated -->
+                        <!-- Contact Info Item Start -->
+                        <div class="contact-info-item wow fadeInUp" data-wow-delay="0.6s">
+                            <div class="icon-box">
+                                <img src="assets/images/clock-check-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Giờ làm việc</h3>
+                                <p>Thứ 2 - Thứ 6 : 08:00 - 18:00</p>
+                                <p>Thứ 7 : 08:00 - 12:00</p>
+                            </div>
+                        </div>
+                        <!-- Contact Info Item End -->
+                    </div>
+                    <!-- Contact Info List End -->
+                </div>
+                
+                <div class="col-xl-5">
+                    <!-- Contact Us Content Start -->
+                    <div class="contact-content-box">
+                        <!-- Section Title Start -->
+                        <div class="section-title">
+                            <h3 class="wow fadeInUp">Kết nối với LAZINET</h3>
+                            <h2 class="wow fadeInUp">Hãy liên hệ <span>ngay!</span></h2>
+                            <p class="wow fadeInUp" data-wow-delay="0.2s">Chúng tôi sẽ phản hồi sớm nhất những yêu cầu của quý khách.</p>
+                        </div>
+                        <!-- Section Title End -->
+
+                        <!-- Google Map IFrame Start -->
+                        <div class="google-map-iframe wow fadeInUp" data-wow-delay="0.4s">
+                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96737.10562045308!2d-74.08535042841811!3d40.739265258395164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1703158537552!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5542.6223591305725!2d106.6807000998858!3d10.794006281724327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529007ded32ef%3A0x9687c6aa15b367a4!2sM.O.R.E%20TOWER!5e0!3m2!1sen!2s!4v1760806593054!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <!-- Google Map IFrame End -->
+                    </div>
+                    <!-- Contact Us Content End -->
+                </div>
+
+                <div class="col-xl-7">
+                    <!-- Contact Us Form Start -->
+                    <div class="contact-us-form">
+                        <!-- Section Title Start -->
+                        <div class="section-title" id="section-title">
+                            <h2 class="wow fadeInUp">Hãy điền <span>biễu mẫu liên hệ</span></h2>
+                            <p class="wow fadeInUp">Với mọi thắc mắc về ứng dụng công nghệ để gia tăng hiệu suất, đội ngũ LAZINET luôn sẵn sàng lắng nghe để phát triển giải pháp công nghệ phù hợp nhất dành cho doanh nghiệp của bạn.</p>
+                        </div>
+                        <!-- Section Title End -->
+
+                        <!-- Contact Form Start -->
+                        <form id="contact-form" method="post">
+                            <div class="form-group mt-3 row g-3">
+                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                    <input type="text" name="name" class="form-control" id="name" placeholder="Họ và tên" required>
+                                </div>
+
+                                <div class="col-md-6 form-group mt-3 mt-md-0 d-flex align-items-center" style="gap: 10px;">
+                                    <select class="form-control" name="userType" id="user-type" style="padding-left: 10px;" required>
+                                        <option value="" disabled selected>Loại yêu cầu</option>
+                                        <option value="Customer Technical Support">Hỗ trợ kỹ thuật</option>
+                                        <option value="Products & Services Ordering">Đặt hàng sản phẩm & dịch vụ</option>
+                                        <option value="New Solution Consulting">Tư vấn giải pháp mới</option>
+                                        <option value="Establish Partnership">Thiết lập hợp tác</option>
+                                        <option value="Technology Training Programs">Đào tạo công nghệ</option>
+                                        <option value="Career Opportunities">Cơ hội nghề nghiệp</option>
+                                        <option value="Other">Khác</option>
+                                    </select>
+                                    <input type="text" class="form-control" name="otherType" id="other-type" placeholder="Vui lòng nhập..." style="display: none;">
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3 row g-3">
+                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                    <input type="tel" class="form-control" name="phone" id="phone" placeholder="Số điện thoại" required>
+                                </div>
+                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Địa chỉ email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Tiêu đề" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <textarea class="form-control" name="message" id="message" placeholder="Nội dung tin nhắn" style="height: 250px;" required></textarea>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" id="submit-btn" class="btn-default">Gửi tin nhắn</button>
+                            </div>
+
+                            <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
+                            <div style="display: none; position: absolute; left: -9999px;">
+                                <label for="website-contact">Website (để trống)</label>
+                                <input type="text" id="website-contact" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+
+                            <!-- Anti-spam fields: JS token, time start, human score -->
+                            <input type="hidden" name="token_bot" id="token-bot-contact" value="">
+                            <input type="hidden" name="form_start_time" id="start-time-contact" value="">
+                            <input type="hidden" name="human_score" id="human-score-contact" value="0">
+                        </form>
+                    
+                        <!-- Contact Form End -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- Page Contact Us End -->
 
-    <!-- Order Modal -->
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeModal">&times;</button>
-            <h2 style="margin: 25px 0;" id="modalProductName">Đặt hàng</h2>
-            <form id="orderForm">
-                <input type="hidden" id="modalItemCode">
-            
-                <div class="form-group">
-                    <label for="customerName">Họ tên *</label>
-                    <input type="text" id="customerName" required>
-                </div>
-            
-                <div class="form-group">
-                    <label for="customerEmail">Email *</label>
-                    <input type="email" id="customerEmail" required>
-                </div>
-            
-                <div class="form-group">
-                    <label for="customerPhone">Số điện thoại *</label>
-                    <input type="tel" id="customerPhone" required>
-                </div>
-            
-                <div class="form-group">
-                    <label for="customerNote">Ghi chú</label>
-                    <input type="text" id="customerNote">
-                </div>
-
-                <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
-                <div style="display: none; position: absolute; left: -9999px;">
-                    <label for="website">Website (để trống)</label>
-                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-                </div>
-            
-                <button type="submit" class="submit-btn">Gửi đơn hàng</button>
-            </form>
-        </div>
-    </div>   
-    <!-- Page Pricing End -->
-
-    <!-- Order Popup -->
-    <div id="order-popup-overlay" class="popup-overlay" style="display: none;">
-        <div class="popup-content">
-            <button class="close-popup" onclick="closeOrderPopup()">×</button>
-            <h3 id="popup-product-name">Đặt hàng</h3>
-            <div id="popup-product-info" class="mb-3"></div>
-            
-            <form id="order-form">
-                <input type="hidden" id="product-code" name="productCode">
-                
-                <div class="form-group">
-                    <label for="customer-name">Quý danh *</label>
-                    <input type="text" id="customer-name" name="customerName" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="customer-email">Email *</label>
-                    <input type="email" id="customer-email" name="email" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="customer-mobile">Số điện thoại *</label>
-                    <input type="tel" id="customer-mobile" name="mobile" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="customer-notes">Ghi chú</label>
-                    <textarea id="customer-notes" name="notes" class="form-control" rows="3"></textarea>
-                </div>
-                
-                <button type="submit" class="btn-default btn-block">Gửi đơn hàng</button>
-            </form>
-        </div>
-    </div>
-    <!-- Page Pricing End -->
-
-<!-- Footer Start -->
+    <!-- Footer Start -->
     <footer class="main-footer">
         <div class="container">
             <div class="row">
@@ -502,6 +569,11 @@
                                 <label for="website">Website (để trống)</label>
                                 <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
                             </div>
+
+                            <!-- Anti-spam fields: JS token, time start, human score -->
+                            <input type="hidden" name="token_bot" id="token-bot-newsletter" value="">
+                            <input type="hidden" name="form_start_time" id="start-time-newsletter" value="">
+                            <input type="hidden" name="human_score" id="human-score-newsletter" value="0">
                         </form>
                     </div>
                     <!-- Footer Newsletter Form End -->
@@ -548,360 +620,26 @@
         <!-- Footer Copyright End -->
     </footer>
     <!-- Footer End -->
-    <script>
-        // Configuration
-        const CONFIG = {
-            API_URL: 'https://script.google.com/macros/s/AKfycbwtLWvDHprqu1eoJI8fjNDX_t03eAieVZNRnaptM40yALw3AKASy0d_xiHYdHlut7YLYQ/exec' // URL Google Apps Script Web App
-        };
 
-        // Global variables
-        let products = [];
-        let categories = [];
-        let originalText = ''; // Thêm biến originalText
-
-        // DOM Elements
-        const categoryTabs = document.getElementById('categoryTabs');
-        const productsGrid = document.getElementById('productsGrid');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const errorMessage = document.getElementById('errorMessage');
-        const orderModal = document.getElementById('orderModal');
-        const closeModal = document.getElementById('closeModal');
-        const orderForm = document.getElementById('orderForm');
-        const modalProductName = document.getElementById('modalProductName');
-        const modalItemCode = document.getElementById('modalItemCode');
-
-        // Initialize application
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
-            setupEventListeners();
-        });
-
-        function setupEventListeners() {
-            closeModal.addEventListener('click', closeOrderModal);
-            orderForm.addEventListener('submit', handleOrderSubmit);
-            
-            // Close modal when clicking outside
-            orderModal.addEventListener('click', function(e) {
-                if (e.target === orderModal) {
-                    closeOrderModal();
-                }
-            });
-        }
-
-        // Load products from backend API
-        async function loadProducts() {
-            try {
-                const response = await fetch(`${CONFIG.API_URL}?action=getProducts`);
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    products = result.data;
-                    
-                    // Extract unique categories
-                    categories = [...new Set(products.map(product => product.cat_type))];
-                    
-                    renderTabs();
-                    renderProducts(products);
-                    
-                    loadingMessage.style.display = 'none';
-                } else {
-                    throw new Error(result.error || 'Failed to load products');
-                }
-                
-            } catch (error) {
-                console.error('Error loading products:', error);
-                loadingMessage.style.display = 'none';
-                errorMessage.style.display = 'block';
-            }
-        }
-
-        // Render category tabs
-        function renderTabs() {
-            categoryTabs.innerHTML = '';
-            
-            // Add "All" tab
-            const allTab = document.createElement('button');
-            allTab.className = 'tab active';
-            allTab.textContent = 'Tất cả';
-            allTab.addEventListener('click', () => filterProducts('all'));
-            categoryTabs.appendChild(allTab);
-            
-            // Add category tabs
-            categories.forEach(category => {
-                const tab = document.createElement('button');
-                tab.className = 'tab';
-                tab.textContent = category;
-                tab.addEventListener('click', () => filterProducts(category));
-                categoryTabs.appendChild(tab);
-            });
-        }
-
-        // Render products grid
-        function renderProducts(productsToRender) {
-            productsGrid.innerHTML = '';
-            
-            if (productsToRender.length === 0) {
-                productsGrid.innerHTML = '<div class="error-message">Không có sản phẩm nào trong danh mục này.</div>';
-                return;
-            }
-            
-            productsToRender.forEach(product => {
-                const productCard = createProductCard(product);
-                productsGrid.appendChild(productCard);
-            });
-        }
-
-        // Create product card element
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.className = `product-card ${product.item_common ? 'highlighted' : ''}`;
-            
-            const features = getProductFeatures(product);
-            
-            card.innerHTML = `
-                <div class="product-header">
-                    <h3 class="product-name">${escapeHtml(product.item_name)}</h3>
-                    <p class="product-description">${escapeHtml(product.cat_intro)}</p>
-                </div>
-                
-                <div class="product-price">${formatPrice(product.item_price)}</div>
-                
-                ${features.length > 0 ? `
-                <ul class="product-features">
-                    ${features.map(feature => `<li>${escapeHtml(feature)}</li>`).join('')}
-                </ul>
-                ` : ''}
-                
-                <button class="product-button" data-item-code="${product.item_code}">
-                    Đặt hàng ngay
-                </button>
-            `;
-            
-            // Add click event to order button
-            const orderButton = card.querySelector('.product-button');
-            orderButton.addEventListener('click', () => openOrderModal(product));
-            
-            return card;
-        }
-
-        // Get product features from feature columns
-        function getProductFeatures(product) {
-            const features = [];
-            for (let i = 1; i <= 10; i++) {
-                const feature = product[`item_feature_${i.toString().padStart(2, '0')}`];
-                if (feature && feature.trim() !== '') {
-                    features.push(feature);
-                }
-            }
-            return features;
-        }
-
-        // Format price for display
-        function formatPrice(price) {
-            // Nếu là số và lớn hơn 0 -> định dạng tiền
-            if (typeof price === 'number' && price > 0) {
-                return price.toLocaleString('vi-VN') + ' ₫';
-            }
-            
-            // Mọi trường hợp còn lại -> hiển thị "Liên hệ"
-            return 'Liên hệ LAZINET';
-        }
-
-        // Escape HTML to prevent XSS
-        function escapeHtml(unsafe) {
-            if (!unsafe) return '';
-            return unsafe
-                .toString()
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        // Filter products by category
-        function filterProducts(category) {
-            // Update active tab
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
-            
-            let filteredProducts;
-            if (category === 'all') {
-                filteredProducts = products;
-            } else {
-                filteredProducts = products.filter(product => product.cat_type === category);
-            }
-            
-            renderProducts(filteredProducts);
-        }
-
-        // Open order modal
-        function openOrderModal(product) {
-            modalProductName.textContent = product.item_name;
-            modalItemCode.value = product.item_code;
-            orderModal.style.display = 'block';
-            
-            // Store only public product data
-            const publicProductData = {
-                item_code: product.item_code,
-                item_name: product.item_name,
-                item_price: product.item_price
-            };
-            orderForm.dataset.product = JSON.stringify(publicProductData);
-        }
-
-        // Close order modal
-        function closeOrderModal() {
-            orderModal.style.display = 'none';
-            orderForm.reset();
-        }
-
-    async function handleOrderSubmit(e) {
-        e.preventDefault();
-    
-        const submitBtn = e.target.querySelector('.submit-btn');
-    
-        // Kiểm tra rate limiting với localStorage
-        const lastSubmitTime = localStorage.getItem('lastOrderSubmitTime');
-        const now = Date.now();
-        if (lastSubmitTime && (now - parseInt(lastSubmitTime)) < SUBMIT_COOLDOWN_MS) {
-            const remainingTime = Math.ceil((SUBMIT_COOLDOWN_MS - (now - parseInt(lastSubmitTime))) / 1000);
-            // alert(`Vui lòng chờ ${remainingTime} giây trước khi gửi lại!`);
-            // Thay thế alert cũ:
-            // alert(`Vui lòng chờ ${remainingTime} giây trước khi gửi lại!`);
-
-            // Bằng đoạn code này:
-            const lazinetLogo = 'assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png';
-
-            Swal.fire({
-                title: 'Vui lòng chờ',
-                html: `
-                    <div style="text-align: center;">
-                        <p style="margin-bottom: 15px; font-size: 16px; color: #333;">
-                            Vui lòng chờ <strong style="color: #ff6500;">${remainingTime} giây</strong> 
-                            trước khi gửi lại đơn hàng!
-                        </p>
-                        <img 
-                            src="${lazinetLogo}" 
-                            alt="LAZINET Logo" 
-                            style="
-                                height: 150px;
-                                object-fit: contain;
-                                border-radius: 8px;
-                                padding: 5px;
-                                background: white;
-                                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-                                margin: 10px auto;
-                            "
-                        >
-                        <div style="margin-top: 15px; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; display: inline-block;">
-                            <small style="color: #666;">
-                                Cám ơn sự kiên nhẫn đợi chờ của quý khách!
-                            </small>
-                        </div>
-                    </div>
-                `,
-                icon: 'warning',
-                timer: 4000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                width: '500px', // ⬅ Thêm dòng này
-                padding: '2rem', // ⬅ Và dòng này
-                customClass: {
-                    htmlContainer: 'swal-logo-container',
-                    popup: 'swal-custom-popup',
-                    container: 'swal-high-zindex'
-                },
-                // Thêm backdrop để đóng modal nếu cần
-                backdrop: true,
-                allowOutsideClick: false
-            });
-            return; // Dừng submit
-        }
-    
-        try {
-            originalText = 'Gửi yêu cầu đặt hàng';
-            submitBtn.textContent = '➤ Đang gửi...';
-            submitBtn.disabled = true;
-        
-            const formData = {
-                item_code: modalItemCode.value,
-                order_customer: document.getElementById('customerName').value.trim(),
-                customer_email: document.getElementById('customerEmail').value.trim(),
-                customer_phone: document.getElementById('customerPhone').value.trim(),
-                customer_note: document.getElementById('customerNote').value.trim(),
-                action: 'submitOrder'
-            };
-        
-            // Validation cơ bản
-            if (!formData.order_customer || !formData.customer_email || !formData.customer_phone) {
-                throw new Error('Vui lòng điền đầy đủ thông tin bắt buộc');
-            }
-        
-            // Honeypot check: Nếu field ẩn có giá trị → spam, chặn submit
-            const honeypotValue = document.getElementById('website').value.trim();
-            if (honeypotValue !== '') {
-                console.warn('Honeypot detected: Potential spam attempt');
-                throw new Error('Yêu cầu không hợp lệ. Vui lòng thử lại.'); // Hoặc log server-side nếu có
-            }
-        
-            // Gửi request (không quan tâm response)
-            await fetch(CONFIG.API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formData)
-            });
-        
-            // Thành công: Lưu timestamp (honeypot đã pass)
-            localStorage.setItem('lastOrderSubmitTime', now.toString());
-        
-            submitBtn.textContent = '✅ Thành công!';
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                closeOrderModal();
-            }, 5000);
-        
-        } catch (error) {
-            // Thất bại (không lưu timestamp nếu lỗi)
-            submitBtn.textContent = '❌ Thất bại';
-            setTimeout(() => {
-                alert(error.message || 'Có lỗi xảy ra!');
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 5000);
-        }
-    }
-    </script>
-    <script src="assets/js/jquery-3.7.1.min.js" defer></script>
-    <script src="assets/js/circle-progress.min.js" defer></script>
-    <script src="assets/js/bootstrap.min.js" defer></script>
-    <script src="assets/js/validator.min.js" defer></script>
-    <script src="assets/js/jquery.slicknav.js" defer></script>
-    <script src="assets/js/swiper-bundle.min.js" defer></script>
-    <script src="assets/js/jquery.waypoints.min.js" defer></script>
-    <script src="assets/js/jquery.counterup.min.js" defer></script>
-    <script src="assets/js/jquery.magnific-popup.min.js" defer></script>
-    <script src="assets/js/SmoothScroll.js" defer></script>
-    <script src="assets/js/parallaxie.js" defer></script>
-    <script src="assets/js/gsap.min.js" defer></script>
-    <script src="assets/js/magiccursor.js" defer></script>
-    <script src="assets/js/SplitText.min.js" defer></script>
-    <script src="assets/js/ScrollTrigger.min.js" defer></script>
-    <script src="assets/js/jquery.mb.YTPlayer.min.js" defer></script>
-    <script src="assets/js/wow.min.js" defer></script>
-    <script src="assets/js/function.js" defer></script>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/circle-progress.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/validator.min.js"></script>
+    <script src="assets/js/jquery.slicknav.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/SmoothScroll.js"></script>
+    <script src="assets/js/parallaxie.js"></script>
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/magiccursor.js"></script>
+    <script src="assets/js/SplitText.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <script src="assets/js/jquery.mb.YTPlayer.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/function.js"></script>
     <script src="assets/js/lazinet.js" defer></script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
