@@ -286,7 +286,7 @@
     <section class="support-section py-5">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-8">
+                <div style="width: 100%;">
                     <div class="support-card card shadow-lg border-0 rounded-4 p-4">
                         <h2 class="text-center mb-4">Truy cập thông tin hỗ trợ khách hàng</h2>
                         <p class="text-center text-muted mb-4">Nhập số điện thoại đã đăng ký để xác thực và truy cập thông tin dự án của bạn.</p>
@@ -567,6 +567,7 @@
             const phone = document.getElementById('phoneInput').value.trim();
             normalizedPhone = normalizePhone(phone);
             console.log('Normalized phone:', normalizedPhone);
+            document.getElementById('checkBtn').textContent = 'Đang kiểm tra...';
 
             if (!normalizedPhone) {
                 alert('Số điện thoại không hợp lệ. Vui lòng nhập số Việt Nam chuẩn (10 chữ số bắt đầu bằng 0).');
@@ -601,6 +602,8 @@
         document.getElementById('verifyBtn').addEventListener('click', async () => {
             const otpInputs = document.querySelectorAll('.otp-input');
             const otp = Array.from(otpInputs).map(input => input.value).join('');
+            document.getElementById('checkBtn').textContent = 'Đã gửi mã';
+            document.getElementById('verifyBtn').textContent = 'Đang xác minh...';
             if (otp.length !== 4) {
                 alert('Vui lòng nhập đầy đủ 4 số mã xác thực.');
                 return;
@@ -608,6 +611,7 @@
 
             const result = await callScript('verifyOTP', { phone: normalizedPhone, otp });
             if (result && result.success) {
+                document.getElementById('verifyBtn').textContent = 'Đã xác minh OK!';
                 const customerData = result.customer;
                 const tbody = document.getElementById('infoTableBody');
                 tbody.innerHTML = `
