@@ -688,6 +688,7 @@
                     <div class="about-footer">
                         <!-- Footer Logo Start -->
                         <div class="footer-logo">
+                            <!-- <img src="assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt=""> -->
                             <a class="btn-logo" href="index.html">
                                 <img src="assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="Logo">
                             </a>
@@ -740,6 +741,7 @@
                             <div class="form-group">
                                 <input type="email" id="email-newsletter" name="mail" class="form-control"
                                     placeholder="Nhập email của bạn *" required>
+                                <!-- <button id="newsletter-btn" type="submit" class="newsletter-btn">Đăng ký</button> -->
                                 <button id="newsletter-btn" class="newsletter-btn" type="button" onclick="submitNewsletter()">Đăng ký</button>
                             </div>
 
@@ -748,6 +750,11 @@
                                 <label for="website">Website (để trống)</label>
                                 <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
                             </div>
+
+                            <!-- Anti-spam fields: JS token, time start, human score -->
+                            <input type="hidden" name="token_bot" id="token-bot-newsletter" value="">
+                            <input type="hidden" name="form_start_time" id="start-time-newsletter" value="">
+                            <input type="hidden" name="human_score" id="human-score-newsletter" value="0">
                         </form>
                     </div>
                     <!-- Footer Newsletter Form End -->

@@ -944,7 +944,6 @@
     </div>
     <!-- Page Service Single End -->
 
-
     <!-- Footer Start -->
     <footer class="main-footer">
         <div class="container">
@@ -959,15 +958,14 @@
                                 <img src="assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="Logo">
                             </a>
                         </div>
-
+                        
                         <!-- Footer Logo End -->
 
                         <!-- About Footer Content Start -->
                         <div class="about-footer-content">
                             <p class="wow fadeInUp" data-wow-delay="0.2s" id="hero-description">
-                                Đội ngũ chuyên gia LAZINET kết hợp công nghệ tiên tiến với kinh nghiệm thực chiến
-                                để mang đến giải pháp toàn trình, toàn diện, đảm bảo doanh nghiệp bạn vận hành tối ưu và
-                                không gián đoạn.
+                                Đội ngũ chuyên gia LAZINET kết hợp công nghệ tiên tiến với kinh nghiệm thực chiến 
+                                để mang đến giải pháp toàn trình, toàn diện, đảm bảo doanh nghiệp bạn vận hành tối ưu và không gián đoạn.
                             </p>
                         </div>
                         <!-- About Footer Content End -->
@@ -979,13 +977,10 @@
                     <!-- Footer Location Link Start -->
                     <div class="footer-location footer-links">
                         <h3>Địa chỉ</h3>
-                        <ul>
-                            <li><a href="https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank"
-                                    style="color: inherit;">Digital Workspace - M.O.R.E TOWER</a></li>
-                            <li><a href="https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank"
-                                    style="color: inherit;">89 Phan Đình Phùng, Phường Phú Nhuận, TP. Hồ Chí Minh</a>
-                            </li>
-                        </ul>
+                            <ul>
+                                <li><a href = "https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank" style="color: inherit;">Digital Workspace - M.O.R.E TOWER</a></li>
+                                <li><a href = "https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank" style="color: inherit;">89 Phan Đình Phùng, Phường Phú Nhuận, TP. Hồ Chí Minh</a></li>
+                            </ul>
                     </div>
                     <!-- Footer Location Link End -->
                 </div>
@@ -1012,16 +1007,19 @@
                                 <input type="email" id="email-newsletter" name="mail" class="form-control"
                                     placeholder="Nhập email của bạn *" required>
                                 <!-- <button id="newsletter-btn" type="submit" class="newsletter-btn">Đăng ký</button> -->
-                                <button id="newsletter-btn" class="newsletter-btn" type="button"
-                                    onclick="submitNewsletter()">Đăng ký</button>
+                                <button id="newsletter-btn" class="newsletter-btn" type="button" onclick="submitNewsletter()">Đăng ký</button>
                             </div>
 
                             <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
                             <div style="display: none; position: absolute; left: -9999px;">
                                 <label for="website">Website (để trống)</label>
-                                <input type="text" id="website-newsletter" name="website" tabindex="-1"
-                                    autocomplete="off">
+                                <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
                             </div>
+
+                            <!-- Anti-spam fields: JS token, time start, human score -->
+                            <input type="hidden" name="token_bot" id="token-bot-newsletter" value="">
+                            <input type="hidden" name="form_start_time" id="start-time-newsletter" value="">
+                            <input type="hidden" name="human_score" id="human-score-newsletter" value="0">
                         </form>
                     </div>
                     <!-- Footer Newsletter Form End -->
@@ -1037,13 +1035,13 @@
                         <!-- Footer Copyright Box Start -->
                         <div class="footer-copyright-box">
                             <div class="footer-copyright-text">
-                                <p><span id="currentYear"></span> LAZINET &copy;
-                                    <script>
-                                        const startYear = 2024; // Năm bắt đầu
-                                        const currentYear = new Date().getFullYear(); // Năm hiện tại
-                                        document.write(`${startYear}–${currentYear}`);
-                                    </script>
-                                    . Tất cả quyền được bảo lưu.
+                                <p><span id="currentYear"></span> LAZINET &copy; 
+                                <script>
+                                    const startYear = 2024; // Năm bắt đầu
+                                    const currentYear = new Date().getFullYear(); // Năm hiện tại
+                                    document.write(`${startYear}–${currentYear}`);
+                                </script>
+                                . Tất cả quyền được bảo lưu.
                                 </p>
                             </div>
                             <!-- Footer Menu Start -->

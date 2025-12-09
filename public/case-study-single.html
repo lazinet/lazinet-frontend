@@ -429,62 +429,27 @@
 
     <!-- Footer Start -->
     <footer class="main-footer">
-        <!-- Footer Scrolling Ticker Box Start -->
-        <div class="footer-scrolling-ticker-box">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Footer Scrolling Ticker Start -->
-                        <div class="footer-scrolling-ticker">
-                            <!-- Scrolling Ticker Box Start -->
-                            <div class="scrolling-ticker-box">
-                                <!-- Scrolling Ticker Content Start -->
-                                <div class="scrolling-content">
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                </div>
-                                <!-- Scrolling Ticker Content End -->
-            
-                                <!-- Scrolling Ticker Content Start -->
-                                <div class="scrolling-content">
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                    <span><img src="assets/images/icon-asterisk.svg" alt=""> Let's  Work Together</span>
-                                </div>
-                                <!-- Scrolling Ticker Content End -->
-                            </div>
-                            <!-- Scrolling Ticker Box End -->
-            
-                            <!-- Footer Contact Button Start -->
-                            <div class="footer-contact-btn">
-                                <a href="contact.html" class="schedule-btn">Contact Us <img src="assets/images/arrow-white.svg" alt=""></a>
-                            </div>
-                            <!-- Footer Contact Button End -->
-                        </div>
-                        <!-- Footer Scrolling Ticker End -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer Scrolling Ticker Box End -->
-        
-		<div class="container">
+        <div class="container">
             <div class="row">
                 <div class="col-xl-3 col-md-6">
                     <!-- About Footer Start -->
                     <div class="about-footer">
                         <!-- Footer Logo Start -->
                         <div class="footer-logo">
-                            <img src="assets/images/footer-logo.svg" alt="">
+                            <!-- <img src="assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt=""> -->
+                            <a class="btn-logo" href="index.html">
+                                <img src="assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="Logo">
+                            </a>
                         </div>
+                        
                         <!-- Footer Logo End -->
 
                         <!-- About Footer Content Start -->
                         <div class="about-footer-content">
-                            <p>Secure your cloud environments & ensure safe migration with compliance-ready.</p>
+                            <p class="wow fadeInUp" data-wow-delay="0.2s" id="hero-description">
+                                Đội ngũ chuyên gia LAZINET kết hợp công nghệ tiên tiến với kinh nghiệm thực chiến 
+                                để mang đến giải pháp toàn trình, toàn diện, đảm bảo doanh nghiệp bạn vận hành tối ưu và không gián đoạn.
+                            </p>
                         </div>
                         <!-- About Footer Content End -->
                     </div>
@@ -494,8 +459,11 @@
                 <div class="col-xl-3 col-md-6">
                     <!-- Footer Location Link Start -->
                     <div class="footer-location footer-links">
-                        <h3>Our Location</h3>
-                        <p>4517 Washington Ave. Manchester, Kentucky 39495</p>
+                        <h3>Địa chỉ</h3>
+                            <ul>
+                                <li><a href = "https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank" style="color: inherit;">Digital Workspace - M.O.R.E TOWER</a></li>
+                                <li><a href = "https://maps.app.goo.gl/5mSLRiBcJuFwUxwWA" target="_blank" style="color: inherit;">89 Phan Đình Phùng, Phường Phú Nhuận, TP. Hồ Chí Minh</a></li>
+                            </ul>
                     </div>
                     <!-- Footer Location Link End -->
                 </div>
@@ -503,7 +471,7 @@
                 <div class="col-xl-3 col-md-6">
                     <!-- Footer Contact Start -->
                     <div class="footer-contact footer-links">
-                        <h3>Contact Information</h3>
+                        <h3>Liên hệ</h3>
                         <ul>
                             <li><a href="tel:+84908556220">+84 908 556 220</a></li>
                             <li><a href="mailto:email@lazinet.com">email@lazinet.com</a></li>
@@ -515,13 +483,26 @@
                 <div class="col-xl-3 col-md-6">
                     <!-- Footer Newsletter Form Start -->
                     <div class="footer-newsletter-form footer-links">
-                        <h3>Subscribe To Newsletter</h3>
-                        <p>Stay informe with the latest cybersecurity news, expert tips.</p>
-                        <form id="newslettersForm" action="#" method="POST">
+                        <h3>Nhận tin LAZINET</h3>
+                        <p>Đăng ký nhận tin để cập nhật những giải pháp công nghệ mới nhất từ chúng tôi!</p>
+                        <form id="newsletter-form">
                             <div class="form-group">
-                                <input type="email" name="mail" class="form-control" id="mail" placeholder="Email Address *" required>
-                                <button type="submit" class="newsletter-btn">Subscribe</button>
+                                <input type="email" id="email-newsletter" name="mail" class="form-control"
+                                    placeholder="Nhập email của bạn *" required>
+                                <!-- <button id="newsletter-btn" type="submit" class="newsletter-btn">Đăng ký</button> -->
+                                <button id="newsletter-btn" class="newsletter-btn" type="button" onclick="submitNewsletter()">Đăng ký</button>
                             </div>
+
+                            <!-- Honeypot field: Ẩn với người dùng, lộ với bot -->
+                            <div style="display: none; position: absolute; left: -9999px;">
+                                <label for="website">Website (để trống)</label>
+                                <input type="text" id="website-newsletter" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+
+                            <!-- Anti-spam fields: JS token, time start, human score -->
+                            <input type="hidden" name="token_bot" id="token-bot-newsletter" value="">
+                            <input type="hidden" name="form_start_time" id="start-time-newsletter" value="">
+                            <input type="hidden" name="human_score" id="human-score-newsletter" value="0">
                         </form>
                     </div>
                     <!-- Footer Newsletter Form End -->
@@ -537,17 +518,25 @@
                         <!-- Footer Copyright Box Start -->
                         <div class="footer-copyright-box">
                             <div class="footer-copyright-text">
-                                <p>Copyright © 2025 All Rights Reserved.</p>
+                                <p><span id="currentYear"></span> LAZINET &copy; 
+                                <script>
+                                    const startYear = 2024; // Năm bắt đầu
+                                    const currentYear = new Date().getFullYear(); // Năm hiện tại
+                                    document.write(`${startYear}–${currentYear}`);
+                                </script>
+                                . Tất cả quyền được bảo lưu.
+                                </p>
                             </div>
-
                             <!-- Footer Menu Start -->
                             <div class="footer-menu">
                                 <ul>
-                                    <li><a href="index-2.html">Home</a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="services.html">services</a></li>
-                                    <li><a href="blog.html">Blogs</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="terms-conditions.html">Điều khoản sử dụng</a></li>
+                                    <li><a href="privacy-policy.html">Chính sách bảo mật</a></li>
+                                    <li><a href="index.html">Trang chủ</a></li>
+                                    <li><a href="lazinet-solution-applied-technologies.html">Giải pháp</a></li>
+                                    <li><a href="lazinet-services.html">Dịch vụ</a></li>
+                                    <li><a href="about.html">Về LAZINET</a></li>
+                                    <li><a class="btn-default" href="contact.html">Liên hệ</a></li>
                                 </ul>
                             </div>
                             <!-- Footer Menu End -->

@@ -108,12 +108,22 @@
 
     // Hàm random content
     function randomizeHeroContent() {
+        const subtitleEl = document.getElementById('hero-subtitle');
+        const titleEl = document.getElementById('hero-title');
+        const descEl = document.getElementById('hero-description');
+        
+        // Chỉ chạy nếu các elements tồn tại (ví dụ: chỉ trên homepage)
+        if (!subtitleEl || !titleEl || !descEl) {
+            console.log('Hero elements not found, skipping randomizeHeroContent.');
+            return;
+        }
+        
         const randomIndex = Math.floor(Math.random() * heroContents.length);
         const content = heroContents[randomIndex];
         
-        document.getElementById('hero-subtitle').innerHTML = content.subtitle;
-        document.getElementById('hero-title').innerHTML = content.title;
-        document.getElementById('hero-description').textContent = content.description;
+        subtitleEl.innerHTML = content.subtitle;
+        titleEl.innerHTML = content.title;
+        descEl.textContent = content.description;
         
         // Ghi log để debug (có thể xóa sau)
         console.log('Đã load hero content version:', randomIndex + 1);
@@ -124,10 +134,18 @@
 
     // Hàm random Description Only
     function randomizeHeroDescriptionOnly() {
+        const descEl = document.getElementById('hero-description');
+        
+        // Chỉ chạy nếu element tồn tại (ví dụ: chỉ trên homepage)
+        if (!descEl) {
+            console.log('Hero description not found, skipping randomizeHeroDescriptionOnly.');
+            return;
+        }
+        
         const randomIndex = Math.floor(Math.random() * heroContents.length);
         const content = heroContents[randomIndex];
 
-        document.getElementById('hero-description').textContent = content.description;
+        descEl.textContent = content.description;
         
         // Ghi log để debug (có thể xóa sau)
         console.log('Đã load hero content version:', randomIndex + 1);
@@ -143,14 +161,37 @@
 // Biến global (nếu chưa có)
     const SUBMIT_COOLDOWN_MS = 60000; // 1 phút giữa các submit   
 
-//  FORM LIÊN HỆ ================================================================================================================================================================================ 
-// Biến global (nếu chưa có)
+// GLOBAL ANTI-SPAM COUNTERS (di chuyển ra ngoài IIFE để accessible)
+let mouseMoves = 0, keysPressed = 0, fieldsFocused = 0, hasScrolled = false;
+const isTouched = 'ontouchstart' in window; // Mobile
 
-    document.getElementById('contact-form').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Ngăn hành vi mặc định của form
+// HÀM CHỐNG SPAM RIÊNG CHO CONTACT-FORM (nhiều field, score cao hơn)
+function initContactAntiSpam() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    // Token và time start
+    const startTime = Date.now();
+    const token = btoa(Math.random() + Date.now() + navigator.userAgent).substring(0, 32);
+    document.getElementById('start-time-contact').value = startTime;
+    document.getElementById('token-bot-contact').value = token;
+
+    // Event listeners riêng cho contact (nhiều field → focused dễ đạt cao)
+    form.querySelectorAll('input, textarea, select').forEach(field => {
+        if (!field.name.includes('bot') && !field.name.includes('time') && !field.name.includes('score') && !field.id.includes('website')) {
+            field.addEventListener('focus', () => {
+                if (fieldsFocused === 0) console.log('Contact: Fields focused: 1 (click vào ô đầu tiên)'); // DEBUG LOG
+                fieldsFocused++;
+            });
+        }
+    });
+
+    // Submit handler với score cao hơn (ngưỡng 4 vì nhiều tương tác)
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
         const button = document.getElementById('submit-btn');
 
-        // Kiểm tra rate limiting với localStorage
+        // Rate limiting
         const lastSubmitTime = localStorage.getItem('lastContactSubmitTime');
         const now = Date.now();
         if (lastSubmitTime && (now - parseInt(lastSubmitTime)) < SUBMIT_COOLDOWN_MS) {
@@ -161,14 +202,45 @@
                 button.textContent = 'Gửi tin nhắn';
                 button.style.color = '#ff6500';
             }, 2000);
-            return; // Dừng submit
+            return;
+        }
+
+        // Tính human score (cao hơn vì nhiều field: focused >=2 cho điểm cao)
+        let humanScore = 0;
+        if (mouseMoves >= 5) humanScore += 2;
+        if (keysPressed >= 2) humanScore += 2; // Nhiều gõ hơn
+        if (fieldsFocused >= 2) humanScore += 3; // Nhiều field → yêu cầu focused 2
+        if (hasScrolled) humanScore += 1;
+        if (isTouched) humanScore += 2;
+        document.getElementById('human-score-contact').value = humanScore;
+
+        // Anti-spam check
+        const timeSpent = (now - startTime) / 1000;
+        const finalHumanScore = humanScore;
+        const tokenBot = document.getElementById('token-bot-contact').value;
+        const honeypotValue = document.getElementById('website-contact').value.trim();
+
+        console.log('Contact anti-spam debug:', { timeSpent, finalHumanScore, tokenBot: !!tokenBot, honeypot: !!honeypotValue, mouseMoves, keysPressed, fieldsFocused });
+
+        const isBot = 
+            honeypotValue !== '' ||
+            tokenBot === '' ||
+            timeSpent < 1.5 || timeSpent > 600 ||
+            finalHumanScore < 3; // Ngưỡng cao hơn vì nhiều tương tác
+
+        if (isBot) {
+            console.warn('Bot detected in contact:', { honeypot: honeypotValue, token: tokenBot, time: timeSpent, score: finalHumanScore });
+            button.textContent = 'Có lỗi xảy ra, vui lòng thử lại sau ít phút.';
+            button.style.color = '#FF3333';
+            setTimeout(() => location.reload(), 2000);
+            return;
         }
 
         button.textContent = 'Đang gửi ... LAZINET';
-        button.style.color = '#ff6500'; // Màu cam
+        button.style.color = '#ff6500';
         button.disabled = true;
 
-        // Lấy dữ liệu từ form
+        // Lấy dữ liệu form
         const formData = {
             name: document.getElementById('name').value.trim(),
             userType: document.getElementById('user-type').value.trim(),
@@ -177,36 +249,28 @@
             email: document.getElementById('email').value.trim(),
             subject: document.getElementById('subject').value.trim(),
             message: document.getElementById('message').value.trim(),
+            token_bot: tokenBot,
+            form_start_time: startTime,
+            human_score: finalHumanScore
         };
 
         try {
-            // Honeypot check: Nếu field ẩn có giá trị → spam, chặn submit
-            const honeypotValue = document.getElementById('website-contact').value.trim();
-            if (honeypotValue !== '') {
-                console.warn('Honeypot detected: Potential spam attempt');
-                throw new Error('Yêu cầu không hợp lệ. Vui lòng thử lại.');
-            }
-
-            // Gửi yêu cầu POST với no-cors
             await fetch('https://script.google.com/macros/s/AKfycbz4t2LtIb1In7obXC_EKujEH3ZJGbvrz3uevuqVw4d-zErIj3Tf10QWwxlWH2-5IJ7KqA/exec', {
                 method: 'POST',
-                mode: 'no-cors', // Bỏ qua kiểm tra CORS
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
 
-            // Thành công: Lưu timestamp (honeypot đã pass) và reset form
             localStorage.setItem('lastContactSubmitTime', now.toString());
-            document.getElementById('contact-form').reset(); // Reset toàn bộ form
-            document.getElementById('other-type').style.display = 'none'; // Reset hidden field
-            document.getElementById('user-type').style.width = '100%'; // Reset select width
+            document.getElementById('contact-form').reset();
+            document.getElementById('other-type').style.display = 'none';
+            document.getElementById('user-type').style.width = '100%';
 
-            // Hiển thị thông báo thành công
             button.textContent = 'Đã gửi. LAZINET sẽ phản hồi sớm nhất có thể, trân trọng cám ơn!';
-            button.style.color = '#ffffff'; // Màu xanh lá
-            button.disabled = true; // Khóa nút để tránh gửi lại
+            button.style.color = '#ffffff';
+            button.disabled = true;
 
-            // Tùy chọn: Reset button sau 10 giây để cho phép submit mới
             setTimeout(() => {
                 button.textContent = 'Gửi tin nhắn';
                 button.style.color = '#ff6500';
@@ -214,57 +278,40 @@
             }, 10000);
 
         } catch (error) {
-            // Hiển thị thông báo lỗi
             button.textContent = `Error: ${error.message}`;
-            button.style.backgroundColor = '#FF3333'; // Đổi màu nền (màu đỏ)
+            button.style.backgroundColor = '#FF3333';
             button.disabled = false;
         }
     });
+}
 
-    window.addEventListener('DOMContentLoaded', function () {
-        const userTypeSelect = document.getElementById('user-type');
+// HÀM CHỐNG SPAM RIÊNG CHO NEWSLETTER-FORM (ít field, score đơn giản hơn, tái sử dụng ở nhiều trang)
+function initNewsletterAntiSpam() {
+    const form = document.getElementById('newsletter-form');
+    if (!form) return;
 
-        // Kiểm tra nếu giá trị mặc định là ""
-        function updateSelectColor() {
-            if (userTypeSelect.value === "") {
-                userTypeSelect.style.color = "#595959"; // Màu của placeholder
-            } else {
-                userTypeSelect.style.color = ""; // Đặt lại màu khi chọn giá trị khác
-            }
-        }
+    // Token và time start riêng (có thể dùng chung global counters nhưng score thấp hơn)
+    const startTime = Date.now();
+    const token = btoa(Math.random() + Date.now() + navigator.userAgent).substring(0, 32);
+    document.getElementById('start-time-newsletter').value = startTime;
+    document.getElementById('token-bot-newsletter').value = token;
 
-        // Cập nhật màu khi load trang
-        updateSelectColor();
-
-        // Thêm sự kiện khi người dùng chọn một giá trị khác
-        userTypeSelect.addEventListener('change', function () {
-            updateSelectColor(); // Cập nhật màu khi chọn thay đổi
-        });
-    });
-
-    document.getElementById('user-type').addEventListener('change', function () {
-        const otherInputContainer = document.getElementById('other-type');
-        const userType = document.getElementById('user-type');
-
-        if (this.value === 'Other') {
-            userType.style.width = '30%'; // Thu hẹp dropdown userType
-            otherInputContainer.style.display = 'inline-block'; // Hiển thị input
-            otherInputContainer.setAttribute('required', ''); // Thêm thuộc tính required
-        } else {
-            userType.style.width = '100%'; // Trả lại kích thước ban đầu
-            otherInputContainer.style.display = 'none'; // Ẩn trường nhập liệu
-            otherInputContainer.removeAttribute('required'); // Xóa thuộc tính required
+    // Event listeners riêng cho newsletter (chỉ 1 field → focused >=1 là đủ, mouse >=3)
+    form.querySelectorAll('input, textarea, select').forEach(field => {
+        if (!field.name.includes('bot') && !field.name.includes('time') && !field.name.includes('score') && !field.id.includes('website')) {
+            field.addEventListener('focus', () => {
+                if (fieldsFocused === 0) console.log('Newsletter: Fields focused: 1 (click vào email)'); // DEBUG LOG
+                fieldsFocused++;
+            });
         }
     });
-    
 
-    // FORM NEWSLETTER ================================================================================================================================================================================
-    // Biến global (nếu chưa có)
-    async function submitNewsletter() {
+    // Submit handler với score thấp hơn (ngưỡng 2 vì ít tương tác)
+    window.submitNewsletter = async function() {
         const email = document.getElementById('email-newsletter').value.trim();
         const button = document.getElementById('newsletter-btn');
 
-        // Kiểm tra rate limiting với localStorage
+        // Rate limiting
         const lastSubmitTime = localStorage.getItem('lastNewsletterSubmitTime');
         const now = Date.now();
         if (lastSubmitTime && (now - parseInt(lastSubmitTime)) < SUBMIT_COOLDOWN_MS) {
@@ -275,7 +322,38 @@
                 button.textContent = 'Đăng ký';
                 button.style.color = '#ff5000';
             }, 2000);
-            return; // Dừng submit
+            return;
+        }
+
+        // Tính human score (thấp hơn: focused >=1 + mouse >=3, không yêu cầu keys nhiều vì autofill)
+        let humanScore = 0;
+        if (mouseMoves >= 3) humanScore += 1.5; // Ít di chuột hơn
+        if (keysPressed >= 0) humanScore += 1.5; // Không bắt buộc gõ (autofill ok)
+        if (fieldsFocused >= 1) humanScore += 1.5; // Chỉ cần click email
+        if (hasScrolled) humanScore += 0.5;
+        if (isTouched) humanScore += 1;
+        document.getElementById('human-score-newsletter').value = humanScore;
+
+        // Anti-spam check
+        const timeSpent = (now - startTime) / 1000;
+        const finalHumanScore = humanScore;
+        const tokenBot = document.getElementById('token-bot-newsletter').value;
+        const honeypotValue = document.getElementById('website-newsletter').value.trim();
+
+        console.log('Newsletter anti-spam debug:', { timeSpent, finalHumanScore, tokenBot: !!tokenBot, honeypot: !!honeypotValue, mouseMoves, keysPressed, fieldsFocused });
+
+        const isBot = 
+            honeypotValue !== '' ||
+            tokenBot === '' ||
+            timeSpent < 1 || timeSpent > 600 || // Thời gian ngắn hơn vì ít tương tác
+            finalHumanScore < 1; // Ngưỡng thấp hơn
+
+        if (isBot) {
+            console.warn('Bot detected in newsletter:', { honeypot: honeypotValue, token: tokenBot, time: timeSpent, score: finalHumanScore });
+            button.textContent = 'Có lỗi xảy ra, vui lòng thử lại sau ít phút.';
+            button.style.color = '#FF3333';
+            setTimeout(() => location.reload(), 2000);
+            return;
         }
 
         // Kiểm tra email hợp lệ
@@ -287,36 +365,26 @@
             return;
         }
 
-        // Honeypot check: Nếu field ẩn có giá trị → spam, chặn submit
-        const honeypotValue = document.getElementById('website-newsletter').value.trim();
-        if (honeypotValue !== '') {
-            console.warn('Honeypot detected: Potential spam attempt');
-            button.textContent = 'Yêu cầu không hợp lệ!';
-            button.style.color = 'red';
-            setTimeout(() => {
-                button.textContent = 'Đăng ký';
-                button.style.color = '#ff5000';
-            }, 3000);
-            return; // Dừng submit
-        }
-
         button.textContent = 'Đang đăng ký';
-        button.style.color = '#ff5000'; // Màu cam
+        button.style.color = '#ff5000';
         button.disabled = true;
 
         try {
-            // Gửi yêu cầu POST
-            const response = await fetch(
+            await fetch(
                 'https://script.google.com/macros/s/AKfycbz38pxrAZj7NprlijMQszw3k1tRL1YC8Phzlcl7v7mAZfd8_JGqOgAP6rusC2ZkrK2E/exec',
                 {
                     method: 'POST',
-                    mode: 'no-cors', // Bỏ qua kiểm tra CORS
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email }),
+                    body: JSON.stringify({ 
+                        email,
+                        token_bot: tokenBot,
+                        form_start_time: startTime,
+                        human_score: finalHumanScore
+                    }),
                 }
             );
 
-            // Thành công: Lưu timestamp (honeypot đã pass)
             localStorage.setItem('lastNewsletterSubmitTime', now.toString());
 
             button.textContent = 'Đã đăng ký!';
@@ -328,7 +396,63 @@
             button.style.color = 'red';
             button.disabled = false;
         }
+    };
+}
+
+// KHỞI TẠO ANTI-SPAM KHI LOAD TRANG (tách riêng để newsletter tái sử dụng)
+document.addEventListener('DOMContentLoaded', () => {
+    // Global event listeners (chung cho cả 2 form)
+    document.addEventListener('mousemove', () => {
+        if (mouseMoves < 30) mouseMoves++;
+        if (mouseMoves === 5) console.log('Mouse moves reached 5'); // DEBUG LOG
+    });
+
+    document.addEventListener('keydown', () => {
+        if (keysPressed < 20) keysPressed++;
+        if (keysPressed === 1) console.log('Keys pressed: 1 (gõ phím đầu tiên)'); // DEBUG LOG
+    });
+
+    window.addEventListener('scroll', () => {
+        if (!hasScrolled) {
+            hasScrolled = true;
+            console.log('Scrolled: true'); // DEBUG LOG
+        }
+    });
+
+    // Khởi tạo riêng cho từng form nếu tồn tại
+    initContactAntiSpam();
+    initNewsletterAntiSpam();
+
+    // Phần user-type select (chỉ cho contact-form)
+    const userTypeSelect = document.getElementById('user-type');
+    if (userTypeSelect) {
+        function updateSelectColor() {
+            if (userTypeSelect.value === "") {
+                userTypeSelect.style.color = "#595959";
+            } else {
+                userTypeSelect.style.color = "";
+            }
+        }
+        updateSelectColor();
+        userTypeSelect.addEventListener('change', updateSelectColor);
     }
+
+    // User-type change handler (chỉ cho contact-form)
+    if (userTypeSelect) {
+        userTypeSelect.addEventListener('change', function () {
+            const otherInputContainer = document.getElementById('other-type');
+            if (this.value === 'Other') {
+                this.style.width = '30%';
+                otherInputContainer.style.display = 'inline-block';
+                otherInputContainer.setAttribute('required', '');
+            } else {
+                this.style.width = '100%';
+                otherInputContainer.style.display = 'none';
+                otherInputContainer.removeAttribute('required');
+            }
+        });
+    }
+});
 
 // Tech Grid Animation =================================================================================================================================================================
     const canvas = document.getElementById("tech-grid");
