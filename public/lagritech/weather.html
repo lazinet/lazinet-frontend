@@ -2,15 +2,146 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ứng dụng Thời tiết cho Cà Phê - LAZINET</title>
-    <meta name="description" content="Theo dõi thời tiết tối ưu cho cây cà phê tại Việt Nam với bản đồ tương tác, dự báo chi tiết, và khuyến nghị nông nghiệp từ LAZINET.">
-    <meta name="keywords" content="thời tiết cà phê, dự báo thời tiết Việt Nam, nông nghiệp cà phê, LAZINET, thời tiết nông nghiệp">
-    <meta name="author" content="LAZINET">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<!-- Meta -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<!-- === CORE META TAGS === -->
+<title>Ứng Dụng Thời Tiết Cho Cà Phê Miễn Phí | LAZINET - Dự Báo Thời Tiết Nông Nghiệp Việt Nam</title>
+<meta name="description" content="Theo dõi thời tiết tối ưu cho cây cà phê tại Việt Nam với bản đồ tương tác, dự báo chi tiết, khuyến nghị nông nghiệp từ LAZINET. Dự báo nhiệt độ, độ ẩm, mưa gió, UV cho nông dân cà phê.">
+<meta name="keywords" content="thời tiết cà phê, dự báo thời tiết cà phê, thời tiết nông nghiệp Việt Nam, ứng dụng thời tiết cà phê, LAZINET, dự báo mưa cà phê, nhiệt độ cà phê, độ ẩm cà phê, khuyến nghị nông nghiệp, thời tiết Đắk Lắk, thời tiết Lâm Đồng">
+<meta name="author" content="LAZINET Technologies">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+
+<!-- === CANONICAL & ALTERNATE URLs === -->
+<link rel="canonical" href="https://lazinet.com/weather.html">
+<link rel="alternate" hreflang="vi-VN" href="https://lazinet.com/weather.html">
+<link rel="alternate" hreflang="x-default" href="https://lazinet.com/weather.html">
+
+<!-- === FAVICON & APP ICONS === -->
+<link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+
+<!-- === OPEN GRAPH (Facebook, LinkedIn) === -->
+<meta property="og:title" content="Ứng Dụng Thời Tiết Cho Cà Phê Miễn Phí | LAZINET">
+<meta property="og:description" content="Theo dõi thời tiết cà phê với bản đồ tương tác, dự báo chi tiết & khuyến nghị nông nghiệp. Nhiệt độ, độ ẩm, mưa gió, UV tối ưu cho cây cà phê Việt Nam.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lazinet.com/weather.html">
+<meta property="og:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LAZINET - Ứng Dụng Thời Tiết Cho Cà Phê">
+<meta property="og:site_name" content="LAZINET">
+<meta property="og:locale" content="vi_VN">
+
+<!-- === TWITTER CARD === -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ứng Dụng Thời Tiết Cho Cà Phê | LAZINET">
+<meta name="twitter:description" content="Dự báo thời tiết chuyên biệt cho cây cà phê: bản đồ tương tác, khuyến nghị nông nghiệp. Tối ưu cho nông dân Việt Nam với dữ liệu nhiệt độ, mưa, gió.">
+<meta name="twitter:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+<meta name="twitter:image:alt" content="LAZINET Weather App for Coffee">
+<meta name="twitter:site" content="@lazinet">
+<meta name="twitter:creator" content="@lazinet">
+
+<!-- === ZALO SPECIFIC === -->
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:secure_url" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+
+<!-- === TIKTOK SPECIFIC === -->
+<meta property="al:ios:url" content="lazinet://app">
+<meta property="al:ios:app_store_id" content="123456789">
+<meta property="al:ios:app_name" content="LAZINET">
+<meta property="al:android:url" content="lazinet://app">
+<meta property="al:android:package" content="com.lazinet.app">
+<meta property="al:android:app_name" content="LAZINET">
+
+<!-- === ADDITIONAL SEO META === -->
+<meta name="theme-color" content="#0052FF">
+<meta name="msapplication-TileColor" content="#0052FF">
+<meta name="msapplication-config" content="browserconfig.xml">
+<meta name="apple-mobile-web-app-title" content="LAZINET">
+<meta name="application-name" content="LAZINET">
+<meta name="format-detection" content="telephone=no">
+
+<!-- === STRUCTURED DATA (JSON-LD) === -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Ứng Dụng Thời Tiết Cho Cà Phê Miễn Phí - LAZINET",
+    "description": "Ứng dụng theo dõi thời tiết chuyên biệt cho cây cà phê tại Việt Nam. Bản đồ tương tác, dự báo chi tiết nhiệt độ, độ ẩm, mưa gió, UV và khuyến nghị nông nghiệp từ LAZINET.",
+    "url": "https://lazinet.com/weather.html",
+    "publisher": {
+        "@type": "Organization",
+        "name": "LAZINET Technologies",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoFullv2.png"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "89 Phan Dinh Phung",
+            "addressLocality": "Ho Chi Minh City",
+            "addressRegion": "HCMC",
+            "postalCode": "700000",
+            "addressCountry": "VN"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+84-908556220",
+            "contactType": "customer service",
+            "email": "email@lazinet.com",
+            "availableLanguage": "Vietnamese"
+        },
+        "sameAs": [
+            "https://www.facebook.com/profile.php?id=61567050494124",
+            "https://linkedin.com/company/lazinet"
+        ]
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "LAZINET Weather App for Coffee",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Ứng dụng dự báo thời tiết và khuyến nghị cho nông nghiệp cà phê, tích hợp bản đồ Leaflet và API thời tiết.",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "VND"
+        },
+        "featureList": [
+            "Bản đồ tương tác",
+            "Dự báo chi tiết 24h",
+            "Khuyến nghị nông nghiệp",
+            "Hỗ trợ vị trí GPS"
+        ]
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Trang chủ",
+                "item": "https://lazinet.com"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Thời Tiết Cà Phê",
+                "item": "https://lazinet.com/weather.html"
+            }
+        ]
+    }
+}
+</script>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
