@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes">
+
+    <title>LAZINET Converter – Công cụ Chuyển đổi Đơn vị Thông minh</title>
+
+    <meta name="description"
+        content="Công cụ chuyển đổi đơn vị realtime của LAZINET: Độ dài, khối lượng, nhiệt độ, tiền tệ, dữ liệu, áp suất, năng lượng… 100% miễn phí.">
+    <meta name="keywords"
+        content="LAZINET, chuyển đổi đơn vị, unit converter, convert tiền tệ realtime, nhiệt độ, độ dài, diện tích, tốc độ, dữ liệu, năng lượng, pressure">
+    <meta name="robots" content="index, follow">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/img/logo-lazinet/lazinet_LogoOnly.png">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            font-family: Inter, sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-cat.active {
+            background: #ff6f00;
+            color: #fff;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+
+        .rate-box {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+        }
+    </style>
+</head>
+
+<body class="p-4">
+
+    <!-- HEADER -->
+    <header class="glass p-6 mb-6 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <img src="../assets/img/logo-lazinet/lazinet_LogoOnly.png" class="w-12 h-12">
+            <div>
+                <h1 class="text-2xl font-bold">LAZINET Converter</h1>
+                <p class="text-sm opacity-70">Công cụ chuyển đổi realtime • 100% miễn phí</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BOX -->
+    <div class="glass p-6">
+
+        <!-- CATEGORY -->
+        <h2 class="text-xl font-bold mb-3">Chọn loại đơn vị</h2>
+        <div id="catButtons" class="flex flex-wrap gap-2 mb-6"></div>
+
+        <!-- CONVERTER -->
+        <div class="grid lg:grid-cols-3 gap-6">
+
+            <!-- LEFT PANEL -->
+            <div class="lg:col-span-2 glass p-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- INPUT -->
+                    <div>
+                        <label class="font-medium">Giá trị</label>
+                        <input id="inputValue" type="number" value="1"
+                            class="w-full p-3 border rounded-lg text-xl mt-2" oninput="convertNow()">
+
+                        <label class="font-medium block mt-4">Từ đơn vị</label>
+                        <select id="fromUnit" class="w-full p-3 border rounded-lg" onchange="convertNow()"></select>
+                    </div>
+
+                    <!-- OUTPUT -->
+                    <div>
+                        <label class="font-medium">Kết quả</label>
+
+                        <div id="resultValue"
+                            class="w-full p-3 border rounded-lg bg-gray-50 text-xl font-bold mt-2">1</div>
+
+                        <label class="font-medium block mt-4">Sang đơn vị</label>
+                        <select id="toUnit" class="w-full p-3 border rounded-lg" onchange="convertNow()"></select>
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="flex justify-center mt-5">
+                    <button onclick="swapUnits()"
+                        class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-3 rounded-full text-lg">
+                        ⇄ Đổi chiều
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="space-y-6">
+
+                <!-- INFO BOX -->
+                <div class="rate-box p-5 rounded-xl text-white">
+                    <h3 class="font-bold text-lg mb-2">Chi tiết chuyển đổi</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Tỷ lệ:</span>
+                            <span id="rateView" class="font-bold">1</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Công thức:</span>
+                            <span id="formulaView" class="font-mono text-sm">× 1</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Thời gian:</span>
+                            <span id="timeView">0.000s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION -->
+                <button onclick="copyResult()"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-bold hover-scale">📋
+                    Sao chép</button>
+
+                <button onclick="resetAll()"
+                    class="w-full bg-gray-700 hover:bg-gray-800 text-white p-3 rounded-lg font-bold hover-scale">🔁
+                    Đặt lại</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-10 text-center text-gray-600">
+        © 2025 LAZINET Technologies – Công cụ miễn phí cho cộng đồng
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        /* =====================
+            UNIT DATABASE
+        ======================= */
+
+        const DB = {
+
+            length: {
+                name: "Độ dài",
+                base: "m",
+                units: {
+                    m: 1, km: 1000, cm: 0.01, mm: 0.001,
+                    ft: 0.3048, in: 0.0254, yd: 0.9144, mi: 1609.34
+                }
+            },
+
+            mass: {
+                name: "Khối lượng",
+                base: "kg",
+                units: {
+                    kg: 1, g: 0.001, mg: 1e-6,
+                    lb: 0.453592, oz: 0.0283495
+                }
+            },
+
+            area: {
+                name: "Diện tích",
+                base: "m2",
+                units: {
+                    m2: 1, km2: 1e6, cm2: 0.0001,
+                    ha: 10000, ac: 4046.86
+                }
+            },
+
+            volume: {
+                name: "Thể tích",
+                base: "m3",
+                units: {
+                    m3: 1, l: 0.001, ml: 0.000001,
+                    gal_us: 0.00378541
+                }
+            },
+
+            speed: {
+                name: "Tốc độ",
+                base: "mps",
+                units: {
+                    mps: 1,
+                    kmh: 1 / 3.6,
+                    mph: 0.44704,
+                    kt: 0.514444
+                }
+            },
+
+            temperature: {
+                name: "Nhiệt độ",
+                special: true,
+                convert(v, from, to) {
+
+                    if (from === to) return v;
+
+                    if (from === "C") v = v + 273.15;
+                    if (from === "F") v = (v - 32) * 5 / 9 + 273.15;
+
+                    if (to === "C") return v - 273.15;
+                    if (to === "F") return (v - 273.15) * 9 / 5 + 32;
+
+                    return v;
+                },
+                units: { C: 1, F: 1, K: 1 }
+            },
+
+            data: {
+                name: "Dữ liệu",
+                base: "B",
+                units: {
+                    B: 1,
+                    KB: 1024,
+                    MB: 1024 ** 2,
+                    GB: 1024 ** 3,
+                    TB: 1024 ** 4
+                }
+            },
+
+            currency: {
+                name: "Tiền tệ",
+                dynamic: true,         /* fetch API */
+                base: "USD",
+                rates: {},             /* loaded later */
+                units: ["USD", "EUR", "VND", "JPY", "GBP", "AUD", "CNY", "KRW"]
+            }
+        };
+
+        /* =====================
+            LOAD CATEGORIES
+        ======================= */
+
+        const catButtons = document.getElementById("catButtons");
+        let currentCat = "length";
+
+        Object.keys(DB).forEach(k => {
+            let b = document.createElement("button");
+            b.textContent = DB[k].name;
+            b.className = "btn-cat px-4 py-2 border rounded-lg hover:bg-orange-200";
+            b.onclick = () => selectCategory(k);
+            catButtons.appendChild(b);
+        });
+
+        function selectCategory(cat) {
+            currentCat = cat;
+            [...catButtons.children].forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+
+            loadUnits();
+            convertNow();
+        }
+
+        /* =====================
+            LOAD UNITS
+        ======================= */
+
+        function loadUnits() {
+            let from = document.getElementById("fromUnit");
+            let to = document.getElementById("toUnit");
+            from.innerHTML = "";
+            to.innerHTML = "";
+
+            let data = DB[currentCat];
+
+            let units = data.dynamic ? data.units : Object.keys(data.units);
+
+            units.forEach(u => {
+                from.innerHTML += `<option value="${u}">${u}</option>`;
+                to.innerHTML += `<option value="${u}">${u}</option>`;
+            });
+        }
+
+        /* =====================
+            CURRENCY API
+        ======================= */
+
+        async function loadRates() {
+            try {
+                let res = await fetch("https://open.er-api.com/v6/latest/USD");
+                let js = await res.json();
+                DB.currency.rates = js.rates;
+            } catch (e) {
+                console.log("Currency API Error", e);
+            }
+        }
+
+        loadRates();
+
+        /* =====================
+            CONVERSION CORE
+        ======================= */
+
+        function convertNow() {
+            let t0 = performance.now();
+
+            let v = parseFloat(document.getElementById("inputValue").value || 0);
+            let from = document.getElementById("fromUnit").value;
+            let to = document.getElementById("toUnit").value;
+
+            let out = 0;
+            let db = DB[currentCat];
+
+            if (db.special) {
+                out = db.convert(v, from, to);
+                document.getElementById("rateView").textContent = "–";
+                document.getElementById("formulaView").textContent = "Hàm nhiệt độ";
+            }
+
+            else if (db.dynamic) {
+                let r = DB.currency.rates;
+                if (r[from] && r[to]) {
+                    out = v * (r[to] / r[from]);
+                    document.getElementById("rateView").textContent =
+                        (r[to] / r[from]).toFixed(4);
+                    document.getElementById("formulaView").textContent = "x rate";
+                }
+            }
+
+            else {
+                let baseFrom = db.units[from];
+                let baseTo = db.units[to];
+
+                let inBase = v * baseFrom;
+                out = inBase / baseTo;
+
+                document.getElementById("rateView").textContent =
+                    (baseFrom / baseTo).toFixed(4);
+                document.getElementById("formulaView").textContent =
+                    `× ${baseFrom / baseTo}`;
+            }
+
+            document.getElementById("resultValue").textContent =
+                out.toLocaleString("en-US", { maximumFractionDigits: 12 });
+
+            document.getElementById("timeView").textContent =
+                (performance.now() - t0).toFixed(3) + "s";
+        }
+
+        /* =====================
+            ACTIONS
+        ======================= */
+
+        function swapUnits() {
+            let from = document.getElementById("fromUnit");
+            let to = document.getElementById("toUnit");
+
+            let tmp = from.value;
+            from.value = to.value;
+            to.value = tmp;
+
+            convertNow();
+        }
+
+        function copyResult() {
+            navigator.clipboard.writeText(
+                document.getElementById("resultValue").textContent
+            );
+            alert("Đã sao chép!");
+        }
+
+        function resetAll() {
+            document.getElementById("inputValue").value = 1;
+            loadUnits();
+            convertNow();
+        }
+
+        /* =====================
+            INIT
+        ======================= */
+        loadUnits();
+        convertNow();
+    </script>
+
+</body>
+
+</html>

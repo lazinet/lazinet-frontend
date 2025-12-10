@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="theme-color" content="#0052FF">
+
+    <title>LAZINET Universal Converter | Công cụ chuyển đổi đơn vị toàn diện - Miễn phí 100%</title>
+    <meta name="description" content="Công cụ chuyển đổi đơn vị AI của LAZINET - Hỗ trợ 1000+ đơn vị: độ dài, khối lượng, nhiệt độ, tiền tệ, thời gian, dữ liệu, năng lượng, áp suất, tốc độ, lực, độ nhớt, lưu lượng, bức xạ, độ sáng, âm thanh, điện, từ tính, nấu ăn, hiệu suất nhiên liệu, số học, số La Mã. Miễn phí vĩnh viễn, không quảng cáo, độ chính xác 100%.">
+    <meta name="keywords" content="LAZINET Converter, chuyển đổi đơn vị, công cụ convert, đổi đơn vị online, convert độ dài, đổi nhiệt độ, chuyển tiền tệ, công cụ miễn phí, AI converter, chuyển đổi thông minh, LAZINET, AI, IoT, ERP">
+    <meta name="author" content="LAZINET Technologies">
+    
+    <!-- Open Graph & Twitter Cards (giữ nguyên) -->
+    
+    <!-- Minimal CSS: Bootstrap + Custom -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0052FF;
+            --primary-dark: #0041CC;
+            --secondary-color: #FF6F00;
+            --secondary-dark: #E55A00;
+            --bg-color: #f8fafc;
+            --card-bg: #fff;
+            --border-color: #e2e8f0;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-hover: 0 15px 40px rgba(0,82,255,0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Sora', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-color) 0%, #e2e8f0 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white; 
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo { 
+            height: 40px; 
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-link { 
+            color: rgba(255,255,255,0.9) !important; 
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover, .nav-link.active { 
+            color: white !important; 
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .converter-section { 
+            padding: 40px 0 80px;
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .converter-section {
+                padding: 20px 0 60px;
+            }
+        }
+        
+        .converter-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .converter-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+        
+        .converter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        /* Quick Popular Categories */
+        .quick-categories { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 0.75rem; 
+            justify-content: center; 
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(0, 82, 255, 0.03);
+            border-radius: 12px;
+        }
+        
+        .quick-btn { 
+            padding: 0.75rem 1.25rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 50px; 
+            background: white; 
+            cursor: pointer; 
+            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        .quick-btn:hover, .quick-btn.active { 
+            background: var(--primary-color); 
+            color: white; 
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,82,255,0.2);
+        }
+        
+        .quick-btn i {
+            font-size: 1.1rem;
+        }
+        
+        /* Category Search */
+        .category-search { 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-search i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        
+        .category-search input {
+            padding-left: 3rem;
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        
+        .category-search input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0,82,255,0.15);
+            background: white;
+        }
+        
+        /* Category Menu */
+        .category-menu {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 1rem;
+            border-right: 1px solid var(--border-color);
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #f1f1f1;
+        }
+        
+        .category-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .category-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .category-menu::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-color);
+            border: 1px solid transparent;
+        }
+        
+        .category-item:hover { 
+            background: rgba(0, 82, 255, 0.08); 
+            color: var(--primary-color); 
+            border-color: rgba(0, 82, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .category-item.active { 
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); 
+            color: white; 
+            box-shadow: 0 5px 15px rgba(0,82,255,0.2);
+            border-color: transparent;
+        }
+        
+        .category-item.hidden { display: none; }
+        
+        .category-item i { 
+            width: 24px; 
+            margin-right: 12px; 
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* Search Suggestions */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 100;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .suggestion-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .suggestion-item:hover {
+            background: rgba(0, 82, 255, 0.08);
+            color: var(--primary-color);
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Form Controls */
+        .form-control, select { 
+            border: 2px solid var(--border-color); 
+            border-radius: var(--radius-sm); 
+            padding: 0.875rem; 
+            font-size: 1rem; 
+            background: #f8f9fa;
+            transition: var(--transition);
+            height: auto;
+        }
+        
+        .form-control:focus, select:focus { 
+            border-color: var(--primary-color); 
+            box-shadow: 0 0 0 0.25rem rgba(0,82,255,0.15); 
+            background: white;
+        }
+        
+        .input-group {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        
+        .input-group-text {
+            background: #f1f5f9;
+            border: 2px solid var(--border-color);
+            border-right: none;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        /* Result Display */
+        #resultValue {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 1.75rem;
+            box-shadow: 0 5px 20px rgba(0,82,255,0.2);
+            transition: var(--transition);
+            word-break: break-all;
+            text-align: center;
+        }
+        
+        #resultValue.updating {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Swap Button */
+        #swapUnits {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(255,111,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #swapUnits:hover { 
+            background: linear-gradient(135deg, var(--secondary-dark), #cc5800);
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 8px 25px rgba(255,111,0,0.4);
+        }
+        
+        /* Quick Value Buttons */
+        .quick-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .value-btn {
+            min-width: 60px;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--border-color);
+            background: white;
+        }
+        
+        .value-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Stats */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 1.5rem; 
+            margin: 2.5rem 0;
+        }
+        
+        .stat-card { 
+            background: rgba(255,255,255,0.9); 
+            padding: 1.75rem; 
+            border-radius: 12px; 
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Details Panel */
+        .details-panel {
+            background: #f8fafc;
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Currency Notice */
+        .currency-notice { 
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7); 
+            color: #856404; 
+            border: 1px solid #ffeaa7; 
+            border-left: 4px solid #ffc107;
+            border-radius: var(--radius-sm); 
+            padding: 1rem 1.25rem; 
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* History */
+        .history-section {
+            margin-top: 3rem;
+        }
+        
+        .history-list { 
+            max-height: 300px; 
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: white;
+        }
+        
+        .history-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 1rem; 
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .history-item:hover {
+            background: rgba(0, 82, 255, 0.05);
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-item .conversion {
+            font-weight: 500;
+        }
+        
+        .history-item .category {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .history-item .time {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        /* Footer */
+        .footer { 
+            background: linear-gradient(135deg, #1e293b, #0f172a); 
+            color: white; 
+            padding: 3rem 0 1.5rem; 
+            margin-top: 4rem;
+        }
+        
+        .footer a { 
+            color: #cbd5e1; 
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer a:hover { 
+            color: var(--secondary-color); 
+            transform: translateX(5px);
+        }
+        
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* ========== RESPONSIVE DESIGN ========== */
+        
+        /* Tablet */
+        @media (max-width: 992px) {
+            .converter-card {
+                padding: 1.75rem;
+            }
+            
+            .quick-btn {
+                min-width: 120px;
+                padding: 0.65rem 1rem;
+                font-size: 0.95rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-card .number {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem 0;
+            }
+            
+            .logo {
+                height: 35px;
+            }
+            
+            .navbar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            .nav-link {
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.9rem;
+                margin: 0.1rem;
+            }
+            
+            .converter-section {
+                padding: 20px 0 60px;
+            }
+            
+            .converter-card {
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+            
+            .quick-categories {
+                flex-direction: row;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .quick-btn {
+                min-width: calc(50% - 0.5rem);
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+                border-radius: 12px;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .quick-btn i {
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .category-menu {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding-right: 0;
+                padding-bottom: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                max-height: none;
+                margin-bottom: 1.5rem;
+            }
+            
+            .category-item {
+                flex: 1;
+                min-width: calc(50% - 0.5rem);
+                max-width: calc(50% - 0.5rem);
+                justify-content: flex-start;
+                padding: 0.75rem;
+                margin-bottom: 0;
+                border-radius: 8px;
+            }
+            
+            .category-item i {
+                width: 20px;
+                margin-right: 8px;
+                font-size: 1rem;
+            }
+            
+            #swapUnits {
+                margin: 1rem auto;
+                display: block;
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+                margin: 1.5rem 0;
+            }
+            
+            .stat-card {
+                padding: 1.25rem 0.75rem;
+            }
+            
+            .stat-card .number {
+                font-size: 1.75rem;
+            }
+            
+            #resultValue {
+                font-size: 1.5rem;
+                min-height: 55px;
+                padding: 1rem;
+            }
+            
+            .form-control, select {
+                padding: 0.75rem;
+                font-size: 0.95rem;
+            }
+            
+            .quick-values {
+                gap: 0.5rem;
+            }
+            
+            .value-btn {
+                min-width: 50px;
+                padding: 0.6rem 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .details-panel {
+                padding: 1rem;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+            
+            .footer {
+                padding: 2rem 0 1rem;
+                text-align: center;
+            }
+            
+            .footer-logo {
+                height: 40px;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .quick-btn {
+                min-width: 100%;
+                max-width: 100%;
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 0.75rem 1rem;
+            }
+            
+            .category-item {
+                min-width: 100%;
+                max-width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-values {
+                justify-content: space-between;
+            }
+            
+            .value-btn {
+                flex: 1;
+                min-width: calc(25% - 0.5rem);
+            }
+            
+            h1.display-4 {
+                font-size: 2.25rem;
+            }
+            
+            .lead {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Dark Mode Support (optional) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --border-color: #334155;
+                --text-color: #f1f5f9;
+                --text-light: #94a3b8;
+            }
+            
+            body {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            }
+            
+            .form-control, select {
+                background: #334155;
+                color: white;
+                border-color: #475569;
+            }
+            
+            .category-search input {
+                background: #334155;
+                color: white;
+            }
+            
+            .details-panel {
+                background: #334155;
+            }
+            
+            .stat-card {
+                background: rgba(30, 41, 59, 0.9);
+                border-color: #475569;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .header, .footer, .quick-categories, #swapUnits, .quick-values, .history-section {
+                display: none !important;
+            }
+            
+            .converter-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Simplified Header -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="../index.html"><img src="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" class="logo" alt="LAZINET"></a>
+                </div>
+                <div class="col-lg-6 col-md-8 d-none d-md-block">
+                    <nav class="navbar navbar-expand-md">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item"><a class="nav-link" href="../index.html">Trang chủ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../lazinet-solution-applied-technologies.html">Giải pháp</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../lazinet-services.html">Dịch vụ</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="../lazinet-support-customers.html">Hỗ trợ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../about.html">Về LAZINET</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-12 col-6 text-lg-end text-center">
+                    <a href="../contact.html" class="btn btn-light btn-sm">Liên hệ</a>
+                </div>
+            </div>
+            <!-- Mobile Navigation -->
+            <div class="row d-md-none mt-2">
+                <div class="col-12">
+                    <nav class="navbar">
+                        <ul class="navbar-nav d-flex flex-row justify-content-around w-100">
+                            <li class="nav-item"><a class="nav-link px-2" href="../index.html"><i class="fas fa-home d-block mx-auto mb-1"></i><small>Trang chủ</small></a></li>
+                            <li class="nav-item"><a class="nav-link px-2" href="../lazinet-solution-applied-technologies.html"><i class="fas fa-cogs d-block mx-auto mb-1"></i><small>Giải pháp</small></a></li>
+                            <li class="nav-item"><a class="nav-link px-2" href="../lazinet-services.html"><i class="fas fa-concierge-bell d-block mx-auto mb-1"></i><small>Dịch vụ</small></a></li>
+                            <li class="nav-item"><a class="nav-link px-2 active" href="../lazinet-support-customers.html"><i class="fas fa-headset d-block mx-auto mb-1"></i><small>Hỗ trợ</small></a></li>
+                            <li class="nav-item"><a class="nav-link px-2" href="../about.html"><i class="fas fa-info-circle d-block mx-auto mb-1"></i><small>Về chúng tôi</small></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="converter-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-4 fw-bold mb-3">Công Cụ Chuyển Đổi <span style="color: var(--primary-color);">Toàn Diện</span></h1>
+                        <p class="lead mb-4">Chuyển đổi 1000+ đơn vị chỉ trong 1 giây. Miễn phí, chính xác 100%.</p>
+                        
+                        <!-- Stats -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="number">1000+</div>
+                                <div>Đơn vị</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="number">100%</div>
+                                <div>Chính xác</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="number">0₫</div>
+                                <div>Chi phí</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="number">40+</div>
+                                <div>Danh mục</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Converter Card -->
+                    <div class="converter-card">
+                        <!-- 6 Quick Popular Categories -->
+                        <div class="quick-categories">
+                            <button class="quick-btn active" data-key="length" onclick="loadQuickCategory('length')">
+                                <i class="fas fa-ruler-horizontal"></i>
+                                <span>Độ Dài</span>
+                            </button>
+                            <button class="quick-btn" data-key="mass" onclick="loadQuickCategory('mass')">
+                                <i class="fas fa-weight"></i>
+                                <span>Khối Lượng</span>
+                            </button>
+                            <button class="quick-btn" data-key="temperature" onclick="loadQuickCategory('temperature')">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span>Nhiệt Độ</span>
+                            </button>
+                            <button class="quick-btn" data-key="currency" onclick="loadQuickCategory('currency')">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span>Tiền Tệ</span>
+                            </button>
+                            <button class="quick-btn" data-key="time" onclick="loadQuickCategory('time')">
+                                <i class="fas fa-clock"></i>
+                                <span>Thời Gian</span>
+                            </button>
+                            <button class="quick-btn" data-key="area" onclick="loadQuickCategory('area')">
+                                <i class="fas fa-vector-square"></i>
+                                <span>Diện Tích</span>
+                            </button>
+                        </div>
+
+                        <div class="row">
+                            <!-- Categories Menu with Search -->
+                            <div class="col-lg-4 col-md-5 col-12 mb-4 mb-md-0">
+                                <div class="category-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="categorySearch" class="form-control" placeholder="Tìm danh mục...">
+                                    <div class="search-suggestions" id="searchSuggestions"></div>
+                                </div>
+                                <label class="form-label fw-bold mb-3 d-block">Danh Mục Chuyển Đổi</label>
+                                <div class="category-menu" id="unitCategoriesMenu"></div>
+                            </div>
+                            
+                            <!-- Converter Interface -->
+                            <div class="col-lg-8 col-md-7 col-12">
+                                <div class="row align-items-end mb-4">
+                                    <div class="col-md-5 col-12 mb-3">
+                                        <label class="form-label fw-bold">Nhập Giá Trị</label>
+                                        <div class="input-group">
+                                            <input type="number" id="inputValue" class="form-control" value="1" step="any" placeholder="Nhập giá trị...">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-12 text-center mb-3">
+                                        <button id="swapUnits" class="btn" title="Đổi chiều chuyển đổi">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-5 col-12 mb-3">
+                                        <label class="form-label fw-bold">Kết Quả</label>
+                                        <div id="resultValue" class="text-center">1.00</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6 col-12 mb-3">
+                                        <label class="form-label fw-bold">Từ Đơn Vị</label>
+                                        <select id="fromUnit" class="form-control"></select>
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-3">
+                                        <label class="form-label fw-bold">Sang Đơn Vị</label>
+                                        <select id="toUnit" class="form-control"></select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Conversion Details -->
+                                <div class="details-panel">
+                                    <div class="detail-item">
+                                        <span><i class="fas fa-exchange-alt me-2"></i>Tỷ lệ chuyển đổi:</span>
+                                        <span id="conversionRate" class="fw-bold">1.0000</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span><i class="fas fa-calculator me-2"></i>Công thức:</span>
+                                        <span id="conversionFormula" class="font-monospace">x 1</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span><i class="fas fa-stopwatch me-2"></i>Thời gian xử lý:</span>
+                                        <span id="conversionTime">0.001ms</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Currency Notice -->
+                                <div class="currency-notice" id="currencyNotice" style="display: none;">
+                                    <i class="fas fa-sync-alt fa-spin"></i>
+                                    <span>Đang tải tỷ giá tiền tệ...</span>
+                                </div>
+                                
+                                <!-- Quick Values -->
+                                <div class="mt-4">
+                                    <p class="text-center mb-2 fw-bold">Giá trị nhanh:</p>
+                                    <div class="quick-values">
+                                        <button class="btn value-btn" onclick="setInputValue(0.1)">0.1</button>
+                                        <button class="btn value-btn" onclick="setInputValue(1)">1</button>
+                                        <button class="btn value-btn" onclick="setInputValue(10)">10</button>
+                                        <button class="btn value-btn" onclick="setInputValue(100)">100</button>
+                                        <button class="btn value-btn" onclick="setInputValue(1000)">1K</button>
+                                        <button class="btn value-btn" onclick="setInputValue(10000)">10K</button>
+                                        <button class="btn value-btn" onclick="setInputValue(0.5)">0.5</button>
+                                        <button class="btn value-btn" onclick="setInputValue(2.5)">2.5</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History -->
+                    <div class="history-section">
+                        <div class="converter-card">
+                            <h5 class="mb-3"><i class="fas fa-history me-2"></i>Lịch Sử Chuyển Đổi Gần Đây</h5>
+                            <div class="history-list" id="conversionHistory"></div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-outline-primary" onclick="exportHistory()">
+                                    <i class="fas fa-download me-1"></i> Xuất CSV
+                                </button>
+                                <button class="btn btn-danger" onclick="clearHistory()">
+                                    <i class="fas fa-trash me-1"></i> Xóa Lịch Sử
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simplified Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" class="footer-logo" alt="LAZINET">
+                    <p>Đối tác chuyển đổi số toàn diện. Giải pháp AI, IoT, ERP, MES cho doanh nghiệp.</p>
+                    <div class="mt-3">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h6>Liên Hệ</h6>
+                    <p class="mb-2"><i class="fas fa-phone me-2"></i><a href="tel:+84908556220">+84 908 556 220</a></p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:email@lazinet.com">email@lazinet.com</a></p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>89 Phan Đình Phùng, Phú Nhuận, TP. HCM</p>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <h6>Liên Kết Nhanh</h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li><a href="../index.html">Trang chủ</a></li>
+                                <li><a href="../about.html">Về chúng tôi</a></li>
+                                <li><a href="../lazinet-services.html">Dịch vụ</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li><a href="../privacy.html">Chính sách bảo mật</a></li>
+                                <li><a href="../terms.html">Điều khoản sử dụng</a></li>
+                                <li><a href="../contact.html">Liên hệ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024–2025 LAZINET Technologies. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Minimal JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ============================================
+        // EXPANDED CONVERSION DATA (40+ CATEGORIES)
+        // ============================================
+        const CONVERSION_CATEGORIES = {
+            // Core Categories (6 most popular - shown in quick buttons)
+            length: { 
+                name: "Độ Dài", 
+                icon: "fas fa-ruler-horizontal", 
+                base: 'm', 
+                priority: 10,
+                units: [
+                    {name:"Mét",symbol:"m",factor:1},
+                    {name:"Kilômét",symbol:"km",factor:1000},
+                    {name:"Centimét",symbol:"cm",factor:0.01},
+                    {name:"Milimét",symbol:"mm",factor:0.001},
+                    {name:"Inch",symbol:"in",factor:0.0254},
+                    {name:"Foot",symbol:"ft",factor:0.3048},
+                    {name:"Yard",symbol:"yd",factor:0.9144},
+                    {name:"Mile",symbol:"mi",factor:1609.344},
+                    {name:"Hải lý",symbol:"nmi",factor:1852},
+                    {name:"Năm ánh sáng",symbol:"ly",factor:9.461e15},
+                    {name:"Parsec",symbol:"pc",factor:3.086e16},
+                    {name:"Angstrom",symbol:"Å",factor:1e-10},
+                    {name:"Nanômét",symbol:"nm",factor:1e-9},
+                    {name:"Micrômét",symbol:"µm",factor:1e-6},
+                    {name:"Dặm Trung Quốc",symbol:"里",factor:500},
+                    {name:"Sải",symbol:"fathom",factor:1.8288}
+                ]
+            },
+            mass: { 
+                name: "Khối Lượng", 
+                icon: "fas fa-weight", 
+                base: 'kg', 
+                priority: 9,
+                units: [
+                    {name:"Kilôgam",symbol:"kg",factor:1},
+                    {name:"Gram",symbol:"g",factor:0.001},
+                    {name:"Miligram",symbol:"mg",factor:1e-6},
+                    {name:"Tấn",symbol:"t",factor:1000},
+                    {name:"Pound",symbol:"lb",factor:0.453592},
+                    {name:"Ounce",symbol:"oz",factor:0.0283495},
+                    {name:"Stone",symbol:"st",factor:6.35029},
+                    {name:"Carat",symbol:"ct",factor:0.0002},
+                    {name:"Grain",symbol:"gr",factor:6.48e-5},
+                    {name:"Troy Ounce",symbol:"ozt",factor:0.0311035},
+                    {name:"Tạ",symbol:"quintal",factor:100},
+                    {name:"Lạng",symbol:"tael",factor:0.0375},
+                    {name:"Chỉ",symbol:"chi",factor:0.00375}
+                ]
+            },
+            temperature: { 
+                name: "Nhiệt Độ", 
+                icon: "fas fa-thermometer-half", 
+                isSpecial: true, 
+                priority: 8,
+                units: [
+                    {name:"Celsius",symbol:"°C",type:'C'},
+                    {name:"Fahrenheit",symbol:"°F",type:'F'},
+                    {name:"Kelvin",symbol:"K",type:'K'},
+                    {name:"Rankine",symbol:"°R",type:'R'},
+                    {name:"Réaumur",symbol:"°Re",type:'Re'}
+                ]
+            },
+            currency: { 
+                name: "Tiền Tệ", 
+                icon: "fas fa-dollar-sign", 
+                isDynamic: true, 
+                priority: 10,
+                units: [
+                    {name:"Việt Nam Đồng",symbol:"VND",rate:1},
+                    {name:"Đô la Mỹ",symbol:"USD",rate:null},
+                    {name:"Euro",symbol:"EUR",rate:null},
+                    {name:"Yên Nhật",symbol:"JPY",rate:null},
+                    {name:"Bảng Anh",symbol:"GBP",rate:null},
+                    {name:"Nhân dân tệ",symbol:"CNY",rate:null},
+                    {name:"Won Hàn",symbol:"KRW",rate:null},
+                    {name:"Bạt Thái",symbol:"THB",rate:null},
+                    {name:"Đô la Singapore",symbol:"SGD",rate:null},
+                    {name:"Đô la Úc",symbol:"AUD",rate:null},
+                    {name:"Đô la Canada",symbol:"CAD",rate:null},
+                    {name:"Franc Thụy Sĩ",symbol:"CHF",rate:null},
+                    {name:"Rúp Nga",symbol:"RUB",rate:null},
+                    {name:"Rupee Ấn Độ",symbol:"INR",rate:null},
+                    {name:"Ringgit Malaysia",symbol:"MYR",rate:null},
+                    {name:"Peso Philippines",symbol:"PHP",rate:null}
+                ]
+            },
+            time: { 
+                name: "Thời Gian", 
+                icon: "fas fa-clock", 
+                base: 's', 
+                priority: 7,
+                units: [
+                    {name:"Giây",symbol:"s",factor:1},
+                    {name:"Phút",symbol:"min",factor:60},
+                    {name:"Giờ",symbol:"h",factor:3600},
+                    {name:"Ngày",symbol:"d",factor:86400},
+                    {name:"Tuần",symbol:"wk",factor:604800},
+                    {name:"Tháng",symbol:"mo",factor:2.629746e6},
+                    {name:"Năm",symbol:"yr",factor:3.1536e7},
+                    {name:"Thập kỷ",symbol:"decade",factor:3.1536e8},
+                    {name:"Thế kỷ",symbol:"century",factor:3.1536e9},
+                    {name:"Thiên niên kỷ",symbol:"millennium",factor:3.1536e10},
+                    {name:"Microgiây",symbol:"µs",factor:1e-6},
+                    {name:"Miligiây",symbol:"ms",factor:0.001},
+                    {name:"Nanogiây",symbol:"ns",factor:1e-9}
+                ]
+            },
+            area: { 
+                name: "Diện Tích", 
+                icon: "fas fa-vector-square", 
+                base: 'm²', 
+                priority: 6,
+                units: [
+                    {name:"Mét vuông",symbol:"m²",factor:1},
+                    {name:"Hecta",symbol:"ha",factor:10000},
+                    {name:"Kilômét vuông",symbol:"km²",factor:1e6},
+                    {name:"Are",symbol:"a",factor:100},
+                    {name:"Acre",symbol:"acre",factor:4046.86},
+                    {name:"Foot vuông",symbol:"ft²",factor:0.092903},
+                    {name:"Inch vuông",symbol:"in²",factor:6.4516e-4},
+                    {name:"Mile vuông",symbol:"mi²",factor:2.59e6},
+                    {name:"Mẫu Anh",symbol:"acre UK",factor:4046.86},
+                    {name:"Sào",symbol:"sao",factor:360},
+                    {name:"Công",symbol:"cong",factor:1000},
+                    {name:"Mẫu",symbol:"mau",factor:3600}
+                ]
+            },
+            
+            // Additional Categories (34 more)
+            volume: { 
+                name: "Thể Tích", 
+                icon: "fas fa-cube", 
+                base: 'm³', 
+                priority: 5,
+                units: [
+                    {name:"Mét khối",symbol:"m³",factor:1},
+                    {name:"Lít",symbol:"L",factor:0.001},
+                    {name:"Mililít",symbol:"ml",factor:1e-6},
+                    {name:"Gallon (US)",symbol:"gal",factor:0.00378541},
+                    {name:"Gallon (UK)",symbol:"gal UK",factor:0.00454609},
+                    {name:"Pint (US)",symbol:"pt",factor:4.73176e-4},
+                    {name:"Fluid Ounce (US)",symbol:"fl oz",factor:2.95735e-5},
+                    {name:"Cubic Foot",symbol:"ft³",factor:0.0283168},
+                    {name:"Cubic Inch",symbol:"in³",factor:1.63871e-5},
+                    {name:"Barrel (dầu)",symbol:"bbl",factor:0.158987},
+                    {name:"Thùng",symbol:"thung",factor:0.02},
+                    {name:"Hộc",symbol:"hoc",factor:0.01}
+                ]
+            },
+            speed: { 
+                name: "Tốc Độ", 
+                icon: "fas fa-tachometer-alt", 
+                base: 'm/s', 
+                priority: 5,
+                units: [
+                    {name:"Mét/giây",symbol:"m/s",factor:1},
+                    {name:"Km/giờ",symbol:"km/h",factor:1/3.6},
+                    {name:"Mph",symbol:"mph",factor:0.44704},
+                    {name:"Knot",symbol:"kn",factor:0.514444},
+                    {name:"Foot/giây",symbol:"ft/s",factor:0.3048},
+                    {name:"Mach",symbol:"Mach",factor:340.29},
+                    {name:"Tốc độ ánh sáng",symbol:"c",factor:299792458}
+                ]
+            },
+            pressure: { 
+                name: "Áp Suất", 
+                icon: "fas fa-wind", 
+                base: 'Pa', 
+                priority: 4,
+                units: [
+                    {name:"Pascal",symbol:"Pa",factor:1},
+                    {name:"Bar",symbol:"bar",factor:1e5},
+                    {name:"Atm",symbol:"atm",factor:101325},
+                    {name:"Psi",symbol:"psi",factor:6894.76},
+                    {name:"Torr",symbol:"Torr",factor:133.322},
+                    {name:"mmHg",symbol:"mmHg",factor:133.322},
+                    {name:"kgf/cm²",symbol:"kgf/cm²",factor:98066.5},
+                    {name:"Inch Hg",symbol:"inHg",factor:3386.39}
+                ]
+            },
+            energy: { 
+                name: "Năng Lượng", 
+                icon: "fas fa-bolt", 
+                base: 'J', 
+                priority: 4,
+                units: [
+                    {name:"Joule",symbol:"J",factor:1},
+                    {name:"Calorie",symbol:"cal",factor:4.184},
+                    {name:"kCal",symbol:"kcal",factor:4184},
+                    {name:"kWh",symbol:"kWh",factor:3.6e6},
+                    {name:"BTU",symbol:"BTU",factor:1055.06},
+                    {name:"eV",symbol:"eV",factor:1.602e-19},
+                    {name:"Erg",symbol:"erg",factor:1e-7},
+                    {name:"Foot-pound",symbol:"ft·lb",factor:1.35582},
+                    {name:"Therm",symbol:"therm",factor:1.055e8}
+                ]
+            },
+            power: { 
+                name: "Công Suất", 
+                icon: "fas fa-power-off", 
+                base: 'W', 
+                priority: 4,
+                units: [
+                    {name:"Watt",symbol:"W",factor:1},
+                    {name:"Kilowatt",symbol:"kW",factor:1000},
+                    {name:"HP",symbol:"hp",factor:745.7},
+                    {name:"BTU/h",symbol:"BTU/h",factor:0.293071},
+                    {name:"PS",symbol:"PS",factor:735.499},
+                    {name:"Ton refrigeration",symbol:"TR",factor:3516.85}
+                ]
+            },
+            frequency: { 
+                name: "Tần Số", 
+                icon: "fas fa-wave-square", 
+                base: 'Hz', 
+                priority: 3,
+                units: [
+                    {name:"Hertz",symbol:"Hz",factor:1},
+                    {name:"kHz",symbol:"kHz",factor:1000},
+                    {name:"MHz",symbol:"MHz",factor:1e6},
+                    {name:"GHz",symbol:"GHz",factor:1e9},
+                    {name:"THz",symbol:"THz",factor:1e12},
+                    {name:"RPM",symbol:"RPM",factor:1/60}
+                ]
+            },
+            force: { 
+                name: "Lực", 
+                icon: "fas fa-arrow-right", 
+                base: 'N', 
+                priority: 3,
+                units: [
+                    {name:"Newton",symbol:"N",factor:1},
+                    {name:"Kilonewton",symbol:"kN",factor:1000},
+                    {name:"Pound-force",symbol:"lbf",factor:4.44822},
+                    {name:"Kilogram-force",symbol:"kgf",factor:9.80665},
+                    {name:"Dyne",symbol:"dyn",factor:0.00001},
+                    {name:"Kip",symbol:"kip",factor:4448.22}
+                ]
+            },
+            viscosity: { 
+                name: "Độ Nhớt", 
+                icon: "fas fa-tint", 
+                base: 'Pa·s', 
+                priority: 2,
+                units: [
+                    {name:"Pascal-giây",symbol:"Pa·s",factor:1},
+                    {name:"Poise",symbol:"P",factor:0.1},
+                    {name:"Centipoise",symbol:"cP",factor:0.001},
+                    {name:"Stokes",symbol:"St",factor:0.0001},
+                    {name:"Centistokes",symbol:"cSt",factor:1e-6}
+                ]
+            },
+            flowrate: { 
+                name: "Lưu Lượng", 
+                icon: "fas fa-tint-drop", 
+                base: 'm³/s', 
+                priority: 2,
+                units: [
+                    {name:"Mét khối/giây",symbol:"m³/s",factor:1},
+                    {name:"Lít/phút",symbol:"L/min",factor:1.6667e-5},
+                    {name:"Gallon/phút (US)",symbol:"GPM",factor:6.309e-5},
+                    {name:"Gallon/phút (UK)",symbol:"GPM UK",factor:7.576e-5},
+                    {name:"Foot³/phút",symbol:"CFM",factor:4.71947e-4}
+                ]
+            },
+            radiation: { 
+                name: "Bức Xạ", 
+                icon: "fas fa-radiation", 
+                base: 'Bq', 
+                priority: 2,
+                units: [
+                    {name:"Becquerel",symbol:"Bq",factor:1},
+                    {name:"Curie",symbol:"Ci",factor:3.7e10},
+                    {name:"Gray",symbol:"Gy",factor:1},
+                    {name:"Sievert",symbol:"Sv",factor:1},
+                    {name:"Rad",symbol:"rad",factor:0.01},
+                    {name:"Rem",symbol:"rem",factor:0.01}
+                ]
+            },
+            luminosity: { 
+                name: "Độ Sáng", 
+                icon: "fas fa-lightbulb", 
+                base: 'cd', 
+                priority: 2,
+                units: [
+                    {name:"Candela",symbol:"cd",factor:1},
+                    {name:"Lumen",symbol:"lm",factor:1},
+                    {name:"Lux",symbol:"lx",factor:1},
+                    {name:"Foot-candle",symbol:"fc",factor:10.7639}
+                ]
+            },
+            sound: { 
+                name: "Âm Thanh", 
+                icon: "fas fa-volume-up", 
+                base: 'Pa', 
+                priority: 2,
+                units: [
+                    {name:"Pascal",symbol:"Pa",factor:1},
+                    {name:"Decibel",symbol:"dB",isSpecial:true}
+                ]
+            },
+            electricity: { 
+                name: "Điện", 
+                icon: "fas fa-plug", 
+                base: 'A', 
+                priority: 3,
+                units: [
+                    {name:"Ampere",symbol:"A",factor:1},
+                    {name:"Milliampere",symbol:"mA",factor:0.001},
+                    {name:"Microampere",symbol:"µA",factor:1e-6},
+                    {name:"Volt",symbol:"V",base:'V',factor:1},
+                    {name:"Kilovolt",symbol:"kV",factor:1000},
+                    {name:"Ohm",symbol:"Ω",base:'Ω',factor:1},
+                    {name:"Kiloohm",symbol:"kΩ",factor:1000},
+                    {name:"Watt",symbol:"W",base:'W',factor:1},
+                    {name:"Kilowatt",symbol:"kW",factor:1000}
+                ]
+            },
+            magnetism: { 
+                name: "Từ Tính", 
+                icon: "fas fa-magnet", 
+                base: 'T', 
+                priority: 2,
+                units: [
+                    {name:"Tesla",symbol:"T",factor:1},
+                    {name:"Gauss",symbol:"G",factor:0.0001},
+                    {name:"Oersted",symbol:"Oe",factor:79.5775}
+                ]
+            },
+            cooking: { 
+                name: "Nấu Ăn", 
+                icon: "fas fa-utensils", 
+                base: 'ml', 
+                priority: 3,
+                units: [
+                    {name:"Mililít",symbol:"ml",factor:1},
+                    {name:"Teaspoon (US)",symbol:"tsp",factor:4.92892},
+                    {name:"Tablespoon (US)",symbol:"tbsp",factor:14.7868},
+                    {name:"Cup (US)",symbol:"cup",factor:236.588},
+                    {name:"Ounce (US fluid)",symbol:"fl oz",factor:29.5735},
+                    {name:"Pint (US)",symbol:"pt",factor:473.176},
+                    {name:"Quart (US)",symbol:"qt",factor:946.353},
+                    {name:"Gallon (US)",symbol:"gal",factor:3785.41},
+                    {name:"Drop",symbol:"drop",factor:0.05}
+                ]
+            },
+            fuelefficiency: { 
+                name: "Hiệu Suất Nhiên Liệu", 
+                icon: "fas fa-gas-pump", 
+                base: 'km/L', 
+                priority: 2,
+                units: [
+                    {name:"Km/Lít",symbol:"km/L",factor:1},
+                    {name:"Mpg (US)",symbol:"mpg",factor:0.425144},
+                    {name:"Mpg (UK)",symbol:"mpg UK",factor:0.354006},
+                    {name:"Lít/100km",symbol:"L/100km",factor:100}
+                ]
+            },
+            numbers: { 
+                name: "Số Học", 
+                icon: "fas fa-calculator", 
+                base: 10, 
+                isSpecial: true, 
+                priority: 3,
+                units: [
+                    {name:"Thập phân",symbol:"Decimal",type:'dec'},
+                    {name:"Nhị phân",symbol:"Binary",type:'bin'},
+                    {name:"Thập lục phân",symbol:"Hex",type:'hex'},
+                    {name:"Bát phân",symbol:"Octal",type:'oct'}
+                ]
+            },
+            roman: { 
+                name: "Số La Mã", 
+                icon: "fas fa-hashtag", 
+                base: 1, 
+                isSpecial: true, 
+                priority: 2,
+                units: [
+                    {name:"Ả Rập",symbol:"Arabic",type:'arabic'},
+                    {name:"La Mã",symbol:"Roman",type:'roman'}
+                ]
+            },
+            torque: { 
+                name: "Mô-men Xoắn", 
+                icon: "fas fa-cog", 
+                base: 'N·m', 
+                priority: 2,
+                units: [
+                    {name:"Newton-mét",symbol:"N·m",factor:1},
+                    {name:"Foot-pound",symbol:"ft·lb",factor:1.35582},
+                    {name:"Inch-pound",symbol:"in·lb",factor:0.112985},
+                    {name:"Kilogram-force mét",symbol:"kgf·m",factor:9.80665}
+                ]
+            },
+            density: { 
+                name: "Mật Độ", 
+                icon: "fas fa-fill-drip", 
+                base: 'kg/m³', 
+                priority: 2,
+                units: [
+                    {name:"Kg/m³",symbol:"kg/m³",factor:1},
+                    {name:"G/cm³",symbol:"g/cm³",factor:1000},
+                    {name:"Lb/ft³",symbol:"lb/ft³",factor:16.0185},
+                    {name:"Lb/in³",symbol:"lb/in³",factor:27679.9}
+                ]
+            },
+            typography: { 
+                name: "In Ấn", 
+                icon: "fas fa-font", 
+                base: 'px', 
+                priority: 2,
+                units: [
+                    {name:"Pixel",symbol:"px",factor:1},
+                    {name:"Point",symbol:"pt",factor:1.33333},
+                    {name:"Pica",symbol:"pica",factor:16},
+                    {name:"Inch",symbol:"in",factor:96},
+                    {name:"Centimeter",symbol:"cm",factor:37.7953},
+                    {name:"Millimeter",symbol:"mm",factor:3.77953}
+                ]
+            },
+            data: { 
+                name: "Dữ Liệu", 
+                icon: "fas fa-database", 
+                base: 'byte', 
+                priority: 4,
+                units: [
+                    {name:"Byte",symbol:"B",factor:1},
+                    {name:"Kilobyte",symbol:"KB",factor:1024},
+                    {name:"Megabyte",symbol:"MB",factor:1048576},
+                    {name:"Gigabyte",symbol:"GB",factor:1073741824},
+                    {name:"Terabyte",symbol:"TB",factor:1099511627776},
+                    {name:"Petabyte",symbol:"PB",factor:1125899906842624},
+                    {name:"Bit",symbol:"bit",factor:0.125},
+                    {name:"Kilobit",symbol:"Kb",factor:128},
+                    {name:"Megabit",symbol:"Mb",factor:131072}
+                ]
+            },
+            angles: { 
+                name: "Góc", 
+                icon: "fas fa-angle-double-right", 
+                base: 'deg', 
+                priority: 3,
+                units: [
+                    {name:"Độ",symbol:"°",factor:1},
+                    {name:"Radian",symbol:"rad",factor:57.2958},
+                    {name:"Gradian",symbol:"grad",factor:0.9},
+                    {name:"Arcminute",symbol:"'",factor:1/60},
+                    {name:"Arcsecond",symbol:"\"",factor:1/3600}
+                ]
+            },
+            fuel: { 
+                name: "Nhiên Liệu", 
+                icon: "fas fa-gas-pump", 
+                base: 'L', 
+                priority: 2,
+                units: [
+                    {name:"Lít",symbol:"L",factor:1},
+                    {name:"Gallon (US)",symbol:"gal",factor:3.78541},
+                    {name:"Gallon (UK)",symbol:"gal UK",factor:4.54609},
+                    {name:"Barrel (dầu)",symbol:"bbl",factor:158.987},
+                    {name:"Cubic Foot",symbol:"ft³",factor:28.3168}
+                ]
+            },
+            concentration: { 
+                name: "Nồng Độ", 
+                icon: "fas fa-flask", 
+                base: 'mol/L', 
+                priority: 2,
+                units: [
+                    {name:"Mol/lít",symbol:"mol/L",factor:1},
+                    {name:"Millimol/lít",symbol:"mmol/L",factor:0.001},
+                    {name:"Phần trăm",symbol:"%",factor:0.01},
+                    {name:"Phần nghìn",symbol:"‰",factor:0.001},
+                    {name:"ppm",symbol:"ppm",factor:1e-6},
+                    {name:"ppb",symbol:"ppb",factor:1e-9}
+                ]
+            },
+            illumination: { 
+                name: "Chiếu Sáng", 
+                icon: "fas fa-lightbulb", 
+                base: 'lx', 
+                priority: 2,
+                units: [
+                    {name:"Lux",symbol:"lx",factor:1},
+                    {name:"Foot-candle",symbol:"fc",factor:10.7639},
+                    {name:"Phot",symbol:"ph",factor:10000},
+                    {name:"Nox",symbol:"nox",factor:0.001}
+                ]
+            },
+            radioactivity: { 
+                name: "Phóng Xạ", 
+                icon: "fas fa-atom", 
+                base: 'Bq', 
+                priority: 2,
+                units: [
+                    {name:"Becquerel",symbol:"Bq",factor:1},
+                    {name:"Curie",symbol:"Ci",factor:3.7e10},
+                    {name:"Rutherford",symbol:"Rd",factor:1e6}
+                ]
+            },
+            acceleration: { 
+                name: "Gia Tốc", 
+                icon: "fas fa-rocket", 
+                base: 'm/s²', 
+                priority: 2,
+                units: [
+                    {name:"Mét/giây²",symbol:"m/s²",factor:1},
+                    {name:"Gal",symbol:"Gal",factor:0.01},
+                    {name:"G-force",symbol:"g",factor:9.80665},
+                    {name:"Foot/giây²",symbol:"ft/s²",factor:0.3048}
+                ]
+            },
+            anglevelocity: { 
+                name: "Vận Tốc Góc", 
+                icon: "fas fa-sync-alt", 
+                base: 'rad/s', 
+                priority: 2,
+                units: [
+                    {name:"Radian/giây",symbol:"rad/s",factor:1},
+                    {name:"Độ/giây",symbol:"°/s",factor:0.0174533},
+                    {name:"RPM",symbol:"RPM",factor:0.10472},
+                    {name:"Vòng/giây",symbol:"rev/s",factor:6.28319}
+                ]
+            },
+            specificvolume: { 
+                name: "Thể Tích Riêng", 
+                icon: "fas fa-weight", 
+                base: 'm³/kg', 
+                priority: 2,
+                units: [
+                    {name:"Mét³/kg",symbol:"m³/kg",factor:1},
+                    {name:"Foot³/lb",symbol:"ft³/lb",factor:0.062428},
+                    {name:"Lít/kg",symbol:"L/kg",factor:0.001}
+                ]
+            },
+            specificenergy: { 
+                name: "Năng Lượng Riêng", 
+                icon: "fas fa-fire", 
+                base: 'J/kg', 
+                priority: 2,
+                units: [
+                    {name:"Joule/kg",symbol:"J/kg",factor:1},
+                    {name:"Calorie/gram",symbol:"cal/g",factor:4184},
+                    {name:"BTU/lb",symbol:"BTU/lb",factor:2326},
+                    {name:"kJ/kg",symbol:"kJ/kg",factor:1000}
+                ]
+            },
+            thermalconductivity: { 
+                name: "Dẫn Nhiệt", 
+                icon: "fas fa-thermometer-full", 
+                base: 'W/(m·K)', 
+                priority: 1,
+                units: [
+                    {name:"Watt/(m·K)",symbol:"W/(m·K)",factor:1},
+                    {name:"BTU/(h·ft·°F)",symbol:"BTU/(h·ft·°F)",factor:1.73073},
+                    {name:"Cal/(cm·s·°C)",symbol:"cal/(cm·s·°C)",factor:418.4}
+                ]
+            },
+            heattransfer: { 
+                name: "Truyền Nhiệt", 
+                icon: "fas fa-fire-alt", 
+                base: 'W/m²', 
+                priority: 1,
+                units: [
+                    {name:"Watt/mét²",symbol:"W/m²",factor:1},
+                    {name:"BTU/(h·ft²)",symbol:"BTU/(h·ft²)",factor:3.15459},
+                    {name:"Cal/(cm²·min)",symbol:"cal/(cm²·min)",factor:697.333}
+                ]
+            },
+            entropy: { 
+                name: "Entropy", 
+                icon: "fas fa-random", 
+                base: 'J/K', 
+                priority: 1,
+                units: [
+                    {name:"Joule/Kelvin",symbol:"J/K",factor:1},
+                    {name:"Calorie/Kelvin",symbol:"cal/K",factor:4.184},
+                    {name:"BTU/°F",symbol:"BTU/°F",factor:1899.1}
+                ]
+            },
+            molarvolume: { 
+                name: "Thể Tích Mol", 
+                icon: "fas fa-vial", 
+                base: 'm³/mol', 
+                priority: 1,
+                units: [
+                    {name:"Mét³/mol",symbol:"m³/mol",factor:1},
+                    {name:"Lít/mol",symbol:"L/mol",factor:0.001},
+                    {name:"Foot³/lb-mol",symbol:"ft³/lb-mol",factor:0.0160185}
+                ]
+            },
+            molarity: { 
+                name: "Nồng Độ Mol", 
+                icon: "fas fa-vials", 
+                base: 'mol/L', 
+                priority: 2,
+                units: [
+                    {name:"Mol/lít",symbol:"mol/L",factor:1},
+                    {name:"Millimol/lít",symbol:"mmol/L",factor:0.001},
+                    {name:"Mol/mét³",symbol:"mol/m³",factor:0.001}
+                ]
+            },
+            molality: { 
+                name: "Nồng Độ Molan", 
+                icon: "fas fa-vial", 
+                base: 'mol/kg', 
+                priority: 1,
+                units: [
+                    {name:"Mol/kg",symbol:"mol/kg",factor:1},
+                    {name:"Millimol/kg",symbol:"mmol/kg",factor:0.001}
+                ]
+            }
+        };
+
+        // Global variables
+        let currentCategory = 'length';
+        let history = JSON.parse(localStorage.getItem('converterHistory')) || [];
+        let rates = {};
+        let searchTimeout = null;
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate categories (sorted by priority)
+            populateCategories();
+            
+            // Load default category
+            loadCategory('length');
+            
+            // Update history display
+            updateHistory();
+            
+            // Set up event listeners
+            document.getElementById('inputValue').addEventListener('input', convert);
+            document.getElementById('fromUnit').addEventListener('change', convert);
+            document.getElementById('toUnit').addEventListener('change', convert);
+            document.getElementById('swapUnits').addEventListener('click', swap);
+            
+            // Search functionality
+            const searchInput = document.getElementById('categorySearch');
+            searchInput.addEventListener('input', handleSearch);
+            searchInput.addEventListener('focus', showSuggestions);
+            document.addEventListener('click', hideSuggestions);
+            
+            // Quick buttons
+            document.querySelectorAll('.quick-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+            }));
+            
+            // Fetch currency rates
+            fetchRates();
+            
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Check for updates
+            checkForUpdates();
+        });
+
+        // ============================================
+        // CATEGORY FUNCTIONS
+        // ============================================
+        function populateCategories() {
+            const menu = document.getElementById('unitCategoriesMenu');
+            
+            // Sort categories by priority (highest first)
+            const sortedCategories = Object.entries(CONVERSION_CATEGORIES)
+                .sort(([,a], [,b]) => (b.priority || 0) - (a.priority || 0));
+            
+            menu.innerHTML = sortedCategories.map(([key, cat]) => `
+                <div class="category-item ${key === 'length' ? 'active' : ''}" 
+                     data-key="${key}" 
+                     onclick="loadCategory('${key}')"
+                     title="${cat.name}">
+                    <i class="${cat.icon}"></i> 
+                    <span>${cat.name}</span>
+                    ${cat.isDynamic ? '<span class="badge bg-warning ms-2">Live</span>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function loadCategory(key) {
+            currentCategory = key;
+            const cat = CONVERSION_CATEGORIES[key];
+            
+            // Update active state in menu
+            document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-key="${key}"]`).classList.add('active');
+            
+            // Update quick buttons active state
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.key === key);
+            });
+            
+            // Show/hide currency notice
+            document.getElementById('currencyNotice').style.display = cat.isDynamic ? 'block' : 'none';
+            
+            // Populate unit selectors
+            const fromSel = document.getElementById('fromUnit');
+            const toSel = document.getElementById('toUnit');
+            
+            fromSel.innerHTML = cat.units.map((u, i) => 
+                `<option value="${i}">${u.name} (${u.symbol})</option>`
+            ).join('');
+            
+            toSel.innerHTML = cat.units.map((u, i) => 
+                `<option value="${i}">${u.name} (${u.symbol})</option>`
+            ).join('');
+            
+            // Set default selections
+            fromSel.value = 0;
+            toSel.value = cat.units.length > 1 ? 1 : 0;
+            
+            // Convert
+            convert();
+            
+            // Hide search suggestions
+            hideSuggestions();
+            
+            // Update search input
+            document.getElementById('categorySearch').value = '';
+        }
+
+        function loadQuickCategory(key) {
+            loadCategory(key);
+            
+            // Scroll to converter
+            document.querySelector('.converter-card').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+
+        // ============================================
+        // SEARCH FUNCTIONALITY
+        // ============================================
+        function handleSearch() {
+            const query = document.getElementById('categorySearch').value.toLowerCase().trim();
+            const suggestions = document.getElementById('searchSuggestions');
+            
+            // Clear previous timeout
+            if (searchTimeout) clearTimeout(searchTimeout);
+            
+            // Debounce search
+            searchTimeout = setTimeout(() => {
+                if (query.length === 0) {
+                    hideSuggestions();
+                    showAllCategories();
+                    return;
+                }
+                
+                // Filter categories
+                const filtered = Object.entries(CONVERSION_CATEGORIES)
+                    .filter(([key, cat]) => 
+                        cat.name.toLowerCase().includes(query) || 
+                        key.toLowerCase().includes(query)
+                    )
+                    .slice(0, 10); // Limit to 10 suggestions
+                
+                // Show suggestions
+                if (filtered.length > 0) {
+                    suggestions.innerHTML = filtered.map(([key, cat]) => `
+                        <div class="suggestion-item" onclick="selectSuggestion('${key}')">
+                            <i class="${cat.icon} me-2"></i>
+                            ${cat.name}
+                            ${cat.isDynamic ? '<span class="badge bg-warning float-end">Live</span>' : ''}
+                        </div>
+                    `).join('');
+                    suggestions.style.display = 'block';
+                } else {
+                    suggestions.innerHTML = `
+                        <div class="suggestion-item text-muted">
+                            <i class="fas fa-search me-2"></i>
+                            Không tìm thấy danh mục
+                        </div>
+                    `;
+                    suggestions.style.display = 'block';
+                }
+                
+                // Filter category menu
+                document.querySelectorAll('.category-item').forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.classList.toggle('hidden', !text.includes(query));
+                });
+            }, 300);
+        }
+
+        function showSuggestions() {
+            const query = document.getElementById('categorySearch').value.toLowerCase().trim();
+            if (query.length > 0) {
+                document.getElementById('searchSuggestions').style.display = 'block';
+            }
+        }
+
+        function hideSuggestions(e) {
+            const suggestions = document.getElementById('searchSuggestions');
+            const searchInput = document.getElementById('categorySearch');
+            
+            if (e && e.target === searchInput) return;
+            
+            suggestions.style.display = 'none';
+        }
+
+        function selectSuggestion(key) {
+            loadCategory(key);
+            document.getElementById('categorySearch').value = '';
+            hideSuggestions();
+        }
+
+        function showAllCategories() {
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('hidden');
+            });
+        }
+
+        // ============================================
+        // CURRENCY RATES
+        // ============================================
+        async function fetchRates() {
+            const notice = document.getElementById('currencyNotice');
+            notice.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i> Đang tải tỷ giá tiền tệ...';
+            notice.style.display = 'block';
+            
+            try {
+                // Try primary API
+                const res = await fetch('https://api.exchangerate-api.com/v4/latest/VND');
+                
+                if (!res.ok) throw new Error('API error');
+                
+                const data = await res.json();
+                rates = data.rates;
+                
+                // Update currency units with rates
+                CONVERSION_CATEGORIES.currency.units.forEach(u => {
+                    if (u.symbol !== 'VND' && rates[u.symbol]) {
+                        u.rate = rates[u.symbol];
+                    }
+                });
+                
+                notice.innerHTML = '<i class="fas fa-check-circle me-2"></i> Tỷ giá real-time đã cập nhật.';
+                notice.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+                notice.style.color = '#065f46';
+                notice.style.borderColor = '#10b981';
+                
+                // If currency is current category, update conversion
+                if (currentCategory === 'currency') {
+                    convert();
+                }
+                
+            } catch (error) {
+                // Fallback to static rates
+                const fallback = {
+                    USD: 25000, EUR: 27000, JPY: 165, GBP: 30500, 
+                    CNY: 3500, KRW: 18.5, THB: 680, SGD: 18500, 
+                    AUD: 16500, CAD: 18500, CHF: 28000, RUB: 280,
+                    INR: 300, MYR: 5300, PHP: 450
+                };
+                
+                CONVERSION_CATEGORIES.currency.units.forEach(u => {
+                    if (u.symbol !== 'VND') {
+                        u.rate = fallback[u.symbol] || 1;
+                    }
+                });
+                
+                notice.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> Tỷ giá cố định (API tạm thời không khả dụng).';
+                notice.style.background = 'linear-gradient(135deg, #fef3c7, #fde68a)';
+                notice.style.color = '#92400e';
+                notice.style.borderColor = '#f59e0b';
+            }
+            
+            // Auto-hide notice after 5 seconds
+            setTimeout(() => {
+                if (currentCategory !== 'currency') {
+                    notice.style.display = 'none';
+                }
+            }, 5000);
+        }
+
+        // ============================================
+        // CONVERSION ENGINE
+        // ============================================
+        function convert() {
+            const cat = CONVERSION_CATEGORIES[currentCategory];
+            const val = parseFloat(document.getElementById('inputValue').value) || 0;
+            const fromIdx = parseInt(document.getElementById('fromUnit').value);
+            const toIdx = parseInt(document.getElementById('toUnit').value);
+            const from = cat.units[fromIdx];
+            const to = cat.units[toIdx];
+            
+            // Show updating animation
+            const resultEl = document.getElementById('resultValue');
+            resultEl.classList.add('updating');
+            
+            // Start timing
+            const start = performance.now();
+            
+            let result = val;
+            let formula = 'x 1';
+            let rate = 1;
+            
+            // Handle different conversion types
+            if (cat.isSpecial) {
+                // Special conversions (temperature, numbers, roman)
+                if (currentCategory === 'temperature') {
+                    result = convertTemperature(val, from.type, to.type);
+                    formula = getTemperatureFormula(from.type, to.type);
+                } else if (currentCategory === 'numbers') {
+                    result = convertNumberBase(val, from.type, to.type);
+                    formula = 'Chuyển cơ số';
+                } else if (currentCategory === 'roman') {
+                    result = convertRomanArabic(val, from.type, to.type);
+                    formula = 'Chuyển số La Mã';
+                } else if (currentCategory === 'sound' && from.type === 'dB') {
+                    result = convertDecibel(val, from.type, to.type);
+                    formula = 'Chuyển đổi dB';
+                }
+            } else if (cat.isDynamic) {
+                // Dynamic conversions (currency)
+                if (from.rate && to.rate) {
+                    result = val * (to.rate / from.rate);
+                    rate = to.rate / from.rate;
+                    formula = `× ${rate.toFixed(6)}`;
+                } else {
+                    result = val;
+                    formula = 'Tỷ giá đang cập nhật';
+                }
+            } else {
+                // Standard unit conversions
+                const baseFrom = val * from.factor;
+                result = baseFrom / to.factor;
+                rate = from.factor / to.factor;
+                formula = `× ${rate.toFixed(6)}`;
+            }
+            
+            // End timing
+            const timeTaken = performance.now() - start;
+            
+            // Update UI
+            resultEl.textContent = formatResult(result, to.symbol);
+            resultEl.classList.remove('updating');
+            
+            document.getElementById('conversionRate').textContent = rate.toFixed(6);
+            document.getElementById('conversionFormula').textContent = formula;
+            document.getElementById('conversionTime').textContent = `${timeTaken.toFixed(2)}ms`;
+            
+            // Add to history
+            addToHistory(val, from, result, to, cat.name);
+        }
+
+        // ============================================
+        // SPECIAL CONVERSION FUNCTIONS
+        // ============================================
+        function convertTemperature(val, from, to) {
+            // Convert to Celsius first
+            let celsius = val;
+            
+            switch (from) {
+                case 'F': celsius = (val - 32) * 5/9; break;
+                case 'K': celsius = val - 273.15; break;
+                case 'R': celsius = (val - 491.67) * 5/9; break;
+                case 'Re': celsius = val * 5/4; break;
+                // 'C' already in Celsius
+            }
+            
+            // Convert from Celsius to target
+            switch (to) {
+                case 'F': return celsius * 9/5 + 32;
+                case 'K': return celsius + 273.15;
+                case 'R': return (celsius + 273.15) * 9/5;
+                case 'Re': return celsius * 4/5;
+                default: return celsius; // 'C'
+            }
+        }
+
+        function getTemperatureFormula(from, to) {
+            const formulas = {
+                'C→F': '× 9/5 + 32',
+                'F→C': '- 32 × 5/9',
+                'C→K': '+ 273.15',
+                'K→C': '- 273.15',
+                'C→R': '+ 273.15 × 9/5',
+                'R→C': '× 5/9 - 273.15'
+            };
+            
+            return formulas[`${from}→${to}`] || 'Công thức đặc biệt';
+        }
+
+        function convertNumberBase(val, from, to) {
+            try {
+                // Convert from source base to decimal
+                let decimal;
+                switch (from) {
+                    case 'bin': decimal = parseInt(val.toString(), 2); break;
+                    case 'oct': decimal = parseInt(val.toString(), 8); break;
+                    case 'dec': decimal = parseFloat(val); break;
+                    case 'hex': decimal = parseInt(val.toString(), 16); break;
+                    default: return val;
+                }
+                
+                // Convert from decimal to target base
+                switch (to) {
+                    case 'bin': return decimal.toString(2);
+                    case 'oct': return decimal.toString(8);
+                    case 'dec': return decimal.toString(10);
+                    case 'hex': return decimal.toString(16).toUpperCase();
+                    default: return decimal;
+                }
+            } catch (e) {
+                return 'Lỗi chuyển đổi';
+            }
+        }
+
+        function convertRomanArabic(val, from, to) {
+            if (from === 'arabic' && to === 'roman') {
+                return arabicToRoman(parseInt(val));
+            } else if (from === 'roman' && to === 'arabic') {
+                return romanToArabic(val.toString().toUpperCase());
+            }
+            return val;
+        }
+
+        function arabicToRoman(num) {
+            if (num < 1 || num > 3999) return 'Ngoài phạm vi (1-3999)';
+            
+            const romanNumerals = [
+                { value: 1000, numeral: 'M' },
+                { value: 900, numeral: 'CM' },
+                { value: 500, numeral: 'D' },
+                { value: 400, numeral: 'CD' },
+                { value: 100, numeral: 'C' },
+                { value: 90, numeral: 'XC' },
+                { value: 50, numeral: 'L' },
+                { value: 40, numeral: 'XL' },
+                { value: 10, numeral: 'X' },
+                { value: 9, numeral: 'IX' },
+                { value: 5, numeral: 'V' },
+                { value: 4, numeral: 'IV' },
+                { value: 1, numeral: 'I' }
+            ];
+            
+            let result = '';
+            for (const { value, numeral } of romanNumerals) {
+                while (num >= value) {
+                    result += numeral;
+                    num -= value;
+                }
+            }
+            return result;
+        }
+
+        function romanToArabic(roman) {
+            const romanMap = {
+                'I': 1, 'V': 5, 'X': 10, 'L': 50,
+                'C': 100, 'D': 500, 'M': 1000
+            };
+            
+            let result = 0;
+            for (let i = 0; i < roman.length; i++) {
+                const current = romanMap[roman[i]];
+                const next = romanMap[roman[i + 1]];
+                
+                if (next && current < next) {
+                    result -= current;
+                } else {
+                    result += current;
+                }
+            }
+            return result;
+        }
+
+        function convertDecibel(val, from, to) {
+            // Simple dB to power ratio conversion
+            if (from === 'dB' && to === 'Pa') {
+                return Math.pow(10, val / 20) * 0.00002;
+            } else if (from === 'Pa' && to === 'dB') {
+                return 20 * Math.log10(val / 0.00002);
+            }
+            return val;
+        }
+
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        function formatResult(num, symbol = '') {
+            if (isNaN(num) || !isFinite(num)) {
+                return 'Không hợp lệ';
+            }
+            
+            // Handle very large or small numbers
+            if (Math.abs(num) > 1e9 || (Math.abs(num) < 1e-6 && num !== 0)) {
+                return num.toExponential(4) + ' ' + symbol;
+            }
+            
+            // Format with appropriate decimal places
+            const absNum = Math.abs(num);
+            let decimalPlaces = 4;
+            
+            if (absNum >= 1000) decimalPlaces = 2;
+            if (absNum >= 10000) decimalPlaces = 0;
+            if (absNum < 1 && absNum > 0) decimalPlaces = 6;
+            if (absNum < 0.001 && absNum > 0) decimalPlaces = 8;
+            
+            // Format number
+            const formatted = num.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: decimalPlaces
+            });
+            
+            return formatted + ' ' + symbol;
+        }
+
+        function swap() {
+            const from = document.getElementById('fromUnit');
+            const to = document.getElementById('toUnit');
+            
+            // Swap values
+            [from.value, to.value] = [to.value, from.value];
+            
+            // Convert
+            convert();
+            
+            // Add animation effect
+            const swapBtn = document.getElementById('swapUnits');
+            swapBtn.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                swapBtn.style.transform = '';
+            }, 300);
+        }
+
+        function setInputValue(v) {
+            document.getElementById('inputValue').value = v;
+            convert();
+        }
+
+        // ============================================
+        // HISTORY FUNCTIONS
+        // ============================================
+        function addToHistory(val, from, result, to, category) {
+            const historyItem = {
+                id: Date.now(),
+                from: `${val} ${from.symbol}`,
+                to: `${formatResult(result, to.symbol)}`,
+                category: category,
+                timestamp: new Date().toLocaleTimeString('vi-VN'),
+                date: new Date().toLocaleDateString('vi-VN')
+            };
+            
+            // Add to beginning of array
+            history.unshift(historyItem);
+            
+            // Keep only last 20 items
+            if (history.length > 20) {
+                history = history.slice(0, 20);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('converterHistory', JSON.stringify(history));
+            
+            // Update display
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const container = document.getElementById('conversionHistory');
+            
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-history fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">Chưa có lịch sử chuyển đổi</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div>
+                        <div class="conversion">
+                            ${item.from} → ${item.to}
+                        </div>
+                        <div class="category">${item.category}</div>
+                    </div>
+                    <div class="time" title="${item.date}">
+                        ${item.timestamp}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearHistory() {
+            if (confirm('Bạn có chắc chắn muốn xóa toàn bộ lịch sử chuyển đổi?')) {
+                history = [];
+                localStorage.removeItem('converterHistory');
+                updateHistory();
+                
+                // Show confirmation
+                showToast('Lịch sử đã được xóa', 'success');
+            }
+        }
+
+        function exportHistory() {
+            if (history.length === 0) {
+                showToast('Không có dữ liệu để xuất', 'warning');
+                return;
+            }
+            
+            // Create CSV content
+            let csv = 'STT,Từ,Đến,Danh mục,Thời gian,Ngày\n';
+            history.forEach((item, index) => {
+                csv += `${index + 1},"${item.from}","${item.to}","${item.category}","${item.timestamp}","${item.date}"\n`;
+            });
+            
+            // Create download link
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `lazinet-converter-history-${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('Đã xuất lịch sử thành CSV', 'success');
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            // Add to page
+            const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+            toastContainer.appendChild(toast);
+            
+            // Initialize and show
+            const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+            bsToast.show();
+            
+            // Remove after hide
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            container.style.zIndex = '9999';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        function checkForUpdates() {
+            // Check if localStorage has old data format
+            const oldHistory = localStorage.getItem('converterHistory');
+            if (oldHistory && oldHistory.includes('cat') && !oldHistory.includes('category')) {
+                // Migrate old format to new format
+                try {
+                    const parsed = JSON.parse(oldHistory);
+                    if (Array.isArray(parsed) && parsed[0] && parsed[0].cat) {
+                        history = parsed.map(item => ({
+                            id: Date.now() + Math.random(),
+                            from: item.from,
+                            to: item.to,
+                            category: item.cat,
+                            timestamp: item.time,
+                            date: new Date().toLocaleDateString('vi-VN')
+                        }));
+                        localStorage.setItem('converterHistory', JSON.stringify(history));
+                        updateHistory();
+                    }
+                } catch (e) {
+                    console.log('Không thể migrate dữ liệu cũ');
+                }
+            }
+        }
+
+        // ============================================
+        // RESPONSIVE ADJUSTMENTS
+        // ============================================
+        function adjustForMobile() {
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Mobile-specific adjustments
+                document.querySelectorAll('.quick-btn span').forEach(span => {
+                    if (span.textContent.length > 8) {
+                        span.style.fontSize = '0.85rem';
+                    }
+                });
+            }
+        }
+
+        // Run on resize
+        window.addEventListener('resize', adjustForMobile);
+        
+        // Initial adjustment
+        setTimeout(adjustForMobile, 100);
+    </script>
+</body>
+</html>
