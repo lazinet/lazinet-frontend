@@ -387,7 +387,7 @@
                 <div class="col-lg-12">
                     <a href="../lazinet-support-pricing.html">
                         <div style="display: flex; justify-content: center; align-items: center;">
-                            <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 150px; padding: 20px;">
+                            <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 120px; padding: 20px;">
                         </div>
                     </a>
                     <div class="text-center mb-4" style="color: var(--card-bg);">
@@ -429,7 +429,12 @@
                             <button class="quick-btn" data-key="temperature" onclick="loadQuickCategory('temperature')"><i class="fas fa-thermometer-half"></i> Nhiệt Độ</button>
                             <button class="quick-btn" data-key="area" onclick="loadQuickCategory('area')"><i class="fas fa-vector-square"></i> Diện Tích</button>
                             <button class="quick-btn" data-key="volume" onclick="loadQuickCategory('volume')"><i class="fas fa-cube"></i> Thể Tích</button>
-                            <button class="quick-btn" data-key="currency" onclick="loadQuickCategory('currency')"><i class="fas fa-dollar-sign"></i> Tiền Tệ</button>
+                            <button class="quick-btn" data-key="currency" onclick="
+                                loadQuickCategory('currency');
+                                document.getElementById('currencyNotice').innerHTML = '<i class=&quot;fas fa-check&quot;></i> Tỷ giá real-time đã được cập nhật.';
+                                document.getElementById('currencyNotice').style.display = 'block';
+                                "><i class="fas fa-dollar-sign"></i> Tiền Tệ
+                            </button>
                         </div>
 
                         <div class="row">
@@ -777,7 +782,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Cập nhật thành công!',
-                    text: 'Tỷ giá tiền tệ đã được tải thời gian thực.',
+                    text: 'Các tham chiếu đã được cập nhật.',
                     timer: 2000,
                     showConfirmButton: false
                 });
