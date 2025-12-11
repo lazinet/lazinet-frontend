@@ -752,27 +752,27 @@
         }
 
         async function fetchRates() {
-            Swal.fire({
-                title: 'Đang cập nhật tỷ giá...',
-                html: `
-                    <div style="text-align: center;">
-                        <p style="margin-bottom: 15px; font-size: 16px; color: #333;">
-                            Đang tải dữ liệu thời gian thực...
-                        </p>
-                        <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 100px; object-fit: contain; border-radius: 8px; padding: 5px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 10px auto;">
-                        <div style="margin-top: 15px; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; display: inline-block;">
-                            <small style="color: #666;">Cảm ơn sự kiên nhẫn của bạn!</small>
-                        </div>
-                    </div>
-                `,
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                willOpen: () => {
-                    Swal.showLoading();
-                },
-                width: '400px',
-                padding: '2rem'
-            });
+            // Swal.fire({
+            //     title: 'Đang cập nhật tỷ giá...',
+            //     html: `
+            //         <div style="text-align: center;">
+            //             <p style="margin-bottom: 15px; font-size: 16px; color: #333;">
+            //                 Đang tải dữ liệu thời gian thực...
+            //             </p>
+            //             <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 100px; object-fit: contain; border-radius: 8px; padding: 5px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 10px auto;">
+            //             <div style="margin-top: 15px; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; display: inline-block;">
+            //                 <small style="color: #666;">Cảm ơn sự kiên nhẫn của bạn!</small>
+            //             </div>
+            //         </div>
+            //     `,
+            //     allowOutsideClick: false,
+            //     showConfirmButton: false,
+            //     willOpen: () => {
+            //         Swal.showLoading();
+            //     },
+            //     width: '400px',
+            //     padding: '2rem'
+            // });
             try {
                 const res = await fetch('https://api.exchangerate-api.com/v4/latest/VND');
                 const data = await res.json();

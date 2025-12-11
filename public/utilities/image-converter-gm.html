@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+    <title>Chuyển Đổi Ảnh Sang WebP Miễn Phí | Công Cụ Nén & Tối Ưu Hóa Ảnh Hàng Loạt - HATHYO</title>
+    <meta name="description" content="🎯 Chuyển đổi ảnh sang WebP miễn phí với tùy chỉnh resize, làm đẹp. Hỗ trợ JPG, PNG, GIF... Công cụ nén ảnh online tốt nhất. Xử lý ảnh hàng loạt ngay trên trình duyệt.">
+    <meta name="keywords" content="chuyển webp, nén ảnh webp, convert to webp, batch webp converter, resize ảnh, làm đẹp ảnh, công cụ webp online, nén ảnh miễn phí, webp maker, tối ưu hóa ảnh">
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico"> 
+
+    <meta property="og:title" content="Chuyển Đổi Ảnh Sang WebP | Công Cụ Nén Ảnh Chuyên Nghiệp - HATHYO">
+    <meta property="og:description" content="Chuyển đổi ảnh sang WebP miễn phí - Nén ảnh, resize, làm đẹp ảnh online. Hỗ trợ đa định dạng.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hathyo.vn/image-converter">
+    <meta property="og:image" content="https://hathyo.vn/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Instrument+Sans:wght@400..700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <style>
+        /* === BIẾN CSS TỪ LAZINET === */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --text-color: #FFFFFF;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --success-color: #4CAF50;
+            --default-font: "Instrument Sans", "Sora", system-ui, sans-serif;
+            --warning-color: #FFC107;
+        }
+
+        /* === STYLES CHUNG (LAZINET Style) === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--default-font);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 1200px; /* Tăng chiều rộng để hiển thị 2 cột info */
+            border: 1px solid var(--divider-color);
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin: 10px 0;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        /* Input & Controls */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            border: 1px solid var(--divider-color);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+        
+        label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        input[type="number"], select {
+            /* (Point 2) Đổi nền cho dropdown/input để chữ trắng dễ nhìn */
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--divider-color);
+            background: var(--accent-secondary-color);
+            color: var(--text-color);
+            transition: border-color 0.3s;
+            appearance: none;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"] + span {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        input[type="radio"]:checked + span::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        /* Buttons */
+        .action-button {
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary-color);
+            background: var(--accent-color);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            flex-grow: 1; /* Cho phép giãn ra */
+            text-align: center;
+        }
+        
+        .action-button:hover:not(:disabled) {
+            background: #2D6FE0;
+            transform: translateY(-1px);
+        }
+        
+        .action-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .file-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        /* Status & Progress */
+        .status-area {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--secondary-color);
+            border: 1px solid var(--divider-color);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--success-color);
+            transition: width 0.3s;
+        }
+
+        .final-status {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        
+        /* Stats Display (Point 7) */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap; /* Cho phép xuống hàng trên di động */
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: space-between;
+        }
+        
+        .stat-box {
+            background: var(--accent-secondary-color);
+            padding: 10px;
+            border-radius: 8px;
+            flex-basis: calc(25% - 8px); /* 4 cột trên PC */
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        
+        .stat-label {
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        /* Image Preview (Point 6) */
+        .image-compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .image-box {
+            background: var(--accent-secondary-color);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--divider-color);
+        }
+        
+        .image-box h3 {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        
+        .image-box img {
+            max-width: 100%;
+            max-height: 250px;
+            display: block;
+            margin: 10px auto;
+            border-radius: 8px;
+        }
+        
+        .image-info-top, .image-info-bottom {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .compression-rate {
+            font-weight: 700;
+            color: var(--success-color);
+            font-size: 1.1em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .controls-grid { grid-template-columns: 1fr; }
+            .image-compare-grid { grid-template-columns: 1fr; }
+            .stat-box { flex-basis: calc(50% - 5px); } /* 2 cột trên di động */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="HathyoV1_Square_LogoOnly_WiderBufffer.png" alt="Logo HATHYO" style="width: 80px; height: 80px; margin-bottom: 10px; opacity: 0.9;">
+    </div>
+    <h1>HỆ THỐNG CHUYỂN ẢNH SANG WEBP</h1>
+    <p class="subtitle">Chuyển đổi và tối ưu hóa ảnh hàng loạt. Dùng công nghệ xử lý ảnh client-side.</p>
+
+    <div class="controls-grid">
+        <div class="radio-group">
+            <label>Tùy chọn thay đổi kích thước:</label>
+            <label>
+                <input type="radio" name="resize_option" value="0" checked onchange="toggleResizeInput()">
+                <span></span> Giữ nguyên kích thước gốc
+            </label>
+            <label>
+                <input type="radio" name="resize_option" value="1" onchange="toggleResizeInput('width')">
+                <span></span> Co chiều rộng về kích thước chuẩn
+            </label>
+            <label>
+                <input type="radio" name="resize_option" value="2" onchange="toggleResizeInput('height')">
+                <span></span> Co chiều cao về kích thước chuẩn
+            </label>
+            
+            <div class="input-group" style="margin-top: 15px;">
+                <label id="size_label" for="size_entry">Kích thước mục tiêu (px):</label>
+                <input type="number" id="size_entry" value="1024" min="1" disabled>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <div class="input-group">
+                <label for="output_format">Định dạng đầu ra:</label>
+                <select id="output_format">
+                    <option value="webp">WebP (Mặc định)</option>
+                    <option value="jpg">JPEG</option>
+                    <option value="png">PNG (Không nén)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="resample_method">Thuật toán lấy mẫu:</label>
+                <select id="resample_method">
+                    <option value="high">LANCZOS (Chất lượng cao nhất)</option>
+                    <option value="high">BICUBIC</option>
+                    <option value="medium">BILINEAR</option>
+                    <option value="low">NEAREST (Nhanh nhất)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="enhance_mode">Chế độ làm đẹp (Độ sáng/Độ tương phản):</label>
+                <select id="enhance_mode">
+                    <option value="1.0">Không làm đẹp</option>
+                    <option value="1.1">Làm đẹp nhẹ (+10%)</option>
+                    <option value="1.2">Làm đẹp vừa (+20%)</option>
+                    <option value="1.4">Lung linh ảo lòi (+40%)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="quality">Chất lượng (WebP/JPG, 1-100): <span id="quality_value">80%</span></label>
+                <input type="range" id="quality" value="80" min="1" max="100" oninput="document.getElementById('quality_value').textContent = this.value + '%'">
+            </div>
+        </div>
+        
+        <div class="output-group">
+            <label>Kiểu đầu ra (Point 5):</label>
+            <div class="radio-group" style="margin-top: 5px;">
+                <label>
+                    <input type="radio" name="output_type" value="individual" checked>
+                    <span></span> Từng file riêng lẻ (Mặc định)
+                </label>
+                <label>
+                    <input type="radio" name="output_type" value="zip">
+                    <span></span> Nén thành 1 file ZIP
+                </label>
+            </div>
+            
+            <div class="file-input-wrapper" style="margin-top: 25px;">
+                <label for="file_input" class="action-button file-selector" style="background: #1E376E; flex-basis: 50%;">
+                    <i class="fa-solid fa-file-image"></i> Chọn Files
+                </label>
+                <input type="file" id="file_input" accept=".jpg,.jpeg,.png,.bmp,.tiff,.gif,.jfif,.webp" multiple style="display: none;">
+                
+                <label for="folder_input" class="action-button file-selector" style="background: #1E376E; flex-basis: 50%;">
+                    <i class="fa-solid fa-folder-open"></i> Chọn Thư mục
+                </label>
+                <input type="file" id="folder_input" webkitdirectory directory multiple style="display: none;">
+            </div>
+            
+            <button class="action-button" id="convert_button" onclick="startConversion()" disabled>
+                <i class="fa-solid fa-bolt"></i> Xử lý Hàng loạt (<span id="file_count_display">0 files</span>)
+            </button>
+        </div>
+    </div>
+    
+    <div class="status-area">
+        <p class="file-status" id="current_file_status">Chưa có file nào được chọn.</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress_bar"></div>
+        </div>
+        <p class="final-status" id="conversion_status"></p>
+        
+        <div class="stats-grid">
+            <div class="stat-box"><div class="stat-value" id="stat_total_files">0</div><div class="stat-label">Tổng số Files</div></div>
+            <div class="stat-box"><div class="stat-value" id="stat_min_w">N/A</div><div class="stat-label">Chiều rộng tối thiểu</div></div>
+            <div class="stat-box"><div class="stat-value" id="stat_min_h">N/A</div><div class="stat-label">Chiều cao tối thiểu</div></div>
+            <div class="stat-box"><div class="stat-value" id="stat_avg_ratio">N/A</div><div class="stat-label">Hiệu suất nén TB</div></div>
+        </div>
+    </div>
+    
+    <div class="image-compare-grid" id="image_compare_area" style="display: none;">
+        <div class="image-box">
+            <h3>Ảnh Gốc (Chưa nén)</h3>
+            <div class="image-info-top">
+                <span id="original_file_type">File Type: N/A</span>
+                <span id="original_dimension">Dimension: N/A</span>
+            </div>
+            <img id="original_image_preview" src="" alt="Ảnh Gốc" style="display: none;">
+            <div class="image-info-bottom">
+                <span id="original_size">Size: N/A</span>
+                <span id="original_ratio">W/H Ratio: N/A</span>
+            </div>
+        </div>
+        <div class="image-box">
+            <h3>Ảnh Đã Xử Lý (Đầu ra)</h3>
+            <div class="image-info-top">
+                <span id="processed_file_type">File Type: N/A</span>
+                <span id="processed_dimension">Dimension: N/A</span>
+            </div>
+            <img id="processed_image_preview" src="" alt="Ảnh Đã Xử Lý" style="display: none;">
+            <div class="image-info-bottom">
+                <span id="processed_size">Size: N/A</span>
+                <span class="compression-rate" id="processed_compression_rate">Hiệu suất: N/A</span>
+            </div>
+        </div>
+    </div>
+    
+    <canvas id="processing_canvas" style="display: none;"></canvas>
+</div>
+
+<script>
+    // Constants
+    const SUPPORTED_MIMES = ['image/jpeg', 'image/png', 'image/bmp', 'image/tiff', 'image/gif', 'image/webp'];
+    let selectedFiles = [];
+    let minWidth = Infinity;
+    let minHeight = Infinity;
+    let totalOriginalSize = 0;
+    let totalProcessedSize = 0;
+
+    // DOM Elements
+    const fileInput = document.getElementById('file_input');
+    const folderInput = document.getElementById('folder_input');
+    const convertButton = document.getElementById('convert_button');
+    const sizeEntry = document.getElementById('size_entry');
+    const sizeLabel = document.getElementById('size_label');
+    const fileCountDisplay = document.getElementById('file_count_display');
+
+    // === UTILITY FUNCTIONS ===
+
+    function bytesToReadable(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const dm = 2;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+    
+    function toggleResizeInput(mode) {
+        const resizeOption = document.querySelector('input[name="resize_option"]:checked').value;
+        sizeEntry.disabled = (resizeOption === '0');
+        
+        if (resizeOption === '1') {
+            sizeLabel.textContent = "Chiều rộng mục tiêu (px):";
+            // (Point 4) Gợi ý theo minWidth
+            if (minWidth !== Infinity) {
+                const suggestedWidth = 2 ** Math.floor(Math.log2(minWidth));
+                sizeEntry.value = suggestedWidth;
+            }
+        } else if (resizeOption === '2') {
+            sizeLabel.textContent = "Chiều cao mục tiêu (px):";
+            // (Point 4) Gợi ý theo minHeight
+            if (minHeight !== Infinity) {
+                const suggestedHeight = 2 ** Math.floor(Math.log2(minHeight));
+                sizeEntry.value = suggestedHeight;
+            }
+        } else {
+            sizeLabel.textContent = "Kích thước mục tiêu (px):";
+        }
+    }
+
+    // === CORE LOGIC ===
+
+    // (Point 1) Handle file selection from both file input and folder input
+    function handleFileSelection(event) {
+        // (Point 1) Fix double-triggering: Only bind logic to the change event of the hidden input
+        const files = Array.from(event.target.files);
+        
+        selectedFiles = files.filter(file => {
+            // Lọc file theo đuôi mở rộng, vì MIME type có thể bị sai
+            const ext = file.name.split('.').pop().toLowerCase();
+            return ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.gif', '.jfif', '.webp'].includes(`.${ext}`);
+        });
+
+        resetConversionState();
+
+        const statusText = document.getElementById('conversion_status');
+        fileCountDisplay.textContent = `${selectedFiles.length} files`;
+        document.getElementById('stat_total_files').textContent = selectedFiles.length;
+
+        if (selectedFiles.length > 0) {
+            statusText.textContent = `Đã chọn ${selectedFiles.length} file. Bắt đầu phân tích kích thước...`;
+            convertButton.disabled = true;
+            analyzeImageDimensions(selectedFiles).then(() => {
+                statusText.textContent = `Sẵn sàng Xử lý Hàng loạt.`;
+                convertButton.disabled = false;
+                // Cập nhật gợi ý sau khi phân tích xong (Point 4)
+                toggleResizeInput(document.querySelector('input[name="resize_option"]:checked').value === '1' ? 'width' : 'height');
+            });
+        } else {
+            statusText.textContent = "Không tìm thấy ảnh hợp lệ.";
+            convertButton.disabled = true;
+        }
+    }
+
+    // (Point 4) Phân tích kích thước nhỏ nhất
+    function analyzeImageDimensions(files) {
+        minWidth = Infinity;
+        minHeight = Infinity;
+        totalOriginalSize = 0;
+        
+        const promises = files.map(file => {
+            return new Promise(resolve => {
+                totalOriginalSize += file.size;
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = new Image();
+                    img.onload = () => {
+                        minWidth = Math.min(minWidth, img.width);
+                        minHeight = Math.min(minHeight, img.height);
+                        resolve();
+                    };
+                    img.onerror = () => resolve(); // Bỏ qua file lỗi
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => resolve();
+                reader.readAsDataURL(file);
+            });
+        });
+
+        return Promise.all(promises).then(() => {
+            document.getElementById('stat_min_w').textContent = minWidth === Infinity ? 'N/A' : `${minWidth}px`;
+            document.getElementById('stat_min_h').textContent = minHeight === Infinity ? 'N/A' : `${minHeight}px`;
+        });
+    }
+    
+    function resetConversionState() {
+        minWidth = Infinity;
+        minHeight = Infinity;
+        totalOriginalSize = 0;
+        totalProcessedSize = 0;
+        document.getElementById('stat_min_w').textContent = 'N/A';
+        document.getElementById('stat_min_h').textContent = 'N/A';
+        document.getElementById('stat_avg_ratio').textContent = 'N/A';
+        document.getElementById('conversion_status').textContent = 'Chờ chọn ảnh để bắt đầu...';
+        document.getElementById('current_file_status').textContent = '';
+        document.getElementById('progress_bar').style.width = '0%';
+        document.getElementById('image_compare_area').style.display = 'none';
+        
+        // Clear previews
+        document.getElementById('original_image_preview').style.display = 'none';
+        document.getElementById('processed_image_preview').style.display = 'none';
+    }
+
+    async function startConversion() {
+        if (selectedFiles.length === 0) return;
+
+        convertButton.disabled = true;
+        const totalFiles = selectedFiles.length;
+        const outputType = document.querySelector('input[name="output_type"]:checked').value;
+        const statusText = document.getElementById('conversion_status');
+        const progressBar = document.getElementById('progress_bar');
+        const fileStatus = document.getElementById('current_file_status');
+        
+        let completedFiles = 0;
+        totalProcessedSize = 0;
+        const zip = new JSZip();
+        
+        statusText.textContent = "Đang xử lý hàng loạt...";
+        
+        for (const file of selectedFiles) {
+            completedFiles++;
+            fileStatus.textContent = `Đang xử lý: ${file.name} (${completedFiles}/${totalFiles})`;
+            
+            try {
+                const { blob, suffix, originalSize, processedSize } = await processSingleImage(file);
+                totalProcessedSize += processedSize;
+                
+                // Cập nhật thống kê tỉ lệ nén trung bình
+                const ratio = (totalProcessedSize / totalOriginalSize) * 100;
+                document.getElementById('stat_avg_ratio').textContent = `${ratio.toFixed(2)}%`;
+
+                if (outputType === 'individual') {
+                    // Tải về từng file
+                    const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+                    const outputFormat = document.getElementById('output_format').value;
+                    const downloadFileName = `${originalName}${suffix}.${outputFormat}`;
+                    saveAs(blob, downloadFileName);
+                } else if (outputType === 'zip') {
+                    // Thêm vào ZIP
+                    const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+                    const outputFormat = document.getElementById('output_format').value;
+                    const zipFileName = `${originalName}${suffix}.${outputFormat}`;
+                    zip.file(zipFileName, blob);
+                }
+
+            } catch (error) {
+                console.error(`❌ Lỗi khi xử lý file ${file.name}:`, error);
+                fileStatus.textContent = `❌ Lỗi: ${file.name}. Bỏ qua file này.`;
+            }
+
+            // Update progress bar
+            const progress = (completedFiles / totalFiles) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Tải xuống file ZIP (Point 5)
+        if (outputType === 'zip' && totalFiles > 0) {
+            fileStatus.textContent = "Đang nén và chuẩn bị tải về file ZIP...";
+            zip.generateAsync({ type: "blob" }).then(content => {
+                saveAs(content, "Hathyo_Image_Batch_Output.zip");
+                finalizeConversion();
+            }).catch(e => {
+                console.error("Lỗi tạo ZIP:", e);
+                fileStatus.textContent = "❌ Lỗi khi tạo file ZIP.";
+                finalizeConversion();
+            });
+        } else {
+            finalizeConversion();
+        }
+    }
+    
+    function finalizeConversion() {
+        document.getElementById('current_file_status').textContent = "";
+        document.getElementById('conversion_status').textContent = "🎉 Hoàn tất! Tất cả ảnh đã được xử lý.";
+        convertButton.disabled = false;
+    }
+
+    function processSingleImage(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.getElementById('processing_canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    const resizeOption = document.querySelector('input[name="resize_option"]:checked').value;
+                    const sizeVal = parseInt(sizeEntry.value);
+                    const resampleQuality = document.getElementById('resample_method').value;
+                    const enhanceFactor = parseFloat(document.getElementById('enhance_mode').value);
+                    const outputFormat = document.getElementById('output_format').value;
+                    const quality = parseInt(document.getElementById('quality').value) / 100;
+
+                    let width = img.width;
+                    let height = img.height;
+                    let newWidth = width;
+                    let newHeight = height;
+                    let suffix = '';
+
+                    // 1. TÍNH TOÁN KÍCH THƯỚC MỚI (Resize)
+                    if (resizeOption === '1' && sizeVal > 0) { // Co chiều rộng
+                        newWidth = sizeVal;
+                        newHeight = Math.round(height * sizeVal / width);
+                        suffix = `_w${newWidth}`;
+                    } else if (resizeOption === '2' && sizeVal > 0) { // Co chiều cao
+                        newHeight = sizeVal;
+                        newWidth = Math.round(width * sizeVal / height);
+                        suffix = `_h${newHeight}`;
+                    }
+                    
+                    // Cấu hình Canvas
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = resampleQuality; 
+                    
+                    // 2. RESIZE & DRAW
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+                    // 3. ENHANCEMENT (Làm đẹp ảnh) - Đơn giản hóa
+                    if (enhanceFactor !== 1.0) {
+                        enhanceImage(ctx, newWidth, newHeight, enhanceFactor);
+                    }
+
+                    // 4. CHUYỂN ĐỔI & LẤY BLOB
+                    let mimeType;
+                    if (outputFormat === 'webp') mimeType = 'image/webp';
+                    else if (outputFormat === 'jpg') mimeType = 'image/jpeg';
+                    else if (outputFormat === 'png') mimeType = 'image/png';
+
+                    canvas.toBlob(blob => {
+                        // (Point 6) Hiển thị thông tin file đầu tiên
+                        if (selectedFiles[0] === file) {
+                            displayComparison(file, img, blob, newWidth, newHeight);
+                        }
+                        
+                        resolve({
+                            blob: blob,
+                            suffix: suffix,
+                            originalSize: file.size,
+                            processedSize: blob.size
+                        });
+                    }, mimeType, quality);
+
+                };
+                img.onerror = reject;
+                img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    // Đơn giản hóa hàm làm đẹp ảnh
+    function enhanceImage(ctx, width, height, enhancementFactor) {
+        const data = ctx.getImageData(0, 0, width, height);
+        const pixels = data.data;
+        const factor = enhancementFactor;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+            for (let j = 0; j < 3; j++) {
+                let pixelValue = pixels[i + j];
+                // Tăng độ sáng/tương phản đơn giản
+                pixelValue = pixelValue * factor;
+                pixels[i + j] = Math.max(0, Math.min(255, pixelValue));
+            }
+        }
+        ctx.putImageData(data, 0, 0);
+    }
+    
+    // (Point 6) Hiển thị thông tin so sánh file đầu tiên
+    function displayComparison(originalFile, originalImg, processedBlob, newWidth, newHeight) {
+        document.getElementById('image_compare_area').style.display = 'grid';
+
+        // --- Ảnh Gốc ---
+        document.getElementById('original_file_type').textContent = `File Type: ${originalFile.type.split('/')[1].toUpperCase()}`;
+        document.getElementById('original_dimension').textContent = `Dimension: ${originalImg.width}x${originalImg.height}`;
+        document.getElementById('original_size').textContent = `Size: ${bytesToReadable(originalFile.size)}`;
+        document.getElementById('original_ratio').textContent = `W/H Ratio: ${(originalImg.width / originalImg.height).toFixed(2)}`;
+        
+        const originalPreview = document.getElementById('original_image_preview');
+        originalPreview.src = originalImg.src;
+        originalPreview.style.display = 'block';
+
+        // --- Ảnh Đã Xử Lý ---
+        const outputFormat = document.getElementById('output_format').value.toUpperCase();
+        document.getElementById('processed_file_type').textContent = `File Type: ${outputFormat}`;
+        document.getElementById('processed_dimension').textContent = `Dimension: ${newWidth}x${newHeight}`;
+        document.getElementById('processed_size').textContent = `Size: ${bytesToReadable(processedBlob.size)}`;
+        
+        const compressionRatio = (processedBlob.size / originalFile.size) * 100;
+        const compressionText = `${compressionRatio.toFixed(2)}%`;
+        const rateElement = document.getElementById('processed_compression_rate');
+        rateElement.textContent = `Hiệu suất nén: ${compressionText}`;
+        rateElement.style.color = compressionRatio < 100 ? 'var(--success-color)' : 'var(--warning-color)';
+        
+        const processedPreview = document.getElementById('processed_image_preview');
+        processedPreview.src = URL.createObjectURL(processedBlob);
+        processedPreview.style.display = 'block';
+    }
+
+
+    // === INITIALIZATION & EVENT LISTENERS (Point 1) ===
+    document.addEventListener('DOMContentLoaded', () => {
+        // (Point 1) Chỉ bind logic vào sự kiện change của input, không click vào label/button
+        fileInput.addEventListener('change', handleFileSelection);
+        folderInput.addEventListener('change', handleFileSelection);
+
+        // Khởi tạo các giá trị mặc định
+        document.getElementById('quality').dispatchEvent(new Event('input'));
+        resetConversionState();
+    });
+</script>
+
+</body>
+</html>

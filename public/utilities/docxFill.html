@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Word Generator</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input { width: 400px; padding: 10px; margin-right: 10px; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #007bff; color: white; }
+        .loading { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h2>Word Generator</h2>
+    <p>Tải dữ liệu từ Google Sheets và tạo file Word</p>
+    
+    <div>
+        <input type="text" id="sheetUrl" placeholder="Dán URL Google Sheets vào đây" value="https://docs.google.com/spreadsheets/d/1DLk55jZ62Pd90mtlDg3Hqv8uGMXRpNZgsH-tkrcv0k8/edit">
+        <button onclick="loadData()">Tải dữ liệu</button>
+    </div>
+    
+    <div id="result">
+        <p class="loading">Nhập URL và nhấn "Tải dữ liệu"</p>
+    </div>
+
+    <script>
+        function loadData() {
+            const url = document.getElementById('sheetUrl').value;
+            
+            // Lấy sheet ID
+            const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+            if (!match) {
+                document.getElementById('result').innerHTML = "<p style='color:red'>URL không hợp lệ</p>";
+                return;
+            }
+            
+            const sheetId = match[1];
+            const apiUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+            
+            // Hiển thị loading
+            document.getElementById('result').innerHTML = "<p class='loading'>Đang tải dữ liệu...</p>";
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Không thể kết nối đến Google Sheets");
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                        const json = JSON.parse(jsonStr);
+                        
+                        // Hiển thị bảng
+                        displayTable(json);
+                        
+                        // Tạo file Word
+                        createWordFile(json);
+                        
+                    } catch (error) {
+                        document.getElementById('result').innerHTML = "<p style='color:red'>Lỗi xử lý dữ liệu: " + error.message + "</p>";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = "<p style='color:red'>Lỗi: " + error.message + "</p>";
+                });
+        }
+        
+        function displayTable(data) {
+            let html = "<h3>Dữ liệu từ Google Sheets:</h3>";
+            html += "<table>";
+            
+            // Header
+            html += "<tr>";
+            data.table.cols.forEach(col => {
+                html += "<th>" + (col.label || "") + "</th>";
+            });
+            html += "</tr>";
+            
+            // Data rows
+            data.table.rows.forEach((row, index) => {
+                html += "<tr>";
+                row.c.forEach(cell => {
+                    html += "<td>" + (cell ? cell.v : "") + "</td>";
+                });
+                html += "</tr>";
+            });
+            
+            html += "</table>";
+            html += "<p><strong>Tổng số bản ghi:</strong> " + data.table.rows.length + "</p>";
+            
+            document.getElementById('result').innerHTML = html;
+        }
+        
+        function createWordFile(data) {
+            // Tạo nội dung Word
+            let wordContent = "<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
+            wordContent += "<head><meta charset='UTF-8'><title>Document</title>";
+            wordContent += "<style>body { font-family: Arial; } table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #000; padding: 8px; }</style>";
+            wordContent += "</head><body>";
+            wordContent += "<h1>Dữ liệu từ Google Sheets</h1>";
+            wordContent += "<p>Ngày tạo: " + new Date().toLocaleDateString('vi-VN') + "</p>";
+            wordContent += "<table>";
+            
+            // Header
+            wordContent += "<tr>";
+            data.table.cols.forEach(col => {
+                wordContent += "<th>" + (col.label || "") + "</th>";
+            });
+            wordContent += "</tr>";
+            
+            // Data
+            data.table.rows.forEach(row => {
+                wordContent += "<tr>";
+                row.c.forEach(cell => {
+                    wordContent += "<td>" + (cell ? cell.v : "") + "</td>";
+                });
+                wordContent += "</tr>";
+            });
+            
+            wordContent += "</table>";
+            wordContent += "</body></html>";
+            
+            // Tạo file và download
+            const blob = new Blob([wordContent], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data_' + new Date().getTime() + '.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Thông báo
+            const msg = document.createElement('div');
+            msg.innerHTML = "<p style='background:#d4edda;padding:10px;border-radius:5px;color:#155724;margin-top:10px'>✓ Đã tải xuống file Word thành công!</p>";
+            document.getElementById('result').appendChild(msg);
+        }
+        
+        // Tự động chạy khi trang tải xong
+        window.onload = function() {
+            console.log("Ứng dụng đã sẵn sàng");
+        };
+    </script>
+</body>
+</html>
