@@ -765,7 +765,7 @@
             padding: 20px;
             margin-top: 30px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 15px;
         }
 
@@ -1167,8 +1167,12 @@
                 <div class="stat-label">Kích thước sau nén</div>
             </div>
             <div class="stat-item">
+                <div class="stat-value" id="compressedSave">0 MB</div>
+                <div class="stat-label">Tiết kiệm</div>
+            </div>
+            <div class="stat-item">
                 <div class="stat-value" id="compressionRatio">0%</div>
-                <div class="stat-label">Tỉ lệ nén</div>
+                <div class="stat-label">Tỉ lệ nén còn</div>
             </div>
         </div>
 
@@ -1396,9 +1400,11 @@
             if (resizeOption === '1') {
                 document.getElementById('targetSize').value = suggestedWidth;
                 showNotification(`Đã áp dụng chiều rộng gợi ý: ${suggestedWidth}px`, 'info');
+                resizeShort = 'W' + suggestedWidth;
             } else if (resizeOption === '2') {
                 document.getElementById('targetSize').value = suggestedHeight;
                 showNotification(`Đã áp dụng chiều cao gợi ý: ${suggestedHeight}px`, 'info');
+                resizeShort = 'H' + suggestedHeight;
             }
         }
 
@@ -1556,6 +1562,7 @@
             processedImages = [];
             let totalOriginalSize = 0;
             let totalCompressedSize = 0;
+            let totalCompressedSave = 0;
             
             // Get settings
             const resizeOption = document.querySelector('input[name="resizeOption"]:checked').value;
@@ -1603,6 +1610,7 @@
                     // Update totals
                     totalOriginalSize += file.size;
                     totalCompressedSize += result.blob.size;
+                    totalCompressedSave = totalOriginalSize - totalCompressedSize
                     
                 } catch (error) {
                     console.error(`Error processing ${file.name}:`, error);
@@ -1616,9 +1624,11 @@
             // Update final statistics
             const totalOriginalSizeMB = (totalOriginalSize / (1024 * 1024)).toFixed(2);
             const totalCompressedSizeMB = (totalCompressedSize / (1024 * 1024)).toFixed(2);
+            const totalCompressedSaveMB = (totalOriginalSizeMB - totalCompressedSizeMB).toFixed(2);
             const overallCompressionRatio = ((totalCompressedSize / totalOriginalSize) * 100).toFixed(1);
             
             document.getElementById('compressedSize').textContent = `${totalCompressedSizeMB} MB`;
+            document.getElementById('compressedSave').textContent = `${totalCompressedSaveMB} MB`;
             document.getElementById('compressionRatio').textContent = `${overallCompressionRatio}%`;
             
             // Reset button
@@ -1651,10 +1661,12 @@
                             // Resize by width
                             height = Math.round(height * settings.targetSize / width);
                             width = settings.targetSize;
+                            resizeShort = 'W' + width;
                         } else if (settings.resizeOption === '2') {
                             // Resize by height
                             width = Math.round(width * settings.targetSize / height);
                             height = settings.targetSize;
+                            resizeShort = 'H' + height;
                         }
                         
                         canvas.width = width;
@@ -1879,7 +1891,7 @@
                     <div style="font-size: 24px;">${icon}</div>
                     <div>${message}</div>
                 </div>`,
-                icon: type,
+                // icon: type,
                 timer: 3000,
                 showConfirmButton: false,
                 toast: true,
