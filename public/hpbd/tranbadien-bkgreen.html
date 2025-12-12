@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="format-detection" content="telephone=no">
 
     <!-- === CORE META TAGS === -->
     <title>Chúc Mừng Sinh Nhật Anh Trần Bá Điền - Giám Đốc BK GREEN 2025! | LAZINET</title>
@@ -66,7 +67,6 @@
     <meta name="msapplication-config" content="browserconfig.xml">
     <meta name="apple-mobile-web-app-title" content="LAZINET">
     <meta name="application-name" content="LAZINET">
-    <meta name="format-detection" content="telephone=no">
     
     <!-- === STRUCTURED DATA (JSON-LD) === -->
     <script type="application/ld+json">
@@ -153,8 +153,8 @@
     <!-- Fonts: Roboto hỗ trợ tiếng Việt tốt -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- jsPDF and html2canvas Libraries -->
@@ -162,13 +162,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
+        /* === CSS RESET & BASE STYLES === */
         :root {
             --primary-tech: #0a1f3d;
             --secondary-tech: #00d4ff;
             --accent-tech: #7b2cbf;
             --glow-color: rgba(0, 212, 255, 0.7);
             --dark-bg: #0c0c1d;
-            --card-bg: rgba(15, 23, 42, 0.9);
+            --card-bg: rgba(15, 23, 42, 0.95);
+            --success-color: #00ff88;
+            --warning-color: #ffaa00;
+            --text-light: #f0f0f0;
+            --text-muted: #aaa;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.4);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
         }
         
         * {
@@ -177,8 +189,12 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
-            font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
+            font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -190,9 +206,11 @@
                 linear-gradient(135deg, var(--dark-bg) 0%, #121212 50%, #1a1a2e 100%);
             position: relative;
             text-align: center;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Hiệu ứng hạt nền */
+        /* === BACKGROUND EFFECTS === */
         .particles {
             position: fixed;
             top: 0;
@@ -218,31 +236,58 @@
             100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
         }
         
-        /* Container chính */
+        .circuit-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+        
+        .circuit-line path {
+            stroke: var(--secondary-tech);
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 5;
+            animation: dash 30s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: 1000; }
+        }
+        
+        /* === MAIN CONTAINER === */
         .container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 20px;
             position: relative;
             z-index: 1;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
-        /* Card chính */
+        /* === MAIN CARD === */
         .main-card {
-            max-width: 1100px;
             width: 100%;
-            padding: 40px;
+            max-width: 1100px;
+            padding: clamp(20px, 4vw, 40px);
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
             box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                inset 0 0 20px rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+                var(--shadow-heavy),
+                0 0 0 1px var(--border-light),
+                inset 0 0 30px rgba(0, 212, 255, 0.15);
+            border: 1px solid var(--border-light);
             position: relative;
             overflow: hidden;
             margin-bottom: 30px;
@@ -257,7 +302,7 @@
             height: 200%;
             background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
             z-index: -1;
-            animation: rotate 20s linear infinite;
+            animation: rotate 30s linear infinite;
         }
         
         @keyframes rotate {
@@ -265,53 +310,67 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Tiêu đề */
+        /* === TYPOGRAPHY === */
         .birthday-title {
             font-family: 'Be Vietnam Pro', sans-serif;
-            font-size: 2.8rem;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: clamp(8px, 2vw, 15px);
             background: linear-gradient(90deg, #fff, var(--secondary-tech), #7b2cbf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
         }
         
         .name-title {
             font-family: 'Be Vietnam Pro', sans-serif;
-            font-size: 2.2rem;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: clamp(10px, 2vw, 15px);
             color: #fff;
             text-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+            line-height: 1.3;
         }
         
         .position {
-            font-size: 1.2rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
             color: var(--secondary-tech);
-            margin-bottom: 30px;
+            margin-bottom: clamp(20px, 4vw, 30px);
             font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        /* Nội dung chúc mừng (ngắn gọn) */
+        .position i {
+            font-size: 1.1em;
+        }
+        
+        /* === MESSAGE SECTION === */
         .message-container {
-            margin: 30px 0;
-            padding: 25px;
+            margin: clamp(20px, 4vw, 30px) 0;
+            padding: clamp(15px, 3vw, 25px);
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             border-left: 5px solid var(--secondary-tech);
             text-align: center;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
         
         .message {
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
             line-height: 1.6;
-            margin-bottom: 15px;
-            color: #f0f0f0;
+            margin-bottom: clamp(10px, 2vw, 15px);
+            color: var(--text-light);
             font-weight: 500;
+            text-align: center;
         }
         
         .highlight {
@@ -319,25 +378,28 @@
             font-weight: 600;
         }
         
-        /* Khu vực thông tin sinh nhật */
+        /* === FACTS SECTION === */
         .birthday-facts {
             background: rgba(10, 31, 61, 0.7);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 25px 0;
+            border-radius: var(--radius-md);
+            padding: clamp(15px, 3vw, 20px);
+            margin: clamp(20px, 4vw, 25px) 0;
             border: 1px solid rgba(0, 212, 255, 0.2);
             text-align: left;
+            backdrop-filter: blur(10px);
         }
         
         .facts-title {
             font-family: 'Be Vietnam Pro', sans-serif;
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             color: var(--secondary-tech);
-            margin-bottom: 15px;
+            margin-bottom: clamp(10px, 2vw, 15px);
             display: flex;
             align-items: center;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
+            text-align: center;
         }
         
         .facts-list {
@@ -345,11 +407,11 @@
         }
         
         .facts-list li {
-            padding: 8px 0;
+            padding: clamp(6px, 1.5vw, 8px) 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: clamp(8px, 2vw, 10px);
         }
         
         .facts-list li:last-child {
@@ -358,62 +420,87 @@
         
         .fact-icon {
             color: var(--secondary-tech);
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             margin-top: 3px;
             flex-shrink: 0;
+            width: 20px;
+            text-align: center;
         }
         
-        /* Logo và chữ ký */
+        .facts-list li span:last-child {
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            line-height: 1.5;
+        }
+        
+        /* === LOGO & SIGNATURE === */
         .logo-container {
-            margin: 25px 0;
+            margin: clamp(15px, 3vw, 25px) 0;
             text-align: center;
         }
         
         .logo-container img {
-            height: 80px;
+            height: clamp(60px, 10vw, 80px);
             width: auto;
+            max-width: 100%;
             filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container img:hover {
+            transform: scale(1.05);
         }
         
         .signature {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: clamp(20px, 4vw, 30px);
+            padding-top: clamp(15px, 3vw, 20px);
+            border-top: 1px solid var(--border-light);
             text-align: center;
         }
         
         .signature p {
             font-style: normal;
-            color: #ccc;
+            color: var(--text-muted);
             margin-bottom: 8px;
-            font-size: 1.1rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
         }
         
         .signature-name {
             display: inline-block;
             background: linear-gradient(90deg, var(--secondary-tech), var(--accent-tech));
             color: white;
-            padding: 12px 25px;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
             border-radius: 50px;
             font-weight: 600;
-            margin-top: 10px;
-            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+            margin-top: clamp(8px, 2vw, 10px);
+            box-shadow: var(--shadow-glow);
             text-decoration: none;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .signature-name:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.4);
         }
         
         .date-display {
-            margin-top: 20px;
-            color: #aaa;
-            font-size: 1rem;
+            margin-top: clamp(15px, 3vw, 20px);
+            color: var(--text-muted);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
-        /* Thanh nút công cụ - căn giữa */
+        /* === TOOLBAR === */
         .toolbar {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: clamp(10px, 2vw, 15px);
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: clamp(20px, 4vw, 30px);
             width: 100%;
             max-width: 800px;
         }
@@ -421,102 +508,367 @@
         .tool-btn {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 14px 25px;
+            padding: clamp(12px, 2vw, 14px) clamp(20px, 4vw, 25px);
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s ease;
             font-family: 'Be Vietnam Pro', sans-serif;
             text-decoration: none;
-            font-size: 0.95rem;
-            min-width: 160px;
-            justify-content: center;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            min-width: min(160px, 100%);
+            flex: 1;
+            max-width: 200px;
         }
         
-        .tool-btn:hover {
+        .tool-btn:hover, .tool-btn:focus {
             background: rgba(0, 212, 255, 0.3);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+            outline: none;
         }
         
-        /* Hiệu ứng công nghệ bổ sung */
-        .circuit-line {
+        .tool-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* === LOADING & NOTIFICATION === */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 212, 255, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: var(--shadow-heavy);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.3s ease-out;
+            font-family: 'Be Vietnam Pro', sans-serif;
+            text-align: center;
+            max-width: 90vw;
+            width: auto;
+            white-space: nowrap;
+        }
+        
+        @keyframes slideUp {
+            from { bottom: -100px; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { bottom: 30px; opacity: 1; }
+            to { bottom: -100px; opacity: 0; }
+        }
+        
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            backdrop-filter: blur(5px);
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--secondary-tech);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* === INTERACTIVE EFFECTS === */
+        .click-effect {
             position: absolute;
-            stroke-dasharray: 10;
-            stroke: var(--secondary-tech);
-            stroke-width: 1;
-            fill: none;
-            opacity: 0.2;
-            animation: dash 20s linear infinite;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 10;
+            animation: ripple 1s ease-out;
         }
         
-        @keyframes dash {
-            to { stroke-dashoffset: 1000; }
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* === RESPONSIVE BREAKPOINTS === */
+        
+        /* Tablet Portrait & Small Desktop */
+        @media (max-width: 1024px) {
             .container {
-                padding: 20px 15px;
+                padding: 15px;
             }
             
             .main-card {
-                padding: 25px;
+                max-width: 900px;
             }
             
-            .birthday-title {
-                font-size: 2.2rem;
+            .tool-btn {
+                max-width: 180px;
+            }
+        }
+        
+        /* Tablet Landscape */
+        @media (max-width: 992px) {
+            .facts-list li {
+                flex-direction: column;
+                gap: 5px;
             }
             
-            .name-title {
-                font-size: 1.8rem;
+            .fact-icon {
+                width: auto;
+            }
+        }
+        
+        /* Tablet Portrait */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+                justify-content: flex-start;
+                padding-top: 40px;
             }
             
-            .position {
-                font-size: 1rem;
-            }
-            
-            .message {
-                font-size: 1.2rem;
+            .main-card {
+                padding: 25px 20px;
+                margin-bottom: 25px;
             }
             
             .toolbar {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
                 gap: 12px;
             }
             
             .tool-btn {
-                width: 100%;
-                max-width: 300px;
+                flex: 0 0 calc(50% - 6px);
+                max-width: calc(50% - 6px);
+            }
+            
+            .facts-list li {
+                flex-direction: row;
             }
         }
         
-        @media (max-width: 480px) {
+        /* Mobile Landscape */
+        @media (max-width: 640px) {
+            .toolbar {
+                gap: 10px;
+            }
+            
+            .tool-btn {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
             .birthday-title {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             
             .name-title {
+                font-size: 1.3rem;
+            }
+            
+            .message {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Mobile Portrait */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                padding-top: 30px;
+            }
+            
+            .main-card {
+                padding: 20px 15px;
+                border-radius: 18px;
+            }
+            
+            .birthday-title {
                 font-size: 1.5rem;
+                letter-spacing: 0;
+            }
+            
+            .name-title {
+                font-size: 1.2rem;
+            }
+            
+            .position {
+                font-size: 0.9rem;
             }
             
             .message-container {
-                padding: 20px;
+                padding: 15px;
+                border-left-width: 4px;
+            }
+            
+            .message {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            
+            .birthday-facts {
+                padding: 15px;
+            }
+            
+            .facts-title {
+                font-size: 1rem;
+            }
+            
+            .facts-list li {
+                font-size: 0.85rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .fact-icon {
+                margin-top: 0;
             }
             
             .signature-name {
                 padding: 10px 20px;
-                font-size: 0.95rem;
+                font-size: 0.9rem;
             }
             
-            .facts-list li {
+            .date-display {
+                font-size: 0.85rem;
+            }
+            
+            .logo-container img {
+                height: 50px;
+            }
+            
+            .notification {
+                padding: 10px 20px;
                 font-size: 0.9rem;
+                white-space: normal;
+                max-width: 85vw;
+                bottom: 20px;
+            }
+        }
+        
+        /* Very Small Mobile */
+        @media (max-width: 360px) {
+            .birthday-title {
+                font-size: 1.3rem;
+            }
+            
+            .name-title {
+                font-size: 1.1rem;
+            }
+            
+            .message {
+                font-size: 0.9rem;
+            }
+            
+            .tool-btn {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Large Desktop */
+        @media (min-width: 1400px) {
+            .container {
+                padding: 40px;
+            }
+            
+            .main-card {
+                max-width: 1200px;
+            }
+        }
+        
+        /* High DPI Screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .main-card {
+                border-width: 0.5px;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .main-card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                background: white !important;
+                color: black !important;
+            }
+            
+            .toolbar, .particles, .circuit-line {
+                display: none !important;
+            }
+        }
+        
+        /* Accessibility: Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .main-card::before {
+                animation: none !important;
+            }
+        }
+        
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --dark-bg: #0a0a0a;
+                --card-bg: rgba(20, 20, 30, 0.95);
+            }
+        }
+        
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .tool-btn:hover {
+                transform: none;
+            }
+            
+            .tool-btn:active {
+                background: rgba(0, 212, 255, 0.3);
+                transform: scale(0.98);
+            }
+            
+            .signature-name:hover {
+                transform: none;
+            }
+            
+            .logo-container img:hover {
+                transform: none;
             }
         }
     </style>
@@ -526,9 +878,10 @@
     <div class="particles" id="particles"></div>
     
     <!-- Hiệu ứng đường mạch điện -->
-    <svg class="circuit-line" width="100%" height="100%" style="position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none;">
+    <svg class="circuit-line" width="100%" height="100%">
         <path d="M50,50 Q100,0 150,50 T250,50 T350,30 T450,70 T550,30 T650,70 T750,50" />
         <path d="M50,150 Q150,100 250,150 T450,130 T650,170" />
+        <path d="M100,300 Q200,250 300,300 T500,280 T700,320" />
     </svg>
     
     <!-- Container chính -->
@@ -543,13 +896,14 @@
             <div class="position">
                 <i class="fas fa-briefcase"></i> Giám đốc CÔNG TY CỔ PHẦN KỸ THUẬT BK GREEN
             </div>
+            
             <div class="logo-container">
-                <a href="https://bkgreen.vn" target="_blank">
-                    <img src="../bkgreen/Logo/Nền trắng - Chữ nhật sát tỉ lệ lề đều.png" alt="BK Green Logo">
+                <a href="https://bkgreen.vn" target="_blank" rel="noopener noreferrer" aria-label="BK Green Website">
+                    <img src="../bkgreen/Logo/Nền trắng - Chữ nhật sát tỉ lệ lề đều.png" alt="BK Green Logo" loading="lazy">
                 </a>
             </div>
             
-            <!-- Lời chúc ngắn gọn (2 câu) -->
+            <!-- Lời chúc ngắn gọn -->
             <div class="message-container">
                 <div class="message">
                     Nhân dịp sinh nhật <span class="highlight">12/12</span>, xin gửi đến anh lời chúc chân thành nhất!
@@ -590,52 +944,68 @@
             
             <div class="signature">
                 <p>Trân trọng,</p>
-                <a href="https://lazinet.com/bizcards/phung-hoang.html" class="signature-name">
+                <a href="https://lazinet.com/bizcards/phung-hoang.html" class="signature-name" target="_blank" rel="noopener noreferrer">
                     Hoàng Minh Phụng
                 </a>
-                <!-- <div style="margin-top: 5px; font-size: 0.9rem; color: #aaa;">
-                    Giám đốc LAZINET
-                </div> -->
             </div>
             
             <div class="date-display">
                 <i class="far fa-calendar-alt"></i> Ngày <span id="currentDate">12 tháng 12 năm 2025</span>
             </div>
             
-            <!-- Logo và chữ ký -->
+            <!-- Logo LAZINET -->
             <div class="logo-container">
-                <a href="https://lazinet.com/lazinet-support-pricing" target="_blank">
-                    <img src="../assets/img/logo-lazinet/QR_LAZINET_Pricing.png" alt="LAZINET Logo">
+                <a href="https://lazinet.com/lazinet-support-pricing" target="_blank" rel="noopener noreferrer" aria-label="LAZINET Pricing">
+                    <img src="../assets/img/logo-lazinet/QR_LAZINET_Pricing.png" alt="LAZINET Logo" loading="lazy">
                 </a>
             </div>
         </div>
         
-        <!-- Thanh nút công cụ - CĂN GIỮA -->
+        <!-- Thanh nút công cụ -->
         <div class="toolbar">
-            <button class="tool-btn" id="exportImageBtn">
+            <button class="tool-btn" id="exportImageBtn" aria-label="Xuất ảnh thiệp sinh nhật">
                 <i class="fas fa-camera"></i> Xuất Ảnh
             </button>
-            <button class="tool-btn" id="exportPdfBtn">
+            <button class="tool-btn" id="exportPdfBtn" aria-label="Xuất PDF thiệp sinh nhật">
                 <i class="fas fa-file-pdf"></i> Xuất PDF
             </button>
-            <a href="https://lazinet.com" class="tool-btn" target="_blank">
+            <a href="https://lazinet.com" class="tool-btn" target="_blank" rel="noopener noreferrer" aria-label="Trang chủ LAZINET">
                 <i class="fas fa-external-link-alt"></i> LAZINET
             </a>
-            <a href="https://lazinet.com/contact" class="tool-btn" target="_blank">
+            <a href="https://lazinet.com/contact" class="tool-btn" target="_blank" rel="noopener noreferrer" aria-label="Liên hệ LAZINET">
                 <i class="fas fa-envelope"></i> Liên hệ
             </a>
         </div>
     </div>
     
     <script>
-        // Tạo hiệu ứng hạt nền
+        // === INITIALIZATION ===
         document.addEventListener('DOMContentLoaded', function() {
+            // Tạo hiệu ứng hạt nền
+            createParticles();
+            
+            // Cập nhật ngày hiện tại
+            updateCurrentDate();
+            
+            // Hiệu ứng chữ nổi
+            animateTitleColor();
+            
+            // Thêm sự kiện cho các nút
+            setupEventListeners();
+            
+            // Kiểm tra và tối ưu cho thiết bị di động
+            optimizeForMobile();
+        });
+        
+        // === PARTICLE EFFECT ===
+        function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = 40;
+            const particleCount = window.innerWidth < 768 ? 20 : 40;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
+                particle.setAttribute('aria-hidden', 'true');
                 
                 // Kích thước ngẫu nhiên
                 const size = Math.random() * 3 + 1;
@@ -660,59 +1030,108 @@
                 
                 particlesContainer.appendChild(particle);
             }
-            
-            // Cập nhật ngày hiện tại
+        }
+        
+        // === DATE UPDATE ===
+        function updateCurrentDate() {
             const today = new Date();
             const day = String(today.getDate()).padStart(2, '0');
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const year = today.getFullYear();
-            document.getElementById('currentDate').textContent = `${day} tháng ${month} năm ${year}`;
             
-            // Hiệu ứng chữ nổi
+            // Format ngày tháng tiếng Việt
+            const monthNames = [
+                'tháng 1', 'tháng 2', 'tháng 3', 'tháng 4', 
+                'tháng 5', 'tháng 6', 'tháng 7', 'tháng 8', 
+                'tháng 9', 'tháng 10', 'tháng 11', 'tháng 12'
+            ];
+            
+            document.getElementById('currentDate').textContent = 
+                `${day} ${monthNames[today.getMonth()]} năm ${year}`;
+        }
+        
+        // === ANIMATED TITLE ===
+        function animateTitleColor() {
             const birthdayTitle = document.querySelector('.birthday-title');
+            if (!birthdayTitle) return;
+            
             let hue = 0;
             
             function updateTitleColor() {
                 hue = (hue + 0.5) % 360;
-                birthdayTitle.style.background = `linear-gradient(90deg, hsl(${hue}, 100%, 70%), hsl(${(hue + 60) % 360}, 100%, 70%), hsl(${(hue + 120) % 360}, 100%, 70%))`;
+                birthdayTitle.style.background = 
+                    `linear-gradient(90deg, hsl(${hue}, 100%, 70%), hsl(${(hue + 60) % 360}, 100%, 70%), hsl(${(hue + 120) % 360}, 100%, 70%))`;
                 birthdayTitle.style.webkitBackgroundClip = 'text';
                 birthdayTitle.style.webkitTextFillColor = 'transparent';
+                birthdayTitle.style.backgroundClip = 'text';
+                
                 requestAnimationFrame(updateTitleColor);
             }
             
-            updateTitleColor();
-        });
+            // Chỉ chạy animation nếu user không prefer reduced motion
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                updateTitleColor();
+            }
+        }
         
-        // Xuất ảnh
-        document.getElementById('exportImageBtn').addEventListener('click', function() {
+        // === EVENT LISTENERS ===
+        function setupEventListeners() {
+            // Xuất ảnh
+            document.getElementById('exportImageBtn').addEventListener('click', exportAsImage);
+            
+            // Xuất PDF
+            document.getElementById('exportPdfBtn').addEventListener('click', exportAsPDF);
+            
+            // Hiệu ứng click card
+            document.getElementById('birthdayCard').addEventListener('click', handleCardClick);
+            
+            // Thêm keyboard support
+            document.addEventListener('keydown', handleKeyboardNavigation);
+        }
+        
+        // === EXPORT IMAGE ===
+        function exportAsImage() {
             const card = document.getElementById('birthdayCard');
             
+            // Hiển thị loading
+            showLoading(true);
+            
             html2canvas(card, {
-                scale: 2,
+                scale: window.devicePixelRatio * 2,
                 backgroundColor: null,
-                useCORS: true
+                useCORS: true,
+                logging: false,
+                allowTaint: true
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'LAZINET-HPBD-TranBaDien-BKGreen.png';
-                link.href = canvas.toDataURL('image/png');
+                link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
                 
-                // Hiệu ứng thông báo
                 showNotification('Đã xuất ảnh thành công!', 'success');
+                showLoading(false);
+            }).catch(error => {
+                console.error('Export image error:', error);
+                showNotification('Có lỗi xảy ra khi xuất ảnh', 'error');
+                showLoading(false);
             });
-        });
+        }
         
-        // Xuất PDF
-        document.getElementById('exportPdfBtn').addEventListener('click', function() {
+        // === EXPORT PDF ===
+        function exportAsPDF() {
             const { jsPDF } = window.jspdf;
             const card = document.getElementById('birthdayCard');
             
+            // Hiển thị loading
+            showLoading(true);
+            
             html2canvas(card, {
-                scale: 2,
+                scale: window.devicePixelRatio * 2,
                 backgroundColor: null,
-                useCORS: true
+                useCORS: true,
+                logging: false
             }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
+                const imgData = canvas.toDataURL('image/png', 1.0);
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgWidth = 190;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
@@ -721,13 +1140,93 @@
                 pdf.addImage(imgData, 'PNG', marginLeft, 10, imgWidth, imgHeight);
                 pdf.save('LAZINET-HPBD-TranBaDien-BKGreen.pdf');
                 
-                // Hiệu ứng thông báo
                 showNotification('Đã xuất PDF thành công!', 'success');
+                showLoading(false);
+            }).catch(error => {
+                console.error('Export PDF error:', error);
+                showNotification('Có lỗi xảy ra khi xuất PDF', 'error');
+                showLoading(false);
             });
-        });
+        }
         
-        // Hiển thị thông báo
-        function showNotification(message, type) {
+        // === CARD CLICK EFFECT ===
+        function handleCardClick(e) {
+            // Kiểm tra không phải click vào nút hoặc link
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || 
+                e.target.closest('button') || e.target.closest('a')) {
+                return;
+            }
+            
+            // Hiệu ứng ripple
+            createRippleEffect(e);
+            
+            // Hiệu ứng rung (chỉ trên desktop)
+            if (window.innerWidth > 768) {
+                createShakeEffect();
+            }
+            
+            // Hiệu ứng chúc mừng
+            createCelebrationEffect(e);
+        }
+        
+        function createRippleEffect(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'click-effect';
+            ripple.style.left = `${e.clientX - 50}px`;
+            ripple.style.top = `${e.clientY - 50}px`;
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 1000);
+        }
+        
+        function createShakeEffect() {
+            const card = document.getElementById('birthdayCard');
+            card.style.animation = 'shake 0.5s ease-in-out';
+            
+            // Xóa animation sau khi kết thúc
+            setTimeout(() => {
+                card.style.animation = '';
+            }, 500);
+        }
+        
+        function createCelebrationEffect(e) {
+            // Tạo thông điệp chúc mừng
+            const message = document.createElement('div');
+            message.textContent = '🎉 CHÚC MỪNG! 🎉';
+            message.setAttribute('aria-hidden', 'true');
+            
+            message.style.cssText = `
+                position: fixed;
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                transform: translate(-50%, -50%);
+                font-size: ${window.innerWidth < 480 ? '1.2rem' : '1.8rem'};
+                font-weight: 700;
+                color: #FFD700;
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+                background: rgba(0, 0, 0, 0.7);
+                padding: 10px 20px;
+                border-radius: 15px;
+                border: 2px solid #FFD700;
+                z-index: 1000;
+                pointer-events: none;
+                opacity: 0;
+                animation: fadeFloat 1.5s ease-in-out forwards;
+                backdrop-filter: blur(5px);
+            `;
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 1500);
+        }
+        
+        // === NOTIFICATION SYSTEM ===
+        function showNotification(message, type = 'info') {
             // Kiểm tra nếu đã có thông báo thì xóa
             const existingNotification = document.querySelector('.notification');
             if (existingNotification) {
@@ -736,263 +1235,164 @@
             
             const notification = document.createElement('div');
             notification.className = 'notification';
+            notification.setAttribute('role', 'alert');
+            notification.setAttribute('aria-live', 'polite');
+            
+            const bgColor = type === 'success' 
+                ? 'rgba(0, 212, 255, 0.9)' 
+                : type === 'error' 
+                ? 'rgba(255, 0, 0, 0.9)' 
+                : 'rgba(255, 255, 255, 0.9)';
+            
+            const textColor = type === 'error' ? 'white' : 'black';
+            
             notification.style.cssText = `
                 position: fixed;
-                bottom: 30px;
+                bottom: ${window.innerWidth < 480 ? '20px' : '30px'};
                 left: 50%;
                 transform: translateX(-50%);
-                background: ${type === 'success' ? 'rgba(0, 212, 255, 0.9)' : 'rgba(255, 0, 0, 0.9)'};
-                color: white;
-                padding: 12px 25px;
+                background: ${bgColor};
+                color: ${textColor};
+                padding: ${window.innerWidth < 480 ? '10px 20px' : '12px 25px'};
                 border-radius: 50px;
                 font-weight: 600;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
                 z-index: 10000;
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 animation: slideUp 0.3s ease-out;
                 font-family: 'Be Vietnam Pro', sans-serif;
+                text-align: center;
+                max-width: 90vw;
+                width: auto;
+                white-space: nowrap;
             `;
             
             notification.textContent = message;
             document.body.appendChild(notification);
             
-            setTimeout(() => {
-                notification.style.animation = 'slideDown 0.3s ease-out';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-            
-            // Thêm keyframes cho animation nếu chưa có
+            // Thêm animation styles nếu chưa có
             if (!document.getElementById('notification-styles')) {
                 const style = document.createElement('style');
                 style.id = 'notification-styles';
                 style.textContent = `
-                    @keyframes slideUp {
-                        from { bottom: -100px; opacity: 0; }
-                        to { bottom: 30px; opacity: 1; }
+                    @keyframes fadeFloat {
+                        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+                        20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+                        40% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                        80% { opacity: 1; transform: translate(-50%, calc(-50% - 50px)) scale(1); }
+                        100% { opacity: 0; transform: translate(-50%, calc(-50% - 80px)) scale(0.8); }
                     }
-                    @keyframes slideDown {
-                        from { bottom: 30px; opacity: 1; }
-                        to { bottom: -100px; opacity: 0; }
+                    
+                    @keyframes shake {
+                        0%, 100% { transform: translateX(0); }
+                        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                        20%, 40%, 60%, 80% { transform: translateX(5px); }
                     }
                 `;
                 document.head.appendChild(style);
             }
-        }
-        
-// Hiệu ứng khi click vào card
-document.getElementById('birthdayCard').addEventListener('click', function(e) {
-    // Kiểm tra không phải click vào nút hoặc link
-    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || 
-        e.target.closest('button') || e.target.closest('a')) {
-        return;
-    }
-    
-    // Lấy tọa độ click
-    const x = e.clientX;
-    const y = e.clientY;
-    
-    // HIỆU ỨNG 1: RUNG CHẤN (SHAKE)
-    this.style.animation = 'shake 0.5s ease-in-out';
-    
-    // Tạo animation cho shake nếu chưa có
-    if (!document.getElementById('shake-animation')) {
-        const style = document.createElement('style');
-        style.id = 'shake-animation';
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    // HIỆU ỨNG 2: HIỂN THỊ LỜI CHÚC MỪNG TẠI VỊ TRÍ CHUỘT
-    const message = document.createElement('div');
-    message.textContent = '🎉 CHÚC MỪNG ANH ĐIỀN! 🎉';
-    message.style.cssText = `
-        position: fixed;
-        left: ${x}px;
-        top: ${y}px;
-        transform: translate(-50%, -50%);
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #FFD700;
-        text-shadow: 
-            0 0 10px rgba(255, 215, 0, 0.8),
-            0 0 20px rgba(255, 215, 0, 0.6),
-            0 0 30px rgba(255, 215, 0, 0.4);
-        background: rgba(0, 0, 0, 0.7);
-        padding: 10px 20px;
-        border-radius: 15px;
-        border: 2px solid #FFD700;
-        z-index: 1000;
-        pointer-events: none;
-        opacity: 0;
-        animation: 
-            fadeInOut 1.5s ease-in-out forwards,
-            floatUp 1.5s ease-in-out forwards;
-        white-space: nowrap;
-        backdrop-filter: blur(5px);
-    `;
-    
-    document.body.appendChild(message);
-    
-    // Thêm animations cho message
-    if (!document.getElementById('message-animations')) {
-        const style = document.createElement('style');
-        style.id = 'message-animations';
-        style.textContent = `
-            @keyframes fadeInOut {
-                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-                20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-                40% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-                80% { opacity: 1; transform: translate(-50%, -150%) scale(1); }
-                100% { opacity: 0; transform: translate(-50%, -180%) scale(0.8); }
-            }
             
-            @keyframes floatUp {
-                0% { top: ${y}px; }
-                100% { top: ${y - 100}px; }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    // Xóa message sau khi animation
-    setTimeout(() => {
-        if (message.parentNode) {
-            message.remove();
-        }
-    }, 1500);
-    
-    // HIỆU ỨNG 3: TUNG HOA SAU 0.5 GIÂY
-    setTimeout(() => {
-        // Dừng hiệu ứng rung
-        this.style.animation = '';
-        
-        // TUNG HOA TỪ VỊ TRÍ CLICK
-        const flowerContainer = document.createElement('div');
-        flowerContainer.style.cssText = `
-            position: fixed;
-            top: ${y}px;
-            left: ${x}px;
-            width: 0;
-            height: 0;
-            pointer-events: none;
-            z-index: 999;
-        `;
-        document.body.appendChild(flowerContainer);
-        
-        // Tạo các bông hoa rơi từ vị trí click
-        const flowerCount = 30;
-        const flowerTypes = ['🌸', '🌺', '🌼', '🌷', '🌹', '💐', '🌻', '🥀', '💮', '🏵️'];
-        
-        for (let i = 0; i < flowerCount; i++) {
-            const flower = document.createElement('div');
-            flower.style.cssText = `
-                position: absolute;
-                font-size: ${Math.random() * 25 + 20}px;
-                top: 0;
-                left: 0;
-                opacity: 0;
-                animation: 
-                    flowerExplode 0.5s ease-out forwards,
-                    flowerFall ${Math.random() * 2 + 1.5}s ease-in ${0.5 + Math.random() * 0.3}s forwards;
-                z-index: 999;
-            `;
-            
-            // Chọn ngẫu nhiên loại hoa
-            flower.textContent = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
-            
-            // Màu sắc ngẫu nhiên
-            const colors = [
-                '#FF69B4', '#FF1493', '#FF4500', '#FF6347', 
-                '#32CD32', '#1E90FF', '#9370DB', '#FFD700',
-                '#FF00FF', '#00FF00', '#00FFFF', '#FFA500'
-            ];
-            flower.style.color = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Thêm hiệu ứng xoay
-            flower.style.transform = `rotate(${Math.random() * 360}deg)`;
-            
-            flowerContainer.appendChild(flower);
-        }
-        
-        // Thêm animation cho hoa
-        if (!document.getElementById('flower-animations')) {
-            const flowerStyle = document.createElement('style');
-            flowerStyle.id = 'flower-animations';
-            flowerStyle.textContent = `
-                @keyframes flowerExplode {
-                    0% {
-                        opacity: 0;
-                        transform: translate(0, 0) scale(0) rotate(0deg);
+            // Tự động xóa sau 3 giây
+            setTimeout(() => {
+                notification.style.animation = 'slideDown 0.3s ease-out';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
                     }
-                    100% {
-                        opacity: 1;
-                        transform: 
-                            translate(
-                                ${Math.random() > 0.5 ? '-' : ''}${Math.random() * 150}px, 
-                                ${Math.random() > 0.5 ? '-' : ''}${Math.random() * 100}px
-                            ) 
-                            scale(1) 
-                            rotate(${Math.random() * 360}deg);
+                }, 300);
+            }, 3000);
+        }
+        
+        // === LOADING INDICATOR ===
+        function showLoading(show) {
+            let loader = document.querySelector('.loading');
+            
+            if (show) {
+                if (!loader) {
+                    loader = document.createElement('div');
+                    loader.className = 'loading';
+                    loader.setAttribute('role', 'status');
+                    loader.setAttribute('aria-label', 'Đang xử lý');
+                    
+                    const spinner = document.createElement('div');
+                    spinner.className = 'loading-spinner';
+                    spinner.setAttribute('aria-hidden', 'true');
+                    
+                    loader.appendChild(spinner);
+                    document.body.appendChild(loader);
+                }
+            } else {
+                if (loader) {
+                    loader.remove();
+                }
+            }
+        }
+        
+        // === KEYBOARD NAVIGATION ===
+        function handleKeyboardNavigation(e) {
+            // Space hoặc Enter trên nút
+            if ((e.key === ' ' || e.key === 'Enter') && 
+                (e.target.classList.contains('tool-btn') || e.target.closest('.tool-btn'))) {
+                e.preventDefault();
+                e.target.click();
+            }
+            
+            // Escape để đóng notification
+            if (e.key === 'Escape') {
+                const notification = document.querySelector('.notification');
+                if (notification) {
+                    notification.remove();
+                }
+            }
+        }
+        
+        // === MOBILE OPTIMIZATION ===
+        function optimizeForMobile() {
+            // Giảm số lượng hạt trên mobile
+            if (window.innerWidth < 768) {
+                const particles = document.querySelectorAll('.particle');
+                if (particles.length > 20) {
+                    for (let i = 20; i < particles.length; i++) {
+                        particles[i].remove();
                     }
                 }
+            }
+            
+            // Tối ưu cho touch devices
+            if ('ontouchstart' in window) {
+                document.body.classList.add('touch-device');
                 
-                @keyframes flowerFall {
-                    0% {
-                        opacity: 1;
-                        transform: 
-                            translate(var(--start-x), var(--start-y)) 
-                            rotate(var(--start-rotate));
-                    }
-                    100% {
-                        opacity: 0;
-                        transform: 
-                            translate(
-                                calc(var(--start-x) + ${Math.random() > 0.5 ? '-' : ''}${Math.random() * 200}px), 
-                                calc(var(--start-y) + 100vh)
-                            ) 
-                            rotate(calc(var(--start-rotate) + ${Math.random() * 720}deg));
-                    }
-                }
-            `;
-            document.head.appendChild(flowerStyle);
+                // Tăng kích thước tap target cho mobile
+                const buttons = document.querySelectorAll('.tool-btn, .signature-name');
+                buttons.forEach(btn => {
+                    btn.style.minHeight = '44px';
+                });
+            }
+            
+            // Lazy load images
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const image = entry.target;
+                            image.src = image.dataset.src || image.src;
+                            imageObserver.unobserve(image);
+                        }
+                    });
+                });
+                
+                images.forEach(img => imageObserver.observe(img));
+            }
         }
         
-        // Thiết lập biến CSS cho mỗi bông hoa
-        setTimeout(() => {
-            const flowers = flowerContainer.querySelectorAll('div');
-            flowers.forEach(flower => {
-                const startX = Math.random() > 0.5 ? '-' : '';
-                const startY = Math.random() > 0.5 ? '-' : '';
-                const xValue = Math.random() * 150;
-                const yValue = Math.random() * 100;
-                const rotateValue = Math.random() * 360;
-                
-                flower.style.setProperty('--start-x', `${startX}${xValue}px`);
-                flower.style.setProperty('--start-y', `${startY}${yValue}px`);
-                flower.style.setProperty('--start-rotate', `${rotateValue}deg`);
-            });
-        }, 10);
-        
-        // Xóa container hoa sau khi animation kết thúc
-        setTimeout(() => {
-            if (flowerContainer.parentNode) {
-                flowerContainer.remove();
-            }
-        }, 3000);
-        
-    }, 500); // Sau 0.5 giây
-});
+        // === RESIZE HANDLER ===
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(optimizeForMobile, 250);
+        });
     </script>
 </body>
 </html>
