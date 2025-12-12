@@ -1258,6 +1258,7 @@
             
             if (resizeOption === '0') {
                 sizeInputGroup.style.display = 'none';
+                resizeShort = 'Original';
             } else {
                 sizeInputGroup.style.display = 'block';
                 if (resizeOption === '1') {
@@ -1653,7 +1654,7 @@
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
-                        
+                        resizeShort = 'Original';
                         let { width, height } = img;
                         
                         // Apply resize
