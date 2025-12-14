@@ -217,13 +217,38 @@
             box-shadow: 0 0 0 3px rgba(63, 130, 251, 0.1);
         }
 
+        /* FIX DROPDOWN */
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
-            padding-right: 2.5rem;
+            background: var(--card-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 1rem center !important;
+            background-size: 16px !important;
+            padding-right: 2.5rem !important;
+        }
+
+        select.form-control option {
+            background: var(--card-bg) !important;
+            color: var(--text-color) !important;
+        }
+
+        select.form-control:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        select.form-control:focus {
+            outline: none;
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 0 3px rgba(63, 130, 251, 0.1) !important;
         }
 
         /* Buttons */
@@ -302,13 +327,14 @@
             margin-top: 0.5rem;
         }
 
-        /* Gantt Container */
+        /* Gantt Container - FIX WIDTH */
         .gantt-container {
             background: var(--card-bg);
             padding: 0;
             overflow: hidden;
             position: relative;
             min-height: calc(100vh - 120px);
+            width: 100%;
         }
 
         .gantt-header {
@@ -318,6 +344,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .gantt-title {
@@ -332,11 +360,19 @@
             flex-wrap: wrap;
         }
 
+        /* GANTT AREA - FIXED FOR FIT TO SCREEN */
         #gantt_here {
-            width: 100%;
+            width: 100% !important;
             height: calc(100vh - 200px);
             min-height: 500px;
             background: var(--card-bg);
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        /* Đảm bảo Gantt chart sử dụng toàn bộ width */
+        .gantt_grid, .gantt_task {
+            min-width: 100%;
         }
 
         /* Data Table */
@@ -653,7 +689,7 @@
             bottom: calc(100% + 5px);
         }
 
-        /* Gantt Custom Styling - THÊM RESIZE HANDLE */
+        /* Gantt Custom Styling */
         .gantt_grid_head_cell {
             background: rgba(0, 0, 0, 0.3) !important;
             border-right: 1px solid var(--border-color) !important;
@@ -771,6 +807,9 @@
             </div>
         </div>
         <div class="header-controls">
+            <button class="btn btn-secondary" onclick="autoFitTimeline()" data-tooltip="Fit toàn bộ timeline vào màn hình">
+                <i class="fas fa-compress-arrows-alt"></i> Fit View
+            </button>
             <button class="btn btn-primary" onclick="downloadChart('png')" data-tooltip="Xuất biểu đồ dạng ảnh PNG">
                 <i class="fas fa-image"></i> Xuất PNG
             </button>
@@ -837,6 +876,7 @@
                             <option value="week">Theo tuần</option>
                             <option value="month" selected>Theo tháng</option>
                             <option value="quarter">Theo quý</option>
+                            <option value="year">Theo năm</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -927,6 +967,7 @@
                         <li><strong>Task con:</strong> Parent ID = ID của task cha</li>
                         <li><strong>Thay đổi cột:</strong> Kéo đường viền bên phải tiêu đề cột để resize</li>
                         <li><strong>Di chuyển task:</strong> Kéo task để thay đổi timeline</li>
+                        <li><strong>Fit view:</strong> Nhấn nút "Fit View" để hiển thị toàn bộ timeline</li>
                     </ul>
                 </div>
             </aside>
@@ -944,8 +985,8 @@
                         <button class="btn btn-secondary" onclick="gantt.zoomOut()" data-tooltip="Thu nhỏ">
                             <i class="fas fa-search-minus"></i>
                         </button>
-                        <button class="btn btn-secondary" onclick="gantt.fit()" data-tooltip="Vừa màn hình">
-                            <i class="fas fa-expand-arrows-alt"></i>
+                        <button class="btn btn-secondary" onclick="autoFitTimeline()" data-tooltip="Fit toàn bộ timeline">
+                            <i class="fas fa-compress-arrows-alt"></i> Fit
                         </button>
                         <button class="btn btn-primary" onclick="showTaskModal()" data-tooltip="Thêm công việc mới">
                             <i class="fas fa-plus-circle"></i> Thêm công việc
@@ -1069,6 +1110,7 @@
         gantt.config.drag_move = true;
         gantt.config.drag_resize = true;
         gantt.config.grid_resize = true;
+        gantt.config.autoschedule = true;
         
         // Cấu hình columns với resize
         gantt.config.columns = [
@@ -1330,7 +1372,17 @@
                 loadColumnWidths();
                 initializeColumnResize();
                 gantt.render();
+                autoFitTimeline(); // Auto fit khi load xong
             }, 100);
+            
+            // Tự động fit khi resize window
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    autoFitTimeline();
+                }, 250);
+            });
         });
 
         // ========== XỬ LÝ FILE ==========
@@ -1420,12 +1472,16 @@
                         const cells = row.split(',').map(c => c.trim());
                         
                         if (cells.length >= 5) {
+                            // FIX: Parse dates đúng cách
+                            const startDateStr = parseDateFromExcel(cells[3]);
+                            const endDateStr = parseDateFromExcel(cells[4]);
+                            
                             const task = {
                                 id: parseInt(cells[0]) || i,
                                 parent: parseInt(cells[1]) || 0,
                                 text: cells[2] || `Task ${i}`,
-                                start_date: parseDateFromExcel(cells[3]),
-                                end_date: parseDateFromExcel(cells[4]),
+                                start_date: startDateStr, // Đảm bảo là string
+                                end_date: endDateStr,     // Đảm bảo là string
                                 progress: parseFloat(cells[5]) || 0,
                                 owner: cells[6] || '',
                                 dependencies: cells[7] || ''
@@ -1457,12 +1513,28 @@
                         const row = jsonData[i];
                         if (!row || row.length === 0) continue;
                         
+                        // FIX: Parse dates từ Excel đúng cách
+                        let startDateStr = '';
+                        let endDateStr = '';
+                        
+                        if (row[3] instanceof Date) {
+                            startDateStr = row[3].toISOString().split('T')[0];
+                        } else {
+                            startDateStr = parseDateFromExcel(row[3]);
+                        }
+                        
+                        if (row[4] instanceof Date) {
+                            endDateStr = row[4].toISOString().split('T')[0];
+                        } else {
+                            endDateStr = parseDateFromExcel(row[4]);
+                        }
+                        
                         const task = {
                             id: parseInt(row[0]) || i,
                             parent: parseInt(row[1]) || 0,
                             text: row[2] || `Task ${i}`,
-                            start_date: parseDateFromExcel(row[3]),
-                            end_date: parseDateFromExcel(row[4]),
+                            start_date: startDateStr, // Đảm bảo là string
+                            end_date: endDateStr,     // Đảm bảo là string
                             progress: parseFloat(row[5]) || 0,
                             owner: row[6] || '',
                             dependencies: row[7] || ''
@@ -1486,7 +1558,6 @@
             
             return tasks;
         }
-
         function parseDateFromExcel(value) {
             if (!value) return null;
             
@@ -1539,49 +1610,60 @@
             return null;
         }
 
-        function loadTasks(tasks) {
-            const ganttData = {data: [], links: []};
-            let linkCounter = 1;
-            
-            tasks.forEach((task) => {
-                const ganttTask = {
-                    id: task.id,
-                    text: task.text,
-                    start_date: task.start_date || new Date().toISOString().split('T')[0],
-                    duration: task.duration || 7,
-                    progress: task.progress || 0,
-                    parent: task.parent || 0,
-                    open: task.parent === 0,
-                    owner: task.owner || '',
-                    dependencies: task.dependencies || ''
-                };
-                
-                ganttData.data.push(ganttTask);
-                
-                if (task.dependencies) {
-                    const deps = task.dependencies.toString().split(/[,;]/).map(d => d.trim()).filter(d => d && !isNaN(d));
-                    deps.forEach(depId => {
-                        if (depId && !isNaN(depId)) {
-                            ganttData.links.push({
-                                id: linkCounter++,
-                                source: parseInt(depId),
-                                target: task.id,
-                                type: "0"
-                            });
-                        }
+function loadTasks(tasks) {
+    const ganttData = {data: [], links: []};
+    let linkCounter = 1;
+    
+    tasks.forEach((task) => {
+        // FIX: Đảm bảo start_date là string
+        let startDate = task.start_date;
+        if (startDate instanceof Date) {
+            startDate = startDate.toISOString().split('T')[0];
+        }
+        
+        const ganttTask = {
+            id: task.id,
+            text: task.text,
+            start_date: startDate, // Đảm bảo là string
+            duration: task.duration || 7,
+            progress: task.progress || 0,
+            parent: task.parent || 0,
+            open: task.parent === 0,
+            owner: task.owner || '',
+            dependencies: task.dependencies || ''
+        };
+        
+        ganttData.data.push(ganttTask);
+        
+        if (task.dependencies) {
+            const deps = task.dependencies.toString().split(/[,;]/).map(d => d.trim()).filter(d => d && !isNaN(d));
+            deps.forEach(depId => {
+                if (depId && !isNaN(depId)) {
+                    ganttData.links.push({
+                        id: linkCounter++,
+                        source: parseInt(depId),
+                        target: task.id,
+                        type: "0"
                     });
                 }
             });
-            
-            gantt.clearAll();
-            gantt.parse(ganttData);
-            updateAllTasks();
-            updateStatistics();
-            updateDataTable();
-            updateParentDropdown();
-            initializeColumnResize();
         }
-
+    });
+    
+    gantt.clearAll();
+    gantt.parse(ganttData);
+    
+    // Auto fit sau khi load
+    setTimeout(() => {
+        autoFitTimeline();
+    }, 100);
+    
+    updateAllTasks();
+    updateStatistics();
+    updateDataTable();
+    updateParentDropdown();
+    initializeColumnResize();
+}
         // ========== TẢI MẪU EXCEL VỚI SUBTASKS ==========
         function downloadSampleExcel() {
             const sampleData = [
@@ -1617,6 +1699,129 @@
             document.getElementById('parentTask').value = parentId;
         }
 
+        // ========== FIXED: FIT TO SCREEN FUNCTION ==========
+        function autoFitTimeline() {
+            try {
+                // 1. Tính toán khoảng thời gian của tất cả tasks
+                let minDate = null;
+                let maxDate = null;
+                
+                gantt.eachTask(function(task) {
+                    if (!task.start_date) return;
+                    
+                    // FIX: Kiểm tra và chuyển đổi start_date đúng cách
+                    let start;
+                    if (task.start_date instanceof Date) {
+                        start = task.start_date;
+                    } else if (typeof task.start_date === 'string') {
+                        start = gantt.date.str_to_date(task.start_date);
+                    } else {
+                        // Nếu không phải string cũng không phải Date, bỏ qua
+                        return;
+                    }
+                    
+                    // FIX: Tính end date đúng cách
+                    let end;
+                    if (task.end_date) {
+                        if (task.end_date instanceof Date) {
+                            end = task.end_date;
+                        } else if (typeof task.end_date === 'string') {
+                            end = gantt.date.str_to_date(task.end_date);
+                        } else {
+                            end = gantt.calculateEndDate(task.start_date, task.duration);
+                        }
+                    } else {
+                        end = gantt.calculateEndDate(task.start_date, task.duration);
+                    }
+                    
+                    if (!minDate || start < minDate) minDate = start;
+                    if (!maxDate || end > maxDate) maxDate = end;
+                });
+                
+                // 2. Nếu không có tasks, dùng ngày mặc định
+                if (!minDate || !maxDate) {
+                    minDate = new Date();
+                    maxDate = new Date();
+                    maxDate.setMonth(maxDate.getMonth() + 3);
+                }
+                
+                // 3. Thêm padding
+                const totalDuration = maxDate - minDate;
+                const padding = totalDuration * 0.1; // 10% padding mỗi bên
+                
+                const startDate = new Date(minDate.getTime() - padding);
+                const endDate = new Date(maxDate.getTime() + padding);
+                
+                // 4. Tính toán scale phù hợp với chiều rộng màn hình
+                const containerWidth = document.getElementById('gantt_here').offsetWidth - gantt.config.grid_width;
+                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                
+                let scaleUnit = "month";
+                let scaleStep = 1;
+                let minColumnWidth = 40;
+                
+                // Điều chỉnh scale dựa trên số ngày
+                if (daysDiff > 730) { // > 2 năm
+                    scaleUnit = "year";
+                    scaleStep = Math.max(1, Math.ceil(daysDiff / 365 / 12));
+                    minColumnWidth = 60;
+                } else if (daysDiff > 180) { // > 6 tháng
+                    scaleUnit = "month";
+                    scaleStep = Math.max(1, Math.ceil(daysDiff / 30 / 8));
+                    minColumnWidth = 50;
+                } else if (daysDiff > 60) { // > 2 tháng
+                    scaleUnit = "week";
+                    scaleStep = 1;
+                    minColumnWidth = 40;
+                } else if (daysDiff > 14) { // > 2 tuần
+                    scaleUnit = "day";
+                    scaleStep = 7; // Hiển thị theo tuần
+                    minColumnWidth = 30;
+                } else {
+                    scaleUnit = "day";
+                    scaleStep = 1;
+                    minColumnWidth = 25;
+                }
+                
+                // 5. Cập nhật cấu hình Gantt
+                gantt.config.scale_unit = scaleUnit;
+                gantt.config.step = scaleStep;
+                gantt.config.min_column_width = minColumnWidth;
+                
+                // 6. Cập nhật subscales
+                if (scaleUnit === "year") {
+                    gantt.config.subscales = [
+                        {unit: "month", step: 1, date: "%F"}
+                    ];
+                } else if (scaleUnit === "month") {
+                    gantt.config.subscales = [
+                        {unit: "week", step: 1, date: "Tuần #%W"}
+                    ];
+                } else if (scaleUnit === "week") {
+                    gantt.config.subscales = [
+                        {unit: "day", step: 1, date: "%d"}
+                    ];
+                } else {
+                    gantt.config.subscales = [];
+                }
+                
+                // 7. Cập nhật dropdown để match
+                document.getElementById('scaleSelect').value = scaleUnit;
+                
+                // 8. Hiển thị toàn bộ khoảng thời gian
+                gantt.showDate(startDate, endDate);
+                
+                // 9. Force render
+                setTimeout(() => {
+                    gantt.render();
+                    showNotification('Đã fit timeline vào màn hình!', 'success');
+                }, 50);
+                
+            } catch (error) {
+                console.error('Error fitting timeline:', error);
+                showNotification('Không thể fit timeline!', 'error');
+            }
+        }
         // ========== ĐIỀU KHIỂN BIỂU ĐỒ ==========
         function updateScale() {
             const scale = document.getElementById('scaleSelect').value;
@@ -1626,28 +1831,50 @@
                 case 'day':
                     gantt.config.step = 1;
                     gantt.config.subscales = [];
+                    gantt.config.min_column_width = 30;
+                    gantt.config.scale_height = 50;
                     break;
                 case 'week':
                     gantt.config.step = 1;
                     gantt.config.subscales = [
-                        {unit: "day", step: 1, date: "%d %M"}
+                        {unit: "day", step: 1, date: "%d"}
                     ];
+                    gantt.config.min_column_width = 40;
+                    gantt.config.scale_height = 60;
                     break;
                 case 'month':
                     gantt.config.step = 1;
                     gantt.config.subscales = [
-                        {unit: "week", step: 1, date: "Week #%W"}
+                        {unit: "week", step: 1, date: "Tuần #%W"}
                     ];
+                    gantt.config.min_column_width = 50;
+                    gantt.config.scale_height = 70;
                     break;
                 case 'quarter':
                     gantt.config.step = 1;
                     gantt.config.subscales = [
                         {unit: "month", step: 1, date: "%F"}
                     ];
+                    gantt.config.min_column_width = 60;
+                    gantt.config.scale_height = 80;
+                    break;
+                case 'year':
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [
+                        {unit: "month", step: 1, date: "%F"}
+                    ];
+                    gantt.config.min_column_width = 70;
+                    gantt.config.scale_height = 80;
                     break;
             }
             
+            gantt.config.subscale_height = 25;
             gantt.render();
+            
+            // Auto fit sau khi thay đổi scale
+            setTimeout(() => {
+                autoFitTimeline();
+            }, 100);
         }
 
         function updateZoom(level) {
@@ -1820,6 +2047,12 @@
             updateStatistics();
             updateDataTable();
             updateParentDropdown();
+            
+            // Auto fit sau khi thêm/sửa task
+            setTimeout(() => {
+                autoFitTimeline();
+            }, 100);
+            
             showNotification('Đã lưu công việc!', 'success');
         }
 
@@ -1966,6 +2199,12 @@
             if (templateName && templates[templateName]) {
                 gantt.clearAll();
                 gantt.parse(templates[templateName]);
+                
+                // Auto fit sau khi load template
+                setTimeout(() => {
+                    autoFitTimeline();
+                }, 100);
+                
                 updateAllTasks();
                 updateStatistics();
                 updateDataTable();
@@ -2038,6 +2277,12 @@
                 updateDataTable();
                 updateParentDropdown();
                 initializeColumnResize();
+                
+                // Auto fit sau khi reset
+                setTimeout(() => {
+                    autoFitTimeline();
+                }, 100);
+                
                 showNotification('Đã đặt lại tất cả dữ liệu!', 'success');
             }
         }

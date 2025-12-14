@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+    <title>BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU - LAZINET</title>
+    <meta name="description" content="LAZINET GASV1.0_R20251213: Giải pháp tự động hoá điền dữ liệu, xuất tài liệu (Docs, PDF) hàng loạt, chính xác, tăng hiệu suất cho doanh nghiệp.">
+    <meta name="keywords" content="tự động hoá tài liệu, tạo hợp đồng hàng loạt, phát hành chứng thư tự động, điền dữ liệu hàng loạt, document automation, LAZINET GAS">
+
+    <meta name="author" content="LAZINET - Công Ty Công Nghệ Hàng Đầu Việt Nam">
+    <meta name="publisher" content="LAZINET Technologies">
+    <meta name="copyright" content="LAZINET © 2024">
+    <meta name="designer" content="LAZINET Design Team">
+    <meta name="reply-to" content="email@lazinet.com">
+
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+    <link rel="canonical" href="https://lazinet.com/document-automation.html">
+    <link rel="alternate" hreflang="vi-VN" href="https://lazinet.com/document-automation.html">
+    <link rel="alternate" hreflang="x-default" href="https://lazinet.com/document-automation.html">
+
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/logo-lazinet/lazinet_LogoOnly-180x180.png">
+    <link rel="mask-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.svg" color="#0052FF">
+
+    <meta property="og:title" content="BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU - LAZINET">
+    <meta property="og:description" content="Giải pháp điền dữ liệu tự động, xuất Docs/PDF hàng loạt, tăng tốc nghiệp vụ.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lazinet.com/document-automation.html">
+    <meta property="og:image" content="https://lazinet.com/assets/img/social/doc-automation-og-1200x630.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU - LAZINET">
+    <meta name="twitter:description" content="Giải pháp điền dữ liệu tự động, xuất Docs/PDF hàng loạt, tăng tốc nghiệp vụ.">
+    <meta name="twitter:image" content="https://lazinet.com/assets/img/social/doc-automation-twitter-1200x600.jpg">
+
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="../assets/css/all.min.css" media="screen">
+    <link rel="stylesheet" href="../assets/css/custom.css" media="screen">
+    <link rel="stylesheet" href="../assets/css/lazinet.css">
+
+    <style>
+        /* Global Variables from custom.css */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --orange-light: #FFbbbb;
+            --blue-main: blue;
+            --blue-light: #ccccff;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --black-color: #000000;
+            --divider-color: #FFFFFF1A;
+            --default-font: "Instrument Sans", "Geist", "Inter", system-ui, sans-serif;
+        }
+
+        /* General Styles adapted from qr.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--default-font);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Căn trên cùng */
+            padding: 20px 20px 50px 20px; /* Thêm padding dưới */
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            /* Tăng độ rộng tối đa cho ảnh lớn */
+            max-width: 1600px; 
+            border: 1px solid var(--divider-color);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin: 20px 0 10px 0;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        /* Loại bỏ bố cục 2 cột cũ, cho phép nội dung chiếm toàn bộ chiều rộng */
+        .main-content {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        /* Thêm style cho phần nội dung giới thiệu */
+        .intro-section {
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--divider-color);
+            text-align: center;
+        }
+
+        .intro-section p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-top: 15px;
+        }
+        
+        .screenshot-area {
+            width: 100%;
+            margin: 30px 0;
+            padding: 10px;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            border: 1px solid var(--divider-color);
+            text-align: center;
+        }
+        
+        .screenshot-area img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            /* Đảm bảo ảnh chiếm tối đa chiều rộng của container */
+            width: 100%; 
+        }
+
+        /* =============================== */
+        /* QUICK SOLUTIONS - RESPONSIVE 6 CỘT */
+        /* =============================== */
+
+        .quick-solutions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .quick-solutions .solution-btn {
+            position: relative;
+            padding: 15px 15px;
+            background: linear-gradient(135deg, var(--accent-secondary-color), var(--accent-color));
+            color: var(--white-color);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 15px;
+            font-weight: 600;
+            flex: 1 0 auto;
+            min-width: 140px;
+            max-width: 200px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            z-index: 1;
+        }
+
+        .quick-solutions .solution-btn:hover {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary-color));
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        .quick-solutions .solution-btn .solution-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .quick-solutions .solution-btn .solution-text {
+            font-size: 14px;
+            line-height: 1.3;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Tooltip style giữ nguyên - Chỉ thay màu cam (orange-main) */
+        .solution-tooltip-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--orange-main); /* Màu overlay khi hover */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 2;
+            border-radius: 12px;
+        }
+        
+        .quick-solutions .solution-btn:hover .solution-tooltip-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .solution-tooltip-content {
+            color: var(--white-color);
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s ease 0.1s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+        }
+        
+        .solution-tooltip-content h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white-color);
+        }
+        
+        .solution-tooltip-content p {
+            font-size: 11px;
+            line-height: 1.4;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+
+        /* =============================== */
+        /* RESPONSIVE DESIGN - ĐIỀU CHỈNH 6 CỘT */
+        /* =============================== */
+
+        /* Desktop Extra Extra Large: 6 columns */
+        @media (min-width: 1400px) {
+            .quick-solutions .solution-btn {
+                flex-basis: calc(16.666% - 10px); /* 6 cột */
+                max-width: calc(16.666% - 10px);
+            }
+        }
+
+        /* Desktop Extra Large: 4 columns (Giữ nguyên) */
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            .quick-solutions .solution-btn {
+                flex-basis: calc(25% - 12px);
+                max-width: calc(25% - 12px);
+            }
+        }
+
+        /* Desktop: 3 columns (Giữ nguyên) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .quick-solutions .solution-btn {
+                flex-basis: calc(33.333% - 10px);
+                max-width: calc(33.333% - 10px);
+            }
+        }
+
+        /* Tablet: 2 columns (Giữ nguyên) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .quick-solutions .solution-btn {
+                flex-basis: calc(50% - 8px);
+                max-width: calc(50% - 8px);
+            }
+        }
+
+        /* Mobile Portrait: 1 column (Giữ nguyên) */
+        @media (max-width: 576px) {
+            .quick-solutions .solution-btn {
+                flex-basis: 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* Tối ưu hóa cho màn hình nhỏ */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .subtitle {
+                font-size: 1em;
+            }
+            .intro-section {
+                padding: 10px 0;
+            }
+            .intro-section p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="lazinet-contact-bar">
+        <div class="lazinet-contact-btn zalo" title="Chat với LAZINET Zalo 0908556220">
+            <img src="../assets/img/others/zalo.png" alt="Zalo">
+            <span class="lazinet-contact-label">Zalo Chat</span>
+        </div>
+        <div class="lazinet-contact-btn phone" title="Gọi ngay LAZINET 0908556220">
+            <img src="../assets/img/others/call.png" alt="Phone">
+            <span class="lazinet-contact-label">Gọi điện</span>
+        </div>
+    </div>
+    <div class="container">
+        <a href="../lazinet-support-pricing.html" style="text-decoration: none;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="height: 100px; padding-bottom: 20px;">
+            </div>
+        </a>
+        
+        <h1>BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU</h1>
+        <p class="subtitle">Phiên bản **LAZINET GASV1.0_R20251213** | Giải pháp đột phá cho việc phát hành tài liệu Docs/PDF hàng loạt, chính xác tuyệt đối.</p>
+
+        <div class="main-content">
+            <div class="intro-section">
+                <h2>Giới thiệu về Ứng dụng</h2>
+                <p>
+                    Ứng dụng chuyển đổi nạp dữ liệu tự động vào template Docs và xuất kết quả hàng loạt (format Docs, PDF) của LAZINET mang đến một quy trình làm việc không thể dễ dàng và hiệu quả hơn. Với khả năng tương thích cao và tốc độ xử lý vượt trội, công cụ này là giải pháp toàn diện để loại bỏ các thao tác thủ công, lặp lại trong công tác văn phòng, giúp doanh nghiệp tiết kiệm thời gian và tối ưu nguồn lực.
+                </p>
+                <p style="font-style: italic; opacity: 0.7; margin-top: 10px;">
+                    Chính xác, tự động, tăng hiệu suất - Chìa khóa để chuyển đổi số nghiệp vụ tài liệu của bạn.
+                </p>
+            </div>
+            
+            <div class="screenshot-area">
+                <h3 style="margin-bottom: 15px;">Giao diện nhập liệu và quản lý Template (Hình Ảnh 1)</h3>
+                <img src="./assets/img/screenshots/screenshot_1_large.jpg" alt="Giao diện tổng quan ứng dụng tự động hoá dữ liệu">
+            </div>
+
+            <div class="screenshot-area">
+                <h3 style="margin-bottom: 15px;">Quy trình xuất Docs/PDF hàng loạt chỉ trong 3 bước (Hình Ảnh 2)</h3>
+                <img src="./assets/img/screenshots/screenshot_2_large.jpg" alt="Quy trình xuất tài liệu hàng loạt">
+            </div>
+            <div class="intro-section" style="border-top: 1px solid var(--divider-color); border-bottom: none;">
+                <h2>Các Tính Năng và Bộ Giải Pháp Chuyên Sâu</h2>
+            </div>
+        </div>
+        
+        <div class="quick-solutions">
+            
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Ứng dụng BIỂU MẪU ĐỘNG</h4>
+                            <p>Tạo và quản lý các biểu mẫu thông minh, tự động điều chỉnh nội dung theo logic điều kiện.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">📑</span> 
+                <span class="solution-text">Ứng dụng BIỂU MẪU ĐỘNG</span>
+            </a>
+
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Phát hành chứng thư hàng loạt</h4>
+                            <p>Tạo chứng thư, giấy chứng nhận, bằng cấp tự động từ danh sách dữ liệu đầu vào.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">📜</span> 
+                <span class="solution-text">Phát hành chứng thư hàng loạt</span>
+            </a>
+
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Soạn thảo hợp đồng hàng loạt</h4>
+                            <p>Tự động điền dữ liệu vào mẫu hợp đồng, cam kết, văn bản pháp lý số lượng lớn.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">✍️</span> 
+                <span class="solution-text">Soạn thảo hợp đồng hàng loạt</span>
+            </a>
+
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Tạo giấy khen, thẻ, biểu mẫu</h4>
+                            <p>Thiết kế và xuất hàng loạt giấy khen, thẻ thành viên, thiệp mời, hồ sơ cá nhân.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">🏆</span> 
+                <span class="solution-text">Tạo giấy khen, thẻ, biểu mẫu</span>
+            </a>
+            
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Tích hợp vào phần mềm tự động hoá</h4>
+                            <p>Kết nối liền mạch với các hệ thống ERP, CRM, hoặc các quy trình tự động hoá hiện có của bạn.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">🤖</span> 
+                <span class="solution-text">Tích hợp vào phần mềm tự động hoá</span>
+            </a>
+            
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Tuỳ chỉnh mẫu và locale linh hoạt</h4>
+                            <p>Dễ dàng điều chỉnh mẫu, ngôn ngữ và định dạng khu vực (locale) theo yêu cầu đặc thù.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">⚙️</span> 
+                <span class="solution-text">Tuỳ chỉnh mẫu và Locale</span>
+            </a>
+            
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Giữ nguyên định dạng mẫu</h4>
+                            <p>Đảm bảo kết quả đầu ra Docs/PDF giữ nguyên 100% định dạng và cấu trúc mẫu đã thiết kế.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">🎨</span> 
+                <span class="solution-text">Giữ nguyên định dạng mẫu</span>
+            </a>
+            
+            <a href="#contact" class="solution-btn">
+                <div class="solution-tooltip-container">
+                    <div class="solution-tooltip-overlay">
+                        <div class="solution-tooltip-content">
+                            <h4>Chính xác, tự động, tăng hiệu suất</h4>
+                            <p>Loại bỏ hoàn toàn lỗi thủ công, tăng tốc độ xử lý tài liệu lên gấp nhiều lần.</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="solution-icon">⚡</span> 
+                <span class="solution-text">Tăng hiệu suất & Độ chính xác</span>
+            </a>
+            
+        </div>
+        <footer style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--divider-color);">
+            <p style="font-size: 0.8em; opacity: 0.6;">
+                LAZINET Document Automation Toolset &copy; 
+                <script> 
+                    const startYear = 2024; 
+                    const currentYear = new Date().getFullYear(); 
+                    document.write(`${startYear}–${currentYear}`); 
+                </script>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Hàm để xử lý animation (giữ nguyên để giữ style chung)
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Thêm các script cần thiết cho các hiệu ứng của nút (nếu có, ở đây không cần nhiều)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Có thể thêm code khởi tạo animations cho các nút giải pháp nếu muốn
+        });
+    </script>
+</body>
+</html>
