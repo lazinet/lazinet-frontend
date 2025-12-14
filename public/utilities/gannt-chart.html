@@ -871,13 +871,15 @@
                     </div>
                     <div class="form-group">
                         <label for="scaleSelect">Thang thời gian:</label>
-                        <select id="scaleSelect" class="form-control" onchange="updateScale()">
-                            <option value="day">Theo ngày</option>
-                            <option value="week">Theo tuần</option>
-                            <option value="month" selected>Theo tháng</option>
-                            <option value="quarter">Theo quý</option>
-                            <option value="year">Theo năm</option>
-                        </select>
+                          <!-- Tìm dropdown scaleSelect và sửa thành: -->
+                          <select id="scaleSelect" class="form-control" onchange="updateScale()">
+                              <option value="">-- Auto fit --</option>
+                              <option value="day">Theo ngày</option>
+                              <option value="week">Theo tuần</option>
+                              <option value="month" selected>Theo tháng</option>
+                              <option value="quarter">Theo quý</option>
+                              <option value="year">Theo năm</option>
+                          </select>
                     </div>
                     <div class="form-group">
                         <label for="zoomLevel">Mức phóng to:</label>
@@ -1700,128 +1702,217 @@ function loadTasks(tasks) {
         }
 
         // ========== FIXED: FIT TO SCREEN FUNCTION ==========
-        function autoFitTimeline() {
-            try {
-                // 1. Tính toán khoảng thời gian của tất cả tasks
-                let minDate = null;
-                let maxDate = null;
-                
-                gantt.eachTask(function(task) {
-                    if (!task.start_date) return;
-                    
-                    // FIX: Kiểm tra và chuyển đổi start_date đúng cách
-                    let start;
-                    if (task.start_date instanceof Date) {
-                        start = task.start_date;
-                    } else if (typeof task.start_date === 'string') {
-                        start = gantt.date.str_to_date(task.start_date);
-                    } else {
-                        // Nếu không phải string cũng không phải Date, bỏ qua
-                        return;
-                    }
-                    
-                    // FIX: Tính end date đúng cách
-                    let end;
-                    if (task.end_date) {
-                        if (task.end_date instanceof Date) {
-                            end = task.end_date;
-                        } else if (typeof task.end_date === 'string') {
-                            end = gantt.date.str_to_date(task.end_date);
-                        } else {
-                            end = gantt.calculateEndDate(task.start_date, task.duration);
-                        }
-                    } else {
-                        end = gantt.calculateEndDate(task.start_date, task.duration);
-                    }
-                    
-                    if (!minDate || start < minDate) minDate = start;
-                    if (!maxDate || end > maxDate) maxDate = end;
-                });
-                
-                // 2. Nếu không có tasks, dùng ngày mặc định
-                if (!minDate || !maxDate) {
-                    minDate = new Date();
-                    maxDate = new Date();
-                    maxDate.setMonth(maxDate.getMonth() + 3);
-                }
-                
-                // 3. Thêm padding
-                const totalDuration = maxDate - minDate;
-                const padding = totalDuration * 0.1; // 10% padding mỗi bên
-                
-                const startDate = new Date(minDate.getTime() - padding);
-                const endDate = new Date(maxDate.getTime() + padding);
-                
-                // 4. Tính toán scale phù hợp với chiều rộng màn hình
-                const containerWidth = document.getElementById('gantt_here').offsetWidth - gantt.config.grid_width;
-                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-                
-                let scaleUnit = "month";
-                let scaleStep = 1;
-                let minColumnWidth = 40;
-                
-                // Điều chỉnh scale dựa trên số ngày
-                if (daysDiff > 730) { // > 2 năm
-                    scaleUnit = "year";
-                    scaleStep = Math.max(1, Math.ceil(daysDiff / 365 / 12));
-                    minColumnWidth = 60;
-                } else if (daysDiff > 180) { // > 6 tháng
-                    scaleUnit = "month";
-                    scaleStep = Math.max(1, Math.ceil(daysDiff / 30 / 8));
-                    minColumnWidth = 50;
-                } else if (daysDiff > 60) { // > 2 tháng
-                    scaleUnit = "week";
-                    scaleStep = 1;
-                    minColumnWidth = 40;
-                } else if (daysDiff > 14) { // > 2 tuần
-                    scaleUnit = "day";
-                    scaleStep = 7; // Hiển thị theo tuần
-                    minColumnWidth = 30;
-                } else {
-                    scaleUnit = "day";
-                    scaleStep = 1;
-                    minColumnWidth = 25;
-                }
-                
-                // 5. Cập nhật cấu hình Gantt
-                gantt.config.scale_unit = scaleUnit;
-                gantt.config.step = scaleStep;
-                gantt.config.min_column_width = minColumnWidth;
-                
-                // 6. Cập nhật subscales
-                if (scaleUnit === "year") {
-                    gantt.config.subscales = [
-                        {unit: "month", step: 1, date: "%F"}
-                    ];
-                } else if (scaleUnit === "month") {
-                    gantt.config.subscales = [
-                        {unit: "week", step: 1, date: "Tuần #%W"}
-                    ];
-                } else if (scaleUnit === "week") {
-                    gantt.config.subscales = [
-                        {unit: "day", step: 1, date: "%d"}
-                    ];
-                } else {
-                    gantt.config.subscales = [];
-                }
-                
-                // 7. Cập nhật dropdown để match
-                document.getElementById('scaleSelect').value = scaleUnit;
-                
-                // 8. Hiển thị toàn bộ khoảng thời gian
-                gantt.showDate(startDate, endDate);
-                
-                // 9. Force render
-                setTimeout(() => {
-                    gantt.render();
-                    showNotification('Đã fit timeline vào màn hình!', 'success');
-                }, 50);
-                
-            } catch (error) {
-                console.error('Error fitting timeline:', error);
-                showNotification('Không thể fit timeline!', 'error');
+// ========== FIXED: FIT TO SCREEN FUNCTION (KHÔNG GHI ĐÈ DROPDOWN) ==========
+function autoFitTimeline() {
+    try {
+        // 1. Tính toán khoảng thời gian của tất cả tasks
+        let minDate = null;
+        let maxDate = null;
+        
+        gantt.eachTask(function(task) {
+            if (!task.start_date) return;
+            
+            // FIX: Kiểm tra và chuyển đổi start_date đúng cách
+            let start;
+            if (task.start_date instanceof Date) {
+                start = task.start_date;
+            } else if (typeof task.start_date === 'string') {
+                start = gantt.date.str_to_date(task.start_date);
+            } else {
+                // Nếu không phải string cũng không phải Date, bỏ qua
+                return;
             }
+            
+            // FIX: Tính end date đúng cách
+            let end;
+            if (task.end_date) {
+                if (task.end_date instanceof Date) {
+                    end = task.end_date;
+                } else if (typeof task.end_date === 'string') {
+                    end = gantt.date.str_to_date(task.end_date);
+                } else {
+                    end = gantt.calculateEndDate(task.start_date, task.duration);
+                }
+            } else {
+                end = gantt.calculateEndDate(task.start_date, task.duration);
+            }
+            
+            if (!minDate || start < minDate) minDate = start;
+            if (!maxDate || end > maxDate) maxDate = end;
+        });
+        
+        // 2. Nếu không có tasks, dùng ngày mặc định
+        if (!minDate || !maxDate) {
+            minDate = new Date();
+            maxDate = new Date();
+            maxDate.setMonth(maxDate.getMonth() + 3);
         }
+        
+        // 3. Thêm padding
+        const totalDuration = maxDate - minDate;
+        const padding = totalDuration * 0.1; // 10% padding mỗi bên
+        
+        const startDate = new Date(minDate.getTime() - padding);
+        const endDate = new Date(maxDate.getTime() + padding);
+        
+        // 4. Tính toán scale phù hợp với chiều rộng màn hình
+        const containerWidth = document.getElementById('gantt_here').offsetWidth - gantt.config.grid_width;
+        const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        
+        let scaleUnit = gantt.config.scale_unit; // GIỮ scale hiện tại từ dropdown
+        let scaleStep = gantt.config.step;
+        let minColumnWidth = gantt.config.min_column_width;
+        
+        // CHỈ tính toán scale nếu không có scale được chọn từ dropdown
+        const selectedScale = document.getElementById('scaleSelect').value;
+        if (!selectedScale || selectedScale === "") {
+            // Điều chỉnh scale dựa trên số ngày
+            if (daysDiff > 730) { // > 2 năm
+                scaleUnit = "year";
+                scaleStep = Math.max(1, Math.ceil(daysDiff / 365 / 12));
+                minColumnWidth = 60;
+            } else if (daysDiff > 180) { // > 6 tháng
+                scaleUnit = "month";
+                scaleStep = Math.max(1, Math.ceil(daysDiff / 30 / 8));
+                minColumnWidth = 50;
+            } else if (daysDiff > 60) { // > 2 tháng
+                scaleUnit = "week";
+                scaleStep = 1;
+                minColumnWidth = 40;
+            } else if (daysDiff > 14) { // > 2 tuần
+                scaleUnit = "day";
+                scaleStep = 7; // Hiển thị theo tuần
+                minColumnWidth = 30;
+            } else {
+                scaleUnit = "day";
+                scaleStep = 1;
+                minColumnWidth = 25;
+            }
+            
+            // Cập nhật dropdown với scale tự động
+            document.getElementById('scaleSelect').value = scaleUnit;
+        } else {
+            // Sử dụng scale từ dropdown
+            scaleUnit = selectedScale;
+            scaleStep = gantt.config.step;
+            minColumnWidth = gantt.config.min_column_width;
+        }
+        
+        // 5. Cập nhật cấu hình Gantt
+        gantt.config.scale_unit = scaleUnit;
+        gantt.config.step = scaleStep;
+        gantt.config.min_column_width = minColumnWidth;
+        
+        // 6. Cập nhật subscales dựa trên scale được chọn
+        if (scaleUnit === "year") {
+            gantt.config.subscales = [
+                {unit: "month", step: 1, date: "%F"}
+            ];
+            gantt.config.scale_height = 80;
+        } else if (scaleUnit === "month") {
+            gantt.config.subscales = [
+                {unit: "week", step: 1, date: "Tuần #%W"}
+            ];
+            gantt.config.scale_height = 70;
+        } else if (scaleUnit === "week") {
+            gantt.config.subscales = [
+                {unit: "day", step: 1, date: "%d"}
+            ];
+            gantt.config.scale_height = 60;
+        } else {
+            gantt.config.subscales = [];
+            gantt.config.scale_height = 50;
+        }
+        
+        gantt.config.subscale_height = 25;
+        
+        // 7. Hiển thị toàn bộ khoảng thời gian
+        gantt.showDate(startDate, endDate);
+        
+        // 8. Force render
+        setTimeout(() => {
+            gantt.render();
+            showNotification('Đã fit timeline vào màn hình!', 'success');
+        }, 50);
+        
+    } catch (error) {
+        console.error('Error fitting timeline:', error);
+        showNotification('Không thể fit timeline!', 'error');
+    }
+}
+
+// ========== CẬP NHẬT HÀM updateScale() ==========
+function updateScale() {
+    const scale = document.getElementById('scaleSelect').value;
+    
+    // Nếu không chọn gì, dùng auto fit
+    if (!scale || scale === "") {
+        autoFitTimeline();
+        return;
+    }
+    
+    // Cập nhật cấu hình dựa trên dropdown
+    gantt.config.scale_unit = scale;
+    
+    switch(scale) {
+        case 'day':
+            gantt.config.step = 1;
+            gantt.config.subscales = [];
+            gantt.config.min_column_width = 30;
+            gantt.config.scale_height = 50;
+            break;
+        case 'week':
+            gantt.config.step = 1;
+            gantt.config.subscales = [
+                {unit: "day", step: 1, date: "%d"}
+            ];
+            gantt.config.min_column_width = 40;
+            gantt.config.scale_height = 60;
+            break;
+        case 'month':
+            gantt.config.step = 1;
+            gantt.config.subscales = [
+                {unit: "week", step: 1, date: "Tuần #%W"}
+            ];
+            gantt.config.min_column_width = 50;
+            gantt.config.scale_height = 70;
+            break;
+        case 'quarter':
+            gantt.config.step = 1;
+            gantt.config.subscales = [
+                {unit: "month", step: 1, date: "%F"}
+            ];
+            gantt.config.min_column_width = 60;
+            gantt.config.scale_height = 80;
+            break;
+        case 'year':
+            gantt.config.step = 1;
+            gantt.config.subscales = [
+                {unit: "month", step: 1, date: "%F"}
+            ];
+            gantt.config.min_column_width = 70;
+            gantt.config.scale_height = 80;
+            break;
+    }
+    
+    gantt.config.subscale_height = 25;
+    gantt.render();
+    
+    // KHÔNG auto fit nữa - để người dùng tự control
+    showNotification('Đã thay đổi thang thời gian sang ' + getScaleName(scale), 'success');
+}
+
+// ========== THÊM HÀM PHỤ TRỢ ==========
+function getScaleName(scale) {
+    const scaleNames = {
+        'day': 'ngày',
+        'week': 'tuần',
+        'month': 'tháng',
+        'quarter': 'quý',
+        'year': 'năm'
+    };
+    return scaleNames[scale] || scale;
+}
         // ========== ĐIỀU KHIỂN BIỂU ĐỒ ==========
         function updateScale() {
             const scale = document.getElementById('scaleSelect').value;
