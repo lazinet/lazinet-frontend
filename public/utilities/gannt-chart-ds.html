@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Công Cụ Gantt Chart Tương Tác | Visualize Project Timelines - LAZINET</title>
+    <meta name="description" content="Công cụ vẽ Gantt Chart từ Excel/CSV online miễn phí. Trực quan hóa dự án, quản lý timeline, tương tác với dữ liệu thời gian thực. Xuất ảnh, PDF chất lượng cao.">
+    <meta name="keywords" content="Gantt Chart, biểu đồ Gantt, quản lý dự án, Excel to Gantt, timeline visualization, project management, công cụ miễn phí, LAZINET">
+    <meta name="author" content="LAZINET Technologies">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- DHTMLX Gantt CSS -->
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0052FF;
+            --secondary-color: #FF6F00;
+            --bg-color: #0F162C;
+            --card-bg: #1A2238;
+            --text-color: #FFFFFF;
+            --border-color: #2D3748;
+            --accent-color: #3F82FB;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --info-color: #3B82F6;
+            --grid-color: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Instrument Sans', 'Geist', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #1E293B 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            height: 50px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .title-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(to right, #FFFFFF, #E2E8F0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .title-section p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: calc(100vh - 120px);
+            max-width: 100vw;
+            overflow: hidden;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 120px;
+        }
+
+        .panel-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            font-size: 1rem;
+        }
+
+        /* File Upload */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--accent-color);
+            background: rgba(63, 130, 251, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .upload-text {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(63, 130, 251, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 2.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn i {
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1E40AF 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 82, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--success-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #DC2626 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #DC2626 0%, var(--danger-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Gantt Container */
+        .gantt-container {
+            background: var(--card-bg);
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            min-height: calc(100vh - 120px);
+        }
+
+        .gantt-header {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gantt-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .gantt-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        #gantt_here {
+            width: 100%;
+            height: calc(100vh - 200px);
+            min-height: 500px;
+            background: var(--card-bg);
+        }
+
+        /* Data Table */
+        .data-table-container {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .data-table-container.active {
+            display: block;
+        }
+
+        .table-header {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #dataTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        #dataTable th {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+        }
+
+        #dataTable td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #dataTable tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .instructions h4 {
+            color: var(--info-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .instructions ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--card-bg);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 10000;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-icon {
+            font-size: 1.25rem;
+        }
+
+        .notification.success {
+            border-left-color: var(--success-color);
+        }
+
+        .notification.error {
+            border-left-color: var(--danger-color);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 22, 44, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+            }
+            
+            .control-panel {
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            #gantt_here {
+                height: calc(100vh - 320px);
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+            
+            .header-controls {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gantt-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .gantt-controls .btn {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .notification {
+                left: 1rem;
+                right: 1rem;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                grid-template-rows: auto 1fr;
+            }
+            
+            .control-panel {
+                padding: 1rem;
+            }
+            
+            .panel-section {
+                padding-bottom: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            #gantt_here {
+                height: calc(100vh - 350px);
+                min-height: 400px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]:before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        [data-tooltip]:hover:before {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 5px);
+        }
+
+        /* Gantt Custom Styling - THÊM RESIZE HANDLE */
+        .gantt_grid_head_cell {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border-right: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            font-weight: 600;
+            position: relative;
+            cursor: col-resize;
+            user-select: none;
+        }
+
+        .gantt_grid_head_cell::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            cursor: col-resize;
+            background: transparent;
+        }
+
+        .gantt_grid_head_cell:hover::after {
+            background: rgba(63, 130, 251, 0.3);
+        }
+
+        .gantt_grid_data .gantt_row {
+            background: transparent !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+        .gantt_grid_data .gantt_row:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .gantt_grid_scale .gantt_grid_head_cell {
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+        .gantt_task_cell {
+            border-right: 1px solid var(--border-color) !important;
+        }
+
+        .gantt_scale_line {
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+        .gantt_task_line {
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .gantt_task_progress {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Grid resize handle styling */
+        .gantt_grid_resize_area {
+            background-color: var(--accent-color) !important;
+            opacity: 0.5 !important;
+        }
+
+        /* Column width indicators */
+        .gantt_grid_head_cell.resizing {
+            background: rgba(63, 130, 251, 0.2) !important;
+        }
+
+        /* Task colors based on progress */
+        .gantt_task_line {
+            transition: all 0.3s ease;
+        }
+
+        .gantt_task_line[progress="100"] {
+            background: var(--success-color) !important;
+            border-color: var(--success-color) !important;
+        }
+
+        .gantt_task_line[progress="0"] {
+            background: #6B7280 !important;
+            border-color: #6B7280 !important;
+        }
+
+        .gantt_task_line.critical {
+            background: var(--danger-color) !important;
+            border-color: var(--danger-color) !important;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="loadingText">Đang tải dữ liệu...</div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-icon" id="notificationIcon"></div>
+        <div id="notificationMessage"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="LAZINET" class="logo">
+            <div class="title-section">
+                <h1>LAZINET Gantt Chart Visualizer</h1>
+                <p>Trực quan hóa dự án từ Excel/CSV - Hoàn toàn miễn phí</p>
+            </div>
+        </div>
+        <div class="header-controls">
+            <button class="btn btn-primary" onclick="downloadChart('png')" data-tooltip="Xuất biểu đồ dạng ảnh PNG">
+                <i class="fas fa-image"></i> Xuất PNG
+            </button>
+            <button class="btn btn-success" onclick="downloadChart('pdf')" data-tooltip="Xuất biểu đồ dạng PDF">
+                <i class="fas fa-file-pdf"></i> Xuất PDF
+            </button>
+            <button class="btn btn-secondary" onclick="resetAll()" data-tooltip="Đặt lại tất cả dữ liệu">
+                <i class="fas fa-redo"></i> Đặt lại
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Control Panel -->
+            <aside class="control-panel">
+                <!-- File Upload Section -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-upload"></i> Tải dữ liệu lên
+                    </div>
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Kéo & Thả file Excel/CSV vào đây</div>
+                        <div class="upload-hint">hoặc nhấp để chọn file</div>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-full" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
+                                <i class="fas fa-file-excel"></i> Chọn File
+                            </button>
+                        </div>
+                        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="templateSelect">Hoặc chọn mẫu có sẵn:</label>
+                        <select id="templateSelect" class="form-control" onchange="loadTemplate(this.value)">
+                            <option value="">-- Chọn mẫu --</option>
+                            <option value="automotive">Dự án Automotive</option>
+                            <option value="project">Dự án phần mềm</option>
+                            <option value="construction">Xây dựng</option>
+                            <option value="marketing">Marketing Campaign</option>
+                            <option value="event">Tổ chức sự kiện</option>
+                        </select>
+                    </div>
+                    <div class="instructions" style="margin-top: 1rem;">
+                        <h4><i class="fas fa-download"></i> Tải mẫu Excel chuẩn</h4>
+                        <p>Download file mẫu để biết định dạng chuẩn:</p>
+                        <button class="btn btn-secondary btn-full" onclick="downloadSampleExcel()" style="margin-top: 0.5rem;">
+                            <i class="fas fa-file-excel"></i> Tải mẫu Excel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chart Settings -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-sliders-h"></i> Cài đặt biểu đồ
+                    </div>
+                    <div class="form-group">
+                        <label for="scaleSelect">Thang thời gian:</label>
+                        <select id="scaleSelect" class="form-control" onchange="updateScale()">
+                            <option value="day">Theo ngày</option>
+                            <option value="week">Theo tuần</option>
+                            <option value="month" selected>Theo tháng</option>
+                            <option value="quarter">Theo quý</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zoomLevel">Mức phóng to:</label>
+                        <input type="range" id="zoomLevel" min="1" max="10" value="5" class="form-control" oninput="updateZoom(this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label for="showCritical">Hiển thị đường găng:</label>
+                        <input type="checkbox" id="showCritical" checked onchange="toggleCriticalPath()">
+                    </div>
+                    <div class="form-group">
+                        <label for="autoSchedule">Tự động lập lịch:</label>
+                        <input type="checkbox" id="autoSchedule" checked onchange="toggleAutoSchedule()">
+                    </div>
+                </div>
+
+                <!-- Task Management -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-tasks"></i> Quản lý công việc
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="addNewTask()" data-tooltip="Thêm công việc mới">
+                            <i class="fas fa-plus"></i> Thêm
+                        </button>
+                        <button class="btn btn-secondary" onclick="editSelectedTask()" data-tooltip="Sửa công việc đã chọn">
+                            <i class="fas fa-edit"></i> Sửa
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteSelectedTask()" data-tooltip="Xóa công việc đã chọn">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="taskFilter">Lọc công việc:</label>
+                        <input type="text" id="taskFilter" class="form-control" placeholder="Nhập từ khóa..." oninput="filterTasks(this.value)">
+                    </div>
+                </div>
+
+                <!-- Data Display -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-table"></i> Hiển thị dữ liệu
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-full" onclick="toggleDataTable()" id="toggleTableBtn">
+                            <i class="fas fa-list"></i> Hiển thị bảng dữ liệu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-chart-bar"></i> Thống kê
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalTasks">0</div>
+                            <div class="stat-label">Tổng công việc</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="completedTasks">0</div>
+                            <div class="stat-label">Đã hoàn thành</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalDuration">0</div>
+                            <div class="stat-label">Tổng thời gian (ngày)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="criticalTasks">0</div>
+                            <div class="stat-label">Công việc găng</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> Hướng dẫn sử dụng</h4>
+                    <ul>
+                        <li><strong>Tải file:</strong> Excel/CSV với các cột: ID, Tên, Bắt đầu, Kết thúc, Tiến độ</li>
+                        <li><strong>Thay đổi cột:</strong> Kéo đường viền bên phải tiêu đề cột để resize</li>
+                        <li><strong>Di chuyển task:</strong> Kéo task để thay đổi timeline</li>
+                        <li><strong>Resize task:</strong> Kéo cạnh trái/phải để thay đổi thời lượng</li>
+                        <li><strong>Phụ thuộc:</strong> Kéo từ task này sang task khác để tạo liên kết</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Gantt Chart Area -->
+            <main class="gantt-container">
+                <div class="gantt-header">
+                    <div class="gantt-title">
+                        <i class="fas fa-project-diagram"></i> Biểu đồ Gantt
+                    </div>
+                    <div class="gantt-controls">
+                        <button class="btn btn-secondary" onclick="gantt.zoomIn()" data-tooltip="Phóng to">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="btn btn-secondary" onclick="gantt.zoomOut()" data-tooltip="Thu nhỏ">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button class="btn btn-secondary" onclick="gantt.fit()" data-tooltip="Vừa màn hình">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </button>
+                        <button class="btn btn-primary" onclick="showTaskModal()" data-tooltip="Thêm công việc mới">
+                            <i class="fas fa-plus-circle"></i> Thêm công việc
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gantt Chart -->
+                <div id="gantt_here"></div>
+
+                <!-- Data Table -->
+                <div class="data-table-container" id="dataTableContainer">
+                    <div class="table-header">
+                        <div class="gantt-title">
+                            <i class="fas fa-table"></i> Bảng dữ liệu
+                        </div>
+                        <button class="btn btn-secondary" onclick="exportTable()" data-tooltip="Xuất bảng dữ liệu">
+                            <i class="fas fa-download"></i> Xuất CSV
+                        </button>
+                    </div>
+                    <div style="overflow-x: auto; max-height: 300px;">
+                        <table id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên công việc</th>
+                                    <th>Bắt đầu</th>
+                                    <th>Kết thúc</th>
+                                    <th>Tiến độ (%)</th>
+                                    <th>Người phụ trách</th>
+                                    <th>Phụ thuộc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Task Modal (Hidden by default) -->
+    <div id="taskModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: var(--card-bg); padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; border: 1px solid var(--border-color);">
+            <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-tasks"></i> Quản lý công việc</h3>
+            <div class="form-group">
+                <label for="taskName">Tên công việc:</label>
+                <input type="text" id="taskName" class="form-control" placeholder="Nhập tên công việc">
+            </div>
+            <div class="form-group">
+                <label for="taskStart">Ngày bắt đầu:</label>
+                <input type="date" id="taskStart" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="taskEnd">Ngày kết thúc:</label>
+                <input type="date" id="taskEnd" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="taskProgress">Tiến độ (%):</label>
+                <input type="range" id="taskProgress" min="0" max="100" value="0" class="form-control" oninput="document.getElementById('progressValue').textContent = this.value + '%'">
+                <span id="progressValue">0%</span>
+            </div>
+            <div class="form-group">
+                <label for="taskOwner">Người phụ trách:</label>
+                <input type="text" id="taskOwner" class="form-control" placeholder="Nhập tên người phụ trách">
+            </div>
+            <div class="form-group">
+                <label for="taskDependencies">Phụ thuộc vào:</label>
+                <input type="text" id="taskDependencies" class="form-control" placeholder="ID công việc phụ thuộc, cách nhau bằng dấu phẩy">
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="saveTask()">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="hideTaskModal()">
+                    <i class="fas fa-times"></i> Hủy
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    
+    <script>
+        // ========== KHAI BÁO BIẾN TOÀN CỤC ==========
+        let allTasks = [];
+        let currentTaskId = null;
+        let isResizing = false;
+        let resizeStartX = 0;
+        let resizeColumnIndex = 0;
+        let originalColumnWidth = 0;
+
+        // ========== CẤU HÌNH GANTT ==========
+        gantt.config.date_format = "%Y-%m-%d";
+        gantt.config.scale_unit = "month";
+        gantt.config.step = 1;
+        gantt.config.subscales = [
+            {unit: "day", step: 1, date: "%d"}
+        ];
+        gantt.config.fit_tasks = true;
+        gantt.config.autofit = true;
+        gantt.config.row_height = 40;
+        gantt.config.bar_height = 20;
+        gantt.config.grid_width = 350;
+        gantt.config.readonly = false;
+        gantt.config.drag_progress = true;
+        gantt.config.drag_links = true;
+        gantt.config.drag_move = true;
+        gantt.config.drag_resize = true;
+        gantt.config.grid_resize = true; // Bật resize grid columns
+        
+        // Cấu hình columns với resize
+        gantt.config.columns = [
+            {name: "text", label: "Tên công việc", width: 200, resize: true},
+            {name: "start_date", label: "Bắt đầu", width: 100, align: "center", resize: true},
+            {name: "end_date", label: "Kết thúc", width: 100, align: "center", resize: true},
+            {name: "progress", label: "Tiến độ", width: 80, align: "center", template: function(task) {
+                return task.progress + "%";
+            }, resize: true},
+            {name: "owner", label: "Người phụ trách", width: 120, resize: true}
+        ];
+
+        // Customize colors
+        gantt.templates.task_class = function(start, end, task) {
+            if (task.progress == 100) return "completed";
+            if (task.critical) return "critical";
+            return "";
+        };
+        
+        gantt.templates.task_text = function(start, end, task) {
+            return task.text + " (" + task.progress + "%)";
+        };
+        
+        gantt.templates.grid_folder = function(item) {
+            return "<div class='gantt_tree_icon gantt_folder_" + (item.$open ? "open" : "closed") + "'></div>";
+        };
+        
+        gantt.templates.grid_file = function(item) {
+            return "<div class='gantt_tree_icon gantt_file'></div>";
+        };
+
+        // ========== DỮ LIỆU MẪU AUTOMOTIVE ==========
+        const automotiveTemplate = {
+            data: [
+                {id: 1, text: "Giai đoạn phân tích & Thiết kế", start_date: "2024-01-01", duration: 45, progress: 100, parent: 0, open: true},
+                {id: 2, text: "Phân tích yêu cầu hệ thống", start_date: "2024-01-01", duration: 15, progress: 100, parent: 1},
+                {id: 3, text: "Thiết kế kiến trúc phần mềm", start_date: "2024-01-16", duration: 20, progress: 100, parent: 1},
+                {id: 4, text: "Thiết kế giao diện người dùng", start_date: "2024-01-26", duration: 10, progress: 100, parent: 1},
+                {id: 5, text: "Giai đoạn phát triển", start_date: "2024-02-15", duration: 120, progress: 65, parent: 0, open: true},
+                {id: 6, text: "Phát triển module điều khiển động cơ", start_date: "2024-02-15", duration: 45, progress: 90, parent: 5},
+                {id: 7, text: "Phát triển hệ thống lái tự động", start_date: "2024-03-01", duration: 60, progress: 70, parent: 5},
+                {id: 8, text: "Phát triển hệ thống an toàn", start_date: "2024-03-15", duration: 50, progress: 50, parent: 5},
+                {id: 9, text: "Phát triển giao diện người dùng", start_date: "2024-04-01", duration: 40, progress: 40, parent: 5},
+                {id: 10, text: "Giai đoạn kiểm thử", start_date: "2024-06-15", duration: 60, progress: 20, parent: 0, open: true},
+                {id: 11, text: "Kiểm thử đơn vị", start_date: "2024-06-15", duration: 20, progress: 30, parent: 10},
+                {id: 12, text: "Kiểm thử tích hợp", start_date: "2024-07-05", duration: 25, progress: 15, parent: 10},
+                {id: 13, text: "Kiểm thử hệ thống", start_date: "2024-08-01", duration: 15, progress: 5, parent: 10},
+                {id: 14, text: "Giai đoạn triển khai", start_date: "2024-08-15", duration: 30, progress: 0, parent: 0, open: true},
+                {id: 15, text: "Triển khai pilot", start_date: "2024-08-15", duration: 15, progress: 0, parent: 14},
+                {id: 16, text: "Đào tạo người dùng", start_date: "2024-09-01", duration: 10, progress: 0, parent: 14},
+                {id: 17, text: "Triển khai chính thức", start_date: "2024-09-11", duration: 5, progress: 0, parent: 14}
+            ],
+            links: [
+                {id: 1, source: 2, target: 3, type: "0"},
+                {id: 2, source: 3, target: 4, type: "0"},
+                {id: 3, source: 4, target: 6, type: "0"},
+                {id: 4, source: 6, target: 7, type: "0"},
+                {id: 5, source: 7, target: 8, type: "0"},
+                {id: 6, source: 8, target: 9, type: "0"},
+                {id: 7, source: 9, target: 11, type: "0"},
+                {id: 8, source: 11, target: 12, type: "0"},
+                {id: 9, source: 12, target: 13, type: "0"},
+                {id: 10, source: 13, target: 15, type: "0"},
+                {id: 11, source: 15, target: 16, type: "0"},
+                {id: 12, source: 16, target: 17, type: "0"}
+            ]
+        };
+
+        const sampleData = automotiveTemplate;
+        
+        // ========== KHỞI TẠO ==========
+        gantt.init("gantt_here");
+        gantt.parse(sampleData);
+        updateAllTasks();
+        updateStatistics();
+
+        // ========== CÁC HÀM QUẢN LÝ TASK ==========
+        function updateAllTasks() {
+            allTasks = [];
+            gantt.eachTask(function(task) {
+                allTasks.push(task);
+            });
+        }
+
+        function updateStatistics() {
+            updateAllTasks();
+            
+            const totalTasks = allTasks.length;
+            const completedTasks = allTasks.filter(t => t.progress === 100).length;
+            const totalDuration = allTasks.reduce((sum, task) => sum + (task.duration || 0), 0);
+            const criticalTasks = allTasks.filter(t => calculateCriticalness(t)).length;
+            
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('totalDuration').textContent = totalDuration;
+            document.getElementById('criticalTasks').textContent = criticalTasks;
+        }
+
+        function calculateCriticalness(task) {
+            const endDate = new Date(task.end_date || task.start_date);
+            const today = new Date();
+            const timeDiff = endDate.getTime() - today.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            return daysDiff <= task.duration * 0.3;
+        }
+
+        // ========== QUẢN LÝ GRID COLUMNS (RESIZE) ==========
+        function initializeColumnResize() {
+            const gridHead = document.querySelector('.gantt_grid_head');
+            if (!gridHead) return;
+
+            // Thêm resize handle cho từng cột
+            const headers = gridHead.querySelectorAll('.gantt_grid_head_cell');
+            headers.forEach((header, index) => {
+                if (index < headers.length - 1) { // Không thêm cho cột cuối
+                    const resizeHandle = document.createElement('div');
+                    resizeHandle.className = 'resize-handle';
+                    resizeHandle.style.cssText = `
+                        position: absolute;
+                        top: 0;
+                        right: -3px;
+                        width: 6px;
+                        height: 100%;
+                        cursor: col-resize;
+                        z-index: 100;
+                        background: transparent;
+                    `;
+                    
+                    header.style.position = 'relative';
+                    header.appendChild(resizeHandle);
+                    
+                    // Sự kiện resize
+                    resizeHandle.addEventListener('mousedown', function(e) {
+                        startResize(e, index);
+                    });
+                }
+            });
+        }
+
+        function startResize(e, columnIndex) {
+            isResizing = true;
+            resizeStartX = e.clientX;
+            resizeColumnIndex = columnIndex;
+            
+            const headers = document.querySelectorAll('.gantt_grid_head_cell');
+            originalColumnWidth = headers[columnIndex].offsetWidth;
+            
+            // Thêm class resizing
+            headers[columnIndex].classList.add('resizing');
+            
+            // Thêm event listeners
+            document.addEventListener('mousemove', handleResize);
+            document.addEventListener('mouseup', stopResize);
+            
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function handleResize(e) {
+            if (!isResizing) return;
+            
+            const deltaX = e.clientX - resizeStartX;
+            const newWidth = Math.max(50, originalColumnWidth + deltaX); // Min width 50px
+            
+            // Cập nhật width trong cấu hình gantt
+            if (gantt.config.columns && gantt.config.columns[resizeColumnIndex]) {
+                gantt.config.columns[resizeColumnIndex].width = newWidth;
+            }
+            
+            // Cập nhật grid width tổng
+            updateTotalGridWidth();
+            
+            // Render lại
+            gantt.render();
+        }
+
+        function stopResize() {
+            if (!isResizing) return;
+            
+            isResizing = false;
+            const headers = document.querySelectorAll('.gantt_grid_head_cell');
+            headers[resizeColumnIndex].classList.remove('resizing');
+            
+            // Xóa event listeners
+            document.removeEventListener('mousemove', handleResize);
+            document.removeEventListener('mouseup', stopResize);
+            
+            // Lưu column widths vào localStorage
+            saveColumnWidths();
+        }
+
+        function updateTotalGridWidth() {
+            if (!gantt.config.columns) return;
+            
+            let totalWidth = 0;
+            gantt.config.columns.forEach(col => {
+                totalWidth += col.width || 100;
+            });
+            
+            gantt.config.grid_width = totalWidth;
+        }
+
+        function saveColumnWidths() {
+            if (!gantt.config.columns) return;
+            
+            const widths = gantt.config.columns.map(col => col.width);
+            localStorage.setItem('ganttColumnWidths', JSON.stringify(widths));
+        }
+
+        function loadColumnWidths() {
+            const savedWidths = localStorage.getItem('ganttColumnWidths');
+            if (savedWidths && gantt.config.columns) {
+                try {
+                    const widths = JSON.parse(savedWidths);
+                    widths.forEach((width, index) => {
+                        if (gantt.config.columns[index]) {
+                            gantt.config.columns[index].width = width;
+                        }
+                    });
+                    updateTotalGridWidth();
+                } catch (e) {
+                    console.error('Error loading column widths:', e);
+                }
+            }
+        }
+
+        // ========== EVENT LISTENERS ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // File input change
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            // Initialize date inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('taskStart').value = today;
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 7);
+            document.getElementById('taskEnd').value = endDate.toISOString().split('T')[0];
+            
+            // Load saved column widths
+            setTimeout(() => {
+                loadColumnWidths();
+                initializeColumnResize();
+                gantt.render(); // Render lại với widths đã load
+            }, 100);
+        });
+
+        // ========== XỬ LÝ FILE ==========
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                loadFile(file);
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                loadFile(files[0]);
+            }
+        }
+
+        async function loadFile(file) {
+            showLoading('Đang đọc file...');
+            
+            try {
+                const data = await readFile(file);
+                const tasks = parseExcelData(data, file.name);
+                
+                if (tasks.length > 0) {
+                    loadTasks(tasks);
+                    showNotification('Đã tải thành công ' + tasks.length + ' công việc!', 'success');
+                } else {
+                    showNotification('Không tìm thấy dữ liệu hợp lệ trong file!', 'warning');
+                }
+            } catch (error) {
+                console.error('Error loading file:', error);
+                showNotification('Lỗi đọc file: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function readFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const data = e.target.result;
+                    resolve(data);
+                };
+                
+                reader.onerror = function(e) {
+                    reject(new Error('Không thể đọc file'));
+                };
+                
+                if (file.name.toLowerCase().endsWith('.csv')) {
+                    reader.readAsText(file, 'UTF-8');
+                } else {
+                    reader.readAsArrayBuffer(file);
+                }
+            });
+        }
+
+        function parseExcelData(data, fileName) {
+            const tasks = [];
+            
+            try {
+                if (fileName.toLowerCase().endsWith('.csv')) {
+                    // Xử lý CSV
+                    const rows = data.split('\n').filter(row => row.trim() !== '');
+                    if (rows.length < 2) return tasks;
+                    
+                    const headers = rows[0].split(',').map(h => h.trim());
+                    
+                    for (let i = 1; i < rows.length; i++) {
+                        const row = rows[i];
+                        const cells = row.split(',').map(c => c.trim());
+                        
+                        if (cells.length >= 4) {
+                            const task = {
+                                id: parseInt(cells[0]) || i,
+                                text: cells[1] || `Task ${i}`,
+                                start_date: parseDateFromExcel(cells[2]),
+                                end_date: parseDateFromExcel(cells[3]),
+                                progress: parseFloat(cells[4]) || 0,
+                                owner: cells[5] || '',
+                                dependencies: cells[6] || ''
+                            };
+                            
+                            // Tính duration
+                            if (task.start_date && task.end_date) {
+                                const start = new Date(task.start_date);
+                                const end = new Date(task.end_date);
+                                task.duration = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                            } else {
+                                task.duration = 7;
+                            }
+                            
+                            tasks.push(task);
+                        }
+                    }
+                } else {
+                    // Xử lý Excel
+                    const workbook = XLSX.read(data, {type: 'array', cellDates: true});
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    // Chuyển sheet thành JSON
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+                    
+                    if (jsonData.length < 2) return tasks;
+                    
+                    const headers = jsonData[0];
+                    
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (!row || row.length === 0) continue;
+                        
+                        const task = {
+                            id: parseInt(row[0]) || i,
+                            text: row[1] || `Task ${i}`,
+                            start_date: parseDateFromExcel(row[2]),
+                            end_date: parseDateFromExcel(row[3]),
+                            progress: parseFloat(row[4]) || 0,
+                            owner: row[5] || '',
+                            dependencies: row[6] || ''
+                        };
+                        
+                        // Tính duration
+                        if (task.start_date && task.end_date) {
+                            const start = new Date(task.start_date);
+                            const end = new Date(task.end_date);
+                            task.duration = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                        } else {
+                            task.duration = 7;
+                        }
+                        
+                        tasks.push(task);
+                    }
+                }
+            } catch (error) {
+                console.error('Parse error:', error);
+                throw error;
+            }
+            
+            return tasks;
+        }
+
+        function parseDateFromExcel(value) {
+            if (!value) return null;
+            
+            // Nếu là số serial date của Excel
+            if (typeof value === 'number') {
+                // Excel date system (1900 date system, với bug năm 1900 là năm nhuận)
+                const excelEpoch = new Date(1899, 11, 30); // December 30, 1899
+                const date = new Date(excelEpoch.getTime() + (value * 24 * 60 * 60 * 1000));
+                return date.toISOString().split('T')[0];
+            }
+            
+            // Nếu là chuỗi date
+            if (typeof value === 'string') {
+                // Thử các định dạng date
+                const formats = [
+                    /(\d{4})-(\d{2})-(\d{2})/, // YYYY-MM-DD
+                    /(\d{2})\/(\d{2})\/(\d{4})/, // DD/MM/YYYY
+                    /(\d{2})-(\d{2})-(\d{4})/, // DD-MM-YYYY
+                    /(\d{4})\/(\d{2})\/(\d{2})/ // YYYY/MM/DD
+                ];
+                
+                for (const format of formats) {
+                    const match = value.match(format);
+                    if (match) {
+                        let year, month, day;
+                        
+                        if (format === formats[0] || format === formats[3]) {
+                            // YYYY-MM-DD hoặc YYYY/MM/DD
+                            year = match[1];
+                            month = parseInt(match[2]) - 1;
+                            day = match[3];
+                        } else {
+                            // DD/MM/YYYY hoặc DD-MM-YYYY
+                            year = match[3];
+                            month = parseInt(match[2]) - 1;
+                            day = match[1];
+                        }
+                        
+                        const date = new Date(year, month, day);
+                        if (!isNaN(date.getTime())) {
+                            return date.toISOString().split('T')[0];
+                        }
+                    }
+                }
+                
+                // Thử parse trực tiếp
+                const date = new Date(value);
+                if (!isNaN(date.getTime())) {
+                    return date.toISOString().split('T')[0];
+                }
+            }
+            
+            // Nếu là đối tượng Date
+            if (value instanceof Date) {
+                return value.toISOString().split('T')[0];
+            }
+            
+            return null;
+        }
+
+        function loadTasks(tasks) {
+            const ganttData = {data: [], links: []};
+            let linkCounter = 1;
+            
+            tasks.forEach((task) => {
+                const ganttTask = {
+                    id: task.id,
+                    text: task.text,
+                    start_date: task.start_date || new Date().toISOString().split('T')[0],
+                    duration: task.duration || 7,
+                    progress: task.progress || 0,
+                    parent: 0,
+                    owner: task.owner || '',
+                    dependencies: task.dependencies || ''
+                };
+                
+                ganttData.data.push(ganttTask);
+                
+                // Xử lý dependencies
+                if (task.dependencies) {
+                    const deps = task.dependencies.toString().split(/[,;]/).map(d => d.trim()).filter(d => d && !isNaN(d));
+                    deps.forEach(depId => {
+                        if (depId && !isNaN(depId)) {
+                            ganttData.links.push({
+                                id: linkCounter++,
+                                source: parseInt(depId),
+                                target: task.id,
+                                type: "0"
+                            });
+                        }
+                    });
+                }
+            });
+            
+            gantt.clearAll();
+            gantt.parse(ganttData);
+            updateAllTasks();
+            updateStatistics();
+            updateDataTable();
+            initializeColumnResize();
+        }
+
+        // ========== TẢI MẪU EXCEL ==========
+        function downloadSampleExcel() {
+            // Tạo dữ liệu mẫu
+            const sampleData = [
+                ["ID", "Tên công việc", "Ngày bắt đầu", "Ngày kết thúc", "Tiến độ (%)", "Người phụ trách", "Phụ thuộc"],
+                [1, "Phân tích yêu cầu hệ thống", "2024-01-01", "2024-01-15", 100, "Nguyễn Văn A", ""],
+                [2, "Thiết kế kiến trúc phần mềm", "2024-01-16", "2024-02-05", 100, "Trần Thị B", "1"],
+                [3, "Phát triển module điều khiển", "2024-02-06", "2024-03-22", 75, "Lê Văn C", "2"],
+                [4, "Phát triển hệ thống lái tự động", "2024-03-01", "2024-04-30", 60, "Phạm Thị D", "2"],
+                [5, "Kiểm thử đơn vị", "2024-05-01", "2024-05-20", 30, "Hồ Văn E", "3,4"],
+                [6, "Kiểm thử tích hợp", "2024-05-21", "2024-06-15", 15, "Nguyễn Thị F", "5"],
+                [7, "Triển khai pilot", "2024-06-16", "2024-07-01", 0, "Trần Văn G", "6"]
+            ];
+            
+            // Tạo worksheet
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            // Tạo workbook
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Dự án Automotive");
+            
+            // Xuất file
+            XLSX.writeFile(wb, "Mau_du_lieu_Gantt_Chart.xlsx");
+            showNotification('Đã tải file mẫu Excel thành công!', 'success');
+        }
+
+        // ========== ĐIỀU KHIỂN BIỂU ĐỒ ==========
+        function updateScale() {
+            const scale = document.getElementById('scaleSelect').value;
+            gantt.config.scale_unit = scale;
+            
+            switch(scale) {
+                case 'day':
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [];
+                    break;
+                case 'week':
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [
+                        {unit: "day", step: 1, date: "%d %M"}
+                    ];
+                    break;
+                case 'month':
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [
+                        {unit: "week", step: 1, date: "Week #%W"}
+                    ];
+                    break;
+                case 'quarter':
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [
+                        {unit: "month", step: 1, date: "%F"}
+                    ];
+                    break;
+            }
+            
+            gantt.render();
+        }
+
+        function updateZoom(level) {
+            const zoomLevels = [0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.5, 2, 3, 5];
+            const zoom = zoomLevels[level - 1] || 1;
+            gantt.config.min_column_width = 30 * zoom;
+            gantt.render();
+        }
+
+        function toggleCriticalPath() {
+            const showCritical = document.getElementById('showCritical').checked;
+            gantt.eachTask(function(task) {
+                task.critical = showCritical && calculateCriticalness(task);
+            });
+            gantt.render();
+        }
+
+        function toggleAutoSchedule() {
+            gantt.config.autoschedule = document.getElementById('autoSchedule').checked;
+        }
+
+        // ========== QUẢN LÝ TASK ==========
+        function addNewTask() {
+            currentTaskId = null;
+            showTaskModal();
+        }
+
+        function editSelectedTask() {
+            const selectedTask = gantt.getSelectedId();
+            if (selectedTask) {
+                currentTaskId = selectedTask;
+                const task = gantt.getTask(selectedTask);
+                
+                document.getElementById('taskName').value = task.text.replace(/ \(\d+%\)$/, '');
+                document.getElementById('taskStart').value = task.start_date;
+                document.getElementById('taskEnd').value = gantt.calculateEndDate(task.start_date, task.duration);
+                document.getElementById('taskProgress').value = task.progress || 0;
+                document.getElementById('progressValue').textContent = (task.progress || 0) + '%';
+                document.getElementById('taskOwner').value = task.owner || '';
+                document.getElementById('taskDependencies').value = task.dependencies || '';
+                
+                showTaskModal();
+            } else {
+                showNotification('Vui lòng chọn một công việc để chỉnh sửa!', 'warning');
+            }
+        }
+
+        function deleteSelectedTask() {
+            const selectedTask = gantt.getSelectedId();
+            if (selectedTask) {
+                if (confirm('Bạn có chắc chắn muốn xóa công việc này?')) {
+                    gantt.deleteTask(selectedTask);
+                    updateAllTasks();
+                    updateStatistics();
+                    updateDataTable();
+                    showNotification('Đã xóa công việc!', 'success');
+                }
+            } else {
+                showNotification('Vui lòng chọn một công việc để xóa!', 'warning');
+            }
+        }
+
+        function filterTasks(keyword) {
+            if (!keyword) {
+                gantt.showTask(null);
+                return;
+            }
+            
+            const searchTerm = keyword.toLowerCase();
+            gantt.eachTask(function(task) {
+                const taskText = task.text.toLowerCase();
+                const matches = taskText.includes(searchTerm);
+                gantt.showTask(task.id, matches);
+            });
+        }
+
+        function showTaskModal() {
+            document.getElementById('taskModal').style.display = 'flex';
+        }
+
+        function hideTaskModal() {
+            document.getElementById('taskModal').style.display = 'none';
+            clearTaskForm();
+        }
+
+        function clearTaskForm() {
+            document.getElementById('taskName').value = '';
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('taskStart').value = today;
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 7);
+            document.getElementById('taskEnd').value = endDate.toISOString().split('T')[0];
+            document.getElementById('taskProgress').value = 0;
+            document.getElementById('progressValue').textContent = '0%';
+            document.getElementById('taskOwner').value = '';
+            document.getElementById('taskDependencies').value = '';
+            currentTaskId = null;
+        }
+
+        function saveTask() {
+            const name = document.getElementById('taskName').value.trim();
+            const start = document.getElementById('taskStart').value;
+            const end = document.getElementById('taskEnd').value;
+            const progress = parseInt(document.getElementById('taskProgress').value);
+            const owner = document.getElementById('taskOwner').value.trim();
+            const dependencies = document.getElementById('taskDependencies').value.trim();
+            
+            if (!name) {
+                showNotification('Vui lòng nhập tên công việc!', 'error');
+                return;
+            }
+            
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            
+            if (duration <= 0) {
+                showNotification('Ngày kết thúc phải sau ngày bắt đầu!', 'error');
+                return;
+            }
+            
+            const taskData = {
+                text: name + ' (' + progress + '%)',
+                start_date: start,
+                duration: duration,
+                progress: progress,
+                owner: owner,
+                dependencies: dependencies
+            };
+            
+            if (currentTaskId) {
+                const existingTask = gantt.getTask(currentTaskId);
+                Object.assign(existingTask, taskData);
+                gantt.updateTask(currentTaskId);
+            } else {
+                const newId = gantt.getTaskByTime().length + 1;
+                taskData.id = newId;
+                taskData.parent = 0;
+                gantt.addTask(taskData);
+            }
+            
+            if (dependencies) {
+                const depIds = dependencies.split(/[,;]/).map(d => d.trim()).filter(d => d && !isNaN(d));
+                depIds.forEach(depId => {
+                    if (depId) {
+                        const linkId = gantt.getLinkByTask(depId, currentTaskId || taskData.id);
+                        if (!linkId) {
+                            gantt.addLink({
+                                source: parseInt(depId),
+                                target: currentTaskId || taskData.id,
+                                type: "0"
+                            });
+                        }
+                    }
+                });
+            }
+            
+            hideTaskModal();
+            updateAllTasks();
+            updateStatistics();
+            updateDataTable();
+            showNotification('Đã lưu công việc!', 'success');
+        }
+
+        // ========== BẢNG DỮ LIỆU ==========
+        function toggleDataTable() {
+            const container = document.getElementById('dataTableContainer');
+            const button = document.getElementById('toggleTableBtn');
+            
+            if (container.classList.contains('active')) {
+                container.classList.remove('active');
+                button.innerHTML = '<i class="fas fa-list"></i> Hiển thị bảng dữ liệu';
+            } else {
+                container.classList.add('active');
+                button.innerHTML = '<i class="fas fa-times"></i> Ẩn bảng dữ liệu';
+                updateDataTable();
+            }
+        }
+
+        function updateDataTable() {
+            updateAllTasks();
+            
+            const tableBody = document.querySelector('#dataTable tbody');
+            tableBody.innerHTML = '';
+            
+            allTasks.forEach(task => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${task.id}</td>
+                    <td>${task.text.replace(/ \(\d+%\)$/, '')}</td>
+                    <td>${formatDate(task.start_date)}</td>
+                    <td>${formatDate(gantt.calculateEndDate(task.start_date, task.duration))}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px;">
+                                <div style="width: ${task.progress || 0}%; background: var(--accent-color); height: 100%; border-radius: 3px;"></div>
+                            </div>
+                            <span>${task.progress || 0}%</span>
+                        </div>
+                    </td>
+                    <td>${task.owner || 'Chưa có'}</td>
+                    <td>${task.dependencies || ''}</td>
+                `;
+                
+                row.addEventListener('click', () => {
+                    gantt.selectTask(task.id);
+                });
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function exportTable() {
+            updateAllTasks();
+            
+            const csvContent = allTasks.map(task => {
+                return [
+                    task.id,
+                    `"${task.text.replace(/ \(\d+%\)$/, '')}"`,
+                    task.start_date,
+                    gantt.calculateEndDate(task.start_date, task.duration),
+                    task.progress || 0,
+                    task.owner || '',
+                    task.dependencies || ''
+                ].join(',');
+            }).join('\n');
+            
+            const headers = ['ID', 'Tên công việc', 'Ngày bắt đầu', 'Ngày kết thúc', 'Tiến độ (%)', 'Người phụ trách', 'Phụ thuộc'].join(',');
+            const csv = headers + '\n' + csvContent;
+            
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `gantt_data_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            
+            showNotification('Đã xuất dữ liệu thành CSV!', 'success');
+        }
+
+        // ========== TEMPLATES ==========
+        function loadTemplate(templateName) {
+            const templates = {
+                automotive: automotiveTemplate,
+                project: {
+                    data: [
+                        {id: 1, text: "Phân tích yêu cầu", start_date: "2024-01-01", duration: 10, progress: 100, parent: 0},
+                        {id: 2, text: "Thiết kế hệ thống", start_date: "2024-01-11", duration: 15, progress: 80, parent: 0},
+                        {id: 3, text: "Phát triển backend", start_date: "2024-01-26", duration: 30, progress: 60, parent: 0},
+                        {id: 4, text: "Phát triển frontend", start_date: "2024-02-25", duration: 25, progress: 40, parent: 0},
+                        {id: 5, text: "Kiểm thử và triển khai", start_date: "2024-03-21", duration: 20, progress: 10, parent: 0}
+                    ],
+                    links: [
+                        {id: 1, source: 1, target: 2, type: "0"},
+                        {id: 2, source: 2, target: 3, type: "0"},
+                        {id: 3, source: 3, target: 4, type: "0"},
+                        {id: 4, source: 4, target: 5, type: "0"}
+                    ]
+                },
+                construction: {
+                    data: [
+                        {id: 1, text: "Chuẩn bị mặt bằng", start_date: "2024-01-01", duration: 15, progress: 100, parent: 0},
+                        {id: 2, text: "Đào móng", start_date: "2024-01-16", duration: 20, progress: 80, parent: 0},
+                        {id: 3, text: "Xây thô", start_date: "2024-02-05", duration: 45, progress: 60, parent: 0},
+                        {id: 4, text: "Hoàn thiện", start_date: "2024-03-21", duration: 30, progress: 30, parent: 0},
+                        {id: 5, text: "Nghiệm thu", start_date: "2024-04-20", duration: 10, progress: 0, parent: 0}
+                    ],
+                    links: [
+                        {id: 1, source: 1, target: 2, type: "0"},
+                        {id: 2, source: 2, target: 3, type: "0"},
+                        {id: 3, source: 3, target: 4, type: "0"},
+                        {id: 4, source: 4, target: 5, type: "0"}
+                    ]
+                },
+                marketing: {
+                    data: [
+                        {id: 1, text: "Nghiên cứu thị trường", start_date: "2024-01-01", duration: 7, progress: 100, parent: 0},
+                        {id: 2, text: "Lập kế hoạch chiến dịch", start_date: "2024-01-08", duration: 5, progress: 80, parent: 0},
+                        {id: 3, text: "Tạo nội dung", start_date: "2024-01-13", duration: 14, progress: 60, parent: 0},
+                        {id: 4, text: "Chạy quảng cáo", start_date: "2024-01-27", duration: 21, progress: 30, parent: 0},
+                        {id: 5, text: "Phân tích kết quả", start_date: "2024-02-17", duration: 7, progress: 10, parent: 0}
+                    ],
+                    links: [
+                        {id: 1, source: 1, target: 2, type: "0"},
+                        {id: 2, source: 2, target: 3, type: "0"},
+                        {id: 3, source: 3, target: 4, type: "0"},
+                        {id: 4, source: 4, target: 5, type: "0"}
+                    ]
+                },
+                event: {
+                    data: [
+                        {id: 1, text: "Lập kế hoạch sự kiện", start_date: "2024-01-01", duration: 10, progress: 100, parent: 0},
+                        {id: 2, text: "Đặt địa điểm và nhà cung cấp", start_date: "2024-01-11", duration: 14, progress: 80, parent: 0},
+                        {id: 3, text: "Quảng bá sự kiện", start_date: "2024-01-25", duration: 21, progress: 60, parent: 0},
+                        {id: 4, text: "Chuẩn bị hậu cần", start_date: "2024-02-15", duration: 10, progress: 40, parent: 0},
+                        {id: 5, text: "Tổ chức sự kiện", start_date: "2024-02-25", duration: 2, progress: 0, parent: 0}
+                    ],
+                    links: [
+                        {id: 1, source: 1, target: 2, type: "0"},
+                        {id: 2, source: 2, target: 3, type: "0"},
+                        {id: 3, source: 3, target: 4, type: "0"},
+                        {id: 4, source: 4, target: 5, type: "0"}
+                    ]
+                }
+            };
+            
+            if (templateName && templates[templateName]) {
+                gantt.clearAll();
+                gantt.parse(templates[templateName]);
+                updateAllTasks();
+                updateStatistics();
+                updateDataTable();
+                showNotification('Đã tải mẫu ' + templateName + ' thành công!', 'success');
+            }
+        }
+
+        // ========== XUẤT FILE ==========
+        function downloadChart(format) {
+            showLoading('Đang xuất biểu đồ...');
+            
+            setTimeout(() => {
+                if (format === 'png') {
+                    exportAsPNG();
+                } else if (format === 'pdf') {
+                    exportAsPDF();
+                }
+                hideLoading();
+            }, 500);
+        }
+
+        function exportAsPNG() {
+            html2canvas(document.getElementById('gantt_here')).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `gantt_chart_${new Date().toISOString().split('T')[0]}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showNotification('Đã xuất biểu đồ dạng PNG!', 'success');
+            });
+        }
+
+        function exportAsPDF() {
+            html2canvas(document.getElementById('gantt_here')).then(canvas => {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('l', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 280;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                pdf.save(`gantt_chart_${new Date().toISOString().split('T')[0]}.pdf`);
+                showNotification('Đã xuất biểu đồ dạng PDF!', 'success');
+            });
+        }
+
+        // ========== TIỆN ÍCH ==========
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        function resetAll() {
+            if (confirm('Bạn có chắc chắn muốn đặt lại tất cả dữ liệu?')) {
+                gantt.clearAll();
+                gantt.parse(sampleData);
+                document.getElementById('fileInput').value = '';
+                document.getElementById('templateSelect').value = '';
+                document.getElementById('scaleSelect').value = 'month';
+                document.getElementById('zoomLevel').value = 5;
+                document.getElementById('showCritical').checked = true;
+                document.getElementById('autoSchedule').checked = true;
+                document.getElementById('dataTableContainer').classList.remove('active');
+                document.getElementById('toggleTableBtn').innerHTML = '<i class="fas fa-list"></i> Hiển thị bảng dữ liệu';
+                clearTaskForm();
+                updateAllTasks();
+                updateStatistics();
+                updateDataTable();
+                initializeColumnResize();
+                showNotification('Đã đặt lại tất cả dữ liệu!', 'success');
+            }
+        }
+
+        // ========== UI HELPERS ==========
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            notification.className = 'notification ' + type;
+            messageEl.textContent = message;
+            
+            switch(type) {
+                case 'success':
+                    icon.innerHTML = '✅';
+                    break;
+                case 'error':
+                    icon.innerHTML = '❌';
+                    break;
+                case 'warning':
+                    icon.innerHTML = '⚠️';
+                    break;
+                default:
+                    icon.innerHTML = 'ℹ️';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showLoading(text) {
+            const overlay = document.getElementById('loadingOverlay');
+            const textEl = document.getElementById('loadingText');
+            textEl.textContent = text;
+            overlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

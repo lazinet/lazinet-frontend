@@ -1,149 +1,293 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Generator</title>
     <style>
-        body { font-family: Arial; padding: 20px; }
-        input { width: 400px; padding: 10px; margin-right: 10px; }
-        button { padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background: #007bff; color: white; }
-        .loading { color: #666; font-style: italic; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f7fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #1a73e8; text-align: center; margin-bottom: 10px; }
+        .input-group { margin: 20px 0; }
+        input { width: 70%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; margin-right: 10px; }
+        button { padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 5px; }
+        button:hover { background: #0d62d9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f2f2f2; }
+        .msg { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #3498db; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <h2>Word Generator</h2>
-    <p>Tải dữ liệu từ Google Sheets và tạo file Word</p>
-    
-    <div>
-        <input type="text" id="sheetUrl" placeholder="Dán URL Google Sheets vào đây" value="https://docs.google.com/spreadsheets/d/1DLk55jZ62Pd90mtlDg3Hqv8uGMXRpNZgsH-tkrcv0k8/edit">
-        <button onclick="loadData()">Tải dữ liệu</button>
-    </div>
-    
-    <div id="result">
-        <p class="loading">Nhập URL và nhấn "Tải dữ liệu"</p>
+    <div class="container">
+        <h1>WORD DOCUMENT GENERATOR</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">Tạo tài liệu Word từ Google Sheets</p>
+        
+        <div class="input-group">
+            <h3>Google Sheets URL:</h3>
+            <input type="text" id="sheetUrl" value="https://docs.google.com/spreadsheets/d/1DLk55jZ62Pd90mtlDg3Hqv8uGMXRpNZgsH-tkrcv0k8/edit">
+            <button onclick="loadData()">Lấy dữ liệu</button>
+            <p style="color: #666; font-size: 14px; margin-top: 5px;">Sheet phải được chia sẻ công khai</p>
+        </div>
+        
+        <div id="message" class="msg" style="display: none;"></div>
+        
+        <div style="margin: 20px 0;">
+            <button onclick="testConnection()" style="background: #2196F3;">Kiểm tra kết nối</button>
+            <button onclick="exportAllToWord()" style="background: #FF9800;">Xuất tất cả ra Word</button>
+            <button onclick="clearTable()" style="background: #f44336;">Xoá dữ liệu</button>
+        </div>
+        
+        <h3>Dữ liệu từ Google Sheets:</h3>
+        <div id="loading" style="display: none; text-align: center; padding: 20px;">
+            <div class="loading"></div> Đang tải...
+        </div>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Họ và tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Nơi sinh</th>
+                    <th>Giới tính</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="6" style="text-align: center; padding: 30px;">Chưa có dữ liệu</td></tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+            <h3>Hướng dẫn:</h3>
+            <ol style="margin-left: 20px; line-height: 1.6;">
+                <li>Chuẩn bị Google Sheets với đúng cột tiêu đề</li>
+                <li>Chia sẻ sheet: Share → Anyone with the link → Viewer</li>
+                <li>Copy URL và dán vào ô trên</li>
+                <li>Nhấn "Lấy dữ liệu" để xem</li>
+                <li>Nhấn "Xuất Word" để tạo tài liệu</li>
+            </ol>
+        </div>
     </div>
 
     <script>
-        function loadData() {
-            const url = document.getElementById('sheetUrl').value;
-            
-            // Lấy sheet ID
-            const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-            if (!match) {
-                document.getElementById('result').innerHTML = "<p style='color:red'>URL không hợp lệ</p>";
+        // Biến lưu dữ liệu
+        let sheetData = [];
+        
+        // Hiển thị thông báo
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'msg ' + type;
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 5000);
+        }
+        
+        // Lấy Sheet ID từ URL
+        function getSheetId(url) {
+            const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+            return match ? match[1] : url;
+        }
+        
+        // Tải dữ liệu
+        async function loadData() {
+            const url = document.getElementById('sheetUrl').value.trim();
+            if (!url) {
+                showMessage('Vui lòng nhập URL', 'error');
                 return;
             }
             
-            const sheetId = match[1];
-            const apiUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+            const sheetId = getSheetId(url);
+            if (!sheetId) {
+                showMessage('URL không hợp lệ', 'error');
+                return;
+            }
             
             // Hiển thị loading
-            document.getElementById('result').innerHTML = "<p class='loading'>Đang tải dữ liệu...</p>";
+            const loading = document.getElementById('loading');
+            const tableBody = document.getElementById('tableBody');
+            loading.style.display = 'block';
+            tableBody.innerHTML = '<tr><td colspan="6">Đang tải...</td></tr>';
             
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Không thể kết nối đến Google Sheets");
-                    }
-                    return response.text();
-                })
-                .then(text => {
-                    try {
-                        const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-                        const json = JSON.parse(jsonStr);
-                        
-                        // Hiển thị bảng
-                        displayTable(json);
-                        
-                        // Tạo file Word
-                        createWordFile(json);
-                        
-                    } catch (error) {
-                        document.getElementById('result').innerHTML = "<p style='color:red'>Lỗi xử lý dữ liệu: " + error.message + "</p>";
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('result').innerHTML = "<p style='color:red'>Lỗi: " + error.message + "</p>";
+            try {
+                // Gọi Google Sheets API
+                const apiUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) throw new Error('Không thể kết nối');
+                
+                const text = await response.text();
+                const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                const data = JSON.parse(jsonStr);
+                
+                // Xử lý dữ liệu
+                sheetData = [];
+                const headers = data.table.cols.map(col => col.label || '');
+                
+                data.table.rows.forEach((row, index) => {
+                    const item = { id: index + 1 };
+                    headers.forEach((header, colIndex) => {
+                        item[header] = row.c[colIndex] ? row.c[colIndex].v || '' : '';
+                    });
+                    sheetData.push(item);
                 });
+                
+                // Hiển thị bảng
+                displayTable();
+                showMessage('Đã tải ' + sheetData.length + ' bản ghi', 'success');
+                
+            } catch (error) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="color:red">Lỗi: ' + error.message + '</td></tr>';
+                showMessage('Lỗi: ' + error.message, 'error');
+            } finally {
+                loading.style.display = 'none';
+            }
         }
         
-        function displayTable(data) {
-            let html = "<h3>Dữ liệu từ Google Sheets:</h3>";
-            html += "<table>";
+        // Hiển thị bảng
+        function displayTable() {
+            const tableBody = document.getElementById('tableBody');
             
-            // Header
-            html += "<tr>";
-            data.table.cols.forEach(col => {
-                html += "<th>" + (col.label || "") + "</th>";
+            if (sheetData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6">Không có dữ liệu</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            sheetData.forEach(row => {
+                html += '<tr>';
+                html += '<td>' + row.id + '</td>';
+                html += '<td>' + (row['Họ và tên'] || '') + '</td>';
+                html += '<td>' + (row['Ngày tháng năm sinh'] || '') + '</td>';
+                html += '<td>' + (row['Nơi sinh'] || '') + '</td>';
+                html += '<td>' + (row['Giới tính'] || '') + '</td>';
+                html += '<td><button onclick="exportToWord(' + row.id + ')" style="background:#4CAF50;color:white;padding:5px 10px;border:none;border-radius:3px;cursor:pointer">Xuất Word</button></td>';
+                html += '</tr>';
             });
-            html += "</tr>";
             
-            // Data rows
-            data.table.rows.forEach((row, index) => {
-                html += "<tr>";
-                row.c.forEach(cell => {
-                    html += "<td>" + (cell ? cell.v : "") + "</td>";
-                });
-                html += "</tr>";
-            });
-            
-            html += "</table>";
-            html += "<p><strong>Tổng số bản ghi:</strong> " + data.table.rows.length + "</p>";
-            
-            document.getElementById('result').innerHTML = html;
+            tableBody.innerHTML = html;
         }
         
-        function createWordFile(data) {
-            // Tạo nội dung Word
-            let wordContent = "<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
-            wordContent += "<head><meta charset='UTF-8'><title>Document</title>";
-            wordContent += "<style>body { font-family: Arial; } table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #000; padding: 8px; }</style>";
-            wordContent += "</head><body>";
-            wordContent += "<h1>Dữ liệu từ Google Sheets</h1>";
-            wordContent += "<p>Ngày tạo: " + new Date().toLocaleDateString('vi-VN') + "</p>";
-            wordContent += "<table>";
+        // Kiểm tra kết nối
+        async function testConnection() {
+            const url = document.getElementById('sheetUrl').value.trim();
+            if (!url) {
+                showMessage('Vui lòng nhập URL', 'error');
+                return;
+            }
             
-            // Header
-            wordContent += "<tr>";
-            data.table.cols.forEach(col => {
-                wordContent += "<th>" + (col.label || "") + "</th>";
-            });
-            wordContent += "</tr>";
+            showMessage('Đang kiểm tra...', 'success');
             
-            // Data
-            data.table.rows.forEach(row => {
-                wordContent += "<tr>";
-                row.c.forEach(cell => {
-                    wordContent += "<td>" + (cell ? cell.v : "") + "</td>";
-                });
-                wordContent += "</tr>";
-            });
+            try {
+                const sheetId = getSheetId(url);
+                const testUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+                const response = await fetch(testUrl);
+                
+                if (response.ok) {
+                    showMessage('Kết nối thành công', 'success');
+                } else {
+                    showMessage('Lỗi kết nối', 'error');
+                }
+            } catch (error) {
+                showMessage('Lỗi: ' + error.message, 'error');
+            }
+        }
+        
+        // Xuất 1 bản ghi ra Word
+        function exportToWord(rowId) {
+            const row = sheetData.find(r => r.id === rowId);
+            if (!row) {
+                showMessage('Không tìm thấy dữ liệu', 'error');
+                return;
+            }
             
-            wordContent += "</table>";
-            wordContent += "</body></html>";
+            // Tạo nội dung HTML cho Word
+            const content = '<!DOCTYPE html>' +
+                '<html><head><meta charset="UTF-8"><title>Document</title>' +
+                '<style>body{font-family:Arial;padding:20px}h1{color:#2c3e50}</style>' +
+                '</head><body>' +
+                '<h1>THÔNG TIN CÁ NHÂN</h1>' +
+                '<p><strong>Họ và tên:</strong> ' + (row['Họ và tên'] || '') + '</p>' +
+                '<p><strong>Ngày sinh:</strong> ' + (row['Ngày tháng năm sinh'] || '') + '</p>' +
+                '<p><strong>Nơi sinh:</strong> ' + (row['Nơi sinh'] || '') + '</p>' +
+                '<p><strong>Giới tính:</strong> ' + (row['Giới tính'] || '') + '</p>' +
+                '<p style="color:#666;font-size:12px">Tạo ngày: ' + new Date().toLocaleDateString('vi-VN') + '</p>' +
+                '</body></html>';
             
-            // Tạo file và download
-            const blob = new Blob([wordContent], { type: 'application/msword' });
+            // Tạo và tải file
+            const blob = new Blob([content], { type: 'application/msword' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'data_' + new Date().getTime() + '.doc';
+            a.download = (row['Họ và tên'] || 'Document') + '.doc';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            // Thông báo
-            const msg = document.createElement('div');
-            msg.innerHTML = "<p style='background:#d4edda;padding:10px;border-radius:5px;color:#155724;margin-top:10px'>✓ Đã tải xuống file Word thành công!</p>";
-            document.getElementById('result').appendChild(msg);
+            showMessage('Đã tạo file: ' + a.download, 'success');
         }
         
-        // Tự động chạy khi trang tải xong
+        // Xuất tất cả ra Word
+        function exportAllToWord() {
+            if (sheetData.length === 0) {
+                showMessage('Không có dữ liệu', 'error');
+                return;
+            }
+            
+            // Tạo nội dung HTML cho Word
+            let content = '<!DOCTYPE html>' +
+                '<html><head><meta charset="UTF-8"><title>Danh sách</title>' +
+                '<style>body{font-family:Arial;padding:20px}h1{text-align:center}' +
+                'table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px}' +
+                'th{background:#f2f2f2}</style></head><body>' +
+                '<h1>DANH SÁCH TỪ GOOGLE SHEETS</h1>' +
+                '<p>Tổng số: ' + sheetData.length + ' bản ghi</p>' +
+                '<table><tr><th>STT</th><th>Họ và tên</th><th>Ngày sinh</th><th>Nơi sinh</th><th>Giới tính</th></tr>';
+            
+            sheetData.forEach(row => {
+                content += '<tr>' +
+                    '<td>' + row.id + '</td>' +
+                    '<td>' + (row['Họ và tên'] || '') + '</td>' +
+                    '<td>' + (row['Ngày tháng năm sinh'] || '') + '</td>' +
+                    '<td>' + (row['Nơi sinh'] || '') + '</td>' +
+                    '<td>' + (row['Giới tính'] || '') + '</td>' +
+                    '</tr>';
+            });
+            
+            content += '</table></body></html>';
+            
+            // Tạo và tải file
+            const blob = new Blob([content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Danh_sach_' + new Date().toISOString().slice(0,10) + '.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showMessage('Đã tạo file với ' + sheetData.length + ' bản ghi', 'success');
+        }
+        
+        // Xoá bảng
+        function clearTable() {
+            if (confirm('Xoá tất cả dữ liệu?')) {
+                sheetData = [];
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6">Đã xoá dữ liệu</td></tr>';
+                showMessage('Đã xoá dữ liệu', 'success');
+            }
+        }
+        
+        // Tự động test khi mở
         window.onload = function() {
-            console.log("Ứng dụng đã sẵn sàng");
+            console.log('App đã sẵn sàng');
         };
     </script>
 </body>
