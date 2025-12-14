@@ -810,18 +810,17 @@
                         <label for="templateSelect">Hoặc chọn mẫu có sẵn:</label>
                         <select id="templateSelect" class="form-control" onchange="loadTemplate(this.value)">
                             <option value="">-- Chọn mẫu --</option>
-                            <option value="automotive">Dự án Automotive</option>
-                            <option value="project">Dự án phần mềm</option>
+                            <option value="automotive">Dự án Automotive (có subtasks)</option>
+                            <option value="software">Dự án phần mềm (có subtasks)</option>
                             <option value="construction">Xây dựng</option>
                             <option value="marketing">Marketing Campaign</option>
-                            <option value="event">Tổ chức sự kiện</option>
                         </select>
                     </div>
                     <div class="instructions" style="margin-top: 1rem;">
-                        <h4><i class="fas fa-download"></i> Tải mẫu Excel chuẩn</h4>
-                        <p>Download file mẫu để biết định dạng chuẩn:</p>
+                        <h4><i class="fas fa-download"></i> Tải mẫu Excel với subtasks</h4>
+                        <p>Download file mẫu với cấu trúc parent-child:</p>
                         <button class="btn btn-secondary btn-full" onclick="downloadSampleExcel()" style="margin-top: 0.5rem;">
-                            <i class="fas fa-file-excel"></i> Tải mẫu Excel
+                            <i class="fas fa-file-excel"></i> Tải mẫu Excel (có subtasks)
                         </button>
                     </div>
                 </div>
@@ -871,6 +870,12 @@
                         </button>
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
+                        <label for="parentSelect">Chọn parent task:</label>
+                        <select id="parentSelect" class="form-control" onchange="updateParentForNewTask()">
+                            <option value="0">-- Không có parent (task chính) --</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
                         <label for="taskFilter">Lọc công việc:</label>
                         <input type="text" id="taskFilter" class="form-control" placeholder="Nhập từ khóa..." oninput="filterTasks(this.value)">
                     </div>
@@ -907,21 +912,21 @@
                             <div class="stat-label">Tổng thời gian (ngày)</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value" id="criticalTasks">0</div>
-                            <div class="stat-label">Công việc găng</div>
+                            <div class="stat-value" id="parentTasks">0</div>
+                            <div class="stat-label">Công việc chính</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Instructions -->
                 <div class="instructions">
-                    <h4><i class="fas fa-info-circle"></i> Hướng dẫn sử dụng</h4>
+                    <h4><i class="fas fa-info-circle"></i> Hướng dẫn sử dụng (có subtasks)</h4>
                     <ul>
-                        <li><strong>Tải file:</strong> Excel/CSV với các cột: ID, Tên, Bắt đầu, Kết thúc, Tiến độ</li>
+                        <li><strong>Cấu trúc parent-child:</strong> Dùng cột "Parent ID" để chỉ định task cha</li>
+                        <li><strong>Task cha:</strong> Parent ID = 0 hoặc để trống</li>
+                        <li><strong>Task con:</strong> Parent ID = ID của task cha</li>
                         <li><strong>Thay đổi cột:</strong> Kéo đường viền bên phải tiêu đề cột để resize</li>
                         <li><strong>Di chuyển task:</strong> Kéo task để thay đổi timeline</li>
-                        <li><strong>Resize task:</strong> Kéo cạnh trái/phải để thay đổi thời lượng</li>
-                        <li><strong>Phụ thuộc:</strong> Kéo từ task này sang task khác để tạo liên kết</li>
                     </ul>
                 </div>
             </aside>
@@ -930,7 +935,7 @@
             <main class="gantt-container">
                 <div class="gantt-header">
                     <div class="gantt-title">
-                        <i class="fas fa-project-diagram"></i> Biểu đồ Gantt
+                        <i class="fas fa-project-diagram"></i> Biểu đồ Gantt (Hỗ trợ Subtasks)
                     </div>
                     <div class="gantt-controls">
                         <button class="btn btn-secondary" onclick="gantt.zoomIn()" data-tooltip="Phóng to">
@@ -966,6 +971,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Parent ID</th>
                                     <th>Tên công việc</th>
                                     <th>Bắt đầu</th>
                                     <th>Kết thúc</th>
@@ -993,6 +999,12 @@
                 <input type="text" id="taskName" class="form-control" placeholder="Nhập tên công việc">
             </div>
             <div class="form-group">
+                <label for="parentTask">Parent Task:</label>
+                <select id="parentTask" class="form-control">
+                    <option value="0">-- Không có parent (task chính) --</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="taskStart">Ngày bắt đầu:</label>
                 <input type="date" id="taskStart" class="form-control">
             </div>
@@ -1010,7 +1022,7 @@
                 <input type="text" id="taskOwner" class="form-control" placeholder="Nhập tên người phụ trách">
             </div>
             <div class="form-group">
-                <label for="taskDependencies">Phụ thuộc vào:</label>
+                <label for="taskDependencies">Phụ thuộc vào (ID):</label>
                 <input type="text" id="taskDependencies" class="form-control" placeholder="ID công việc phụ thuộc, cách nhau bằng dấu phẩy">
             </div>
             <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
@@ -1050,17 +1062,17 @@
         gantt.config.autofit = true;
         gantt.config.row_height = 40;
         gantt.config.bar_height = 20;
-        gantt.config.grid_width = 350;
+        gantt.config.grid_width = 400;
         gantt.config.readonly = false;
         gantt.config.drag_progress = true;
         gantt.config.drag_links = true;
         gantt.config.drag_move = true;
         gantt.config.drag_resize = true;
-        gantt.config.grid_resize = true; // Bật resize grid columns
+        gantt.config.grid_resize = true;
         
         // Cấu hình columns với resize
         gantt.config.columns = [
-            {name: "text", label: "Tên công việc", width: 200, resize: true},
+            {name: "text", label: "Tên công việc", width: 200, resize: true, tree: true},
             {name: "start_date", label: "Bắt đầu", width: 100, align: "center", resize: true},
             {name: "end_date", label: "Kết thúc", width: 100, align: "center", resize: true},
             {name: "progress", label: "Tiến độ", width: 80, align: "center", template: function(task) {
@@ -1088,40 +1100,49 @@
             return "<div class='gantt_tree_icon gantt_file'></div>";
         };
 
-        // ========== DỮ LIỆU MẪU AUTOMOTIVE ==========
+        // ========== DỮ LIỆU MẪU AUTOMOTIVE VỚI SUBTASKS ==========
         const automotiveTemplate = {
             data: [
+                // Parent tasks (parent: 0)
                 {id: 1, text: "Giai đoạn phân tích & Thiết kế", start_date: "2024-01-01", duration: 45, progress: 100, parent: 0, open: true},
-                {id: 2, text: "Phân tích yêu cầu hệ thống", start_date: "2024-01-01", duration: 15, progress: 100, parent: 1},
-                {id: 3, text: "Thiết kế kiến trúc phần mềm", start_date: "2024-01-16", duration: 20, progress: 100, parent: 1},
-                {id: 4, text: "Thiết kế giao diện người dùng", start_date: "2024-01-26", duration: 10, progress: 100, parent: 1},
-                {id: 5, text: "Giai đoạn phát triển", start_date: "2024-02-15", duration: 120, progress: 65, parent: 0, open: true},
-                {id: 6, text: "Phát triển module điều khiển động cơ", start_date: "2024-02-15", duration: 45, progress: 90, parent: 5},
-                {id: 7, text: "Phát triển hệ thống lái tự động", start_date: "2024-03-01", duration: 60, progress: 70, parent: 5},
-                {id: 8, text: "Phát triển hệ thống an toàn", start_date: "2024-03-15", duration: 50, progress: 50, parent: 5},
-                {id: 9, text: "Phát triển giao diện người dùng", start_date: "2024-04-01", duration: 40, progress: 40, parent: 5},
-                {id: 10, text: "Giai đoạn kiểm thử", start_date: "2024-06-15", duration: 60, progress: 20, parent: 0, open: true},
-                {id: 11, text: "Kiểm thử đơn vị", start_date: "2024-06-15", duration: 20, progress: 30, parent: 10},
-                {id: 12, text: "Kiểm thử tích hợp", start_date: "2024-07-05", duration: 25, progress: 15, parent: 10},
-                {id: 13, text: "Kiểm thử hệ thống", start_date: "2024-08-01", duration: 15, progress: 5, parent: 10},
-                {id: 14, text: "Giai đoạn triển khai", start_date: "2024-08-15", duration: 30, progress: 0, parent: 0, open: true},
-                {id: 15, text: "Triển khai pilot", start_date: "2024-08-15", duration: 15, progress: 0, parent: 14},
-                {id: 16, text: "Đào tạo người dùng", start_date: "2024-09-01", duration: 10, progress: 0, parent: 14},
-                {id: 17, text: "Triển khai chính thức", start_date: "2024-09-11", duration: 5, progress: 0, parent: 14}
+                {id: 2, text: "Giai đoạn phát triển", start_date: "2024-02-15", duration: 120, progress: 65, parent: 0, open: true},
+                {id: 3, text: "Giai đoạn kiểm thử", start_date: "2024-06-15", duration: 60, progress: 20, parent: 0, open: true},
+                {id: 4, text: "Giai đoạn triển khai", start_date: "2024-08-15", duration: 30, progress: 0, parent: 0, open: true},
+                
+                // Subtasks của Giai đoạn phân tích & Thiết kế
+                {id: 11, text: "Phân tích yêu cầu hệ thống", start_date: "2024-01-01", duration: 15, progress: 100, parent: 1},
+                {id: 12, text: "Thiết kế kiến trúc phần mềm", start_date: "2024-01-16", duration: 20, progress: 100, parent: 1},
+                {id: 13, text: "Thiết kế giao diện người dùng", start_date: "2024-01-26", duration: 10, progress: 100, parent: 1},
+                
+                // Subtasks của Giai đoạn phát triển
+                {id: 21, text: "Phát triển module điều khiển động cơ", start_date: "2024-02-15", duration: 45, progress: 90, parent: 2},
+                {id: 22, text: "Phát triển hệ thống lái tự động", start_date: "2024-03-01", duration: 60, progress: 70, parent: 2},
+                {id: 23, text: "Phát triển hệ thống an toàn", start_date: "2024-03-15", duration: 50, progress: 50, parent: 2},
+                {id: 24, text: "Phát triển giao diện người dùng", start_date: "2024-04-01", duration: 40, progress: 40, parent: 2},
+                
+                // Subtasks của Giai đoạn kiểm thử
+                {id: 31, text: "Kiểm thử đơn vị", start_date: "2024-06-15", duration: 20, progress: 30, parent: 3},
+                {id: 32, text: "Kiểm thử tích hợp", start_date: "2024-07-05", duration: 25, progress: 15, parent: 3},
+                {id: 33, text: "Kiểm thử hệ thống", start_date: "2024-08-01", duration: 15, progress: 5, parent: 3},
+                
+                // Subtasks của Giai đoạn triển khai
+                {id: 41, text: "Triển khai pilot", start_date: "2024-08-15", duration: 15, progress: 0, parent: 4},
+                {id: 42, text: "Đào tạo người dùng", start_date: "2024-09-01", duration: 10, progress: 0, parent: 4},
+                {id: 43, text: "Triển khai chính thức", start_date: "2024-09-11", duration: 5, progress: 0, parent: 4}
             ],
             links: [
-                {id: 1, source: 2, target: 3, type: "0"},
-                {id: 2, source: 3, target: 4, type: "0"},
-                {id: 3, source: 4, target: 6, type: "0"},
-                {id: 4, source: 6, target: 7, type: "0"},
-                {id: 5, source: 7, target: 8, type: "0"},
-                {id: 6, source: 8, target: 9, type: "0"},
-                {id: 7, source: 9, target: 11, type: "0"},
-                {id: 8, source: 11, target: 12, type: "0"},
-                {id: 9, source: 12, target: 13, type: "0"},
-                {id: 10, source: 13, target: 15, type: "0"},
-                {id: 11, source: 15, target: 16, type: "0"},
-                {id: 12, source: 16, target: 17, type: "0"}
+                {id: 1, source: 11, target: 12, type: "0"},
+                {id: 2, source: 12, target: 13, type: "0"},
+                {id: 3, source: 13, target: 21, type: "0"},
+                {id: 4, source: 21, target: 22, type: "0"},
+                {id: 5, source: 22, target: 23, type: "0"},
+                {id: 6, source: 23, target: 24, type: "0"},
+                {id: 7, source: 24, target: 31, type: "0"},
+                {id: 8, source: 31, target: 32, type: "0"},
+                {id: 9, source: 32, target: 33, type: "0"},
+                {id: 10, source: 33, target: 41, type: "0"},
+                {id: 11, source: 41, target: 42, type: "0"},
+                {id: 12, source: 42, target: 43, type: "0"}
             ]
         };
 
@@ -1132,6 +1153,7 @@
         gantt.parse(sampleData);
         updateAllTasks();
         updateStatistics();
+        updateParentDropdown();
 
         // ========== CÁC HÀM QUẢN LÝ TASK ==========
         function updateAllTasks() {
@@ -1147,21 +1169,36 @@
             const totalTasks = allTasks.length;
             const completedTasks = allTasks.filter(t => t.progress === 100).length;
             const totalDuration = allTasks.reduce((sum, task) => sum + (task.duration || 0), 0);
-            const criticalTasks = allTasks.filter(t => calculateCriticalness(t)).length;
+            const parentTasks = allTasks.filter(t => t.parent === 0).length;
             
             document.getElementById('totalTasks').textContent = totalTasks;
             document.getElementById('completedTasks').textContent = completedTasks;
             document.getElementById('totalDuration').textContent = totalDuration;
-            document.getElementById('criticalTasks').textContent = criticalTasks;
+            document.getElementById('parentTasks').textContent = parentTasks;
         }
 
-        function calculateCriticalness(task) {
-            const endDate = new Date(task.end_date || task.start_date);
-            const today = new Date();
-            const timeDiff = endDate.getTime() - today.getTime();
-            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        function updateParentDropdown() {
+            const parentSelect = document.getElementById('parentSelect');
+            const parentTaskSelect = document.getElementById('parentTask');
             
-            return daysDiff <= task.duration * 0.3;
+            // Clear existing options
+            parentSelect.innerHTML = '<option value="0">-- Không có parent (task chính) --</option>';
+            parentTaskSelect.innerHTML = '<option value="0">-- Không có parent (task chính) --</option>';
+            
+            // Add parent tasks only (tasks with parent = 0)
+            allTasks.forEach(task => {
+                if (task.parent === 0) {
+                    const option1 = document.createElement('option');
+                    option1.value = task.id;
+                    option1.textContent = `[${task.id}] ${task.text}`;
+                    parentSelect.appendChild(option1);
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = task.id;
+                    option2.textContent = `[${task.id}] ${task.text}`;
+                    parentTaskSelect.appendChild(option2);
+                }
+            });
         }
 
         // ========== QUẢN LÝ GRID COLUMNS (RESIZE) ==========
@@ -1169,10 +1206,9 @@
             const gridHead = document.querySelector('.gantt_grid_head');
             if (!gridHead) return;
 
-            // Thêm resize handle cho từng cột
             const headers = gridHead.querySelectorAll('.gantt_grid_head_cell');
             headers.forEach((header, index) => {
-                if (index < headers.length - 1) { // Không thêm cho cột cuối
+                if (index < headers.length - 1) {
                     const resizeHandle = document.createElement('div');
                     resizeHandle.className = 'resize-handle';
                     resizeHandle.style.cssText = `
@@ -1189,7 +1225,6 @@
                     header.style.position = 'relative';
                     header.appendChild(resizeHandle);
                     
-                    // Sự kiện resize
                     resizeHandle.addEventListener('mousedown', function(e) {
                         startResize(e, index);
                     });
@@ -1205,10 +1240,8 @@
             const headers = document.querySelectorAll('.gantt_grid_head_cell');
             originalColumnWidth = headers[columnIndex].offsetWidth;
             
-            // Thêm class resizing
             headers[columnIndex].classList.add('resizing');
             
-            // Thêm event listeners
             document.addEventListener('mousemove', handleResize);
             document.addEventListener('mouseup', stopResize);
             
@@ -1220,17 +1253,13 @@
             if (!isResizing) return;
             
             const deltaX = e.clientX - resizeStartX;
-            const newWidth = Math.max(50, originalColumnWidth + deltaX); // Min width 50px
+            const newWidth = Math.max(50, originalColumnWidth + deltaX);
             
-            // Cập nhật width trong cấu hình gantt
             if (gantt.config.columns && gantt.config.columns[resizeColumnIndex]) {
                 gantt.config.columns[resizeColumnIndex].width = newWidth;
             }
             
-            // Cập nhật grid width tổng
             updateTotalGridWidth();
-            
-            // Render lại
             gantt.render();
         }
 
@@ -1241,11 +1270,9 @@
             const headers = document.querySelectorAll('.gantt_grid_head_cell');
             headers[resizeColumnIndex].classList.remove('resizing');
             
-            // Xóa event listeners
             document.removeEventListener('mousemove', handleResize);
             document.removeEventListener('mouseup', stopResize);
             
-            // Lưu column widths vào localStorage
             saveColumnWidths();
         }
 
@@ -1286,27 +1313,23 @@
 
         // ========== EVENT LISTENERS ==========
         document.addEventListener('DOMContentLoaded', function() {
-            // File input change
             document.getElementById('fileInput').addEventListener('change', handleFileSelect);
             
-            // Drag and drop
             const uploadArea = document.getElementById('uploadArea');
             uploadArea.addEventListener('dragover', handleDragOver);
             uploadArea.addEventListener('dragleave', handleDragLeave);
             uploadArea.addEventListener('drop', handleDrop);
             
-            // Initialize date inputs
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('taskStart').value = today;
             const endDate = new Date();
             endDate.setDate(endDate.getDate() + 7);
             document.getElementById('taskEnd').value = endDate.toISOString().split('T')[0];
             
-            // Load saved column widths
             setTimeout(() => {
                 loadColumnWidths();
                 initializeColumnResize();
-                gantt.render(); // Render lại với widths đã load
+                gantt.render();
             }, 100);
         });
 
@@ -1367,8 +1390,7 @@
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {
-                    const data = e.target.result;
-                    resolve(data);
+                    resolve(e.target.result);
                 };
                 
                 reader.onerror = function(e) {
@@ -1388,28 +1410,27 @@
             
             try {
                 if (fileName.toLowerCase().endsWith('.csv')) {
-                    // Xử lý CSV
                     const rows = data.split('\n').filter(row => row.trim() !== '');
                     if (rows.length < 2) return tasks;
                     
-                    const headers = rows[0].split(',').map(h => h.trim());
+                    const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
                     
                     for (let i = 1; i < rows.length; i++) {
                         const row = rows[i];
                         const cells = row.split(',').map(c => c.trim());
                         
-                        if (cells.length >= 4) {
+                        if (cells.length >= 5) {
                             const task = {
                                 id: parseInt(cells[0]) || i,
-                                text: cells[1] || `Task ${i}`,
-                                start_date: parseDateFromExcel(cells[2]),
-                                end_date: parseDateFromExcel(cells[3]),
-                                progress: parseFloat(cells[4]) || 0,
-                                owner: cells[5] || '',
-                                dependencies: cells[6] || ''
+                                parent: parseInt(cells[1]) || 0,
+                                text: cells[2] || `Task ${i}`,
+                                start_date: parseDateFromExcel(cells[3]),
+                                end_date: parseDateFromExcel(cells[4]),
+                                progress: parseFloat(cells[5]) || 0,
+                                owner: cells[6] || '',
+                                dependencies: cells[7] || ''
                             };
                             
-                            // Tính duration
                             if (task.start_date && task.end_date) {
                                 const start = new Date(task.start_date);
                                 const end = new Date(task.end_date);
@@ -1422,17 +1443,15 @@
                         }
                     }
                 } else {
-                    // Xử lý Excel
                     const workbook = XLSX.read(data, {type: 'array', cellDates: true});
                     const sheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[sheetName];
                     
-                    // Chuyển sheet thành JSON
                     const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
                     
                     if (jsonData.length < 2) return tasks;
                     
-                    const headers = jsonData[0];
+                    const headers = jsonData[0].map(h => h.toString().toLowerCase().trim());
                     
                     for (let i = 1; i < jsonData.length; i++) {
                         const row = jsonData[i];
@@ -1440,15 +1459,15 @@
                         
                         const task = {
                             id: parseInt(row[0]) || i,
-                            text: row[1] || `Task ${i}`,
-                            start_date: parseDateFromExcel(row[2]),
-                            end_date: parseDateFromExcel(row[3]),
-                            progress: parseFloat(row[4]) || 0,
-                            owner: row[5] || '',
-                            dependencies: row[6] || ''
+                            parent: parseInt(row[1]) || 0,
+                            text: row[2] || `Task ${i}`,
+                            start_date: parseDateFromExcel(row[3]),
+                            end_date: parseDateFromExcel(row[4]),
+                            progress: parseFloat(row[5]) || 0,
+                            owner: row[6] || '',
+                            dependencies: row[7] || ''
                         };
                         
-                        // Tính duration
                         if (task.start_date && task.end_date) {
                             const start = new Date(task.start_date);
                             const end = new Date(task.end_date);
@@ -1471,22 +1490,18 @@
         function parseDateFromExcel(value) {
             if (!value) return null;
             
-            // Nếu là số serial date của Excel
             if (typeof value === 'number') {
-                // Excel date system (1900 date system, với bug năm 1900 là năm nhuận)
-                const excelEpoch = new Date(1899, 11, 30); // December 30, 1899
+                const excelEpoch = new Date(1899, 11, 30);
                 const date = new Date(excelEpoch.getTime() + (value * 24 * 60 * 60 * 1000));
                 return date.toISOString().split('T')[0];
             }
             
-            // Nếu là chuỗi date
             if (typeof value === 'string') {
-                // Thử các định dạng date
                 const formats = [
-                    /(\d{4})-(\d{2})-(\d{2})/, // YYYY-MM-DD
-                    /(\d{2})\/(\d{2})\/(\d{4})/, // DD/MM/YYYY
-                    /(\d{2})-(\d{2})-(\d{4})/, // DD-MM-YYYY
-                    /(\d{4})\/(\d{2})\/(\d{2})/ // YYYY/MM/DD
+                    /(\d{4})-(\d{2})-(\d{2})/,
+                    /(\d{2})\/(\d{2})\/(\d{4})/,
+                    /(\d{2})-(\d{2})-(\d{4})/,
+                    /(\d{4})\/(\d{2})\/(\d{2})/
                 ];
                 
                 for (const format of formats) {
@@ -1495,12 +1510,10 @@
                         let year, month, day;
                         
                         if (format === formats[0] || format === formats[3]) {
-                            // YYYY-MM-DD hoặc YYYY/MM/DD
                             year = match[1];
                             month = parseInt(match[2]) - 1;
                             day = match[3];
                         } else {
-                            // DD/MM/YYYY hoặc DD-MM-YYYY
                             year = match[3];
                             month = parseInt(match[2]) - 1;
                             day = match[1];
@@ -1513,14 +1526,12 @@
                     }
                 }
                 
-                // Thử parse trực tiếp
                 const date = new Date(value);
                 if (!isNaN(date.getTime())) {
                     return date.toISOString().split('T')[0];
                 }
             }
             
-            // Nếu là đối tượng Date
             if (value instanceof Date) {
                 return value.toISOString().split('T')[0];
             }
@@ -1539,14 +1550,14 @@
                     start_date: task.start_date || new Date().toISOString().split('T')[0],
                     duration: task.duration || 7,
                     progress: task.progress || 0,
-                    parent: 0,
+                    parent: task.parent || 0,
+                    open: task.parent === 0,
                     owner: task.owner || '',
                     dependencies: task.dependencies || ''
                 };
                 
                 ganttData.data.push(ganttTask);
                 
-                // Xử lý dependencies
                 if (task.dependencies) {
                     const deps = task.dependencies.toString().split(/[,;]/).map(d => d.trim()).filter(d => d && !isNaN(d));
                     deps.forEach(depId => {
@@ -1567,33 +1578,43 @@
             updateAllTasks();
             updateStatistics();
             updateDataTable();
+            updateParentDropdown();
             initializeColumnResize();
         }
 
-        // ========== TẢI MẪU EXCEL ==========
+        // ========== TẢI MẪU EXCEL VỚI SUBTASKS ==========
         function downloadSampleExcel() {
-            // Tạo dữ liệu mẫu
             const sampleData = [
-                ["ID", "Tên công việc", "Ngày bắt đầu", "Ngày kết thúc", "Tiến độ (%)", "Người phụ trách", "Phụ thuộc"],
-                [1, "Phân tích yêu cầu hệ thống", "2024-01-01", "2024-01-15", 100, "Nguyễn Văn A", ""],
-                [2, "Thiết kế kiến trúc phần mềm", "2024-01-16", "2024-02-05", 100, "Trần Thị B", "1"],
-                [3, "Phát triển module điều khiển", "2024-02-06", "2024-03-22", 75, "Lê Văn C", "2"],
-                [4, "Phát triển hệ thống lái tự động", "2024-03-01", "2024-04-30", 60, "Phạm Thị D", "2"],
-                [5, "Kiểm thử đơn vị", "2024-05-01", "2024-05-20", 30, "Hồ Văn E", "3,4"],
-                [6, "Kiểm thử tích hợp", "2024-05-21", "2024-06-15", 15, "Nguyễn Thị F", "5"],
-                [7, "Triển khai pilot", "2024-06-16", "2024-07-01", 0, "Trần Văn G", "6"]
+                ["ID", "Parent ID", "Tên công việc", "Ngày bắt đầu", "Ngày kết thúc", "Tiến độ (%)", "Người phụ trách", "Phụ thuộc"],
+                [1, 0, "Giai đoạn phân tích & Thiết kế", "2024-01-01", "2024-02-15", 100, "Nguyễn Văn A", ""],
+                [2, 1, "Phân tích yêu cầu hệ thống", "2024-01-01", "2024-01-15", 100, "Trần Thị B", ""],
+                [3, 1, "Thiết kế kiến trúc phần mềm", "2024-01-16", "2024-02-05", 100, "Lê Văn C", "2"],
+                [4, 1, "Thiết kế giao diện người dùng", "2024-02-06", "2024-02-15", 100, "Phạm Thị D", "3"],
+                [5, 0, "Giai đoạn phát triển", "2024-02-16", "2024-06-15", 65, "Hồ Văn E", "1"],
+                [6, 5, "Phát triển module điều khiển", "2024-02-16", "2024-04-01", 90, "Nguyễn Thị F", "4"],
+                [7, 5, "Phát triển hệ thống lái tự động", "2024-03-01", "2024-05-01", 70, "Trần Văn G", "4"],
+                [8, 5, "Phát triển hệ thống an toàn", "2024-03-15", "2024-05-05", 50, "Lê Thị H", "4"],
+                [9, 0, "Giai đoạn kiểm thử", "2024-06-01", "2024-08-01", 20, "Phạm Văn I", "5"],
+                [10, 9, "Kiểm thử đơn vị", "2024-06-01", "2024-06-20", 30, "Nguyễn Văn J", "6,7,8"],
+                [11, 9, "Kiểm thử tích hợp", "2024-06-21", "2024-07-15", 15, "Hồ Thị K", "10"],
+                [12, 9, "Kiểm thử hệ thống", "2024-07-16", "2024-08-01", 5, "Trần Văn L", "11"],
+                [13, 0, "Giai đoạn triển khai", "2024-08-02", "2024-09-02", 0, "Lê Thị M", "9"],
+                [14, 13, "Triển khai pilot", "2024-08-02", "2024-08-17", 0, "Phạm Văn N", "12"],
+                [15, 13, "Đào tạo người dùng", "2024-08-18", "2024-08-27", 0, "Nguyễn Thị O", "14"],
+                [16, 13, "Triển khai chính thức", "2024-08-28", "2024-09-02", 0, "Hồ Văn P", "15"]
             ];
             
-            // Tạo worksheet
             const ws = XLSX.utils.aoa_to_sheet(sampleData);
-            
-            // Tạo workbook
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Dự án Automotive");
+            XLSX.utils.book_append_sheet(wb, ws, "Dự án với Subtasks");
             
-            // Xuất file
-            XLSX.writeFile(wb, "Mau_du_lieu_Gantt_Chart.xlsx");
-            showNotification('Đã tải file mẫu Excel thành công!', 'success');
+            XLSX.writeFile(wb, "Mau_du_lieu_Gantt_Chart_Subtasks.xlsx");
+            showNotification('Đã tải file mẫu Excel với subtasks!', 'success');
+        }
+
+        function updateParentForNewTask() {
+            const parentId = document.getElementById('parentSelect').value;
+            document.getElementById('parentTask').value = parentId;
         }
 
         // ========== ĐIỀU KHIỂN BIỂU ĐỒ ==========
@@ -1639,7 +1660,11 @@
         function toggleCriticalPath() {
             const showCritical = document.getElementById('showCritical').checked;
             gantt.eachTask(function(task) {
-                task.critical = showCritical && calculateCriticalness(task);
+                const endDate = new Date(task.end_date || task.start_date);
+                const today = new Date();
+                const timeDiff = endDate.getTime() - today.getTime();
+                const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                task.critical = showCritical && daysDiff <= task.duration * 0.3;
             });
             gantt.render();
         }
@@ -1661,6 +1686,7 @@
                 const task = gantt.getTask(selectedTask);
                 
                 document.getElementById('taskName').value = task.text.replace(/ \(\d+%\)$/, '');
+                document.getElementById('parentTask').value = task.parent || 0;
                 document.getElementById('taskStart').value = task.start_date;
                 document.getElementById('taskEnd').value = gantt.calculateEndDate(task.start_date, task.duration);
                 document.getElementById('taskProgress').value = task.progress || 0;
@@ -1682,6 +1708,7 @@
                     updateAllTasks();
                     updateStatistics();
                     updateDataTable();
+                    updateParentDropdown();
                     showNotification('Đã xóa công việc!', 'success');
                 }
             } else {
@@ -1704,6 +1731,7 @@
         }
 
         function showTaskModal() {
+            updateParentDropdown();
             document.getElementById('taskModal').style.display = 'flex';
         }
 
@@ -1714,6 +1742,7 @@
 
         function clearTaskForm() {
             document.getElementById('taskName').value = '';
+            document.getElementById('parentTask').value = '0';
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('taskStart').value = today;
             const endDate = new Date();
@@ -1728,6 +1757,7 @@
 
         function saveTask() {
             const name = document.getElementById('taskName').value.trim();
+            const parent = parseInt(document.getElementById('parentTask').value) || 0;
             const start = document.getElementById('taskStart').value;
             const end = document.getElementById('taskEnd').value;
             const progress = parseInt(document.getElementById('taskProgress').value);
@@ -1753,6 +1783,8 @@
                 start_date: start,
                 duration: duration,
                 progress: progress,
+                parent: parent,
+                open: parent === 0,
                 owner: owner,
                 dependencies: dependencies
             };
@@ -1762,9 +1794,8 @@
                 Object.assign(existingTask, taskData);
                 gantt.updateTask(currentTaskId);
             } else {
-                const newId = gantt.getTaskByTime().length + 1;
+                const newId = Math.max(...allTasks.map(t => t.id), 0) + 1;
                 taskData.id = newId;
-                taskData.parent = 0;
                 gantt.addTask(taskData);
             }
             
@@ -1788,6 +1819,7 @@
             updateAllTasks();
             updateStatistics();
             updateDataTable();
+            updateParentDropdown();
             showNotification('Đã lưu công việc!', 'success');
         }
 
@@ -1817,6 +1849,7 @@
                 
                 row.innerHTML = `
                     <td>${task.id}</td>
+                    <td>${task.parent || 0}</td>
                     <td>${task.text.replace(/ \(\d+%\)$/, '')}</td>
                     <td>${formatDate(task.start_date)}</td>
                     <td>${formatDate(gantt.calculateEndDate(task.start_date, task.duration))}</td>
@@ -1846,6 +1879,7 @@
             const csvContent = allTasks.map(task => {
                 return [
                     task.id,
+                    task.parent || 0,
                     `"${task.text.replace(/ \(\d+%\)$/, '')}"`,
                     task.start_date,
                     gantt.calculateEndDate(task.start_date, task.duration),
@@ -1855,7 +1889,7 @@
                 ].join(',');
             }).join('\n');
             
-            const headers = ['ID', 'Tên công việc', 'Ngày bắt đầu', 'Ngày kết thúc', 'Tiến độ (%)', 'Người phụ trách', 'Phụ thuộc'].join(',');
+            const headers = ['ID', 'Parent ID', 'Tên công việc', 'Ngày bắt đầu', 'Ngày kết thúc', 'Tiến độ (%)', 'Người phụ trách', 'Phụ thuộc'].join(',');
             const csv = headers + '\n' + csvContent;
             
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -1871,19 +1905,30 @@
         function loadTemplate(templateName) {
             const templates = {
                 automotive: automotiveTemplate,
-                project: {
+                software: {
                     data: [
-                        {id: 1, text: "Phân tích yêu cầu", start_date: "2024-01-01", duration: 10, progress: 100, parent: 0},
-                        {id: 2, text: "Thiết kế hệ thống", start_date: "2024-01-11", duration: 15, progress: 80, parent: 0},
-                        {id: 3, text: "Phát triển backend", start_date: "2024-01-26", duration: 30, progress: 60, parent: 0},
-                        {id: 4, text: "Phát triển frontend", start_date: "2024-02-25", duration: 25, progress: 40, parent: 0},
-                        {id: 5, text: "Kiểm thử và triển khai", start_date: "2024-03-21", duration: 20, progress: 10, parent: 0}
+                        {id: 1, text: "Giai đoạn phân tích", start_date: "2024-01-01", duration: 30, progress: 100, parent: 0, open: true},
+                        {id: 2, text: "Phân tích yêu cầu", start_date: "2024-01-01", duration: 10, progress: 100, parent: 1},
+                        {id: 3, text: "Thiết kế hệ thống", start_date: "2024-01-11", duration: 15, progress: 100, parent: 1},
+                        {id: 4, text: "Thiết kế database", start_date: "2024-01-26", duration: 5, progress: 100, parent: 1},
+                        {id: 5, text: "Giai đoạn phát triển", start_date: "2024-02-01", duration: 90, progress: 60, parent: 0, open: true},
+                        {id: 6, text: "Phát triển Backend API", start_date: "2024-02-01", duration: 45, progress: 80, parent: 5},
+                        {id: 7, text: "Phát triển Frontend", start_date: "2024-02-16", duration: 45, progress: 50, parent: 5},
+                        {id: 8, text: "Phát triển Mobile App", start_date: "2024-03-01", duration: 60, progress: 30, parent: 5},
+                        {id: 9, text: "Giai đoạn kiểm thử", start_date: "2024-05-01", duration: 30, progress: 10, parent: 0, open: true},
+                        {id: 10, text: "Kiểm thử đơn vị", start_date: "2024-05-01", duration: 10, progress: 20, parent: 9},
+                        {id: 11, text: "Kiểm thử tích hợp", start_date: "2024-05-11", duration: 10, progress: 5, parent: 9},
+                        {id: 12, text: "Kiểm thử hệ thống", start_date: "2024-05-21", duration: 10, progress: 0, parent: 9}
                     ],
                     links: [
-                        {id: 1, source: 1, target: 2, type: "0"},
-                        {id: 2, source: 2, target: 3, type: "0"},
-                        {id: 3, source: 3, target: 4, type: "0"},
-                        {id: 4, source: 4, target: 5, type: "0"}
+                        {id: 1, source: 2, target: 3, type: "0"},
+                        {id: 2, source: 3, target: 4, type: "0"},
+                        {id: 3, source: 4, target: 6, type: "0"},
+                        {id: 4, source: 6, target: 7, type: "0"},
+                        {id: 5, source: 7, target: 8, type: "0"},
+                        {id: 6, source: 8, target: 10, type: "0"},
+                        {id: 7, source: 10, target: 11, type: "0"},
+                        {id: 8, source: 11, target: 12, type: "0"}
                     ]
                 },
                 construction: {
@@ -1915,21 +1960,6 @@
                         {id: 3, source: 3, target: 4, type: "0"},
                         {id: 4, source: 4, target: 5, type: "0"}
                     ]
-                },
-                event: {
-                    data: [
-                        {id: 1, text: "Lập kế hoạch sự kiện", start_date: "2024-01-01", duration: 10, progress: 100, parent: 0},
-                        {id: 2, text: "Đặt địa điểm và nhà cung cấp", start_date: "2024-01-11", duration: 14, progress: 80, parent: 0},
-                        {id: 3, text: "Quảng bá sự kiện", start_date: "2024-01-25", duration: 21, progress: 60, parent: 0},
-                        {id: 4, text: "Chuẩn bị hậu cần", start_date: "2024-02-15", duration: 10, progress: 40, parent: 0},
-                        {id: 5, text: "Tổ chức sự kiện", start_date: "2024-02-25", duration: 2, progress: 0, parent: 0}
-                    ],
-                    links: [
-                        {id: 1, source: 1, target: 2, type: "0"},
-                        {id: 2, source: 2, target: 3, type: "0"},
-                        {id: 3, source: 3, target: 4, type: "0"},
-                        {id: 4, source: 4, target: 5, type: "0"}
-                    ]
                 }
             };
             
@@ -1939,6 +1969,7 @@
                 updateAllTasks();
                 updateStatistics();
                 updateDataTable();
+                updateParentDropdown();
                 showNotification('Đã tải mẫu ' + templateName + ' thành công!', 'success');
             }
         }
@@ -2005,6 +2036,7 @@
                 updateAllTasks();
                 updateStatistics();
                 updateDataTable();
+                updateParentDropdown();
                 initializeColumnResize();
                 showNotification('Đã đặt lại tất cả dữ liệu!', 'success');
             }
