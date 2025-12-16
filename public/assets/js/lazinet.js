@@ -175,17 +175,16 @@ document.addEventListener("DOMContentLoaded", randomizeHeroDescriptionOnly);
 // Hoặc có thể random mỗi lần refresh
 // randomizeHeroContent();
 
-// Biến global (nếu chưa có)
+// Biến global (nếu chưa có) - chỉnh sửa: loại bỏ fieldsFocused global, giữ các cái khác
 const SUBMIT_COOLDOWN_MS = 60000; // 1 phút giữa các submit
 
 // GLOBAL ANTI-SPAM COUNTERS (di chuyển ra ngoài IIFE để accessible)
 let mouseMoves = 0,
   keysPressed = 0,
-  fieldsFocused = 0,
   hasScrolled = false;
 const isTouched = "ontouchstart" in window; // Mobile
 
-// HÀM CHỐNG SPAM RIÊNG CHO CONTACT-FORM (nhiều field, score cao hơn)
+// HÀM CHỐNG SPAM RIÊNG CHO CONTACT-FORM (nhiều field, score cao hơn) - giữ nguyên, nhưng fieldsFocused local
 function initContactAntiSpam() {
   const form = document.getElementById("contact-form");
   if (!form) return;
@@ -198,7 +197,8 @@ function initContactAntiSpam() {
   document.getElementById("start-time-contact").value = startTime;
   document.getElementById("token-bot-contact").value = token;
 
-  // Event listeners riêng cho contact (nhiều field → focused dễ đạt cao)
+  // Event listeners riêng cho contact (nhiều field → focused dễ đạt cao) - local fieldsFocused
+  let fieldsFocused = 0; // Local để tránh conflict với newsletter
   form.querySelectorAll("input, textarea, select").forEach((field) => {
     if (
       !field.name.includes("bot") &&
@@ -334,7 +334,7 @@ function initContactAntiSpam() {
   });
 }
 
-// HÀM CHỐNG SPAM RIÊNG CHO NEWSLETTER-FORM (ít field, score đơn giản hơn, tái sử dụng ở nhiều trang)
+// HÀM CHỐNG SPAM RIÊNG CHO NEWSLETTER-FORM (ít field, score đơn giản hơn, tái sử dụng ở nhiều trang) - chỉnh sửa chính
 function initNewsletterAntiSpam() {
   const form = document.getElementById("newsletter-form");
   if (!form) return;
@@ -347,7 +347,8 @@ function initNewsletterAntiSpam() {
   document.getElementById("start-time-newsletter").value = startTime;
   document.getElementById("token-bot-newsletter").value = token;
 
-  // Event listeners riêng cho newsletter (chỉ 1 field → focused >=1 là đủ, mouse >=3)
+  // Event listeners riêng cho newsletter (chỉ 1 field → focused >=1 là đủ, mouse >=3) - local newsletterFieldsFocused
+  let newsletterFieldsFocused = 0; // Local riêng để tránh conflict với contact
   form.querySelectorAll("input, textarea, select").forEach((field) => {
     if (
       !field.name.includes("bot") &&
@@ -356,14 +357,14 @@ function initNewsletterAntiSpam() {
       !field.id.includes("website")
     ) {
       field.addEventListener("focus", () => {
-        if (fieldsFocused === 0)
+        if (newsletterFieldsFocused === 0)
           console.log("Newsletter: Fields focused: 1 (click vào email)"); // DEBUG LOG
-        fieldsFocused++;
+        newsletterFieldsFocused++;
       });
     }
   });
 
-  // Submit handler với score thấp hơn (ngưỡng 2 vì ít tương tác)
+  // Submit handler với score thấp hơn (ngưỡng 2 vì ít tương tác) - chỉnh sửa score và ngưỡng
   window.submitNewsletter = async function () {
     const email = document.getElementById("email-newsletter").value.trim();
     const button = document.getElementById("newsletter-btn");
@@ -384,17 +385,18 @@ function initNewsletterAntiSpam() {
       return;
     }
 
-    // Tính human score (thấp hơn: focused >=1 + mouse >=3, không yêu cầu keys nhiều vì autofill)
+    // Tính human score (thấp hơn: focused >=1 + mouse >=3, không yêu cầu keys nhiều vì autofill) - chỉnh sửa: tăng yêu cầu
     let humanScore = 0;
-    if (mouseMoves >= 3) humanScore += 1.5; // Ít di chuột hơn
-    if (keysPressed >= 0) humanScore += 1.5; // Không bắt buộc gõ (autofill ok)
-    if (fieldsFocused >= 1) humanScore += 1.5; // Chỉ cần click email
-    if (hasScrolled) humanScore += 0.5;
+    if (mouseMoves >= 5) humanScore += 2; // Tăng từ >=3 để khó hơn
+    if (keysPressed >= 3) humanScore += 2; // Tăng từ >=0, chống autofill thuần
+    if (newsletterFieldsFocused >= 1) humanScore += 2; // Tăng giá trị từ 1.5, chỉ cần click email
+    if (hasScrolled) humanScore += 1;
     if (isTouched) humanScore += 1;
+    const timeSpent = (now - startTime) / 1000;
+    if (timeSpent >= 5) humanScore += 1; // Bonus mới: Thời gian điền >=5s
     document.getElementById("human-score-newsletter").value = humanScore;
 
-    // Anti-spam check
-    const timeSpent = (now - startTime) / 1000;
+    // Anti-spam check - chỉnh sửa: tăng ngưỡng <3, timeSpent <2s, thêm email length
     const finalHumanScore = humanScore;
     const tokenBot = document.getElementById("token-bot-newsletter").value;
     const honeypotValue = document
@@ -408,15 +410,18 @@ function initNewsletterAntiSpam() {
       honeypot: !!honeypotValue,
       mouseMoves,
       keysPressed,
-      fieldsFocused,
+      newsletterFieldsFocused, // Log riêng
+      emailLength: email.length,
     });
 
     const isBot =
       honeypotValue !== "" ||
       tokenBot === "" ||
-      timeSpent < 1 ||
-      timeSpent > 600 || // Thời gian ngắn hơn vì ít tương tác
-      finalHumanScore < 1; // Ngưỡng thấp hơn
+      timeSpent < 2 || // Tăng từ 1s
+      timeSpent > 600 ||
+      finalHumanScore < 3 || // Tăng ngưỡng từ <1 để chặt hơn
+      email.length < 5 || // Kiểm tra email ngắn (fake)
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email); // Regex giữ nguyên
 
     if (isBot) {
       console.warn("Bot detected in newsletter:", {
@@ -424,6 +429,7 @@ function initNewsletterAntiSpam() {
         token: tokenBot,
         time: timeSpent,
         score: finalHumanScore,
+        email: email,
       });
       button.textContent = "Có lỗi xảy ra, vui lòng thử lại sau ít phút.";
       button.style.color = "#FF3333";
@@ -431,14 +437,7 @@ function initNewsletterAntiSpam() {
       return;
     }
 
-    // Kiểm tra email hợp lệ
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      button.textContent = "Lỗi Email!";
-      button.style.color = "red";
-      button.disabled = false;
-      return;
-    }
+    // Kiểm tra email hợp lệ - đã tích hợp vào isBot, bỏ lặp
 
     button.textContent = "Đang đăng ký";
     button.style.color = "#ff5000";
@@ -473,7 +472,7 @@ function initNewsletterAntiSpam() {
   };
 }
 
-// KHỞI TẠO ANTI-SPAM KHI LOAD TRANG (tách riêng để newsletter tái sử dụng)
+// KHỞI TẠO ANTI-SPAM KHI LOAD TRANG (tách riêng để newsletter tái sử dụng) - chỉnh sửa log keysPressed
 document.addEventListener("DOMContentLoaded", () => {
   // Global event listeners (chung cho cả 2 form)
   document.addEventListener("mousemove", () => {
@@ -483,7 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("keydown", () => {
     if (keysPressed < 20) keysPressed++;
-    if (keysPressed === 1) console.log("Keys pressed: 1 (gõ phím đầu tiên)"); // DEBUG LOG
+    if (keysPressed === 3) console.log("Keys pressed reached 3"); // Cập nhật log cho ngưỡng mới (newsletter)
   });
 
   window.addEventListener("scroll", () => {
@@ -497,7 +496,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactAntiSpam();
   initNewsletterAntiSpam();
 
-  // Phần user-type select (chỉ cho contact-form)
+  // Phần user-type select (chỉ cho contact-form) - giữ nguyên
   const userTypeSelect = document.getElementById("user-type");
   if (userTypeSelect) {
     function updateSelectColor() {
@@ -511,7 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userTypeSelect.addEventListener("change", updateSelectColor);
   }
 
-  // User-type change handler (chỉ cho contact-form)
+  // User-type change handler (chỉ cho contact-form) - giữ nguyên
   if (userTypeSelect) {
     userTypeSelect.addEventListener("change", function () {
       const otherInputContainer = document.getElementById("other-type");
