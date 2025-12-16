@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET x INGRID | Brand Marketing AI Platform Proposal</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lazinet: { blue: '#0000FF', orange: '#FF6300' },
+                        ingrid: { blue: '#004A90', green: '#90CC64' },
+                        dark: { 900: '#0a0a0f', 800: '#11111a', 700: '#1a1a2e' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scroll Snap Logic */
+        html, body { height: 100%; margin: 0; overflow: hidden; background-color: #0a0a0f; color: white; }
+        .slide-container {
+            height: 100vh;
+            width: 100vw;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            padding: 2rem 4rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        /* Utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #0000FF, #FF6300);
+        }
+        a.source-link {
+            color: #60a5fa;
+            text-decoration: none;
+            border-bottom: 1px dotted #60a5fa;
+            transition: color 0.2s;
+        }
+        a.source-link:hover {
+            color: #93c5fd;
+            border-bottom-style: solid;
+        }
+        
+        /* Map Markers with Pulse Animation */
+        .map-marker {
+            width: 16px; height: 16px;
+            background: #FF6300;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            z-index: 50; /* Ensure on top */
+            box-shadow: 0 0 0 rgba(255, 99, 0, 0.4);
+            animation: pulse 2s infinite;
+            border: 2px solid white;
+        }
+        .map-marker:hover { 
+            transform: scale(1.2); 
+            background: white; 
+            border-color: #FF6300;
+            animation: none;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 99, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 99, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 99, 0, 0); }
+        }
+
+        /* Speaker Notes */
+        #speaker-notes {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #ddd;
+            z-index: 9999;
+            display: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <div class="fixed bottom-5 left-5 text-xs text-gray-500 z-[10000]">Press 'N' for Speaker Notes</div>
+    <div id="speaker-notes">Loading notes...</div>
+
+    <div class="fixed right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-3 z-50" id="nav-dots"></div>
+
+    <div class="slide-container" id="main-scroller">
+
+        <section class="slide bg-dark-900" data-note="Chào mừng CEO Tan CK và đội ngũ Ingrid. Hôm nay tôi (Phụng Hoàng) đại diện Lazinet trình bày kế hoạch hợp tác chiến lược 'Brand Marketing AI'. Chúng ta đang đứng ở thời điểm tháng 12/2025, một cột mốc quan trọng để định hình lại cách các doanh nghiệp FDI tiếp cận thị trường Việt Nam.">
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 z-0 pointer-events-none">
+                <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-lazinet-blue rounded-full blur-[150px]"></div>
+                <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-ingrid-green rounded-full blur-[150px]"></div>
+            </div>
+            
+            <div class="relative z-10 max-w-6xl mx-auto w-full">
+                <div class="flex items-center gap-8 mb-12 animate-in">
+                    <div class="h-16 flex items-center gap-4">
+                        <div class="text-3xl font-bold tracking-tighter text-white">
+                            <span class="text-lazinet-blue">LAZI</span><span class="text-lazinet-orange">NET</span>
+                        </div>
+                        <div class="h-8 w-[1px] bg-gray-600"></div>
+                        <div class="text-3xl font-bold tracking-tighter text-white">
+                            <span class="text-ingrid-blue">INGRID</span><span class="text-ingrid-green">INTL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight animate-in delay-100">
+                    BRAND MARKETING <br>
+                    <span class="gradient-text">POWERED WITH AI</span> <br>
+                    SALES & CRM SYSTEM
+                </h1>
+
+                <p class="text-xl text-gray-400 max-w-2xl mb-12 animate-in delay-200">
+                    A Strategic Tech-Biz Partnership Proposal for the FDI Sector<br>
+                    <span class="text-sm font-mono mt-2 block text-gray-500">Ho Chi Minh City, Dec 16, 2025</span>
+                </p>
+
+                <div class="grid grid-cols-2 gap-8 animate-in delay-300 max-w-3xl">
+                    <div class="glass-panel p-6 border-l-4 border-lazinet-blue">
+                        <h3 class="text-lazinet-blue font-bold mb-2">TECHNOLOGY PARTNER</h3>
+                        <p class="font-bold text-white">LAZINET Applied Tech</p>
+                        <p class="text-sm text-gray-400">AI / IoT / SaaS / ERP</p>
+                    </div>
+                    <div class="glass-panel p-6 border-l-4 border-ingrid-green">
+                        <h3 class="text-ingrid-green font-bold mb-2">BUSINESS PARTNER</h3>
+                        <p class="font-bold text-white">INGRID International</p>
+                        <p class="text-sm text-gray-400">Consulting / Trade Promotion</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide bg-dark-800" data-note="Bức tranh vĩ mô 2025: Việt Nam tiếp tục là điểm sáng. GDP ước đạt 6.9-7.4%. FDI thực hiện đạt 35 tỷ USD. Tôi đã cập nhật link dẫn chứng từ SGGP và VNDirect để quý vị kiểm tra.">
+            <div class="max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
+                <h2 class="text-4xl font-bold mb-8 animate-in"><span class="text-lazinet-orange">Macro Context</span>: Vietnam 2025 Landscape</h2>
+                
+                <div class="grid grid-cols-12 gap-8 h-[60vh]">
+                    <div class="col-span-7 glass-panel p-6 animate-in delay-100 flex flex-col">
+                        <h3 class="text-lg font-bold mb-4">Vietnam GDP & FDI Inflow (2020-2025E)</h3>
+                        <div class="flex-grow relative">
+                            <canvas id="macroChart"></canvas>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-3 text-right">
+                            Sources: 
+                            <a href="https://en.sggp.org.vn/vbf-fdi-to-maintain-upward-trend-in-2025-post112902.html" target="_blank" class="source-link">SGGP (FDI 2025 Forecast)</a>, 
+                            <a href="https://www.vndirect.com.vn/cmsupload/beta/Econ_Update_20241023.pdf" target="_blank" class="source-link">VNDirect (GDP 6.9%)</a>
+                        </div>
+                    </div>
+
+                    <div class="col-span-5 flex flex-col gap-4">
+                        <div class="glass-panel p-6 animate-in delay-200">
+                            <h4 class="text-gray-400 text-sm uppercase">Realized FDI (2025 Est)</h4>
+                            <div class="text-4xl font-bold text-ingrid-green">$35.0 Billion</div>
+                            <div class="text-sm text-green-400 mt-1">▲ 9.4% YoY Growth (Estimated)</div>
+                            <p class="text-xs text-gray-500 mt-2">Driven by "China+1" Strategy maturing.</p>
+                        </div>
+                        <div class="glass-panel p-6 animate-in delay-300">
+                            <h4 class="text-gray-400 text-sm uppercase">Top Investors</h4>
+                            <ul class="mt-2 space-y-2 text-sm">
+                                <li class="flex justify-between"><span>1. Singapore</span> <span class="font-bold text-white">~26%</span></li>
+                                <li class="flex justify-between"><span>2. China</span> <span class="font-bold text-white">~18%</span></li>
+                                <li class="flex justify-between"><span>3. South Korea</span> <span class="font-bold text-white">~15%</span></li>
+                            </ul>
+                            <div class="mt-2 text-xs text-right"><a href="https://www.mpi.gov.vn/en/Pages/default.aspx" target="_blank" class="source-link">MPI Stats</a></div>
+                        </div>
+                        <div class="glass-panel p-6 animate-in delay-300 flex-grow border-l-2 border-lazinet-orange">
+                            <h4 class="text-gray-400 text-sm uppercase">Key Insight</h4>
+                            <p class="text-sm text-gray-300 mt-2">
+                                FDI firms are shifting from construction to <strong>Operational Efficiency</strong>. Demand for local B2B services (Marketing, Tech, Distribution) is at an all-time high.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide bg-dark-900" data-note="Ngành Thực phẩm: Chính phủ đặt mục tiêu XK 50 tỷ USD. Đây là cơ hội để bán giải pháp Marketing cho các công ty FDI sản xuất thực phẩm cần tìm đầu ra. Số liệu đã được dẫn nguồn từ Báo Chính Phủ.">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="grid grid-cols-2 gap-12 items-center">
+                    <div class="animate-in">
+                        <h2 class="text-4xl font-bold mb-6">Target Sector: <br><span class="text-ingrid-green">Food Processing & Manufacturing</span></h2>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-full bg-lazinet-blue/20 flex items-center justify-center text-lazinet-blue text-xl"><i class="fas fa-utensils"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-lg">National Priority</h4>
+                                    <p class="text-gray-400 text-sm">
+                                        Goal: Top 10 global agricultural processing centers by 2030. 
+                                        <a href="https://en.baochinhphu.vn/viet-nam-emerges-as-a-major-global-food-supplier-111251105165530317.htm" target="_blank" class="source-link text-xs ml-2">[Gov Source]</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-full bg-lazinet-orange/20 flex items-center justify-center text-lazinet-orange text-xl"><i class="fas fa-chart-line"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Export Powerhouse</h4>
+                                    <p class="text-gray-400 text-sm">Agri-Forestry-Fishery exports aimed at <strong>$50-51 Billion</strong> in 2025. EVFTA/CPTPP compliance requires better data tracking.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-full bg-ingrid-blue/20 flex items-center justify-center text-ingrid-blue text-xl"><i class="fas fa-robot"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-lg">The Solution Fit</h4>
+                                    <p class="text-gray-400 text-sm">FDI food factories need <strong>Local Supply Chain Integration</strong> and <strong>Domestic Brand Building</strong>. Our AI System bridges this gap.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-8 animate-in delay-200">
+                        <h3 class="text-xl font-bold mb-6 text-center">FDI Needs Analysis Matrix</h3>
+                        <div class="relative h-[400px]">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-gray-500 mt-4">Data derived from 2024-2025 Industry Surveys</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide bg-dark-800" data-note="Khung giải pháp 6 trụ cột (theo file PDF Ingrid): Quét thị trường -> CRM -> Dữ liệu -> Landing Page -> Vận hành -> Quảng bá. Lazinet sẽ AI hóa toàn bộ quy trình này.">
+            <div class="max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
+                <div class="text-center mb-10 animate-in">
+                    <h2 class="text-3xl font-bold">The Solution: <span class="gradient-text">Brand Marketing AI System</span></h2>
+                    <p class="text-gray-400">Digitizing Ingrid's 6-Pillar Framework</p>
+                </div>
+
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 animate-in delay-100">
+                    <div class="glass-panel p-4 flex flex-col items-center text-center group hover:bg-white/5 transition border-t-4 border-lazinet-blue">
+                        <div class="text-2xl text-lazinet-blue mb-3"><i class="fas fa-search"></i></div>
+                        <h4 class="font-bold text-sm mb-2">1. Market Scan</h4>
+                        <p class="text-xs text-gray-400">AI-driven Product Scoping & Market Needs Analysis.</p>
+                    </div>
+                    <div class="glass-panel p-4 flex flex-col items-center text-center group hover:bg-white/5 transition border-t-4 border-lazinet-blue">
+                        <div class="text-2xl text-lazinet-blue mb-3"><i class="fas fa-users-cog"></i></div>
+                        <h4 class="font-bold text-sm mb-2">2. CRM Analysis</h4>
+                        <p class="text-xs text-gray-400">Competitor Tracking & Customer Profiling.</p>
+                    </div>
+                    <div class="glass-panel p-4 flex flex-col items-center text-center group hover:bg-white/5 transition border-t-4 border-lazinet-blue">
+                        <div class="text-2xl text-lazinet-blue mb-3"><i class="fas fa-database"></i></div>
+                        <h4 class="font-bold text-sm mb-2">3. Data Strategy</h4>
+                        <p class="text-xs text-gray-400">Trend Detection & Automated Recommendations.</p>
+                    </div>
+                    <div class="glass-panel p-4 flex flex-col items-center text-center group hover:bg-white/5 transition border-t-4 border-ingrid-green relative overflow-hidden bg-white/5">
+                        <div class="text-2xl text-ingrid-green mb-3"><i class="fas fa-laptop-code"></i></div>
+                        <h4 class="font-bold text-sm mb-2">4. Landing Page</h4>
+                        <p class="text-xs text-gray-400">Dynamic Content, AI Chatbot Sales Agent.</p>
+                    </div>
+                    <div class="glass-panel p-4 flex flex-col items-center text-center group hover:bg-white/5 transition border-t-4 border-lazinet-orange">
+                        <div class="text-2xl text-lazinet-orange mb-3"><i class="fas fa-cogs"></i></div>
+                        <h4 class="font-bold text-sm mb-2">5. Operations</h4>
+                        <p class="text-xs text-gray-400">Auto-Quotations & Transaction Success Analytics.</p>
+                    </div>
+                    <div class="glass-panel p-4 flex flex-col items-center text-center group hover:bg-white/5 transition border-t-4 border-lazinet-orange">
+                        <div class="text-2xl text-lazinet-orange mb-3"><i class="fas fa-bullhorn"></i></div>
+                        <h4 class="font-bold text-sm mb-2">6. Outreach</h4>
+                        <p class="text-xs text-gray-400">Content Strategy, UGC, & Ad Performance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide bg-dark-900" data-note="Công nghệ: Sử dụng API của các Chatbot mạnh nhất hiện nay (Gemini, ChatGPT) kết hợp với OCR xử lý giấy tờ và Agent tự động. Hệ thống thiết kế để scale dễ dàng.">
+            <div class="max-w-7xl mx-auto w-full">
+                <h2 class="text-3xl font-bold mb-8">System Architecture <span class="text-sm font-normal text-gray-500 ml-4">(Scalable & API-First)</span></h2>
+                
+                <div class="grid grid-cols-12 gap-6 h-[60vh]">
+                    <div class="col-span-3 space-y-4 animate-in">
+                        <div class="glass-panel p-4 border-l-4 border-purple-500">
+                            <h4 class="font-bold text-purple-400">AI Core</h4>
+                            <p class="text-xs text-gray-400 mt-2">LLM Orchestrator:</p>
+                            <ul class="text-xs mt-1 space-y-1">
+                                <li>• Google Gemini (Analysis)</li>
+                                <li>• DeepSeek (Coding/Data)</li>
+                                <li>• OCR & Vision API</li>
+                            </ul>
+                        </div>
+                        <div class="glass-panel p-4 border-l-4 border-blue-500">
+                            <h4 class="font-bold text-blue-400">Stack</h4>
+                            <p class="text-xs text-gray-400 mt-2">React/Next.js Frontend, Python/FastAPI Backend. Dockerized.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-span-6 glass-panel p-6 flex flex-col justify-center items-center relative animate-in delay-100 bg-white/5">
+                        <div class="absolute top-4 left-4 font-mono text-xs text-gray-500">LAZINET CORE PLATFORM</div>
+                        
+                        <div class="grid grid-cols-2 gap-4 w-full">
+                            <div class="p-4 bg-dark-800 rounded border border-gray-700 text-center hover:border-lazinet-blue transition">
+                                <i class="fas fa-robot text-lazinet-blue mb-2"></i>
+                                <h5 class="font-bold text-sm">Sales Agents</h5>
+                                <p class="text-[10px] text-gray-500">24/7 Negotiation</p>
+                            </div>
+                            <div class="p-4 bg-dark-800 rounded border border-gray-700 text-center hover:border-lazinet-orange transition">
+                                <i class="fas fa-file-invoice text-lazinet-orange mb-2"></i>
+                                <h5 class="font-bold text-sm">Smart Quotes</h5>
+                                <p class="text-[10px] text-gray-500">Dynamic Pricing</p>
+                            </div>
+                        </div>
+
+                        <div class="w-full mt-4 p-3 bg-gray-800 rounded border border-gray-600 text-center">
+                            <span class="text-xs font-mono">Food Industry Knowledge Graph & Data Lake</span>
+                        </div>
+                    </div>
+
+                    <div class="col-span-3 space-y-4 animate-in delay-200">
+                        <div class="glass-panel p-4 text-center">
+                            <h4 class="font-bold">Web Portal</h4>
+                            <p class="text-[10px] text-gray-500">Dashboard for Managers</p>
+                        </div>
+                        <div class="glass-panel p-4 text-center">
+                            <h4 class="font-bold">Omnichannel</h4>
+                            <p class="text-[10px] text-gray-500">Zalo, FB Messenger Integration</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide bg-dark-800" data-note="Kế hoạch kinh doanh và Lộ trình: Giai đoạn Prototype T1/2026. Custom Dev T3-T6/2026. Mass Deployment từ 2027. Chi phí phát triển khoảng 1.7 tỷ VND cho năm đầu. Điểm hòa vốn dự kiến sau 12-15 tháng.">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="grid grid-cols-2 gap-12 mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">Product Roadmap</h2>
+                        <div class="relative border-l border-gray-700 ml-4 space-y-6">
+                            <div class="pl-8 relative animate-in">
+                                <div class="absolute w-4 h-4 bg-lazinet-orange rounded-full -left-[9px] top-1"></div>
+                                <h4 class="font-bold text-lazinet-orange">Phase 1: Prototype</h4>
+                                <span class="text-xs font-mono text-gray-500">Jan - Feb 2026</span>
+                                <p class="text-xs text-gray-300">Internal Demo & Core Architecture.</p>
+                            </div>
+                            <div class="pl-8 relative animate-in delay-100">
+                                <div class="absolute w-4 h-4 bg-blue-500 rounded-full -left-[9px] top-1"></div>
+                                <h4 class="font-bold text-blue-500">Phase 2: MVP & Customization</h4>
+                                <span class="text-xs font-mono text-gray-500">Mar - Jun 2026</span>
+                                <p class="text-xs text-gray-300">Deploy for 1-2 Pilot Partners. Refine AI.</p>
+                            </div>
+                            <div class="pl-8 relative animate-in delay-200">
+                                <div class="absolute w-4 h-4 bg-green-500 rounded-full -left-[9px] top-1"></div>
+                                <h4 class="font-bold text-green-500">Phase 3: Mass Package</h4>
+                                <span class="text-xs font-mono text-gray-500">Jul 2026 Onwards</span>
+                                <p class="text-xs text-gray-300">SaaS Model Launch.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">Investment & Break-even</h2>
+                        <div class="glass-panel p-5 animate-in delay-100">
+                            <table class="w-full text-sm text-left text-gray-300">
+                                <thead class="text-xs uppercase bg-white/5 text-gray-400">
+                                    <tr>
+                                        <th class="px-2 py-2">Phase</th>
+                                        <th class="px-2 py-2 text-right">Cost (VND)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-800">
+                                        <td class="px-2 py-2">1. Prototype (2mo)</td>
+                                        <td class="px-2 py-2 text-right">~240M</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-800">
+                                        <td class="px-2 py-2">2. MVP (4mo)</td>
+                                        <td class="px-2 py-2 text-right">~640M</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-2 font-bold text-white">Total Year 1</td>
+                                        <td class="px-2 py-2 text-right font-bold text-lazinet-orange">~1.72 Billion</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="mt-4 p-3 bg-white/5 rounded border border-white/10">
+                                <p class="text-xs"><span class="font-bold text-ingrid-green">Break-even:</span> ~12-15 Months with 5-10 paying clients ($2k-$5k/mo).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide bg-dark-900" data-note="Bản đồ này đã được sửa lỗi và tích hợp dữ liệu. Bạn có thể click vào các điểm sáng (KCN) để xem thông tin chi tiết. Dữ liệu gốc nằm trong file Google Sheet mà tôi đã đính kèm link.">
+            <div class="max-w-7xl mx-auto w-full h-full flex flex-col">
+                <h2 class="text-3xl font-bold mb-4">Target Market: Key Southern Industrial Zones</h2>
+                <div class="flex justify-between items-end mb-4">
+                    <p class="text-gray-400">Interactive Data: Click points to view FDI details.</p>
+                    <a href="https://docs.google.com/spreadsheets/d/14EKsLxQESYEdj5w3FRSUp2hkwIyd5Yj5iftmd5ggDjs" target="_blank" class="text-xs text-lazinet-blue hover:underline"><i class="fas fa-table"></i> View Source Data (Google Sheet)</a>
+                </div>
+
+                <div class="flex-grow relative bg-[#0f1016] rounded-xl overflow-hidden border border-gray-700 shadow-2xl animate-in group">
+                    
+                    <svg viewBox="0 0 500 400" class="w-full h-full opacity-40 absolute inset-0 pointer-events-none">
+                        <path d="M100,50 Q200,80 250,150 T220,300" stroke="#333" stroke-width="2" fill="none"/> 
+                        <circle cx="220" cy="250" r="80" fill="rgba(0, 74, 144, 0.1)" />
+                    </svg>
+                    
+                    <div class="map-marker" style="top: 40%; left: 45%;" 
+                         onclick="selectZone(this, 'VSIP I - Binh Duong', 'Strategic loc for Food & Beverages. High FDI density.', 'Very High')">
+                         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[10px] w-20 text-center text-gray-400 pointer-events-none">Binh Duong</div>
+                    </div>
+
+                    <div class="map-marker" style="top: 45%; left: 55%; background: #90CC64; border-color: #90CC64;" 
+                         onclick="selectZone(this, 'Amata City - Dong Nai', 'Hub for Processing & FMCG. Good logistics.', 'High')">
+                         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[10px] w-20 text-center text-gray-400 pointer-events-none">Dong Nai</div>
+                    </div>
+
+                    <div class="map-marker" style="top: 55%; left: 42%; background: #004A90; border-color: #004A90;" 
+                         onclick="selectZone(this, 'Hiep Phuoc - HCMC', 'Port Logistics Advantage. Import/Export focus.', 'Very High')">
+                         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[10px] w-20 text-center text-gray-400 pointer-events-none">HCMC</div>
+                    </div>
+                    
+                    <div class="map-marker" style="top: 60%; left: 38%; background: #FF6300; border-color: #FF6300;" 
+                         onclick="selectZone(this, 'Long Hau IP - Long An', 'Emerging zone for Seafood & Cold Storage.', 'Medium')">
+                         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[10px] w-20 text-center text-gray-400 pointer-events-none">Long An</div>
+                    </div>
+
+
+                    <div id="map-overlay" class="absolute bottom-5 left-5 bg-black/90 backdrop-blur border border-gray-600 p-6 rounded-lg max-w-sm hidden transition-all">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 id="zone-title" class="text-xl font-bold text-white">Zone Name</h4>
+                            <button onclick="document.getElementById('map-overlay').classList.add('hidden')" class="text-gray-500 hover:text-white"><i class="fas fa-times"></i></button>
+                        </div>
+                        <p id="zone-desc" class="text-sm text-gray-300 mb-2">Description...</p>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
+                            <span class="text-xs text-gray-400">Potential Score:</span>
+                            <span id="zone-score" class="font-bold text-lazinet-orange">High</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center animate-in delay-200">
+                    <h3 class="text-xl font-bold text-white">Ready for Partnership?</h3>
+                    <div class="flex justify-center gap-8 mt-4">
+                        <div class="text-sm text-gray-500">Phung Hoang (Lazinet) <br> 84-908556220</div>
+                        <div class="text-sm text-gray-500">Tan CK (Ingrid) <br> +65 6226 2652</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- 1. CHART JS SETUP ---
+        const ctxMacro = document.getElementById('macroChart').getContext('2d');
+        new Chart(ctxMacro, {
+            type: 'bar',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024', '2025 (Est)'],
+                datasets: [
+                    {
+                        label: 'GDP Growth (%)',
+                        data: [2.9, 2.6, 8.0, 5.0, 6.9, 7.2],
+                        type: 'line',
+                        borderColor: '#FF6300',
+                        borderWidth: 2,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        label: 'Realized FDI ($ Billion)',
+                        data: [20.0, 19.7, 22.4, 23.2, 32.0, 35.0],
+                        backgroundColor: 'rgba(0, 74, 144, 0.7)',
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#333' } },
+                    y1: { position: 'right', grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['Local Supply', 'Brand Power', 'Compliance', 'Tech Usage', 'Sales Channels', 'Logistics'],
+                datasets: [{
+                    label: 'Current FDI Capability',
+                    data: [40, 50, 90, 80, 30, 70],
+                    borderColor: '#90CC64',
+                    backgroundColor: 'rgba(144, 204, 100, 0.2)',
+                }, {
+                    label: 'With Lazinet AI',
+                    data: [85, 90, 95, 95, 90, 85],
+                    borderColor: '#0000FF',
+                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                }]
+            },
+            options: {
+                scales: { r: { grid: { color: '#444' }, angleLines: { color: '#444' }, suggestMin: 0, suggestMax: 100 } },
+                plugins: { legend: { position: 'bottom', labels: { color: '#fff' } } }
+            }
+        });
+
+        // --- 2. INTERACTIVE MAP LOGIC (FIXED) ---
+        // Make function global
+        window.selectZone = function(element, title, desc, score) {
+            // Remove 'active' class from all markers
+            document.querySelectorAll('.map-marker').forEach(m => m.style.transform = 'scale(1)');
+            
+            // Highlight current
+            element.style.transform = 'scale(1.5)';
+            
+            // Show overlay
+            const overlay = document.getElementById('map-overlay');
+            document.getElementById('zone-title').innerText = title;
+            document.getElementById('zone-desc').innerText = desc;
+            document.getElementById('zone-score').innerText = score;
+            
+            overlay.classList.remove('hidden');
+            overlay.classList.add('animate-in');
+        };
+
+        // --- 3. SLIDE NAVIGATION & NOTES ---
+        const container = document.getElementById('main-scroller');
+        const slides = document.querySelectorAll('.slide');
+        const navDots = document.getElementById('nav-dots');
+        const notesBox = document.getElementById('speaker-notes');
+
+        // Init Dots
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('div');
+            dot.className = `w-3 h-3 rounded-full cursor-pointer transition-all ${index === 0 ? 'bg-lazinet-orange scale-125' : 'bg-gray-600 hover:bg-white'}`;
+            dot.onclick = () => slide.scrollIntoView({ behavior: 'smooth' });
+            navDots.appendChild(dot);
+        });
+
+        // Scroll Logic
+        container.addEventListener('scroll', () => {
+            const scrollPos = container.scrollTop;
+            const windowHeight = window.innerHeight;
+            const index = Math.round(scrollPos / windowHeight);
+
+            // Update dots
+            Array.from(navDots.children).forEach((dot, i) => {
+                dot.className = i === index 
+                    ? 'w-3 h-3 rounded-full cursor-pointer transition-all bg-lazinet-orange scale-125' 
+                    : 'w-3 h-3 rounded-full cursor-pointer transition-all bg-gray-600 hover:bg-white';
+            });
+
+            // Update Notes
+            if(slides[index]) {
+                const note = slides[index].getAttribute('data-note');
+                notesBox.innerText = note || "No notes available.";
+            }
+        });
+
+        // Toggle Notes
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'n') {
+                notesBox.style.display = (notesBox.style.display === 'none' || !notesBox.style.display) ? 'block' : 'none';
+                container.dispatchEvent(new Event('scroll')); // refresh note text
+            }
+        });
+    </script>
+</body>
+</html>

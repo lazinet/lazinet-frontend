@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET x INGRID | AI Strategic Proposal 2025</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lazi: { blue: '#0000FF', orange: '#FF6300', dark: '#050510' },
+                        ingrid: { blue: '#004A90', green: '#90CC64' },
+                        glass: { 
+                            surface: 'rgba(15, 23, 42, 0.6)', 
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            highlight: 'rgba(255, 255, 255, 0.03)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 12s linear infinite',
+                        'pulse-glow': 'pulseGlow 3s infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 10px rgba(0, 74, 144, 0.2)' },
+                            '50%': { boxShadow: '0 0 25px rgba(0, 74, 144, 0.5)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Reset */
+        body { 
+            background-color: #020205; 
+            color: #e2e8f0; 
+            overflow: hidden; 
+            font-size: 14px;
+        }
+
+        /* Slide Logic */
+        .slides-wrapper {
+            height: 100vh;
+            width: 100vw;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            padding: 4vh 4vw;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            background: radial-gradient(circle at 15% 50%, rgba(0,0,255,0.03) 0%, rgba(0,0,0,0) 50%),
+                        radial-gradient(circle at 85% 30%, rgba(144,204,100,0.03) 0%, rgba(0,0,0,0) 50%);
+        }
+
+        /* Glassmorphism Pro */
+        .cyber-card {
+            background: var(--glass-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .cyber-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Technical Grid Background */
+        .bg-tech-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Utilities */
+        .text-glow { text-shadow: 0 0 20px rgba(0, 74, 144, 0.6); }
+        .gradient-text { 
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+        /* Animation Classes */
+        .fade-in-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Interactive Map Tooltip */
+        .leaflet-popup-content-wrapper { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); color: white; border: 1px solid #333; }
+        .leaflet-popup-tip { background: #333; }
+    </style>
+</head>
+<body class="bg-tech-grid">
+
+    <div class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3" id="nav-indicator"></div>
+    
+    <div class="fixed top-0 left-0 h-1 bg-gradient-to-r from-lazi-blue to-ingrid-green z-50 transition-all duration-300" id="progress-bar" style="width: 0%"></div>
+
+    <div class="slides-wrapper" id="main-scroller">
+
+        <section class="justify-center items-center overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2232&auto=format&fit=crop')] bg-cover opacity-10 pointer-events-none mix-blend-screen"></div>
+            
+            <div class="relative z-10 text-center max-w-5xl mx-auto">
+                <div class="flex justify-center items-center gap-6 mb-8 fade-in-up">
+                    <div class="px-4 py-2 bg-lazi-blue/10 border border-lazi-blue text-lazi-blue font-mono text-sm tracking-widest rounded">TECH: LAZINET</div>
+                    <div class="h-px w-12 bg-gray-600"></div>
+                    <div class="px-4 py-2 bg-ingrid-green/10 border border-ingrid-green text-ingrid-green font-mono text-sm tracking-widest rounded">BIZ: INGRID</div>
+                </div>
+
+                <h1 class="text-6xl md:text-8xl font-tech font-bold uppercase leading-none mb-6 tracking-tight fade-in-up delay-100">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-lazi-blue to-lazi-blue">AI</span> Driven<br>
+                    <span class="text-white">Commerce</span>
+                </h1>
+
+                <p class="text-xl text-gray-400 font-light max-w-2xl mx-auto mb-10 fade-in-up delay-200">
+                    Project Proposal: <strong class="text-white">Brand Marketing Powered by AI Sales & CRM</strong><br>
+                    <span class="text-sm font-mono text-gray-500 mt-2 block">Status: Internal Review | Date: Dec 16, 2025</span>
+                </p>
+
+                <div class="grid grid-cols-2 gap-8 max-w-3xl mx-auto fade-in-up delay-300">
+                    <div class="cyber-card p-6 border-l-4 border-l-lazi-orange text-left group">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded bg-lazi-blue flex items-center justify-center text-white font-bold text-lg">L</div>
+                            <div>
+                                <h3 class="font-bold text-white leading-none group-hover:text-lazi-orange transition">LAZINET Applied Tech</h3>
+                                <div class="text-[10px] text-gray-500 font-mono mt-1">AI / IoT / ERP Core</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-2">Lead: Phụng Hoàng (CEO)</p>
+                        <a href="mailto:email@lazinet.com" class="text-xs text-lazi-blue hover:underline">email@lazinet.com</a>
+                    </div>
+
+                    <div class="cyber-card p-6 border-l-4 border-l-ingrid-green text-left group">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded bg-ingrid-blue flex items-center justify-center text-white font-bold text-lg">I</div>
+                            <div>
+                                <h3 class="font-bold text-white leading-none group-hover:text-ingrid-green transition">INGRID International</h3>
+                                <div class="text-[10px] text-gray-500 font-mono mt-1">Strategy / Trade / Market</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-2">Lead: Tan CK (CEO)</p>
+                        <a href="mailto:en@ingridintl.sg" class="text-xs text-ingrid-green hover:underline">en@ingridintl.sg</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-end mb-6">
+                <div>
+                    <h2 class="text-4xl font-tech font-bold text-white">Macro Intelligence <span class="text-lazi-orange">2025</span></h2>
+                    <p class="text-sm text-gray-400 font-mono mt-1">Data Source: GSO Vietnam / World Bank / MPI (Dec 2025 Snapshot)</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-bold text-ingrid-green">$39.5B</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Est. Realized FDI 2025</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6 h-full">
+                <div class="col-span-8 cyber-card p-6 flex flex-col relative">
+                    <div class="absolute top-4 right-4 flex gap-2">
+                        <span class="w-3 h-3 bg-lazi-blue rounded-full"></span><span class="text-xs text-gray-400">GDP (%)</span>
+                        <span class="w-3 h-3 bg-lazi-orange rounded-full ml-2"></span><span class="text-xs text-gray-400">FDI ($B)</span>
+                    </div>
+                    <div id="macroChart" class="w-full h-full"></div>
+                </div>
+
+                <div class="col-span-4 flex flex-col gap-4">
+                    <div class="cyber-card p-5 flex-1 border-l-2 border-lazi-blue">
+                        <h3 class="text-sm font-bold text-white mb-2"><i class="fas fa-chart-line text-lazi-blue mr-2"></i>Trend Analysis</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed text-justify">
+                            Vietnam GDP 2025 reaches <strong>~7.0%</strong>. The "China+1" strategy has fully matured, shifting from construction to <span class="text-white font-bold">Operation Optimization</span>. 
+                            <br><br>
+                            FDI structure is pivoting: High-tech (semiconductors) and <strong>Food Processing</strong> (for export EVFTA) are the new dominant drivers.
+                        </p>
+                    </div>
+
+                    <div class="cyber-card p-5 flex-1 border-l-2 border-ingrid-green">
+                        <h3 class="text-sm font-bold text-white mb-2"><i class="fas fa-globe-asia text-ingrid-green mr-2"></i>Top Partners</h3>
+                        <div class="space-y-3 mt-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-400">1. Singapore</span>
+                                <div class="w-24 bg-gray-800 h-1.5 rounded-full overflow-hidden"><div class="bg-white w-[80%] h-full"></div></div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-400">2. South Korea</span>
+                                <div class="w-24 bg-gray-800 h-1.5 rounded-full overflow-hidden"><div class="bg-white w-[65%] h-full"></div></div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-400">3. Japan</span>
+                                <div class="w-24 bg-gray-800 h-1.5 rounded-full overflow-hidden"><div class="bg-white w-[50%] h-full"></div></div>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 text-[10px] text-gray-500">
+                            *Japan & Korea dominate Food Processing sector investments.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="max-w-7xl mx-auto w-full">
+                <h2 class="text-3xl font-tech font-bold mb-8"><span class="text-ingrid-green">Food Industry</span>: The "Disconnected" Factory</h2>
+                
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="cyber-card p-6 hover:bg-red-900/10 transition group">
+                        <div class="w-12 h-12 rounded-lg bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                            <i class="fas fa-unlink text-red-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Supply Chain Isolation</h3>
+                        <p class="text-sm text-gray-400 text-justify">
+                            FDI factories have world-class machinery but poor connection to local raw materials (Farm-to-Factory).
+                            <br><span class="text-red-400 text-xs mt-2 block">→ Lack of real-time sourcing data.</span>
+                        </p>
+                    </div>
+
+                    <div class="cyber-card p-6 hover:bg-orange-900/10 transition group">
+                        <div class="w-12 h-12 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                            <i class="fas fa-eye-slash text-orange-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Market Blindness</h3>
+                        <p class="text-sm text-gray-400 text-justify">
+                            Producing without grasping local taste shifts or competitor pricing. Relying on outdated quarterly reports.
+                            <br><span class="text-orange-400 text-xs mt-2 block">→ Need AI Market Scanning.</span>
+                        </p>
+                    </div>
+
+                    <div class="cyber-card p-6 bg-lazi-blue/5 border-lazi-blue/30 group">
+                        <div class="w-12 h-12 rounded-lg bg-lazi-blue/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                            <i class="fas fa-rocket text-lazi-blue text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">The AI Opportunity</h3>
+                        <p class="text-sm text-gray-300 text-justify">
+                            Food exports target <strong class="text-white">$55B</strong> (2026). Companies need tools to automate B2B sales (Alibaba/Amazon style) but localized.
+                            <br><span class="text-lazi-blue text-xs mt-2 block font-bold">→ Perfect fit for our System.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 cyber-card p-6 border-t border-gray-700">
+                    <h4 class="text-xs font-mono text-gray-500 uppercase mb-4">Competitor Landscape Analysis</h4>
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div class="p-3 bg-gray-800 rounded">
+                            <div class="font-bold text-gray-400">Salesforce</div>
+                            <div class="text-[10px] text-gray-500">Too expensive, complex</div>
+                        </div>
+                        <div class="p-3 bg-gray-800 rounded">
+                            <div class="font-bold text-gray-400">HubSpot</div>
+                            <div class="text-[10px] text-gray-500">Good marketing, weak Ops</div>
+                        </div>
+                        <div class="p-3 bg-gray-800 rounded">
+                            <div class="font-bold text-gray-400">Local ERPs</div>
+                            <div class="text-[10px] text-gray-500">No AI, just accounting</div>
+                        </div>
+                        <div class="p-3 bg-lazi-blue/20 border border-lazi-blue rounded relative overflow-hidden">
+                            <div class="absolute inset-0 bg-lazi-blue/10 animate-pulse"></div>
+                            <div class="font-bold text-white relative z-10">LAZINET x INGRID</div>
+                            <div class="text-[10px] text-lazi-blue relative z-10">AI-Native + Local Insight</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-tech font-bold">The Solution: <span class="text-transparent bg-clip-text bg-gradient-to-r from-lazi-blue to-ingrid-green">AI Sales & CRM Ecosystem</span></h2>
+                <p class="text-gray-400 text-sm">Digitizing Ingrid's Commercial Framework with Lazinet's Technology</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 h-full pb-8">
+                <div class="cyber-card p-4 flex flex-col hover:bg-white/5 transition relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-20 text-4xl font-black text-gray-700">01</div>
+                    <div class="text-lazi-blue font-mono text-xs mb-2">INPUT</div>
+                    <h3 class="font-bold text-white">Market Scan (AI)</h3>
+                    <p class="text-xs text-gray-400 mt-2">Crawler agents scanning competitor prices (Shopee/Lazada/B2B sites) & Raw material indexes.</p>
+                </div>
+
+                <div class="cyber-card p-4 flex flex-col hover:bg-white/5 transition relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-20 text-4xl font-black text-gray-700">02</div>
+                    <div class="text-lazi-blue font-mono text-xs mb-2">PROCESS</div>
+                    <h3 class="font-bold text-white">Smart CRM</h3>
+                    <p class="text-xs text-gray-400 mt-2">360° Customer View. AI scoring for B2B leads (Distributors vs Retailers).</p>
+                </div>
+
+                <div class="cyber-card p-4 flex flex-col hover:bg-white/5 transition relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-20 text-4xl font-black text-gray-700">03</div>
+                    <div class="text-lazi-blue font-mono text-xs mb-2">CORE</div>
+                    <h3 class="font-bold text-white">Data Lake</h3>
+                    <p class="text-xs text-gray-400 mt-2">Centralized data warehouse connecting Factory ERP with Market Signals.</p>
+                </div>
+
+                <div class="cyber-card p-4 flex flex-col hover:bg-white/5 transition relative overflow-hidden border-t-2 border-ingrid-green">
+                    <div class="absolute top-0 right-0 p-2 opacity-20 text-4xl font-black text-gray-700">04</div>
+                    <div class="text-ingrid-green font-mono text-xs mb-2">TOUCHPOINT</div>
+                    <h3 class="font-bold text-white">Auto Landing Page</h3>
+                    <p class="text-xs text-gray-400 mt-2">Instant generation of product showcases with embedded AI Chatbot Agents.</p>
+                </div>
+
+                <div class="cyber-card p-4 flex flex-col hover:bg-white/5 transition relative overflow-hidden border-t-2 border-ingrid-green">
+                    <div class="absolute top-0 right-0 p-2 opacity-20 text-4xl font-black text-gray-700">05</div>
+                    <div class="text-ingrid-green font-mono text-xs mb-2">OPERATION</div>
+                    <h3 class="font-bold text-white">Auto Ops</h3>
+                    <p class="text-xs text-gray-400 mt-2">Auto-Quotation generation based on volume. Contract generation via Templates.</p>
+                </div>
+
+                <div class="cyber-card p-4 flex flex-col hover:bg-white/5 transition relative overflow-hidden border-t-2 border-ingrid-green">
+                    <div class="absolute top-0 right-0 p-2 opacity-20 text-4xl font-black text-gray-700">06</div>
+                    <div class="text-ingrid-green font-mono text-xs mb-2">OUTREACH</div>
+                    <h3 class="font-bold text-white">AI Marketing</h3>
+                    <p class="text-xs text-gray-400 mt-2">Auto-content for LinkedIn/Zalo. Ad performance tracking & optimization.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-tech font-bold mb-6">Technical Architecture <span class="text-xs font-sans font-normal text-gray-500 border border-gray-600 px-2 py-1 rounded ml-4">Microservices / API-First</span></h2>
+            
+            <div class="flex-grow cyber-card p-8 relative flex flex-col justify-center items-center gap-6">
+                <svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 50 H 90 V 200" stroke="#00F" fill="none" stroke-width="2"/>
+                    <path d="M50 400 H 90 V 200" stroke="#0F0" fill="none" stroke-width="2"/>
+                </svg>
+
+                <div class="flex gap-4">
+                    <div class="px-6 py-3 bg-gray-800 rounded-lg border border-gray-600 text-sm font-bold text-white"><i class="fas fa-desktop mr-2"></i>Web Portal (Next.js)</div>
+                    <div class="px-6 py-3 bg-gray-800 rounded-lg border border-gray-600 text-sm font-bold text-white"><i class="fas fa-mobile-alt mr-2"></i>Mobile App (Flutter)</div>
+                    <div class="px-6 py-3 bg-gray-800 rounded-lg border border-gray-600 text-sm font-bold text-green-500"><i class="fas fa-comment-dots mr-2"></i>Zalo / FB Webhook</div>
+                </div>
+
+                <i class="fas fa-arrow-down text-gray-500"></i>
+
+                <div class="w-full max-w-4xl p-6 rounded-xl border border-lazi-blue bg-lazi-blue/5 grid grid-cols-3 gap-4 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bg-lazi-blue text-white text-[10px] font-bold px-2 py-1">LAZINET CORE</div>
+                    
+                    <div class="col-span-1 p-4 bg-gray-900 rounded border border-gray-700">
+                        <h4 class="text-lazi-orange font-bold text-xs mb-2">BUSINESS SERVICES</h4>
+                        <ul class="text-[10px] text-gray-400 space-y-1">
+                            <li>• Auth (OAuth2/JWT)</li>
+                            <li>• Tenant Manager (SaaS)</li>
+                            <li>• Billing Engine</li>
+                            <li>• Notification Svc</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-span-2 p-4 bg-gray-900 rounded border border-gray-700 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-lazi-blue/30 blur-xl rounded-full"></div>
+                        <h4 class="text-white font-bold text-xs mb-2 flex justify-between">
+                            AI ORCHESTRATOR (RAG Pipeline)
+                            <span class="text-[10px] text-lazi-blue border border-lazi-blue px-1 rounded">FastAPI / Python</span>
+                        </h4>
+                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                            <div class="bg-black/50 p-2 rounded border border-gray-600">
+                                <span class="text-purple-400 font-bold">LLM Gateway</span><br>
+                                Google Gemini Pro / DeepSeek
+                            </div>
+                            <div class="bg-black/50 p-2 rounded border border-gray-600">
+                                <span class="text-green-400 font-bold">Agents</span><br>
+                                Pricing Bot, Contract OCR
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <i class="fas fa-arrow-down text-gray-500"></i>
+
+                <div class="flex gap-8">
+                    <div class="text-center">
+                        <i class="fas fa-database text-3xl text-blue-500 mb-2"></i>
+                        <div class="text-xs font-bold">PostgreSQL</div>
+                        <div class="text-[10px] text-gray-500">Structured Data</div>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-project-diagram text-3xl text-purple-500 mb-2"></i>
+                        <div class="text-xs font-bold">Vector DB (Pinecone)</div>
+                        <div class="text-[10px] text-gray-500">Embeddings / Knowledge</div>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-layer-group text-3xl text-orange-500 mb-2"></i>
+                        <div class="text-xs font-bold">Redis</div>
+                        <div class="text-[10px] text-gray-500">Caching / Queues</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="grid grid-cols-12 gap-8 h-full">
+                <div class="col-span-5 flex flex-col justify-center">
+                    <h2 class="text-3xl font-tech font-bold mb-6">Execution Roadmap</h2>
+                    <div class="relative border-l border-gray-700 ml-4 space-y-8">
+                        <div class="pl-8 relative">
+                            <div class="absolute w-3 h-3 bg-lazi-blue rounded-full -left-[7px] top-1.5 shadow-[0_0_10px_#00F]"></div>
+                            <div class="text-[10px] font-mono text-lazi-blue mb-1">JAN - FEB 2026</div>
+                            <h4 class="font-bold text-white text-lg">Phase 1: Prototype</h4>
+                            <p class="text-xs text-gray-400">Internal Demo. Market Crawler v1. Basic CRM structure.</p>
+                        </div>
+                        <div class="pl-8 relative">
+                            <div class="absolute w-3 h-3 bg-lazi-orange rounded-full -left-[7px] top-1.5"></div>
+                            <div class="text-[10px] font-mono text-lazi-orange mb-1">MAR - JUN 2026</div>
+                            <h4 class="font-bold text-white text-lg">Phase 2: MVP & Pilot</h4>
+                            <p class="text-xs text-gray-400">Deploy for 1-2 friendly FDI clients. Refine AI models with real data.</p>
+                        </div>
+                        <div class="pl-8 relative">
+                            <div class="absolute w-3 h-3 bg-ingrid-green rounded-full -left-[7px] top-1.5"></div>
+                            <div class="text-[10px] font-mono text-ingrid-green mb-1">JUL - DEC 2026</div>
+                            <h4 class="font-bold text-white text-lg">Phase 3: Package Deployment</h4>
+                            <p class="text-xs text-gray-400">Scale to 5-10 clients. Customization <30%. Prepare SaaS Core.</p>
+                        </div>
+                        <div class="pl-8 relative">
+                            <div class="absolute w-3 h-3 bg-gray-500 rounded-full -left-[7px] top-1.5"></div>
+                            <div class="text-[10px] font-mono text-gray-500 mb-1">JAN 2027+</div>
+                            <h4 class="font-bold text-white text-lg">Phase 4: Mass SaaS</h4>
+                            <p class="text-xs text-gray-400">Self-service platform. Subscription model.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-7 cyber-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold mb-4 flex justify-between items-center">
+                        Resource & Cost Estimation
+                        <span class="text-xs font-normal text-gray-500 border border-gray-600 px-2 py-1 rounded">Unit: VND Million</span>
+                    </h3>
+                    
+                    <div class="overflow-hidden rounded-lg border border-gray-700">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-300 uppercase bg-gray-800">
+                                <tr>
+                                    <th class="px-4 py-3">Phase</th>
+                                    <th class="px-4 py-3">Duration</th>
+                                    <th class="px-4 py-3">Team (MM)</th>
+                                    <th class="px-4 py-3 text-right">Est. Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-800 hover:bg-white/5">
+                                    <td class="px-4 py-3 font-bold text-lazi-blue">1. Prototype</td>
+                                    <td class="px-4 py-3">2 Mo</td>
+                                    <td class="px-4 py-3 text-xs">1 Sr, 1 Jr (4 MM)</td>
+                                    <td class="px-4 py-3 text-right text-white font-mono">160</td>
+                                </tr>
+                                <tr class="border-b border-gray-800 hover:bg-white/5">
+                                    <td class="px-4 py-3 font-bold text-lazi-orange">2. MVP</td>
+                                    <td class="px-4 py-3">4 Mo</td>
+                                    <td class="px-4 py-3 text-xs">1 Sr, 1 Mid, 1 Jr (12 MM)</td>
+                                    <td class="px-4 py-3 text-right text-white font-mono">480</td>
+                                </tr>
+                                <tr class="border-b border-gray-800 hover:bg-white/5">
+                                    <td class="px-4 py-3 font-bold text-ingrid-green">3. Package</td>
+                                    <td class="px-4 py-3">6 Mo</td>
+                                    <td class="px-4 py-3 text-xs">Full Team (24 MM)</td>
+                                    <td class="px-4 py-3 text-right text-white font-mono">960</td>
+                                </tr>
+                                <tr class="bg-lazi-blue/10">
+                                    <td class="px-4 py-3 font-bold text-white">TOTAL Y1</td>
+                                    <td class="px-4 py-3">12 Mo</td>
+                                    <td class="px-4 py-3"></td>
+                                    <td class="px-4 py-3 text-right text-lazi-orange font-bold text-lg font-mono">~1,600</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-auto grid grid-cols-2 gap-4 pt-4">
+                        <div class="p-4 bg-green-900/20 border border-green-800 rounded">
+                            <div class="text-[10px] text-gray-400 uppercase">Break-even Point</div>
+                            <div class="text-xl font-bold text-white">Month 14-16</div>
+                            <div class="text-xs text-green-400">Requires ~10 Clients ($2k setup + $500/mo)</div>
+                        </div>
+                        <div class="p-4 bg-blue-900/20 border border-blue-800 rounded">
+                            <div class="text-[10px] text-gray-400 uppercase">SaaS Goal (2027)</div>
+                            <div class="text-xl font-bold text-white">50+ Clients</div>
+                            <div class="text-xs text-blue-400">Revenue ~10 Billion VND/Year</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-tech font-bold text-white">Geo-Intelligence: <span class="text-lazi-orange">Target Zones</span></h2>
+                <a href="https://docs.google.com/spreadsheets/d/14EKsLxQESYEdj5w3FRSUp2hkwIyd5Yj5iftmd5ggDjs" target="_blank" class="text-xs text-lazi-blue border border-lazi-blue px-3 py-1 rounded hover:bg-lazi-blue hover:text-white transition">
+                    <i class="fas fa-external-link-alt mr-2"></i>Access Database
+                </a>
+            </div>
+            
+            <div class="flex-grow w-full rounded-xl overflow-hidden border border-gray-700 relative cyber-card">
+                <div id="industryMap" class="w-full h-full z-0"></div>
+                
+                <div class="absolute bottom-6 left-6 z-[1000] bg-black/80 backdrop-blur p-4 rounded border border-gray-600 w-48">
+                    <div class="text-xs font-bold text-white mb-2 uppercase">Zone Types</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_5px_blue]"></span>
+                        <span class="text-xs text-gray-300">Food Cluster</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_5px_orange]"></span>
+                        <span class="text-xs text-gray-300">General Industry</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="justify-center items-center text-center">
+            <h2 class="text-5xl font-tech font-bold mb-6">Let's Build The Future</h2>
+            <p class="text-xl text-gray-400 max-w-2xl mb-12">
+                Merging <strong class="text-lazi-blue">Lazinet's Technology</strong> with <strong class="text-ingrid-green">Ingrid's Network</strong> to dominate the FDI services market.
+            </p>
+
+            <button class="group relative px-8 py-4 bg-transparent border border-white text-white font-bold uppercase tracking-widest overflow-hidden hover:text-black transition duration-300">
+                <span class="absolute inset-0 w-full h-full bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                <span class="relative z-10">Start Phase 1</span>
+            </button>
+
+            <div class="mt-16 grid grid-cols-2 gap-12 text-sm text-gray-500">
+                <div>
+                    <div class="font-bold text-white mb-1">LAZINET Applied Technologies</div>
+                    <a href="https://lazinet.com" class="hover:text-lazi-blue">lazinet.com</a>
+                </div>
+                <div>
+                    <div class="font-bold text-white mb-1">INGRID International</div>
+                    <a href="https://ingridintl.sg" class="hover:text-ingrid-green">ingridintl.sg</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- 1. SLIDE NAVIGATION & PROGRESS ---
+        const scroller = document.getElementById('main-scroller');
+        const sections = document.querySelectorAll('section');
+        const navContainer = document.getElementById('nav-indicator');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Generate Dots
+        sections.forEach((_, idx) => {
+            const dot = document.createElement('div');
+            dot.className = `w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ${idx === 0 ? 'bg-white h-4' : 'bg-gray-600 hover:bg-gray-400'}`;
+            dot.onclick = () => sections[idx].scrollIntoView({ behavior: 'smooth' });
+            navContainer.appendChild(dot);
+        });
+
+        // Scroll Listener
+        scroller.addEventListener('scroll', () => {
+            const scrollPos = scroller.scrollTop;
+            const height = scroller.scrollHeight - window.innerHeight;
+            const progress = (scrollPos / height) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            const activeIdx = Math.round(scrollPos / window.innerHeight);
+            Array.from(navContainer.children).forEach((dot, i) => {
+                dot.className = i === activeIdx 
+                    ? 'w-2 h-4 rounded-full bg-lazi-orange shadow-[0_0_10px_#FF6300] transition-all duration-300' 
+                    : 'w-2 h-2 rounded-full bg-gray-600 hover:bg-gray-400 transition-all duration-300';
+            });
+        });
+
+        // --- 2. ECHARTS: MACRO DATA ---
+        const initChart = () => {
+            const chartDom = document.getElementById('macroChart');
+            if(!chartDom) return;
+            
+            const myChart = echarts.init(chartDom, 'dark');
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+                legend: { data: ['GDP Growth (%)', 'FDI Realized ($B)'], bottom: 0 },
+                grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+                xAxis: {
+                    type: 'category',
+                    data: ['2021', '2022', '2023', '2024', '2025 (Est)'],
+                    axisLine: { lineStyle: { color: '#555' } }
+                },
+                yAxis: [
+                    { type: 'value', name: 'FDI ($B)', position: 'left', splitLine: { lineStyle: { color: '#333' } } },
+                    { type: 'value', name: 'GDP (%)', position: 'right', splitLine: { show: false } }
+                ],
+                series: [
+                    {
+                        name: 'FDI Realized ($B)',
+                        type: 'bar',
+                        data: [19.74, 22.4, 23.18, 32.5, 39.5],
+                        itemStyle: { 
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#004A90' },
+                                { offset: 1, color: '#002040' }
+                            ]),
+                            borderRadius: [4, 4, 0, 0]
+                        }
+                    },
+                    {
+                        name: 'GDP Growth (%)',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [2.58, 8.02, 5.05, 6.5, 7.0],
+                        smooth: true,
+                        itemStyle: { color: '#FF6300' },
+                        lineStyle: { width: 3, shadowBlur: 10, shadowColor: '#FF6300' }
+                    }
+                ]
+            };
+            myChart.setOption(option);
+            window.addEventListener('resize', () => myChart.resize());
+        };
+        // Delay chart init to ensure container size is calculated
+        setTimeout(initChart, 500);
+
+        // --- 3. LEAFLET MAP ---
+        const initMap = () => {
+            const mapDom = document.getElementById('industryMap');
+            if(!mapDom) return;
+
+            const map = L.map('industryMap', {
+                center: [10.85, 106.75], // Center HCM-BinhDuong-DongNai
+                zoom: 10,
+                zoomControl: false,
+                attributionControl: false
+            });
+
+            // Dark Matter Basemap
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            // Data Points
+            const zones = [
+                { name: "VSIP I - Binh Duong", lat: 10.926, lng: 106.697, type: "food", desc: "Top Food Processing Hub" },
+                { name: "Amata - Dong Nai", lat: 10.938, lng: 106.867, type: "general", desc: "High-Tech Manufacturing" },
+                { name: "Hiep Phuoc - HCMC", lat: 10.635, lng: 106.745, type: "food", desc: "Port Logistics / Cold Chain" },
+                { name: "Tan Thuan - HCMC", lat: 10.762, lng: 106.726, type: "general", desc: "Export Processing Zone" }
+            ];
+
+            zones.forEach(z => {
+                const color = z.type === 'food' ? '#3b82f6' : '#f97316';
+                const circle = L.circleMarker([z.lat, z.lng], {
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.6,
+                    radius: z.type === 'food' ? 12 : 8
+                }).addTo(map);
+
+                // Add pulse effect using CSS class on the marker element? 
+                // Leaflet makes this tricky, simpler to use Popup
+                circle.bindPopup(`
+                    <div style="font-family: Inter, sans-serif; color: #fff;">
+                        <strong style="color: ${color}">${z.name}</strong><br>
+                        <span style="font-size: 11px; opacity: 0.8">${z.desc}</span>
+                    </div>
+                `);
+            });
+        };
+        setTimeout(initMap, 1000);
+
+    </script>
+</body>
+</html>

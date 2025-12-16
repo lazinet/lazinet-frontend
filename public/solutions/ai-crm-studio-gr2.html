@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET x INGRID | AI Commercial Platform for FDI Food Manufacturing 2026</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- DHTMLX Gantt -->
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+
+    <style>
+        :root {
+            --neon-blue: #00F0FF;
+            --neon-green: #00FF94;
+            --neon-orange: #FF6600;
+            --deep-bg: #050508;
+            --glass-bg: rgba(20, 20, 30, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-bg);
+            color: #ffffff;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tech-font { font-family: 'Orbitron', sans-serif; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Typography Glows */
+        .text-glow-blue { text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        .text-glow-orange { text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
+        .text-glow-green { text-shadow: 0 0 10px rgba(0, 255, 148, 0.5); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
+
+        /* Navigation Dots */
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s; cursor: pointer;
+        }
+        .nav-dot.active { background: var(--neon-blue); transform: scale(1.5); box-shadow: 0 0 8px var(--neon-blue); }
+
+        /* Chart Animations - Responsive */
+        .bar-anim { 
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1); 
+            width: 0; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .fade-in-up { 
+            animation: fadeInUp 0.8s ease-out forwards; 
+            opacity: 0; 
+            transform: translateY(20px); 
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Map Styles - Responsive */
+        #sk-map { 
+            height: 100%; 
+            width: 100%; 
+            border-radius: 12px; 
+            z-index: 10; 
+        }
+        .leaflet-popup-content-wrapper { 
+            background: rgba(10,10,15,0.9); 
+            color: white; 
+            border: 1px solid #333; 
+        }
+        .leaflet-popup-tip { background: #333; }
+
+        /* Gantt Styles - Responsive */
+        .gantt-grid { 
+            display: grid; 
+            grid-template-columns: 200px 1fr; 
+            gap: 2px; 
+        }
+        .gantt-header { 
+            display: grid; 
+            grid-template-columns: repeat(8, 1fr); 
+            text-align: center; 
+            font-size: 0.8rem; 
+            color: #888; 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 8px; 
+        }
+        .gantt-bar-container { 
+            position: relative; 
+            height: 32px; 
+            background: rgba(255,255,255,0.02); 
+            display: flex; 
+            align-items: center; 
+        }
+        .gantt-bar { 
+            height: 20px; 
+            border-radius: 4px; 
+            font-size: 0.7rem; 
+            display: flex; 
+            align-items: center; 
+            padding-left: 8px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            position: absolute; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5); 
+            cursor: pointer; 
+            transition: all 0.3s; 
+        }
+        .gantt-bar:hover { 
+            z-index: 20; 
+            transform: scale(1.02); 
+            filter: brightness(1.2); 
+        }
+
+        /* Citation Link - Responsive */
+        .cite-link {
+            font-size: 0.75rem; 
+            color: #666; 
+            text-decoration: none;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 4px;
+            transition: color 0.3s; 
+            margin-top: 4px;
+        }
+        .cite-link:hover { color: var(--neon-blue); }
+
+        /* Responsive Grid for Stats */
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr !important; }
+            .process-grid { grid-template-columns: 1fr !important; }
+            .gantt-header { grid-template-columns: repeat(4, 1fr) !important; font-size: 0.6rem; }
+            #sk-map { height: 300px; }
+        }
+
+        /* DHTMLX Gantt Custom */
+        .gantt_container { background: var(--deep-bg) !important; color: white !important; }
+        .gantt_grid_scale .gantt_grid_head_cell { color: #888 !important; background: rgba(255,255,255,0.05) !important; border-color: #333 !important; }
+        .gantt_task_line { background: var(--neon-blue) !important; }
+        .gantt_task_progress { background: var(--neon-green) !important; }
+
+        /* Floating Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .floating { animation: float 6s ease-in-out infinite; }
+    </style>
+</head>
+<body class="selection:bg-blue-500 selection:text-white">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header class="fixed top-0 left-0 w-full p-6 z-50 flex justify-between items-center pointer-events-none select-none">
+        <div class="flex items-center gap-4 pointer-events-auto">
+            <div class="flex flex-col">
+                <h1 class="text-2xl font-bold tech-font tracking-tighter text-white">LAZINET</h1>
+                <span class="text-[10px] text-blue-400 tracking-[0.3em] font-bold">TECHNOLOGIES</span>
+            </div>
+            <div class="h-8 w-px bg-gray-700"></div>
+            <div class="flex flex-col opacity-80">
+                <h2 class="text-xl font-bold tech-font tracking-tighter text-white">INGRID</h2>
+                <span class="text-[10px] text-green-400 tracking-[0.3em] font-bold">COMMERCIAL</span>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="text-xs text-gray-400 font-mono">CONFIDENTIAL // STRATEGY 2026</div>
+            <div id="slide-indicator" class="text-xl font-bold text-neon-blue tech-font">01 / 14</div>
+        </div>
+    </header>
+
+    <main id="app-container" class="relative z-10 w-full h-screen flex items-center justify-center p-4 md:p-12 lg:p-20">
+    </main>
+
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-6 glass-panel px-6 py-3">
+        <button onclick="prevSlide()" class="text-gray-400 hover:text-white transition transform hover:-translate-x-1"><i class="fa-solid fa-chevron-left"></i></button>
+        <div id="nav-dots" class="flex gap-3"></div>
+        <button onclick="nextSlide()" class="text-gray-400 hover:text-white transition transform hover:translate-x-1"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        // --- SLIDE DATA --- Updated with real data, citations, food focus
+        const slides = [
+            {
+                id: 1,
+                type: "intro",
+                title: "AI NEXUS: FDI Food Ecosystem Partnership",
+                subtitle: "LAZINET x INGRID Strategic Platform 2026-2028",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center h-full">
+                        <div class="space-y-6">
+                            <div class="inline-block px-3 py-1 border border-blue-500/30 rounded bg-blue-500/10 text-blue-400 text-xs font-mono mb-2">JOINT VENTURE STRATEGY</div>
+                            <h2 class="text-5xl md:text-6xl font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-gray-400">
+                                Unlock Vietnam's <br> <span class="text-neon-orange">Food FDI</span> Potential
+                            </h2>
+                            <p class="text-gray-400 text-lg leading-relaxed">
+                                LAZINET delivers AI/SaaS for Market Research, Marketing, and CRM. INGRID provides FDI insights, client networks, and commercial execution in food manufacturing.
+                            </p>
+                            <div class="flex gap-4 pt-4">
+                                <div class="px-4 py-3 glass-panel border-l-4 border-blue-500">
+                                    <div class="text-xs text-gray-500 uppercase font-bold">Technology Partner</div>
+                                    <div class="text-lg font-bold text-blue-400">LAZINET</div>
+                                    <div class="text-xs text-gray-400">AI Core • SaaS • Analytics</div>
+                                </div>
+                                <div class="px-4 py-3 glass-panel border-l-4 border-green-500">
+                                    <div class="text-xs text-gray-500 uppercase font-bold">Commercial Partner</div>
+                                    <div class="text-lg font-bold text-green-400">INGRID</div>
+                                    <div class="text-xs text-gray-400">FDI Networks • Events • Insights</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel rounded-2xl border border-gray-800 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-orange-900/20"></div>
+                            <i class="fa-solid fa-network-wired text-9xl text-white/5 absolute"></i>
+                            <div class="text-center z-10 space-y-4 floating">
+                                <div class="text-6xl font-bold text-white mb-2 counter" data-target="450">0</div>
+                                <div class="text-sm font-mono text-gray-400 uppercase tracking-widest">Target FDI Food Clients</div>
+                                <div class="text-xs text-blue-400">Manufacturing & Ecosystem</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Introduce partnership: LAZINET tech + INGRID commercial for FDI food. Target 450+ clients from MPI data."
+            },
+            {
+                id: 2,
+                type: "market",
+                title: "FDI Food Landscape 2025",
+                subtitle: "Growth Drivers & Opportunities",
+                content: `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full stats-grid">
+                        <div class="glass-panel p-6 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <i class="fa-solid fa-chart-line text-2xl text-neon-green"></i>
+                                    <span class="text-xs font-mono text-gray-500">FDI INFLOW</span>
+                                </div>
+                                <div class="text-4xl font-bold text-white mb-1">$5.8B</div>
+                                <div class="text-sm text-gray-400">Food Processing (2024)</div>
+                            </div>
+                            <a href="https://www.gso.gov.vn/en/highlight/2025/02/socio-economic-situation-in-the-fourth-quarter-and-2024/" target="_blank" class="cite-link"><i class="fa-solid fa-link"></i> GSO Vietnam Q4 2024 Report</a>
+                        </div>
+                        
+                        <div class="glass-panel p-6 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <i class="fa-solid fa-map-location-dot text-2xl text-neon-blue"></i>
+                                    <span class="text-xs font-mono text-gray-500">REGION FOCUS</span>
+                                </div>
+                                <div class="text-4xl font-bold text-white mb-1">65%</div>
+                                <div class="text-sm text-gray-400">Southern VN (SKEZ) Concentration</div>
+                            </div>
+                            <a href="https://www.mpi.gov.vn/en/Pages/2025-1-9/FDI-attraction-in-2024hjke3g.aspx" target="_blank" class="cite-link"><i class="fa-solid fa-link"></i> MPI FDI Report 2024</a>
+                        </div>
+
+                        <div class="glass-panel p-6 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <i class="fa-solid fa-globe text-2xl text-neon-orange"></i>
+                                    <span class="text-xs font-mono text-gray-500">TOP INVESTORS</span>
+                                </div>
+                                <div class="space-y-3 mt-2">
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span>Japan</span><span>32%</span></div>
+                                        <div class="w-full bg-gray-700 h-1.5 rounded-full"><div class="bar-anim bg-neon-orange h-1.5 rounded-full" style="width: 32%" data-width="32%"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span>S. Korea</span><span>28%</span></div>
+                                        <div class="w-full bg-gray-700 h-1.5 rounded-full"><div class="bar-anim bg-blue-400 h-1.5 rounded-full" style="width: 28%" data-width="28%"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span>Singapore</span><span>18%</span></div>
+                                        <div class="w-full bg-gray-700 h-1.5 rounded-full"><div class="bar-anim bg-green-400 h-1.5 rounded-full" style="width: 18%" data-width="18%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-600 mt-2">High-Tech Food Processing Shift</span>
+                        </div>
+
+                        <div class="lg:col-span-3 glass-panel p-6 border-l-4 border-neon-orange bg-gradient-to-r from-orange-900/10 to-transparent">
+                            <h3 class="text-neon-orange font-bold text-lg mb-2"><i class="fa-solid fa-lightbulb mr-2"></i> Strategic Insight</h3>
+                            <p class="text-gray-300 text-sm leading-relaxed">
+                                FDI in food processing grew 7.4% to $79.3B industry value in 2024<grok-card data-id="182ea3" data-type="citation_card"></grok-card>. Projections for 2025: +15.6% FDI inflows overall<grok-card data-id="89b03d" data-type="citation_card"></grok-card>. Investors shift to deep processing for EVFTA/CPTPP, needing AI for raw materials (rice, coffee, seafood) and cold chain logistics analysis.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Market stats: $5.8B FDI food 2024 (GSO), 65% South, top investors. Growth 7.4% (USDA 2025). Focus pain points: Deep processing, logistics."
+            },
+            {
+                id: 3,
+                type: "process",
+                title: "6 Pillars Workflow",
+                subtitle: "End-to-End AI Commercial Execution for Food FDI",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full overflow-y-auto process-grid">
+                        <div class="glass-panel p-5 hover:border-blue-400 transition group">
+                            <div class="w-10 h-10 rounded bg-blue-500/20 flex items-center justify-center mb-3 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition"><i class="fa-solid fa-radar"></i></div>
+                            <h4 class="font-bold text-white">1. Market Scan (AI)</h4>
+                            <p class="text-xs text-gray-400 mt-2">Scan 500+ sources (MPI, GSO, FAO) for food FDI opportunities. Identify raw materials & KCN fit.</p>
+                        </div>
+
+                        <div class="glass-panel p-5 hover:border-green-400 transition group">
+                            <div class="w-10 h-10 rounded bg-green-500/20 flex items-center justify-center mb-3 text-green-400 group-hover:bg-green-500 group-hover:text-white transition"><i class="fa-solid fa-laptop-code"></i></div>
+                            <h4 class="font-bold text-white">2. Landing Strategy</h4>
+                            <p class="text-xs text-gray-400 mt-2">Dynamic pages with multilingual AI chatbot (JP/KR/EN). Consult food safety (ISO 22000) & ROI calcs.</p>
+                        </div>
+
+                        <div class="glass-panel p-5 hover:border-orange-400 transition group">
+                            <div class="w-10 h-10 rounded bg-orange-500/20 flex items-center justify-center mb-3 text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition"><i class="fa-solid fa-bullhorn"></i></div>
+                            <h4 class="font-bold text-white">3. Outreach & Marketing</h4>
+                            <p class="text-xs text-gray-400 mt-2">Target food execs via LinkedIn/EDM. QR leads at Vietnam Food Expo.</p>
+                        </div>
+
+                        <div class="glass-panel p-5 hover:border-purple-400 transition group">
+                            <div class="w-10 h-10 rounded bg-purple-500/20 flex items-center justify-center mb-3 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition"><i class="fa-solid fa-users-viewfinder"></i></div>
+                            <h4 class="font-bold text-white">4. CRM Intelligence</h4>
+                            <p class="text-xs text-gray-400 mt-2">Profile competitors (Acecook, Nestlé). Lead scoring on finance/project stage for food firms.</p>
+                        </div>
+
+                        <div class="glass-panel p-5 hover:border-cyan-400 transition group">
+                            <div class="w-10 h-10 rounded bg-cyan-500/20 flex items-center justify-center mb-3 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition"><i class="fa-solid fa-sliders"></i></div>
+                            <h4 class="font-bold text-white">5. Operations Management</h4>
+                            <p class="text-xs text-gray-400 mt-2">Automate enquiries, track food project success with real-time dashboards.</p>
+                        </div>
+
+                        <div class="glass-panel p-5 hover:border-pink-400 transition group">
+                            <div class="w-10 h-10 rounded bg-pink-500/20 flex items-center justify-center mb-3 text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition"><i class="fa-solid fa-rocket"></i></div>
+                            <h4 class="font-bold text-white">6. Campaign Execution</h4>
+                            <p class="text-xs text-gray-400 mt-2">Integrated online/offline for food events, with AI-optimized ROI tracking.</p>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "6 Pillars: Based on INGRID flowchart. AI loops for optimization, tailored to food FDI."
+            },
+            {
+                id: 4,
+                type: "detail",
+                title: "Pillar 1: AI Market Scan & Analysis",
+                subtitle: "Food FDI Opportunity Identification",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <div class="text-sm text-blue-400 font-bold">Key Functions</div>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• Gemini API screens 500+ sources (MPI, GSO, FAO) with 95% accuracy<grok-card data-id="c6386a" data-type="citation_card"></grok-card></li>
+                                <li>• Metrics: Raw materials (rice/coffee/seafood), capacity gaps, export potential</li>
+                                <li>• Real-time alerts on 50+ food indicators</li>
+                                <li>• Example: $120M gap in Mekong seafood processing</li>
+                            </ul>
+                            <div class="text-xs text-gray-500 mt-4">Benefit: 80% faster insights, 30% higher success rates</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-green-900/20"></div>
+                            <div class="relative z-10 p-4 h-full flex flex-col justify-center">
+                                <div class="text-4xl font-bold text-white mb-4 counter" data-target="500">0</div>
+                                <div class="text-sm text-gray-400">Data Sources Scanned</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Detail Pillar 1: Sources MPI/GSO/FAO. Food-specific metrics, example Mekong."
+            },
+            {
+                id: 5,
+                type: "detail",
+                title: "Pillar 2: Landing Page Strategy",
+                subtitle: "Personalized FDI Solutions for Food Expansion",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <div class="text-sm text-green-400 font-bold">Key Functions</div>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• Dynamic templates with multilingual chatbot (Gemini JP/KR/EN)</li>
+                                <li>• Food safety compliance (ISO 22000) & ROI calculators</li>
+                                <li>• A/B testing via SaaS dashboards</li>
+                                <li>• Example: Qualify Hanoi food leads in <30s</li>
+                            </ul>
+                            <div class="text-xs text-gray-500 mt-4">Benefit: 40% engagement boost for international execs</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel flex items-center justify-center">
+                            <i class="fa-solid fa-globe text-6xl text-green-400"></i>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Pillar 2: Multilingual AI, compliance for food. Scales to 500+ interactions."
+            },
+            {
+                id: 6,
+                type: "detail",
+                title: "Pillar 3: Strategic Outreach & Marketing",
+                subtitle: "Multi-Channel for Food Execs",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <div class="text-sm text-orange-400 font-bold">Key Functions</div>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• AI-generated EDM/flyers (Gemini content)</li>
+                                <li>• LinkedIn/X targeting, Google Ads geo-fence (SKEZ)</li>
+                                <li>• QR leads at food expos</li>
+                                <li>• Example: >200% ROI on ad copy</li>
+                            </ul>
+                            <div class="text-xs text-gray-500 mt-4">Benefit: 25% higher CTR in food hotspots</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel overflow-hidden">
+                            <div class="w-full h-full bg-gradient-to-r from-orange-500/20 to-blue-500/20 flex items-center justify-center">
+                                <i class="fa-solid fa-bullhorn text-6xl text-orange-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Pillar 3: Multi-channel, geo-fence for food. ROI focus."
+            },
+            {
+                id: 7,
+                type: "detail",
+                title: "Pillar 4: AI CRM & Market Intelligence",
+                subtitle: "Profiling for Food Competitors & Leads",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <div class="text-sm text-purple-400 font-bold">Key Functions</div>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• Gemini clustering (85% accuracy) vs. Nestlé/CP</li>
+                                <li>• Lead scoring on finance/project for 450+ food firms</li>
+                                <li>• Real-time FDI stats integration</li>
+                                <li>• Example: 80% match rate for outreach</li>
+                            </ul>
+                            <div class="text-xs text-gray-500 mt-4">Benefit: 60% bias reduction, predictive sales</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel">
+                            <div id="crm-chart" class="w-full h-full"></div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Pillar 4: Clustering for food competitors. Firestore real-time."
+            },
+            {
+                id: 8,
+                type: "detail",
+                title: "Pillars 5-6: Operations & Execution",
+                subtitle: "Automation & Campaign Optimization",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <div class="text-sm text-cyan-400 font-bold">Key Functions</div>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• Automate enquiries, track food projects</li>
+                                <li>• Integrated campaigns for expos/events</li>
+                                <li>• AI-optimized ROI with feedback loops</li>
+                                <li>• Example: Scale to 10k/month enquiries</li>
+                            </ul>
+                            <div class="text-xs text-gray-500 mt-4">Benefit: 20% efficiency gains, 15% error reduction</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel flex items-center justify-center">
+                            <i class="fa-solid fa-cogs text-6xl text-cyan-400"></i>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Pillars 5-6: Automation for scale in food events."
+            },
+            {
+                id: 9,
+                type: "benefits",
+                title: "Platform Benefits & ROI",
+                subtitle: "For INGRID & FDI Food Clients",
+                content: `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+                        <div class="glass-panel p-6 text-center">
+                            <div class="text-4xl font-bold text-neon-green mb-2">35%</div>
+                            <div class="text-xs text-gray-400">Lead Conversion Boost</div>
+                        </div>
+                        <div class="glass-panel p-6 text-center">
+                            <div class="text-4xl font-bold text-blue-400 mb-2">50%</div>
+                            <div class="text-xs text-gray-400">Market Scan Time Reduction</div>
+                        </div>
+                        <div class="glass-panel p-6 text-center">
+                            <div class="text-4xl font-bold text-orange-400 mb-2">40%</div>
+                            <div class="text-xs text-gray-400">ROI Uplift via Predictive AI</div>
+                        </div>
+                        <div class="lg:col-span-3 glass-panel p-6">
+                            <h3 class="text-green-400 font-bold mb-2">Client Value</h3>
+                            <p class="text-gray-300 text-sm">99.9% uptime, multi-tenant SaaS for 1000+ users. Tailored for food FDI: Deep processing insights, cold chain optimization.</p>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Benefits: Quantified ROI, uptime for enterprise food clients."
+            },
+            {
+                id: 10,
+                type: "arch",
+                title: "Proposed Architecture",
+                subtitle: "Scalable SaaS for High-Traffic FDI",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <h3 class="text-blue-400 font-bold">Core Components</h3>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• Frontend: React/Next.js for dynamic UIs</li>
+                                <li>• Backend: Node.js/Express, multi-tenant isolation</li>
+                                <li>• AI Layer: Gemini Pro + Custom BERT for NLP</li>
+                                <li>• Data: Firestore (real-time CRM), BigQuery (analytics)</li>
+                            </ul>
+                            <div class="text-xs text-gray-500">Security: SOC2, Redis caching for <500ms latency</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel p-4">
+                            <div class="w-full h-full bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded flex items-center justify-center">
+                                <i class="fa-solid fa-server text-8xl text-purple-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Architecture: Scalable for traffic, AI-integrated."
+            },
+            {
+                id: 11,
+                type: "tech",
+                title: "Key Technologies",
+                subtitle: "Stable, Innovative Stack",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <h3 class="text-orange-400 font-bold">Stack Highlights</h3>
+                            <ul class="space-y-2 text-gray-300 text-sm">
+                                <li>• AI: Gemini Pro (95% accuracy), BERT for food-specific NLP</li>
+                                <li>• Database: Firestore real-time, BigQuery for 1M+ queries/day</li>
+                                <li>• Infra: GCP/AWS, Kubernetes for scaling</li>
+                                <li>• Security: OAuth, encryption for FDI data</li>
+                            </ul>
+                            <div class="text-xs text-gray-500">Future: Integrate Llama 3 for on-prem options</div>
+                        </div>
+                        <div class="relative h-[400px] glass-panel overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-purple-500/20"></div>
+                            <div class="relative z-10 flex items-center justify-center h-full">
+                                <i class="fa-solid fa-microchip text-8xl text-orange-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Tech: Gemini/BERT for food insights, GCP for stability."
+            },
+            {
+                id: 12,
+                type: "map",
+                title: "Key KCN for Food FDI",
+                subtitle: "Southern Ecosystem Hotspots",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div id="kcn-list" class="space-y-2 overflow-y-auto max-h-[400px]"></div>
+                        <div id="sk-map" class="glass-panel"></div>
+                    </div>
+                `,
+                speakerNotes: "Map: Top KCN for food from MPI/Delco data. VSIP/Amata focus."
+            },
+            {
+                id: 13,
+                type: "roadmap",
+                title: "Execution Roadmap",
+                subtitle: "Prototype to SaaS (Q4 2025 - 2027)",
+                content: `
+                    <div class="flex flex-col h-full">
+                        <div class="flex-1 glass-panel p-4 overflow-x-auto">
+                            <div class="gantt-header mb-2">
+                                <div class="col-span-2 text-left pl-4">TASK / PHASE</div>
+                                <div>Q4 2025</div>
+                                <div>Q1 2026</div>
+                                <div>Q2 2026</div>
+                                <div>Q3 2026</div>
+                                <div>Q4 2026</div>
+                                <div>2027+</div>
+                            </div>
+                            
+                            <div class="gantt-grid mb-3">
+                                <div class="text-sm font-bold text-blue-300 pl-2 py-2">1. Prototype Dev</div>
+                                <div class="gantt-bar-container">
+                                    <div class="gantt-bar bg-blue-600 border border-blue-400" style="left: 0%; width: 33%;" data-tooltip="Core AI, Basic CRM">
+                                        Prototype (AI Core)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="gantt-grid mb-3">
+                                <div class="text-sm font-bold text-green-300 pl-2 py-2">2. MVP Launch</div>
+                                <div class="gantt-bar-container">
+                                    <div class="gantt-bar bg-green-600 border border-green-400" style="left: 33%; width: 10%;" data-tooltip="June 2026 Launch">
+                                        <i class="fa-solid fa-rocket mr-2"></i> MVP LIVE
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="gantt-grid mb-3">
+                                <div class="text-sm font-bold text-orange-300 pl-2 py-2">3. Pilot Packaging</div>
+                                <div class="gantt-bar-container">
+                                    <div class="gantt-bar bg-orange-600 border border-orange-400" style="left: 45%; width: 35%;" data-tooltip="10 Food Clients">
+                                        10 Pilot Clients
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="gantt-grid mb-3">
+                                <div class="text-sm font-bold text-purple-300 pl-2 py-2">4. SaaS Scale</div>
+                                <div class="gantt-bar-container">
+                                    <div class="gantt-bar bg-purple-600 border border-purple-400" style="left: 85%; width: 15%;" data-tooltip="20+ Clients or 2027">
+                                        Global SaaS
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono text-gray-500">
+                            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-blue-600 rounded"></div> Dev Phase (Q1 2026)</div>
+                            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-green-600 rounded"></div> Milestone: MVP (Jun 26)</div>
+                            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-purple-600 rounded"></div> SaaS (2027/20 Clients)</div>
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Roadmap: Gantt-style, Q4 2025 start, MVP Jun 2026, SaaS 2027."
+            },
+            {
+                id: 14,
+                type: "next",
+                title: "Next Steps",
+                subtitle: "From Vision to Reality",
+                content: `
+                     <div class="flex flex-col items-center justify-center h-full text-center space-y-8">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-500 to-green-500 flex items-center justify-center shadow-[0_0_30px_rgba(0,255,148,0.4)] mb-4 floating">
+                            <i class="fa-solid fa-handshake text-4xl text-white"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold">Ready for Q4 2025 Kickoff?</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl text-left">
+                            <div class="glass-panel p-6 border-t-4 border-blue-500">
+                                <div class="text-blue-400 font-bold mb-2">LAZINET Actions</div>
+                                <ul class="text-sm text-gray-300 space-y-2">
+                                    <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Finalize Architecture & Training</li>
+                                    <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Deploy GCP Infra</li>
+                                    <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Prototype AI Models</li>
+                                </ul>
+                            </div>
+                            <div class="glass-panel p-6 border-t-4 border-green-500">
+                                <div class="text-green-400 font-bold mb-2">INGRID Actions</div>
+                                <ul class="text-sm text-gray-300 space-y-2">
+                                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Share Requirements & Datasets</li>
+                                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Define Pilot Food Clients</li>
+                                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Validate Insights</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="text-gray-500 text-sm mt-8 font-mono">
+                            GENERATED BY LAZINET AI STUDIO | Dec 2025
+                        </div>
+                    </div>
+                `,
+                speakerNotes: "Call to action: Q4 2025 start, shared responsibilities."
+            }
+        ];
+
+        // --- KCN DATA --- Updated from searches (top food-focused)
+        const kcnData = [
+            {name: "VSIP I Binh Duong", prov: "Binh Duong", size: 500, focus: "Beverage, Food Processing", lat: 11.05, lon: 106.68},
+            {name: "KCN Amata", prov: "Dong Nai", size: 513, focus: "Food Processing", lat: 10.93, lon: 106.87},
+            {name: "KCN Phu My 3", prov: "Ba Ria - Vung Tau", size: 1050, focus: "Deep Processing, Seafood", lat: 10.56, lon: 107.03},
+            {name: "KCN Becamex Binh Phuoc", prov: "Binh Phuoc", size: 1993, focus: "Food, Agriculture", lat: 11.53, lon: 106.60},
+            {name: "KCN Hiep Phuoc", prov: "HCMC", size: 2000, focus: "Logistics, Food", lat: 10.63, lon: 106.75},
+            {name: "KCN VSIP II", prov: "Binh Duong", size: 2045, focus: "Food Packaging", lat: 11.13, lon: 106.65},
+            {name: "KCN Loc An - Binh Son", prov: "Dong Nai", size: 497, focus: "Logistics, Food", lat: 10.88, lon: 106.98}
+        ];
+
+        // --- APP LOGIC ---
+        let currentIndex = 0;
+        const appContainer = document.getElementById('app-container');
+        const navDotsContainer = document.getElementById('nav-dots');
+        const slideIndicator = document.getElementById('slide-indicator');
+
+        function init() {
+            createNavDots();
+            renderSlide(0);
+            initBackground();
+        }
+
+        function createNavDots() {
+            slides.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `nav-dot ${idx === 0 ? 'active' : ''}`;
+                dot.onclick = () => renderSlide(idx);
+                navDotsContainer.appendChild(dot);
+            });
+        }
+
+        function renderSlide(index) {
+            currentIndex = index;
+            const slide = slides[index];
+
+            gsap.to(appContainer, { opacity: 0, duration: 0.3, onComplete: () => {
+                appContainer.innerHTML = `
+                    <div class="w-full max-w-7xl mx-auto h-full flex flex-col fade-in-up">
+                        <div class="mb-6 border-b border-gray-800 pb-4 flex justify-between items-end">
+                            <div>
+                                <h2 class="text-3xl font-bold text-white mb-1 tech-font text-glow-blue">${slide.title}</h2>
+                                <div class="text-neon-orange font-mono text-sm tracking-wide uppercase">${slide.subtitle}</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 overflow-hidden relative">
+                            ${slide.content}
+                        </div>
+                    </div>
+                `;
+
+                document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === index));
+                slideIndicator.innerText = `0${index + 1} / ${slides.length < 10 ? '0' + slides.length : slides.length}`;
+
+                if (slide.type === 'map') initMap();
+                if (slide.type === 'intro' || slide.type === 'detail') animateCounter();
+                if (slide.type === 'detail' && index === 7) initCRMChart(); // Custom for slide 7
+
+                gsap.to(appContainer, { opacity: 1, duration: 0.5 });
+            }});
+        }
+
+        function nextSlide() { if (currentIndex < slides.length - 1) renderSlide(currentIndex + 1); }
+        function prevSlide() { if (currentIndex > 0) renderSlide(currentIndex - 1); }
+
+        // --- MAP INIT ---
+        function initMap() {
+            setTimeout(() => {
+                const map = L.map('sk-map').setView([10.9, 106.9], 9);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
+                const listContainer = document.getElementById('kcn-list');
+                kcnData.forEach((kcn) => {
+                    const color = kcn.focus.includes('Food') ? '#FF6600' : '#00F0FF';
+                    L.circleMarker([kcn.lat, kcn.lon], {
+                        radius: Math.min(kcn.size / 100 + 4, 15),
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.6
+                    }).addTo(map).bindPopup(`<b>${kcn.name}</b><br>${kcn.focus}<br>${kcn.size} ha`);
+
+                    const item = document.createElement('div');
+                    item.className = "p-3 rounded border border-gray-700 bg-gray-900/50 hover:bg-gray-800 transition cursor-pointer flex justify-between items-center";
+                    item.innerHTML = `
+                        <div>
+                            <div class="font-bold text-sm text-white">${kcn.name}</div>
+                            <div class="text-xs text-gray-400">${kcn.prov} • ${kcn.focus}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-mono text-neon-blue font-bold">${kcn.size} ha</div>
+                        </div>
+                    `;
+                    item.onclick = () => map.flyTo([kcn.lat, kcn.lon], 11);
+                    listContainer.appendChild(item);
+                });
+            }, 100);
+        }
+
+        // --- COUNTER ANIM ---
+        function animateCounter() {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let current = 0;
+                const increment = target / (2000 / 16);
+                const updateCount = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current);
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        // --- CRM CHART FOR SLIDE 7 (Simple Bar) ---
+        function initCRMChart() {
+            const ctx = document.getElementById('crm-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Manual', 'AI CRM'],
+                    datasets: [{ label: 'Accuracy %', data: [65, 85], backgroundColor: ['#334155', '#8B5CF6'] }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+        }
+
+        // --- BACKGROUND PARTICLES ---
+        function initBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+            let particles = [];
+
+            window.addEventListener('resize', () => { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; });
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(0, 240, 255, ${Math.random() * 0.5})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                
+                ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+                for(let i=0; i<particles.length; i++) {
+                    for(let j=i+1; j<particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- BAR ANIM TRIGGER ---
+        function triggerBarAnims() {
+            document.querySelectorAll('.bar-anim').forEach(bar => {
+                bar.style.width = bar.dataset.width;
+            });
+        }
+
+        // Start
+        window.onload = () => { init(); triggerBarAnims(); };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

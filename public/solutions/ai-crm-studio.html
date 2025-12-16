@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET - Brand Marketing AI Strategy</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for World-Class Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --lazinet-orange: #FF6300;
+            --lazinet-blue: #0000FF;
+            --dark-bg: #050510;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, .tech-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Netzone Background Effect */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Neon Text */
+        .neon-text-blue {
+            text-shadow: 0 0 10px rgba(0, 0, 255, 0.8), 0 0 20px rgba(0, 0, 255, 0.4);
+        }
+        .neon-text-orange {
+            text-shadow: 0 0 10px rgba(255, 99, 0, 0.8), 0 0 20px rgba(255, 99, 0, 0.4);
+        }
+
+        /* Custom Bullet Points */
+        .tech-bullet {
+            position: relative;
+            padding-left: 20px;
+        }
+        .tech-bullet::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--lazinet-orange);
+            transform: rotate(45deg);
+            box-shadow: 0 0 5px var(--lazinet-orange);
+        }
+
+        /* Grid Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Visual Placeholder Styling */
+        .visual-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .visual-bg-anim {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent 0deg, var(--lazinet-blue) 360deg);
+            animation: rotate 10s linear infinite;
+            opacity: 0.1;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Chart Specific Styles */
+        .chart-bar {
+            transition: height 1s ease-out;
+            box-shadow: 0 0 10px currentColor;
+        }
+        .flow-node {
+            background: rgba(0,0,255,0.1);
+            border: 1px solid rgba(0,0,255,0.4);
+            box-shadow: 0 0 10px rgba(0,0,255,0.1);
+        }
+
+        /* Scrollbar for notes */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: var(--lazinet-orange);
+            border-radius: 3px;
+        }
+
+        /* Grid Navigation Modal */
+        #grid-nav {
+            backdrop-filter: blur(20px);
+            background: rgba(5, 5, 16, 0.9);
+        }
+        .grid-item:hover .grid-id {
+            color: var(--lazinet-orange);
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-black h-screen w-screen relative selection:bg-orange-500 selection:text-white">
+
+    <!-- Dynamic Background -->
+    <canvas id="canvas-bg"></canvas>
+    <div class="grid-overlay"></div>
+
+    <!-- UI: Top Header -->
+    <div class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center select-none pointer-events-none">
+        <div class="flex items-center gap-4 pointer-events-auto cursor-pointer" onclick="goToSlide(0)">
+            <!-- Logo Placeholder -->
+            <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" alt="LAZINET" class="h-10 md:h-12 object-contain" onerror="this.src='https://placehold.co/200x50/000000/FFFFFF?text=LAZINET'">
+            <div class="h-8 w-px bg-white/20"></div>
+            <div class="text-xs md:text-sm text-white/60 tracking-widest font-light uppercase group">
+                AI Solutions Division
+            </div>
+        </div>
+        <div class="text-right">
+            <div id="slide-counter" class="text-2xl font-bold text-white/90 tech-font">01 / 22</div>
+            <div class="text-[10px] text-orange-500 uppercase tracking-[0.2em] font-bold glow">Confidential</div>
+        </div>
+    </div>
+
+    <!-- Main Content Stage -->
+    <main id="slide-stage" class="relative z-10 w-full h-full flex items-center justify-center p-8 md:p-16 opacity-0">
+        <!-- Content gets injected here by JS -->
+    </main>
+
+    <!-- Controls UI -->
+    <div class="fixed bottom-0 left-0 w-full z-50 p-6 flex justify-between items-end pointer-events-none">
+        <!-- Left: Notes & Grid -->
+        <div class="pointer-events-auto flex gap-3">
+            <button onclick="toggleGrid()" class="glass-panel text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg flex items-center gap-2 transition-all text-sm group" title="Slide Grid">
+                <i class="fa-solid fa-grid-2 group-hover:text-blue-400"></i>
+                <span class="hidden md:inline">Grid</span>
+            </button>
+            <button onclick="toggleNotes()" class="glass-panel text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg flex items-center gap-2 transition-all text-sm group" title="Speaker Notes">
+                <i class="fa-regular fa-comment-dots group-hover:text-[var(--lazinet-orange)]"></i>
+                <span class="hidden md:inline">Notes</span>
+            </button>
+        </div>
+
+        <!-- Right: Progress & Nav -->
+        <div class="flex flex-col items-end gap-2 pointer-events-auto">
+            <div class="flex gap-2 mb-2">
+                 <button onclick="goToSlide(0)" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-blue-500 transition-all active:scale-95" title="Home">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+                <div class="w-px h-10 bg-white/10 mx-1"></div>
+                <button onclick="prevSlide()" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-orange-500 transition-all active:scale-95">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button onclick="nextSlide()" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-orange-500 transition-all active:scale-95">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button onclick="toggleFullScreen()" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-blue-500 transition-all active:scale-95 ml-2">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-600 to-orange-500 w-0 transition-all duration-500 ease-out shadow-[0_0_10px_var(--lazinet-orange)]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Speaker Notes Panel -->
+    <div id="notes-panel" class="fixed left-6 bottom-24 w-80 glass-panel border-l-4 border-l-[var(--lazinet-orange)] p-6 rounded-r-lg transform -translate-x-[120%] transition-transform duration-500 z-40 max-h-[40vh] overflow-y-auto custom-scroll">
+        <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs uppercase tracking-widest text-orange-500 font-bold">Presenter Notes</h4>
+            <button onclick="toggleNotes()" class="text-white/40 hover:text-white"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <p id="notes-content" class="text-sm text-white/80 leading-relaxed font-light whitespace-pre-line">
+            <!-- Notes injected here -->
+        </p>
+    </div>
+
+    <!-- Grid Navigation Overlay -->
+    <div id="grid-nav" class="fixed inset-0 z-[60] hidden flex flex-col p-8 opacity-0 transition-opacity duration-300">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold tech-font text-white">Slide Index</h2>
+            <button onclick="toggleGrid()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto custom-scroll pr-2">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4" id="grid-container">
+                <!-- Grid items injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA SOURCE & VISUAL CONFIGURATION ---
+        const slides = [
+            {
+                id: 1,
+                section: "Introduction",
+                title: "Brand Marketing AI Process Flow – Empowering FDI Expansion in Vietnam",
+                content: [
+                    "Introduction: AI-powered end-to-end system for market analysis to marketing campaigns.",
+                    "Target: Tailored for FDI consulting partners.",
+                    "Objectives: Boost lead conversion by 35%, cut market scan time by 50%.",
+                    "Partner: LAZINET x [Partner Name].",
+                    "Agenda: Business Processes → Benefits → Architecture → Technology → Implementation."
+                ],
+                visualType: "map-intro",
+                speakerNotes: "Slide mở đầu: Giới thiệu tổng quan hệ thống AI hỗ trợ FDI mở rộng tại VN, nhấn mạnh lợi ích định lượng. Sử dụng flowchart từ file đính kèm để minh họa quy trình end-to-end."
+            },
+            {
+                id: 2,
+                section: "Business Processes",
+                title: "Overview of Business Processes",
+                content: [
+                    "Flowchart Breakdown: 6 key stages (Market Scan → Marketing Campaign).",
+                    "Structure: Linear flow with AI feedback loops (e.g., CRM insights to analysis).",
+                    "Core Operations: VN market needs analysis (FDI sectors: manufacturing, tech), sales support via AI chatbots.",
+                    "Inputs: Raw market data; Outputs: Launch-ready campaigns."
+                ],
+                visualType: "flow-linear",
+                visualData: { steps: ["Scan", "Strategy", "Outreach", "CRM", "Ops", "Campaign"] },
+                speakerNotes: "Tổng quan quy trình: Phân tích sơ đồ PPTX, nhấn mạnh flow tuyến tính và loop AI. Liên kết với nhu cầu FDI như phân tích thị trường sản xuất."
+            },
+            {
+                id: 3,
+                section: "Business Processes",
+                title: "BP Analysis 1: Market Scan and Analysis",
+                content: [
+                    "Scope: Customer-product fit (FDI needs: factory expansion).",
+                    "AI Data Screening: Gemini classification & filtering.",
+                    "Market Analysis: VN 2025 trends (EV, semiconductors).",
+                    "Operations: Critical review of market needs → AI-assisted data strategy.",
+                    "Example: Scan 100+ sources to identify FDI electronics gaps."
+                ],
+                visualType: "chart-bar",
+                visualData: {
+                    title: "Time Consumption (Hours/Project)",
+                    labels: ["Manual Scan", "AI Scan (Lazinet)"],
+                    values: [120, 40], // 66% reduction roughly
+                    colors: ["#334155", "#FF6300"]
+                },
+                speakerNotes: "Phân tích nghiệp vụ 1: Market Scan – Chi tiết scoping và AI screening dữ liệu, ví dụ xu hướng VN cho FDI."
+            },
+            {
+                id: 4,
+                section: "Business Processes",
+                title: "BP Analysis 2: Formulate Landing Page Strategy",
+                content: [
+                    "Define Solutions: Custom FDI consulting packages.",
+                    "Brand Messaging: Positioning VN as a production hub.",
+                    "AI Chatbox: Gemini real-time Q&A integration.",
+                    "AI Sales Process: Automated lead scoring.",
+                    "Example: Chatbot recommends 'Hanoi industrial zones' based on user enquiry."
+                ],
+                visualType: "chat-sim",
+                speakerNotes: "Nghiệp vụ 2: Landing Page Strategy – Xây dựng chatbox AI và sales process, ví dụ tương tác real-time."
+            },
+            {
+                id: 5,
+                section: "Business Processes",
+                title: "BP Analysis 3: Strategic Marketing Outreach",
+                content: [
+                    "Flyer/EDM: AI-generated content personalized for recipients.",
+                    "Social Strategy: LinkedIn/X focus for FDI investors.",
+                    "Content: Animated posts/UGC (video tools).",
+                    "Ad Buy: Targeted campaigns for VN investors.",
+                    "Example: AI-optimized ad copy generating >200% ROI."
+                ],
+                visualType: "network-graph",
+                speakerNotes: "Nghiệp vụ 3: Marketing Outreach – Chiến lược đa kênh, tích hợp sự kiện ngoại tuyến cho FDI."
+            },
+            {
+                id: 6,
+                section: "Business Processes",
+                title: "BP Analysis 4: Market & AI-Assisted CRM Analysis",
+                content: [
+                    "Analysis: Customer/competitor deep dives (e.g., vs. Samsung VN).",
+                    "AI Profiling: Gemini clustering for segmentation.",
+                    "Data Trends: Real-time VN FDI statistics.",
+                    "Recommendations: Automated sales next-steps.",
+                    "Example: Profile 500 leads with 80% accuracy."
+                ],
+                visualType: "chart-pie",
+                visualData: {
+                    title: "Competitor Market Share Analysis",
+                    labels: ["Competitor A", "Competitor B", "Competitor C", "Others"],
+                    values: [30, 25, 15, 30]
+                },
+                speakerNotes: "Nghiệp vụ 4: CRM Analysis – Phân tích khách hàng và đối thủ, AI profiling với khuyến nghị."
+            },
+            {
+                id: 7,
+                section: "Business Processes",
+                title: "BP Analysis 5-6: Operations & Campaign",
+                content: [
+                    "Operations: Enquiries/quotations management (auto via Apps Script).",
+                    "Tracking: Success rate tracking & transaction analysis.",
+                    "Campaign: Calendar planning, creative design, execution.",
+                    "Measurement: ROI analysis (e.g., event attendance to sales).",
+                    "Example: Weekly auto-reports on success rates."
+                ],
+                visualType: "chart-metrics",
+                visualData: {
+                    metrics: [
+                        { label: "Success Rate", value: "68%", change: "+12%" },
+                        { label: "Trans. Vol", value: "1.2K", change: "+45%" },
+                        { label: "Avg Time", value: "2h", change: "-30%" }
+                    ]
+                },
+                speakerNotes: "Nghiệp vụ 5-6: Operations & Campaign – Quản lý enquiries và lập kế hoạch chiến dịch, đo lường ROI."
+            },
+            {
+                id: 8,
+                section: "Benefits",
+                title: "Overall System Benefits",
+                content: [
+                    "Speed: 40% less market scan time.",
+                    "Accuracy: AI profiling >85%.",
+                    "Scalability: Handle 1k leads/month.",
+                    "FDI Impact: Reduced VN market risks.",
+                    "Engagement: 25% higher via personalized outreach.",
+                    "ROI: Expected payback in 6 months."
+                ],
+                visualType: "big-stats",
+                visualData: {
+                    main: "6 Months",
+                    sub: "Expected ROI Payback",
+                    extra: "Reduced Risk Profile"
+                },
+                speakerNotes: "Lợi ích tổng thể: Định lượng hiệu quả, nhấn mạnh ROI cho đối tác FDI."
+            },
+            {
+                id: 9,
+                section: "Benefits",
+                title: "Detailed Benefits: Operational Efficiency & Metrics",
+                content: [
+                    "Market Scan: 50% manual data reduction → 20% faster insights.",
+                    "CRM: AI recommendations boost conversion by 30%.",
+                    "Campaign: UGC/ad optimization → 15% cost savings.",
+                    "Case Study: FDI client expansion → +40% VN market share."
+                ],
+                visualType: "chart-bar-horiz",
+                visualData: {
+                    labels: ["Data Reduction", "Faster Insights", "Conversion Boost", "Cost Saving"],
+                    values: [50, 20, 30, 15],
+                    suffix: "%"
+                },
+                speakerNotes: "Lợi ích chi tiết: Metrics cụ thể cho từng nghiệp vụ, ví dụ case study FDI."
+            },
+            {
+                id: 10,
+                section: "Benefits",
+                title: "Benefits: Tailored for FDI Partners",
+                content: [
+                    "Efficiency: Event communications support (auto-invites via CRM).",
+                    "Analysis: Real-time competitor tracking.",
+                    "Business Value: Expanded FDI networks, 35% consulting revenue growth.",
+                    "Sustainability: Low-compute AI (serverless design)."
+                ],
+                visualType: "map-simple",
+                speakerNotes: "Lợi ích cho đối tác: Tăng doanh thu tư vấn, hỗ trợ sự kiện truyền thông."
+            },
+            {
+                id: 11,
+                section: "Architecture",
+                title: "System Architecture: High-Level Overview",
+                content: [
+                    "Frontend: GitHub Pages (Landing).",
+                    "Backend: Apps Script (Serverless Logic).",
+                    "AI Engine: Gemini API.",
+                    "Database: Google Sheets (CRM/Data).",
+                    "Flow: Enquiry → AI Processing → CRM Update → Campaign Trigger.",
+                    "Scalability: Auto via Google quotas."
+                ],
+                visualType: "stack-layers",
+                visualData: { layers: ["Frontend (GH Pages)", "Backend (Apps Script)", "AI Engine (Gemini)", "Data (Sheets)"] },
+                speakerNotes: "Kiến trúc tổng quát: Các layer chính, flow end-to-end serverless."
+            },
+            {
+                id: 12,
+                section: "Architecture",
+                title: "System Architecture: Core Components",
+                content: [
+                    "Frontend: Landing operations (forms, chatbox).",
+                    "Backend: Event triggers (onSubmit → API calls).",
+                    "Data: Sheets tables (Customers, Trends, Recs).",
+                    "Integration: lazinet.vn domain via CNAME."
+                ],
+                visualType: "tech-grid",
+                speakerNotes: "Kiến trúc chi tiết: Components cốt lõi, tích hợp domain."
+            },
+            {
+                id: 13,
+                section: "Architecture",
+                title: "System Architecture: AI & CRM Integration",
+                content: [
+                    "AI Loop: Gemini profiling → Recommendations → Feedback to Market Scan.",
+                    "Security: Google OAuth, data encryption.",
+                    "Monitoring: Sheets dashboards + Alerts."
+                ],
+                visualType: "flow-loop",
+                speakerNotes: "Tích hợp AI-CRM: Loop feedback, bảo mật dữ liệu FDI."
+            },
+            {
+                id: 14,
+                section: "Architecture",
+                title: "System Architecture: Marketing Outreach Module",
+                content: [
+                    "Components: EDM generator (Apps Script templates).",
+                    "Scheduling: Social scheduler (Google Calendar sync).",
+                    "Extensibility: Hooks for offline events (QR to CRM)."
+                ],
+                visualType: "calendar-ui",
+                speakerNotes: "Module Outreach: Tích hợp EDM và lịch sự kiện."
+            },
+            {
+                id: 15,
+                section: "Technology",
+                title: "Technology Analysis: Core Stack (Max Cost Efficiency)",
+                content: [
+                    "Core: Google Workspace (Apps Script, Sheets) – Free, serverless.",
+                    "AI: Gemini API (Flash-Lite: $0.10 input/1M tokens).",
+                    "Frontend: GitHub Pages (Free hosting).",
+                    "Domain: lazinet.vn.",
+                    "Tools: VS Code/Python (local dev, gspread sync)."
+                ],
+                visualType: "logo-cloud",
+                speakerNotes: "Phân tích công nghệ: Stack tiết kiệm, cập nhật pricing Gemini Dec 2025."
+            },
+            {
+                id: 16,
+                section: "Technology",
+                title: "Technology Analysis: AI Implementation",
+                content: [
+                    "Gemini: Prompt engineering for profiling/trends (JSON outputs).",
+                    "Alternatives: Fallback to Grok for reasoning (prioritize Gemini for savings).",
+                    "Limits: 15 RPM free → Sufficient for 100 enquiries/day."
+                ],
+                visualType: "code-block",
+                speakerNotes: "Triển khai AI: Prompt cho Gemini, giới hạn free tier."
+            },
+            {
+                id: 17,
+                section: "Technology",
+                title: "Technology Analysis: Data & Analytics",
+                content: [
+                    "Sheets: Query language for trends, charts for success rates.",
+                    "Python: Local analysis (SciPy clustering for profiling).",
+                    "Future: Google Analytics for ad buy tracking."
+                ],
+                visualType: "chart-area",
+                speakerNotes: "Dữ liệu & Analytics: Sheets làm DB, Python hỗ trợ."
+            },
+            {
+                id: 18,
+                section: "Implementation",
+                title: "Implementation Plan: Phase 1 - Prototype (Weeks 1-4)",
+                content: [
+                    "Steps: Build AI CRM demo (Profiling, Trends, Recs) on Apps Script + Gemini.",
+                    "Resources: Solo dev, dummy data.",
+                    "Milestones: Functional landing on lazinet.vn, test 50 enquiries.",
+                    "Maturity: Proof-of-concept."
+                ],
+                visualType: "progress-radial",
+                visualData: { progress: 25, label: "Phase 1: Prototype" },
+                speakerNotes: "Kế hoạch giai đoạn 1: Prototype – Xây demo nhanh, test cơ bản."
+            },
+            {
+                id: 19,
+                section: "Implementation",
+                title: "Implementation Plan: Phase 2 - Customized (Weeks 5-8)",
+                content: [
+                    "Steps: Customize for partner (FDI-specific prompts, event calendar integration).",
+                    "Testing: UAT with partner, >80% accuracy metrics.",
+                    "Resources: +1 tester, feedback loops.",
+                    "Maturity: Tailored MVP."
+                ],
+                visualType: "progress-radial",
+                visualData: { progress: 60, label: "Phase 2: Customize" },
+                speakerNotes: "Giai đoạn 2: Customized – Tùy chỉnh theo đối tác, UAT."
+            },
+            {
+                id: 20,
+                section: "Implementation",
+                title: "Implementation Plan: Phase 3 - Packaging & SaaS (Week 9+)",
+                content: [
+                    "Steps: Package as templates (Sheets/Apps Script exports), deploy SaaS.",
+                    "Scale: Multi-tenant users, monitor via Billing alerts.",
+                    "Roadmap: V1 Core → V2 Full offline → V3 Multi-language.",
+                    "Cost: <200k VND/month at scale."
+                ],
+                visualType: "progress-radial",
+                visualData: { progress: 100, label: "Phase 3: SaaS Scale" },
+                speakerNotes: "Giai đoạn 3: Packaging/SaaS – Scale hệ thống, roadmap tương lai."
+            },
+            {
+                id: 21,
+                section: "Implementation",
+                title: "Implementation Plan: Risks & Mitigation",
+                content: [
+                    "Risk: API quotas. Mitigation: Prompt caching.",
+                    "Risk: Data privacy. Mitigation: GDPR via Google.",
+                    "Success Metrics: 90% uptime, 25% efficiency gain.",
+                    "Support: Monthly reviews."
+                ],
+                visualType: "risk-matrix",
+                speakerNotes: "Rủi ro & Giải pháp: Quota API, privacy, metrics thành công."
+            },
+            {
+                id: 22,
+                section: "Conclusion",
+                title: "Conclusion: Vision & Next Steps",
+                content: [
+                    "Summary: AI-driven engine for FDI market leadership.",
+                    "Long-Term: Digital transformation in communications.",
+                    "Next Steps: Schedule demo (lazinet.vn/ai-demo link).",
+                    "Q&A."
+                ],
+                visualType: "end-card",
+                speakerNotes: "Kết luận: Tóm tắt tầm nhìn, call to action demo."
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentIndex = 0;
+        let notesVisible = false;
+        let gridVisible = false;
+
+        // --- DOM ELEMENTS ---
+        const stage = document.getElementById('slide-stage');
+        const slideCounter = document.getElementById('slide-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const notesPanel = document.getElementById('notes-panel');
+        const notesContent = document.getElementById('notes-content');
+        const gridNav = document.getElementById('grid-nav');
+        const gridContainer = document.getElementById('grid-container');
+
+        // --- VISUAL RENDERERS ---
+        // Dynamically creates HTML for charts/graphs
+        function getVisualContent(slide) {
+            const data = slide.visualData || {};
+            
+            switch(slide.visualType) {
+                case "chart-bar":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center p-8">
+                            <h3 class="text-white/60 mb-6 text-center font-bold tracking-widest">${data.title || 'Data Comparison'}</h3>
+                            <div class="flex items-end justify-center space-x-12 h-64 border-b border-white/20 pb-2">
+                                ${data.labels.map((lbl, i) => `
+                                    <div class="flex flex-col items-center gap-2 group">
+                                        <div class="text-xl font-bold text-white mb-2 opacity-0 count-up">${data.values[i]}h</div>
+                                        <div class="w-16 md:w-24 bg-[${data.colors[i]}] rounded-t-lg relative overflow-hidden chart-bar h-0" data-height="${(data.values[i] / Math.max(...data.values)) * 100}%" style="background-color: ${data.colors[i]}">
+                                            <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        </div>
+                                        <div class="text-xs text-white/50 mt-2">${lbl}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                case "chart-bar-horiz":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center p-8">
+                             <div class="space-y-6">
+                                ${data.labels.map((lbl, i) => `
+                                    <div class="w-full">
+                                        <div class="flex justify-between mb-1 text-sm text-white/70">
+                                            <span>${lbl}</span>
+                                            <span class="text-orange-400 font-bold">${data.values[i]}${data.suffix}</span>
+                                        </div>
+                                        <div class="w-full h-4 bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-blue-600 to-orange-500 chart-bar-h w-0 rounded-full" data-width="${(data.values[i] / Math.max(...data.values)) * 100}%"></div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                             </div>
+                        </div>
+                    `;
+
+                case "chart-pie":
+                    // Simple CSS conic gradient for pie
+                    const colors = ['#0000FF', '#FF6300', '#10B981', '#64748B'];
+                    let gradientStr = "";
+                    let currentDeg = 0;
+                    data.values.forEach((val, i) => {
+                        const deg = (val / 100) * 360;
+                        gradientStr += `${colors[i]} ${currentDeg}deg ${currentDeg + deg}deg, `;
+                        currentDeg += deg;
+                    });
+                    gradientStr = gradientStr.slice(0, -2);
+                    
+                    return `
+                        <div class="w-full h-full flex flex-col items-center justify-center p-8">
+                            <h3 class="text-white/60 mb-6 text-center font-bold tracking-widest">${data.title}</h3>
+                            <div class="flex gap-8 items-center">
+                                <div class="w-48 h-48 rounded-full relative" style="background: conic-gradient(${gradientStr}); box-shadow: 0 0 30px rgba(0,0,255,0.2);">
+                                    <div class="absolute inset-0 rounded-full bg-black/50 m-12 backdrop-blur-sm flex items-center justify-center">
+                                        <span class="text-xs text-white/50">SHARE</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    ${data.labels.map((lbl, i) => `
+                                        <div class="flex items-center gap-2 text-sm text-white/80">
+                                            <div class="w-3 h-3 rounded-full" style="background-color: ${colors[i]}"></div>
+                                            <span>${lbl}</span>
+                                            <span class="font-bold ml-auto">${data.values[i]}%</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                
+                case "flow-linear":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center items-center p-4">
+                            <div class="flex flex-wrap gap-4 justify-center items-center">
+                                ${data.steps.map((step, i) => `
+                                    <div class="flow-node px-6 py-4 rounded bg-blue-900/20 border border-blue-500/30 text-white font-bold relative group hover:bg-blue-900/50 transition-colors">
+                                        ${step}
+                                        ${i < data.steps.length - 1 ? '<i class="fa-solid fa-arrow-right absolute -right-6 top-1/2 -translate-y-1/2 text-orange-500/50"></i>' : ''}
+                                    </div>
+                                    ${(i+1)%3 === 0 && i !== data.steps.length -1 ? '<div class="w-full"></div>' : ''} 
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                case "big-stats":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center items-center p-8 text-center">
+                            <div class="text-[8rem] font-bold text-transparent bg-clip-text bg-gradient-to-br from-orange-400 to-red-600 tech-font leading-none mb-4 animate-pulse">
+                                ${data.main}
+                            </div>
+                            <div class="text-2xl text-white/80 uppercase tracking-widest font-light mb-8 border-b border-white/20 pb-4">${data.sub}</div>
+                            <div class="bg-blue-900/30 px-6 py-3 rounded-full border border-blue-500/30 text-blue-300">
+                                <i class="fa-solid fa-check-circle mr-2"></i> ${data.extra}
+                            </div>
+                        </div>
+                    `;
+
+                case "map-intro":
+                    return `
+                        <div class="w-full h-full flex items-center justify-center relative">
+                             <!-- Stylized Abstract Map -->
+                             <div class="w-64 h-80 border-2 border-white/10 rounded-xl relative overflow-hidden bg-white/5 backdrop-blur flex items-center justify-center">
+                                <div class="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/21/Vietnam_location_map.svg')] bg-cover bg-center"></div>
+                                <div class="w-3 h-3 bg-orange-500 rounded-full absolute top-1/4 left-1/2 animate-ping"></div>
+                                <div class="w-3 h-3 bg-blue-500 rounded-full absolute bottom-1/4 right-1/3 animate-ping" style="animation-delay: 0.5s"></div>
+                                <i class="fa-solid fa-network-wired text-4xl text-white/50 z-10"></i>
+                             </div>
+                        </div>
+                    `;
+                
+                case "progress-radial":
+                    const circumference = 2 * Math.PI * 40;
+                    const offset = circumference - (data.progress / 100) * circumference;
+                    return `
+                         <div class="w-full h-full flex flex-col items-center justify-center">
+                            <div class="relative w-48 h-48">
+                                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#1e293b" stroke-width="8" />
+                                    <circle class="progress-ring-circle transition-all duration-1000 ease-out" cx="50" cy="50" r="40" fill="none" stroke="#FF6300" stroke-width="8" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}" data-offset="${offset}" />
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-3xl font-bold text-white">${data.progress}%</span>
+                                    <span class="text-[10px] uppercase text-white/50 tracking-wider">Complete</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-xl font-bold text-blue-300">${data.label}</div>
+                         </div>
+                    `;
+
+                default: // Fallback generic tech visual
+                    return `
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <div class="w-32 h-32 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                                <div class="w-20 h-20 rounded-full bg-blue-600/20 blur-xl"></div>
+                            </div>
+                            <i class="fa-solid fa-microchip text-5xl text-white/80 absolute"></i>
+                            <div class="mt-8 text-center text-white/40 font-mono text-xs">A.I. PROCESSING UNIT</div>
+                        </div>
+                    `;
+            }
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            // Update UI Counters
+            slideCounter.innerHTML = `<span class="text-orange-500">${String(slide.id).padStart(2, '0')}</span> / ${slides.length}`;
+            progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+            notesContent.innerText = slide.speakerNotes;
+
+            // Animate Slide Out (if exists)
+            const oldContent = document.getElementById('slide-content-wrapper');
+            if (oldContent) {
+                gsap.to(oldContent, {
+                    duration: 0.3,
+                    opacity: 0,
+                    scale: 0.95,
+                    filter: "blur(10px)",
+                    onComplete: () => buildNewSlide(slide)
+                });
+            } else {
+                buildNewSlide(slide);
+            }
+        }
+
+        function buildNewSlide(slide) {
+            stage.innerHTML = ''; // Clear
+
+            const wrapper = document.createElement('div');
+            wrapper.id = 'slide-content-wrapper';
+            wrapper.className = 'w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative';
+            
+            // --- Left Column: Content ---
+            const leftCol = document.createElement('div');
+            leftCol.className = 'space-y-6 z-20';
+
+            // Section Label
+            const sectionLabel = document.createElement('div');
+            sectionLabel.className = 'inline-block px-3 py-1 border border-blue-500/50 bg-blue-900/20 rounded text-blue-300 text-xs uppercase tracking-widest font-bold mb-2 neon-text-blue';
+            sectionLabel.innerText = slide.section || 'General';
+            leftCol.appendChild(sectionLabel);
+
+            // Title
+            const title = document.createElement('h1');
+            title.className = 'text-3xl md:text-5xl font-bold leading-tight text-white mb-6';
+            title.innerText = slide.title;
+            leftCol.appendChild(title);
+
+            // Bullets Container
+            const bulletsContainer = document.createElement('ul');
+            bulletsContainer.className = 'space-y-4';
+            
+            slide.content.forEach(text => {
+                const li = document.createElement('li');
+                li.className = 'tech-bullet text-lg md:text-xl text-gray-300 font-light opacity-0 translate-y-4 bullet-item';
+                // Highlight keywords logic
+                const highlighted = text.replace(/(\d+%|\d+k|AI|Gemini|FDI|ROI)/g, '<span class="text-orange-400 font-bold">$1</span>');
+                li.innerHTML = `<span>${highlighted}</span>`;
+                bulletsContainer.appendChild(li);
+            });
+            leftCol.appendChild(bulletsContainer);
+            wrapper.appendChild(leftCol);
+
+            // --- Right Column: Visuals (Dynamic High-Tech Charts) ---
+            const rightCol = document.createElement('div');
+            rightCol.className = 'relative h-[400px] lg:h-[500px] w-full visual-container glass-panel group';
+            
+            const contentContainer = document.createElement('div');
+            contentContainer.className = 'relative z-10 w-full h-full';
+            contentContainer.innerHTML = getVisualContent(slide);
+
+            // Decorative background
+            const decoration = document.createElement('div');
+            decoration.innerHTML = `
+                <div class="visual-bg-anim"></div>
+                <div class="absolute top-4 right-4 text-white/20 text-xs font-mono">SYS_ID: ${slide.id}</div>
+                <div class="absolute bottom-4 left-4 w-12 h-1 bg-orange-500/50"></div>
+                <div class="absolute bottom-4 right-4 w-12 h-1 bg-blue-500/50"></div>
+            `;
+
+            rightCol.appendChild(decoration);
+            rightCol.appendChild(contentContainer);
+            wrapper.appendChild(rightCol);
+
+            stage.appendChild(wrapper);
+
+            // --- GSAP Entrance Animation ---
+            const tl = gsap.timeline({
+                onComplete: () => triggerVisualAnimations(slide) // Trigger chart anims after slide load
+            });
+            
+            tl.fromTo(wrapper, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+            tl.fromTo(sectionLabel, { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 0);
+            tl.fromTo(title, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.2");
+            tl.to(".bullet-item", { y: 0, opacity: 1, duration: 0.4, stagger: 0.1 }, "-=0.3");
+            tl.fromTo(rightCol, { scale: 0.9, opacity: 0, rotationY: 10 }, { scale: 1, opacity: 1, rotationY: 0, duration: 0.8 }, "-=0.5");
+        }
+
+        // --- CHART ANIMATIONS TRIGGERS ---
+        function triggerVisualAnimations(slide) {
+            // Bar Charts
+            document.querySelectorAll('.chart-bar').forEach(bar => {
+                setTimeout(() => { bar.style.height = bar.dataset.height; }, 100);
+            });
+            document.querySelectorAll('.chart-bar-h').forEach(bar => {
+                setTimeout(() => { bar.style.width = bar.dataset.width; }, 100);
+            });
+            // Radial Progress
+            document.querySelectorAll('.progress-ring-circle').forEach(circle => {
+                setTimeout(() => { circle.style.strokeDashoffset = circle.dataset.offset; }, 100);
+            });
+        }
+
+        // --- GRID NAVIGATION ---
+        function populateGrid() {
+            gridContainer.innerHTML = slides.map((slide, idx) => `
+                <div onclick="goToSlide(${idx})" class="grid-item cursor-pointer bg-white/5 border border-white/10 p-3 rounded hover:bg-white/10 hover:border-orange-500/50 transition-all group flex flex-col h-32 relative overflow-hidden">
+                    <div class="grid-id text-2xl font-bold text-white/10 absolute top-2 right-2 group-hover:text-orange-500/20 transition-colors">${String(slide.id).padStart(2,'0')}</div>
+                    <div class="text-[10px] text-blue-400 uppercase tracking-wider mb-1">${slide.section}</div>
+                    <div class="text-xs text-white/80 font-medium leading-tight line-clamp-3">${slide.title}</div>
+                    ${idx === currentIndex ? '<div class="absolute bottom-0 left-0 w-full h-1 bg-orange-500"></div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function toggleGrid() {
+            gridVisible = !gridVisible;
+            if (gridVisible) {
+                populateGrid(); // Refresh active state
+                gridNav.classList.remove('hidden');
+                setTimeout(() => {
+                    gridNav.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                gridNav.classList.add('opacity-0');
+                setTimeout(() => {
+                    gridNav.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // --- GLOBAL CONTROLS ---
+        function goToSlide(index) {
+            currentIndex = index;
+            renderSlide(currentIndex);
+            if (gridVisible) toggleGrid();
+        }
+
+        function nextSlide() {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+                renderSlide(currentIndex);
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderSlide(currentIndex);
+            }
+        }
+
+        function toggleNotes() {
+            notesVisible = !notesVisible;
+            if (notesVisible) {
+                notesPanel.classList.remove('-translate-x-[120%]');
+                notesPanel.classList.add('translate-x-0');
+            } else {
+                notesPanel.classList.add('-translate-x-[120%]');
+                notesPanel.classList.remove('translate-x-0');
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // --- KEYBOARD NAV ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'n') toggleNotes();
+            if (e.key === 'f') toggleFullScreen();
+            if (e.key === 'g') toggleGrid();
+            if (e.key === 'Escape' && gridVisible) toggleGrid();
+        });
+
+        // --- INIT ---
+        window.onload = () => {
+            gsap.to(stage, { opacity: 1, duration: 1 });
+            renderSlide(currentIndex);
+            initNetzoneBackground();
+        };
+
+        // --- BACKGROUND EFFECT ---
+        function initNetzoneBackground() {
+            const canvas = document.getElementById('canvas-bg');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                    this.color = Math.random() > 0.8 ? '#FF6300' : '#0000FF'; 
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = 0.6;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.globalAlpha = 0.15;
+                ctx.strokeStyle = '#0000FF';
+                ctx.lineWidth = 0.5;
+
+                for (let i = 0; i < particles.length; i++) {
+                    let p1 = particles[i];
+                    p1.update();
+                    p1.draw();
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let p2 = particles[j];
+                        let dx = p1.x - p2.x;
+                        let dy = p1.y - p2.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

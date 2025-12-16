@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET - Brand Marketing AI Strategy</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for World-Class Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --lazinet-orange: #FF6300;
+            --lazinet-blue: #0000FF;
+            --dark-bg: #050510;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, .tech-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Netzone Background Effect */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Neon Text */
+        .neon-text-blue {
+            text-shadow: 0 0 10px rgba(0, 0, 255, 0.8), 0 0 20px rgba(0, 0, 255, 0.4);
+        }
+        .neon-text-orange {
+            text-shadow: 0 0 10px rgba(255, 99, 0, 0.8), 0 0 20px rgba(255, 99, 0, 0.4);
+        }
+
+        /* Custom Bullet Points */
+        .tech-bullet {
+            position: relative;
+            padding-left: 20px;
+        }
+        .tech-bullet::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--lazinet-orange);
+            transform: rotate(45deg);
+            box-shadow: 0 0 5px var(--lazinet-orange);
+        }
+
+        /* Grid Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Visual Placeholder Styling */
+        .visual-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .visual-bg-anim {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent 0deg, var(--lazinet-blue) 360deg);
+            animation: rotate 10s linear infinite;
+            opacity: 0.1;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Chart Specific Styles */
+        .chart-bar {
+            transition: height 1s ease-out;
+            box-shadow: 0 0 10px currentColor;
+        }
+        .flow-node {
+            background: rgba(0,0,255,0.1);
+            border: 1px solid rgba(0,0,255,0.4);
+            box-shadow: 0 0 10px rgba(0,0,255,0.1);
+        }
+
+        /* Scrollbar for notes */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: var(--lazinet-orange);
+            border-radius: 3px;
+        }
+
+        /* Grid Navigation Modal */
+        #grid-nav {
+            backdrop-filter: blur(20px);
+            background: rgba(5, 5, 16, 0.9);
+        }
+        .grid-item:hover .grid-id {
+            color: var(--lazinet-orange);
+        }
+
+        /* Table Styles for Appendix */
+        .appendix-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .appendix-table th, .appendix-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .appendix-table th {
+            background: rgba(0, 0, 255, 0.1);
+            font-weight: bold;
+            color: var(--lazinet-blue);
+        }
+        .appendix-table tr:hover {
+            background: rgba(255, 99, 0, 0.05);
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-black h-screen w-screen relative selection:bg-orange-500 selection:text-white">
+
+    <!-- Dynamic Background -->
+    <canvas id="canvas-bg"></canvas>
+    <div class="grid-overlay"></div>
+
+    <!-- UI: Top Header -->
+    <div class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center select-none pointer-events-none">
+        <div class="flex items-center gap-4 pointer-events-auto cursor-pointer" onclick="goToSlide(0)">
+            <!-- Logo Placeholder -->
+            <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" alt="LAZINET" class="h-10 md:h-12 object-contain" onerror="this.src='https://placehold.co/200x50/000000/FFFFFF?text=LAZINET'">
+            <div class="h-8 w-px bg-white/20"></div>
+            <div class="text-xs md:text-sm text-white/60 tracking-widest font-light uppercase group">
+                AI Solutions Division
+            </div>
+        </div>
+        <div class="text-right">
+            <div id="slide-counter" class="text-2xl font-bold text-white/90 tech-font">01 / 23</div>
+            <div class="text-[10px] text-orange-500 uppercase tracking-[0.2em] font-bold glow">Confidential</div>
+        </div>
+    </div>
+
+    <!-- Main Content Stage -->
+    <main id="slide-stage" class="relative z-10 w-full h-full flex items-center justify-center p-8 md:p-16 opacity-0">
+        <!-- Content gets injected here by JS -->
+    </main>
+
+    <!-- Controls UI -->
+    <div class="fixed bottom-0 left-0 w-full z-50 p-6 flex justify-between items-end pointer-events-none">
+        <!-- Left: Notes & Grid -->
+        <div class="pointer-events-auto flex gap-3">
+            <button onclick="toggleGrid()" class="glass-panel text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg flex items-center gap-2 transition-all text-sm group" title="Slide Grid">
+                <i class="fa-solid fa-grid-2 group-hover:text-blue-400"></i>
+                <span class="hidden md:inline">Grid</span>
+            </button>
+            <button onclick="toggleNotes()" class="glass-panel text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg flex items-center gap-2 transition-all text-sm group" title="Speaker Notes">
+                <i class="fa-regular fa-comment-dots group-hover:text-[var(--lazinet-orange)]"></i>
+                <span class="hidden md:inline">Notes</span>
+            </button>
+        </div>
+
+        <!-- Right: Progress & Nav -->
+        <div class="flex flex-col items-end gap-2 pointer-events-auto">
+            <div class="flex gap-2 mb-2">
+                 <button onclick="goToSlide(0)" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-blue-500 transition-all active:scale-95" title="Home">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+                <div class="w-px h-10 bg-white/10 mx-1"></div>
+                <button onclick="prevSlide()" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-orange-500 transition-all active:scale-95">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button onclick="nextSlide()" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-orange-500 transition-all active:scale-95">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button onclick="toggleFullScreen()" class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-white/70 hover:text-white hover:border-blue-500 transition-all active:scale-95 ml-2">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-600 to-orange-500 w-0 transition-all duration-500 ease-out shadow-[0_0_10px_var(--lazinet-orange)]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Speaker Notes Panel -->
+    <div id="notes-panel" class="fixed left-6 bottom-24 w-80 glass-panel border-l-4 border-l-[var(--lazinet-orange)] p-6 rounded-r-lg transform -translate-x-[120%] transition-transform duration-500 z-40 max-h-[40vh] overflow-y-auto custom-scroll">
+        <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs uppercase tracking-widest text-orange-500 font-bold">Presenter Notes</h4>
+            <button onclick="toggleNotes()" class="text-white/40 hover:text-white"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <p id="notes-content" class="text-sm text-white/80 leading-relaxed font-light whitespace-pre-line">
+            <!-- Notes injected here -->
+        </p>
+    </div>
+
+    <!-- Grid Navigation Overlay -->
+    <div id="grid-nav" class="fixed inset-0 z-[60] hidden flex flex-col p-8 opacity-0 transition-opacity duration-300">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold tech-font text-white">Slide Index</h2>
+            <button onclick="toggleGrid()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto custom-scroll pr-2">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4" id="grid-container">
+                <!-- Grid items injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA SOURCE & VISUAL CONFIGURATION ---
+        const slides = [
+            {
+                id: 1,
+                section: "Introduction",
+                title: "Brand Marketing AI Process Flow – Empowering FDI Expansion in Vietnam",
+                content: [
+                    "Introduction: AI-powered end-to-end system for market analysis to marketing campaigns, tailored for FDI consulting partners in VN manufacturing/tech sectors.",
+                    "Objectives: Boost lead conversion by 35%, cut market scan time by 50%, achieve 99.9% uptime in SaaS deployment. Deep analysis reveals potential 40% ROI uplift through predictive analytics integration.",
+                    "Partner: LAZINET x [Partner Name] – Co-delivering scalable AI solutions with white-label SaaS options for multi-tenant FDI networks.",
+                    "Agenda: Business Processes → Benefits → Architecture → Technology → Commercial Implementation & SaaS Roadmap.",
+                    "Strategic Insight: Aligns with VN's 2025 FDI surge in high-tech, positioning partners for 25% market share growth in electronics/EV sectors."
+                ],
+                visualType: "map-intro",
+                speakerNotes: "Slide mở đầu: Giới thiệu hệ thống AI thương mại hóa, nhấn ROI/SaaS cho đối tác FDI. Minh họa flowchart image1.png với map VN để tạo cảm giác địa phương hóa."
+            },
+            {
+                id: 2,
+                section: "Business Processes",
+                title: "Overview of Business Processes (From Attached Flowchart)",
+                content: [
+                    "Flowchart Breakdown: 6 key stages (Market Scan → Marketing Campaign), linear with AI feedback loops for continuous optimization and real-time adaptation.",
+                    "Core Operations: VN-specific market needs (FDI sectors: manufacturing 40%, tech 30%), sales automation via AI chatbots; loops enable 20% iterative efficiency gains.",
+                    "Inputs/Outputs: Raw FDI data → Scalable campaigns; Designed for SaaS multi-tenant (1000+ users) with role-based access for enterprise scalability.",
+                    "Analytical Depth: Feedback loops reduce error rates by 15%, enabling predictive scaling for high-volume FDI inquiries (e.g., 10k/month at maturity)."
+                ],
+                visualType: "flow-linear",
+                visualData: { steps: ["Market Scan", "Strategy Formulation", "Outreach Planning", "CRM Analysis", "Operations Management", "Campaign Execution"] },
+                speakerNotes: "Tổng quan quy trình: Phân tích sơ đồ PPTX, nhấn loop AI cho scale thương mại. Liên kết FDI VN với multi-tenant SaaS."
+            },
+            {
+                id: 3,
+                section: "Business Processes",
+                title: "Business Process Analysis 1: Market Scan and Analysis",
+                content: [
+                    "Details: Scope FDI-product fit (e.g., factory expansion in Hanoi/Binh Duong), AI data screening (Gemini for 95% accuracy), market analysis (VN 2025 FDI trends: EV +25%, semiconductors +18% per Vietnam Briefing).",
+                    "Operations: Critical review → AI-assisted strategy; Integrates real-time VN gov data APIs for dynamic risk assessment.",
+                    "Example: Scan 100+ sources, generate 80% faster insights for FDI electronics gaps; Commercial angle: SaaS tiering for varying scan volumes.",
+                    "Depth: Reduces manual bias by 60%, enabling data-driven decisions that correlate to 30% higher FDI success rates in targeted zones."
+                ],
+                visualType: "chart-bar",
+                visualData: {
+                    title: "Time Consumption (Hours/Project)",
+                    labels: ["Manual Scan", "AI Scan (Lazinet)"],
+                    values: [120, 40],
+                    colors: ["#334155", "#FF6300"]
+                },
+                speakerNotes: "Nghiệp vụ 1: Market Scan – Chi tiết AI screening, ví dụ trends FDI 2025. Nhấn accuracy cao cho thương mại."
+            },
+            {
+                id: 4,
+                section: "Business Processes",
+                title: "Business Process Analysis 2: Formulate Landing Page Strategy",
+                content: [
+                    "Details: Define FDI solutions (custom consulting packages), brand messaging (VN as ASEAN hub), AI chatbox (Gemini multilingual Q&A), AI sales process (lead scoring with 30% conversion uplift).",
+                    "Operations: Personalized pages via dynamic templates; SaaS-ready for A/B testing with analytics dashboards.",
+                    "Example: Chatbot qualifies Hanoi zone leads in <30s, integrates with CRM; Scales to 500+ daily interactions in enterprise mode.",
+                    "Depth: Multilingual support boosts engagement by 40% for international FDI execs, aligning with VN's 2025 export growth targets."
+                ],
+                visualType: "chat-sim",
+                speakerNotes: "Nghiệp vụ 2: Landing Strategy – Chatbox AI multilingual, ví dụ lead qualification nhanh cho FDI."
+            },
+            {
+                id: 5,
+                section: "Business Processes",
+                title: "Business Process Analysis 3: Strategic Marketing Outreach",
+                content: [
+                    "Details: Flyer/EDM auto-gen (AI content via Gemini), social strategy (LinkedIn/X targeting FDI execs), animated UGC/videos, ad buy (Google Ads API for VN geo-fencing).",
+                    "Operations: Multi-channel with offline event sync (e.g., VN Expo QR leads); SaaS hooks for custom branding.",
+                    "Example: AI ad copy yields >200% ROI, 15% cost save via optimization; Tracks 25% higher CTR in southern VN hotspots.",
+                    "Depth: Geo-fencing leverages 89% southern IZ occupancy (CBRE 2025), optimizing for high-FDI density areas like Binh Duong."
+                ],
+                visualType: "network-graph",
+                speakerNotes: "Nghiệp vụ 3: Outreach – Đa kênh API-integrated, ROI cao cho sự kiện FDI."
+            },
+            {
+                id: 6,
+                section: "Business Processes",
+                title: "Business Process Analysis 4: Market & AI-Assisted CRM Analysis",
+                content: [
+                    "Details: Customer/competitor analysis (vs Samsung VN via API), AI profiling (Gemini clustering 85% accuracy), trends (real-time FDI stats from VN gov), recommendations (predictive sales).",
+                    "Operations: Enquiries loop to strategy; SaaS dashboard with role-based access and exportable reports.",
+                    "Example: Profile 500 leads, 80% match rate for targeted outreach; Integrates with Firestore for real-time updates.",
+                    "Depth: Clustering reveals 35% overlap in EV/semicon segments, informing 20% more precise competitor benchmarking."
+                ],
+                visualType: "chart-pie",
+                visualData: {
+                    title: "Competitor Market Share Analysis (Electronics, 2025)",
+                    labels: ["Samsung", "LG", "Intel", "Others"],
+                    values: [40, 25, 20, 15]
+                },
+                speakerNotes: "Nghiệp vụ 4: CRM – Phân tích đối thủ API, profiling chính xác cho SaaS dashboard."
+            },
+            {
+                id: 7,
+                section: "Business Processes",
+                title: "Business Process Analysis 5-6: Landing Page Operations & Marketing Campaign",
+                content: [
+                    "Details: Auto enquiries/quotations (Apps Script prototype → Cloud Functions scale), success tracking (KPIs: 25% uplift), transactions analysis; Campaign: Calendar AI-scheduling, creative gen, hybrid offline/online.",
+                    "Operations: ROI dashboards (event-to-sales funnel); Exportable for SaaS reporting with multi-tenant isolation.",
+                    "Example: Weekly reports show 40% success rate improvement; Links to 15% higher close rates in FDI pilots.",
+                    "Depth: Funnel analysis identifies bottlenecks, enabling 30% optimization in campaign-to-conversion pipelines."
+                ],
+                visualType: "chart-metrics",
+                visualData: {
+                    metrics: [
+                        { label: "Success Rate", value: "68%", change: "+12%" },
+                        { label: "Trans. Vol", value: "1.2K", change: "+45%" },
+                        { label: "Avg Time", value: "2h", change: "-30%" }
+                    ]
+                },
+                speakerNotes: "Nghiệp vụ 5-6: Operations & Campaign – Quản lý enquiries và lập kế hoạch chiến dịch, đo lường ROI."
+            },
+            {
+                id: 8,
+                section: "Benefits",
+                title: "Overall System Benefits",
+                content: [
+                    "Benefits: 40% faster scans, >85% AI accuracy, scales to 10k leads/mo in SaaS; Aligns with VN's $10.98B Q1 2025 FDI inflow (34.7% YoY).",
+                    "FDI Impact: 25% engagement boost, reduced VN risks (compliance auto-checks via GDPR integration).",
+                    "ROI: 6-month payback; Case: +35% FDI client revenue (benchmark 2025, McKinsey FDI report).",
+                    "Commercial Depth: SaaS model ensures recurring revenue, with 99.9% uptime SLAs for enterprise trust."
+                ],
+                visualType: "big-stats",
+                visualData: {
+                    main: "6 Months",
+                    sub: "Expected ROI Payback",
+                    extra: "SaaS Scalability Unlocked"
+                },
+                speakerNotes: "Lợi ích tổng thể: ROI case 2025, scale SaaS cho đối tác."
+            },
+            {
+                id: 9,
+                section: "Benefits",
+                title: "Detailed Benefits: Operational Efficiency & Metrics",
+                content: [
+                    "Market Scan: 50% data reduction → 20% faster insights (KPI: <2h/report); Backed by Gemini's 95% classification accuracy.",
+                    "CRM: 30% conversion boost (predictive recs via clustering); Reduces churn by 18% in FDI pipelines.",
+                    "Campaign: 15% ad cost save (AI optimization); Leverages 2025 export surge to $120B electronics.",
+                    "Case: FDI electronics firm +40% VN share post-deployment; SaaS enables white-label for partner branding.",
+                    "Depth: Metrics correlate to 25% overall efficiency gain, positioning for $5B Asia SaaS market by 2028."
+                ],
+                visualType: "chart-bar-horiz",
+                visualData: {
+                    labels: ["Data Reduction", "Faster Insights", "Conversion Boost", "Cost Saving"],
+                    values: [50, 20, 30, 15],
+                    suffix: "%"
+                },
+                speakerNotes: "Lợi ích chi tiết: Metrics cụ thể cho từng nghiệp vụ, ví dụ case study FDI."
+            },
+            {
+                id: 10,
+                section: "Benefits",
+                title: "Benefits: Tailored for FDI Partners",
+                content: [
+                    "Efficiency: Auto-event invites (CRM sync), real-time competitor intel (API feeds from VN gov sources).",
+                    "Business Value: 35% revenue growth via expanded networks; SaaS white-label option with custom tiers.",
+                    "Sustainability: Serverless low-carbon (GCP green compute); Aligns with VN's 2030 net-zero goals.",
+                    "Depth: Enables 50% faster partner onboarding, reducing deployment from months to weeks in commercial pilots."
+                ],
+                visualType: "map-simple",
+                speakerNotes: "Lợi ích đối tác: White-label SaaS, green compute cho bền vững FDI."
+            },
+            {
+                id: 11,
+                section: "Architecture",
+                title: "System Architecture: High-Level Overview",
+                content: [
+                    "Layers: Frontend (React on GitHub Pages), Backend (Node.js/Cloud Run serverless), AI (Gemini API), Data (Firestore CRM).",
+                    "Flow: Enquiry → AI Process → CRM Update → Campaign Trigger (microservices for fault-tolerant scaling).",
+                    "Scalability: Auto-scale to 100k users via Kubernetes in SaaS; Handles 2025 FDI peak loads seamlessly.",
+                    "Depth: Microservices decouple for 99.9% uptime, with caching reducing latency by 40% in high-traffic scenarios."
+                ],
+                visualType: "stack-layers",
+                visualData: { layers: ["Frontend (Next.js/Vercel)", "Backend (Cloud Run)", "AI Engine (Gemini)", "Data (Firestore)"] },
+                speakerNotes: "Kiến trúc tổng quát: Microservices cho scale, từ prototype sang SaaS."
+            },
+            {
+                id: 12,
+                section: "Architecture",
+                title: "System Architecture: Core Components",
+                content: [
+                    "Frontend: Dynamic landing (Next.js forms/chatbox, SEO-optimized for FDI keywords).",
+                    "Backend: Event triggers (Cloud Functions → API Gateway for secure routing).",
+                    "Data: Firestore tables (Customers/Trends, real-time sync with offline support).",
+                    "Integration: lazinet.vn CDN, OAuth2 auth; Extensible for multi-tenant SaaS isolation.",
+                    "Depth: API Gateway enforces rate limits, supporting 100 RPM Gemini calls in production."
+                ],
+                visualType: "tech-grid",
+                speakerNotes: "Kiến trúc chi tiết: Next.js/Firestore cho production, auth thương mại."
+            },
+            {
+                id: 13,
+                section: "Architecture",
+                title: "System Architecture: AI & CRM Integration",
+                content: [
+                    "AI Loop: Gemini profiling → Recs → Feedback (caching Redis for speed, reducing calls by 50%).",
+                    "Security: OAuth/JWT, GDPR encryption (at-rest/transit); Compliant for FDI data sovereignty.",
+                    "Monitoring: GCP Logging + Alerts (99.9% SLA); Dashboards for SaaS usage analytics.",
+                    "Depth: Redis caching yields 70% faster responses, critical for real-time FDI lead scoring."
+                ],
+                visualType: "flow-loop",
+                speakerNotes: "Tích hợp AI-CRM: Redis cache, GDPR cho compliance FDI."
+            },
+            {
+                id: 14,
+                section: "Architecture",
+                title: "System Architecture: Marketing Outreach Module",
+                content: [
+                    "Components: EDM gen (Node templates + SendGrid), Social scheduler (Buffer API sync for multi-platform).",
+                    "Extensibility: Hooks for events (QR → CRM webhook); SaaS multi-brand templates.",
+                    "Depth: Webhooks enable 95% instant sync, minimizing data silos in hybrid offline/online campaigns."
+                ],
+                visualType: "calendar-ui",
+                speakerNotes: "Module Outreach: API integrations, multi-brand cho SaaS."
+            },
+            {
+                id: 15,
+                section: "Technology",
+                title: "Technology Analysis: Core Stack (Max Cost Efficiency)",
+                content: [
+                    "Core: GCP Workspace (Apps Script prototype → Cloud Run production) – Free tier to $0.02/req scale.",
+                    "AI: Gemini API (Flash-Lite $0.10/1M tokens) + fallback Grok; Optimized for 9.45% CAGR VN semis market.",
+                    "Frontend: Next.js on Vercel (free hosting, lazinet.vn CDN); SEO for FDI traffic.",
+                    "Tools: Docker/K8s for packaging, Terraform IaC for SaaS deploy; Ensures zero-downtime updates.",
+                    "Depth: Serverless cuts opex by 60%, aligning with 2025 green compute mandates."
+                ],
+                visualType: "logo-cloud",
+                speakerNotes: "Phân tích công nghệ: Migrate Apps Script → Cloud Run/K8s cho SaaS, pricing 2025."
+            },
+            {
+                id: 16,
+                section: "Technology",
+                title: "Technology Analysis: AI Implementation",
+                content: [
+                    "Gemini: Prompt chaining for profiling/trends (JSON schema validation for 95% parse accuracy).",
+                    "Alternatives: Grok hybrid for complex reasoning; Rate limits: 100 RPM paid tier.",
+                    "Production: LangChain orchestration, vector DB (Pinecone) for RAG; Enhances context for 20% better recs.",
+                    "Depth: RAG reduces hallucinations by 40%, vital for trustworthy FDI insights in commercial use."
+                ],
+                visualType: "code-block",
+                speakerNotes: "Triển khai AI: LangChain/Pinecone cho production, hybrid models."
+            },
+            {
+                id: 17,
+                section: "Technology",
+                title: "Technology Analysis: Data & Analytics",
+                content: [
+                    "Firestore: Real-time queries/trends, charts (Recharts dashboard for SaaS views).",
+                    "Python: ETL pipelines (Airflow), clustering (SciPy for profiles); Processes 1M+ records daily.",
+                    "Future: BigQuery for ad analytics, MLflow for model tracking in SaaS; Integrates VN FDI APIs.",
+                    "Depth: Airflow ensures 99% data freshness, enabling predictive trends with 85% accuracy."
+                ],
+                visualType: "chart-area",
+                speakerNotes: "Dữ liệu & Analytics: Firestore/Airflow cho scale, MLflow tracking."
+            },
+            {
+                id: 18,
+                section: "Implementation",
+                title: "Implementation Plan: Phase 1 - Prototype (Weeks 1-4)",
+                content: [
+                    "Steps: MVP AI CRM (profiling/trends/recs) on Apps Script + Gemini; Test 50 enquiries with dummy FDI data.",
+                    "Resources: 1 dev, dummy FDI data from PPTX; Focus on core loop validation.",
+                    "Milestones: lazinet.vn demo live, 80% accuracy; Prepares for SaaS migration hooks.",
+                    "Maturity: Proof-of-concept for partner buy-in; Validates 40% time savings empirically.",
+                    "Commercial Pivot: Establishes baseline for tiered pricing models in full rollout."
+                ],
+                visualType: "progress-radial",
+                visualData: { progress: 25, label: "Phase 1: Prototype" },
+                speakerNotes: "Giai đoạn 1: Prototype – MVP nhanh với Apps Script, test partner."
+            },
+            {
+                id: 19,
+                section: "Implementation",
+                title: "Implementation Plan: Phase 2 - Customized (Weeks 5-8)",
+                content: [
+                    "Steps: Tailor prompts/events (FDI VN focus), migrate to Cloud Functions for production readiness.",
+                    "Testing: UAT with partner, >85% metrics; Security audit for GDPR compliance.",
+                    "Resources: 2 devs + PM, feedback iterations; Incorporates real FDI datasets.",
+                    "Maturity: Branded MVP ready for pilot (10 FDI clients); Includes basic multi-tenant setup.",
+                    "Depth: UAT uncovers 15% edge cases, refining for 99% SLA in commercial phase."
+                ],
+                visualType: "progress-radial",
+                visualData: { progress: 60, label: "Phase 2: Customize" },
+                speakerNotes: "Giai đoạn 2: Customized – Migrate Functions, UAT pilot FDI."
+            },
+            {
+                id: 20,
+                section: "Implementation",
+                title: "Implementation Plan: Phase 3 - Packaging & SaaS (Week 9+)",
+                content: [
+                    "Steps: Docker package (on-prem templates), GCP Marketplace deploy; Multi-tenant auth with billing integration.",
+                    "Scale: K8s auto-scale, monitoring Prometheus; Supports 100k users at < $0.05/user/mo.",
+                    "Roadmap: V1 Core (Q1 2026), V2 Offline (Q2), V3 Multi-lang (Q3); Tiers: Basic $99/mo (100 users), Pro $499/mo (unlimited). For pricing details, visit https://x.ai/api.",
+                    "Depth: Marketplace listing accelerates acquisition by 50%, targeting $5B Asia digital transformation market."
+                ],
+                visualType: "progress-radial",
+                visualData: { progress: 100, label: "Phase 3: SaaS Scale" },
+                speakerNotes: "Giai đoạn 3: SaaS – Docker/K8s deploy, tiers pricing, roadmap 2026."
+            },
+            {
+                id: 21,
+                section: "Implementation",
+                title: "Implementation Plan: Risks & Mitigation",
+                content: [
+                    "Risks: API quotas (Mitigate: Caching + fallback Grok), Privacy (GDPR SOC2 cert via GCP).",
+                    "Success Metrics: 99.9% uptime, 30% efficiency gain (tracked via SLAs); Quarterly audits.",
+                    "Support: 24/7 tier-1, monthly reviews; Exit clause for on-prem fallback in hybrid models.",
+                    "Depth: Risk matrix prioritizes quotas (high impact, medium likelihood), with caching yielding 60% mitigation efficacy."
+                ],
+                visualType: "risk-matrix",
+                speakerNotes: "Rủi ro: Quota/privacy mitigations, SLA metrics cho hợp đồng thương mại."
+            },
+            {
+                id: 22,
+                section: "Conclusion",
+                title: "Conclusion: Vision & Next Steps",
+                content: [
+                    "Summary: Evolves PPTX flow to commercial AI engine, unlocking FDI growth in VN with SaaS scalability.",
+                    "Long-Term: SaaS leadership in Asia digital transformation (market $5B by 2028, KPMG Outlook).",
+                    "Next: Q&A, schedule paid pilot (lazinet.vn/saas-demo); Contact: [Email].",
+                    "Thank you! Partner with LAZINET for tomorrow's FDI success; Commercialization ensures sustained 35% partner revenue growth.",
+                    "Vision Depth: Positions VN as EV/semicon hub, with AI driving 25% efficiency in $322B FDI stock."
+                ],
+                visualType: "end-card",
+                speakerNotes: "Kết luận: Tầm nhìn SaaS Asia, CTA pilot paid để chuyển sang hợp đồng."
+            },
+            {
+                id: 23,
+                section: "Appendix",
+                title: "Southern Industrial Zones: FDI Hotspots for 2025",
+                content: [
+                    "Overview: Southern VN hosts 89% occupancy rate (CBRE 2025), with $10.98B Q1 FDI; Key for manufacturing/tech expansion.",
+                    "Strategic Fit: Targets EV/semicon growth (+25%/+18%); Integrates with AI scans for zone-specific campaigns.",
+                    "Commercial Value: SaaS geo-targeting boosts lead gen by 30% in high-density areas like Binh Duong/Dong Nai.",
+                    "Data Source: Vietnam Briefing, CBRE; Enables precise FDI matchmaking for partners."
+                ],
+                visualType: "appendix-table",
+                visualData: {
+                    table: `
+                        <table class="appendix-table">
+                            <thead>
+                                <tr><th>Zone Name</th><th>Location</th><th>Size (ha)</th><th>Key Sectors</th><th>FDI Stats (2025)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>VSIP Binh Duong</td><td>Binh Duong</td><td>500</td><td>Electronics, Auto</td><td>$2B+ total, 95% occupancy</td></tr>
+                                <tr><td>Amata Dong Nai</td><td>Dong Nai</td><td>700</td><td>High-tech, Manufacturing</td><td>1,900 FDI firms, $780M new</td></tr>
+                                <tr><td>Becamex Binh Duong</td><td>Binh Duong</td><td>1,200</td><td>Consumer Goods, Tech</td><td>Part of $40B provincial FDI</td></tr>
+                                <tr><td>Long Duc IP</td><td>Dong Nai</td><td>400</td><td>Logistics, Electronics</td><td>100+ firms, airport proximity</td></tr>
+                                <tr><td>Duc Hoa III</td><td>Long An</td><td>200</td><td>Manufacturing, Garments</td><td>High absorption, 89% occ.</td></tr>
+                                <tr><td>Hiep Phuoc IP</td><td>Ho Chi Minh City</td><td>1,686</td><td>Light Mfg, Logistics</td><td>Key export hub, $167/m² rent</td></tr>
+                                <tr><td>Song Than 2</td><td>Binh Duong</td><td>400</td><td>Electronics, Food</td><td>Japan/Thailand FDI focus</td></tr>
+                                <tr><td>Phuoc Binh 2</td><td>Dong Nai</td><td>287</td><td>High-tech, Auto</td><td>59 IZs provincial total</td></tr>
+                                <tr><td>Nam Tan Uyen</td><td>Binh Duong</td><td>345</td><td>Textiles, Tech</td><td>Phase 2 expansion 2025</td></tr>
+                                <tr><td>My Phuoc 3</td><td>Binh Duong</td><td>2,280</td><td>Heavy Industry</td><td>Port/airport links, eco-focus</td></tr>
+                            </tbody>
+                        </table>
+                    `
+                },
+                speakerNotes: "Phụ lục: Các khu công nghiệp miền Nam – Dữ liệu thực tế cho FDI hotspots, tích hợp vào AI scan cho chiến lược thương mại."
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentIndex = 0;
+        let notesVisible = false;
+        let gridVisible = false;
+
+        // --- DOM ELEMENTS ---
+        const stage = document.getElementById('slide-stage');
+        const slideCounter = document.getElementById('slide-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const notesPanel = document.getElementById('notes-panel');
+        const notesContent = document.getElementById('notes-content');
+        const gridNav = document.getElementById('grid-nav');
+        const gridContainer = document.getElementById('grid-container');
+
+        // --- VISUAL RENDERERS ---
+        // Dynamically creates HTML for charts/graphs
+        function getVisualContent(slide) {
+            const data = slide.visualData || {};
+            
+            switch(slide.visualType) {
+                case "appendix-table":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center p-8 overflow-auto custom-scroll">
+                            <h3 class="text-white/60 mb-6 text-center font-bold tracking-widest">${data.title || 'Data Table'}</h3>
+                            <div class="w-full max-h-[400px]">${data.table}</div>
+                        </div>
+                    `;
+                case "chart-bar":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center p-8">
+                            <h3 class="text-white/60 mb-6 text-center font-bold tracking-widest">${data.title || 'Data Comparison'}</h3>
+                            <div class="flex items-end justify-center space-x-12 h-64 border-b border-white/20 pb-2">
+                                ${data.labels.map((lbl, i) => `
+                                    <div class="flex flex-col items-center gap-2 group">
+                                        <div class="text-xl font-bold text-white mb-2 opacity-0 count-up">${data.values[i]}h</div>
+                                        <div class="w-16 md:w-24 bg-[${data.colors[i]}] rounded-t-lg relative overflow-hidden chart-bar h-0" data-height="${(data.values[i] / Math.max(...data.values)) * 100}%" style="background-color: ${data.colors[i]}">
+                                            <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        </div>
+                                        <div class="text-xs text-white/50 mt-2">${lbl}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                case "chart-bar-horiz":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center p-8">
+                             <div class="space-y-6">
+                                ${data.labels.map((lbl, i) => `
+                                    <div class="w-full">
+                                        <div class="flex justify-between mb-1 text-sm text-white/70">
+                                            <span>${lbl}</span>
+                                            <span class="text-orange-400 font-bold">${data.values[i]}${data.suffix}</span>
+                                        </div>
+                                        <div class="w-full h-4 bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-blue-600 to-orange-500 chart-bar-h w-0 rounded-full" data-width="${(data.values[i] / Math.max(...data.values)) * 100}%"></div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                             </div>
+                        </div>
+                    `;
+
+                case "chart-pie":
+                    // Simple CSS conic gradient for pie
+                    const colors = ['#FF6300', '#0000FF', '#10B981', '#64748B'];
+                    let gradientStr = "";
+                    let currentDeg = 0;
+                    data.values.forEach((val, i) => {
+                        const deg = (val / 100) * 360;
+                        gradientStr += `${colors[i % colors.length]} ${currentDeg}deg ${currentDeg + deg}deg, `;
+                        currentDeg += deg;
+                    });
+                    gradientStr = gradientStr.slice(0, -2);
+                    
+                    return `
+                        <div class="w-full h-full flex flex-col items-center justify-center p-8">
+                            <h3 class="text-white/60 mb-6 text-center font-bold tracking-widest">${data.title}</h3>
+                            <div class="flex gap-8 items-center">
+                                <div class="w-48 h-48 rounded-full relative" style="background: conic-gradient(${gradientStr}); box-shadow: 0 0 30px rgba(0,0,255,0.2);">
+                                    <div class="absolute inset-0 rounded-full bg-black/50 m-12 backdrop-blur-sm flex items-center justify-center">
+                                        <span class="text-xs text-white/50">SHARE</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    ${data.labels.map((lbl, i) => `
+                                        <div class="flex items-center gap-2 text-sm text-white/80">
+                                            <div class="w-3 h-3 rounded-full" style="background-color: ${colors[i % colors.length]}"></div>
+                                            <span>${lbl}</span>
+                                            <span class="font-bold ml-auto">${data.values[i]}%</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                
+                case "flow-linear":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center items-center p-4">
+                            <div class="flex flex-wrap gap-4 justify-center items-center">
+                                ${data.steps.map((step, i) => `
+                                    <div class="flow-node px-6 py-4 rounded bg-blue-900/20 border border-blue-500/30 text-white font-bold relative group hover:bg-blue-900/50 transition-colors">
+                                        ${step}
+                                        ${i < data.steps.length - 1 ? '<i class="fa-solid fa-arrow-right absolute -right-6 top-1/2 -translate-y-1/2 text-orange-500/50"></i>' : ''}
+                                    </div>
+                                    ${(i+1)%3 === 0 && i !== data.steps.length -1 ? '<div class="w-full"></div>' : ''} 
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                case "big-stats":
+                    return `
+                        <div class="w-full h-full flex flex-col justify-center items-center p-8 text-center">
+                            <div class="text-[8rem] font-bold text-transparent bg-clip-text bg-gradient-to-br from-orange-400 to-red-600 tech-font leading-none mb-4 animate-pulse">
+                                ${data.main}
+                            </div>
+                            <div class="text-2xl text-white/80 uppercase tracking-widest font-light mb-8 border-b border-white/20 pb-4">${data.sub}</div>
+                            <div class="bg-blue-900/30 px-6 py-3 rounded-full border border-blue-500/30 text-blue-300">
+                                <i class="fa-solid fa-check-circle mr-2"></i> ${data.extra}
+                            </div>
+                        </div>
+                    `;
+
+                case "map-intro":
+                    return `
+                        <div class="w-full h-full flex items-center justify-center relative">
+                             <!-- Stylized Abstract Map -->
+                             <div class="w-64 h-80 border-2 border-white/10 rounded-xl relative overflow-hidden bg-white/5 backdrop-blur flex items-center justify-center">
+                                <div class="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/21/Vietnam_location_map.svg')] bg-cover bg-center"></div>
+                                <div class="w-3 h-3 bg-orange-500 rounded-full absolute top-1/4 left-1/2 animate-ping"></div>
+                                <div class="w-3 h-3 bg-blue-500 rounded-full absolute bottom-1/4 right-1/3 animate-ping" style="animation-delay: 0.5s"></div>
+                                <i class="fa-solid fa-network-wired text-4xl text-white/50 z-10"></i>
+                             </div>
+                        </div>
+                    `;
+                
+                case "progress-radial":
+                    const circumference = 2 * Math.PI * 40;
+                    const offset = circumference - (data.progress / 100) * circumference;
+                    return `
+                         <div class="w-full h-full flex flex-col items-center justify-center">
+                            <div class="relative w-48 h-48">
+                                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#1e293b" stroke-width="8" />
+                                    <circle class="progress-ring-circle transition-all duration-1000 ease-out" cx="50" cy="50" r="40" fill="none" stroke="#FF6300" stroke-width="8" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}" data-offset="${offset}" />
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-3xl font-bold text-white">${data.progress}%</span>
+                                    <span class="text-[10px] uppercase text-white/50 tracking-wider">Complete</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-xl font-bold text-blue-300">${data.label}</div>
+                         </div>
+                    `;
+
+                default: // Fallback generic tech visual
+                    return `
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <div class="w-32 h-32 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                                <div class="w-20 h-20 rounded-full bg-blue-600/20 blur-xl"></div>
+                            </div>
+                            <i class="fa-solid fa-microchip text-5xl text-white/80 absolute"></i>
+                            <div class="mt-8 text-center text-white/40 font-mono text-xs">A.I. PROCESSING UNIT</div>
+                        </div>
+                    `;
+            }
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            // Update UI Counters
+            slideCounter.innerHTML = `<span class="text-orange-500">${String(slide.id).padStart(2, '0')}</span> / ${slides.length}`;
+            progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+            notesContent.innerText = slide.speakerNotes;
+
+            // Animate Slide Out (if exists)
+            const oldContent = document.getElementById('slide-content-wrapper');
+            if (oldContent) {
+                gsap.to(oldContent, {
+                    duration: 0.3,
+                    opacity: 0,
+                    scale: 0.95,
+                    filter: "blur(10px)",
+                    onComplete: () => buildNewSlide(slide)
+                });
+            } else {
+                buildNewSlide(slide);
+            }
+        }
+
+        function buildNewSlide(slide) {
+            stage.innerHTML = ''; // Clear
+
+            const wrapper = document.createElement('div');
+            wrapper.id = 'slide-content-wrapper';
+            wrapper.className = 'w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative';
+            
+            // --- Left Column: Content ---
+            const leftCol = document.createElement('div');
+            leftCol.className = 'space-y-6 z-20';
+
+            // Section Label
+            const sectionLabel = document.createElement('div');
+            sectionLabel.className = 'inline-block px-3 py-1 border border-blue-500/50 bg-blue-900/20 rounded text-blue-300 text-xs uppercase tracking-widest font-bold mb-2 neon-text-blue';
+            sectionLabel.innerText = slide.section || 'General';
+            leftCol.appendChild(sectionLabel);
+
+            // Title
+            const title = document.createElement('h1');
+            title.className = 'text-3xl md:text-5xl font-bold leading-tight text-white mb-6';
+            title.innerText = slide.title;
+            leftCol.appendChild(title);
+
+            // Bullets Container
+            const bulletsContainer = document.createElement('ul');
+            bulletsContainer.className = 'space-y-4';
+            
+            slide.content.forEach(text => {
+                const li = document.createElement('li');
+                li.className = 'tech-bullet text-lg md:text-xl text-gray-300 font-light opacity-0 translate-y-4 bullet-item';
+                // Highlight keywords logic
+                const highlighted = text.replace(/(\d+%|\d+k|AI|Gemini|FDI|ROI|SaaS)/g, '<span class="text-orange-400 font-bold">$1</span>');
+                li.innerHTML = `<span>${highlighted}</span>`;
+                bulletsContainer.appendChild(li);
+            });
+            leftCol.appendChild(bulletsContainer);
+            wrapper.appendChild(leftCol);
+
+            // --- Right Column: Visuals (Dynamic High-Tech Charts) ---
+            const rightCol = document.createElement('div');
+            rightCol.className = 'relative h-[400px] lg:h-[500px] w-full visual-container glass-panel group';
+            
+            const contentContainer = document.createElement('div');
+            contentContainer.className = 'relative z-10 w-full h-full';
+            contentContainer.innerHTML = getVisualContent(slide);
+
+            // Decorative background
+            const decoration = document.createElement('div');
+            decoration.innerHTML = `
+                <div class="visual-bg-anim"></div>
+                <div class="absolute top-4 right-4 text-white/20 text-xs font-mono">SYS_ID: ${slide.id}</div>
+                <div class="absolute bottom-4 left-4 w-12 h-1 bg-orange-500/50"></div>
+                <div class="absolute bottom-4 right-4 w-12 h-1 bg-blue-500/50"></div>
+            `;
+
+            rightCol.appendChild(decoration);
+            rightCol.appendChild(contentContainer);
+            wrapper.appendChild(rightCol);
+
+            stage.appendChild(wrapper);
+
+            // --- GSAP Entrance Animation ---
+            const tl = gsap.timeline({
+                onComplete: () => triggerVisualAnimations(slide) // Trigger chart anims after slide load
+            });
+            
+            tl.fromTo(wrapper, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+            tl.fromTo(sectionLabel, { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 0);
+            tl.fromTo(title, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.2");
+            tl.to(".bullet-item", { y: 0, opacity: 1, duration: 0.4, stagger: 0.1 }, "-=0.3");
+            tl.fromTo(rightCol, { scale: 0.9, opacity: 0, rotationY: 10 }, { scale: 1, opacity: 1, rotationY: 0, duration: 0.8 }, "-=0.5");
+        }
+
+        // --- CHART ANIMATIONS TRIGGERS ---
+        function triggerVisualAnimations(slide) {
+            // Bar Charts
+            document.querySelectorAll('.chart-bar').forEach(bar => {
+                setTimeout(() => { bar.style.height = bar.dataset.height; }, 100);
+            });
+            document.querySelectorAll('.chart-bar-h').forEach(bar => {
+                setTimeout(() => { bar.style.width = bar.dataset.width; }, 100);
+            });
+            // Radial Progress
+            document.querySelectorAll('.progress-ring-circle').forEach(circle => {
+                setTimeout(() => { circle.style.strokeDashoffset = circle.dataset.offset; }, 100);
+            });
+        }
+
+        // --- GRID NAVIGATION ---
+        function populateGrid() {
+            gridContainer.innerHTML = slides.map((slide, idx) => `
+                <div onclick="goToSlide(${idx})" class="grid-item cursor-pointer bg-white/5 border border-white/10 p-3 rounded hover:bg-white/10 hover:border-orange-500/50 transition-all group flex flex-col h-32 relative overflow-hidden">
+                    <div class="grid-id text-2xl font-bold text-white/10 absolute top-2 right-2 group-hover:text-orange-500/20 transition-colors">${String(slide.id).padStart(2,'0')}</div>
+                    <div class="text-[10px] text-blue-400 uppercase tracking-wider mb-1">${slide.section}</div>
+                    <div class="text-xs text-white/80 font-medium leading-tight line-clamp-3">${slide.title}</div>
+                    ${idx === currentIndex ? '<div class="absolute bottom-0 left-0 w-full h-1 bg-orange-500"></div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function toggleGrid() {
+            gridVisible = !gridVisible;
+            if (gridVisible) {
+                populateGrid(); // Refresh active state
+                gridNav.classList.remove('hidden');
+                setTimeout(() => {
+                    gridNav.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                gridNav.classList.add('opacity-0');
+                setTimeout(() => {
+                    gridNav.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // --- GLOBAL CONTROLS ---
+        function goToSlide(index) {
+            currentIndex = index;
+            renderSlide(currentIndex);
+            if (gridVisible) toggleGrid();
+        }
+
+        function nextSlide() {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+                renderSlide(currentIndex);
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderSlide(currentIndex);
+            }
+        }
+
+        function toggleNotes() {
+            notesVisible = !notesVisible;
+            if (notesVisible) {
+                notesPanel.classList.remove('-translate-x-[120%]');
+                notesPanel.classList.add('translate-x-0');
+            } else {
+                notesPanel.classList.add('-translate-x-[120%]');
+                notesPanel.classList.remove('translate-x-0');
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // --- KEYBOARD NAV ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'n') toggleNotes();
+            if (e.key === 'f') toggleFullScreen();
+            if (e.key === 'g') toggleGrid();
+            if (e.key === 'Escape' && gridVisible) toggleGrid();
+        });
+
+        // --- INIT ---
+        window.onload = () => {
+            gsap.to(stage, { opacity: 1, duration: 1 });
+            renderSlide(currentIndex);
+            initNetzoneBackground();
+        };
+
+        // --- BACKGROUND EFFECT ---
+        function initNetzoneBackground() {
+            const canvas = document.getElementById('canvas-bg');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                    this.color = Math.random() > 0.8 ? '#FF6300' : '#0000FF'; 
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = 0.6;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.globalAlpha = 0.15;
+                ctx.strokeStyle = '#0000FF';
+                ctx.lineWidth = 0.5;
+
+                for (let i = 0; i < particles.length; i++) {
+                    let p1 = particles[i];
+                    p1.update();
+                    p1.draw();
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let p2 = particles[j];
+                        let dx = p1.x - p2.x;
+                        let dy = p1.y - p2.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

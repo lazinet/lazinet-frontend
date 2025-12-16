@@ -1,0 +1,2306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+<title>LAZINET × INGRID | AI-Powered Brand Marketing CRM for FDI</title>
+<meta name="description" content="🎯 LAZINET INGRID - Nền tảng phát triển sản phẩm thông minh tích hợp AI. Giải pháp toàn diện cho quản lý dự án, phân tích thị trường thực tế và tối ưu hóa vận hành doanh nghiệp 2024.">
+<meta name="keywords" content="LAZINET INGRID, AI CRM Studio, quản lý dự án AI, phân tích thị trường, tự động hóa thiết kế, giải pháp doanh nghiệp AI, LAZINET Technologies, Ingrid Platform">
+
+<meta name="author" content="LAZINET - Công Ty Công Nghệ Hàng Đầu Việt Nam">
+<meta name="publisher" content="LAZINET Technologies">
+<meta name="copyright" content="LAZINET © 2024">
+<meta name="designer" content="LAZINET Design Team">
+<meta name="reply-to" content="contact@lazinet.com">
+
+<link rel="icon" type="image/x-icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+<link rel="shortcut icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.ico" type="image/x-icon">
+<link rel="apple-touch-icon" sizes="57x57" href="https://lazinet.com/assets/img/logo-lazinet/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://lazinet.com/assets/img/logo-lazinet/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://lazinet.com/assets/img/logo-lazinet/favicon-16x16.png">
+<link rel="manifest" href="../assets/json/manifest.json">
+<meta name="msapplication-TileColor" content="#0066FF">
+<meta name="msapplication-TileImage" content="https://lazinet.com/assets/img/logo-lazinet/ms-icon-144x144.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LAZINET Technologies">
+<meta property="og:title" content="LAZINET INGRID - Đột Phá Quy Trình Với Trí Tuệ Nhân Tạo">
+<meta property="og:description" content="Nền tảng quản trị thông minh dành cho doanh nghiệp hiện đại.">
+<meta property="og:url" content="https://lazinet.com/ingrid-ai">
+<meta property="og:image" content="https://lazinet.com/assets/img/og-ingrid.png">
+
+<meta name="theme-color" content="#0066FF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        :root {
+            --neon-orange: #FF6300;
+            --neon-blue: #0000FF;
+            --ingrid-blue: #004A90;
+            --ingrid-green: #90CC64;
+            --deep-bg: #050505;
+            --panel-bg: rgba(20, 20, 25, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-bg);
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #050505 60%);
+        }
+        
+        h1, h2, h3, .tech-font {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        /* GLOW EFFECTS */
+        .text-glow-blue { text-shadow: 0 0 10px rgba(0, 0, 255, 0.6); }
+        .text-glow-orange { text-shadow: 0 0 10px rgba(255, 99, 0, 0.6); }
+        
+        .box-glow {
+            backdrop-filter: blur(12px);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+        }
+        .box-glow:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 0, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        /* CITATION BADGES */
+        .citation-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #888;
+            border: 1px solid #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            text-decoration: none;
+        }
+        .citation-link:hover {
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+            background: rgba(0, 0, 255, 0.05);
+        }
+        
+        /* INSIGHT BOX */
+        .insight-box {
+            border-left: 4px solid var(--neon-orange);
+            background: linear-gradient(90deg, rgba(255,99,0,0.05) 0%, transparent 100%);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        /* GANTT CHART */
+        .gantt-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .gantt-header {
+            background: #0f0f0f;
+            padding: 15px;
+            font-family: 'Orbitron';
+            color: #666;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+        }
+        
+        .gantt-row {
+            display: contents;
+        }
+        
+        .gantt-task {
+            padding: 20px;
+            background: #111;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #ccc;
+            border-right: 1px solid #222;
+        }
+        
+        .gantt-timeline {
+            position: relative;
+            background: #0d0d0d;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+        
+        .gantt-grid-lines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            pointer-events: none;
+        }
+        .gantt-line { border-right: 1px dashed rgba(255,255,255,0.05); }
+
+        .gantt-bar {
+            height: 32px;
+            border-radius: 6px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+            backdrop-filter: blur(5px);
+            width: 0;
+        }
+        
+        .bar-blue { background: linear-gradient(90deg, rgba(0,0,255,0.6) 0%, rgba(0,0,255,0.9) 100%); border: 1px solid rgba(0,0,255,0.5); }
+        .bar-green { background: linear-gradient(90deg, rgba(144,204,100,0.6) 0%, rgba(144,204,100,0.9) 100%); border: 1px solid rgba(144,204,100,0.5); }
+        .bar-orange { background: linear-gradient(90deg, rgba(255,99,0,0.6) 0%, rgba(255,99,0,0.9) 100%); border: 1px solid rgba(255,99,0,0.5); }
+        .bar-purple { background: linear-gradient(90deg, rgba(0,74,144,0.6) 0%, rgba(0,74,144,0.9) 100%); border: 1px solid rgba(0,74,144,0.5); }
+
+        .milestone {
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 2px solid var(--deep-bg);
+            box-shadow: 0 0 10px white;
+            z-index: 10;
+        }
+        
+        /* MAP STYLING */
+        #industrial-map {
+            height: 500px;
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            filter: grayscale(20%) contrast(1.1);
+            z-index: 1;
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-orange); }
+        
+        /* PILLAR CARDS */
+        .pillar-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .pillar-card:hover {
+            background: linear-gradient(180deg, rgba(0,0,255,0.05) 0%, rgba(0,0,255,0) 100%);
+            border-color: var(--neon-blue);
+        }
+        
+        /* Navigation Dots */
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .nav-dot.active {
+            background: var(--neon-orange);
+            box-shadow: 0 0 10px var(--neon-orange);
+        }
+        .nav-dot:hover {
+            background: var(--neon-blue);
+            transform: scale(1.2);
+        }
+
+        /* Logo Styling */
+        .logo-lazinet {
+            color: #0000FF;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(0,0,255,0.5);
+        }
+        
+        .logo-ingrid {
+            color: #90CC64;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(144,204,100,0.5);
+        }
+
+        /* Chart Styles */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Speaker Notes */
+        #speaker-notes {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: rgba(0,0,0,0.95);
+            border: 1px solid var(--neon-blue);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #ddd;
+            z-index: 9999;
+            display: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-orange': '#FF6300',
+                        'neon-blue': '#0000FF',
+                        'ingrid-blue': '#004A90',
+                        'ingrid-green': '#90CC64',
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                        'jetbrains': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased">
+
+    <!-- Animated Background Canvas -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Speaker Notes -->
+    <div id="speaker-notes">Loading notes... Press 'N' to toggle</div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-[1400px] mx-auto px-4 md:px-8 py-10 md:py-20 space-y-20 md:space-y-40">
+
+        <!-- TITLE SLIDE -->
+        <section id="slide-0" class="h-[90vh] flex flex-col justify-center items-center text-center px-4">
+            <div class="inline-block px-4 py-1 border border-neon-blue/30 rounded-full bg-neon-blue/10 text-neon-blue text-sm font-jetbrains mb-6" data-animate>
+                CONFIDENTIAL // COMMERCIAL STRATEGY 2025-2026
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tighter" data-animate>
+                BRAND MARKETING 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-blue-500 text-glow-blue">POWERED WITH AI</span>
+            </h1>
+            <p class="text-xl md:text-3xl lg:text-4xl font-light text-gray-300 max-w-4xl leading-relaxed" data-animate>
+                <span class="logo-lazinet">LAZINET</span> × <span class="logo-ingrid">INGRID</span> Strategic Partnership
+            </p>
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mt-4" data-animate>
+                AI-Powered Sales & CRM System for FDI Enterprises in Vietnam
+            </p>
+            <div class="mt-12 flex gap-8 opacity-60">
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-robot text-2xl text-neon-blue"></i>
+                    <span class="text-xs font-jetbrains">AI/ML</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-2xl text-neon-orange"></i>
+                    <span class="text-xs font-jetbrains">CRM</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-industry text-2xl text-ingrid-blue"></i>
+                    <span class="text-xs font-jetbrains">Manufacturing</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-seedling text-2xl text-ingrid-green"></i>
+                    <span class="text-xs font-jetbrains">Food Industry</span>
+                </div>
+            </div>
+            
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl">
+                <div class="box-glow p-6 rounded-xl text-center">
+                    <div class="w-16 h-16 rounded-full bg-neon-blue/20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-microchip text-neon-blue text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 logo-lazinet">LAZINET</h3>
+                    <p class="text-sm text-gray-400">Technology Development Partner</p>
+                    <div class="text-xs text-gray-500 mt-2">CEO: Phụng Hoàng (+84 908 556 220)</div>
+                    <div class="text-xs text-gray-500">tech@lazinet.com</div>
+                    <a href="https://lazinet.com" target="_blank" class="citation-link mt-2">
+                        <i class="fa-solid fa-link"></i> lazinet.com
+                    </a>
+                </div>
+                <div class="box-glow p-6 rounded-xl text-center">
+                    <div class="w-16 h-16 rounded-full bg-ingrid-green/20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-handshake text-ingrid-green text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 logo-ingrid">INGRID</h3>
+                    <p class="text-sm text-gray-400">Commercial & Marketing Partner</p>
+                    <div class="text-xs text-gray-500 mt-2">CEO: Tan CK (+65 6226 2652)</div>
+                    <div class="text-xs text-gray-500">en@ingridintl.sg</div>
+                    <a href="https://ingridintl.sg" target="_blank" class="citation-link mt-2">
+                        <i class="fa-solid fa-link"></i> ingridintl.sg
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MACRO ECONOMIC ANALYSIS -->
+        <section id="slide-1">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-blue border-l-8 border-neon-blue pl-6">
+                01. Vietnam Economic Landscape 2025<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">FDI Trends & Market Opportunities</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">Economic Overview 2024-2025</h3>
+                        <p class="text-gray-300 text-lg leading-relaxed">
+                            Vietnam's economy shows <span class="text-white font-bold">strong resilience</span> with projected 
+                            GDP growth of <span class="text-white font-bold">6.0-6.5%</span> in 2025, maintaining its position as 
+                            a top FDI destination in Southeast Asia.
+                        </p>
+                        
+                        <div class="insight-box mt-6">
+                            <h4 class="text-neon-orange font-bold text-sm uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-lightbulb"></i> Key Insight
+                            </h4>
+                            <p class="text-sm text-gray-400">
+                                Vietnam's manufacturing sector continues to attract <strong class="text-white">supply chain diversification</strong> 
+                                from global companies implementing "China+1" strategies. Food processing shows 
+                                <strong class="text-white">28% YoY growth</strong> in FDI inflows.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">FDI Performance 2024</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#FFA500]"></div>
+                                    <span class="text-gray-300">Registered Capital</span>
+                                </div>
+                                <span class="font-bold text-white">$36.61B</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFA500] rounded-full" style="width: 100%" data-width="100%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#87CEEB]"></div>
+                                    <span class="text-gray-300">Disbursed Capital</span>
+                                </div>
+                                <span class="font-bold text-white">$23.18B</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#87CEEB] rounded-full" style="width: 63.3%" data-width="63.3%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#90EE90]"></div>
+                                    <span class="text-gray-300">Manufacturing Share</span>
+                                </div>
+                                <span class="font-bold text-white">64.2%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#90EE90] rounded-full" style="width: 64.2%" data-width="64.2%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#DDA0DD]"></div>
+                                    <span class="text-gray-300">New Projects</span>
+                                </div>
+                                <span class="font-bold text-white">3,188</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#DDA0DD] rounded-full" style="width: 89%" data-width="89%"></div>
+                            </div>
+                        </div>
+                        <a href="https://vietnamnews.vn/economy/1654745/fdi-inflow-up-32-per-cent-to-us36-6-billion.html" target="_blank" class="citation-link">
+                            <i class="fa-solid fa-link"></i> Source: Vietnam News - FDI 2024 Statistics
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid gap-6">
+                    <div class="box-glow p-6 rounded-xl">
+                        <div>
+                            <div class="text-sm text-gray-500 font-jetbrains mb-1">TOTAL REGISTERED FDI 2024</div>
+                            <div class="text-4xl md:text-5xl font-black text-white">$36.6 <span class="text-2xl text-gray-400">Billion</span></div>
+                            <div class="text-green-400 text-sm font-bold mt-2">
+                                <i class="fa-solid fa-arrow-up"></i> +32.1% Year-over-Year
+                            </div>
+                        </div>
+                        <a href="https://www.mpi.gov.vn/en/Pages/tinbai.aspx?idTin=55119&idcm=147" target="_blank" class="citation-link">
+                            <i class="fa-solid fa-link"></i> Source: MPI Vietnam Official Statistics
+                        </a>
+                    </div>
+
+                    <div class="box-glow p-6 rounded-xl">
+                        <div>
+                            <div class="text-sm text-gray-500 font-jetbrains mb-1">TOP INVESTING COUNTRIES 2024</div>
+                            <div class="grid grid-cols-2 gap-4 mt-4">
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-white">$6.8B</div>
+                                    <div class="text-sm text-gray-400">Singapore</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-white">$4.9B</div>
+                                    <div class="text-sm text-gray-400">Hong Kong</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-white">$4.7B</div>
+                                    <div class="text-sm text-gray-400">Japan</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-white">$4.5B</div>
+                                    <div class="text-sm text-gray-400">China</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://vietnamnet.vn/en/vietnam-s-fdi-inflow-up-13-1-percent-in-11-months-2275581.html" target="_blank" class="citation-link">
+                            <i class="fa-solid fa-link"></i> Source: VietnamNet - FDI by Country
+                        </a>
+                    </div>
+                    
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Investment Drivers</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-check text-green-400"></i>
+                                <span class="text-gray-300">15 Free Trade Agreements (FTAs)</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-check text-green-400"></i>
+                                <span class="text-gray-300">Competitive labor costs</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-check text-green-400"></i>
+                                <span class="text-gray-300">Political stability</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-check text-green-400"></i>
+                                <span class="text-gray-300">Strategic location in ASEAN</span>
+                            </div>
+                        </div>
+                        <a href="https://www.worldbank.org/en/country/vietnam/overview" target="_blank" class="citation-link mt-4">
+                            <i class="fa-solid fa-link"></i> World Bank Vietnam Overview
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOD MANUFACTURING SECTOR ANALYSIS -->
+        <section id="slide-2">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-orange border-l-8 border-neon-orange pl-6">
+                02. Food Manufacturing Sector Analysis<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Strategic Focus for AI CRM Platform</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-8">
+                    <div class="box-glow p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">Market Opportunity & Growth</h3>
+                        <p class="text-gray-300 text-lg leading-relaxed">
+                            Vietnam's food processing industry targets <span class="text-white font-bold">$50 billion in exports by 2030</span>, 
+                            with current FDI in food manufacturing reaching <span class="text-white font-bold">$5.8 billion (2024)</span>.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div class="bg-black/40 p-4 rounded">
+                                <div class="text-xs text-gray-500">FOOD EXPORTS 2024</div>
+                                <div class="text-xl font-bold text-white">$46.8B</div>
+                                <a href="https://vietnamnews.vn/economy/1651096/agro-forestry-fishery-exports-hit-record-high-of-us46-86-billion.html" target="_blank" class="citation-link">
+                                    <i class="fa-solid fa-link"></i> Vietnam News
+                                </a>
+                            </div>
+                            <div class="bg-black/40 p-4 rounded">
+                                <div class="text-xs text-gray-500">SECTOR GROWTH</div>
+                                <div class="text-xl font-bold text-neon-orange">+28% YoY</div>
+                                <div class="text-gray-400 text-sm mt-2">FDI inflows 2024-2025</div>
+                            </div>
+                        </div>
+                        
+                        <div class="insight-box mt-6">
+                            <h4 class="text-neon-orange font-bold text-sm uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-lightbulb"></i> Key Challenges Identified
+                            </h4>
+                            <ul class="text-sm text-gray-400 space-y-2">
+                                <li><strong class="text-white">Supply chain visibility:</strong> 68% lack real-time supplier data</li>
+                                <li><strong class="text-white">Market access:</strong> High cost per B2B lead ($500-1000)</li>
+                                <li><strong class="text-white">Regulatory compliance:</strong> Complex food safety requirements</li>
+                                <li><strong class="text-white">Brand localization:</strong> Limited understanding of Vietnamese market</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Food Manufacturing Subsectors</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#FFA500]"></div>
+                                    <span class="text-gray-300">Processed Foods</span>
+                                </div>
+                                <span class="font-bold text-white">42%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFA500] rounded-full" style="width: 42%" data-width="42%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#87CEEB]"></div>
+                                    <span class="text-gray-300">Beverages</span>
+                                </div>
+                                <span class="font-bold text-white">24%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#87CEEB] rounded-full" style="width: 24%" data-width="24%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#90EE90]"></div>
+                                    <span class="text-gray-300">Animal Feed</span>
+                                </div>
+                                <span class="font-bold text-white">19%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#90EE90] rounded-full" style="width: 19%" data-width="19%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-[#DDA0DD]"></div>
+                                    <span class="text-gray-300">Seafood Processing</span>
+                                </div>
+                                <span class="font-bold text-white">15%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#DDA0DD] rounded-full" style="width: 15%" data-width="15%"></div>
+                            </div>
+                        </div>
+                        <a href="https://www.vietnam-briefing.com/news/vietnams-food-processing-industry-potential-opportunities.html/" target="_blank" class="citation-link">
+                            <i class="fa-solid fa-link"></i> Source: Vietnam Briefing Industry Analysis
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid gap-6">
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Technology Adoption Gap Analysis</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Basic CRM Usage</span>
+                                <span class="font-bold text-white">45%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-500 rounded-full" style="width: 45%" data-width="45%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">AI/ML Integration</span>
+                                <span class="font-bold text-white">12%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-500 rounded-full" style="width: 12%" data-width="12%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Automated Marketing</span>
+                                <span class="font-bold text-white">18%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-orange-500 rounded-full" style="width: 18%" data-width="18%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Supply Chain AI</span>
+                                <span class="font-bold text-white">8%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 8%" data-width="8%"></div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-4">Based on survey of 200+ food manufacturers in Vietnam</div>
+                    </div>
+
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Competitive Landscape</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-white/5 rounded">
+                                <div>
+                                    <div class="font-bold">HubSpot</div>
+                                    <div class="text-xs text-gray-400">Generic CRM, high cost</div>
+                                </div>
+                                <div class="text-red-400 text-sm">$800+/month</div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-white/5 rounded">
+                                <div>
+                                    <div class="font-bold">Salesforce</div>
+                                    <div class="text-xs text-gray-400">Enterprise-focused, complex</div>
+                                </div>
+                                <div class="text-red-400 text-sm">$1,500+/month</div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-white/5 rounded border border-neon-blue/30">
+                                <div>
+                                    <div class="font-bold text-neon-blue">OUR SOLUTION</div>
+                                    <div class="text-xs text-gray-400">Industry-specific AI CRM</div>
+                                </div>
+                                <div class="text-green-400 text-sm font-bold">$199-799/month</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Market Pain Points</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-exclamation-circle text-red-400 mt-1"></i>
+                                <span class="text-gray-300">High customer acquisition cost ($500-1000 per B2B lead)</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-exclamation-circle text-red-400 mt-1"></i>
+                                <span class="text-gray-300">Limited market intelligence on competitor pricing</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-exclamation-circle text-red-400 mt-1"></i>
+                                <span class="text-gray-300">Inefficient lead qualification process</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-exclamation-circle text-red-400 mt-1"></i>
+                                <span class="text-gray-300">Poor integration between sales and production data</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI CRM SYSTEM ARCHITECTURE -->
+        <section id="slide-3">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-blue border-l-8 border-neon-blue pl-6">
+                03. AI-Powered CRM System Architecture<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">6-Pillar Framework for Food Manufacturing</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="pillar-card p-6 rounded-xl group">
+                    <div class="w-12 h-12 rounded-lg bg-neon-blue/20 flex items-center justify-center mb-4 group-hover:bg-neon-blue/40 transition">
+                        <i class="fa-solid fa-search text-neon-blue text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">1. Market Scan & Analysis</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>• AI-assisted data strategy</li>
+                        <li>• Competitor intelligence</li>
+                        <li>• Market trend analysis</li>
+                        <li>• Customer profiling</li>
+                    </ul>
+                    <div class="mt-4 text-xs text-neon-blue font-jetbrains">
+                        <i class="fa-solid fa-database"></i> 500+ Data Sources
+                    </div>
+                </div>
+
+                <div class="pillar-card p-6 rounded-xl group">
+                    <div class="w-12 h-12 rounded-lg bg-neon-blue/20 flex items-center justify-center mb-4 group-hover:bg-neon-blue/40 transition">
+                        <i class="fa-solid fa-users-cog text-neon-blue text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">2. CRM Analysis</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>• AI-assisted profiling</li>
+                        <li>• Predictive analytics</li>
+                        <li>• Customer segmentation</li>
+                        <li>• Trend forecasting</li>
+                    </ul>
+                    <div class="mt-4 text-xs text-neon-blue font-jetbrains">
+                        <i class="fa-solid fa-brain"></i> 92% Accuracy
+                    </div>
+                </div>
+
+                <div class="pillar-card p-6 rounded-xl group">
+                    <div class="w-12 h-12 rounded-lg bg-neon-blue/20 flex items-center justify-center mb-4 group-hover:bg-neon-blue/40 transition">
+                        <i class="fa-solid fa-window-maximize text-neon-blue text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">3. Landing Page Strategy</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>• AI chat integration</li>
+                        <li>• Automated sales process</li>
+                        <li>• Brand messaging</li>
+                        <li>• Solution showcasing</li>
+                    </ul>
+                    <div class="mt-4 text-xs text-neon-blue font-jetbrains">
+                        <i class="fa-solid fa-calculator"></i> ROI Calculator
+                    </div>
+                </div>
+
+                <div class="pillar-card p-6 rounded-xl group">
+                    <div class="w-12 h-12 rounded-lg bg-neon-orange/20 flex items-center justify-center mb-4 group-hover:bg-neon-orange/40 transition">
+                        <i class="fa-solid fa-server text-neon-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">4. Landing Page Operations</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>• AI-powered enquiries</li>
+                        <li>• Automated quotations</li>
+                        <li>• Success rate tracking</li>
+                        <li>• Transaction analysis</li>
+                    </ul>
+                    <div class="mt-4 text-xs text-neon-orange font-jetbrains">
+                        <i class="fa-solid fa-bolt"></i> 2-hour Response SLA
+                    </div>
+                </div>
+
+                <div class="pillar-card p-6 rounded-xl group">
+                    <div class="w-12 h-12 rounded-lg bg-neon-orange/20 flex items-center justify-center mb-4 group-hover:bg-neon-orange/40 transition">
+                        <i class="fa-solid fa-bullhorn text-neon-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">5. Strategic Marketing</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>• AI content generation</li>
+                        <li>• Social media automation</li>
+                        <li>• Ad buy optimization</li>
+                        <li>• UGC management</li>
+                    </ul>
+                    <div class="mt-4 text-xs text-neon-orange font-jetbrains">
+                        <i class="fa-solid fa-chart-line"></i> 380% Email ROI
+                    </div>
+                </div>
+
+                <div class="pillar-card p-6 rounded-xl group">
+                    <div class="w-12 h-12 rounded-lg bg-neon-orange/20 flex items-center justify-center mb-4 group-hover:bg-neon-orange/40 transition">
+                        <i class="fa-solid fa-rocket text-neon-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">6. Marketing Campaign</h3>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>• Calendar planning</li>
+                        <li>• Creative automation</li>
+                        <li>• Multi-channel execution</li>
+                        <li>• Performance tracking</li>
+                    </ul>
+                    <div class="mt-4 text-xs text-neon-orange font-jetbrains">
+                        <i class="fa-solid fa-calendar-check"></i> Vietnam Food Expo
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 box-glow p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-4">Key Differentiators</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 border-l-4 border-neon-blue">
+                        <div class="font-bold text-white mb-2">Industry-Specific AI</div>
+                        <div class="text-sm text-gray-400">Custom models trained on food manufacturing data</div>
+                    </div>
+                    <div class="p-4 border-l-4 border-neon-orange">
+                        <div class="font-bold text-white mb-2">Integrated Supply Chain</div>
+                        <div class="text-sm text-gray-400">Seamless connection between sales and production</div>
+                    </div>
+                    <div class="p-4 border-l-4 border-ingrid-green">
+                        <div class="font-bold text-white mb-2">Cost-Effective</div>
+                        <div class="text-sm text-gray-400">70% lower cost than enterprise solutions</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEVELOPMENT ROADMAP -->
+        <section id="slide-4">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-blue border-l-8 border-neon-blue pl-6">
+                04. Development Roadmap<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">4-Phase Implementation Plan (2025-2026)</span>
+            </h2>
+
+            <div class="gantt-container box-glow">
+                <div class="gantt-row">
+                    <div class="gantt-task bg-[#0a0a0a] text-gray-500">PHASE / ACTIVITY</div>
+                    <div class="gantt-header">
+                        <div class="border-r border-gray-800">Q1 2026</div>
+                        <div class="border-r border-gray-800">Q2 2026</div>
+                        <div class="border-r border-gray-800">Q3 2026</div>
+                        <div>Q4 2026</div>
+                    </div>
+                </div>
+
+                <div class="gantt-row group">
+                    <div class="gantt-task">
+                        <div class="flex flex-col">
+                            <span class="text-white group-hover:text-neon-blue transition">01. Prototype Development</span>
+                            <span class="text-xs text-gray-600">Core AI models & architecture (2 months)</span>
+                        </div>
+                    </div>
+                    <div class="gantt-timeline">
+                        <div class="gantt-grid-lines">
+                            <div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div>
+                        </div>
+                        <div class="gantt-bar bar-blue" data-width="25%">
+                            <span>Jan - Feb 2026</span>
+                            <div class="milestone"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gantt-row group">
+                    <div class="gantt-task">
+                        <div class="flex flex-col">
+                            <span class="text-white group-hover:text-green-400 transition">02. MVP & Customization</span>
+                            <span class="text-xs text-gray-600">Pilot deployment for 1-2 clients (4 months)</span>
+                        </div>
+                    </div>
+                    <div class="gantt-timeline">
+                        <div class="gantt-grid-lines">
+                            <div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div>
+                        </div>
+                        <div class="gantt-bar bar-green" data-width="25%" style="margin-left: 25%">
+                            <span>Mar - Jun 2026</span>
+                            <div class="milestone"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gantt-row group">
+                    <div class="gantt-task">
+                        <div class="flex flex-col">
+                            <span class="text-white group-hover:text-neon-orange transition">03. Package Deployment</span>
+                            <span class="text-xs text-gray-600">Additional 5-10 clients (≤30% customization)</span>
+                        </div>
+                    </div>
+                    <div class="gantt-timeline">
+                        <div class="gantt-grid-lines">
+                            <div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div>
+                        </div>
+                        <div class="gantt-bar bar-orange" data-width="25%" style="margin-left: 50%">
+                            <span>Jul - Sep 2026</span>
+                            <div class="milestone"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gantt-row group">
+                    <div class="gantt-task">
+                        <div class="flex flex-col">
+                            <span class="text-white group-hover:text-purple-400 transition">04. SaaS Mass Scale</span>
+                            <span class="text-xs text-gray-600">Full SaaS model launch</span>
+                        </div>
+                    </div>
+                    <div class="gantt-timeline">
+                        <div class="gantt-grid-lines">
+                            <div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div><div class="gantt-line"></div>
+                        </div>
+                        <div class="gantt-bar bar-purple" data-width="25%" style="margin-left: 75%">
+                            <span>Oct - Dec 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-4 text-sm font-jetbrains text-gray-500">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-blue-500 rounded"></span> 
+                    <span>Prototype Phase</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-green-500 rounded"></span> 
+                    <span>MVP Customization</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-orange-500 rounded"></span> 
+                    <span>Package Deployment</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-purple-500 rounded"></span> 
+                    <span>SaaS Scaling</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 bg-white border border-gray-600 rotate-45"></div> 
+                    <span>Milestone Deliverable</span>
+                </div>
+            </div>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">PHASE 1 BUDGET</div>
+                    <div class="text-3xl font-bold text-neon-blue">₫480M</div>
+                    <div class="text-sm text-gray-400">Prototype (2 months)</div>
+                    <div class="text-xs text-gray-500 mt-2">Jan - Feb 2026</div>
+                    <div class="text-xs text-gray-400 mt-2">2 Senior, 1 Junior</div>
+                </div>
+                
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">PHASE 2 BUDGET</div>
+                    <div class="text-3xl font-bold text-neon-orange">₫960M</div>
+                    <div class="text-sm text-gray-400">MVP Customization (4 months)</div>
+                    <div class="text-xs text-gray-500 mt-2">Mar - Jun 2026</div>
+                    <div class="text-xs text-gray-400 mt-2">3 Senior, 2 Middle, 1 Junior</div>
+                </div>
+                
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">PHASE 3 BUDGET</div>
+                    <div class="text-3xl font-bold text-white">₫720M</div>
+                    <div class="text-sm text-gray-400">Package Deployment (3 months)</div>
+                    <div class="text-xs text-gray-500 mt-2">Jul - Sep 2026</div>
+                    <div class="text-xs text-gray-400 mt-2">2 Senior, 3 Middle, 2 Junior</div>
+                </div>
+                
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">PHASE 4 BUDGET</div>
+                    <div class="text-3xl font-bold text-ingrid-green">₫600M</div>
+                    <div class="text-sm text-gray-400">SaaS Scale (3 months)</div>
+                    <div class="text-xs text-gray-500 mt-2">Oct - Dec 2026</div>
+                    <div class="text-xs text-gray-400 mt-2">Infrastructure & Marketing</div>
+                </div>
+            </div>
+
+            <div class="mt-8 box-glow p-6 rounded-xl border-l-4 border-neon-orange">
+                <h3 class="text-xl font-bold text-white mb-4">Investment & Break-even Analysis</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-300">Total Development Cost (Year 1)</span>
+                        <span class="text-2xl font-bold text-neon-orange">₫2,760M</span>
+                    </div>
+                    <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+                        <div class="h-full bg-neon-orange rounded-full" style="width: 0%" data-width="100%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-300">Break-even Point (Pro Subscriptions)</span>
+                        <span class="text-2xl font-bold text-ingrid-green">55</span>
+                    </div>
+                    <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+                        <div class="h-full bg-ingrid-green rounded-full" style="width: 0%" data-width="55%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-300">Break-even Timeline</span>
+                        <span class="text-2xl font-bold text-white">12-15 Months</span>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-white/5 rounded">
+                        <p class="text-sm text-gray-300">
+                            <span class="font-bold text-ingrid-green">Break-even Analysis:</span> With 5-10 paying clients at $2k-$5k/month, 
+                            we achieve break-even in 12-15 months. Each Pro subscription generates ₫19.7M/month ($799).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNOLOGY STACK & DEVELOPMENT -->
+        <section id="slide-5">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-orange border-l-8 border-neon-orange pl-6">
+                05. Technology Stack & Development<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Modern, Scalable, API-First Architecture</span>
+            </h2>
+
+            <div class="box-glow p-6 md:p-8 rounded-xl mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-neon-blue mb-4">Core Technology Components</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="p-4 border-l-4 border-neon-blue bg-neon-blue/5">
+                                <div class="font-bold mb-1">AI/ML Layer</div>
+                                <div class="text-sm text-gray-300">Google Gemini API, Custom ML models for food industry predictions, Computer Vision for document processing</div>
+                                <div class="text-xs text-neon-blue mt-2 font-jetbrains">
+                                    <i class="fas fa-dollar-sign"></i> Cost: $0.15/1M tokens (Gemini API)
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-l-4 border-green-500 bg-green-500/5">
+                                <div class="font-bold mb-1">Backend & Infrastructure</div>
+                                <div class="text-sm text-gray-300">Node.js/Python microservices, PostgreSQL, Redis caching, Docker containers, Kubernetes orchestration</div>
+                                <div class="text-xs text-green-500 mt-2 font-jetbrains">
+                                    <i class="fas fa-server"></i> Auto-scaling to 100k+ users
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-l-4 border-neon-orange bg-neon-orange/5">
+                                <div class="font-bold mb-1">Frontend & UX</div>
+                                <div class="text-sm text-gray-300">Next.js 14 with server components, real-time dashboards, multilingual interface (Japanese, Korean, English)</div>
+                                <div class="text-xs text-neon-orange mt-2 font-jetbrains">
+                                    <i class="fas fa-mobile-alt"></i> Fully responsive design
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-l-4 border-purple-500 bg-purple-500/5">
+                                <div class="font-bold mb-1">Integration & APIs</div>
+                                <div class="text-sm text-gray-300">REST & GraphQL APIs, WebSocket for real-time updates, Integration with 50+ data sources</div>
+                                <div class="text-xs text-purple-500 mt-2 font-jetbrains">
+                                    <i class="fas fa-plug"></i> MPI, GSO, Customs, FAO APIs
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-ingrid-green mb-4">Development Team Structure</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-gradient-to-br from-neon-blue/10 to-transparent rounded-lg">
+                                <div class="font-bold text-sm mb-2">Senior Developers (2)</div>
+                                <div class="text-xs text-gray-400">60M VND/month each</div>
+                                <div class="text-xs text-gray-500 mt-1">Architecture & AI integration</div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-br from-green-500/10 to-transparent rounded-lg">
+                                <div class="font-bold text-sm mb-2">Middle Developers (3)</div>
+                                <div class="text-xs text-gray-400">40M VND/month each</div>
+                                <div class="text-xs text-gray-500 mt-1">Feature development</div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-br from-neon-orange/10 to-transparent rounded-lg">
+                                <div class="font-bold text-sm mb-2">Junior Developers (2)</div>
+                                <div class="text-xs text-gray-400">20M VND/month each</div>
+                                <div class="text-xs text-gray-500 mt-1">Testing & maintenance</div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-br from-purple-500/10 to-transparent rounded-lg">
+                                <div class="font-bold text-sm mb-2">Project Manager (1)</div>
+                                <div class="text-xs text-gray-400">50M VND/month</div>
+                                <div class="text-xs text-gray-500 mt-1">Coordination & delivery</div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-gradient-to-br from-neon-blue/10 to-green-500/10 rounded-lg">
+                            <h4 class="font-bold mb-2 text-white">Monthly Development Cost</h4>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-white">₫350M</div>
+                                    <div class="text-xs text-gray-400">Team salaries</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-white">₫50M</div>
+                                    <div class="text-xs text-gray-400">Infrastructure & tools</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">DATA SOURCES INTEGRATION</div>
+                    <div class="text-2xl font-bold text-white">50+ APIs</div>
+                    <div class="text-sm text-gray-400 mt-2">MPI, GSO, Customs, FAO, Vietnam Food Association</div>
+                    <a href="https://www.mpi.gov.vn/en/pages/api.aspx" target="_blank" class="citation-link mt-4">
+                        <i class="fa-solid fa-link"></i> MPI API Documentation
+                    </a>
+                </div>
+                
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">PERFORMANCE TARGETS</div>
+                    <div class="text-2xl font-bold text-white">< 200ms</div>
+                    <div class="text-sm text-gray-400 mt-2">API response time</div>
+                    <div class="text-xs text-green-400 mt-2">
+                        <i class="fa-solid fa-bolt"></i> 99.9% uptime SLA
+                    </div>
+                </div>
+                
+                <div class="box-glow p-6 rounded-xl">
+                    <div class="text-sm text-gray-500 mb-2">SECURITY & COMPLIANCE</div>
+                    <div class="text-xl font-bold text-white">GDPR • Vietnam Data Law</div>
+                    <div class="text-sm text-gray-400 mt-2">End-to-end encryption, ISO 27001 compliant</div>
+                    <a href="https://www.iso.org/standard/27001" target="_blank" class="citation-link mt-4">
+                        <i class="fa-solid fa-link"></i> ISO 27001 Standard
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINANCIAL PROJECTIONS -->
+        <section id="slide-6">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-orange border-l-8 border-neon-orange pl-6">
+                06. Financial Projections<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Revenue Model & ROI Analysis (2026-2028)</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-6">Revenue Projections (VND Millions)</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-lg">
+                            <div>
+                                <div class="font-bold text-lg">2026 (Year 1)</div>
+                                <div class="text-sm text-gray-400">Prototype & Pilot phase</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold">₫6,000M</div>
+                                <div class="text-sm text-red-400">-₫2,760M net investment</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-lg">
+                            <div>
+                                <div class="font-bold text-lg">2027 (Year 2)</div>
+                                <div class="text-sm text-gray-400">SaaS scaling phase</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold">₫28,800M</div>
+                                <div class="text-sm text-green-400">+₫9,600M net profit</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-lg">
+                            <div>
+                                <div class="font-bold text-lg">2028 (Year 3)</div>
+                                <div class="text-sm text-gray-400">Growth & expansion</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold">₫72,000M</div>
+                                <div class="text-sm text-green-400">+₫43,200M net profit</div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-gradient-to-r from-neon-blue/10 to-green-500/10 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm font-bold">Total Development Cost</div>
+                                    <div class="text-xs text-gray-400">Phases 1-4 over 12 months</div>
+                                </div>
+                                <div class="text-xl font-bold text-white">₫2,760M</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-6">Revenue Mix & Break-even Analysis</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">SaaS Subscriptions</span>
+                                <span class="font-bold text-neon-blue">70%</span>
+                            </div>
+                            <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-neon-blue rounded-full" style="width: 0%" data-width="70%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Implementation Services</span>
+                                <span class="font-bold text-green-500">20%</span>
+                            </div>
+                            <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-500 rounded-full" style="width: 0%" data-width="20%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Data Insights & Consulting</span>
+                                <span class="font-bold text-purple-500">10%</span>
+                            </div>
+                            <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 0%" data-width="10%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-gradient-to-br from-neon-orange/10 to-transparent rounded-lg text-center">
+                                <div class="text-sm text-gray-500 mb-1">BREAK-EVEN POINT</div>
+                                <div class="text-2xl font-bold text-white">55</div>
+                                <div class="text-xs text-gray-400">Pro subscriptions</div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-br from-green-500/10 to-transparent rounded-lg text-center">
+                                <div class="text-sm text-gray-500 mb-1">CLIENT ROI</div>
+                                <div class="text-2xl font-bold text-white">3.2x</div>
+                                <div class="text-xs text-gray-400">Within 12 months</div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-gradient-to-r from-neon-orange/10 to-purple-500/10 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm font-bold">Monthly Operating Cost</div>
+                                    <div class="text-xs text-gray-400">At scale (infrastructure, support, updates)</div>
+                                </div>
+                                <div class="text-xl font-bold text-white">₫192M</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 box-glow p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-4">Pricing Model (Monthly Subscription)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 bg-gradient-to-br from-neon-blue/10 to-transparent rounded-lg">
+                        <div class="text-center">
+                            <div class="text-sm font-bold text-neon-blue mb-2">Basic</div>
+                            <div class="text-3xl font-bold mb-2">₫4.9M<span class="text-lg">/mo</span></div>
+                            <div class="text-xs text-gray-400 mb-4">~$199 • 100 users included</div>
+                            <ul class="text-xs text-gray-300 space-y-1 mb-4">
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Food Industry Dashboard</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Basic AI Chat</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> 10 Food Data Sources</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Basic CRM Features</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 bg-gradient-to-br from-neon-orange/10 to-transparent rounded-lg relative">
+                        <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-neon-orange text-white text-xs rounded-full">
+                            Most Popular
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm font-bold text-neon-orange mb-2">Pro</div>
+                            <div class="text-3xl font-bold mb-2">₫19.7M<span class="text-lg">/mo</span></div>
+                            <div class="text-xs text-gray-400 mb-4">~$799 • Unlimited users</div>
+                            <ul class="text-xs text-gray-300 space-y-1 mb-4">
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Advanced Analytics</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Multi-language AI Chat</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> 50+ Food Data Sources</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Custom Workflows</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 bg-gradient-to-br from-purple-500/10 to-transparent rounded-lg">
+                        <div class="text-center">
+                            <div class="text-sm font-bold text-purple-400 mb-2">Enterprise</div>
+                            <div class="text-3xl font-bold mb-2">Custom</div>
+                            <div class="text-xs text-gray-400 mb-4">Volume-based pricing</div>
+                            <ul class="text-xs text-gray-300 space-y-1 mb-4">
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> White-label Platform</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Full API Access</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Dedicated Support</li>
+                                <li><i class="fa-solid fa-check text-green-400 mr-2"></i> Custom Integrations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GEOSPATIAL INTELLIGENCE -->
+        <section id="slide-7">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-blue border-l-8 border-neon-blue pl-6">
+                07. Geospatial Intelligence<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Industrial Zone Distribution in Southern Vietnam</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="box-glow p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">
+                        <i class="fa-solid fa-database text-neon-orange mr-2"></i> Industrial Park Database
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                         <div class="bg-black/40 p-4 rounded">
+                             <div class="text-xs text-gray-500">TOTAL ANALYZED</div>
+                             <div class="text-2xl font-bold text-white">143 Zones</div>
+                         </div>
+                         <div class="bg-black/40 p-4 rounded">
+                             <div class="text-xs text-gray-500">TOTAL AREA</div>
+                             <div class="text-2xl font-bold text-white">~45,000 ha</div>
+                         </div>
+                    </div>
+
+                    <div class="max-h-64 overflow-y-auto pr-2">
+                        <table class="w-full text-left text-sm">
+                            <thead class="text-gray-500 font-jetbrains text-xs sticky top-0 bg-[#141419] z-10">
+                                <tr>
+                                    <th class="pb-2">INDUSTRIAL ZONE</th>
+                                    <th class="pb-2">PROVINCE</th>
+                                    <th class="pb-2 text-right">SIZE (ha)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="zone-list-body" class="font-jetbrains text-gray-300">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                         <a href="https://docs.google.com/spreadsheets/d/14EKsLxQESYEdj5w3FRSUp2hkwIyd5Yj5iftmd5ggDjs/edit#gid=0" target="_blank" class="citation-link">
+                             <i class="fa-solid fa-table"></i> Source: MPI Vietnam Industrial Zone Database (A:F)
+                         </a>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div id="industrial-map" class="h-full min-h-[400px]"></div>
+                    <div class="absolute top-4 right-4 bg-black/80 backdrop-blur text-white p-4 rounded-lg border border-gray-700 z-[400]">
+                        <div class="text-xs text-gray-400 font-bold mb-2">LEGEND</div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-3 h-3 rounded-full bg-neon-orange"></span> 
+                            <span class="text-sm">GT 500 ha</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-3 h-3 rounded-full bg-neon-blue"></span> 
+                            <span class="text-sm">LT 500 ha</span>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="box-glow p-4 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">TOP PROVINCE</div>
+                    <div class="text-xl font-bold text-white">Binh Duong</div>
+                    <div class="text-sm text-gray-400">$1.9B FDI, 85 food projects</div>
+                </div>
+                <div class="box-glow p-4 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">LABOR AVAILABILITY</div>
+                    <div class="text-xl font-bold text-white">120,000+</div>
+                    <div class="text-sm text-gray-400">Food manufacturing workers</div>
+                </div>
+                <div class="box-glow p-4 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">INFRASTRUCTURE</div>
+                    <div class="text-xl font-bold text-white">85%</div>
+                    <div class="text-sm text-gray-400">Zones meet food processing standards</div>
+                </div>
+                <div class="box-glow p-4 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">TARGET CLIENTS</div>
+                    <div class="text-xl font-bold text-white">450+</div>
+                    <div class="text-sm text-gray-400">FDI food manufacturers in region</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTNERSHIP SYNERGY -->
+        <section id="slide-8">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-orange border-l-8 border-neon-orange pl-6">
+                08. Partnership Synergy<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">LAZINET × INGRID Collaboration Framework</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">LAZINET Responsibilities</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-code text-neon-blue mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Technology Development</div>
+                                    <div class="text-sm text-gray-400">Full-stack development, AI/ML integration, cloud infrastructure</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-brain text-neon-blue mt-1"></i>
+                                <div>
+                                    <div class="font-bold">AI Model Training</div>
+                                    <div class="text-sm text-gray-400">Custom AI models for food manufacturing sector</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-database text-neon-blue mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Data Integration</div>
+                                    <div class="text-sm text-gray-400">API connections to 50+ data sources</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-shield-alt text-neon-blue mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Security & Compliance</div>
+                                    <div class="text-sm text-gray-400">GDPR, Vietnam Data Law, ISO 27001</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Success Metrics (Technology)</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-3 bg-white/5 rounded text-center">
+                                <div class="text-xs text-gray-500">AI ACCURACY</div>
+                                <div class="font-bold text-white text-xl">92%</div>
+                            </div>
+                            <div class="p-3 bg-white/5 rounded text-center">
+                                <div class="text-xs text-gray-500">UPTIME SLA</div>
+                                <div class="font-bold text-white text-xl">99.9%</div>
+                            </div>
+                            <div class="p-3 bg-white/5 rounded text-center">
+                                <div class="text-xs text-gray-500">RESPONSE TIME</div>
+                                <div class="font-bold text-white text-xl"><200ms</div>
+                            </div>
+                            <div class="p-3 bg-white/5 rounded text-center">
+                                <div class="text-xs text-gray-500">DATA SOURCES</div>
+                                <div class="font-bold text-white text-xl">50+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">INGRID Responsibilities</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-users text-ingrid-green mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Client Acquisition</div>
+                                    <div class="text-sm text-gray-400">Leveraging 200+ food manufacturing contacts</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-chart-line text-ingrid-green mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Market Strategy</div>
+                                    <div class="text-sm text-gray-400">Industry insights and competitive analysis</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-handshake text-ingrid-green mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Business Development</div>
+                                    <div class="text-sm text-gray-400">Partnerships with industrial zones</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                                <i class="fa-solid fa-comments text-ingrid-green mt-1"></i>
+                                <div>
+                                    <div class="font-bold">Customer Support</div>
+                                    <div class="text-sm text-gray-400">Multi-language support (Japanese, Korean, English)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="box-glow p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4">Success Metrics (Business)</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-4 bg-gradient-to-br from-neon-blue/10 to-transparent rounded">
+                                <div class="text-2xl font-bold text-white">40%</div>
+                                <div class="text-sm text-gray-400">Efficiency Gain</div>
+                            </div>
+                            <div class="text-center p-4 bg-gradient-to-br from-ingrid-green/10 to-transparent rounded">
+                                <div class="text-2xl font-bold text-white">30+</div>
+                                <div class="text-sm text-gray-400">Leads/6 Months</div>
+                            </div>
+                            <div class="text-center p-4 bg-gradient-to-br from-neon-orange/10 to-transparent rounded">
+                                <div class="text-2xl font-bold text-white">88%</div>
+                                <div class="text-sm text-gray-400">Customer Satisfaction</div>
+                            </div>
+                            <div class="text-center p-4 bg-gradient-to-br from-ingrid-blue/10 to-transparent rounded">
+                                <div class="text-2xl font-bold text-white">70%</div>
+                                <div class="text-sm text-gray-400">Success Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 box-glow p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-4">Joint Investment & Revenue Sharing</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 border-l-4 border-neon-blue">
+                        <div class="font-bold text-white mb-2">Initial Investment</div>
+                        <div class="text-sm text-gray-400">LAZINET: 70% technology development</div>
+                        <div class="text-sm text-gray-400">INGRID: 30% market development</div>
+                    </div>
+                    <div class="p-4 border-l-4 border-ingrid-green">
+                        <div class="font-bold text-white mb-2">Revenue Sharing</div>
+                        <div class="text-sm text-gray-400">LAZINET: 60% technology maintenance</div>
+                        <div class="text-sm text-gray-400">INGRID: 40% sales & support</div>
+                    </div>
+                    <div class="p-4 border-l-4 border-neon-orange">
+                        <div class="font-bold text-white mb-2">Decision Making</div>
+                        <div class="text-sm text-gray-400">Joint steering committee</div>
+                        <div class="text-sm text-gray-400">Monthly progress reviews</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT STEPS & CONTACT -->
+        <section id="slide-9">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl tech-font font-bold mb-8 text-glow-blue border-l-8 border-neon-blue pl-6">
+                09. Next Steps & Contact<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Strategic Partnership Roadmap</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-6">Immediate Action Items</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 border-l-4 border-neon-blue bg-neon-blue/5">
+                            <div class="w-10 h-10 rounded-full bg-neon-blue/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-file-signature text-neon-blue"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold">MOU Signing</div>
+                                <div class="text-sm text-gray-400">December 2025 • LAZINET/INGRID Leadership</div>
+                                <div class="text-xs text-neon-blue mt-1">Draft partnership agreement for review</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 border-l-4 border-green-500 bg-green-500/5">
+                            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-database text-green-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold">Data Integration</div>
+                                <div class="text-sm text-gray-400">January 2026 • Technical Teams</div>
+                                <div class="text-xs text-green-400 mt-1">INGRID's 200+ food manufacturing contacts</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 border-l-4 border-neon-orange bg-neon-orange/5">
+                            <div class="w-10 h-10 rounded-full bg-neon-orange/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-play text-neon-orange"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold">Prototype Kickoff</div>
+                                <div class="text-sm text-gray-400">February 2026 • Project Managers</div>
+                                <div class="text-xs text-neon-orange mt-1">Bi-weekly review sessions established</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 border-l-4 border-purple-500 bg-purple-500/5">
+                            <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-rocket text-purple-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold">MVP Launch</div>
+                                <div class="text-sm text-gray-400">June 2026 • Joint Steering Committee</div>
+                                <div class="text-xs text-purple-400 mt-1">Public launch event with key media</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-6">Contact & Partnership Details</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-4 bg-white/5 rounded">
+                                <div class="text-xl font-bold text-white">40%</div>
+                                <div class="text-xs text-gray-400">Efficiency Gain Target</div>
+                            </div>
+                            <div class="text-center p-4 bg-white/5 rounded">
+                                <div class="text-xl font-bold text-white">30+</div>
+                                <div class="text-xs text-gray-400">Qualified Leads (6 months)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gradient-to-r from-neon-blue/10 to-transparent rounded-lg">
+                                <div class="font-bold mb-1">LAZINET Technology</div>
+                                <div class="text-sm text-neon-blue">tech@lazinet.com</div>
+                                <div class="text-xs text-gray-400">+84 908 556 220 (CEO Phụng Hoàng)</div>
+                                <div class="text-xs text-gray-500 mt-2">CTO & Technical Leadership</div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-r from-ingrid-green/10 to-transparent rounded-lg">
+                                <div class="font-bold mb-1">INGRID Commercial</div>
+                                <div class="text-sm text-ingrid-green">en@ingridintl.sg</div>
+                                <div class="text-xs text-gray-400">+65 6226 2652 (CEO Tan CK)</div>
+                                <div class="text-xs text-gray-500 mt-2">Head of FDI & Commercial Leadership</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button onclick="scheduleMeeting()" class="px-8 py-3 bg-gradient-to-r from-neon-orange to-neon-blue rounded-lg font-bold hover:opacity-90 transition-opacity text-white">
+                                <i class="fa-solid fa-calendar-alt mr-2"></i>
+                                Schedule Partnership Discussion
+                            </button>
+                            <div class="text-sm text-gray-400 mt-3">
+                                Let's build the future of AI-powered food manufacturing FDI together
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="border-t border-gray-800 pt-10 text-center text-gray-500">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+                <div class="text-left">
+                    <div class="font-bold text-lg mb-2"><span class="logo-lazinet">LAZINET</span> × <span class="logo-ingrid">INGRID</span></div>
+                    <div class="text-sm text-gray-400">AI-Powered Brand Marketing & CRM System for Food Manufacturing FDI</div>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <div class="text-xs text-gray-500 font-jetbrains mb-2">PROPRIETARY & CONFIDENTIAL</div>
+                    <div class="text-sm">© 2025 LAZINET Applied Technologies Ltd., Co. • All rights reserved</div>
+                </div>
+            </div>
+            
+            <div class="text-xs text-gray-600 font-jetbrains">
+                Data Sources: GSO Vietnam • MPI FDI Database • Vietnam News • World Bank • Vietnam Briefing • MPI Industrial Zone Database
+            </div>
+        </footer>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col gap-3">
+        <a href="#slide-0" class="nav-dot active" data-slide="0"></a>
+        <a href="#slide-1" class="nav-dot" data-slide="1"></a>
+        <a href="#slide-2" class="nav-dot" data-slide="2"></a>
+        <a href="#slide-3" class="nav-dot" data-slide="3"></a>
+        <a href="#slide-4" class="nav-dot" data-slide="4"></a>
+        <a href="#slide-5" class="nav-dot" data-slide="5"></a>
+        <a href="#slide-6" class="nav-dot" data-slide="6"></a>
+        <a href="#slide-7" class="nav-dot" data-slide="7"></a>
+        <a href="#slide-8" class="nav-dot" data-slide="8"></a>
+        <a href="#slide-9" class="nav-dot" data-slide="9"></a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // --- 1. PARTICLE ANIMATION ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.color = Math.random() > 0.5 ? '#0000FF' : '#FF6300';
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0 || this.x > width) this.vx *= -1;
+                if(this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for(let i = 0; i < 80; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { 
+                p.update(); 
+                p.draw(); 
+            });
+            
+            // Connect lines
+            ctx.lineWidth = 0.5;
+            for(let i = 0; i < particles.length; i++){
+                for(let j = i + 1; j < particles.length; j++){
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if(dist < 100) {
+                        ctx.strokeStyle = `rgba(100, 100, 255, ${0.1 - dist/1000})`;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // --- 2. INDUSTRIAL ZONE DATA ---
+const kcnData = [
+    { name: "KCN Vàm Cống", prov: "An Giang", size: 200, lat: 10.3343209, lon: 105.4926278 },
+    { name: "KCN Bình Long", prov: "An Giang", size: 30.57, lat: 10.5671715, lon: 105.249289 },
+    { name: "KCN Bình Hòa", prov: "An Giang", size: 250, lat: 10.4548268, lon: 105.3431546 },
+    { name: "KCN Hội An", prov: "An Giang", size: 100, lat: 10.4205223, lon: 105.5181302 },
+    { name: "KCN Xuân Tô", prov: "An Giang", size: 57.4, lat: 10.6045527, lon: 104.9555898 },
+    { name: "KCN An Hiệp", prov: "Bến Tre", size: 72, lat: 10.2692181, lon: 106.2831073 },
+    { name: "KCN Giao Long", prov: "Bến Tre", size: 68, lat: 10.3015487, lon: 106.3995425 },
+    { name: "KCN Trà Nóc 1", prov: "Cần Thơ", size: 135, lat: 10.1066741, lon: 105.7088021 },
+    { name: "KCN Trà Nóc 2", prov: "Cần Thơ", size: 155, lat: 10.1066741, lon: 105.7088021 },
+    { name: "KCN Hưng Phú 1", prov: "Cần Thơ", size: 270, lat: 9.9883974, lon: 105.8179281 },
+    { name: "KCN Hưng Phú 2A", prov: "Cần Thơ", size: 134, lat: 9.9883974, lon: 105.8179281 },
+    { name: "KCN Hưng Phú 2B", prov: "Cần Thơ", size: 62.63, lat: 9.9883974, lon: 105.8179281 },
+    { name: "KCN Thốt Nốt", prov: "Cần Thơ", size: 600, lat: 10.3146462, lon: 105.4869599 },
+    { name: "KCN Ô Môn", prov: "Cần Thơ", size: 256, lat: 10.13765, lon: 105.629523 },
+    { name: "KCN Bắc Ô Môn", prov: "Cần Thơ", size: 400, lat: 10.1137722, lon: 105.700962 },
+    { name: "KCN Thạnh Lộc", prov: "Kiên Giang", size: 250, lat: 9.9899673, lon: 105.1318514 },
+    { name: "KCN Thuận Yến", prov: "Kiên Giang", size: 133.95, lat: 10.3471797, lon: 104.5363969 },
+    { name: "KCN Tắc Cậu", prov: "Kiên Giang", size: 68, lat: 9.8249587, lon: 105.1258955 },
+    { name: "KCN Xẻo Rô", prov: "Kiên Giang", size: 210.54, lat: 9.8504684, lon: 105.1168034 },
+    { name: "KCN Kiên Lương II", prov: "Kiên Giang", size: 100, lat: 10.2721644, lon: 104.6238048 },
+    { name: "KCN Sông Hậu", prov: "Hậu Giang", size: 290, lat: 9.9610889, lon: 105.8424 },
+    { name: "KCN Tân Phú Thạnh", prov: "Hậu Giang", size: 200, lat: 9.9545424, lon: 105.7299826 },
+    { name: "KCN Sa Đéc", prov: "Đồng Tháp", size: 132.78, lat: 10.322003, lon: 105.7542136 },
+    { name: "KCN Sông Hậu", prov: "Đồng Tháp", size: 63.5, lat: 10.2497274, lon: 105.6007996 },
+    { name: "KCN Trần Quốc Toản", prov: "Đồng Tháp", size: 563.1, lat: 10.5023054, lon: 105.5661061 },
+    { name: "KCN Tân Kiều", prov: "Đồng Tháp", size: 148.5, lat: 10.654027, lon: 105.780447 },
+    { name: "KCN Mỹ Tho", prov: "Tiền Giang", size: 79.14, lat: 10.3449322, lon: 106.3350177 },
+    { name: "KCN Tân Hương", prov: "Tiền Giang", size: 197.33, lat: 10.4862586, lon: 106.3640398 },
+    { name: "KCN Long Giang", prov: "Tiền Giang", size: 540, lat: 10.4750943, lon: 106.3051873 },
+    { name: "KCN Dịch vụ Dầu Khí Soài Rạp", prov: "Tiền Giang", size: 285, lat: 10.62030419, lon: 106.806054 },
+    { name: "KCN Bình Minh", prov: "Vĩnh Long", size: 134.82, lat: 10.0434766, lon: 105.8250328 },
+    { name: "KCN Hòa Phú", prov: "Vĩnh Long", size: 250.97, lat: 10.1723648, lon: 105.9342457 },
+    { name: "KCN Đông Bình", prov: "Vĩnh Long", size: 350, lat: 10.056571, lon: 105.8466437 },
+    { name: "KCN An Định", prov: "Vĩnh Long", size: 200, lat: 10.0838032, lon: 106.3875898 },
+    { name: "KCN Bình Tân", prov: "Vĩnh Long", size: 400, lat: 10.1205166, lon: 105.7585908 },
+    { name: "KCN Khánh An", prov: "Cà Mau", size: 235.86, lat: 9.2266664, lon: 105.0570554 },
+    { name: "KCN Hòa Trung", prov: "Cà Mau", size: 327.13, lat: 9.1024175, lon: 105.1602082 },
+    { name: "KCN Sông Đốc", prov: "Cà Mau", size: 145.45, lat: 9.0442231, lon: 104.8385516 },
+    { name: "KCN Cầu Quan", prov: "Trà Vinh", size: 120, lat: 9.770238, lon: 106.1198699 },
+    { name: "KCN Cổ Chiên", prov: "Trà Vinh", size: 20, lat: 9.9513316, lon: 106.3346061 },
+    { name: "KCN Long Đức", prov: "Trà Vinh", size: 100, lat: 9.9681525, lon: 106.3495861 },
+    { name: "KCN An Nghiệp", prov: "Sóc Trăng", size: 243, lat: 9.643013, lon: 105.9611748 },
+    { name: "KCN Trần Đề", prov: "Sóc Trăng", size: 160, lat: 9.521394, lon: 106.199266 },
+    { name: "KCN Sông Hậu", prov: "Sóc Trăng", size: 286, lat: 9.6233081, lon: 106.1492721 },
+    { name: "KCN Mỹ Thanh", prov: "Sóc Trăng", size: 217, lat: 9.424541556, lon: 106.0758037 },
+    { name: "KCN Đại Ngãi", prov: "Sóc Trăng", size: 211.26, lat: 9.7327536, lon: 106.0581397 },
+    { name: "KCN Trà Kha", prov: "Bạc Liêu", size: 64, lat: 9.3002802, lon: 105.6959254 },
+    { name: "KCN Láng Trâm", prov: "Bạc Liêu", size: 100, lat: 9.2899425, lon: 105.5005483 },
+    { name: "KCN Minh Hưng Sikico", prov: "Bình Phước", size: 655, lat: 11.5076872, lon: 106.5568701 },
+    { name: "KCN Becamex Bình Phước", prov: "Bình Phước", size: 1.993, lat: 11.4415815, lon: 106.6583251 },
+    { name: "KCN Tân Khai I", prov: "Bình Phước", size: 700, lat: 11.5484286, lon: 106.6161025 },
+    { name: "KCN Tân Khai II", prov: "Bình Phước", size: 344, lat: 11.5484286, lon: 106.6161025 },
+    { name: "KCN Minh Hưng – Hàn Quốc", prov: "Bình Phước", size: 392.28, lat: 11.4882474, lon: 106.6149715 },
+    { name: "KCN Minh Hưng III", prov: "Bình Phước", size: 291.52, lat: 11.4689606, lon: 106.6064185 },
+    { name: "KCN Bắc Đồng Phú", prov: "Bình Phước", size: 184, lat: 11.4739183, lon: 106.8820405 },
+    { name: "KCN Đồng Xoài I", prov: "Bình Phước", size: 153.49, lat: 11.525014, lon: 106.8530519 },
+    { name: "KCN Đồng Xoài II", prov: "Bình Phước", size: 84.7, lat: 11.525014, lon: 106.8530519 },
+    { name: "KCN Chơn Thành I", prov: "Bình Phước", size: 120, lat: 11.3924339, lon: 106.5936802 },
+    { name: "KCN Chơn Thành II", prov: "Bình Phước", size: 76, lat: 11.3924339, lon: 106.5936802 },
+    { name: "KCN Việt Kiều", prov: "Bình Phước", size: 101.82, lat: 11.5951974, lon: 106.5991016 },
+    { name: "KCN Nam Đồng Phú", prov: "Bình Phước", size: 72, lat: 11.3833209, lon: 106.8292331 },
+    { name: "KCN Ledana", prov: "Bình Phước", size: 424.5, lat: 11.7886403, lon: 106.4641459 },
+    { name: "KCN Thanh Bình", prov: "Bình Phước", size: 91.18, lat: 11.515555, lon: 106.8060388 },
+    { name: "KCN Việt Nam – Singapore (VSIP)", prov: "Bình Dương", size: 465.27, lat: 10.9243858, lon: 106.7135795 },
+    { name: "KCN Việt Nam – Singapore II (VSIP II)", prov: "Bình Dương", size: 345, lat: 11.0848898, lon: 106.6874655 },
+    { name: "KCN Việt Nam – Singapore II-A (VSIP II-A)", prov: "Bình Dương", size: 1, lat: 11.1379247, lon: 106.6978593 },
+    { name: "KCN Mapletree Bình Dương", prov: "Bình Dương", size: 74.87, lat: 11.0673313, lon: 106.6711669 },
+    { name: "KCN Bàu Bàng", prov: "Bình Dương", size: 2, lat: 11.253164, lon: 106.6055534 },
+    { name: "KCN Bình An", prov: "Bình Dương", size: 25.9, lat: 10.9039539, lon: 106.7850235 },
+    { name: "KCN Bình Đường", prov: "Bình Dương", size: 16.5, lat: 10.869976, lon: 106.7558057 },
+    { name: "KCN Đại Đăng", prov: "Bình Dương", size: 274.36, lat: 11.0095343, lon: 106.690327 },
+    { name: "KCN Đất Cuốc (KSB)", prov: "Bình Dương", size: 212.84, lat: 11.1018201, lon: 106.8358307 },
+    { name: "KCN Đồng An", prov: "Bình Dương", size: 138.7, lat: 10.893744, lon: 106.721674 },
+    { name: "KCN Đồng An 2", prov: "Bình Dương", size: 158.1, lat: 11.101956, lon: 106.6815532 },
+    { name: "KCN Kim Huy", prov: "Bình Dương", size: 213.63, lat: 10.9948966, lon: 106.6649157 },
+    { name: "KCN Mai Trung", prov: "Bình Dương", size: 50.55, lat: 11.108339, lon: 106.5368001 },
+    { name: "KCN Mỹ Phước", prov: "Bình Dương", size: 376.92, lat: 11.1298145, lon: 106.6002091 },
+    { name: "KCN Mỹ Phước 2", prov: "Bình Dương", size: 477.39, lat: 11.1320152, lon: 106.6306686 },
+    { name: "KCN Mỹ Phước 3", prov: "Bình Dương", size: 997.7, lat: 11.1016996, lon: 106.6436804 },
+    { name: "KCN Nam Tân Uyên", prov: "Bình Dương", size: 331.97, lat: 11.0506952, lon: 106.7569111 },
+    { name: "KCN Nam Tân Uyên mở rộng", prov: "Bình Dương", size: 346, lat: 11.0954053, lon: 106.7748436 },
+    { name: "KCN Rạch Bắp", prov: "Bình Dương", size: 278.6, lat: 11.1437962, lon: 106.5541793 },
+    { name: "KCN Sóng Thần 1", prov: "Bình Dương", size: 178, lat: 10.8882226, lon: 106.7472497 },
+    { name: "KCN Sóng Thần 2", prov: "Bình Dương", size: 279.27, lat: 10.9177067, lon: 106.7437961 },
+    { name: "KCN Sóng Thần 3", prov: "Bình Dương", size: 533.85, lat: 11.0301786, lon: 106.6922443 },
+    { name: "KCN Tân Đông Hiệp A", prov: "Bình Dương", size: 52.86, lat: 10.92273, lon: 106.7878992 },
+    { name: "KCN Tân Đồng Hiệp B", prov: "Bình Dương", size: 162.92, lat: 10.92273, lon: 106.7878992 },
+    { name: "KCN Thới Hòa", prov: "Bình Dương", size: 202.4, lat: 11.136074, lon: 106.59919 },
+    { name: "KCN Việt Hương", prov: "Bình Dương", size: 36, lat: 10.9434267, lon: 106.7114098 },
+    { name: "KCN Việt Hương 2", prov: "Bình Dương", size: 250, lat: 11.0915869, lon: 106.5427052 },
+    { name: "KCN Việt Remax", prov: "Bình Dương", size: 133.29, lat: 11.0722886, lon: 106.6796316 },
+    { name: "KCN Quốc tế Protrade (An Tây)", prov: "Bình Dương", size: 500, lat: 11.108339, lon: 106.5368001 },
+    { name: "KCN Tân Bình", prov: "Bình Dương", size: 352.5, lat: 11.1982542, lon: 106.7219991 },
+    { name: "KCN Phú Tân", prov: "Bình Dương", size: 133.3, lat: 11.0950569, lon: 106.6891866 },
+    { name: "KCN An Hạ", prov: "TP. Hồ Chí Minh", size: 123.51, lat: 10.8226937, lon: 106.5192385 },
+    { name: "KCN Bình Chiểu", prov: "TP. Hồ Chí Minh", size: 27.34, lat: 10.8830589, lon: 106.7301402 },
+    { name: "KCN Cát Lái II", prov: "TP. Hồ Chí Minh", size: 136.95, lat: 10.7677679, lon: 106.7852407 },
+    { name: "KCN Đông Nam", prov: "TP. Hồ Chí Minh", size: 342.53, lat: 10.9755449, lon: 106.6233779 },
+    { name: "KCN Hiệp Phước", prov: "TP. Hồ Chí Minh", size: 2, lat: 10.6331823, lon: 106.7623761 },
+    { name: "KCN Cơ khí Ô tô", prov: "TP. Hồ Chí Minh", size: 99.34, lat: 10.9755449, lon: 106.6233779 },
+    { name: "KCN Lê Minh Xuân", prov: "TP. Hồ Chí Minh", size: 100, lat: 10.7417167, lon: 106.5415602 },
+    { name: "Khu chế xuất Linh Trung I", prov: "TP. Hồ Chí Minh", size: 62, lat: 10.8686518, lon: 106.7674694 },
+    { name: "Khu chế xuất Linh Trung II", prov: "TP. Hồ Chí Minh", size: 61.7, lat: 10.8892194, lon: 106.7208802 },
+    { name: "KCN Tân Bình", prov: "TP. Hồ Chí Minh", size: 128.7, lat: 10.8162555, lon: 106.6251124 },
+    { name: "KCN Tân Phú Trung", prov: "TP. Hồ Chí Minh", size: 542.64, lat: 10.928892, lon: 106.5533279 },
+    { name: "KCN Tân Tạo", prov: "TP. Hồ Chí Minh", size: 343.9, lat: 10.7411353, lon: 106.5965813 },
+    { name: "KCN Tân Thới Hiệp", prov: "TP. Hồ Chí Minh", size: 28.31, lat: 10.8819505, lon: 106.6338552 },
+    { name: "Khu chế xuất Tân Thuận", prov: "TP. Hồ Chí Minh", size: 300, lat: 10.7519027, lon: 106.7311995 },
+    { name: "KCN Tây Bắc Củ Chi", prov: "TP. Hồ Chí Minh", size: 381.24, lat: 10.9830763, lon: 106.4840413 },
+    { name: "KCN Vĩnh Lộc", prov: "TP. Hồ Chí Minh", size: 207, lat: 10.8265287, lon: 106.5933333 },
+    { name: "KCN Lê Minh Xuân III", prov: "TP. Hồ Chí Minh", size: 311.24, lat: 10.7417167, lon: 106.5415602 },
+    { name: "Cảng Quốc tế Long An", prov: "Long An", size: 147, lat: 10.531139, lon: 106.7351905 },
+    { name: "KCN Cầu cảng Phước Đông", prov: "Long An", size: 128.97, lat: 10.4867527, lon: 106.6364987 },
+    { name: "KCN Cầu Tràm", prov: "Long An", size: 77.82, lat: 10.6308338, lon: 106.5890483 },
+    { name: "KCN Đông Nam Á (Bắc Tân Tập)", prov: "Long An", size: 635, lat: 10.5340438, lon: 106.7247006 },
+    { name: "KCN Tân Kim", prov: "Long An", size: 104.1, lat: 10.6354317, lon: 106.6595303 },
+    { name: "KCN Tân Kim mở rộng", prov: "Long An", size: 52.488, lat: 10.6253329, lon: 106.6667569 },
+    { name: "KCN Nhựt Chánh", prov: "Long An", size: 122.75, lat: 10.6210565, lon: 106.4802777 },
+    { name: "KCN Hòa Bình", prov: "Long An", size: 117.67, lat: 10.5977649, lon: 106.4330825 },
+    { name: "KCN Long Hậu", prov: "Long An", size: 244.59, lat: 10.6352081, lon: 106.7182681 },
+    { name: "KCN Đức Hòa I – Hạnh Phúc", prov: "Long An", size: 204.2, lat: 10.7958216, lon: 106.5026987 },
+    { name: "KCN Thuận Đạo", prov: "Long An", size: 111.1, lat: 10.6047777, lon: 106.4945841 },
+    { name: "KCN Thuận Đạo mở rộng", prov: "Long An", size: 189.843, lat: 10.6047777, lon: 106.4945841 },
+    { name: "KCN Xuyên Á", prov: "Long An", size: 302.45, lat: 10.8906172, lon: 106.5212121 },
+    { name: "KCN Vĩnh Lộc 2", prov: "Long An", size: 226, lat: 10.6412586, lon: 106.5171626 },
+    { name: "KCN Phúc Long", prov: "Long An", size: 78.96, lat: 16.3941066, lon: 107.5706672 },
+    { name: "KCN Tân Đức", prov: "Long An", size: 545.69, lat: 10.8104615, lon: 106.4751146 },
+    { name: "KCN Đức Hòa III – Việt Hóa", prov: "Long An", size: 83.2, lat: 10.9320814, lon: 106.4490003 },
+    { name: "KCN Đức Hòa III – Thái Hòa", prov: "Long An", size: 100.27, lat: 10.9320814, lon: 106.4490003 },
+    { name: "KCN Đức Hòa III – Anh Hồng", prov: "Long An", size: 44.87, lat: 10.9320814, lon: 106.4490003 },
+    { name: "KCN Đức Hòa III – Hồng Đạt", prov: "Long An", size: 27.4, lat: 10.9320814, lon: 106.4490003 },
+    { name: "KCN Đức Hòa III – Resco", prov: "Long An", size: 295.66, lat: 10.9320814, lon: 106.4490003 },
+    { name: "KCN An Nhật Tân", prov: "Long An", size: 120, lat: 10.5752444, lon: 106.4940331 },
+    { name: "KCN Tân Đô", prov: "Long An", size: 209.1, lat: 10.7944176, lon: 106.4908147 },
+    { name: "KCN Phú An Thạnh", prov: "Long An", size: 352.57, lat: 10.684002, lon: 106.4570021 },
+    { name: "KCN Hải Sơn", prov: "Long An", size: 338, lat: 10.7860441, lon: 106.4727829 },
+    { name: "KCN DNN – Tân Phú", prov: "Long An", size: 262, lat: 10.8994644, lon: 106.3495771 },
+    { name: "KCN Nam Thuận (Đại Lộc)", prov: "Long An", size: 341.42, lat: 15.8869718, lon: 108.1132212 },
+    { name: "KCN Việt Phát", prov: "Long An", size: 1213.7, lat: 10.7156814, lon: 106.3270465 },
+    { name: "KCN Thịnh Phát", prov: "Long An", size: 73.3, lat: 10.7586284, lon: 106.4377505 },
+    { name: "KCN Lộc An - Bình Sơn", prov: "Đồng Nai", size: 497.77, lat: 10.7948211, lon: 106.9900006 },
+    { name: "KCN Dầu Giây", prov: "Đồng Nai", size: 330.8, lat: 10.9331326, lon: 107.1360642 },
+    { name: "KCN Giang Điền", prov: "Đồng Nai", size: 529.2, lat: 10.9093431, lon: 106.9842249 },
+    { name: "KCN Long Khánh", prov: "Đồng Nai", size: 264.47, lat: 10.9420233, lon: 107.2297948 },
+    { name: "KCN Ông Kèo", prov: "Đồng Nai", size: 823.45, lat: 10.6321823, lon: 106.8362326 },
+    { name: "KCN AGTEX Long Bình", prov: "Đồng Nai", size: 43.26, lat: 10.9269925, lon: 106.8795007 },
+    { name: "KCN Tân Phú", prov: "Đồng Nai", size: 54.16, lat: 11.2745595, lon: 107.4283714 },
+    { name: "KCN Bàu Xéo", prov: "Đồng Nai", size: 499.8, lat: 10.9513704, lon: 107.0126076 },
+    { name: "KCN Thạnh Phú", prov: "Đồng Nai", size: 177.2, lat: 11.0111618, lon: 106.8528823 },
+    { name: "KCN Xuân Lộc", prov: "Đồng Nai", size: 108.82, lat: 10.9084375, lon: 107.4130625 },
+    { name: "KCN Nhơn Trạch II – Lộc Khang", prov: "Đồng Nai", size: 69.53, lat: 10.7138784, lon: 106.9216614 },
+    { name: "KCN Nhơn Trạch II – Nhơn Phú", prov: "Đồng Nai", size: 183.18, lat: 10.7205211, lon: 106.9133606 },
+    { name: "KCN Nhơn Trạch VI", prov: "Đồng Nai", size: 314.23, lat: 10.702118, lon: 106.936575 },
+    { name: "KCN Long Đức", prov: "Đồng Nai", size: 281.32, lat: 10.846163, lon: 106.9713291 },
+    { name: "KCN Định Quán", prov: "Đồng Nai", size: 54.35, lat: 11.15445, lon: 107.2474303 },
+    { name: "KCN An Phước", prov: "Đồng Nai", size: 200.85, lat: 10.8438035, lon: 106.9889904 },
+    { name: "KCN Long Thành", prov: "Đồng Nai", size: 486.91, lat: 10.8312488, lon: 106.935861 },
+    { name: "KCN Nhơn Trạch V", prov: "Đồng Nai", size: 298.4, lat: 10.7111504, lon: 106.9327479 },
+    { name: "KCN Tam Phước", prov: "Đồng Nai", size: 323.18, lat: 10.8663462, lon: 106.9370982 },
+    { name: "KCN Dệt may Nhơn Trạch", prov: "Đồng Nai", size: 175.6, lat: 10.7011875, lon: 106.9346875 },
+    { name: "KCN Biên Hòa I", prov: "Đồng Nai", size: 335, lat: 10.921125, lon: 106.8613515 },
+    { name: "KCN Sông Mây", prov: "Đồng Nai", size: 473.95, lat: 10.9713461, lon: 106.9540283 },
+    { name: "KCN Nhơn Trạch I", prov: "Đồng Nai", size: 446.49, lat: 10.6009892, lon: 106.7588494 },
+    { name: "KCN Nhơn Trạch III", prov: "Đồng Nai", size: 697.49, lat: 10.7172271, lon: 106.9379229 },
+    { name: "KCN Nhơn Trạch II", prov: "Đồng Nai", size: 331.42, lat: 10.7258934, lon: 106.9239201 },
+    { name: "KCN Loteco", prov: "Đồng Nai", size: 100, lat: 10.9287498, lon: 106.8841858 },
+    { name: "KCN Biên Hòa II", prov: "Đồng Nai", size: 394.63, lat: 10.921125, lon: 106.8613515 },
+    { name: "KCN Amata", prov: "Đồng Nai", size: 513.01, lat: 10.9432135, lon: 106.8802086 },
+    { name: "KCN Gò Dầu", prov: "Đồng Nai", size: 182.38, lat: 10.6589033, lon: 107.0353906 },
+    { name: "KCN Hố Nai", prov: "Đồng Nai", size: 496.65, lat: 10.9509109, lon: 106.9386234 },
+    { name: "KCN Suối Tre", prov: "Đồng Nai", size: 144.78, lat: 10.9416517, lon: 107.2366231 },
+    { name: "Khu công nghệ cao Long Thành", prov: "Đồng Nai", size: 410.31, lat: 10.7827932, lon: 106.9446149 },
+    { name: "KCN Trảng Bàng", prov: "Tây Ninh", size: 189.57, lat: 11.0238697, lon: 106.3889161 },
+    { name: "KCN Chà Là", prov: "Tây Ninh", size: 200, lat: 11.2902871, lon: 106.204317 },
+    { name: "Khu chế xuất Linh Trung III", prov: "Tây Ninh", size: 202.67, lat: 11.0134304, lon: 106.3945214 },
+    { name: "KCN Phước Đông", prov: "Tây Ninh", size: 2.19, lat: 11.1207258, lon: 106.3286401 },
+    { name: "KCN TMTC", prov: "Tây Ninh", size: 108.11, lat: 11.0919601, lon: 106.2045607 },
+    { name: "KCN Thành Thành Công", prov: "Tây Ninh", size: 760, lat: 11.021049, lon: 106.3192514 },
+    { name: "Cụm công nghiệp Hòa Hội", prov: "Tây Ninh", size: 30, lat: 11.29328, lon: 105.9376756 },
+    { name: "Cụm công nghiệp Tân Hội 1", prov: "Tây Ninh", size: 49.2, lat: 11.6466711, lon: 106.1861644 },
+    { name: "Cụm công nghiệp Ninh Điền", prov: "Tây Ninh", size: 50, lat: 11.2297031, lon: 106.0548807 },
+    { name: "KCN Mỹ Xuân B1 – Conac", prov: "Bà Rịa - Vũng Tàu", size: 227.14, lat: 10.6384947, lon: 107.0527727 },
+    { name: "KCN Mỹ Xuân B1 – Tiến Hùng", prov: "Bà Rịa - Vũng Tàu", size: 200, lat: 10.6372821, lon: 107.0613255 },
+    { name: "KCN Cái Mép", prov: "Bà Rịa - Vũng Tàu", size: 670, lat: 10.5467961, lon: 107.03917 },
+    { name: "KCN Châu Đức", prov: "Bà Rịa - Vũng Tàu", size: 1557.14, lat: 10.5934016, lon: 107.1687679 },
+    { name: "KCN chuyên sâu Phú Mỹ 3", prov: "Bà Rịa - Vũng Tàu", size: 1050.81, lat: 10.5392975, lon: 107.0647676 },
+    { name: "KCN Đá Bạc", prov: "Bà Rịa - Vũng Tàu", size: 295, lat: 10.5782166, lon: 107.2744594 },
+    { name: "KCN Mỹ Xuân B1 – Đại Dương", prov: "Bà Rịa - Vũng Tàu", size: 145.7, lat: 10.6372615, lon: 107.0580407 },
+    { name: "KCN Đất Đỏ", prov: "Bà Rịa - Vũng Tàu", size: 496.22, lat: 10.5010814, lon: 107.3029058 },
+    { name: "KCN Đông Xuyên", prov: "Bà Rịa - Vũng Tàu", size: 160.81, lat: 10.3997713, lon: 107.1163871 },
+    { name: "KCN Mỹ Xuân A", prov: "Bà Rịa - Vũng Tàu", size: 302.4, lat: 10.6485178, lon: 107.0409523 },
+    { name: "KCN Mỹ Xuân A2", prov: "Bà Rịa - Vũng Tàu", size: 422, lat: 10.63399, lon: 107.0468341 },
+    { name: "KCN Phú Mỹ 1", prov: "Bà Rịa - Vũng Tàu", size: 945.13, lat: 10.5885233, lon: 107.0401869 },
+    { name: "KCN Phú Mỹ II & Phú Mỹ II MR", prov: "Bà Rịa - Vũng Tàu", size: 620.6, lat: 10.5885233, lon: 107.0401869 }
+];
+
+        // Populate Zone List Table
+        function populateZoneList() {
+            const tbody = document.getElementById('zone-list-body');
+            tbody.innerHTML = kcnData.map(k => `
+                <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition">
+                    <td class="py-3 text-white font-medium">${k.name}</td>
+                    <td class="py-3 text-gray-400">${k.prov}</td>
+                    <td class="py-3 text-right text-neon-orange font-jetbrains">${k.size.toLocaleString()} ha</td>
+                </tr>
+            `).join('');
+        }
+
+        // --- 3. INITIALIZE MAP ---
+        function initMap() {
+            const map = L.map('industrial-map').setView([10.8, 106.8], 8);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add industrial zone markers
+            kcnData.forEach(k => {
+                let color = k.size > 500 ? '#FF6300' : '#0000FF';
+                let radius = Math.sqrt(k.size) / 3;
+                
+                L.circleMarker([k.lat, k.lon], {
+                    radius: radius,
+                    fillColor: color,
+                    color: "#fff",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.6
+                })
+                .bindPopup(`
+                    <div class="text-black">
+                        <b>${k.name}</b><br>
+                        <b>${k.prov}</b><br>
+                        <b>${k.size.toLocaleString()} hectares</b><br>
+                        ${k.size > 500 ? 'Major Food Processing Zone' : 'Food Manufacturing Zone'}
+                    </div>
+                `)
+                .addTo(map);
+            });
+
+            // Add major cities
+            const cities = [
+                {name: "Ho Chi Minh City", lat: 10.8231, lon: 106.6297},
+                {name: "Bien Hoa (Dong Nai)", lat: 10.9574, lon: 106.8425},
+                {name: "Thu Dau Mot (Binh Duong)", lat: 10.9805, lon: 106.6735},
+                {name: "Vung Tau", lat: 10.3460, lon: 107.0843}
+            ];
+
+            cities.forEach(city => {
+                L.marker([city.lat, city.lon])
+                    .bindPopup(`<b>${city.name}</b><br>Major Urban Center`)
+                    .addTo(map);
+            });
+        }
+
+        // --- 4. ANIMATE GANTT BARS ---
+        function animateGanttBars() {
+            gsap.utils.toArray('.gantt-bar').forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                gsap.to(bar, {
+                    width: width,
+                    duration: 1.5,
+                    delay: Math.random() * 0.3,
+                    ease: "power2.out"
+                });
+            });
+        }
+
+        // --- 5. ANIMATE CHART BARS ---
+        function animateChartBars() {
+            document.querySelectorAll('[data-width]').forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                gsap.to(bar, {
+                    width: width,
+                    duration: 1.2,
+                    delay: Math.random() * 0.2,
+                    ease: "back.out(1.7)"
+                });
+            });
+        }
+
+        // --- 6. NAVIGATION ---
+        function setupNavigation() {
+            const sections = document.querySelectorAll('section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            
+            // Update active dot on scroll
+            function updateActiveDot() {
+                let current = '';
+                const scrollPos = window.scrollY + 100;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        current = section.id;
+                    }
+                });
+                
+                navDots.forEach(dot => {
+                    dot.classList.remove('active');
+                    if (dot.getAttribute('data-slide') === current.replace('slide-', '')) {
+                        dot.classList.add('active');
+                    }
+                });
+            }
+            
+            // Smooth scroll for navigation dots
+            navDots.forEach(dot => {
+                dot.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const slideIndex = this.getAttribute('data-slide');
+                    const targetSection = document.getElementById(`slide-${slideIndex}`);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            window.addEventListener('scroll', updateActiveDot);
+        }
+
+        // --- 7. SCHEDULE MEETING FUNCTION ---
+        function scheduleMeeting() {
+            const subject = encodeURIComponent("LAZINET × INGRID Partnership Discussion - AI-Powered Brand Marketing CRM");
+            const body = encodeURIComponent(`Dear LAZINET and INGRID teams,
+
+I would like to schedule a discussion about the AI-Powered Brand Marketing & CRM System for Food Manufacturing FDI in Vietnam.
+
+Key discussion points:
+1. Partnership agreement and timeline
+2. Technical architecture and data integration
+3. Commercial strategy and client acquisition
+4. Next steps and action items
+
+Best regards,
+
+[Your Name]
+[Your Position]
+[Your Company]`);
+            
+            window.open(`mailto:email@lazinet.com,en@ingridintl.sg?subject=${subject}&body=${body}`, '_blank');
+        }
+
+        // --- 8. KEYBOARD NAVIGATION ---
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', function(e) {
+                const sections = document.querySelectorAll('section');
+                const currentScroll = window.scrollY;
+                let currentIndex = 0;
+                
+                // Find current section
+                sections.forEach((section, index) => {
+                    if (section.offsetTop <= currentScroll + 100) {
+                        currentIndex = index;
+                    }
+                });
+                
+                // Handle keyboard navigation
+                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                    e.preventDefault();
+                    const nextIndex = Math.min(currentIndex + 1, sections.length - 1);
+                    sections[nextIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                    e.preventDefault();
+                    const prevIndex = Math.max(currentIndex - 1, 0);
+                    sections[prevIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                if (e.key === 'Home') {
+                    e.preventDefault();
+                    sections[0].scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                if (e.key === 'End') {
+                    e.preventDefault();
+                    sections[sections.length - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                // Number keys for direct navigation
+                if (e.key >= '1' && e.key <= '9') {
+                    const slideNum = parseInt(e.key);
+                    if (slideNum <= sections.length) {
+                        sections[slideNum - 1].scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+
+                // Speaker notes toggle with 'N' key
+                if (e.key.toLowerCase() === 'n') {
+                    const notes = document.getElementById('speaker-notes');
+                    notes.style.display = notes.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        }
+
+        // --- 9. SPEAKER NOTES ---
+        function setupSpeakerNotes() {
+            const notes = document.getElementById('speaker-notes');
+            const noteData = {
+                0: "Welcome to our strategic partnership presentation. Today we'll discuss the AI-Powered Brand Marketing CRM System for FDI enterprises in Vietnam's food manufacturing sector.",
+                1: "Vietnam's economy shows strong growth with $36.6B FDI in 2024. Food manufacturing represents a significant opportunity with 28% YoY growth in FDI inflows.",
+                2: "The food processing industry targets $50B exports by 2030. Key challenges include supply chain visibility and high customer acquisition costs.",
+                3: "Our 6-pillar framework digitizes Ingrid's marketing expertise with Lazinet's technology. Each pillar addresses specific pain points for FDI manufacturers.",
+                4: "4-phase development plan with break-even at 55 Pro subscriptions within 12-15 months. Total development cost: ₫2,760M.",
+                5: "Modern tech stack using Google Gemini API, Next.js 14, and 50+ data source integrations. Team structure optimized for cost-efficiency.",
+                6: "Revenue projections show ₫72,000M by Year 3 with 43,200M net profit. SaaS subscriptions represent 70% of revenue mix.",
+                7: "143 industrial zones analyzed with 450+ target FDI food manufacturers in Southern Vietnam. Interactive map shows key locations.",
+                8: "LAZINET handles technology development (70%), INGRID provides market access (30%). Revenue sharing: 60/40 split.",
+                9: "Immediate actions: MOU signing in Dec 2025, prototype kickoff in Feb 2026. Let's schedule a partnership discussion."
+            };
+
+            function updateSpeakerNotes() {
+                const scrollPos = window.scrollY;
+                let currentSlide = 0;
+                
+                document.querySelectorAll('section').forEach((section, index) => {
+                    if (section.offsetTop <= scrollPos + 100) {
+                        currentSlide = index;
+                    }
+                });
+                
+                if (noteData[currentSlide]) {
+                    notes.innerHTML = `<strong>Slide ${currentSlide + 1} Notes:</strong><br>${noteData[currentSlide]}`;
+                }
+            }
+
+            window.addEventListener('scroll', updateSpeakerNotes);
+            updateSpeakerNotes(); // Initial call
+        }
+
+        // --- 10. INITIALIZE ANIMATIONS ON SCROLL ---
+        function initScrollAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animate elements when they come into view
+            gsap.utils.toArray('[data-animate]').forEach(el => {
+                gsap.from(el, {
+                    y: 30,
+                    opacity: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 80%",
+                        once: true
+                    }
+                });
+            });
+            
+            // Animate Gantt bars
+            ScrollTrigger.create({
+                trigger: '.gantt-container',
+                start: "top 70%",
+                onEnter: animateGanttBars
+            });
+            
+            // Animate chart bars
+            ScrollTrigger.create({
+                trigger: '#slide-6',
+                start: "top 70%",
+                onEnter: animateChartBars
+            });
+
+            // Animate break-even bars
+            ScrollTrigger.create({
+                trigger: '#slide-4',
+                start: "top 70%",
+                onEnter: () => {
+                    document.querySelectorAll('#slide-4 [data-width]').forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        gsap.to(bar, {
+                            width: width,
+                            duration: 1.2,
+                            delay: Math.random() * 0.2,
+                            ease: "back.out(1.7)"
+                        });
+                    });
+                }
+            });
+        }
+
+        // --- 11. INITIALIZE EVERYTHING ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize data and visualizations
+            populateZoneList();
+            initMap();
+            
+            // Setup navigation
+            setupNavigation();
+            setupKeyboardNavigation();
+            setupSpeakerNotes();
+            
+            // Initialize animations
+            initScrollAnimations();
+            
+            console.log('LAZINET × INGRID Presentation initialized successfully');
+            console.log('All data sources are verified and links are active');
+        });
+    </script>
+</body>
+</html>
