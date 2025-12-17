@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Manufacturing Digital Transformation Summit 2026 - LAZINET</title>
+    <meta name="description" content="Discover how AI CRM can boost efficiency by 30% in food manufacturing. Join LAZINET for our 2026 Summit in Ho Chi Minh City, Vietnam. Learn about supply chain optimization, demand prediction, and automated marketing.">
+    <meta name="keywords" content="AI CRM, food manufacturing, digital transformation, LAZINET, industry 4.0, supply chain optimization, predictive analytics, automation, workshop, technology summit, Ho Chi Minh City, Vietnam, 2026 event">
+    <meta property="og:title" content="Food Manufacturing Digital Transformation Summit 2026 - LAZINET">
+    <meta property="og:description" content="Unlock 30% efficiency with AI CRM in food manufacturing. Explore real-world case studies, live demos, and expert insights at the LAZINET Summit in HCMC.">
+    <meta property="og:image" content="https://lazinet.com/assets/img/background/mes-lazinet.webp">
+    <meta property="og:url" content="https://your-event-website.com"> <!-- Replace with actual event URL -->
+    <link rel="icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0000FF;
+            --secondary-color: #FF6300;
+            --accent-color: #FFFFFF;
+            --text-color-dark: #333333;
+            --text-color-light: #FFFFFF;
+            --bg-dark: #1a1a1a;
+            --bg-light: #f8f8f8;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        /* General Reset & Base Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-color-dark);
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            font-weight: 700;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--bg-dark);
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo img {
+            height: 40px;
+        }
+
+        .header .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .header .nav-menu a {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .header .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+
+        .header .nav-menu a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .header .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px 10px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 80vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--accent-color);
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://lazinet.com/assets/img/background/mes-lazinet.webp?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            line-height: 1.2;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero p {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #e05a00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sections General */
+        section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        section:nth-of-type(odd) {
+            background-color: var(--bg-light);
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--bg-dark);
+            color: var(--accent-color);
+        }
+        section:nth-of-type(even) h2,
+        section:nth-of-type(even) h3 {
+            color: var(--accent-color);
+        }
+
+        .section-title {
+            font-size: 2.8em;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+        
+        /* Event Info */
+        .event-info .container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .event-intro {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .event-intro h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .event-intro p {
+            font-size: 1.1em;
+            color: var(--text-color-dark);
+            margin-bottom: 1.5em;
+        }
+
+        .event-intro strong {
+            color: var(--primary-color);
+        }
+        .event-intro ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .event-intro ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+            color: var(--text-color-dark);
+        }
+        .event-intro ul li::before {
+            content: '•';
+            color: var(--secondary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+
+        .event-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            text-align: left;
+            margin-top: 40px;
+        }
+
+        .highlight-card {
+            background-color: var(--accent-color);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            flex: 1 1 calc(33% - 40px);
+            min-width: 280px;
+            max-width: 380px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .highlight-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .highlight-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .highlight-card ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: var(--text-color-dark);
+        }
+
+        .highlight-card ul li::before {
+            content: '✓';
+            color: var(--secondary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        /* Agenda Section */
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .agenda-item {
+            background-color: var(--accent-color);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .agenda-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .agenda-item h3 {
+            color: var(--primary-color);
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+
+        .agenda-item .time {
+            font-size: 1.1em;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .agenda-item p {
+            color: var(--text-color-dark);
+            margin-bottom: 10px;
+        }
+
+        .agenda-item ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .agenda-item ul li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            color: #555;
+            font-size: 0.95em;
+        }
+        .agenda-item ul li::before {
+            content: '-';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        /* Speakers Section */
+        .speakers {
+            background-color: var(--bg-dark);
+            color: var(--accent-color);
+        }
+
+        .speakers .section-title {
+            color: var(--accent-color);
+        }
+        .speakers .section-title::after {
+            background-color: var(--secondary-color);
+        }
+
+        .speaker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .speaker-card {
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-bottom: 5px solid var(--primary-color);
+        }
+
+        .speaker-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .speaker-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid var(--secondary-color);
+        }
+
+        .speaker-card h3 {
+            font-size: 1.8em;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .speaker-card .title {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .speaker-card p {
+            color: #ccc;
+            font-size: 0.95em;
+        }
+
+        /* Benefits Section */
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .benefit-item {
+            background-color: var(--accent-color);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            display: flex;
+            align-items: flex-start;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-right: 5px solid var(--secondary-color);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .benefit-item .icon-wrapper {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            color: var(--accent-color);
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .benefit-item h3 {
+            color: var(--primary-color);
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .benefit-item p {
+            color: var(--text-color-dark);
+            font-size: 0.95em;
+        }
+        
+        /* Register Section */
+        .register-section {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            padding: 80px 0;
+            text-align: center;
+        }
+        .register-section .section-title {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        .register-section .section-title::after {
+            background-color: var(--secondary-color);
+        }
+        .register-section p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .register-section .qr-code-wrapper {
+            background-color: var(--accent-color);
+            padding: 25px;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .register-section .qr-code-wrapper:hover {
+            transform: scale(1.03);
+        }
+        .register-section .qr-code-wrapper img {
+            width: 250px;
+            height: 250px;
+            display: block;
+        }
+        .register-section .qr-code-wrapper p {
+            margin-top: 15px;
+            margin-bottom: 0;
+            color: var(--text-color-dark);
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--bg-dark);
+            color: #bbb;
+            padding: 60px 0;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-col {
+            flex: 1 1 auto;
+            min-width: 250px;
+            max-width: 350px;
+        }
+
+        .footer-col h3 {
+            color: var(--accent-color);
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .footer-col p, .footer-col ul li {
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col ul li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li svg {
+            color: var(--primary-color);
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px; /* For better text alignment */
+        }
+
+        .footer-col a {
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            width: 100%;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8em;
+            }
+
+            .hero p {
+                font-size: 1.2em;
+            }
+
+            .section-title {
+                font-size: 2.2em;
+            }
+
+            .agenda-item, .speaker-card, .benefit-item {
+                padding: 25px;
+            }
+            .header .logo img {
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header .container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .header .logo {
+                flex-basis: 100%;
+                text-align: center;
+                margin-bottom: 15px;
+            }
+            .header .menu-toggle {
+                position: absolute;
+                right: 15px;
+                top: 20px;
+                margin-bottom: 0;
+            }
+            .header .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px; /* Adjust based on header height */
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-dark);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+                padding: 20px 0;
+                animation: slideDown 0.3s ease-out;
+            }
+            .header .nav-menu.active {
+                display: flex;
+            }
+            .header .nav-menu li {
+                margin: 0;
+                text-align: center;
+                padding: 10px 0;
+            }
+            .header .nav-menu a {
+                padding: 10px 0;
+                display: block;
+            }
+            .header .nav-menu a::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                height: 70vh;
+                min-height: 400px;
+            }
+            .hero h1 {
+                font-size: 2.2em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            .btn-primary {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+                margin-bottom: 40px;
+            }
+
+            .event-highlights {
+                flex-direction: column;
+                align-items: center;
+            }
+            .highlight-card {
+                flex: 1 1 100%;
+                max-width: 90%;
+            }
+
+            .speaker-grid, .benefits-list, .agenda-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-col {
+                min-width: unset;
+                max-width: 90%;
+            }
+            .footer-col ul li {
+                justify-content: center;
+            }
+            .footer-col ul li svg {
+                margin-left: 0;
+            }
+            .footer-col h3 {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+            .hero p {
+                font-size: 0.9em;
+            }
+            .btn-primary {
+                font-size: 0.9em;
+                padding: 10px 25px;
+            }
+
+            .section-title {
+                font-size: 1.6em;
+            }
+            .header .logo img {
+                height: 35px;
+            }
+            .header {
+                padding: 10px 0;
+            }
+            .register-section .qr-code-wrapper img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="#home" class="logo">
+                <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png" alt="LAZINET Logo">
+            </a>
+            <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+            <nav class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#agenda">Agenda</a></li>
+                <li><a href="#speakers">Speakers</a></li>
+                <li><a href="#register">Register</a></li>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Food Manufacturing Digital Transformation Summit 2026</h1>
+            <p>Sunday, March 15, 2026 | 9:00 AM ICT | Ho Chi Minh City, Vietnam (Rex Hotel)</p>
+            <a href="#register" class="btn-primary">Register Now</a>
+        </div>
+    </section>
+
+    <section class="event-info">
+        <div class="container">
+            <div class="event-intro">
+                <h2 class="section-title">Unlock Future Potential: AI in Food Manufacturing</h2>
+                <p>Join us for the premier <strong>Food Manufacturing Digital Transformation Summit 2026</strong>, where we delve into cutting-edge strategies and technologies shaping the future of the food industry. This summit is your opportunity to explore how <strong>AI CRM</strong> can revolutionize your operations.</p>
+                <p>Discover how AI CRM helps food manufacturing plants increase efficiency by an impressive <strong>30%</strong>. We'll present in-depth insights from a real-world <strong>Case Study of an FDI factory</strong>, demonstrating practical applications and tangible results in:</p>
+                <ul>
+                    <li>Optimizing supply chains for better raw material flow.</li>
+                    <li>Predicting raw material demand with unparalleled accuracy.</li>
+                    <li>Automating email marketing for targeted customer engagement.</li>
+                </ul>
+                <p>The event will feature a <strong>live demo of our AI CRM solution</strong>, allowing you to experience its power firsthand. Prepare to transform your understanding and approach to digital excellence.</p>
+            </div>
+            <div class="event-highlights">
+                <div class="highlight-card">
+                    <h3>Comprehensive Agenda</h3>
+                    <p>Our program is structured to provide both theoretical knowledge and practical skills:</p>
+                    <ul>
+                        <li><strong>9:00 AM - 12:00 PM: Theory & Insights</strong> - Deep dive into AI CRM principles and strategic applications.</li>
+                        <li><strong>1:00 PM - 5:00 PM: Hands-on Workshop</strong> - Practical session to apply AI CRM concepts to real-world scenarios.</li>
+                    </ul>
+                </div>
+                <div class="highlight-card">
+                    <h3>Unbeatable Benefits</h3>
+                    <p>Participate to gain significant advantages for your business:</p>
+                    <ul>
+                        <li><strong>Save 20-40%</strong> on operational costs through optimized processes.</li>
+                        <li>Achieve an impressive <strong>ROI of 380%</strong> within just 12 months.</li>
+                        <li>Gain insights from a <strong>proven FDI factory case study</strong>.</li>
+                        <li>Network with industry leaders and technology experts.</li>
+                        <li>Discover future trends in food manufacturing digital transformation.</li>
+                    </ul>
+                </div>
+                <div class="highlight-card">
+                    <h3>Exclusive Event Offer</h3>
+                    <p>Attendees of the summit will receive a special benefit:</p>
+                    <ul>
+                        <li><strong>30% discount</strong> on our comprehensive AI CRM package when you register and commit at the event.</li>
+                        <li>Personalized consultation with LAZINET AI experts.</li>
+                        <li>Early access to future AI CRM features.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agenda">
+        <div class="container">
+            <h2 class="section-title">Summit Agenda</h2>
+            <div class="agenda-grid">
+                <div class="agenda-item">
+                    <span class="time">9:00 AM - 9:30 AM</span>
+                    <h3>Opening & Keynote Address</h3>
+                    <p>Welcome remarks and an overview of the digital transformation landscape in food manufacturing.</p>
+                    <ul>
+                        <li>Introduction to AI in Industry 4.0</li>
+                        <li>Setting the stage for the day's insights</li>
+                    </ul>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">9:30 AM - 10:30 AM</span>
+                    <h3>The Power of AI CRM in Supply Chain</h3>
+                    <p>Exploring how AI-driven CRM optimizes raw material procurement and inventory management.</p>
+                    <ul>
+                        <li>Predictive analytics for demand forecasting</li>
+                        <li>Supplier relationship management with AI</li>
+                    </ul>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">10:30 AM - 11:00 AM</span>
+                    <h3>Coffee Break & Networking</h3>
+                    <p>An opportunity to connect with peers and discuss initial insights.</p>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">11:00 AM - 12:00 PM</span>
+                    <h3>Case Study: FDI Factory Success Story</h3>
+                    <p>Detailed presentation of a real-world implementation of AI CRM in an FDI food factory, highlighting challenges and successes.</p>
+                    <ul>
+                        <li>Quantifiable results in efficiency and cost savings</li>
+                        <li>Lessons learned and best practices</li>
+                    </ul>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">12:00 PM - 1:00 PM</span>
+                    <h3>Lunch Break</h3>
+                    <p>Complimentary lunch provided.</p>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">1:00 PM - 3:00 PM</span>
+                    <h3>Interactive AI CRM Live Demo & Q&A</h3>
+                    <p>See our AI CRM solution in action, followed by an open Q&A session with our experts.</p>
+                    <ul>
+                        <li>Real-time demonstration of key features</li>
+                        <li>Addressing specific business challenges</li>
+                    </ul>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">3:00 PM - 4:30 PM</span>
+                    <h3>Hands-on Workshop: Implementing AI CRM Strategies</h3>
+                    <p>Practical exercises and group discussions on applying AI CRM insights to your own business scenarios.</p>
+                    <ul>
+                        <li>Developing a tailored AI CRM roadmap</li>
+                        <li>Interactive problem-solving sessions</li>
+                    </ul>
+                </div>
+                <div class="agenda-item">
+                    <span class="time">4:30 PM - 5:00 PM</span>
+                    <h3>Closing Remarks & Future Outlook</h3>
+                    <p>Summary of key takeaways, special announcements, and a look at the future of digital transformation.</p>
+                    <ul>
+                        <li>Exclusive event offer reminder</li>
+                        <li>Networking opportunity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="speakers" class="speakers">
+        <div class="container">
+            <h2 class="section-title">Our Esteemed Speakers</h2>
+            <div class="speaker-grid">
+                <div class="speaker-card">
+                    <img src="https://via.placeholder.com/150/FF6300/FFFFFF?text=Jane+Doe" alt="Speaker Jane Doe">
+                    <h3>Jane Doe</h3>
+                    <p class="title">Chief AI Officer, TechInnovate Group</p>
+                    <p>Jane is a pioneer in AI-driven business solutions, with over 15 years of experience in developing and implementing transformative technologies across various industries. She's passionate about leveraging AI for sustainable growth.</p>
+                </div>
+                <div class="speaker-card">
+                    <img src="https://via.placeholder.com/150/0000FF/FFFFFF?text=John+Smith" alt="Speaker John Smith">
+                    <h3>John Smith</h3>
+                    <p class="title">Head of Digital Transformation, Global Food Co.</p>
+                    <p>John leads digital initiatives for one of the largest food manufacturing companies globally. His expertise lies in supply chain optimization and integrating smart technologies for operational excellence.</p>
+                </div>
+                <div class="speaker-card">
+                    <img src="https://via.placeholder.com/150/FF6300/FFFFFF?text=Emily+Chen" alt="Speaker Emily Chen">
+                    <h3>Emily Chen</h3>
+                    <p class="title">Senior AI CRM Consultant, LAZINET</p>
+                    <p>Emily specializes in tailored AI CRM solutions for the manufacturing sector. She has successfully guided numerous clients through their digital journeys, achieving significant ROI and efficiency gains.</p>
+                </div>
+                <div class="speaker-card">
+                    <img src="https://via.placeholder.com/150/0000FF/FFFFFF?text=David+Lee" alt="Speaker David Lee">
+                    <h3>David Lee</h3>
+                    <p class="title">Industry Analyst, Market Insights Group</p>
+                    <p>David is a respected industry analyst focusing on emerging technologies in food production. His insights into market trends and future predictions are highly sought after by leading corporations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Why Attend This Summit?</h2>
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="icon-wrapper">1</div>
+                    <div>
+                        <h3>Boost Efficiency by 30%+</h3>
+                        <p>Learn how to integrate AI CRM to streamline operations, reduce waste, and achieve significant productivity gains across your entire food manufacturing process.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-wrapper">2</div>
+                    <div>
+                        <h3>Achieve 380% ROI in 12 Months</h3>
+                        <p>Discover proven strategies and real-world case studies demonstrating how our AI CRM solutions deliver exceptional returns on investment within a single year.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-wrapper">3</div>
+                    <div>
+                        <h3>Optimize Supply Chain & Logistics</h3>
+                        <p>Master predictive analytics to forecast demand, manage inventory, and enhance raw material procurement, ensuring a resilient and efficient supply chain.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-wrapper">4</div>
+                    <div>
+                        <h3>Automate Marketing & Customer Engagement</h3>
+                        <p>Implement AI-driven email marketing and CRM strategies to build stronger customer relationships and drive sales with personalized campaigns.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-wrapper">5</div>
+                    <div>
+                        <h3>Live AI CRM Demo & Workshop</h3>
+                        <p>Engage in a live demonstration of our cutting-edge AI CRM and participate in hands-on workshops to apply these powerful tools directly.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-wrapper">6</div>
+                    <div>
+                        <h3>Exclusive 30% Discount</h3>
+                        <p>Attendees receive a special 30% discount on LAZINET's AI CRM package when registering at the event, a significant investment in your digital future.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon-wrapper">7</div>
+                    <div>
+                        <h3>Network with Industry Leaders</h3>
+                        <p>Connect with top executives, technology innovators, and peers in the food manufacturing sector to share insights and foster collaborations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="register-section">
+        <div class="container">
+            <h2 class="section-title">Secure Your Spot Now!</h2>
+            <p>Don't miss out on this opportunity to lead your food manufacturing business into a digitally transformed future. Scan the QR code below to register for the summit and unlock exclusive benefits.</p>
+            <div class="qr-code-wrapper">
+                <!-- QR Code for: https://drive.google.com/file/d/18Ohws542fRJIyG6vZQmig0XSrzGzcCDd/view?usp=drivesdk -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://drive.google.com/file/d/18Ohws542fRJIyG6vZQmig0XSrzGzcCDd/view?usp=drivesdk" alt="Registration QR Code">
+                <p>Scan to Register</p>
+            </div>
+            <p style="margin-top: 30px; font-size: 1em;">Need assistance? <a href="mailto:info@lazinet.com" style="color: var(--secondary-color); font-weight: 600;">Contact us</a>.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-col">
+                <h3>About LAZINET</h3>
+                <p>LAZINET is your comprehensive digital transformation partner, providing advanced technology solutions to help businesses optimize processes, innovate, and thrive in the digital future.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li>
+                        <!-- Heroicon: Map Pin -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M11.54 22.351A2.738 2.738 0 0012 22.5c.373 0 .736-.08 1.06-.249l6.035-3.513A3.376 3.376 0 0021 15.698V7.302c0-1.096-.464-2.146-1.286-2.857l-6.035-3.513a3.376 3.376 0 00-3.582 0L3.286 4.445A3.376 3.376 0 002 7.302v8.396c0 1.096.464 2.146 1.286 2.857l6.035 3.513a2.738 2.738 0 001.06.249zM10.5 12a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span>123 Technology Lane, Innovation District, Ho Chi Minh City, Vietnam</span>
+                    </li>
+                    <li>
+                        <!-- Heroicon: Phone -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.547 1.956 1.306 1.446 3.37 2.477 6.136 3.032 7.79.055.169.112.333.172.492.35.918.795 2.518-1.541 3.517-2.585 1.002-4.137-.306-4.545-.697-.1-.099-.214-.176-.34-.236a.75.75 0 00-.734.025 1.875 1.875 0 00-.181.199c-.194.254-.42.482-.663.684a2.535 2.535 0 01-1.408.483.75.75 0 00-.472.164l-.23.18a3 3 0 00-.312.312l-1.5 1.5a3 3 0 00.707 5.253.75.75 0 00.318.067H7.5a6 6 0 006-6c0-1.353-.298-2.647-.832-3.816-.36-.789-.86-1.517-1.472-2.197a1.5 1.5 0 00-2.115.068c-.282.26-.59.508-.916.745-.065.048-.135.09-.208.125a.75.75 0 00-.71-.037c-.127-.061-.242-.138-.342-.236l-.013-.01c-.134-.132-.276-.258-.426-.378-.4-.308-.888-.66-1.425-.972A3.013 3.013 0 014.5 4.5z" clip-rule="evenodd" />
+                        </svg>
+                        <span>+84 987 654 321</span>
+                    </li>
+                    <li>
+                        <!-- Heroicon: Envelope -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path d="M1.5 8.67v8.586a1.5 1.5 0 001.5 1.5h18a1.5 1.5 0 001.5-1.5V8.67l-8.627 5.42a2.25 2.25 0 01-2.646 0L1.5 8.67z" />
+                            <path d="M22.5 6.908V6.75a1.5 1.5 0 00-1.5-1.5H3A1.5 1.5 0 001.5 6.75v.158l9.714 6.096a1.5 1.5 0 001.764 0L22.5 6.908z" />
+                        </svg>
+                        <span>info@lazinet.com</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                    <li><a href="#register">Register</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 LAZINET. All rights reserved. Your partner in digital transformation.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+
+            menuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when a link is clicked (for mobile)
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webinar: AI-Powered B2B Marketing Personalization | LAZINET</title>
+    <meta name="description" content="Discover how to revolutionize B2B marketing with AI-powered personalization. Increase email open rates by 40% and automate content creation for manufacturing clients. Join LAZINET's exclusive webinar.">
+    <meta name="keywords" content="AI, B2B Marketing, Personalization, Webinar, LAZINET, Digital Transformation, Manufacturing, Grok API, Marketing Automation">
+    <meta name="author" content="LAZINET">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-event-url.com/"> <!-- Replace with actual event URL -->
+    <meta property="og:title" content="Webinar: AI-Powered B2B Marketing Personalization | LAZINET">
+    <meta property="og:description" content="Discover how to revolutionize B2B marketing with AI-powered personalization. Increase email open rates by 40% and automate content creation for manufacturing clients.">
+    <meta property="og:image" content="https://lazinet.com/assets/img/background/ecomm5_Original.webp?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"> <!-- Hero banner image -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-event-url.com/"> <!-- Replace with actual event URL -->
+    <meta property="twitter:title" content="Webinar: AI-Powered B2B Marketing Personalization | LAZINET">
+    <meta property="twitter:description" content="Discover how to revolutionize B2B marketing with AI-powered personalization. Increase email open rates by 40% and automate content creation for manufacturing clients.">
+    <meta property="twitter:image" content="https://lazinet.com/assets/img/background/ecomm5_Original.webp?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"> <!-- Hero banner image -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" type="image/png">
+
+    <!-- Font Awesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #0000FF; /* Blue */
+            --secondary-color: #FF6300; /* Orange */
+            --accent-color: #FFFFFF; /* White */
+            --dark-text: #333333;
+            --light-text: #f0f0f0;
+            --background-dark: #1a1a1a;
+            --background-light: #ffffff;
+            --gap-large: 80px;
+            --gap-medium: 40px;
+            --gap-small: 20px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--background-light);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--dark-text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--gap-small);
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .mb-4 { margin-bottom: var(--gap-small); }
+        .mb-8 { margin-bottom: var(--gap-medium); }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--background-light);
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 40px;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            gap: var(--gap-medium);
+        }
+
+        .nav-menu a {
+            color: var(--dark-text);
+            font-weight: 500;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 70vh; /* Adjust height as needed */
+            min-height: 500px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--accent-color);
+            padding: var(--gap-large) var(--gap-small);
+            background-color: #333; /* Fallback */
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://lazinet.com/assets/img/background/ecomm5_Original.webp?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            filter: brightness(0.5); /* Darken the background image */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            animation: fadeInScale 1s ease-out forwards;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: var(--gap-small);
+            color: var(--accent-color);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.4em;
+            margin-bottom: var(--gap-medium);
+            color: var(--accent-color);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Sections */
+        .section {
+            padding: var(--gap-large) 0;
+        }
+
+        .section-dark {
+            background-color: var(--background-dark);
+            color: var(--light-text);
+        }
+
+        .section-dark h2, .section-dark h3 {
+            color: var(--accent-color);
+        }
+
+        .section-dark p {
+            color: var(--light-text);
+        }
+
+        .section-light {
+            background-color: var(--background-light);
+            color: var(--dark-text);
+        }
+
+        .section-title {
+            font-size: 2.8em;
+            margin-bottom: var(--gap-large);
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about-event {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2em;
+        }
+
+        .about-event h3 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            margin-bottom: var(--gap-small);
+        }
+
+        .about-event p {
+            margin-bottom: var(--gap-small);
+        }
+
+        /* Agenda Section */
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--gap-medium);
+        }
+
+        .agenda-item {
+            background-color: var(--accent-color);
+            padding: var(--gap-medium);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .agenda-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .agenda-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .agenda-item p {
+            color: #555;
+            font-size: 0.95em;
+        }
+        .agenda-item strong {
+            color: var(--secondary-color);
+        }
+
+
+        /* Speakers Section */
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--gap-medium);
+            justify-content: center;
+        }
+
+        .speaker-card {
+            background-color: var(--accent-color);
+            padding: var(--gap-small);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+
+        .speaker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .speaker-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto var(--gap-small) auto;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 0 6px rgba(0,0,0,0.05);
+        }
+
+        .speaker-card h3 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .speaker-card p.title {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: var(--gap-small);
+        }
+
+        .speaker-card p.bio {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--gap-medium);
+        }
+
+        .benefit-item {
+            background-color: var(--accent-color);
+            padding: var(--gap-medium);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--gap-small);
+            border-left: 5px solid var(--secondary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .benefit-item i {
+            font-size: 2em;
+            color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .benefit-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .benefit-item p {
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        /* Register Section */
+        .register-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, rgba(0, 0, 255, 0.8) 100%);
+            color: var(--accent-color);
+            padding: var(--gap-large) 0;
+        }
+
+        .register-section h2 {
+            color: var(--accent-color);
+        }
+
+        .register-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .qr-code img {
+            width: 180px;
+            height: 180px;
+            border-radius: 8px;
+            border: 8px solid var(--accent-color);
+            margin: var(--gap-medium) auto;
+            display: block;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .qr-code img:hover {
+            transform: scale(1.05);
+        }
+
+        .register-section p {
+            font-size: 1.1em;
+            margin-bottom: var(--gap-medium);
+            color: var(--light-text);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--background-dark);
+            color: var(--light-text);
+            padding: var(--gap-large) 0;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--gap-medium);
+            text-align: left;
+        }
+        
+        .footer-logo {
+            margin-bottom: var(--gap-small);
+        }
+        .footer-logo img {
+            height: 50px;
+            margin: 0 auto;
+            filter: brightness(0) invert(1); /* Makes logo white */
+        }
+
+        .footer h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .footer p, .footer ul {
+            color: var(--light-text);
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer ul li i {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+            width: 20px;
+            text-align: center;
+        }
+        .footer ul li a {
+            color: var(--light-text);
+            transition: color 0.3s ease;
+        }
+        .footer ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer .copyright {
+            margin-top: var(--gap-medium);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: var(--gap-medium);
+            text-align: center;
+            grid-column: 1 / -1; /* Span full width */
+        }
+        
+        /* Animation Effects */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .header .container {
+                padding: 0 var(--gap-medium);
+            }
+            .nav-menu ul {
+                gap: var(--gap-medium);
+            }
+            .hero h1 {
+                font-size: 4.5em;
+            }
+            .hero p {
+                font-size: 1.6em;
+            }
+            .section-title {
+                font-size: 3.5em;
+            }
+            .footer .container {
+                grid-template-columns: 2fr 1fr 1fr;
+                text-align: left;
+            }
+            .footer-logo {
+                margin: 0;
+            }
+            .footer-logo img {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .header {
+                padding: 10px 0;
+            }
+            .header .container {
+                flex-direction: column;
+                gap: var(--gap-small);
+            }
+            .nav-menu ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: var(--gap-small);
+            }
+            .hero {
+                height: 60vh;
+                min-height: 400px;
+                padding: var(--gap-medium) var(--gap-small);
+            }
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1.1em;
+            }
+            .section {
+                padding: var(--gap-medium) 0;
+            }
+            .section-title {
+                font-size: 2em;
+                margin-bottom: var(--gap-medium);
+            }
+            .about-event {
+                font-size: 1em;
+            }
+            .agenda-item, .speaker-card, .benefit-item {
+                padding: var(--gap-small);
+            }
+            .footer .container {
+                padding: 0 var(--gap-small);
+            }
+            .footer-logo img {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            .btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+            .nav-menu ul {
+                gap: 10px;
+                font-size: 0.9em;
+            }
+            .header-logo img {
+                height: 35px;
+            }
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-logo">
+                <a href="#home">
+                    <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="LAZINET Logo">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                    <li><a href="#register">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Webinar Cá Nhân Hóa Marketing B2B Với AI</h1>
+                <p>Sun Nov 15 2026 00:00:00 GMT+0700 (Giờ Đông Dương) | Online</p>
+                <a href="#register" class="btn btn-primary">Đăng Ký Ngay</a>
+            </div>
+        </section>
+
+        <section class="section section-light">
+            <div class="container about-event">
+                <h2 class="section-title">About the Webinar</h2>
+                <h3>Unlock the Power of AI in B2B Marketing for Manufacturing</h3>
+                <p>Revolutionize your marketing strategy by leveraging cutting-edge AI to deliver unparalleled personalization. This exclusive webinar will demonstrate how to automate email and content creation tailored for each individual manufacturing client.</p>
+                <p>Dive deep into a live demo showcasing how to generate personalized landing pages and event invitations using the advanced Grok API. Learn actionable strategies to achieve an astounding <strong>40% increase in email open rates</strong>, driving higher engagement and conversion for your B2B initiatives.</p>
+                <p>Whether you're looking to optimize customer journeys, enhance lead nurturing, or simply stay ahead in the competitive B2B landscape, this webinar provides the insights and tools you need to succeed.</p>
+            </div>
+        </section>
+
+        <section id="agenda" class="section section-dark">
+            <div class="container">
+                <h2 class="section-title">Event Agenda</h2>
+                <div class="agenda-grid">
+                    <div class="agenda-item">
+                        <h3>9:00 AM - 9:30 AM: Opening & Introduction</h3>
+                        <p><strong>Welcome Address:</strong> Setting the stage for AI in B2B marketing.</p>
+                        <p>Overview of LAZINET's vision for digital transformation in manufacturing.</p>
+                    </div>
+                    <div class="agenda-item">
+                        <h3>9:30 AM - 10:30 AM: The AI Revolution in B2B Personalization</h3>
+                        <p><strong>Keynote Speech:</strong> Understanding the paradigm shift towards hyper-personalization.</p>
+                        <p>Strategies for tailoring content at scale for diverse manufacturing segments.</p>
+                    </div>
+                    <div class="agenda-item">
+                        <h3>10:30 AM - 11:30 AM: Live Demo: Grok API & Automated Content Generation</h3>
+                        <p><strong>Interactive Session:</strong> Generating personalized emails, landing pages, and invitations using Grok API.</p>
+                        <p>Real-time examples and best practices for implementation.</p>
+                    </div>
+                    <div class="agenda-item">
+                        <h3>11:30 AM - 12:00 PM: Q&A Session & Networking</h3>
+                        <p><strong>Expert Panel:</strong> Your questions answered by our AI and marketing specialists.</p>
+                        <p>Opportunities for virtual networking with industry peers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="speakers" class="section section-light">
+            <div class="container">
+                <h2 class="section-title">Our Esteemed Speakers</h2>
+                <div class="speakers-grid">
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/150/0000FF/FFFFFF?text=Dr.+Elara" alt="Speaker Dr. Elara Vance">
+                        <h3>Dr. Elara Vance</h3>
+                        <p class="title">Chief AI Strategist, LAZINET</p>
+                        <p class="bio">Dr. Vance leads LAZINET's AI initiatives, specializing in machine learning applications for enterprise solutions. Her work focuses on predictive analytics and personalized customer experiences for B2B industries.</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/150/FF6300/FFFFFF?text=Mr.+Ethan" alt="Speaker Mr. Ethan Thorne">
+                        <h3>Mr. Ethan Thorne</h3>
+                        <p class="title">Head of Digital Marketing, TechInnovate</p>
+                        <p class="bio">With over 15 years in digital marketing, Mr. Thorne has pioneered data-driven strategies for leading tech companies. He is passionate about leveraging AI to create impactful and measurable marketing campaigns.</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/150/0000FF/FFFFFF?text=Ms.+Sophia" alt="Speaker Ms. Sophia Lee">
+                        <h3>Ms. Sophia Lee</h3>
+                        <p class="title">Manufacturing Solutions Architect, LAZINET</p>
+                        <p class="bio">Ms. Lee is an expert in digital transformation for the manufacturing sector. She bridges technology and business needs, helping companies integrate advanced solutions for operational excellence and market outreach.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-dark">
+            <div class="container">
+                <h2 class="section-title">Why You Must Attend This Webinar</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <i class="fas fa-rocket"></i>
+                        <div>
+                            <h3>Boost Engagement by 40%</h3>
+                            <p>Implement AI strategies proven to increase email open rates and content interaction by up to 40%, directly impacting your lead nurturing success.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-cogs"></i>
+                        <div>
+                            <h3>Automate Personalization at Scale</h3>
+                            <p>Learn to create unique, tailored content for every customer segment, minimizing manual effort and maximizing relevance across your B2B campaigns.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h3>Drive Higher Conversion Rates</h3>
+                            <p>Discover how personalized messaging resonates more effectively, leading to a significant uplift in qualified leads and conversion-to-sales ratios.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <h3>Gain Competitive Edge with Grok API</h3>
+                            <p>Get an exclusive look at practical applications of the Grok API for generating dynamic, impactful marketing assets that set you apart.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h3>Network with Industry Leaders</h3>
+                            <p>Connect with fellow B2B professionals and AI experts, fostering valuable relationships and opportunities for collaboration.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-desktop"></i>
+                        <div>
+                            <h3>Future-Proof Your Marketing Strategy</h3>
+                            <p>Equip yourself with the knowledge and tools to adapt to the evolving digital landscape, ensuring your marketing efforts remain effective and innovative.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="register" class="register-section">
+            <div class="container register-content">
+                <h2 class="section-title">Secure Your Spot Now!</h2>
+                <p>Don't miss out on this opportunity to transform your B2B marketing with AI. Scan the QR code below to register instantly and embark on your journey towards smarter, more effective marketing.</p>
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://docs.google.com/forms/d/e/1FAIpQLSegbUC5HwK5k-_uV-oDLY6vHTTzaAxa9I4JGPVDjrxrHqma3Q" alt="QR Code for Registration">
+                </div>
+                <p>Alternatively, click the button below to register directly:</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSegbUC5HwK5k-_uV-oDLY6vHTTzaAxa9I4JGPVDjrxrHqma3Q" target="_blank" class="btn btn-secondary">Register via Link</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div>
+                <div class="footer-logo mb-4">
+                    <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="LAZINET Logo">
+                </div>
+                <p>LAZINET là đối tác chuyển đổi số toàn diện, cung cấp giải pháp công nghệ tiên tiến giúp doanh nghiệp tối ưu hóa quy trình và sẵn sàng cho tương lai kỹ thuật số.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                    <li><a href="#register">Register</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact Us</h4>
+                <ul>
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i> <!-- Pin icon - used once -->
+                        <span>123 AI Street, Tech City, Vietnam</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i> <!-- Phone icon - used once -->
+                        <a href="tel:+84123456789">+84 123 456 789</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i> <!-- Email icon - used once -->
+                        <a href="mailto:info@lazinet.com">info@lazinet.com</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 LAZINET. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
