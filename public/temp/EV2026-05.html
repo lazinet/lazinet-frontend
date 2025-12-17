@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar An Toàn Thực Phẩm & Traceability Với AI | LAZINET</title>
+    <meta name="description" content="Tham gia Seminar chuyên sâu về An Toàn Thực Phẩm & Traceability với AI từ LAZINET. Khám phá giải pháp blockchain, AI, HACCP & FDA để tối ưu hóa chuỗi cung ứng thực phẩm. Đăng ký ngay!">
+    <meta name="keywords" content="an toàn thực phẩm, traceability, AI, blockchain, HACCP, FDA, LAZINET, công nghệ thực phẩm, chuỗi cung ứng">
+    <meta name="author" content="LAZINET">
+    <meta property="og:title" content="Seminar An Toàn Thực Phẩm & Traceability Với AI">
+    <meta property="og:description" content="Khám phá giải pháp blockchain và AI cho an toàn thực phẩm, từ nông trại đến bàn ăn, với LAZINET.">
+    <meta property="og:image" content="https://lazinet.com/assets/img/background/mes-lazinet.webp?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80">
+    <meta property="og:url" content="https://yourdomain.com/seminar-food-safety-ai"> <!-- Vui lòng thay thế bằng URL thực tế của landing page -->
+    <meta property="og:type" content="website">
+
+    <!-- Title Icon -->
+    <link rel="icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" type="image/png">
+
+    <!-- Font Awesome CDN for Icons (Version 6.5.1 for stability) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* CSS Variables for easy theme management */
+        :root {
+            --primary-color: #0000FF; /* Blue - Main accent */
+            --secondary-color: #FF6300; /* Orange - Highlight, hover */
+            --accent-color: #FFFFFF; /* White - Text on dark, background for light elements */
+            --dark-text: #333333; /* Dark text for light backgrounds */
+            --light-text: #F8F8F8; /* Light text for dark backgrounds */
+            --bg-dark: #1a1a1a; /* Dark background for sections */
+            --bg-light: #f4f4f4; /* Light background for sections */
+            --font-family-sans: 'Arial', sans-serif;
+            --max-width-content: 1200px;
+            --padding-section: 80px 20px;
+        }
+
+        /* General Resets and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-sans);
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            max-width: var(--max-width-content);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: var(--padding-section);
+            text-align: center;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 1em;
+            font-weight: bold;
+            color: var(--dark-text);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            line-height: 1.2;
+            color: var(--accent-color); /* Specific for hero section */
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 1.5em;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -15px; /* Adjusted for better spacing */
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        p {
+            margin-bottom: 1em;
+            font-size: 1.05em;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-dark);
+            color: var(--accent-color);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            flex-shrink: 0;
+            height: 45px; /* Slightly larger logo */
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin-left: 35px; /* Increased spacing */
+        }
+
+        nav ul li a {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.05em;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px; /* Slightly lower underscore */
+            width: 0;
+            height: 3px; /* Thicker underscore */
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            font-size: 1.8em;
+            color: var(--accent-color);
+            width: 30px; /* Consistent width */
+            height: 20px; /* Consistent height */
+            justify-content: space-between;
+        }
+        .menu-toggle span {
+            height: 3px;
+            width: 100%;
+            background: var(--accent-color);
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+        /* Hamburger to X animation */
+        .menu-toggle.active span:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://lazinet.com/assets/img/background/mes-lazinet.webp?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--accent-color);
+            padding: 220px 20px 120px; /* More vertical padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 90vh; /* Taller hero */
+            position: relative;
+            overflow: hidden;
+            margin-top: 75px; /* Account for fixed header height */
+            perspective: 1000px; /* For 3D effects */
+        }
+
+        #hero h1 {
+            font-size: 5em; /* Larger title */
+            margin-bottom: 0.4em;
+            text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.7);
+            animation: fadeInDown 1.2s ease-out forwards;
+            position: relative;
+            z-index: 2;
+        }
+
+        #hero .subtitle {
+            font-size: 1.6em;
+            margin-bottom: 2.5em;
+            color: var(--light-text);
+            animation: fadeInUp 1.2s ease-out forwards 0.3s;
+            opacity: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        #hero .btn {
+            animation: zoomIn 1.2s ease-out forwards 0.6s;
+            opacity: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Subtle Background Animation (Tech grid/particles) */
+        #hero::before, #hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        #hero::before {
+            background: radial-gradient(circle at 10% 20%, rgba(0, 0, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(255, 99, 0, 0.15) 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: pulseBg 20s infinite alternate ease-in-out;
+        }
+        #hero::after {
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: panGrid 60s linear infinite;
+        }
+        @keyframes panGrid {
+            from { background-position: 0 0; }
+            to { background-position: -500px -500px; }
+        }
+
+        /* Event Introduction */
+        #introduction {
+            background-color: var(--bg-light);
+            padding-bottom: 60px;
+        }
+        #introduction .intro-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Increased gap */
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        #introduction .intro-content p {
+            font-size: 1.15em; /* Slightly larger text */
+            line-height: 1.8;
+            color: var(--dark-text);
+        }
+        #introduction .intro-content strong {
+            color: var(--primary-color);
+        }
+
+        /* Agenda Section */
+        #agenda {
+            background-color: var(--bg-dark);
+            color: var(--light-text);
+            padding-bottom: var(--padding-section);
+        }
+        #agenda h2 {
+            color: var(--accent-color);
+        }
+        #agenda .agenda-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider min width */
+            gap: 35px; /* Increased gap */
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .agenda-item {
+            background-color: #2a2a2a;
+            padding: 35px; /* Increased padding */
+            border-radius: 12px; /* Slightly more rounded */
+            text-align: left;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            border-left: 6px solid var(--primary-color); /* Thicker border */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .agenda-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 255, 0.05), transparent 50%, rgba(255, 99, 0, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .agenda-item:hover::before {
+            opacity: 1;
+        }
+        .agenda-item:hover {
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            border-left-color: var(--secondary-color);
+        }
+        .agenda-item h3 {
+            color: var(--primary-color);
+            font-size: 1.5em; /* Slightly larger title */
+            margin-bottom: 12px;
+        }
+        .agenda-item .time {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 12px;
+            display: block;
+            font-size: 1.1em;
+        }
+        .agenda-item .speaker-name {
+            font-style: italic;
+            color: #ccc;
+            margin-top: 15px;
+            display: block;
+            font-size: 0.95em;
+        }
+        .agenda-item p {
+            font-size: 1em; /* Slightly larger paragraph */
+            color: #bbb;
+        }
+
+        /* Speakers Section */
+        #speakers {
+            background-color: var(--bg-light);
+            padding-bottom: var(--padding-section);
+        }
+        #speakers .speaker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 45px; /* Increased gap */
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .speaker-card {
+            background-color: var(--accent-color);
+            padding: 35px; /* Increased padding */
+            border-radius: 15px; /* More rounded */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid var(--primary-color);
+        }
+        .speaker-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-bottom-color: var(--secondary-color);
+        }
+        .speaker-card img {
+            width: 160px; /* Slightly larger image */
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 25px; /* More margin */
+            border: 5px solid var(--primary-color); /* Thicker border */
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 0 0 5px rgba(0,0,0,0.05); /* Outer glow */
+        }
+        .speaker-card:hover img {
+            border-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        .speaker-card h3 {
+            color: var(--primary-color);
+            font-size: 1.6em; /* Larger name */
+            margin-bottom: 8px;
+        }
+        .speaker-card .title {
+            color: var(--secondary-color);
+            font-style: italic;
+            margin-bottom: 20px; /* More margin */
+            display: block;
+            font-size: 1.05em;
+        }
+        .speaker-card p {
+            font-size: 1em;
+            color: var(--dark-text);
+        }
+
+        /* Benefits Section */
+        #benefits {
+            background-color: var(--bg-dark);
+            color: var(--light-text);
+            padding-bottom: var(--padding-section);
+        }
+        #benefits h2 {
+            color: var(--accent-color);
+        }
+        #benefits ul {
+            list-style: none;
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px; /* Increased gap */
+        }
+        #benefits ul li {
+            font-size: 1.2em; /* Larger text */
+            line-height: 1.7;
+            padding: 20px 30px; /* More padding */
+            background-color: #2a2a2a;
+            border-radius: 10px; /* More rounded */
+            position: relative;
+            padding-left: 65px; /* More space for checkmark */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        #benefits ul li:hover {
+            background-color: #3a3a3a;
+            transform: translateX(8px); /* More pronounced slide */
+        }
+        #benefits ul li::before {
+            content: '✓';
+            font-family: 'Font Awesome 6 Free'; /* Ensure Font Awesome if preferred, else stay with simple char */
+            font-weight: 900; /* For Font Awesome solid icons */
+            color: var(--secondary-color);
+            font-size: 1.8em; /* Larger checkmark */
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            line-height: 1; /* Center vertically better */
+        }
+        #benefits ul li strong {
+            color: var(--primary-color);
+        }
+
+        /* Registration Section */
+        #register {
+            background-color: var(--bg-light);
+            padding-bottom: 80px;
+        }
+        #register .registration-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 700px;
+            margin: 0 auto;
+            gap: 35px; /* Increased gap */
+        }
+        #register p {
+            font-size: 1.15em;
+            line-height: 1.7;
+            color: var(--dark-text);
+        }
+        #register .qr-code-wrapper {
+            background-color: var(--accent-color);
+            padding: 30px; /* More padding */
+            border-radius: 20px; /* More rounded */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: inline-block;
+            margin: 25px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        #register .qr-code-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+        #register .qr-code-wrapper img {
+            width: 220px; /* Larger QR code */
+            height: 220px;
+            border: 6px solid var(--primary-color); /* Thicker border */
+            border-radius: 12px;
+        }
+        #register .qr-caption {
+            font-size: 1em; /* Slightly larger caption */
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-dark);
+            color: var(--light-text);
+            padding: 60px 20px; /* More padding */
+            text-align: left;
+        }
+        footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted columns */
+            gap: 50px; /* Increased gap */
+        }
+        footer h3 {
+            color: var(--primary-color);
+            margin-bottom: 25px; /* More margin */
+            font-size: 1.5em; /* Larger title */
+            position: relative;
+            text-transform: uppercase;
+        }
+        footer h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px; /* Slightly lower underscore */
+            width: 60px; /* Wider underscore */
+            height: 4px; /* Thicker underscore */
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+        footer p, footer ul {
+            font-size: 1em; /* Consistent font size */
+            line-height: 1.8;
+            color: #ccc;
+        }
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+        footer ul li {
+            margin-bottom: 18px; /* More spacing */
+            display: flex;
+            align-items: flex-start;
+        }
+        footer ul li i {
+            color: var(--secondary-color);
+            margin-right: 20px; /* More spacing */
+            font-size: 1.3em; /* Larger icon */
+            flex-shrink: 0;
+            width: 25px; /* Ensure alignment */
+            text-align: center;
+        }
+        footer a {
+            color: var(--light-text);
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        footer .copyright {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 50px; /* More margin */
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-70px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(70px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulseBg {
+            0% { background-position: 0% 0%, 100% 100%; }
+            50% { background-position: 15% 25%, 85% 75%; }
+            100% { background-position: 0% 0%, 100% 100%; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            h1 { font-size: 4em; }
+            h2 { font-size: 2.2em; }
+            header .container {
+                flex-wrap: wrap; /* Allow wrapping of elements */
+            }
+            nav {
+                width: 100%;
+                order: 3; /* Move nav below logo and toggle */
+                margin-top: 20px;
+                display: none; /* Hidden by default for smaller screens */
+                background-color: rgba(26, 26, 26, 0.95); /* Semi-transparent background for mobile nav */
+                padding: 10px 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            nav.open {
+                display: block; /* Show when 'open' class is active */
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            nav ul li {
+                margin: 0;
+                width: 100%;
+                text-align: center;
+            }
+            nav ul li a {
+                display: block;
+                padding: 12px 0;
+                font-size: 1.1em;
+            }
+            nav ul li a::after {
+                bottom: -4px;
+                height: 2px;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            #hero {
+                padding: 180px 20px 100px;
+                min-height: 80vh;
+                margin-top: 75px; /* Adjust for fixed header */
+            }
+            #hero h1 {
+                font-size: 3.8em;
+            }
+            #hero .subtitle {
+                font-size: 1.4em;
+            }
+            footer .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            footer h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                justify-content: space-between;
+                padding: 0 15px;
+            }
+            .logo {
+                height: 40px;
+            }
+            #hero {
+                min-height: 70vh;
+                padding: 140px 15px 70px;
+            }
+            #hero h1 {
+                font-size: 3em;
+            }
+            #hero .subtitle {
+                font-size: 1.2em;
+            }
+            .btn {
+                padding: 12px 28px;
+                font-size: 1em;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            section {
+                padding: 60px 15px;
+            }
+            .speaker-grid {
+                grid-template-columns: 1fr;
+            }
+            #benefits ul li {
+                padding-left: 55px;
+                font-size: 1.1em;
+            }
+            #benefits ul li::before {
+                left: 20px;
+                font-size: 1.5em;
+            }
+            #register .qr-code-wrapper img {
+                width: 180px;
+                height: 180px;
+                border: 4px solid var(--primary-color);
+            }
+            #register .qr-caption {
+                font-size: 0.9em;
+            }
+            footer {
+                padding: 40px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 1.8em; }
+            #hero {
+                padding: 100px 10px 50px;
+            }
+            #hero .subtitle {
+                font-size: 1em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .agenda-item {
+                padding: 25px;
+            }
+            .speaker-card {
+                padding: 25px;
+            }
+            .speaker-card img {
+                width: 120px;
+                height: 120px;
+            }
+            #benefits ul li {
+                font-size: 1em;
+                padding: 15px 20px 15px 50px;
+            }
+            #benefits ul li::before {
+                left: 15px;
+                font-size: 1.3em;
+            }
+            footer h3 {
+                font-size: 1.3em;
+            }
+            footer ul li {
+                font-size: 0.9em;
+                margin-bottom: 12px;
+            }
+            footer ul li i {
+                font-size: 1.1em;
+                margin-right: 15px;
+                width: 18px;
+            }
+            footer .copyright {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="#hero" class="logo">
+                <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="LAZINET Logo">
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                    <li><a href="#register">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1>Seminar An Toàn Thực Phẩm & Traceability Với AI</h1>
+                <p class="subtitle">Wed Aug 05 2026 00:00:00 GMT+0700 (Giờ Đông Dương) | Online</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSegbUC5HwK5k-_uV-oDLY6vHTTzaAxa9I4JGPVDjrxrHqma3Q" target="_blank" class="btn">Đăng Ký Ngay</a>
+            </div>
+        </section>
+
+        <section id="introduction">
+            <div class="container">
+                <h2>About the Seminar</h2>
+                <div class="intro-content">
+                    <p>In today's rapidly evolving food industry, ensuring food safety and traceability is paramount. This exclusive seminar delves into cutting-edge solutions leveraging <strong>Blockchain and Artificial Intelligence (AI)</strong> to revolutionize how food products are tracked from farm to fork.</p>
+                    <p>Join us to gain deep insights from a comprehensive demo of our advanced traceability system. Discover how it integrates AI to proactively detect risks and ensure compliance with stringent international standards like <strong>HACCP and FDA</strong>. Learn how real-time data and predictive analytics can prevent contamination, minimize waste, and build unparalleled consumer trust.</p>
+                    <p>Hear compelling testimonials from leading food industry clients who have successfully implemented our solutions, achieving significant improvements in their operational efficiency and product integrity. This is a must-attend event for food manufacturers, quality assurance managers, supply chain professionals, and anyone committed to elevating food safety standards.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="agenda">
+            <div class="container">
+                <h2>Seminar Agenda</h2>
+                <div class="agenda-items">
+                    <div class="agenda-item">
+                        <span class="time">9:00 AM - 9:30 AM</span>
+                        <h3>Opening & Keynote: The Future of Food Safety with AI</h3>
+                        <p>Exploring the transformative impact of AI and blockchain on food safety and supply chain transparency.</p>
+                        <span class="speaker-name">Dr. Emily Chen, AI Research Lead</span>
+                    </div>
+                    <div class="agenda-item">
+                        <span class="time">9:30 AM - 10:30 AM</span>
+                        <h3>Deep Dive Demo: From Farm to Fork Traceability System</h3>
+                        <p>Live demonstration of LAZINET's integrated system, showcasing real-time tracking, data capture, and blockchain immutability.</p>
+                        <span class="speaker-name">Mr. Alex Johnson, Solutions Architect</span>
+                    </div>
+                    <div class="agenda-item">
+                        <span class="time">10:30 AM - 11:00 AM</span>
+                        <h3>Coffee Break & Networking</h3>
+                        <p>Opportunity to connect with peers and industry experts.</p>
+                    </div>
+                    <div class="agenda-item">
+                        <span class="time">11:00 AM - 12:00 PM</span>
+                        <h3>AI-Powered Risk Detection & Compliance (HACCP/FDA)</h3>
+                        <p>How AI algorithms identify potential risks, ensure compliance with HACCP & FDA, and provide predictive insights.</p>
+                        <span class="speaker-name">Ms. Sarah Lee, Regulatory Compliance Specialist</span>
+                    </div>
+                    <div class="agenda-item">
+                        <span class="time">12:00 PM - 1:00 PM</span>
+                        <h3>Panel Discussion: Industry Challenges & Success Stories</h3>
+                        <p>Leading experts discuss current industry hurdles and share real-world success stories from blockchain & AI implementation.</p>
+                        <span class="speaker-name">Moderator: Mr. David Kim (Industry Analyst)</span>
+                    </div>
+                    <div class="agenda-item">
+                        <span class="time">1:00 PM - 1:30 PM</span>
+                        <h3>Q&A and Closing Remarks</h3>
+                        <p>Interactive session with speakers and summary of key takeaways.</p>
+                        <span class="speaker-name">LAZINET Team</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="speakers">
+            <div class="container">
+                <h2>Meet Our Esteemed Speakers</h2>
+                <div class="speaker-grid">
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/160/0000FF/FFFFFF?text=Dr.+Emily" alt="Dr. Emily Chen">
+                        <h3>Dr. Emily Chen</h3>
+                        <span class="title">AI Research Lead, LAZINET</span>
+                        <p>Dr. Chen leads groundbreaking research in AI applications for supply chain optimization and predictive analytics, with a focus on food safety. Her work has been published in numerous international journals.</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/160/FF6300/FFFFFF?text=Mr.+Alex" alt="Mr. Alex Johnson">
+                        <h3>Mr. Alex Johnson</h3>
+                        <span class="title">Solutions Architect, LAZINET</span>
+                        <p>Mr. Johnson is a seasoned architect with over 15 years of experience designing robust blockchain and IoT solutions for complex industrial challenges, particularly in food and beverage.</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/160/0000FF/FFFFFF?text=Ms.+Sarah" alt="Ms. Sarah Lee">
+                        <h3>Ms. Sarah Lee</h3>
+                        <span class="title">Regulatory Compliance Specialist</span>
+                        <p>Ms. Lee is an expert in global food safety regulations, including HACCP and FDA guidelines. She advises companies on compliance strategies and risk management frameworks.</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://via.placeholder.com/160/FF6300/FFFFFF?text=Mr.+David" alt="Mr. David Kim">
+                        <h3>Mr. David Kim</h3>
+                        <span class="title">Industry Analyst & Consultant</span>
+                        <p>Mr. Kim provides strategic consulting to agribusinesses and tech firms, offering insights into market trends and the adoption of emerging technologies for sustainable practices.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits">
+            <div class="container">
+                <h2>Why You Should Attend</h2>
+                <ul>
+                    <li><strong>Unlock Advanced Traceability:</strong> Discover how an integrated system of AI and Blockchain can provide end-to-end visibility, reducing recall costs by up to 30%.</li>
+                    <li><strong>Ensure Regulatory Compliance:</strong> Gain actionable strategies to meet and exceed global food safety standards (HACCP, FDA), minimizing legal risks and ensuring market access.</li>
+                    <li><strong>Mitigate Risks Proactively:</strong> Learn how AI-powered analytics can predict potential contamination and supply chain disruptions, reducing incident rates by 25%.</li>
+                    <li><strong>Enhance Consumer Trust:</strong> Build a transparent brand reputation by providing verifiable proof of product origin and safety, leading to a 15% increase in consumer loyalty.</li>
+                    <li><strong>Boost Operational Efficiency:</strong> Optimize your supply chain with real-time data, cutting down operational inefficiencies and saving up to 20% in verification processes.</li>
+                    <li><strong>Network with Industry Leaders:</strong> Connect with peers, experts, and potential partners in the food technology and safety sector, fostering valuable collaborations.</li>
+                    <li><strong>Stay Ahead of the Curve:</strong> Equip your business with future-proof strategies and technologies that are shaping the next generation of food production and distribution.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="register">
+            <div class="container">
+                <h2>Join Us for This Exclusive Seminar</h2>
+                <div class="registration-content">
+                    <p>Don't miss this opportunity to transform your approach to food safety and traceability. Secure your spot now!</p>
+                    <div class="qr-code-wrapper">
+                        <!-- QR Code generated from https://docs.google.com/forms/d/e/1FAIpQLSegbUC5HwK5k-_uV-oDLY6vHTTzaAxa9I4JGPVDjrxrHqma3Q -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://docs.google.com/forms/d/e/1FAIpQLSegbUC5HwK5k-_uV-oDLY6vHTTzaAxa9I4JGPVDjrxrHqma3Q" alt="QR Code for Seminar Registration">
+                        <p class="qr-caption">Scan to register for the seminar</p>
+                    </div>
+                    <p>Click the button below or scan the QR code to complete your registration form.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSegbUC5HwK5k-_uV-oDLY6vHTTzaAxa9I4JGPVDjrxrHqma3Q" target="_blank" class="btn">Đăng Ký Ngay</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div>
+                <h3>About LAZINET</h3>
+                <p>LAZINET is a comprehensive digital transformation partner, providing advanced technology solutions that empower businesses to optimize processes and thrive in the digital future. We specialize in AI, Blockchain, IoT, and Cloud technologies to deliver innovative, sustainable, and secure solutions.</p>
+            </div>
+            <div>
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i><span>123 Tech Park, Innovation City, XYZ Country</span></li>
+                    <li><i class="fas fa-phone"></i><span><a href="tel:+84123456789">+84 123 456 789</a></span></li>
+                    <li><i class="fas fa-envelope"></i><span><a href="mailto:info@lazinet.com">info@lazinet.com</a></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 LAZINET. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Close mobile menu if open
+                const nav = document.getElementById('main-nav');
+                if (nav.classList.contains('open')) {
+                    nav.classList.remove('open');
+                    document.getElementById('mobile-menu').classList.remove('active');
+                }
+            });
+        });
+
+        // Mobile menu toggle functionality
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mainNav = document.getElementById('main-nav');
+
+        mobileMenu.addEventListener('click', function() {
+            mainNav.classList.toggle('open');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Add 'active' class to current nav item based on scroll position for better UX
+        const sections = document.querySelectorAll('main section');
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            // Determine which section is currently in view
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - document.querySelector('header').offsetHeight - 50; /* Adjust for header height and some offset */
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            // Add 'active' class to the corresponding navigation link
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Set 'Home' as active on initial load if no other section is in view
+        if (window.scrollY === 0) {
+            navLinks.forEach(link => link.classList.remove('active'));
+            document.querySelector('nav ul li a[href="#hero"]').classList.add('active');
+        }
+    </script>
+</body>
+</html>
