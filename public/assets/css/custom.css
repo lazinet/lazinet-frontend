@@ -2108,15 +2108,21 @@ header.main-header .container-fluid{
 	width: calc(59% - 15px);
 }
 
-.feature-image figure{
-	display: block;
-	border-radius: 12px;
-	overflow: hidden;
-	align-items: center;
+.feature-image figure {
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 100%;
+    width: fit-content; /* Tự động co giãn theo nội dung */
 }
 
-.feature-image img{
-	object-fit: cover;
+.feature-image img {
+    object-fit: cover;
+    display: block; /* Đảm bảo img là block element */
+    max-width: 100%;
+    height: auto;
 }
 
 .feature-scrolling-ticker{
