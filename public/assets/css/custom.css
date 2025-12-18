@@ -2112,6 +2112,7 @@ header.main-header .container-fluid{
 	display: block;
 	border-radius: 12px;
 	overflow: hidden;
+	align-items: center;
 }
 
 .feature-image img{
