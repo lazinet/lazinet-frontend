@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+    <title>LAZINET LUCKY DRAW NEW YEAR 2026 | Professional Utility</title>
+    <meta name="description" content="🎯 Công cụ quay thưởng chuyên nghiệp từ LAZINET cho năm mới 2026. Tùy chỉnh giải thưởng, âm thanh hoành tráng và minh bạch.">
+    <meta name="author" content="LAZINET - Công Ty Công Nghệ Hàng Đầu Việt Nam">
+
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/lazinet.css">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --lz-bg: #0F162C;
+            --lz-card: rgba(255, 255, 255, 0.03);
+            --lz-accent: #3F82FB;
+            --lz-border: rgba(255, 255, 255, 0.1);
+            --lz-orange: #ff5000;
+        }
+
+        body { background-color: var(--lz-bg); color: #fff; font-family: "Be Vietnam Pro", "Inter", "Instrument Sans", sans-serif; overflow-x: hidden; }
+        .glass-card { background: var(--lz-card); border: 1px solid var(--lz-border); border-radius: 24px; backdrop-filter: blur(15px); padding: 25px; height: 100%; }
+
+/* Header Responsive Cập nhật */
+    .brand-container { 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; /* Đẩy logo và chữ ra 2 bên hoặc bao quanh */
+        width: 100%; 
+        flex-wrap: wrap; /* Cho phép xuống dòng khi màn hình quá nhỏ */
+        gap: 10px;
+    }
+
+    .brand-year { 
+        /* Bỏ position absolute để không bị đè lên logo */
+        font-family: 'Be Vietnam Pro', sans-serif; 
+        font-weight: 800; 
+        letter-spacing: 1px; 
+        font-size: 1.25rem;
+        color: #fff; 
+        text-shadow: 0 0 20px rgba(63, 130, 251, 0.5);
+        transition: all 0.3s ease;
+        text-align: right;
+        flex: 1; /* Chiếm phần không gian còn lại */
+    }
+        @media (max-width: 992px) { .brand-year { font-size: 1rem; letter-spacing: 1px; } }
+        @media (max-width: 768px) { .brand-year { position: static; transform: none; margin-left: auto; font-size: 0.85rem; } }
+        @media (max-width: 480px) { 
+        .brand-container {
+            justify-content: center; /* Căn giữa cả cụm trên màn hình siêu nhỏ */
+        }
+        .brand-year { 
+            font-size: 0.75rem; 
+            text-align: center;
+            width: 100%; /* Ép tiêu đề xuống dòng dưới logo */
+            margin-top: 5px;
+        }
+        .navbar-brand { margin-right: 0; }
+    }
+
+        /* Wheel & Pointer (Hướng tâm) */
+        .wheel-wrapper { position: relative; max-width: 420px; margin: 0 auto; }
+        #wheel-pointer { 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            z-index: 100; width: 45px; filter: drop-shadow(0 5px 12px rgba(255, 80, 0, 0.6)); 
+        }
+        canvas { width: 100%;}
+
+        /* Inputs */
+        .lz-input { background: rgba(255,255,255,0.05) !important; border: 1px solid var(--lz-border) !important; color: #fff !important; border-radius: 12px; }
+        .lz-input::placeholder { color: rgba(255, 255, 255, 0.25) !important; font-weight: 400; }
+        .unit-label { width: 60px; text-align: left; display: inline-block; font-size: 0.8rem; opacity: 0.5; }
+
+        /* Audio Bar */
+        .audio-bar { 
+            background: rgba(63, 130, 251, 0.08); border-radius: 14px; padding: 10px 18px; margin-bottom: 25px; 
+            display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(63, 130, 251, 0.15);
+        }
+        .audio-main-btn { cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--lz-accent); transition: 0.2s; }
+        .change-music-btn { 
+            font-size: 0.7rem; font-weight: 800; color: rgba(255,255,255,0.4); text-decoration: none; 
+            border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 8px; cursor: pointer;
+        }
+
+        .reward-item { display: grid; grid-template-columns: 1fr 50px 70px 30px; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .btn-spin { 
+            background: linear-gradient(90deg, var(--lz-orange), #E64A19); border: none; color: white; padding: 18px; 
+            border-radius: 16px; font-weight: 800; width: 100%; transition: 0.3s; box-shadow: 0 10px 20px rgba(230, 74, 25, 0.3);
+        }
+        .btn-spin:disabled { opacity: 0.4; }
+
+        .history-container { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .history-row { padding: 12px 15px; border-radius: 14px; margin-bottom: 10px; display: grid; grid-template-columns: 40px 1fr 1fr 85px; font-size: 0.85rem; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--lz-border); }
+                footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--divider-color);
+            color: var(--text-color);
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+/* Chỉ xóa viền mặc định khi nhấn vào để trông thật tự nhiên */
+.editable-name {
+    display: inline-block;
+    min-width: 50px;
+}
+
+.editable-name:focus {
+    /* Khi nhấn vào để sửa, chỉ làm sáng nhẹ nền để biết đang ở chế độ nhập liệu */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-dark bg-transparent py-3">
+    <div class="container">
+        <div class="brand-container">
+            <a class="navbar-brand" href="https://lazinet.com">
+                <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" height="60">
+            </a>
+            <div class="brand-year">LUCKY DRAW NEW YEAR 2026</div>
+        </div>
+    </div>
+</nav>
+
+    <main class="container py-2">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-4">
+                <div class="glass-card">
+                    <div class="d-flex align-items-center mb-4 text-primary">
+                        <i class="fas fa-sliders-h fa-lg me-2"></i>
+                        <h5 class="fw-bold mb-0">CẤU HÌNH</h5>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <label class="small fw-bold opacity-75 text-primary"><i class="fas fa-clock me-2"></i>THỜI GIAN QUAY</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" id="spinDuration" class="form-control lz-input text-center p-1" value="5" style="width: 70px;">
+                                <span class="unit-label">giây</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label class="small fw-bold opacity-75 text-primary"><i class="fas fa-rocket me-2"></i>TỐC ĐỘ QUAY</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" id="spinSpeed" class="form-control lz-input text-center p-1" value="3" style="width: 70px;">
+                                <span class="unit-label">vòng/s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3 text-primary">
+    <i class="fas fa-gift me-2"></i>
+    <h6 class="fw-bold mb-0">DANH SÁCH GIẢI</h6>
+    <span class="ms-2 small text-white-50 fst-italic" style="font-size: 0.75rem;">(SL ∞ là vô hạn)</span>
+</div>
+                    <div id="rewardContainer" style="max-height: 320px; overflow-y: auto;"></div>
+                    <button onclick="addRewardRow()" class="btn btn-outline-light btn-sm w-100 border-0 py-2 mt-3" style="background: var(--lz-border);">
+                        <i class="fas fa-plus-circle me-2"></i>Thêm giải thưởng
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-md-7">
+                            <div class="wheel-wrapper">
+                                <div id="wheel-pointer">
+                                    <svg viewBox="0 0 24 24" fill="#ff5000">
+                                        <path d="M12 24l8-12h-16l8 12zM12 0c-1.1 0-2 .9-2 2v10h4v-10c0-1.1-.9-2-2-2z"/>
+                                    </svg>
+                                </div>
+                                <canvas id="wheelCanvas" width="800" height="800"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="ps-md-4 py-4">
+                                <div class="audio-bar">
+                                    <div class="audio-main-btn" onclick="toggleMute()">
+                                        <i class="fas fa-volume-up" id="muteIcon"></i>
+                                        <span style="font-size: 0.75rem; font-weight: 800;">ÂM THANH</span>
+                                    </div>
+                                    <input type="file" id="audioUpload" accept="audio/*,video/*" class="d-none" onchange="loadMedia(this)">
+                                    <label for="audioUpload" class="change-music-btn">THAY NHẠC CỦA BẠN</label>
+                                    <!-- Hơi chói tai -->
+                                    <!-- <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio> -->
+                                    <!-- Kiểu Chuông ngân Chiến thắng (Êm ái & Sang trọng) -->
+                                    <!-- <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/1434/1434-preview.mp3"></audio> -->
+                                    <!-- Kiểu Arcade Retro (Vui nhộn & Năng động) OK1 -->
+                                    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+                                    <!-- Kiểu Kèn Trumpet (Hoành tráng & Truyền thống)  -->
+                                    <!-- <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3"></audio> -->
+                                    <!-- Kiểu Vỗ tay & Hò reo (Nhiệt huyết & Sôi động) -->
+                                    <!-- <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3"></audio> -->
+                                    <!-- Kiểu Digital Pop (Hiện đại & Công nghệ) OK2-->
+                                    <!-- <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio> -->
+                                </div>
+                                <label class="small fw-bold text-primary mb-2 opacity-75">TÊN NGƯỜI QUAY</label>
+                                <input type="text" id="currentPlayer" class="form-control lz-input mb-4 p-3 fw-bold" placeholder="Để trống là 'Mặc định'...">
+                                <button id="spinBtn" class="btn-spin" onclick="spin()">BẮT ĐẦU QUAY</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="glass-card text-center d-flex flex-column justify-content-center" style="border: 2px dashed var(--lz-accent); min-height: 220px;">
+                    <span class="small opacity-50 text-uppercase fw-bold">Kết quả trúng thưởng</span>
+                    <div id="lastResult" class="my-3 h1 fw-bold text-white">—</div>
+                    <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto" style="width: fit-content;">Sẵn sàng</div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-history me-2"></i>LỊCH SỬ TRAO GIẢI</h5>
+                        <button onclick="clearHistory()" class="btn btn-link btn-sm text-danger text-decoration-none">Xóa lịch sử</button>
+                    </div>
+                    <div id="historyList" class="history-container">
+                        <div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay nào...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <footer>
+            <div class="footer-copyright-text">
+                <p>LUCKY <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span> &copy;
+                    <script>
+                        const startYear = 2024;
+                        const currentYear = new Date().getFullYear();
+                        document.write(`${startYear}–${currentYear}`);
+                    </script>
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const rewardContainer = document.getElementById('rewardContainer');
+        const winSound = document.getElementById('winSound');
+        const spinBtn = document.getElementById('spinBtn');
+        let turnCount = 0; // Biến đếm số thứ tự lượt quay
+        let currentAngle = 0;
+        let isSpinning = false;
+        let activeRewards = [];
+
+        function addRewardRow(name = "", color = "", qty = "") {
+            const row = document.createElement('div');
+            row.className = 'reward-item';
+            const finalColor = color || `#${Math.floor(Math.random()*16777215).toString(16)}`;
+            row.innerHTML = `
+                <input type="text" class="form-control lz-input rew-name p-1 ps-2" placeholder="Tên giải..." value="${name}" oninput="refresh()">
+                <input type="color" class="color-picker rew-color" value="${finalColor}" onchange="refresh()">
+                <input type="number" class="form-control lz-input rew-qty text-center p-1" placeholder="∞" value="${qty}" oninput="refresh()">
+                <button class="btn btn-link text-danger p-0" onclick="this.parentElement.remove(); refresh()"><i class="fas fa-times"></i></button>
+            `;
+            rewardContainer.appendChild(row);
+            refresh();
+        }
+
+        function refresh() {
+            const names = document.querySelectorAll('.rew-name');
+            const colors = document.querySelectorAll('.rew-color');
+            const qtys = document.querySelectorAll('.rew-qty');
+            activeRewards = [];
+            names.forEach((n, i) => {
+                const q = qtys[i].value;
+                const qtyVal = q === "" ? null : parseInt(q);
+                if(n.value.trim() !== "" && (qtyVal === null || qtyVal > 0)) {
+                    activeRewards.push({ name: n.value.trim(), color: colors[i].value, qty: qtyVal, input: qtys[i], row: n.parentElement });
+                }
+            });
+            draw();
+        }
+
+        function draw() {
+            const radius = canvas.width / 2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if(activeRewards.length === 0) return;
+            const slice = (Math.PI * 2) / activeRewards.length;
+            activeRewards.forEach((item, i) => {
+                const angle = currentAngle + i * slice;
+                ctx.beginPath();
+                ctx.fillStyle = item.color;
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 15, angle, angle + slice);
+                ctx.fill();
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + slice / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 24px Geist";
+                // HIỂN THỊ: [Số lượng] [Tên giải]
+                const label = (item.qty === null ? "" : item.qty + " ") + item.name;
+                ctx.fillText(label, radius - 60, 10);
+                ctx.restore();
+            });
+            ctx.beginPath(); ctx.arc(radius, radius, 30, 0, Math.PI * 2);
+            ctx.fillStyle = "#0F162C"; ctx.fill();
+        }
+
+        function spin() {
+            if (isSpinning || activeRewards.length === 0) return;
+            isSpinning = true; spinBtn.disabled = true;
+            const duration = (parseFloat(document.getElementById('spinDuration').value) || 5) * 1000;
+            const speed = parseFloat(document.getElementById('spinSpeed').value) || 3;
+            const totalRot = (speed * (duration/1000) * Math.PI * 2) + Math.random() * Math.PI * 2;
+            const start = performance.now();
+            function animate(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                currentAngle = (1 - Math.pow(1 - progress, 3)) * totalRot;
+                draw();
+                if (progress < 1) requestAnimationFrame(animate);
+                else finalize();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function finalize() {
+            isSpinning = false; spinBtn.disabled = false;
+            const slice = (Math.PI * 2) / activeRewards.length;
+            const norm = (1.5 * Math.PI - (currentAngle % (Math.PI * 2))) % (Math.PI * 2);
+            const idx = Math.floor((norm < 0 ? norm + Math.PI * 2 : norm) / slice);
+            const prize = activeRewards[idx];
+            const player = document.getElementById('currentPlayer').value.trim() || "Mặc định";
+
+            if(prize.qty !== null) {
+                prize.qty--;
+                prize.input.value = prize.qty;
+                if(prize.qty <= 0) prize.row.remove();
+            }
+
+            document.getElementById('lastResult').innerText = prize.name;
+            document.getElementById('lastResult').style.color = prize.color;
+            document.getElementById('lastWinner').innerText = "Người thắng: " + player;
+
+            if(!winSound.muted) winSound.play();
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            
+            Swal.fire({
+                title: 'CHÚC MỪNG!',
+                html: `<b>${player}</b> đã nhận được:<br><h3 style="color:${prize.color}; margin-top:10px;">${prize.name}</h3>`,
+                timer: 2000,
+                showConfirmButton: false,
+                background: '#161d31',
+                color: '#fff'
+            });
+
+            // Ghi lịch sử
+            turnCount++; // Mỗi lần quay xong thì tăng số thứ tự lên 1
+            const history = document.getElementById('historyList');
+            if(document.getElementById('emptyHistory')) document.getElementById('emptyHistory').remove();
+            const entry = document.createElement('div');
+            entry.className = 'history-row shadow-sm';
+            entry.style.borderLeft = `5px solid ${prize.color}`;
+            // entry.innerHTML = `<div class="opacity-50">#</div><div class="fw-bold">${player}</div><div style="color:${prize.color}">${prize.name}</div><div class="text-end opacity-50 small">${new Date().toLocaleTimeString('vi-VN')}</div>`;
+            entry.innerHTML = `
+                    <div class="opacity-50 fw-bold">${turnCount}</div>
+                    <div class="fw-bold text-white editable-name" 
+                        contenteditable="true" 
+                        spellcheck="false"
+                        style="outline: none; cursor: text;">
+                        ${player}
+                    </div>
+                    <div style="color:${prize.color}">${prize.name}</div>
+                    <div class="text-end opacity-50 small">${new Date().toLocaleTimeString('vi-VN')}</div>
+              `;
+            history.prepend(entry);
+
+            document.getElementById('currentPlayer').value = "";
+            refresh();
+        }
+
+        function loadMedia(input) { if(input.files[0]) winSound.src = URL.createObjectURL(input.files[0]); }
+        function toggleMute() { winSound.muted = !winSound.muted; document.getElementById('muteIcon').className = winSound.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up'; }
+        function clearHistory() { document.getElementById('historyList').innerHTML = '<div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có dữ liệu lượt quay nào...</div>'; turnCount = 0;}
+
+        document.addEventListener('DOMContentLoaded', () => {
+            addRewardRow("Giải Đặc Biệt", "#FF6300", "1");
+            addRewardRow("Giải Nhất", "#0000FF", "2");
+            addRewardRow("Giải Nhì", "#0A703F", "3");
+            addRewardRow("Khuyến Khích", "#EA2035", "5");
+            addRewardRow("Chúc May Mắn", "#7030A0", "5");
+        });
+    </script>
+</body>
+</html>

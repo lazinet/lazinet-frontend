@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    <!-- Nền vòng tròn bánh răng lớn (màu đỏ) -->
+    <circle cx="400" cy="400" r="380" fill="#C51030"/>
+    
+    <!-- Bánh răng ngoài (màu trắng) -->
+    <circle cx="400" cy="400" r="320" fill="white"/>
+    
+    <!-- Chi tiết bánh răng (màu đỏ) -->
+    <path d="M400,80 L420,80 L420,120 L400,120 Z" fill="#C51030"/>
+    <path d="M400,680 L420,680 L420,720 L400,720 Z" fill="#C51030"/>
+    <path d="M80,400 L120,400 L120,420 L80,420 Z" fill="#C51030"/>
+    <path d="M680,400 L720,400 L720,420 L680,420 Z" fill="#C51030"/>
+    
+    <!-- Vòng tròn trong (màu đỏ) -->
+    <circle cx="400" cy="400" r="280" fill="#C51030"/>
+    
+    <!-- CÁNH CHIM BIỂU TƯỢNG TÂN SƠN NHẤT (màu vàng) -->
+    <path d="M200,350 Q400,200 600,350 Q400,500 200,350 Z" fill="#FFCD00" stroke="#C51030" stroke-width="2"/>
+    
+    <!-- NGỌN ĐUỐC BÁCH KHOA (màu vàng và trắng) -->
+    <!-- Tay cầm đuốc -->
+    <rect x="390" y="300" width="20" height="180" fill="white"/>
+    
+    <!-- Ngọn lửa chính -->
+    <path d="M400,250 Q370,150 400,100 Q430,150 400,250 Z" fill="#FFCD00"/>
+    
+    <!-- Tia lửa -->
+    <circle cx="400" cy="90" r="15" fill="white"/>
+    <ellipse cx="370" cy="120" rx="8" ry="12" fill="white"/>
+    <ellipse cx="430" cy="120" rx="8" ry="12" fill="white"/>
+    
+    <!-- VÒNG TRÒN KẾT NỐI (màu trắng, trong suốt) -->
+    <circle cx="400" cy="400" r="250" fill="none" stroke="white" stroke-width="3" stroke-dasharray="10,5"/>
+    
+    <!-- CHỮ VIỆT: VÒNG TRÊN -->
+    <text x="400" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="white">
+        HỘI CỰU SINH VIÊN
+    </text>
+    
+    <!-- CHỮ VIỆT: TRUNG TÂM -->
+    <text x="400" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="32" fill="white">
+        ĐẠI HỌC BÁCH KHOA HÀ NỘI
+    </text>
+    
+    <!-- CHỮ VIỆT: VÒNG DƯỚI -->
+    <text x="400" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#FFCD00">
+        CỘNG ĐỒNG TÂN SƠN NHẤT
+    </text>
+</svg>

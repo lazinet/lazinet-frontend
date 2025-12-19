@@ -1,0 +1,336 @@
+<html lang="vi"><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTIT Pro Editor - Full Features &amp; Multi-Size</title>
+    <meta charset="UTF-8">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+        /* CSS Base */
+        @page { margin: 0; }
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 20px;
+            background: linear-gradient(135deg, #e9ecef 0%, #faf9f8 100%);
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { display: flex; flex-direction: column; max-width: 1200px; margin: 0 auto; gap: 20px; align-items: center; }
+
+        /* Control Panel */
+        .control-panel {
+            width: 100%; max-width: 210mm; background: #fff; padding: 15px;
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .toolbar-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+        .toolbar-row:last-child { border-bottom: none; }
+        .btn-group-label { font-size: 12px; font-weight: 700; color: #555; min-width: 100px; }
+
+        .btn {
+            padding: 8px 14px; background: #333; color: white; border: none; border-radius: 4px;
+            cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; transition: 0.2s;
+        }
+        .btn:hover { background: #EA2035; }
+        .btn-outline { background: white; color: #333; border: 1px solid #ccc; }
+        .btn-danger { background: #dc3545; }
+        input[type="text"], select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; }
+
+        /* Main Card */
+        .card {
+            width: 210mm; min-height: 297mm; background-color: white;
+            padding: 12mm 15mm; position: relative; margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); overflow: visible;
+            background-size: cover; background-position: center;
+            /* Dòng kẻ phân trang A4 mờ */
+            background-image: linear-gradient(#f0f0f0 1px, transparent 1px);
+            background-size: 100% 297mm;
+        }
+
+        /* Decorations */
+        .card-deco-top, .card-deco-bottom {
+            position: absolute; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, #EA2035 0%, #7030A0 100%); z-index: 10;
+        }
+        .card-deco-top { top: 0; }
+        .card-deco-bottom { bottom: 0; }
+
+        .corner {
+            position: absolute; width: 40px; height: 40px; border-width: 3px; border-style: solid; z-index: 10; pointer-events: none;
+        }
+        .c-tl { top: 15px; left: 15px; border-color: #EA2035 transparent transparent #EA2035; }
+        .c-tr { top: 15px; right: 15px; border-color: #7030A0 #7030A0 transparent transparent; }
+        .c-bl { bottom: 15px; left: 15px; border-color: transparent transparent #EA2035 #EA2035; }
+        .c-br { bottom: 15px; right: 15px; border-color: transparent #7030A0 #7030A0 transparent; }
+
+        /* Header */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee;
+            position: relative; z-index: 11;
+        }
+        .viettel-logo { height: 45px; }
+        .partner-logo { height: 60px; max-width: 180px; object-fit: contain; }
+        .company-name { font-size: 26px; font-weight: 800; text-align: center; flex: 1; text-transform: uppercase; padding: 0 10px; outline: none; }
+
+        /* Sections */
+        .section { margin-bottom: 18px; position: relative; z-index: 5; }
+        .section-header { display: flex; align-items: center; border-bottom: 2px solid #EA2035; margin-bottom: 10px; padding-bottom: 5px; }
+        .title-icon { width: 24px; height: 24px; margin-right: 10px; object-fit: contain; }
+        .section-title { font-size: 18px; font-weight: 700; color: #EA2035; text-transform: uppercase; }
+        .content-editable { font-size: 14.5px; line-height: 1.5; text-align: justify; outline: none; border: 1px dashed transparent; }
+        .content-editable:hover { border-color: #ddd; }
+
+        /* Contact Area */
+        .contact-wrapper { margin-top: 15px; position: relative; z-index: 5; }
+        .contact-general { text-align: center; font-size: 13px; margin-bottom: 15px; background: rgba(248, 249, 250, 0.8); padding: 10px; border-radius: 4px; }
+        .two-column { display: flex; gap: 20px; }
+        .column { flex: 1; }
+        .contact-card { padding: 12px; background: rgba(248, 249, 250, 0.9); border-radius: 6px; border-left: 4px solid #EA2035; height: 100%; }
+        .contact-card h3 { margin: 0 0 8px 0; color: #EA2035; font-size: 15px; border-bottom: 1px solid #ddd; }
+        .contact-details { font-size: 12.5px; line-height: 1.6; }
+        .social-icons img { height: 16px; margin-left: 5px; vertical-align: middle; }
+
+        @media print { .control-panel { display: none; } .card { box-shadow: none; border: none; margin: 0; } }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="control-panel">
+            <div class="toolbar-row">
+                <span class="btn-group-label">Đối tác &amp; Icon:</span>
+                <input type="text" id="logoUrlInput" placeholder="Link logo đối tác...">
+                <button class="btn btn-outline" onclick="updatePartnerLogo('url')">Dán Link</button>
+                <button class="btn btn-outline" onclick="document.getElementById('filePartner').click()">Logo</button>
+                <button class="btn btn-outline" onclick="document.getElementById('fileIcons').click()">Đổi Icons Tiêu đề</button>
+                <input type="file" id="filePartner" hidden="" accept="image/*">
+                <input type="file" id="fileIcons" hidden="" accept="image/*">
+            </div>
+
+            <div class="toolbar-row">
+                <span class="btn-group-label">Hình nền (BG):</span>
+                <input type="text" id="bgUrlInput" placeholder="Link ảnh nền...">
+                <button class="btn btn-outline" onclick="updateBG('url')">Dán Link</button>
+                <button class="btn btn-outline" onclick="document.getElementById('fileBG').click()">Upload Nền</button>
+                <button class="btn btn-danger" onclick="updateBG('clear')">Xóa nền</button>
+                <input type="file" id="fileBG" hidden="" accept="image/*">
+            </div>
+
+            <div class="toolbar-row">
+                <span class="btn-group-label">Xuất tài liệu:</span>
+                <select id="paperSize">
+                    <option value="a0">Khổ A0</option>
+                    <option value="a1">Khổ A1</option>
+                    <option value="a2">Khổ A2</option>
+                    <option value="a3">Khổ A3</option>
+                    <option value="a4" selected="">Khổ A4 (Chuẩn)</option>
+                    <option value="a5">Khổ A5</option>
+                </select>
+                <button class="btn" style="background:#006400" onclick="exportPDF()"><i class="bi bi-file-pdf"></i> Xuất PDF (Header lặp lại)</button>
+                <button class="btn btn-outline" onclick="exportWord()">
+                    <i class="bi bi-file-word"></i> Word
+                </button>
+                <button class="btn btn-outline" onclick="saveHTML()">
+                    <i class="bi bi-code-slash"></i> HTML Compact
+                </button>
+            </div>
+            <div style="font-size: 11px; color: #d63384; font-style: italic;">
+                * Hệ thống tự lặp lại Header/Footer/Góc khi sang trang mới trong PDF. Nếu chữ bị đè, hãy Enter để xuống dòng.
+            </div>
+        </div>
+
+        <div class="card" id="main-card">
+            <div class="card-deco-top"></div>
+            <div class="corner c-tl"></div><div class="corner c-tr"></div>
+            <div class="corner c-bl"></div><div class="corner c-br"></div>
+            <div class="card-deco-bottom"></div>
+
+            <div class="header" id="header-to-clone">
+                <img class="viettel-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Viettel_logo_2021.svg/2560px-Viettel_logo_2021.svg.png">
+                <div class="company-name" contenteditable="true">GIỚI THIỆU TÓM TẮT</div>
+                <img id="partnerLogo" class="partner-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iODAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjY2NjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zNWVtIj5MT0dPIMSQ4buQSSBUw4FDPC90ZXh0Pjwvc3ZnPg==">
+            </div>
+
+            <div id="content-body">
+                <div class="section">
+                    <div class="section-header">
+                        <img class="title-icon main-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACrklEQVR4nO2Yu2sVQRSHv0tMTERsfCSKRVCIIGxhI4iF2vhAFFtFLPxL/BPsTEQ0lgErwUILwcZGEcRGEU0hIcaQ+Mh7I3f2zOzM7J57vXvFwMOwcz/zOXPmzJmZS0QjGjGiEc0g1A1sA94D28G2q/97wAvAD7bdegHMA4+AD8BHoK+Bbc8C14DrwA9gXyPtVwP3gQfAR6A7I+1eADeAa8AvYLBR9jcCD4F7wGegKyPtngfXgGvAT2CgEfbnAg+BO8BnoDMj7Z4FV4FrwE9gXyPsbwDuA3eBT0BnRtq9AK4C14BfwEAj7M8F7gN3gM9AZ0bavQCuAleBn8B+F+xPAreB28AnYFeK9s+BK8AV4BewzwX708Bt4BbwCdiZov1zwUXgMvAT2OeC/WngFnAL+ATsTNH+BXARuAz8AHa7YH8GuAWcBz4Cu1K0fw5cAC4BP4DdLtifBs4D54BPwM4U7V8AF4DzQA/Y7YL9WeAc8B74COxM0f4FcB44B/QA/a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A3amaP8COAe8A3a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A3a64j2fAOeAdsCtF+xfAGeAtsNcV99ECZ4A3wJYxvD8NnALeADuH8P4UcAp4DewawvtTwCngNbBtCO9PAyeBV8C2Ibw/BZwCdtfQ7qV/3+x1/f68a/j+lI7vTyN9f34C24bw/hRwEngFbB3C+9PAKWALsHEI708Bp4ANwMYhvD8FnAI2ABuH8P4UcArYAGwcwvuTwClgPbB+CO9PA6eA9cD6Ibw/BZwC1gPrh/D+FHAKeA2sHcK7N6JtA6uA1cAqYDmwzP/uAcuAZcAyYClwGrgI9I0a0YhG/C/4A1/3u/g2u/kSAAAAAElFTkSuQmCC">
+                        <div class="section-title">VỀ VIETTEL SOFTWARE</div>
+                    </div>
+                    <div class="content-editable" contenteditable="true">
+                        <strong>Viettel Software</strong> (VTIT), thành viên của Tập đoàn Viettel, là nhà cung cấp hàng đầu các dịch vụ giải pháp CNTT. Với hơn 1.500 chuyên gia, chúng tôi cam kết thúc đẩy chuyển đổi số tại Việt Nam và vươn tầm thế giới.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <img class="title-icon main-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACrklEQVR4nO2Yu2sVQRSHv0tMTERsfCSKRVCIIGxhI4iF2vhAFFtFLPxL/BPsTEQ0lgErwUILwcZGEcRGEU0hIcaQ+Mh7I3f2zOzM7J57vXvFwMOwcz/zOXPmzJmZS0QjGjGiEc0g1A1sA94D28G2q/97wAvAD7bdegHMA4+AD8BHoK+Bbc8C14DrwA9gXyPtVwP3gQfAR6A7I+1eADeAa8AvYLBR9jcCD4F7wGegKyPtngfXgGvAT2CgEfbnAg+BO8BnoDMj7Z4FV4FrwE9gXyPsbwDuA3eBT0BnRtq9AK4C14BfwEAj7M8F7gN3gM9AZ0bavQCuAleBn8B+F+xPAreB28AnYFeK9s+BK8AV4BewzwX708Bt4BbwCdiZov1zwUXgMvAT2OeC/WngFnAL+ATsTNH+BXARuAz8AHa7YH8GuAWcBz4Cu1K0fw5cAC4BP4DdLtifBs4D54BPwM4U7V8AF4DzQA/Y7YL9WeAc8B74COxM0f4FcB44B/QA/a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A3amaP8COAe8A3a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A3a64j2fAOeAdsCtF+xfAGeAtsNcV99ECZ4A3wJYxvD8NnALeADuH8P4UcAp4DewawvtTwCngNbBtCO9PAyeBV8C2Ibw/BZwCdtfQ7qV/3+x1/f68a/j+lI7vTyN9f34C24bw/hRwEngFbB3C+9PAKWALsHEI708Bp4ANwMYhvD8FnAI2ABuH8P4UcArYAGwcwvuTwClgPbB+CO9PA6eA9cD6Ibw/BZwC1gPrh/D+FHAKeA2sHcK7N6JtA6uA1cAqYDmwzP/uAcuAZcAyYClwGrgI9I0a0YhG/C/4A1/3u/g2u/kSAAAAAElFTkSuQmCC">
+                        <div class="section-title">DỊCH VỤ CUNG CẤP</div>
+                    </div>
+                    <div class="content-editable" contenteditable="true">
+                        <ul>
+                            <li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li><li><strong>Tư vấn giải pháp:</strong>&nbsp;Chiến lược chuyển đổi số toàn diện.</li><li><strong>Gia công phần mềm:</strong>&nbsp;Phát triển theo yêu cầu, linh hoạt.</li><li><strong>Phái cử nhân sự:</strong>&nbsp;Chuyên gia chất lượng cao.</li><li><strong>Vận hành &amp; Bảo trì:</strong>&nbsp;Hệ thống an toàn, ổn định.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contact-wrapper">
+                    <div class="contact-general">
+                        <p><strong>CÔNG TY TNHH MTV ĐẦU TƯ CÔNG NGHỆ VIETTEL (VTIT)</strong></p>
+                        <p><i class="bi bi-globe" style="color:#EA2035"></i> viettelsoftware.com | MST: 2801045888</p>
+                    </div>
+                    <div class="two-column">
+                        <div class="column">
+                            <div class="contact-card">
+                                <h3>TRỤ SỞ CHÍNH</h3>
+                                <div class="contact-details" contenteditable="true">
+                                    <p><i class="bi bi-geo-alt-fill"></i> 36A Dịch Vọng Hậu, HN</p>
+                                    <p><i class="bi bi-telephone-fill"></i> +84-988889446</p>
+                                    <p><i class="bi bi-envelope-fill"></i> contact@viettelsoftware.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="contact-card">
+                                <h3>VĂN PHÒNG MIỀN NAM</h3>
+                                <div class="contact-details" contenteditable="true">
+                                    <p><i class="bi bi-geo-alt-fill"></i> Tòa nhà Viettel, 285 CMT8, HCM</p>
+                                    <p><i class="bi bi-telephone-fill"></i> <strong>Mr. Phụng</strong> +84-983667248</p>
+                                    <p><i class="bi bi-envelope-fill"></i> phunghm@viettelsoftware.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        // 1. Image Handlers
+        function updatePartnerLogo(type) {
+            const img = document.getElementById('partnerLogo');
+            if(type === 'url') img.src = document.getElementById('logoUrlInput').value;
+        }
+        document.getElementById('filePartner').onchange = function(e) {
+            const reader = new FileReader();
+            reader.onload = (ev) => document.getElementById('partnerLogo').src = ev.target.result;
+            reader.readAsDataURL(e.target.files[0]);
+        };
+        document.getElementById('fileIcons').onchange = function(e) {
+            const reader = new FileReader();
+            reader.onload = (ev) => document.querySelectorAll('.main-icon').forEach(i => i.src = ev.target.result);
+            reader.readAsDataURL(e.target.files[0]);
+        };
+        function updateBG(type) {
+            const card = document.getElementById('main-card');
+            if(type === 'url') card.style.backgroundImage = `url('${document.getElementById('bgUrlInput').value}')`;
+            else if(type === 'clear') {
+                card.style.backgroundImage = 'linear-gradient(#f0f0f0 1px, transparent 1px)';
+            }
+        }
+        document.getElementById('fileBG').onchange = function(e) {
+            const reader = new FileReader();
+            reader.onload = (ev) => document.getElementById('main-card').style.backgroundImage = `url('${ev.target.result}')`;
+            reader.readAsDataURL(e.target.files[0]);
+        };
+
+        // 2. Export PDF Logic (Multi-page with Header Repetition)
+        async function exportPDF() {
+            const btn = document.querySelector('button[onclick="exportPDF()"]');
+            btn.innerHTML = "Đang tạo file...";
+            
+            const card = document.getElementById('main-card');
+            const sizeKey = document.getElementById('paperSize').value;
+            const sizesMM = { a0:[841,1189], a1:[594,841], a2:[420,594], a3:[297,420], a4:[210,297], a5:[148,210] };
+            const [wMM, hMM] = sizesMM[sizeKey];
+
+            // Tạm ẩn grid lines
+            const oldBG = card.style.backgroundImage;
+            if(oldBG.includes('linear-gradient')) card.style.backgroundImage = 'none';
+
+            // Capture Full Content
+            const fullCanvas = await html2canvas(card, { scale: 2, useCORS: true });
+            
+            // Capture Header separately
+            const headerPart = document.getElementById('header-to-clone');
+            const headerCanvas = await html2canvas(headerPart, { scale: 2, backgroundColor: null });
+
+            const canvasW = fullCanvas.width;
+            const canvasHPerPage = canvasW * (hMM / wMM);
+            const totalPages = Math.ceil(fullCanvas.height / canvasHPerPage);
+
+            const pdf = new jsPDF('p', 'mm', sizeKey);
+
+            for(let i=0; i<totalPages; i++) {
+                if(i > 0) pdf.addPage();
+                const pageCanvas = document.createElement('canvas');
+                pageCanvas.width = canvasW; pageCanvas.height = canvasHPerPage;
+                const ctx = pageCanvas.getContext('2d');
+                
+                // Draw background/content slice
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0,0, canvasW, canvasHPerPage);
+                ctx.drawImage(fullCanvas, 0, i*canvasHPerPage, canvasW, canvasHPerPage, 0, 0, canvasW, canvasHPerPage);
+
+                // Repeat Decorations
+                const sH = (6 / 297) * canvasHPerPage;
+                const grad = ctx.createLinearGradient(0,0,canvasW,0);
+                grad.addColorStop(0,'#EA2035'); grad.addColorStop(1,'#7030A0');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvasW, sH); // Top bar
+                ctx.fillRect(0, canvasHPerPage-sH, canvasW, sH); // Bottom bar
+
+                // Draw Header for all pages (1, 2, 3...)
+                const hRatio = headerCanvas.height / headerCanvas.width;
+                const drawH = canvasW * hRatio;
+                ctx.drawImage(headerCanvas, 0, (12/297)*canvasHPerPage, canvasW, drawH);
+
+                // Draw Corners
+                const cSize = (40/297)*canvasHPerPage; const cOff = (15/297)*canvasHPerPage;
+                ctx.lineWidth = (3/297)*canvasHPerPage;
+                ctx.strokeStyle = '#EA2035'; ctx.beginPath(); ctx.moveTo(cOff,cOff+cSize); ctx.lineTo(cOff,cOff); ctx.lineTo(cOff+cSize,cOff); ctx.stroke();
+                ctx.strokeStyle = '#7030A0'; ctx.beginPath(); ctx.moveTo(canvasW-cOff-cSize,cOff); ctx.lineTo(canvasW-cOff,cOff); ctx.lineTo(canvasW-cOff,cOff+cSize); ctx.stroke();
+
+                pdf.addImage(pageCanvas.toDataURL('image/png'), 'PNG', 0, 0, wMM, hMM);
+            }
+
+            pdf.save(`VTIT_Brochure_${sizeKey.toUpperCase()}.pdf`);
+            card.style.backgroundImage = oldBG;
+            btn.innerHTML = '<i class="bi bi-file-pdf"></i> Xuất PDF (Header lặp lại)';
+        }
+
+        // 3. Export Word (Inherited)
+        function exportWord() {
+            const body = document.getElementById('content-body').innerHTML;
+            const title = document.querySelector('.company-name').innerText;
+            const doc = `<html><head><meta charset='utf-8'></head><body><h1 style='text-align:center'>${title}</h1>${body}</body></html>`;
+            const blob = new Blob(['\ufeff', doc], { type: 'application/msword' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'VTIT-Brochure.doc';
+            link.click();
+        }
+
+        // 4. Save HTML (Inherited)
+        function saveHTML() {
+            const html = document.documentElement.outerHTML;
+            const blob = new Blob([html], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'VTIT_Editor_Full.html';
+            a.click();
+        }
+    </script>
+
+</body></html>

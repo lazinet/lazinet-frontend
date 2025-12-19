@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu Viettel Software (VTIT)</title>
+    <meta charset="UTF-8">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset & Base */
+        @page { size: A4; margin: 0; }
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #e9ecef 0%, #faf9f8 100%);
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Card Setup */
+        .card {
+            width: 210mm;
+            min-height: 297mm; /* Mặc định là 1 trang */
+            height: auto;      /* Tự động dãn nở theo content */
+            background: white;
+            padding: 12mm 15mm; 
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(42, 92, 154, 0.1);
+            overflow: visible; 
+            margin: 0 auto;
+            /* Đường kẻ mờ đánh dấu trang A4 */
+            background-image: linear-gradient(#ccc 1px, transparent 1px);
+            background-size: 100% 297mm; /* Lặp lại đúng chiều cao A4 */
+            background-position: 0 -1px; /* Ẩn line đầu tiên */
+        }
+
+        /* Khi xuất file thì ẩn các hiệu ứng thừa */
+        .card.exporting {
+            background-image: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            margin: 0 !important;
+            transform: none !important;
+        }
+
+        /* Page Break Indicator (Chỉ để nhìn, ko in) */
+        .page-marker {
+            position: absolute;
+            left: -110px;
+            width: 100px;
+            text-align: right;
+            color: #999;
+            font-size: 12px;
+            font-style: italic;
+            border-bottom: 1px dashed #ccc;
+            pointer-events: none;
+        }
+
+        /* Decorations */
+        .card::before, .card::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #EA2035 0%, #7030A0 100%);
+            z-index: 1;
+        }
+        .card::before { top: 0; }
+        .card::after { bottom: 0; }
+
+        .corner-decoration {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .corner-1 { top: 15px; left: 15px; border-top: 3px solid #EA2035; border-left: 3px solid #EA2035; }
+        .corner-2 { top: 15px; right: 15px; border-top: 3px solid #7030A0; border-right: 3px solid #7030A0; }
+        .corner-3 { bottom: 15px; left: 15px; border-bottom: 3px solid #EA2035; border-left: 3px solid #EA2035; }
+        .corner-4 { bottom: 15px; right: 15px; border-bottom: 3px solid #7030A0; border-right: 3px solid #7030A0; }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .viettel-logo { height: 45px; width: auto; }
+        .partner-logo { height: 60px; width: auto; max-width: 180px; object-fit: contain; }
+
+        .company-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: #000;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px dashed transparent;
+        }
+        .company-name:hover, .company-name:focus { border-color: #ccc; outline: none; }
+
+        /* Content Sections */
+        .section { margin-bottom: 18px; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #EA2035;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .title-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #EA2035;
+            text-transform: uppercase;
+        }
+
+        .content-editable {
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: justify;
+            min-height: 20px;
+            border: 1px dashed transparent;
+            padding: 2px;
+        }
+        .content-editable:hover { border-color: #ddd; }
+        .content-editable:focus { outline: none; border-color: #EA2035; background: #fffdfd; }
+
+        .content-editable ul { margin: 5px 0; padding-left: 20px; }
+        .content-editable li { margin-bottom: 4px; }
+
+        /* Contact Section */
+        .contact-wrapper { margin-top: 10px; }
+        
+        .contact-general {
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .contact-general p { margin: 3px 0; }
+        .contact-general a { color: #333; text-decoration: none; }
+
+        .two-column {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .column { flex: 1; }
+
+        .contact-card {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #EA2035;
+            height: 100%;
+        }
+
+        .contact-card h3 {
+            margin: 0 0 10px 0;
+            color: #EA2035;
+            font-size: 15px;
+            font-weight: 700;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .contact-details { font-size: 12.5px; }
+        .contact-details p { margin: 6px 0; display: flex; align-items: flex-start; gap: 8px; }
+        .contact-details i { color: #EA2035; margin-top: 3px; font-size: 14px; }
+        .social-icons { display: inline-flex; gap: 5px; margin-left: 5px; vertical-align: middle; }
+        .social-icons img { height: 16px; width: auto; transition: transform 0.2s; }
+        .social-icons img:hover { transform: scale(1.2); }
+
+        /* Controls */
+        .control-panel {
+            width: 100%;
+            max-width: 210mm;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toolbar-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #EA2035; transform: translateY(-1px); }
+        .btn-outline { background: white; color: #333; border: 1px solid #ccc; }
+        .btn-outline:hover { background: #f0f0f0; border-color: #999; }
+        
+        .btn-group-label { font-size: 12px; font-weight: 600; color: #666; margin-right: 5px; }
+
+        select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .control-panel, .corner-decoration, .page-marker { display: none !important; }
+            .card { box-shadow: none; border: none; margin: 0; transform: none !important; background-image: none !important; }
+            .content-editable { border: none !important; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="control-panel" id="controlPanel">
+            <div class="toolbar-row" style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <span class="btn-group-label">Logo Đối Tác (URL):</span>
+                <input type="text" id="logoUrlInput" placeholder="Dán link ảnh vào đây (Lưu ý: Một số link sẽ chặn xuất file)">
+                <button class="btn btn-outline" id="updateLogoUrlBtn">Cập nhật URL</button>
+            </div>
+
+            <div class="toolbar-row">
+                <span class="btn-group-label">Cài đặt ảnh:</span>
+                <input type="file" id="logoPartnerUpload" accept="image/*" style="display: none;">
+                <button class="btn btn-outline" onclick="document.getElementById('logoPartnerUpload').click()">Upload Logo Đối Tác</button>
+                
+                <input type="file" id="iconTitleUpload" accept="image/*" style="display: none;">
+                <button class="btn btn-outline" onclick="document.getElementById('iconTitleUpload').click()">Upload Icon Tiêu Đề</button>
+            </div>
+
+            <div class="toolbar-row">
+                <span class="btn-group-label">Xuất file (Tự động chia trang):</span>
+                <select id="paperSize">
+                    <option value="1">Khổ A4 (Chuẩn)</option>
+                    <option value="1.41">Khổ A3</option>
+                    <option value="2">Khổ A2</option>
+                    <option value="2.82">Khổ A1</option>
+                    <option value="4">Khổ A0</option>
+                    <option value="0.7">Khổ A5</option>
+                </select>
+                <button class="btn" id="exportPngBtn"><i class="bi bi-file-image"></i> Xuất Ảnh (PNG)</button>
+                <button class="btn" id="exportPdfBtn"><i class="bi bi-file-pdf"></i> Xuất PDF</button>
+                <button class="btn" id="exportWordBtn"><i class="bi bi-file-word"></i> Xuất Word</button>
+            </div>
+            
+            <div class="toolbar-row" style="border-top: 1px solid #eee; padding-top: 10px;">
+                <button class="btn" id="saveCompactHtmlBtn" style="background-color: #006400;"><i class="bi bi-box-seam"></i> Xuất File HTML Compact (Gửi đi)</button>
+            </div>
+            <div style="font-size: 11px; color: #666; text-align: center; font-style: italic;">
+                *Lưu ý: Các dòng kẻ mờ trên thẻ là vạch phân chia trang A4. Hãy điều chỉnh nội dung để tránh bị cắt ngang chữ khi sang trang mới.
+            </div>
+        </div>
+
+        <div class="card" id="brochure-card">
+            <div id="pageMarkersContainer"></div>
+
+            <div class="corner-decoration corner-1"></div>
+            <div class="corner-decoration corner-2"></div>
+            <div class="corner-decoration corner-3"></div>
+            <div class="corner-decoration corner-4"></div>
+
+            <div class="header">
+                <img class="viettel-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAMAAACzXn/yAAAAbFBMVEUAAAD///8ZGRkAAAAxMTFBQUEKCgoGBgYMDAwSEhIlJSUREREMDAwODg4REREJCQkFBQUHBwcMDAwMDAwKCgoMDAwMDAwLCwsLCwsMDAwLCwsMDAwMDAwLCwsMDAwLCwsMDAwMDAwMDAwLCwvv3s/QAAAAI3RSTlMAAAAAEszb0IeSgXFfUDAvKCEbFv7+/v38+/r59vTx8O/o5eAfz12zAAADaUlEQVRo3u2Za3OiMBCG4QSEQE4iBwRBsVoVrbba7v//3y4CSUBAbO10Z+Z52Q+dTOZNMsNMAlLqHw2jWDSi+W+x0tA049lY6eiW8VysdEzLeCZWOmZlPBMb0zK2Y6VjVsYzsTEtYztWOmZlPBMb0zK2Y6VjVsYzsTEtYz9WOmZlPBMb0zL2Y6VjVsYzsf8qVrqb5/z90B9v6S0u/v5hWOl47M/3j/T2sFh212Gs9H5/yq/Zl9l60x3GSsfjIb/my3Kz7Qxjpff7fX7Nl+Vq0x3GSu/3x/yaL8vlpjuMlY7H/fyaz8vFpjOMld7vD/k1n5fztTtsH6t4zK/5tJyuOkJ/rAzjMb/m03K67Aj9sdL7/SG/5tNysuwI/bHS8bifX/NpOVl2hP5Y6f3+kF/zaTlZdoT+WOn9/pBf82k5XnaE/ljpeNzPr/m0HC87Qn+s9H5/yK/5tBwvO0J/rPR+f8iv+bQcLztCf6x0PO7n12xazpYdoT9Wer8/5tdsWs6WHaE/Vnq/P+bXbFrOlh2hP1Y6Hvfza14tJ8uO0B8rvd8f8mteLSfLjtAfK73fH/JrXi0ny47QHysdj/v5Na+Wk2VH6I+V3u8P+TWvlpNlR+iPlX69P+bXvFpOlh1hQKy0l1/zYjlZdoQBsfre/y2/5sVysuwIA2L1vf9bfs2L5WTZEQbE6nv/t/yaF8vJsiMMiNX3/m/5NS+Wk2VHGBArXf1f82I5WXaEAbHS+9/yYjlZdoQBsfre/y2/5sVycuwIA2Klq/9rXiwfy44wIFa6+r/mxfKx7AgDYqWr/2teLB/LjjAgVrr6v+bF8rHsCANipav/a14sH8uOMCBWuvq/5sXyqewIA2Klq/9rXiyfy44wIFa6+r/mxfK57AgDYqWr/2teLJ/LjjAgVrr6v+bF8rnsCANi/XT1f82L5XPZEQbE+unq/5oXy+eyIwyI9dPV/zUvls9lRxgQ66er/2teLJ/LjjAg1k9X/9e8WD6XHWFArJ+u/q95sXwuO8KAWD9d/V/zYvlUdoQBsX66+r/mxfKp7AgDYv109X/Ni+Vj2REGxPrp6v+aF8vHsiMMiPXT1f81L5aPZUcYEOunq/9rXiwfy44wINZPV//XvFg+lh1hQKyfrv6vebEcHzvC8Fj9H1t/AD7Wf6c3AAAAAElFTkSuQmCC" crossorigin="anonymous" alt="Viettel Logo">
+                
+                <div class="company-name" contenteditable="true">GIỚI THIỆU TÓM TẮT</div>
+                
+                <img id="partnerLogo" class="partner-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iODAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjY2NjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zNWVtIj5MT0dPIMSQ4buQSSBUw4FDPC90ZXh0Pjwvc3ZnPg==" alt="Partner Logo">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <img class="title-icon main-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACrklEQVR4nO2Yu2sVQRSHv0tMTERsfCSKRVCIIGxhI4iF2vhAFFtFLPxL/BPsTEQ0lgErwUILwcZGEcRGEU0hIcaQ+Mh7I3f2zOzM7J57vXvFwMOwcz/zOXPmzJmZS0QjGjGiEc0g1A1sA94D28G2q/97wAvAD7bdegHMA4+AD8BHoK+Bbc8C14DrwA9gXyPtVwP3gQfAR6A7I+1eADeAa8AvYLBR9jcCD4F7wGegKyPtngfXgGvAT2CgEfbnAg+BO8BnoDMj7Z4FV4FrwE9gXyPsbwDuA3eBT0BnRtq9AK4C14BfwEAj7M8F7gN3gM9AZ0bavQCuAleBn8B+F+xPAreB28AnYFeK9s+BK8AV4BewzwX708Bt4BbwCdiZov1zwUXgMvAT2OeC/WngFnAL+ATsTNH+BXARuAz8AHa7YH8GuAWcBz4Cu1K0fw5cAC4BP4DdLtifBs4D54BPwM4U7V8AF4DzQA/Y7YL9WeAc8B74COxM0f4FcB44B/QA/a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A7a64j6eAueAd8D2FO1fAGeBd8A+V9zHU+AM8A7YlqL9C+AM8A7Y64r7eAKcAd4BW1O0fw6cB94Be11xH0+AM8BboC1F+xfAGeAtsNcV99ECZ4A3wJYxvD8NnALeADuH8P4UcAp4DewawvtTwCngNbBtCO9PAyeBV8C2Ibw/BZwCdtfQ7qV/3+x1/f68a/j+lI7vTyN9f34C24bw/hRwEngFbB3C+9PAKWALsHEI708Bp4ANwMYhvD8FnAI2ABuH8P4UcArYAGwcwvuTwClgPbB+CO9PA6eA9cD6Ibw/BZwC1gPrh/D+FHAKeA2sHcK7N6JtA6uA1cAqYDmwzP/uAcuAZcAyYClwGrgI9I0a0YhG/C/4A1/3u/g2u/kSAAAAAElFTkSuQmCC" alt="Icon">
+                    <div class="section-title">VỀ VIETTEL SOFTWARE</div>
+                </div>
+                <div class="content-editable" contenteditable="true">
+                    <strong>Viettel Software</strong> (VTIT), thành viên của <strong>Tập đoàn Viettel</strong>, là nhà cung cấp hàng đầu các dịch vụ gia công phần mềm và giải pháp CNTT. Với hơn <strong>1.500</strong> chuyên gia, chúng tôi cam kết thúc đẩy chuyển đổi số tại Việt Nam và vươn tầm thế giới.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <img class="title-icon main-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACrklEQVR4nO2Yu2sVQRSHv0tMTERsfCSKRVCIIGxhI4iF2vhAFFtFLPxL/BPsTEQ0lgErwUILwcZGEcRGEU0hIcaQ+Mh7I3f2zOzM7J57vXvFwMOwcz/zOXPmzJmZS0QjGjGiEc0g1A1sA94D28G2q/97wAvAD7bdegHMA4+AD8BHoK+Bbc8C14DrwA9gXyPtVwP3gQfAR6A7I+1eADeAa8AvYLBR9jcCD4F7wGegKyPtngfXgGvAT2CgEfbnAg+BO8BnoDMj7Z4FV4FrwE9gXyPsbwDuA3eBT0BnRtq9AK4C14BfwEAj7M8F7gN3gM9AZ0bavQCuAleBn8B+F+xPAreB28AnYFeK9s+BK8AV4BewzwX708Bt4BbwCdiZov1zwUXgMvAT2OeC/WngFnAL+ATsTNH+BXARuAz8AHa7YH8GuAWcBz4Cu1K0fw5cAC4BP4DdLtifBs4D54BPwM4U7V8AF4DzQA/Y7YL9WeAc8B74COxM0f4FcB44B/QA/a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A7a64j6eAueAd8D2FO1fAGeBd8A+V9zHU+AM8A7YlqL9C+AM8A7Y64r7eAKcAd4BW1O0fw6cB94Be11xH0+AM8BboC1F+xfAGeAtsNcV99ECZ4A3wJYxvD8NnALeADuH8P4UcAp4DewawvtTwCngNbBtCO9PAyeBV8C2Ibw/BZwCdtfQ7qV/3+x1/f68a/j+lI7vTyN9f34C24bw/hRwEngFbB3C+9PAKWALsHEI708Bp4ANwMYhvD8FnAI2ABuH8P4UcArYAGwcwvuTwClgPbB+CO9PA6eA9cD6Ibw/BZwC1gPrh/D+FHAKeA2sHcK7N6JtA6uA1cAqYDmwzP/uAcuAZcAyYClwGrgI9I0a0YhG/C/4A1/3u/g2u/kSAAAAAElFTkSuQmCC" alt="Icon">
+                    <div class="section-title">LÝ DO HỢP TÁC</div>
+                </div>
+                <div class="content-editable" contenteditable="true">
+                    <ul>
+                        <li><strong>Tùy biến chuyên sâu:</strong> Thích ứng cao độ mô hình kinh doanh.</li>
+                        <li><strong>Tiêu chuẩn toàn cầu:</strong> CMMI5, ISO-27001, ISO-9001.</li>
+                        <li><strong>Công nghệ vượt trội:</strong> AI, IoT, Blockchain, Big Data.</li>
+                        <li><strong>Uy tín vững chắc:</strong> Đối tác tin cậy tại Việt Nam và Quốc tế.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <img class="title-icon main-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACrklEQVR4nO2Yu2sVQRSHv0tMTERsfCSKRVCIIGxhI4iF2vhAFFtFLPxL/BPsTEQ0lgErwUILwcZGEcRGEU0hIcaQ+Mh7I3f2zOzM7J57vXvFwMOwcz/zOXPmzJmZS0QjGjGiEc0g1A1sA94D28G2q/97wAvAD7bdegHMA4+AD8BHoK+Bbc8C14DrwA9gXyPtVwP3gQfAR6A7I+1eADeAa8AvYLBR9jcCD4F7wGegKyPtngfXgGvAT2CgEfbnAg+BO8BnoDMj7Z4FV4FrwE9gXyPsbwDuA3eBT0BnRtq9AK4C14BfwEAj7M8F7gN3gM9AZ0bavQCuAleBn8B+F+xPAreB28AnYFeK9s+BK8AV4BewzwX708Bt4BbwCdiZov1zwUXgMvAT2OeC/WngFnAL+ATsTNH+BXARuAz8AHa7YH8GuAWcBz4Cu1K0fw5cAC4BP4DdLtifBs4D54BPwM4U7V8AF4DzQA/Y7YL9WeAc8B74COxM0f4FcB44B/QA/a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A7a64j6eAueAd8D2FO1fAGeBd8A+V9zHU+AM8A7YlqL9C+AM8A7Y64r7eAKcAd4BW1O0fw6cB94Be11xH0+AM8BboC1F+xfAGeAtsNcV99ECZ4A3wJYxvD8NnALeADuH8P4UcAp4DewawvtTwCngNbBtCO9PAyeBV8C2Ibw/BZwCdtfQ7qV/3+x1/f68a/j+lI7vTyN9f34C24bw/hRwEngFbB3C+9PAKWALsHEI708Bp4ANwMYhvD8FnAI2ABuH8P4UcArYAGwcwvuTwClgPbB+CO9PA6eA9cD6Ibw/BZwC1gPrh/D+FHAKeA2sHcK7N6JtA6uA1cAqYDmwzP/uAcuAZcAyYClwGrgI9I0a0YhG/C/4A1/3u/g2u/kSAAAAAElFTkSuQmCC" alt="Icon">
+                    <div class="section-title">DỊCH VỤ CUNG CẤP</div>
+                </div>
+                <div class="content-editable" contenteditable="true">
+                    <ul>
+                        <li><strong>Tư vấn giải pháp:</strong> Chiến lược chuyển đổi số toàn diện.</li>
+                        <li><strong>Gia công phần mềm:</strong> Phát triển theo yêu cầu, linh hoạt.</li>
+                        <li><strong>Phái cử nhân sự:</strong> Chuyên gia chất lượng cao, quản lý hiệu quả.</li>
+                        <li><strong>Vận hành & Bảo trì:</strong> Đảm bảo hệ thống an toàn, ổn định.</li>
+                    </ul>
+                </div>
+            </div>
+
+             <div class="section">
+                <div class="section-header">
+                    <img class="title-icon main-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACrklEQVR4nO2Yu2sVQRSHv0tMTERsfCSKRVCIIGxhI4iF2vhAFFtFLPxL/BPsTEQ0lgErwUILwcZGEcRGEU0hIcaQ+Mh7I3f2zOzM7J57vXvFwMOwcz/zOXPmzJmZS0QjGjGiEc0g1A1sA94D28G2q/97wAvAD7bdegHMA4+AD8BHoK+Bbc8C14DrwA9gXyPtVwP3gQfAR6A7I+1eADeAa8AvYLBR9jcCD4F7wGegKyPtngfXgGvAT2CgEfbnAg+BO8BnoDMj7Z4FV4FrwE9gXyPsbwDuA3eBT0BnRtq9AK4C14BfwEAj7M8F7gN3gM9AZ0bavQCuAleBn8B+F+xPAreB28AnYFeK9s+BK8AV4BewzwX708Bt4BbwCdiZov1zwUXgMvAT2OeC/WngFnAL+ATsTNH+BXARuAz8AHa7YH8GuAWcBz4Cu1K0fw5cAC4BP4DdLtifBs4D54BPwM4U7V8AF4DzQA/Y7YL9WeAc8B74COxM0f4FcB44B/QA/a64j2fAOeAdsCtF+xfAOeAdsN8V9/EMOAe8A3amaP8COAe8A7a64j6eAueAd8D2FO1fAGeBd8A+V9zHU+AM8A7YlqL9C+AM8A7Y64r7eAKcAd4BW1O0fw6cB94Be11xH0+AM8BboC1F+xfAGeAtsNcV99ECZ4A3wJYxvD8NnALeADuH8P4UcAp4DewawvtTwCngNbBtCO9PAyeBV8C2Ibw/BZwCdtfQ7qV/3+x1/f68a/j+lI7vTyN9f34C24bw/hRwEngFbB3C+9PAKWALsHEI708Bp4ANwMYhvD8FnAI2ABuH8P4UcArYAGwcwvuTwClgPbB+CO9PA6eA9cD6Ibw/BZwC1gPrh/D+FHAKeA2sHcK7N6JtA6uA1cAqYDmwzP/uAcuAZcAyYClwGrgI9I0a0YhG/C/4A1/3u/g2u/kSAAAAAElFTkSuQmCC" alt="Icon">
+                    <div class="section-title">KINH NGHIỆM TRIỂN KHAI</div>
+                </div>
+                <div class="content-editable" contenteditable="true">
+                    <ul>
+                        <li><strong>Viễn thông:</strong> OSS, BSS, AI Chatbot, Big Data.</li>
+                        <li><strong>Chính phủ/Doanh nghiệp:</strong> Smart City, ERP, CRM, e-Office.</li>
+                        <li><strong>Tài chính số:</strong> Ví điện tử, Ngân hàng số, Cổng thanh toán.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-general">
+                    <p><strong>CÔNG TY TNHH MTV ĐẦU TƯ CÔNG NGHỆ VIETTEL (VTIT)</strong></p>
+                    <p>
+                        <i class="bi bi-globe" style="color: #EA2035;"></i> <a href="https://viettelsoftware.com" target="_blank">viettelsoftware.com</a> 
+                        | MST: 2801045888
+                    </p>
+                </div>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="contact-card">
+                            <h3>TRỤ SỞ CHÍNH</h3>
+                            <div class="contact-details" contenteditable="true">
+                                <p><i class="bi bi-geo-alt-fill"></i> 36A Dịch Vọng Hậu, Cầu Giấy, HN</p>
+                                <p><i class="bi bi-telephone-fill"></i> +84-988889446</p>
+                                <p><i class="bi bi-envelope-fill"></i> contact@viettelsoftware.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="contact-card">
+                            <h3>VĂN PHÒNG MIỀN NAM</h3>
+                            <div class="contact-details" contenteditable="true" id="contactHCM">
+                                <p><i class="bi bi-geo-alt-fill"></i> Tòa nhà Viettel, 285 CMT8, HCM</p>
+                                <p>
+                                    <i class="bi bi-telephone-fill"></i> 
+                                    <strong>Mr. Phụng</strong> +84-983667248
+                                    <span class="social-icons" contenteditable="false">
+                                        <a href="http://zalo.me/84983667248" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/50px-Icon_of_Zalo.svg.png"></a>
+                                        <a href="https://wa.me/84983667248" target="_blank"><img src="https://static.whatsapp.net/rsrc.php/yZ/r/JvsnINJ2CZv.svg"></a>
+                                    </span>
+                                </p>
+                                <p><i class="bi bi-envelope-fill"></i> phunghm@viettelsoftware.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        const card = document.getElementById('brochure-card');
+        const updateLogoUrlBtn = document.getElementById('updateLogoUrlBtn');
+        const logoUrlInput = document.getElementById('logoUrlInput');
+
+        // --- 0. MARKER ---
+        function createPageMarkers() {
+            const A4_MM = 297;
+            const container = document.getElementById('pageMarkersContainer');
+            container.innerHTML = '';
+            
+            // Tính số trang dựa trên độ cao card
+            const totalHeightMM = (card.scrollHeight * 25.4) / 96; 
+            const pages = Math.ceil(totalHeightMM / A4_MM);
+
+            for (let i = 1; i < pages; i++) {
+                const marker = document.createElement('div');
+                marker.className = 'page-marker';
+                marker.style.top = `${i * 297}mm`;
+                marker.innerText = `Hết trang ${i}`;
+                container.appendChild(marker);
+            }
+        }
+        window.addEventListener('load', createPageMarkers);
+        card.addEventListener('input', createPageMarkers);
+
+        // --- 1. UPLOAD ---
+        function handleImageUpload(inputId, imgClassOrId) {
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const base64 = event.target.result;
+                        if(imgClassOrId.startsWith('.')) {
+                            document.querySelectorAll(imgClassOrId).forEach(img => img.src = base64);
+                        } else {
+                            const img = document.getElementById(imgClassOrId);
+                            img.src = base64;
+                            img.removeAttribute('crossOrigin');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        handleImageUpload('logoPartnerUpload', 'partnerLogo');
+        handleImageUpload('iconTitleUpload', '.main-icon');
+
+        updateLogoUrlBtn.addEventListener('click', function() {
+            const url = logoUrlInput.value.trim();
+            if (url) {
+                const img = document.getElementById('partnerLogo');
+                img.setAttribute('crossOrigin', 'anonymous');
+                img.src = url;
+                img.onerror = function() {
+                    alert('Không thể tải ảnh từ URL này (bị chặn CORS). Vui lòng tải về máy và dùng nút Upload.');
+                    img.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iODAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjY2NjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zNWVtIj5MT0dPIMSQ4buQSSBUw4FDPC90ZXh0Pjwvc3ZnPg==";
+                };
+            }
+        });
+
+        // --- 2. HÀM CẮT TRANG THÔNG MINH ---
+        function sliceCanvasToA4(sourceCanvas) {
+            const A4_RATIO = 210 / 297;
+            const contentWidth = sourceCanvas.width;
+            
+            // Tính chiều cao chuẩn của 1 trang A4 theo pixel của canvas hiện tại
+            const pageHeight = contentWidth / A4_RATIO; 
+            const totalHeight = sourceCanvas.height;
+            
+            // THUẬT TOÁN MỚI: TÍNH SỐ TRANG CHÍNH XÁC
+            // Trừ đi một khoảng đệm nhỏ (buffer) khoảng 5px để tránh việc dư 1px cũng tính là sang trang mới
+            const buffer = 5; 
+            let totalPages = Math.ceil((totalHeight - buffer) / pageHeight);
+            
+            // Tối thiểu luôn là 1 trang
+            if (totalPages < 1) totalPages = 1;
+
+            console.log(`Chiều cao Canvas: ${totalHeight}, Chiều cao 1 trang: ${pageHeight}, Số trang tính được: ${totalPages}`);
+
+            const pages = [];
+            for (let i = 0; i < totalPages; i++) {
+                const canvasPage = document.createElement('canvas');
+                canvasPage.width = contentWidth;
+                canvasPage.height = pageHeight;
+                const ctx = canvasPage.getContext('2d');
+
+                // Nền trắng
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvasPage.width, canvasPage.height);
+
+                // Cắt ảnh
+                const sourceY = i * pageHeight;
+                const remainingHeight = totalHeight - sourceY;
+                const drawHeight = Math.min(pageHeight, remainingHeight);
+
+                ctx.drawImage(
+                    sourceCanvas, 
+                    0, sourceY, contentWidth, drawHeight, // Source
+                    0, 0, contentWidth, drawHeight        // Dest
+                );
+
+                pages.push(canvasPage);
+            }
+            return pages;
+        }
+
+        // --- 3. EXPORT PNG ---
+        document.getElementById('exportPngBtn').addEventListener('click', function() {
+            card.classList.add('exporting');
+            const scale = parseFloat(document.getElementById('paperSize').value);
+            
+            html2canvas(card, {
+                scale: 3 * scale,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                card.classList.remove('exporting');
+                try {
+                    const pages = sliceCanvasToA4(canvas);
+                    pages.forEach((pageCanvas, index) => {
+                        const link = document.createElement('a');
+                        link.download = `VTIT-Brochure-Page-${index + 1}.png`;
+                        link.href = pageCanvas.toDataURL('image/png');
+                        link.click();
+                    });
+                } catch (e) {
+                    alert("Lỗi xuất ảnh: " + e.message);
+                }
+            });
+        });
+
+        // --- 4. EXPORT PDF ---
+        document.getElementById('exportPdfBtn').addEventListener('click', function() {
+            card.classList.add('exporting');
+            const scaleFactor = parseFloat(document.getElementById('paperSize').value);
+            
+            html2canvas(card, {
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                card.classList.remove('exporting');
+                try {
+                    const pages = sliceCanvasToA4(canvas);
+                    
+                    const formats = { '1': 'a4', '1.41': 'a3', '2': 'a2', '2.82': 'a1', '4': 'a0', '0.7': 'a5' };
+                    const pdfFormat = formats[scaleFactor.toString()] || 'a4';
+                    
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: pdfFormat
+                    });
+
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                    pages.forEach((pageCanvas, index) => {
+                        if (index > 0) pdf.addPage();
+                        const imgData = pageCanvas.toDataURL('image/png');
+                        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    });
+
+                    pdf.save('VTIT-Brochure.pdf');
+                } catch (e) {
+                    alert("Lỗi xuất PDF: " + e.message);
+                }
+            });
+        });
+
+        // --- 5. EXPORT WORD ---
+        document.getElementById('exportWordBtn').addEventListener('click', function() {
+            const sections = document.querySelectorAll('.section');
+            let contentHTML = '';
+            sections.forEach(sec => {
+                const title = sec.querySelector('.section-title').innerText;
+                const content = sec.querySelector('.content-editable').innerHTML;
+                contentHTML += `<h3 style="color:#EA2035; border-bottom:1px solid #333; margin-top:20px;">${title}</h3>${content}`;
+            });
+            const contactHN = document.querySelectorAll('.contact-details')[0].innerHTML;
+            const contactHCM = document.getElementById('contactHCM').innerHTML;
+            const docHTML = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>Export Word</title></head>
+                <body style="font-family: Arial, sans-serif;">
+                    <div style="text-align:center;">
+                        <h1 style="color: #EA2035;">${document.querySelector('.company-name').innerText}</h1>
+                        <p>VIETTEL SOFTWARE (VTIT)</p>
+                    </div>
+                    ${contentHTML}
+                    <h3 style="color:#EA2035; border-bottom:1px solid #333; margin-top:20px;">LIÊN HỆ</h3>
+                    <table width="100%" cellpadding="10" cellspacing="0" border="0">
+                        <tr>
+                            <td width="50%" valign="top" style="background-color: #f9f9f9; border-left: 5px solid #EA2035;">
+                                <strong style="color:#EA2035">TRỤ SỞ CHÍNH</strong><br/>${contactHN}
+                            </td>
+                            <td width="20"></td>
+                            <td width="50%" valign="top" style="background-color: #f9f9f9; border-left: 5px solid #EA2035;">
+                                <strong style="color:#EA2035">VĂN PHÒNG MIỀN NAM</strong><br/>${contactHCM}
+                            </td>
+                        </tr>
+                    </table>
+                </body></html>`;
+            const blob = new Blob(['\ufeff', docHTML], { type: 'application/msword' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'VTIT-Brochure.doc';
+            link.click();
+        });
+
+        // --- 6. EXPORT HTML ---
+        document.getElementById('saveCompactHtmlBtn').addEventListener('click', function() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Brochure-VTIT-Compact-Final.html';
+            link.click();
+        });
+    </script>
+</body>
+</html>
