@@ -103,7 +103,7 @@
                         <div id="resultBoxContent" style="max-height: 300px; overflow-y: auto;">
                             <span class="small opacity-50 text-uppercase fw-bold">Kết quả vừa quay</span>
                             <div id="lastResult" class="my-3 h2 fw-bold text-white">—</div>
-                            <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto">Sẵn sàng</div>
+                            <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto">Sẵn sàng: Thiết lập & Quay đi</div>
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
                             <i class="fas fa-file-excel text-success" style="cursor:pointer" onclick="exportExcel('stats')" title="Xuất Thống kê"></i>
                         </div>
                         <div id="miniStats" style="max-height: 300px; overflow-y: auto;">
-                            <div class="text-center py-4 opacity-25 small italic">Chưa có dữ liệu...</div>
+                            <div class="text-center py-4 opacity-25 small italic">Chưa có dữ liệu... Thiết lập & Quay đi</div>
                         </div>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                         </div>
                     </div>
                     <div id="historyList" class="history-list-box">
-                        <div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay nào...</div>
+                        <div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay ... Thiết lập & Quay đi</div>
                     </div>
                 </div>
             </div>
@@ -571,7 +571,7 @@
                     html += `<div class="mb-2 border-bottom border-white-50 pb-1"><div class="fw-bold" style="font-size:0.75rem; color:${pObj.color}">${pObj.name}</div><div class="ps-1 small opacity-75">${winnersHtml}</div></div>`;
                 }
             });
-            container.innerHTML = html || '<div class="text-center py-4 opacity-25 small italic">Chưa có dữ liệu...</div>';
+            container.innerHTML = html || '<div class="text-center py-4 opacity-25 small italic">Chưa có dữ liệu... Thiết lập & Quay đi</div>';
         }
 
         function renderFinalSummary() {
