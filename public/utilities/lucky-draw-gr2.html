@@ -51,7 +51,7 @@
         .btn-spin { background: linear-gradient(90deg, var(--lz-orange), #E64A19); border: none; color: white; padding: 18px; border-radius: 16px; font-weight: 800; width: 100%; transition: 0.3s; box-shadow: 0 10px 20px rgba(230, 74, 25, 0.3); }
         
         .sync-layout-wrapper { display: flex; flex-direction: column; height: 100%; gap: 24px; }
-        .result-fixed-box { height: 220px; flex-shrink: 0; transition: all 0.5s ease; }
+        .result-fixed-box { height: 220px; flex-shrink: 0; }
         .stats-dynamic-box { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; }
         #miniStats { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
 
@@ -61,15 +61,19 @@
         .editable-name { display: inline-block; min-width: 50px; outline: none; }
         .editable-name:focus { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
         
+        /* Chế độ tổng kết */
         #playZone { transition: opacity 0.3s; }
         #finalSummaryZone { display: none; text-align: center; width: 100%; height: 100%; flex-direction: column; }
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; text-align: left; max-height: 450px; overflow-y: auto; padding: 10px; }
+
+        /* Preset số */
+        .number-preset-controls { display: none; margin-top: 10px; align-items: center; gap: 10px; }
+        .number-preset-controls input { width: 100px; }
 
         .preset-container { margin-top: 20px; margin-bottom: 15px; }
         .preset-select { width: 100%; padding: 8px 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--lz-border); color: #fff; font-size: 0.85rem; }
         .preset-select option { background: #0F162C; color: #fff; }
         .province-select { margin-top: 10px; }
-        .number-input-group { margin-top: 10px; display: none; }
 
         footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--lz-border); color: #fff; opacity: 0.7; font-size: 0.9em; }
         ::-webkit-scrollbar { width: 4px; }
@@ -79,6 +83,10 @@
             .brand-year { text-align: center; margin-top: 10px; flex-basis: 100%; }
             .reward-item { grid-template-columns: 1fr 40px 60px 30px; gap: 8px; }
             .history-row { grid-template-columns: 30px 1fr 1fr 70px; font-size: 0.8rem; padding: 10px; }
+        }
+        @media (max-width: 576px) {
+            .history-row { grid-template-columns: 25px 1fr 1fr 60px; }
+            .result-fixed-box { height: 180px; }
         }
     </style>
 </head>
@@ -99,11 +107,15 @@
         <div class="row g-4 mb-4">
             <div class="col-lg-4">
                 <div class="sync-layout-wrapper">
-                    <div id="resultBox" class="glass-card text-center d-flex flex-column justify-content-center result-fixed-box" style="border: 2px dashed var(--lz-accent);">
-                        <div id="resultBoxContent">
-                            <span class="small opacity-50 text-uppercase fw-bold">Kết quả vừa quay</span>
-                            <div id="lastResult" class="my-3 h1 fw-bold text-white">—</div>
-                            <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto">Sẵn sàng</div>
+                    <div class="glass-card text-center d-flex flex-column justify-content-center result-fixed-box" style="border: 2px dashed var(--lz-accent);">
+                        <span class="small opacity-50 text-uppercase fw-bold">Kết quả vừa quay</span>
+                        <div id="lastResult" class="my-3 h1 fw-bold text-white">—</div>
+                        <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto">Sẵn sàng</div>
+
+                        <!-- Thống kê theo người khi hết giải -->
+                        <div id="winnerStatsByPerson" style="display:none; width:100%; text-align:left; font-size:0.85rem; margin-top:10px;">
+                            <div class="fw-bold text-primary small mb-2">THỐNG KÊ THEO NGƯỜI TRÚNG</div>
+                            <div id="winnerStatsContent"></div>
                         </div>
                     </div>
 
@@ -136,7 +148,7 @@
                         <div class="col-md-5">
                             <div class="ps-md-4 py-4">
                                 <div class="audio-bar">
-                                    <div class="audio-main-btn" onclick="toggleMute()">
+                                    <div class="audio-main-btn" onclick="winSound.muted = !winSound.muted; document.getElementById('muteIcon').className = winSound.muted ? 'fas fa-play-circle text-secondary' : 'fas fa-pause-circle text-white';">
                                         <i class="fas fa-pause-circle text-white" id="muteIcon"></i>
                                         <span style="font-size: 0.75rem; font-weight: 800;">ÂM THANH</span>
                                     </div>
@@ -183,7 +195,7 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <label class="small fw-bold opacity-75 text-primary"><i class="fas fa-rocket me-2"></i>TỐC ĐỘ QUAY</label>
-                            <div class="d-flex align-items-center gap-2">
+                            <div class="d-flex align-items: center; gap: 2;">
                                 <input type="number" id="spinSpeed" class="form-control lz-input text-center p-1" value="3" style="width: 70px;">
                                 <span class="unit-label">vòng/s</span>
                             </div>
@@ -196,11 +208,11 @@
                         <span class="ms-2 small text-white-50 fst-italic" style="font-size: 0.75rem;">(SL ∞ là vô hạn)</span>
                     </div>
 
+                    <!-- Phần preset -->
                     <div class="preset-container">
-                        <select id="presetSelect" class="preset-select" onchange="handlePresetChange(this.value)">
+                        <select id="presetSelect" class="preset-select" onchange="applyPreset(this.value)">
                             <option value="">-- Chọn mẫu cấu hình --</option>
                             <option value="quay_trung_thuong">🎯 Quay trúng thưởng</option>
-                            <option value="quay_chon_so">🔢 Quay chọn số (1-N)</option>
                             <option value="quay_an_nhau">🍺 Quay ăn nhậu</option>
                             <option value="quay_an_mon">🍽️ Quay ăn món gì</option>
                             <option value="quay_con_giap">🐉 Quay chọn con giáp</option>
@@ -209,13 +221,13 @@
                             <option value="quay_mau">🎨 Quay chọn màu</option>
                             <option value="quay_tinh_thanh">🏙️ Quay 34 tỉnh thành</option>
                             <option value="quay_xa_phuong">🏘️ Quay xã phường</option>
+                            <option value="quay_chon_so">🔢 Quay chọn số</option>
                         </select>
-                        
-                        <div id="numberInputGroup" class="number-input-group">
-                            <div class="d-flex gap-2">
-                                <input type="number" id="maxNumberN" class="form-control lz-input p-2" value="10" placeholder="Nhập N...">
-                                <button class="btn btn-primary btn-sm rounded-3 px-3" onclick="applyNumberPreset()">Cập nhật</button>
-                            </div>
+
+                        <!-- Control cho preset số -->
+                        <div class="number-preset-controls d-flex" id="numberPresetControls">
+                            <input type="number" id="numberCount" class="form-control lz-input text-center" value="10" min="2" style="width:90px;">
+                            <button class="btn btn-outline-light btn-sm" onclick="applyNumberPreset()">Cập nhật</button>
                         </div>
 
                         <select id="provinceSelect" class="preset-select province-select" style="display: none;" onchange="loadWardsByProvince(this.value)">
@@ -237,7 +249,7 @@
                         <div>
                             <button onclick="clearHistory()" class="btn btn-link btn-sm text-danger text-decoration-none"><i class="fas fa-trash"></i></button>
                             <button onclick="exportExcel('history')" class="btn btn-sm btn-outline-success border-0 me-2"><i class="fas fa-file-excel"></i></button>
-                        </div>
+                        </div符>
                     </div>
                     <div id="historyList" class="history-list-box">
                         <div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay nào...</div>
@@ -249,7 +261,11 @@
         <footer>
             <div class="footer-copyright-text">
                 <p>LUCKY <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span> &copy; 
-                    <script>document.write(`2024–${new Date().getFullYear()}`);</script>
+                    <script>
+                        const startYear = 2024;
+                        const currentYear = new Date().getFullYear();
+                        document.write(`${startYear}–${currentYear}`);
+                    </script>
                 </p>
             </div>
         </footer>
@@ -269,58 +285,107 @@
         let prizePriorityOrder = []; 
         let provincesData = null;
 
-        const presetColors = ['#FF6300', '#0070C0', '#0A703F', '#EA2035', '#7030A0', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'];
+        const presetColors = [
+            '#FF6300', '#0070C0', '#0A703F', '#EA2035', '#7030A0',
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+            '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
+        ];
 
         const presets = {
-            quay_trung_thuong: { name: "Quay trúng thưởng", items: [{ name: "Giải Đặc Biệt", color: "#FF6300", qty: "1" }, { name: "Giải Nhất", color: "#0070C0", qty: "2" }, { name: "Giải Nhì", color: "#0A703F", qty: "3" }, { name: "Giải Ba", color: "#EA2035", qty: "4" }, { name: "Khuyến Khích", color: "#7030A0", qty: "5" }] },
-            quay_an_nhau: { name: "Quay ăn nhậu", items: ["hải sản", "lẩu", "nướng", "gà", "vịt", "chay", "mì cay"].map((v, i) => ({ name: "Nhậu " + v, color: presetColors[i], qty: "" })) },
-            quay_an_mon: { name: "Quay ăn món gì", items: ["Phở", "Bún chả", "Bánh mì", "Cơm tấm", "Bánh xèo", "Hủ tiếu", "Bún bò Huế", "Mì Quảng"].map((v, i) => ({ name: v, color: presetColors[i], qty: "" })) },
-            quay_con_giap: { name: "Quay chọn con giáp", items: ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"].map((v, i) => ({ name: v, color: presetColors[i], qty: "" })) },
-            quay_thang: { name: "Quay chọn tháng", items: Array.from({length: 12}, (_, i) => ({ name: "Tháng " + (i+1), color: presetColors[i % presetColors.length], qty: "" })) },
-            quay_ngay: { name: "Quay chọn ngày", items: ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"].map((v, i) => ({ name: v, color: presetColors[i], qty: "" })) },
-            quay_mau: { name: "Quay chọn màu", items: [{ name: "Đỏ", color: "#FF0000", qty: "" }, { name: "Xanh dương", color: "#0000FF", qty: "" }, { name: "Xanh lá", color: "#00FF00", qty: "" }, { name: "Vàng", color: "#FFFF00", qty: "" }, { name: "Cam", color: "#FFA500", qty: "" }, { name: "Tím", color: "#800080", qty: "" }, { name: "Hồng", color: "#FFC0CB", qty: "" }, { name: "Nâu", color: "#A52A2A", qty: "" }] },
-            quay_tinh_thanh: { name: "Quay 34 tỉnh thành", items: ["Hà Nội", "TP HCM", "Hải Phòng", "Đà Nẵng", "Cần Thơ", "An Giang", "Bà Rịa - Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh", "Bến Tre", "Bình Định", "Bình Dương", "Bình Phước", "Bình Thuận", "Cà Mau", "Cao Bằng", "Đắk Lắk", "Đắk Nông"].map((v, i) => ({ name: v, color: presetColors[i % presetColors.length], qty: "" })) }
+            quay_trung_thuong: {
+                name: "Quay trúng thưởng",
+                items: [
+                    { name: "Giải Đặc Biệt", color: "#FF6300", qty: "1" },
+                    { name: "Giải Nhất", color: "#0070C0", qty: "2" },
+                    { name: "Giải Nhì", color: "#0A703F", qty: "3" },
+                    { name: "Giải Ba", color: "#EA2035", qty: "4" },
+                    { name: "Khuyến Khích", color: "#7030A0", qty: "5" }
+                ]
+            },
+            quay_an_nhau: { name: "Quay ăn nhậu", items: [ { name: "Nhậu hải sản", color: presetColors[0], qty: "" }, { name: "Nhậu lẩu", color: presetColors[1], qty: "" }, { name: "Nhậu nướng", color: presetColors[2], qty: "" }, { name: "Nhậu gà", color: presetColors[3], qty: "" }, { name: "Nhậu vịt", color: presetColors[4], qty: "" }, { name: "Nhậu chay", color: presetColors[5], qty: "" }, { name: "Nhậu mì cay", color: presetColors[6], qty: "" } ] },
+            quay_an_mon: { name: "Quay ăn món gì", items: [ { name: "Phở", color: presetColors[0], qty: "" }, { name: "Bún chả", color: presetColors[1], qty: "" }, { name: "Bánh mì", color: presetColors[2], qty: "" }, { name: "Cơm tấm", color: presetColors[3], qty: "" }, { name: "Bánh xèo", color: presetColors[4], qty: "" }, { name: "Hủ tiếu", color: presetColors[5], qty: "" }, { name: "Bún bò Huế", color: presetColors[6], qty: "" }, { name: "Mì Quảng", color: presetColors[7], qty: "" } ] },
+            quay_con_giap: { name: "Quay chọn con giáp", items: [ { name: "Tý", color: presetColors[0], qty: "" }, { name: "Sửu", color: presetColors[1], qty: "" }, { name: "Dần", color: presetColors[2], qty: "" }, { name: "Mão", color: presetColors[3], qty: "" }, { name: "Thìn", color: presetColors[4], qty: "" }, { name: "Tỵ", color: presetColors[5], qty: "" }, { name: "Ngọ", color: presetColors[6], qty: "" }, { name: "Mùi", color: presetColors[7], qty: "" }, { name: "Thân", color: presetColors[8], qty: "" }, { name: "Dậu", color: presetColors[9], qty: "" }, { name: "Tuất", color: presetColors[10], qty: "" }, { name: "Hợi", color: presetColors[11], qty: "" } ] },
+            quay_thang: { name: "Quay chọn tháng", items: Array.from({length:12},(_,i)=> ({name:`Tháng ${i+1}`, color:presetColors[i], qty:""})) },
+            quay_ngay: { name: "Quay chọn ngày", items: [ "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật" ].map((d,i)=>({name:d, color:presetColors[i], qty:""})) },
+            quay_mau: { name: "Quay chọn màu", items: [ {name:"Đỏ",color:"#FF0000",qty:""}, {name:"Xanh dương",color:"#0000FF",qty:""}, {name:"Xanh lá",color:"#00FF00",qty:""}, {name:"Vàng",color:"#FFFF00",qty:""}, {name:"Cam",color:"#FFA500",qty:""}, {name:"Tím",color:"#800080",qty:""}, {name:"Hồng",color:"#FFC0CB",qty:""}, {name:"Nâu",color:"#A52A2A",qty:""} ] },
+            quay_tinh_thanh: { name: "Quay 34 tỉnh thành", items: [ "Hà Nội","TP HCM","Hải Phòng","Đà Nẵng","Cần Thơ","An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận","Cà Mau","Cao Bằng","Đắk Lắk","Đắk Nông" ].map((p,i)=>({name:p, color:presetColors[i%presetColors.length], qty:""})) },
+            quay_xa_phuong: { name: "Quay xã phường", items: [] },
+            quay_chon_so: { name: "Quay chọn số", items: [] }
         };
-
-        function handlePresetChange(val) {
-            document.getElementById('numberInputGroup').style.display = (val === 'quay_chon_so') ? 'block' : 'none';
-            document.getElementById('provinceSelect').style.display = (val === 'quay_xa_phuong') ? 'block' : 'none';
-            if(val === 'quay_chon_so') applyNumberPreset();
-            else if(val === 'quay_xa_phuong') { if(!provincesData) loadProvincesData(); }
-            else applyPreset(val);
-        }
-
-        function applyNumberPreset() {
-            const n = parseInt(document.getElementById('maxNumberN').value) || 10;
-            rewardContainer.innerHTML = '';
-            for(let i = 1; i <= n; i++) {
-                addRewardRow(i.toString(), presetColors[(i-1) % presetColors.length], "");
-            }
-            refresh();
-        }
 
         async function loadProvincesData() {
             try {
                 const response = await fetch('../assets/refs/vn-xaphuong-2025-main/danhmucxaphuong.json');
                 provincesData = await response.json();
-                const sel = document.getElementById('provinceSelect');
-                sel.innerHTML = '<option value="">-- Chọn tỉnh thành --</option>';
-                provincesData.forEach(p => { const opt = document.createElement('option'); opt.value = p.matinhBNV; opt.textContent = p.tentinhmoi; sel.appendChild(opt); });
-            } catch (e) { console.error(e); }
+                populateProvinceSelect();
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu tỉnh thành:', error);
+                Swal.fire({title: 'Lỗi',text: 'Không thể tải dữ liệu tỉnh thành.',icon: 'error'});
+            }
         }
 
-        function loadWardsByProvince(pid) {
-            if(!provincesData || !pid) return;
-            const p = provincesData.find(x => x.matinhBNV == pid);
+        function populateProvinceSelect() {
+            if (!provincesData) return;
+            const provinceSelect = document.getElementById('provinceSelect');
+            provinceSelect.innerHTML = '<option value="">-- Chọn tỉnh thành --</option>';
+            provincesData.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.matinhBNV;
+                option.textContent = province.tentinhmoi;
+                provinceSelect.appendChild(option);
+            });
+        }
+
+        function loadWardsByProvince(provinceId) {
+            if (!provincesData || !provinceId) return;
+            const province = provincesData.find(p => p.matinhBNV == provinceId);
+            if (!province || !province.phuongxa) return;
             rewardContainer.innerHTML = '';
-            p.phuongxa.forEach((w, i) => addRewardRow(w.tenphuongxa, presetColors[i % presetColors.length], ""));
+            province.phuongxa.forEach((ward, index) => {
+                const colorIndex = index % presetColors.length;
+                addRewardRow(ward.tenphuongxa, presetColors[colorIndex], "");
+            });
             refresh();
         }
 
-        function applyPreset(pid) {
-            if(!pid || !presets[pid]) return;
+        function applyNumberPreset() {
+            const n = parseInt(document.getElementById('numberCount').value) || 10;
+            if (n < 2) return;
             rewardContainer.innerHTML = '';
-            presets[pid].items.forEach(item => addRewardRow(item.name, item.color, item.qty));
+            for(let i=1; i<=n; i++) {
+                const color = presetColors[(i-1) % presetColors.length];
+                addRewardRow(i.toString(), color, "");
+            }
+            refresh();
+        }
+
+        function applyPreset(presetId) {
+            const provinceSelect = document.getElementById('provinceSelect');
+            const numberControls = document.getElementById('numberPresetControls');
+
+            if (presetId === 'quay_xa_phuong') {
+                provinceSelect.style.display = 'block';
+                numberControls.style.display = 'none';
+                if (!provincesData) loadProvincesData();
+                return;
+            } else if (presetId === 'quay_chon_so') {
+                provinceSelect.style.display = 'none';
+                numberControls.style.display = 'flex';
+                applyNumberPreset();
+                return;
+            } else {
+                provinceSelect.style.display = 'none';
+                numberControls.style.display = 'none';
+            }
+            
+            if (!presetId || !presets[presetId]) return;
+            
+            const preset = presets[presetId];
+            rewardContainer.innerHTML = '';
+            preset.items.forEach(item => {
+                addRewardRow(item.name, item.color, item.qty);
+            });
             refresh();
         }
 
@@ -328,31 +393,45 @@
             const row = document.createElement('div');
             row.className = 'reward-item';
             const finalColor = color || `#${Math.floor(Math.random()*16777215).toString(16)}`;
-            row.innerHTML = `<input type="text" class="form-control lz-input rew-name p-1 ps-2" placeholder="Tên giải..." value="${name}" oninput="refresh()"><input type="color" class="color-picker rew-color" value="${finalColor}" onchange="refresh()"><input type="number" class="form-control lz-input rew-qty text-center p-1" placeholder="∞" value="${qty}" oninput="refresh()"><button class="btn btn-link text-danger p-0" onclick="this.parentElement.remove(); refresh()"><i class="fas fa-times"></i></button>`;
+            row.innerHTML = `
+                <input type="text" class="form-control lz-input rew-name p-1 ps-2" placeholder="Tên giải..." value="${name}" oninput="refresh()">
+                <input type="color" class="color-picker rew-color" value="${finalColor}" onchange="refresh()">
+                <input type="number" class="form-control lz-input rew-qty text-center p-1" placeholder="∞" value="${qty}" oninput="refresh()">
+                <button class="btn btn-link text-danger p-0" onclick="this.parentElement.remove(); refresh()"><i class="fas fa-times"></i></button>
+            `;
             rewardContainer.appendChild(row);
             refresh();
         }
 
         function refresh() {
-            const names = document.querySelectorAll('.rew-name'), colors = document.querySelectorAll('.rew-color'), qtys = document.querySelectorAll('.rew-qty');
-            activeRewards = []; prizePriorityOrder = [];
+            const names = document.querySelectorAll('.rew-name');
+            const colors = document.querySelectorAll('.rew-color');
+            const qtys = document.querySelectorAll('.rew-qty');
+            activeRewards = [];
+            prizePriorityOrder = [];
             names.forEach((n, i) => {
                 const nameStr = n.value.trim();
                 if(nameStr !== "") {
                     prizePriorityOrder.push({ name: nameStr, color: colors[i].value });
                     const qVal = qtys[i].value === "" ? null : parseInt(qtys[i].value);
-                    if(qVal === null || qVal > 0) activeRewards.push({ name: nameStr, color: colors[i].value, qty: qVal, input: qtys[i] });
+                    if(qVal === null || qVal > 0 || qVal === null && qtys[i].value === "") {
+                        activeRewards.push({ name: nameStr, color: colors[i].value, qty: qVal, input: qtys[i], row: n.parentElement });
+                    }
                 }
             });
 
             if (turnCount > 0 && activeRewards.length === 0) {
                 document.getElementById('playZone').style.display = 'none';
                 document.getElementById('finalSummaryZone').style.display = 'flex';
-                showFinalUserStats(); 
                 renderFinalSummary();
+                showWinnerStatsByPerson();
             } else {
                 document.getElementById('playZone').style.display = 'flex';
                 document.getElementById('finalSummaryZone').style.display = 'none';
+                document.getElementById('winnerStatsByPerson').style.display = 'none';
+                document.getElementById('lastResult').innerText = '—';
+                document.getElementById('lastWinner').innerText = 'Sẵn sàng';
+                document.getElementById('lastWinner').style.backgroundColor = '';
                 draw();
             }
             updateMiniStats();
@@ -363,20 +442,36 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if(activeRewards.length === 0) return;
             const slice = (Math.PI * 2) / activeRewards.length;
-            let fontSize = activeRewards.length > 12 ? 14 : (activeRewards.length > 8 ? 18 : 22);
-            let textDist = activeRewards.length > 12 ? radius - 40 : radius - 60;
-            
+            let fontSize = activeRewards.length > 12 ? 14 : activeRewards.length > 8 ? 18 : activeRewards.length > 5 ? 20 : 24;
+            let textDistance = activeRewards.length > 12 ? radius - 40 : activeRewards.length > 8 ? radius - 50 : radius - 60;
+
             activeRewards.forEach((item, i) => {
                 const angle = currentAngle + i * slice;
-                ctx.beginPath(); ctx.fillStyle = item.color; ctx.moveTo(radius, radius);
-                ctx.arc(radius, radius, radius - 15, angle, angle + slice); ctx.fill();
-                ctx.save(); ctx.translate(radius, radius); ctx.rotate(angle + slice / 2);
-                let txt = (item.qty === null ? "" : item.qty + " ") + item.name;
-                if (txt.length > 15) txt = txt.substring(0, 15) + '...';
-                ctx.textAlign = "right"; ctx.fillStyle = "#fff"; ctx.font = `bold ${fontSize}px "Be Vietnam Pro"`;
-                ctx.fillText(txt, textDist, 10); ctx.restore();
+                ctx.beginPath(); 
+                ctx.fillStyle = item.color; 
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 15, angle, angle + slice); 
+                ctx.fill();
+                
+                ctx.save(); 
+                ctx.translate(radius, radius); 
+                ctx.rotate(angle + slice / 2);
+                
+                let displayText = (item.qty === null ? "" : item.qty + " ") + item.name;
+                const maxTextLength = activeRewards.length > 8 ? 15 : 20;
+                if (displayText.length > maxTextLength) displayText = displayText.substring(0, maxTextLength) + '...';
+                
+                ctx.textAlign = "right"; 
+                ctx.fillStyle = "#fff"; 
+                ctx.font = "bold " + fontSize + "px Geist";
+                ctx.fillText(displayText, textDistance, 10);
+                ctx.restore();
             });
-            ctx.beginPath(); ctx.arc(radius, radius, 30, 0, Math.PI * 2); ctx.fillStyle = "#0F162C"; ctx.fill();
+            
+            ctx.beginPath(); 
+            ctx.arc(radius, radius, 30, 0, Math.PI * 2); 
+            ctx.fillStyle = "#0F162C"; 
+            ctx.fill();
         }
 
         function spin() {
@@ -387,9 +482,12 @@
             const totalRot = (speed * (duration/1000) * Math.PI * 2) + Math.random() * Math.PI * 2;
             const start = performance.now();
             function animate(now) {
-                const elapsed = now - start, progress = Math.min(elapsed / duration, 1);
-                currentAngle = (1 - Math.pow(1 - progress, 3)) * totalRot; draw();
-                if (progress < 1) requestAnimationFrame(animate); else finalize();
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                currentAngle = (1 - Math.pow(1 - progress, 3)) * totalRot;
+                draw();
+                if (progress < 1) requestAnimationFrame(animate);
+                else finalize();
             }
             requestAnimationFrame(animate);
         }
@@ -401,44 +499,32 @@
             const idx = Math.floor((norm < 0 ? norm + Math.PI * 2 : norm) / slice);
             const prize = activeRewards[idx], player = document.getElementById('currentPlayer').value.trim() || "Bạn";
 
-            if(prize.qty !== null) { prize.qty--; prize.input.value = prize.qty; }
+            if(prize.qty !== null) { 
+                prize.qty--; 
+                prize.input.value = prize.qty; 
+            }
+            
             turnCount++;
             if(!winnerStats[prize.name]) winnerStats[prize.name] = [];
-            winnerStats[prize.name].push({ turn: turnCount, name: player, color: prize.color });
+            winnerStats[prize.name].push({ turn: turnCount, name: player });
 
             document.getElementById('lastResult').innerText = prize.name;
             document.getElementById('lastResult').style.color = prize.color;
-            const winBadge = document.getElementById('lastWinner');
-            winBadge.innerText = "Người quay: " + player;
-            winBadge.style.backgroundColor = prize.color; // Đổi màu nền theo giải thưởng
+            document.getElementById('lastWinner').innerText = "Người quay: " + player;
+            document.getElementById('lastWinner').style.backgroundColor = prize.color;
 
             if(!winSound.muted) { winSound.currentTime = 0; winSound.play(); }
             confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
             
-            Swal.fire({ title: 'CHÚC MỪNG!', html: `<b>${player}</b> đã nhận được:<br><h3 style="color:${prize.color}; margin-top:10px;">${prize.name}</h3>`, timer: 2000, showConfirmButton: false, background: '#161d31', color: '#fff' });
+            Swal.fire({
+                title: 'CHÚC MỪNG!',
+                html: `<b>${player}</b> đã nhận được:<br><h3 style="color:${prize.color}; margin-top:10px;">${prize.name}</h3>`,
+                timer: 2000, showConfirmButton: false, background: '#161d31', color: '#fff'
+            });
 
             updateHistory(player, prize);
             document.getElementById('currentPlayer').value = "";
             refresh();
-        }
-
-        function showFinalUserStats() {
-            const userMap = {};
-            Object.keys(winnerStats).forEach(pName => {
-                winnerStats[pName].forEach(win => {
-                    if(!userMap[win.name]) userMap[win.name] = [];
-                    userMap[win.name].push({ prize: pName, color: win.color });
-                });
-            });
-
-            let html = `<div style="text-align:left;"><span class="small opacity-50 text-uppercase fw-bold d-block text-center mb-2">Giải theo người trúng</span><div style="max-height:150px; overflow-y:auto;">`;
-            Object.keys(userMap).forEach(user => {
-                const prizes = userMap[user].map(p => `<span style="color:${p.color}">${p.prize}</span>`).join(', ');
-                html += `<div class="small mb-1 border-bottom border-white-10 pb-1"><b>${user}:</b> ${prizes}</div>`;
-            });
-            html += `</div></div>`;
-            document.getElementById('resultBox').innerHTML = html;
-            document.getElementById('resultBox').style.border = "1px solid var(--lz-accent)";
         }
 
         function updateHistory(player, prize) {
@@ -455,21 +541,55 @@
             const container = document.getElementById('miniStats');
             let html = '';
             prizePriorityOrder.forEach(pObj => {
-                if(winnerStats[pObj.name] && winnerStats[pObj.name].length > 0) {
-                    const winnersHtml = winnerStats[pObj.name].map(w => `<span class="me-2">${w.turn}. ${w.name}</span>`).join('+ ');
-                    html += `<div class="mb-2 border-bottom border-white-50 pb-1"><div class="fw-bold" style="font-size:0.75rem; color:${pObj.color}">${pObj.name}</div><div class="ps-1 small opacity-75">${winnersHtml}</div></div>`;
+                const pName = pObj.name;
+                const pColor = pObj.color;
+                if(winnerStats[pName] && winnerStats[pName].length > 0) {
+                    const winnersHtml = winnerStats[pName].map(w => `<span class="me-2">${w.turn}. ${w.name}</span>`).join('+  ');
+                    html += `<div class="mb-2 border-bottom border-white-50 pb-1">
+                        <div class="fw-bold" style="font-size:0.75rem; color:${pColor}">${pName}</div>
+                        <div class="ps-1 small opacity-75">${winnersHtml}</div>
+                    </div>`;
                 }
             });
             container.innerHTML = html || '<div class="text-center py-4 opacity-25 small italic">Chưa có dữ liệu...</div>';
+        }
+
+        function showWinnerStatsByPerson() {
+            const container = document.getElementById('winnerStatsContent');
+            const statsObj = {};
+            Object.keys(winnerStats).forEach(prize => {
+                winnerStats[prize].forEach(w => {
+                    if (!statsObj[w.name]) statsObj[w.name] = [];
+                    statsObj[w.name].push({prize, turn: w.turn});
+                });
+            });
+
+            let html = '';
+            Object.keys(statsObj).sort().forEach(person => {
+                const prizes = statsObj[person];
+                const prizeList = prizes.map(p => `<div class="small">#${p.turn} <span style="color:${prizePriorityOrder.find(o=>o.name===p.prize)?.color || '#fff'}">${p.prize}</span></div>`).join('');
+                html += `<div class="mb-3">
+                    <div class="fw-bold">${person} (${prizes.length} giải)</div>
+                    <div class="ps-2 small opacity-80">${prizeList}</div>
+                </div>`;
+            });
+
+            container.innerHTML = html || '<div class="opacity-50 small">Chưa có người trúng</div>';
+            document.getElementById('winnerStatsByPerson').style.display = 'block';
         }
 
         function renderFinalSummary() {
             const container = document.getElementById('finalList');
             let html = '';
             prizePriorityOrder.forEach(pObj => {
-                if(winnerStats[pObj.name] && winnerStats[pObj.name].length > 0) {
-                    const listHtml = winnerStats[pObj.name].map(w => `<div class="mb-1"># ${w.turn}. <b>${w.name}</b></div>`).join('');
-                    html += `<div class="p-3 rounded-4" style="background:rgba(255,255,255,0.03); border:1px solid var(--lz-border)"><h6 class="fw-bold border-bottom border-secondary pb-2 mb-2" style="color:${pObj.color}">${pObj.name}</h6><div class="small" style="max-height: 150px; overflow-y: auto;">${listHtml}</div></div>`;
+                const pName = pObj.name;
+                const pColor = pObj.color;
+                if(winnerStats[pName] && winnerStats[pName].length > 0) {
+                    const listHtml = winnerStats[pName].map(w => `<div class="mb-1"># ${w.turn}. <b>${w.name}</b></div>`).join('');
+                    html += `<div class="p-3 rounded-4" style="background:rgba(255,255,255,0.03); border:1px solid var(--lz-border)">
+                        <h6 class="fw-bold border-bottom border-secondary pb-2 mb-2" style="color:${pColor}">${pName}</h6>
+                        <div class="small" style="max-height: 150px; overflow-y: auto;">${listHtml}</div>
+                    </div>`;
                 }
             });
             container.innerHTML = html;
@@ -478,35 +598,57 @@
         function exportExcel(type) {
             let data = [];
             if(type === 'history') {
-                document.querySelectorAll('.history-row').forEach(row => { const divs = row.querySelectorAll('div'); data.push({ "Lượt": divs[0].innerText, "Tên": divs[1].innerText, "Giải thưởng": divs[2].innerText, "Thời gian": divs[3].innerText }); });
+                document.querySelectorAll('.history-row').forEach(row => {
+                    const divs = row.querySelectorAll('div');
+                    data.push({ "Lượt": divs[0].innerText, "Tên": divs[1].innerText, "Giải thưởng": divs[2].innerText, "Thời gian": divs[3].innerText });
+                });
             } else {
-                prizePriorityOrder.forEach(pObj => { if(winnerStats[pObj.name]) winnerStats[pObj.name].forEach(w => data.push({ "Giải thưởng": pObj.name, "Lượt quay": w.turn, "Tên người trúng": w.name })); });
+                prizePriorityOrder.forEach(pObj => {
+                    const pName = pObj.name;
+                    if(winnerStats[pName]) {
+                        winnerStats[pName].forEach(w => data.push({ "Giải thưởng": pName, "Lượt quay": w.turn, "Tên người trúng": w.name }));
+                    }
+                });
             }
             if(data.length === 0) return Swal.fire("Thông báo", "Chưa có dữ liệu để xuất!", "info");
-            const ws = XLSX.utils.json_to_sheet(data), wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "BaoCao");
             XLSX.writeFile(wb, `Lazinet_LuckyDraw_${type}.xlsx`);
         }
 
         function loadMedia(input) { if(input.files[0]) winSound.src = URL.createObjectURL(input.files[0]); }
-        function toggleMute() { winSound.muted = !winSound.muted; document.getElementById('muteIcon').className = winSound.muted ? 'fas fa-play-circle text-secondary' : 'fas fa-pause-circle text-white'; }
         
         function clearHistory() { 
-            Swal.fire({ title: 'Xóa lịch sử?', text: "Toàn bộ thống kê và lịch sử quay sẽ bị mất!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ff5000', confirmButtonText: 'Đồng ý', cancelButtonText: 'Hủy' }).then((r) => {
-                if (r.isConfirmed) {
-                    location.reload(); // Cách sạch nhất để reset về trạng thái ban đầu
+            Swal.fire({
+                title: 'Xóa lịch sử?',
+                text: "Toàn bộ thống kê và lịch sử quay sẽ bị mất!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff5000',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('historyList').innerHTML = '<div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay nào...</div>'; 
+                    turnCount = 0; 
+                    winnerStats = {}; 
+                    refresh();
                 }
             });
         }
 
+        // Enter để cập nhật số
+        document.getElementById('numberCount').addEventListener('keypress', e => {
+            if (e.key === 'Enter') applyNumberPreset();
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
-            applyPreset('quay_trung_thuong');
-            document.getElementById('presetSelect').value = 'quay_trung_thuong';
-            
-            // Xử lý phím Enter cho ô nhập số N
-            document.getElementById('maxNumberN').addEventListener('keypress', (e) => {
-                if(e.key === 'Enter') applyNumberPreset();
+            const defaultPreset = presets.quay_trung_thuong;
+            defaultPreset.items.forEach(item => {
+                addRewardRow(item.name, item.color, item.qty);
             });
+            document.getElementById('presetSelect').value = 'quay_trung_thuong';
         });
     </script>
 </body>

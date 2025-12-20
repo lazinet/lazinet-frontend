@@ -13,8 +13,8 @@
     <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/lazinet.css">
-    <link rel="stylesheet" href="../assets/css/custom.css">
+    <!-- <link rel="stylesheet" href="../assets/css/lazinet.css">
+    <link rel="stylesheet" href="../assets/css/custom.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;700;800&display=swap" rel="stylesheet">
 
@@ -134,7 +134,10 @@
                                         <path d="M12 24l8-12h-16l8 12zM12 0c-1.1 0-2 .9-2 2v10h4v-10c0-1.1-.9-2-2-2z"/>
                                     </svg>
                                 </div>
-                                <canvas id="wheelCanvas" width="800" height="800"></canvas>
+                                <!-- <canvas id="wheelCanvas" width="800" height="800"></canvas> -->
+                                 <canvas id="wheelCanvas" width="800" height="800"></canvas>
+                                <!-- Logo LAZINET ở giữa vòng xoay -->
+                                <img src="../assets/img/logo-lazinet/lazinet_LogoOnly.png" id="centerLogo" alt="LAZINET Logo" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; pointer-events: none; z-index: 50; box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);">
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -149,7 +152,7 @@
                                     <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
                                 </div>
                                 <label class="small fw-bold text-primary mb-2 opacity-75">TÊN NGƯỜI QUAY</label>
-                                <input type="text" id="currentPlayer" class="form-control lz-input mb-4 p-3 fw-bold" placeholder="Để trống là 'Mặc định'...">
+                                <input type="text" id="currentPlayer" class="form-control lz-input mb-4 p-3 fw-bold" placeholder="Nhập tên người quay ...">
                                 <button id="spinBtn" class="btn-spin" onclick="spin()">BẮT ĐẦU QUAY</button>
                             </div>
                         </div>
@@ -158,7 +161,7 @@
                     <div id="finalSummaryZone">
                         <div class="d-flex align-items-center justify-content-center mb-4">
                             <i class="fas fa-trophy text-warning fa-2x me-3"></i>
-                            <h2 class="fw-bold text-primary mb-0">TỔNG KẾT TRAO GIẢI</h2>
+                            <h2 class="fw-bold text-primary mb-0">TỔNG KẾT TRAO GIẢI 🎉</h2>
                         </div>
                         <div id="finalList" class="summary-grid mb-2"></div>
                         <div class="mt-auto pt-3 border-top border-white-10">
@@ -173,7 +176,7 @@
             <div class="col-lg-4">
                 <div class="sync-layout-wrapper">
                     <div class="glass-card text-center d-flex flex-column justify-content-center result-fixed-box" style="border: 2px dashed var(--lz-accent);">
-                        <span class="small opacity-50 text-uppercase fw-bold">Kết quả trúng thưởng</span>
+                        <span class="small opacity-50 text-uppercase fw-bold">Kết quả vừa quay</span>
                         <div id="lastResult" class="my-3 h1 fw-bold text-white">—</div>
                         <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto">Sẵn sàng</div>
                     </div>
@@ -193,10 +196,10 @@
             <div class="col-lg-8">
                 <div class="glass-card">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-history me-2"></i>LỊCH SỬ QUAY TRÚNG THƯỞNG</h5>
+                        <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-history me-2"></i>LỊCH SỬ QUAY</h5>
                         <div>
                             <button onclick="exportExcel('history')" class="btn btn-sm btn-outline-success border-0 me-2"><i class="fas fa-file-excel"></i></button>
-                            <button onclick="clearHistory()" class="btn btn-link btn-sm text-danger text-decoration-none">Xóa lịch sử</button>
+                            <button onclick="clearHistory()" class="btn btn-link btn-sm text-danger text-decoration-none"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                     <div id="historyList" class="history-list-box">
@@ -316,7 +319,7 @@
             const slice = (Math.PI * 2) / activeRewards.length;
             const norm = (1.5 * Math.PI - (currentAngle % (Math.PI * 2))) % (Math.PI * 2);
             const idx = Math.floor((norm < 0 ? norm + Math.PI * 2 : norm) / slice);
-            const prize = activeRewards[idx], player = document.getElementById('currentPlayer').value.trim() || "Mặc định";
+            const prize = activeRewards[idx], player = document.getElementById('currentPlayer').value.trim() || "Bạn";
 
             if(prize.qty !== null) { 
                 prize.qty--; 
@@ -436,9 +439,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             addRewardRow("Giải Đặc Biệt", "#FF6300", "1");
-            addRewardRow("Giải Nhất", "#0000FF", "2");
+            addRewardRow("Giải Nhất", "#0070C0", "2");
             addRewardRow("Giải Nhì", "#0A703F", "3");
-            addRewardRow("Khuyến Khích", "#EA2035", "5");
+            addRewardRow("Khuyến Khích", "#EA2035", "4");
             addRewardRow("Chúc May Mắn", "#7030A0", "5");
         });
     </script>
