@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản trị Triển lãm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #1e293b; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 h-screen overflow-hidden">
+
+    <!-- Config Area -->
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbx6tyIigAGulIXtTEsRMpf47wP904VdDx1MWlk_JSp5VW_04DHl8PqNpzRVdGcfU6Pj/exec"; 
+    </script>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2rem] p-10 shadow-2xl text-center">
+            <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <i class="fas fa-shield-alt text-white text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-1 uppercase tracking-tight">Admin Access</h2>
+            <p class="text-slate-400 text-sm mb-6 font-medium">Nhập mã truy cập quản trị viên</p>
+            <input id="login-pass" type="password" class="w-full bg-slate-100 border-none px-4 py-4 rounded-xl mb-4 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold text-lg tracking-widest placeholder:font-normal placeholder:tracking-normal" placeholder="Mật khẩu...">
+            <button onclick="doLogin()" id="btn-login" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-bold py-4 rounded-xl transition-all shadow-xl flex justify-center gap-2">
+                <span>ĐĂNG NHẬP</span>
+            </button>
+            <a href="index.html" class="block mt-6 text-slate-400 text-xs font-bold hover:text-white transition">← Quay lại trang khách</a>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboard" class="flex h-full hidden">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0">
+            <div class="p-6 border-b border-slate-100">
+                <h2 class="font-black text-xl text-slate-800 tracking-tighter">ADMIN HUB</h2>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Version 6.0</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <button onclick="switchTab('info')" id="nav-info" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold bg-blue-50 text-blue-600 transition"><i class="fas fa-info-circle w-6"></i> Thông tin chung</button>
+                <button onclick="switchTab('booths')" id="nav-booths" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-th-large w-6"></i> Quản lý Booth</button>
+            </nav>
+            <div class="p-4 border-t border-slate-100">
+                <button onclick="location.reload()" class="w-full bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs hover:bg-slate-200">ĐĂNG XUẤT</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 flex flex-col h-full overflow-hidden">
+            <!-- Topbar -->
+            <div class="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-6 flex-shrink-0">
+                <h3 id="page-title" class="font-bold text-slate-700">Cấu hình hệ thống</h3>
+                <button onclick="saveChanges()" id="btn-save" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-xs font-bold shadow-lg shadow-blue-200 transition flex items-center gap-2">
+                    <i class="fas fa-save"></i> LƯU THAY ĐỔI
+                </button>
+            </div>
+
+            <!-- Workspace -->
+            <div class="flex-1 p-6 overflow-hidden flex gap-6">
+                <!-- Editor -->
+                <div class="flex-1 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden flex flex-col relative">
+                    
+                    <!-- Tab: Info -->
+                    <div id="tab-info" class="p-8 space-y-6 overflow-y-auto absolute inset-0">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="col-span-2"><h4 class="font-bold text-slate-800 border-b pb-2 mb-2">Thông tin sự kiện</h4></div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase">Tên sự kiện</label>
+                                <input id="inp-title" class="w-full border-b border-slate-200 py-2 font-bold text-slate-700 focus:border-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase">Địa điểm</label>
+                                <input id="inp-loc" class="w-full border-b border-slate-200 py-2 font-bold text-slate-700 focus:border-blue-500 outline-none">
+                            </div>
+                            
+                            <div class="col-span-2 mt-4"><h4 class="font-bold text-slate-800 border-b pb-2 mb-2">Cấu hình bản đồ (Pixel)</h4></div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase">Chiều rộng (Width)</label>
+                                <input id="inp-w" type="number" oninput="drawPreview()" class="w-full border-b border-slate-200 py-2 font-bold text-slate-700 focus:border-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase">Chiều cao (Height)</label>
+                                <input id="inp-h" type="number" oninput="drawPreview()" class="w-full border-b border-slate-200 py-2 font-bold text-slate-700 focus:border-blue-500 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Booths -->
+                    <div id="tab-booths" class="hidden absolute inset-0 flex flex-col">
+                        <div class="p-4 border-b border-slate-100 flex justify-between bg-slate-50/50">
+                            <h4 class="font-bold text-sm text-slate-700">Danh sách gian hàng</h4>
+                            <button onclick="addBooth()" class="bg-white border border-slate-200 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-50 shadow-sm">+ Thêm mới</button>
+                        </div>
+                        <div class="flex-1 overflow-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-slate-50 sticky top-0 z-10 text-xs font-black text-slate-400 uppercase tracking-wider">
+                                    <tr>
+                                        <th class="p-3 pl-4">ID</th>
+                                        <th class="p-3">X</th>
+                                        <th class="p-3">Y</th>
+                                        <th class="p-3">W</th>
+                                        <th class="p-3">H</th>
+                                        <th class="p-3">Trạng thái</th>
+                                        <th class="p-3 text-right pr-4">Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="booth-list" class="divide-y divide-slate-100 text-sm font-medium text-slate-600">
+                                    <!-- Rows JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="w-[400px] bg-slate-100 rounded-3xl border-4 border-white shadow-inner flex flex-col overflow-hidden relative group">
+                    <div class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black uppercase text-slate-400 shadow-sm pointer-events-none">Live Preview</div>
+                    <div id="preview-container" class="flex-1 relative overflow-hidden">
+                        <canvas id="preview-canvas" class="block w-full h-full"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- GLOBAL ---
+        let appData = null;
+
+        // --- API CALL ---
+        async function callAPI(action, payload = {}) {
+            if (API_URL.includes("XXXXX")) return alert("Chưa cấu hình API URL!");
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, ...payload }) });
+                return await res.json();
+            } catch { return { success: false, message: "Lỗi kết nối!" }; }
+        }
+
+        // --- LOGIN ---
+        async function doLogin() {
+            const pass = document.getElementById('login-pass').value;
+            const btn = document.getElementById('btn-login');
+            btn.innerHTML = '<div class="loader w-5 h-5 border-white border-t-transparent"></div>';
+            
+            const res = await callAPI('checkPass', { pass });
+            if (res.valid) {
+                // Load data
+                const dataRes = await callAPI('getInitData');
+                if (dataRes.success) {
+                    appData = dataRes;
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    renderData();
+                } else {
+                    alert("Lỗi tải dữ liệu!");
+                }
+            } else {
+                alert("Mật khẩu không đúng!");
+                btn.innerHTML = '<span>ĐĂNG NHẬP</span>';
+            }
+        }
+
+        // --- RENDER ---
+        function renderData() {
+            // Info Tab
+            document.getElementById('inp-title').value = appData.organizer.title;
+            document.getElementById('inp-loc').value = appData.organizer.location;
+            document.getElementById('inp-w').value = appData.organizer.width;
+            document.getElementById('inp-h').value = appData.organizer.height;
+
+            renderTable();
+            drawPreview();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('booth-list');
+            tbody.innerHTML = '';
+            appData.booths.forEach((b, i) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-blue-50/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-2 pl-4"><input onchange="editBooth(${i}, 'id', this.value)" value="${b.id}" class="w-16 bg-transparent border-b border-transparent focus:border-blue-500 outline-none font-bold text-slate-800"></td>
+                    <td class="p-2"><input type="number" onchange="editBooth(${i}, 'x', this.value)" value="${b.x}" class="w-12 bg-transparent border-b border-transparent focus:border-blue-500 outline-none"></td>
+                    <td class="p-2"><input type="number" onchange="editBooth(${i}, 'y', this.value)" value="${b.y}" class="w-12 bg-transparent border-b border-transparent focus:border-blue-500 outline-none"></td>
+                    <td class="p-2"><input type="number" onchange="editBooth(${i}, 'width', this.value)" value="${b.width}" class="w-12 bg-transparent border-b border-transparent focus:border-blue-500 outline-none"></td>
+                    <td class="p-2"><input type="number" onchange="editBooth(${i}, 'height', this.value)" value="${b.height}" class="w-12 bg-transparent border-b border-transparent focus:border-blue-500 outline-none"></td>
+                    <td class="p-2">
+                        <select onchange="editBooth(${i}, 'status', this.value)" class="bg-transparent text-xs font-bold outline-none cursor-pointer ${getStatusColor(b.status)}">
+                            <option value="Available" ${b.status==='Available'?'selected':''}>Trống</option>
+                            <option value="Booked" ${b.status==='Booked'?'selected':''}>Đã đặt</option>
+                            <option value="Occupied" ${b.status==='Occupied'?'selected':''}>Đã mua</option>
+                        </select>
+                    </td>
+                    <td class="p-2 text-right pr-4"><button onclick="delBooth(${i})" class="text-slate-300 hover:text-red-500 transition"><i class="fas fa-trash-alt"></i></button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function getStatusColor(s) {
+            if(s==='Available') return 'text-slate-500';
+            if(s==='Booked') return 'text-yellow-600';
+            return 'text-emerald-600';
+        }
+
+        // --- ACTIONS ---
+        window.editBooth = (idx, field, val) => {
+            if(['x','y','width','height'].includes(field)) val = Number(val);
+            appData.booths[idx][field] = val;
+            if(field === 'status') renderTable(); // re-render for color
+            drawPreview();
+        };
+
+        window.addBooth = () => {
+            appData.booths.push({ id: "NEW", x: 10, y: 10, width: 100, height: 100, status: "Available", rank: "Standard", price: 0 });
+            renderTable();
+            drawPreview();
+        };
+
+        window.delBooth = (idx) => {
+            if(confirm("Xóa gian hàng này?")) {
+                appData.booths.splice(idx, 1);
+                renderTable();
+                drawPreview();
+            }
+        };
+
+        window.switchTab = (tab) => {
+            ['info', 'booths'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                nav.className = "w-full text-left px-4 py-3 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).className = "w-full text-left px-4 py-3 rounded-xl text-sm font-bold bg-blue-50 text-blue-600 transition";
+        };
+
+        window.saveChanges = async () => {
+            // Sync Input info
+            appData.organizer.title = document.getElementById('inp-title').value;
+            appData.organizer.location = document.getElementById('inp-loc').value;
+            appData.organizer.width = Number(document.getElementById('inp-w').value);
+            appData.organizer.height = Number(document.getElementById('inp-h').value);
+
+            const btn = document.getElementById('btn-save');
+            btn.innerHTML = '<div class="loader w-4 h-4 border-white border-t-transparent"></div> Lưu...';
+            
+            const res = await callAPI('saveFullData', { 
+                organizer: appData.organizer, 
+                booths: appData.booths,
+                schedule: [] // Giữ nguyên schedule cũ
+            });
+
+            btn.innerHTML = '<i class="fas fa-save"></i> LƯU THAY ĐỔI';
+            alert(res.message);
+        };
+
+        // --- PREVIEW ---
+        function drawPreview() {
+            const cvs = document.getElementById('preview-canvas');
+            const cont = document.getElementById('preview-container');
+            const ctx = cvs.getContext('2d');
+            
+            cvs.width = cont.clientWidth;
+            cvs.height = cont.clientHeight;
+
+            const mapW = Number(document.getElementById('inp-w').value) || 2000;
+            const mapH = Number(document.getElementById('inp-h').value) || 1500;
+            
+            // Fit to screen
+            const scale = Math.min(cvs.width / mapW, cvs.height / mapH) * 0.95;
+            const ox = (cvs.width - mapW * scale) / 2;
+            const oy = (cvs.height - mapH * scale) / 2;
+
+            ctx.clearRect(0,0,cvs.width, cvs.height);
+            ctx.save();
+            ctx.translate(ox, oy);
+            ctx.scale(scale, scale);
+
+            // Map BG
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, mapW, mapH);
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.strokeRect(0, 0, mapW, mapH);
+
+            // Booths
+            appData.booths.forEach(b => {
+                ctx.fillStyle = b.status === 'Available' ? 'white' : (b.status==='Booked' ? '#fbbf24' : '#10b981');
+                ctx.fillRect(b.x, b.y, b.width, b.height);
+                ctx.strokeStyle = "#94a3b8";
+                ctx.lineWidth = 2/scale;
+                ctx.strokeRect(b.x, b.y, b.width, b.height);
+                
+                ctx.fillStyle = "#475569";
+                ctx.font = `bold ${24/scale}px Arial`;
+                ctx.fillText(b.id, b.x + 5, b.y + 30/scale);
+            });
+
+            ctx.restore();
+        }
+        
+        // Auto resize preview
+        window.onresize = drawPreview;
+    </script>
+</body>
+</html>

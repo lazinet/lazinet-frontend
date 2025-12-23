@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Triển lãm Trực tuyến</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        
+        #viewport { width: 100vw; height: 100vh; cursor: grab; outline: none; }
+        #map-container { transform-origin: 0 0; }
+        
+        .booth { position: absolute; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-direction: column; font-size: 10px; border: 1px solid rgba(0,0,0,0.1); }
+        .booth:hover { z-index: 100; transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        .status-Available { background: white; color: #334155; }
+        .status-Booked { background: rgba(253, 224, 71, 0.6); backdrop-filter: blur(2px); border: 2px solid #eab308; }
+        .status-Occupied { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        
+        /* Chatbot UI */
+        .chat-window { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); z-index: 9999; display: flex; flex-direction: column; overflow: hidden; transform: translateY(120%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .chat-visible { transform: translateY(0); }
+        .chat-toggle { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 10000; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .chat-toggle:active { transform: scale(0.9); }
+
+        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #3498db; border-radius: 50%; width: 12px; height: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <script>
+        // const GAS_URL = "https://script.google.com/macros/s/AKfycbwlurI_JlQWRp4ySGjX-MXgEesbXgY4BidPy5KtkqVJhtaQB3N4pmv2jdMgSFg2vn8zdQ/exec"; 
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw3bSVePu0GbJUbkQkmJp5HYmhhlXHQkEEvByEx7vqn34D1SpmGRvuE7KAxuG3CdLkvJA/exec'
+        let globalScale = 1;
+    </script>
+
+    <div class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm px-6 py-3 flex justify-between items-center h-16">
+        <div class="flex items-center gap-4">
+            <img id="logo-org" src="" class="h-10 object-contain hidden">
+            <div>
+                <h1 id="event-title" class="font-bold text-slate-800 text-lg leading-tight">Loading Event...</h1>
+                <p id="event-loc" class="text-xs text-slate-500">...</p>
+            </div>
+        </div>
+        <div class="hidden md:flex gap-4 text-sm">
+            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-white border border-gray-300 rounded-sm"></span> Trống</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-yellow-200 border border-yellow-500 rounded-sm"></span> Đang giữ</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-green-100 border border-green-500 rounded-sm"></span> Đã mua</div>
+        </div>
+    </div>
+
+    <div id="viewport">
+        <div id="map-container" class="relative bg-white shadow-2xl">
+            </div>
+    </div>
+
+    <div class="fixed bottom-8 left-8 z-40 flex flex-col gap-2">
+        <button id="zoom-in" class="w-10 h-10 bg-white rounded-full shadow text-slate-600 hover:text-blue-600"><i class="fa-solid fa-plus"></i></button>
+        <button id="zoom-out" class="w-10 h-10 bg-white rounded-full shadow text-slate-600 hover:text-blue-600"><i class="fa-solid fa-minus"></i></button>
+        <button id="reset-view" class="w-10 h-10 bg-white rounded-full shadow text-slate-600 hover:text-blue-600"><i class="fa-solid fa-compress"></i></button>
+    </div>
+
+    <div id="chat-btn" class="chat-toggle text-white text-2xl" onclick="toggleChat()">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+
+    <div id="chat-win" class="chat-window font-sans">
+        <div id="chat-header" class="p-4 text-white font-bold flex justify-between items-center">
+            <span id="chat-title">AI Assistant</span>
+            <button onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="chat-body" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50 text-sm">
+            <div class="flex justify-start">
+                <div class="bg-white border p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%]">
+                    Xin chào! Tôi có thể giúp gì cho bạn về triển lãm này?
+                </div>
+            </div>
+        </div>
+        <div id="ai-typing" class="hidden px-4 py-2 text-xs text-slate-400 italic">
+            <span id="wait-msg">Đang soạn tin...</span> <span class="loader inline-block ml-2"></span>
+        </div>
+        <div class="p-3 bg-white border-t flex gap-2">
+            <input id="chat-inp" type="text" class="flex-1 border rounded-full px-4 py-2 text-sm outline-none focus:border-blue-500" placeholder="Nhập câu hỏi..." onkeydown="if(event.key==='Enter') sendChat()">
+            <button onclick="sendChat()" class="w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let panzoom;
+        let configColors = {};
+
+        // 1. Init System
+        window.onload = async () => {
+            Swal.fire({ title: 'Đang tải dữ liệu...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST', body: JSON.stringify({ action: 'getInitData', isAdmin: false })
+                }).then(r => r.json());
+                
+                Swal.close();
+
+                if(!res.success) {
+                    Swal.fire('Thông báo', res.message, 'warning');
+                    return;
+                }
+
+                setupUI(res);
+                renderMap(res);
+                setupPanzoom();
+
+            } catch(e) {
+                Swal.fire('Lỗi', 'Không kết nối được máy chủ', 'error');
+            }
+        };
+
+        function setupUI(data) {
+            // Configs
+            const cfg = data.configs;
+            const org = data.org;
+            configColors = cfg;
+
+            // Chat UI Setup
+            const btn = document.getElementById('chat-btn');
+            const head = document.getElementById('chat-header');
+            btn.style.backgroundColor = cfg.color1 || '#2563eb';
+            head.style.backgroundColor = cfg.color1 || '#2563eb';
+            document.getElementById('chat-title').innerText = cfg.chatName;
+            document.getElementById('wait-msg').innerText = cfg.waiting;
+
+            // Header Info
+            document.getElementById('event-title').innerText = org.eventTitle;
+            document.getElementById('event-loc').innerText = org.location;
+            if(org.logo) {
+                const img = document.getElementById('logo-org');
+                img.src = org.logo;
+                img.classList.remove('hidden');
+            }
+        }
+
+        function renderMap(data) {
+            const org = data.org;
+            const container = document.getElementById('map-container');
+            const ratio = Number(org.ratio) || 10; // Pixel per CM
+            
+            // Set size map (convert cm -> px)
+            container.style.width = (org.width * ratio) + 'px';
+            container.style.height = (org.height * ratio) + 'px';
+            
+            // Render Booths
+            data.booths.forEach(b => {
+                const el = document.createElement('div');
+                el.className = `booth status-${b.status} rounded-lg`;
+                
+                // Position & Size
+                el.style.left = (b.x * ratio) + 'px';
+                el.style.top = (b.y * ratio) + 'px';
+                el.style.width = (b.w * ratio) + 'px';
+                el.style.height = (b.h * ratio) + 'px';
+                el.style.borderRadius = (b.r * ratio) + 'px';
+
+                // Content
+                let innerHTML = `<span class="font-bold text-lg">${b.boothId}</span>`;
+                innerHTML += `<span class="text-[0.6rem] mt-1 uppercase tracking-wider">${b.rank}</span>`;
+                
+                if (b.status === 'Occupied' && b.logo) {
+                    innerHTML += `<img src="${b.logo}" class="w-12 h-12 object-contain mt-2">`;
+                }
+                
+                if (b.status === 'Available') {
+                    innerHTML += `<span class="mt-2 text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">Đặt ngay</span>`;
+                }
+
+                el.innerHTML = innerHTML;
+
+                // Event Click
+                el.onclick = (e) => {
+                    // Chống drag trigger click
+                    if(e.defaultPrevented) return;
+                    handleBoothClick(b);
+                };
+
+                container.appendChild(el);
+            });
+        }
+
+        function setupPanzoom() {
+            const elem = document.getElementById('map-container');
+            panzoom = Panzoom(elem, {
+                maxScale: 10,
+                minScale: 0.1,
+                contain: 'outside',
+                startScale: 0.2 // Zoom out ban đầu để thấy toàn cảnh
+            });
+            elem.parentElement.addEventListener('wheel', panzoom.zoomWithWheel);
+            
+            // Buttons
+            document.getElementById('zoom-in').onclick = panzoom.zoomIn;
+            document.getElementById('zoom-out').onclick = panzoom.zoomOut;
+            document.getElementById('reset-view').onclick = panzoom.reset;
+        }
+
+        function handleBoothClick(b) {
+            if (b.status !== 'Available') {
+                // Show info for booked/occupied
+                let html = `<div class="text-left space-y-2">`;
+                if(b.status === 'Occupied') {
+                    html += `<img src="${b.logo}" class="h-16 mx-auto mb-2">`;
+                    html += `<p><b>Công ty:</b> ${b.fullName}</p>`;
+                    html += `<p><b>Web:</b> ${b.addr}</p>`; // Ví dụ dùng field addr cho mô tả ngắn
+                } else {
+                    html += `<p class="text-center text-yellow-600 font-bold">Đang giữ chỗ</p>`;
+                }
+                html += `</div>`;
+                
+                Swal.fire({
+                    title: `Gian hàng ${b.boothId}`,
+                    html: html,
+                    icon: 'info'
+                });
+                return;
+            }
+
+            // Booking Form
+            Swal.fire({
+                title: `Đặt Gian ${b.boothId}`,
+                html: `
+                    <div class="text-left text-sm space-y-3">
+                        <div class="bg-blue-50 p-3 rounded">
+                            <p><b>Hạng:</b> ${b.rank}</p>
+                            <p><b>Kích thước:</b> ${b.size}</p>
+                            <p class="text-red-600 font-bold text-lg">Giá: ${Number(b.priceVat).toLocaleString()} VND (Đã VAT)</p>
+                        </div>
+                        <p class="italic text-xs text-gray-500">Quét mã VietQR dưới đây để thanh toán, sau đó nhập thông tin để xác nhận.</p>
+                        <div class="flex justify-center my-2">
+                             <img src="${b.qrLink}" class="w-48 h-48 border shadow-sm">
+                        </div>
+                        <input id="inp-tax" class="w-full border p-2 rounded" placeholder="Mã số thuế">
+                        <input id="inp-cname" class="w-full border p-2 rounded" placeholder="Tên công ty đầy đủ">
+                        <input id="inp-sname" class="w-full border p-2 rounded" placeholder="Tên viết tắt (để hiển thị)">
+                        <input id="inp-addr" class="w-full border p-2 rounded" placeholder="Địa chỉ công ty">
+                        <input id="inp-logo" class="w-full border p-2 rounded" placeholder="Link Logo URL">
+                        <hr>
+                        <input id="inp-pname" class="w-full border p-2 rounded" placeholder="Tên người liên hệ">
+                        <input id="inp-phone" class="w-full border p-2 rounded" placeholder="Số điện thoại">
+                        <input id="inp-email" class="w-full border p-2 rounded" placeholder="Email nhận xác nhận">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận Đặt & Đã CK',
+                confirmButtonColor: '#16a34a',
+                width: '600px',
+                preConfirm: () => {
+                    const fullName = document.getElementById('inp-cname').value;
+                    const phone = document.getElementById('inp-phone').value;
+                    if(!fullName || !phone) return Swal.showValidationMessage('Vui lòng nhập Tên công ty và SĐT');
+                    
+                    return {
+                        action: 'bookBooth',
+                        boothId: b.boothId,
+                        tax: document.getElementById('inp-tax').value,
+                        fullName: fullName,
+                        shortName: document.getElementById('inp-sname').value,
+                        addr: document.getElementById('inp-addr').value,
+                        logo: document.getElementById('inp-logo').value,
+                        name: document.getElementById('inp-pname').value,
+                        phone: phone,
+                        email: document.getElementById('inp-email').value
+                    };
+                }
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    submitBooking(result.value);
+                }
+            });
+        }
+
+        async function submitBooking(payload) {
+            Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST', body: JSON.stringify(payload)
+                }).then(r => r.json());
+
+                if(res.success) {
+                    Swal.fire('Thành công', 'Đã đặt chỗ thành công! BTC sẽ liên hệ xác nhận.', 'success').then(() => location.reload());
+                } else {
+                    Swal.fire('Thất bại', res.message, 'error');
+                }
+            } catch(e) { Swal.fire('Lỗi', e.toString(), 'error'); }
+        }
+
+        // --- Chatbot Logic ---
+        function toggleChat() {
+            document.getElementById('chat-win').classList.toggle('chat-visible');
+        }
+
+        async function sendChat() {
+            const inp = document.getElementById('chat-inp');
+            const msg = inp.value.trim();
+            if(!msg) return;
+
+            // Render User Msg
+            const body = document.getElementById('chat-body');
+            body.innerHTML += `<div class="flex justify-end"><div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]">${msg}</div></div>`;
+            inp.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            document.getElementById('ai-typing').classList.remove('hidden');
+
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST', body: JSON.stringify({ action: 'chatAI', message: msg })
+                }).then(r => r.json());
+                
+                // Render Bot Msg
+                body.innerHTML += `<div class="flex justify-start"><div class="bg-white border p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] text-slate-700">${res.answer}</div></div>`;
+            } catch(e) {
+                body.innerHTML += `<div class="flex justify-start"><div class="bg-red-50 text-red-500 border p-3 rounded-2xl">Lỗi kết nối AI.</div></div>`;
+            }
+            
+            document.getElementById('ai-typing').classList.add('hidden');
+            body.scrollTop = body.scrollHeight;
+        }
+    </script>
+</body>
+</html>

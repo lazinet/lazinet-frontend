@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Admin - LAZINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #f3f4f6; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .preview-box { background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+    <script>
+        // const GAS_URL = "https://script.google.com/macros/s/AKfycbwlurI_JlQWRp4ySGjX-MXgEesbXgY4BidPy5KtkqVJhtaQB3N4pmv2jdMgSFg2vn8zdQ/exec"; 
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw3bSVePu0GbJUbkQkmJp5HYmhhlXHQkEEvByEx7vqn34D1SpmGRvuE7KAxuG3CdLkvJA/exec'
+        let authPass = "";
+        let banksList = [];
+    </script>
+
+    <div id="login-modal" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center">
+            <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" class="h-16 mx-auto mb-4">
+            <h2 class="text-xl font-bold mb-4 text-slate-700">Đăng nhập Quản trị</h2>
+            <input type="password" id="admin-pass" class="w-full p-3 border rounded-lg mb-4 focus:ring-2 ring-blue-500 outline-none" placeholder="Nhập mật khẩu Admin...">
+            <button onclick="checkLogin()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">Truy cập</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="flex-1 flex flex-col hidden h-full">
+        <header class="bg-white border-b h-16 flex items-center justify-between px-6 shadow-sm z-20">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-layer-group text-blue-600 text-xl"></i>
+                <h1 class="font-bold text-lg text-slate-800">Organizer Config</h1>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="saveAll()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Lưu Hệ Thống
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden">
+            <div class="w-1/3 bg-white border-r overflow-y-auto p-6 space-y-8 custom-scrollbar">
+                
+                <section>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-wider">1. Thông tin Tổ chức</h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <input id="org-short" class="border p-2 rounded" placeholder="Tên ngắn (VD: LAZINET)">
+                        <input id="org-full" class="border p-2 rounded" placeholder="Tên đầy đủ công ty">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input id="org-web" class="border p-2 rounded" placeholder="Website">
+                            <input id="org-email" class="border p-2 rounded" placeholder="Email">
+                        </div>
+                        <input id="org-logo" class="border p-2 rounded" placeholder="Link Logo URL">
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border">
+                            <label class="text-xs font-bold text-slate-500 block mb-2">Thông tin Ngân hàng (Để tạo QR)</label>
+                            <select id="org-bank" class="w-full border p-2 rounded mb-2"></select>
+                            <input id="org-acc-name" class="w-full border p-2 rounded mb-2" placeholder="Tên chủ tài khoản">
+                            <input id="org-acc-num" class="w-full border p-2 rounded" placeholder="Số tài khoản">
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <section>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-wider">2. Cấu hình Sự kiện & Map</h3>
+                    <div class="space-y-3">
+                        <input id="evt-title" class="w-full border p-2 rounded font-bold text-blue-900" placeholder="Tên sự kiện">
+                        <input id="evt-loc" class="w-full border p-2 rounded" placeholder="Địa điểm (VD: SECC)">
+                        <textarea id="evt-addr" class="w-full border p-2 rounded" rows="2" placeholder="Địa chỉ chi tiết"></textarea>
+                        
+                        <div class="grid grid-cols-3 gap-2">
+                            <div><label class="text-xs">Rộng (cm)</label><input id="map-w" type="number" class="border p-2 rounded w-full" oninput="renderPreview()"></div>
+                            <div><label class="text-xs">Cao (cm)</label><input id="map-h" type="number" class="border p-2 rounded w-full" oninput="renderPreview()"></div>
+                            <div><label class="text-xs">Pix/cm</label><input id="map-r" type="number" class="border p-2 rounded w-full" value="10" oninput="renderPreview()"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <section>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-wider">3. Lịch trình</h3>
+                    <div id="schedule-container" class="space-y-2"></div>
+                    <button onclick="addScheduleRow()" class="mt-2 text-blue-600 text-sm font-medium hover:underline">+ Thêm dòng lịch trình</button>
+                </section>
+                
+                 <hr>
+
+                <section>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-wider">4. Danh sách Booths</h3>
+                    <div class="text-xs text-slate-500 mb-2 italic">Thay đổi thông số để cập nhật bản vẽ bên phải.</div>
+                    <textarea id="booths-json" class="w-full h-64 border p-2 rounded font-mono text-xs bg-slate-50" placeholder="JSON Booths..." oninput="parseAndRenderBooths()"></textarea>
+                    <div class="flex gap-2 mt-2">
+                         <button onclick="formatJson()" class="bg-gray-200 px-3 py-1 rounded text-xs">Format JSON</button>
+                         <button onclick="alert('Tính năng import CSV chưa hỗ trợ ở bản demo này')" class="bg-gray-200 px-3 py-1 rounded text-xs">Import Excel</button>
+                    </div>
+                </section>
+            </div>
+
+            <div class="flex-1 bg-slate-100 relative overflow-hidden flex flex-col">
+                <div class="absolute top-4 right-4 z-10 bg-white/80 p-2 rounded text-xs backdrop-blur shadow">
+                    Live Preview (Map Mode)
+                </div>
+                <div id="preview-viewport" class="w-full h-full overflow-auto preview-box flex items-center justify-center p-10">
+                    <div id="map-canvas" class="bg-white shadow-xl relative transition-all duration-300 origin-center">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIC ---
+        let currentBooths = [];
+        
+        async function checkLogin() {
+            const pass = document.getElementById('admin-pass').value;
+            Swal.fire({title: 'Đang kiểm tra...', didOpen: () => Swal.showLoading()});
+            
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'checkPass', pass: pass })
+                }).then(r => r.json());
+
+                if (res.success) {
+                    authPass = pass;
+                    document.getElementById('login-modal').classList.add('hidden');
+                    document.getElementById('main-app').classList.remove('hidden');
+                    loadData();
+                } else {
+                    Swal.fire('Lỗi', res.message, 'error');
+                }
+            } catch(e) {
+                Swal.fire('Lỗi kết nối', e.toString(), 'error');
+            }
+        }
+
+        async function loadData() {
+            Swal.fire({title: 'Đang tải dữ liệu...', didOpen: () => Swal.showLoading()});
+            const res = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'getInitData', isAdmin: true })
+            }).then(r => r.json());
+            Swal.close();
+
+            if (!res.success) return alert(res.message);
+
+            // Fill Banks
+            banksList = res.banks;
+            const bankSel = document.getElementById('org-bank');
+            banksList.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b; opt.text = b;
+                bankSel.appendChild(opt);
+            });
+
+            // Fill Organizer Info
+            const o = res.org;
+            setVal('org-short', o.shortName); setVal('org-full', o.fullName);
+            setVal('org-web', o.web); setVal('org-logo', o.logo); setVal('org-email', o.email);
+            setVal('org-bank', o.bankName); setVal('org-acc-name', o.accName); setVal('org-acc-num', o.accNum);
+            
+            setVal('evt-title', o.eventTitle); setVal('evt-loc', o.location); setVal('evt-addr', o.address);
+            setVal('map-w', o.width); setVal('map-h', o.height); setVal('map-r', o.ratio);
+
+            // Fill Schedule
+            const scheCont = document.getElementById('schedule-container');
+            scheCont.innerHTML = '';
+            res.schedule.forEach(s => addScheduleRow(s));
+
+            // Fill Booths & Render
+            currentBooths = res.booths;
+            // Simplify for JSON editor (remove customer info for cleaner view if wanted, but user wants full control)
+            // Here we map to a simpler editable structure or keep full
+            const editableBooths = currentBooths.map(b => ({
+                areaId: b.areaId, boothId: b.boothId, size: b.size,
+                x: b.x, y: b.y, w: b.w, h: b.h, r: b.r,
+                rank: b.rank, price: b.price, priceVat: b.priceVat, status: b.status
+            }));
+            
+            document.getElementById('booths-json').value = JSON.stringify(editableBooths, null, 2);
+            renderPreview();
+        }
+
+        function setVal(id, val) { document.getElementById(id).value = val || ''; }
+        function getVal(id) { return document.getElementById(id).value; }
+
+        function addScheduleRow(data = {}) {
+            const div = document.createElement('div');
+            div.className = "grid grid-cols-12 gap-1 items-center sche-row";
+            div.innerHTML = `
+                <input class="col-span-3 border p-1 text-xs rounded s-date" placeholder="dd/mm/yyyy" value="${data.date || ''}">
+                <input class="col-span-2 border p-1 text-xs rounded s-start" placeholder="HH:MM" value="${data.start || ''}">
+                <input class="col-span-2 border p-1 text-xs rounded s-end" placeholder="HH:MM" value="${data.end || ''}">
+                <input class="col-span-4 border p-1 text-xs rounded s-content" placeholder="Nội dung" value="${data.content || ''}">
+                <button onclick="this.parentElement.remove()" class="col-span-1 text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+            `;
+            document.getElementById('schedule-container').appendChild(div);
+        }
+
+        function parseAndRenderBooths() {
+            try {
+                const json = JSON.parse(document.getElementById('booths-json').value);
+                currentBooths = json; // Update local state
+                renderPreview();
+            } catch (e) {
+                // Ignore parsing errors while typing
+            }
+        }
+
+        function formatJson() {
+             try {
+                const v = document.getElementById('booths-json').value;
+                document.getElementById('booths-json').value = JSON.stringify(JSON.parse(v), null, 2);
+            } catch(e) { alert("JSON lỗi"); }
+        }
+
+        function renderPreview() {
+            const W = Number(getVal('map-w')) || 1000;
+            const H = Number(getVal('map-h')) || 1000;
+            const R = Number(getVal('map-r')) || 10; // Pixel per CM
+
+            const canvas = document.getElementById('map-canvas');
+            // Convert CM to Pixels for display
+            canvas.style.width = (W * R / 100) + 'px'; // Chia 100 để scale nhỏ lại cho vừa màn hình preview, hoặc để nguyên
+            // Để preview hợp lý, ta dùng tỉ lệ thu nhỏ. Giả sử R là px/cm thực tế, nhưng màn hình bé.
+            // Ta dùng 1 hệ số scale view.
+            const displayScale = 0.2; // Thu nhỏ 5 lần để xem
+            
+            canvas.style.width = (W * displayScale) + 'px';
+            canvas.style.height = (H * displayScale) + 'px';
+            canvas.innerHTML = '';
+
+            currentBooths.forEach(b => {
+                const el = document.createElement('div');
+                el.className = "absolute flex items-center justify-center text-[8px] border text-center font-bold shadow-sm overflow-hidden hover:bg-yellow-200 transition cursor-pointer";
+                el.style.left = (b.x * displayScale) + 'px';
+                el.style.top = (b.y * displayScale) + 'px';
+                el.style.width = (b.w * displayScale) + 'px';
+                el.style.height = (b.h * displayScale) + 'px';
+                el.style.borderRadius = (b.r * displayScale) + 'px';
+                
+                // Color coding
+                if(b.status === 'Occupied') el.style.background = '#86efac';
+                else if(b.status === 'Booked') el.style.background = '#fef08a';
+                else el.style.background = 'white';
+
+                el.innerText = b.boothId;
+                el.title = `${b.boothId} - ${b.status}`;
+                canvas.appendChild(el);
+            });
+        }
+
+        async function saveAll() {
+            // Collect Data
+            const schedule = Array.from(document.querySelectorAll('.sche-row')).map(row => ({
+                date: row.querySelector('.s-date').value,
+                start: row.querySelector('.s-start').value,
+                end: row.querySelector('.s-end').value,
+                content: row.querySelector('.s-content').value
+            }));
+
+            // Parse Booths again to be sure
+            let boothsData;
+            try {
+                boothsData = JSON.parse(document.getElementById('booths-json').value);
+            } catch(e) { return Swal.fire('Lỗi JSON', 'Vui lòng kiểm tra cú pháp JSON Booths', 'error'); }
+
+            const payload = {
+                action: 'saveFullData',
+                pass: authPass,
+                org: {
+                    shortName: getVal('org-short'), fullName: getVal('org-full'),
+                    web: getVal('org-web'), logo: getVal('org-logo'), email: getVal('org-email'),
+                    bankName: getVal('org-bank'), accName: getVal('org-acc-name'), accNum: getVal('org-acc-num'),
+                    eventTitle: getVal('evt-title'), location: getVal('evt-loc'), address: getVal('evt-addr'),
+                    width: getVal('map-w'), height: getVal('map-h'), ratio: getVal('map-r'),
+                    map: '', start: '', end: '' // Simplified for demo
+                },
+                schedule: schedule,
+                booths: boothsData
+            };
+
+            Swal.fire({title: 'Đang lưu lên hệ thống...', didOpen: () => Swal.showLoading()});
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST', body: JSON.stringify(payload)
+                }).then(r => r.json());
+                
+                if(res.success) Swal.fire('Thành công', 'Dữ liệu đã được cập nhật!', 'success');
+                else Swal.fire('Lỗi', res.message, 'error');
+            } catch(e) { Swal.fire('Lỗi mạng', e.toString(), 'error'); }
+        }
+    </script>
+</body>
+</html>

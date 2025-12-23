@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký Gian hàng Trưng bày</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    svg { border: 1px solid #ccc; background: #f0f0f0; margin: 20px auto; display: block; }
+    .booth { stroke: black; stroke-width: 2; cursor: pointer; }
+    .available { fill: lightgreen; }
+    .occupied { fill: lightcoral; }
+    text { pointer-events: none; fill: black; font-size: 14px; }
+    #info { margin: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>Sơ đồ Gian hàng Trưng bày</h1>
+  <div id="info">Đang tải dữ liệu...</div>
+  <svg id="floorplan" width="800" height="600" viewBox="0 0 800 600"></svg>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxAU80LaHMhH_mIqwwHc8tQ5I3dEe5p8fHdITsRFFfBB_nUw2wtB5dJ82KWCLUSlRt7/exec'; // Thay bằng URL từ bước 3
+
+    async function loadFloorPlan() {
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({action: 'getData'})
+      });
+      const booths = await response.json();
+      const svg = document.getElementById('floorplan');
+      svg.innerHTML = ''; // Clear
+
+      booths.forEach(booth => {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', booth.X);
+        rect.setAttribute('y', booth.Y);
+        rect.setAttribute('width', booth.Width);
+        rect.setAttribute('height', booth.Height);
+        rect.setAttribute('class', `booth ${booth['Trạng thái'].toLowerCase()}`);
+        rect.setAttribute('id', booth['Booth ID']);
+
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', parseInt(booth.X) + parseInt(booth.Width)/2);
+        text.setAttribute('y', parseInt(booth.Y) + parseInt(booth.Height)/2);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.textContent = booth['Booth ID'];
+
+        if (booth['Trạng thái'] === 'Occupied' && booth['Logo URL']) {
+          const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+          img.setAttribute('href', booth['Logo URL']);
+          img.setAttribute('x', parseInt(booth.X) + 10);
+          img.setAttribute('y', parseInt(booth.Y) + 10);
+          img.setAttribute('width', parseInt(booth.Width) - 20);
+          img.setAttribute('height', parseInt(booth.Height) - 40);
+          svg.appendChild(img);
+        }
+
+        svg.appendChild(rect);
+        svg.appendChild(text);
+
+        rect.onclick = () => selectBooth(booth);
+      });
+      document.getElementById('info').textContent = 'Click vào booth xanh để đăng ký';
+    }
+
+    function selectBooth(booth) {
+      if (booth['Trạng thái'] !== 'Available') {
+        alert('Booth này đã được đặt bởi: ' + (booth['Công ty'] || 'không rõ'));
+        return;
+      }
+      const company = prompt('Tên công ty:');
+      if (!company) return;
+      const logoUrl = prompt('URL logo công ty[](https://...):', 'https://via.placeholder.com/100');
+      if (!logoUrl) return;
+
+      fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'reserve',
+          boothId: booth['Booth ID'],
+          companyData: {company: company, logoUrl: logoUrl}
+        })
+      })
+      .then(res => res.json())
+      .then(result => {
+        alert(result.message);
+        if (result.success) loadFloorPlan(); // Refresh
+      });
+    }
+
+    loadFloorPlan();
+  </script>
+</body>
+</html>

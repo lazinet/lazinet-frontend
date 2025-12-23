@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký Gian hàng Trưng bày</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    #container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    #floorplan {
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      display: block;
+    }
+    .legend {
+      margin: 20px auto;
+      display: inline-block;
+      background: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .legend-item {
+      display: inline-block;
+      margin: 0 15px;
+    }
+    .color-box {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+      border: 1px solid #000;
+    }
+    #loading {
+      font-size: 18px;
+      color: #666;
+      margin: 40px;
+    }
+    #info {
+      font-size: 18px;
+      color: #444;
+      margin: 20px;
+    }
+
+    /* Modal styles */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .modal-content h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .modal-content label {
+      display: block;
+      text-align: left;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .modal-buttons {
+      margin-top: 30px;
+      text-align: right;
+    }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+    .btn-confirm {
+      background: #4CAF50;
+      color: white;
+    }
+    .btn-cancel {
+      background: #f44336;
+      color: white;
+    }
+
+    /* Booth styles */
+    .booth {
+      stroke: #333;
+      stroke-width: 2;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .booth:hover {
+      opacity: 0.8;
+    }
+    .available { fill: #a8e6cf; }
+    .occupied { fill: #ff9999; }
+    text {
+      pointer-events: none;
+      fill: #333;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  </style>
+  <!-- Thư viện zoom & pan -->
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+</head>
+<body>
+  <div id="container">
+    <h1>Đăng ký Gian hàng Trưng bày</h1>
+    <div id="loading">Đang tải sơ đồ gian hàng...</div>
+    <div id="info" style="display:none;">Click vào booth màu xanh để đăng ký</div>
+
+    <svg id="floorplan" width="100%" height="600" viewBox="0 0 1000 800"></svg>
+
+    <div class="legend">
+      <div class="legend-item">
+        <span class="color-box available"></span> Còn trống
+      </div>
+      <div class="legend-item">
+        <span class="color-box occupied"></span> Đã đặt
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Đăng ký -->
+  <div id="modal">
+    <div class="modal-content">
+      <h2>Đăng ký Booth <span id="modal-booth-id"></span></h2>
+      <p><strong>Kích thước:</strong> <span id="modal-size"></span><br>
+         <strong>Giá:</strong> <span id="modal-price"></span> VND</p>
+
+      <form id="registration-form">
+        <label>Tên công ty *</label>
+        <input type="text" name="company" required>
+
+        <label>Người liên hệ *</label>
+        <input type="text" name="contact" required>
+
+        <label>Email *</label>
+        <input type="email" name="email" required>
+
+        <label>Điện thoại *</label>
+        <input type="tel" name="phone" required>
+
+        <label>URL Logo (khuyến khích)</label>
+        <input type="url" name="logo" placeholder="https://example.com/logo.png" value="https://via.placeholder.com/150">
+
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-cancel" id="close-modal">Hủy</button>
+          <button type="submit" class="btn btn-confirm">Xác nhận đăng ký</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxAU80LaHMhH_mIqwwHc8tQ5I3dEe5p8fHdITsRFFfBB_nUw2wtB5dJ82KWCLUSlRt7/exec'; // <<< THAY BẰNG URL WEB APP CỦA BẠN
+
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('close-modal');
+    const loading = document.getElementById('loading');
+    const info = document.getElementById('info');
+
+    closeModal.onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+    let panZoomInstance = null;
+
+    async function loadFloorPlan() {
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({action: 'getData'})
+        });
+        const booths = await response.json();
+
+        const svg = document.getElementById('floorplan');
+        svg.innerHTML = '';
+
+        booths.forEach(booth => {
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+          // Rect booth
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', booth.X);
+          rect.setAttribute('y', booth.Y);
+          rect.setAttribute('width', booth.Width);
+          rect.setAttribute('height', booth.Height);
+          rect.setAttribute('class', `booth ${booth['Trạng thái'].toLowerCase()}`);
+
+          // Text ID
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', parseFloat(booth.X) + parseFloat(booth.Width)/2);
+          text.setAttribute('y', parseFloat(booth.Y) + parseFloat(booth.Height)/2);
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('dominant-baseline', 'middle');
+          text.textContent = booth['Booth ID'];
+
+          g.appendChild(rect);
+          g.appendChild(text);
+
+          // Logo nếu occupied
+          if (booth['Trạng thái'] === 'Occupied' && booth['Logo URL']) {
+            const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            img.setAttribute('href', booth['Logo URL']);
+            img.setAttribute('x', parseFloat(booth.X) + 10);
+            img.setAttribute('y', parseFloat(booth.Y) + 10);
+            img.setAttribute('width', parseFloat(booth.Width) - 20);
+            img.setAttribute('height', parseFloat(booth.Height) - 20);
+            g.appendChild(img);
+          }
+
+          g.onclick = () => selectBooth(booth);
+          svg.appendChild(g);
+        });
+
+        // Khởi tạo zoom/pan
+        if (panZoomInstance) panZoomInstance.destroy();
+        panZoomInstance = svgPanZoom(svg, {
+          zoomEnabled: true,
+          panEnabled: true,
+          controlIconsEnabled: true,
+          fit: true,
+          center: true,
+          minZoom: 0.5,
+          maxZoom: 10
+        });
+
+        loading.style.display = 'none';
+        info.style.display = 'block';
+      } catch (err) {
+        loading.textContent = 'Lỗi tải dữ liệu: ' + err.message;
+      }
+    }
+
+    function selectBooth(booth) {
+      if (booth['Trạng thái'] !== 'Available') {
+        alert(`Booth này đã được đặt bởi: ${booth['Công ty'] || 'chưa có thông tin'}`);
+        return;
+      }
+
+      document.getElementById('modal-booth-id').textContent = booth['Booth ID'];
+      document.getElementById('modal-size').textContent = booth['Kích thước'];
+      document.getElementById('modal-price').textContent = parseInt(booth['Giá (VND)']).toLocaleString('vi-VN');
+
+      modal.style.display = 'flex';
+
+      const form = document.getElementById('registration-form');
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const companyData = {
+          company: formData.get('company'),
+          logoUrl: formData.get('logo') || ''
+        };
+
+        try {
+          const response = await fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'reserve',
+              boothId: booth['Booth ID'],
+              companyData: companyData
+            })
+          });
+          const result = await response.json();
+          alert(result.message);
+          if (result.success) {
+            modal.style.display = 'none';
+            form.reset();
+            loadFloorPlan();
+          }
+        } catch (err) {
+          alert('Lỗi kết nối: ' + err.message);
+        }
+      };
+    }
+
+    // Load khi mở trang
+    loadFloorPlan();
+  </script>
+</body>
+</html>

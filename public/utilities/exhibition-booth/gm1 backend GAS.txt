@@ -1,0 +1,122 @@
+/** * LAZINET EXHIBITION SYSTEM V4.0 - CORE BACKEND
+ * Tương tác 2 chiều với Organizer & Client
+ */
+
+const SS = SpreadsheetApp.getActiveSpreadsheet();
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  try {
+    const request = JSON.parse(e.postData.contents);
+    const action = request.action;
+    
+    // Kiểm tra hiệu lực hệ thống (Configs!B2)
+    const isActive = SS.getSheetByName('Configs').getRange('B2').getValue();
+    const inactiveMsg = SS.getSheetByName('Configs').getRange('B3').getValue();
+    if (!isActive && action !== 'checkPass') {
+      return response({ success: false, message: inactiveMsg });
+    }
+
+    switch(action) {
+      case 'getInitData': return response(getInitData());
+      case 'checkPass': 
+        const adminPass = SS.getSheetByName('Configs').getRange('B4').getValue();
+        return response({ valid: String(request.pass) === String(adminPass) });
+      case 'saveOrganizer': return response(saveOrganizer(request));
+      case 'bookBooth': return response(bookBooth(request));
+      case 'chatAI': return response(handleChatAI(request.message));
+      default: return response({ success: false, message: "Action Unknown" });
+    }
+  } catch (err) {
+    return response({ success: false, message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function response(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getInitData() {
+  const configSh = SS.getSheetByName('Configs');
+  const orgSh = SS.getSheetByName('Organizer');
+  const boothSh = SS.getSheetByName('Booths');
+  
+  // Load Organizer Info
+  const orgData = orgSh.getRange('B2:B22').getValues();
+  const schedule = orgSh.getRange('A25:D').getValues().filter(r => r[0] !== "");
+  
+  // Load Booths
+  const bData = boothSh.getDataRange().getValues();
+  const headers = bData[0].map(h => h.toString().trim());
+  const booths = bData.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h, idx) => obj[h] = row[idx]);
+    return obj;
+  });
+
+  return {
+    configs: {
+      botName: configSh.getRange('B8').getValue(),
+      botLogo: configSh.getRange('B9').getValue(),
+      colors: [configSh.getRange('B10').getValue(), configSh.getRange('B11').getValue(), configSh.getRange('B12').getValue()],
+      waitingMsg: configSh.getRange('B13').getValue()
+    },
+    organizer: {
+      shortName: orgData[0][0], fullName: orgData[1][0], logo: orgData[3][0],
+      title: orgData[12][0], location: orgData[13][0], address: orgData[14][0],
+      width: orgData[16][0], height: orgData[17][0], ratio: orgData[18][0],
+      start: orgData[19][0], end: orgData[20][0], schedule: schedule
+    },
+    booths: booths
+  };
+}
+
+function saveOrganizer(req) {
+  const sh = SS.getSheetByName('Organizer');
+  const p = req.payload;
+  sh.getRange('B14').setValue(p.title);
+  sh.getRange('B15').setValue(p.location);
+  sh.getRange('B18').setValue(p.width);
+  sh.getRange('B19').setValue(p.height);
+  sh.getRange('B20').setValue(p.ratio);
+  // Cập nhật bảng Booths (Cột A-L) nếu có gửi lên
+  return { success: true };
+}
+
+function bookBooth(req) {
+  const sh = SS.getSheetByName('Booths');
+  const data = sh.getDataRange().getValues();
+  const idIdx = data[0].indexOf('Booth ID');
+  const stIdx = data[0].indexOf('Trạng thái');
+  
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][idIdx] == req.boothId && data[i][stIdx] === 'Available') {
+      const row = i + 1;
+      sh.getRange(row, stIdx + 1).setValue('Booked');
+      sh.getRange(row, data[0].indexOf('Thời gian đặt') + 1).setValue(new Date());
+      sh.getRange(row, data[0].indexOf('Tên công ty ngắn gọn') + 1).setValue(req.info.compShort);
+      sh.getRange(row, data[0].indexOf('Tên công ty đầy đủ') + 1).setValue(req.info.compFull);
+      sh.getRange(row, data[0].indexOf('Mã số thuế') + 1).setValue(req.info.tax);
+      sh.getRange(row, data[0].indexOf('SĐT người đặt') + 1).setValue(req.info.phone);
+      sh.getRange(row, data[0].indexOf('Email người đặt') + 1).setValue(req.info.email);
+      
+      // Gửi Email (Cần cấu hình MailApp)
+      return { success: true, message: "Đặt chỗ thành công! Vui lòng kiểm tra email." };
+    }
+  }
+  return { success: false, message: "Booth đã bị người khác đặt." };
+}
+
+function handleChatAI(userMsg) {
+  const cfg = SS.getSheetByName('Configs');
+  const model = cfg.getRange('B5').getValue();
+  const apiKey = cfg.getRange('B6').getValue();
+  const promptBase = cfg.getRange('B14').getValue();
+  
+  // Ở đây bạn sẽ dùng UrlFetchApp để gọi API Grok/Gemini/DeepSeek tương ứng
+  // Demo trả về giả lập:
+  return { answer: "Dựa trên dữ liệu, Booth A01 đã Occupied. Bạn nên chọn A03 hạng Gold đang Available nhé!" };
+}

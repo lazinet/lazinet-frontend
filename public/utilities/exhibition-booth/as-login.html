@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazinet Admin - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl text-center">
+        <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-200">
+            <i class="fas fa-user-shield text-white text-4xl"></i>
+        </div>
+        <h2 class="text-2xl font-black text-slate-800 mb-2 tracking-tighter uppercase">Admin Hub Access</h2>
+        <p class="text-slate-400 text-sm mb-6">Enter your credentials to manage the exhibition.</p>
+        
+        <input 
+            id="password" 
+            type="password" 
+            class="w-full bg-slate-50 border-none p-5 rounded-2xl mb-6 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold tracking-widest text-lg transition" 
+            placeholder="••••••••"
+        >
+        
+        <button onclick="handleLogin()" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-bold py-5 rounded-2xl transition-all active:scale-95 shadow-xl">
+            VERIFY ACCESS
+        </button>
+        
+        <a href="index.html" class="block mt-4 text-slate-400 text-xs font-bold hover:text-slate-600 transition hover:underline">
+            Return to Visitor View
+        </a>
+    </div>
+
+    <script>
+        const ADMIN_PASS = "admin123";
+
+        function handleLogin() {
+            const input = document.getElementById('password').value;
+            if (input === ADMIN_PASS) {
+                window.location.href = "admin.html";
+            } else {
+                alert("Invalid Access Code");
+                document.getElementById('password').value = "";
+            }
+        }
+        
+        document.getElementById('password').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị Triển lãm - Hệ thống LAZINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .nav-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .input-minimal { border-bottom: 1px solid #e2e8f0; transition: all 0.3s; }
+        .input-minimal:focus { border-bottom-color: #2563eb; outline: none; }
+        canvas { touch-action: none; cursor: crosshair; }
+        .booth-diamond { background: linear-gradient(135deg, #e0f2fe, #38bdf8); }
+        .booth-platinum { background: linear-gradient(135deg, #f1f5f9, #94a3b8); }
+        .booth-gold { background: linear-gradient(135deg, #fef3c7, #f59e0b); }
+        .booth-silver { background: linear-gradient(135deg, #f8fafc, #64748b); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div id="login-screen" class="fixed inset-0 bg-slate-900 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl text-center">
+            <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-200">
+                <i class="fas fa-user-shield text-white text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2 tracking-tighter uppercase">Truy cập Quản trị</h2>
+            <p class="text-slate-400 text-sm mb-8 font-medium">Nhập mật khẩu quản trị để tiếp tục</p>
+            <input type="password" id="admin-pass" class="w-full bg-slate-50 border-none p-5 rounded-2xl mb-6 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold tracking-widest" placeholder="••••••••">
+            <button onclick="verifyAccess()" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-bold py-5 rounded-2xl transition-all active:scale-95 shadow-xl">XÁC MINH TRUY CẬP</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden flex-1 flex flex-col">
+        <nav class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 sticky top-0 z-50 nav-shadow">
+            <div class="flex items-center gap-4">
+                <img id="org-logo" class="h-10 w-10 object-contain rounded-lg bg-slate-50 p-1">
+                <div>
+                    <h1 id="nav-org-name" class="font-black text-slate-800 leading-none tracking-tighter text-xl"></h1>
+                    <span class="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em]">Hệ thống Quản trị Triển lãm</span>
+                </div>
+            </div>
+
+            <div class="flex-1 max-w-xl mx-10 hidden lg:block">
+                <div class="flex gap-6 items-center bg-slate-50 px-6 py-2 rounded-2xl border border-slate-100">
+                    <div class="flex-1">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Tên triển lãm</p>
+                        <input id="inp-event-title" class="w-full bg-transparent font-bold text-sm text-slate-700 outline-none" placeholder="Nhập tên sự kiện...">
+                    </div>
+                    <div class="w-[1px] h-8 bg-slate-200"></div>
+                    <div>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Địa điểm</p>
+                        <input id="inp-event-loc" class="w-full bg-transparent font-bold text-xs text-slate-500 outline-none" placeholder="Nhập địa điểm...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="fetchData()" class="p-3 text-slate-400 hover:text-blue-600 transition"><i class="fas fa-sync-alt"></i></button>
+                <button onclick="submitAllData()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-100 transition-all active:scale-95">
+                    <i class="fas fa-cloud-upload-alt mr-2"></i> LƯU & CẬP NHẬT
+                </button>
+            </div>
+        </nav>
+
+        <div class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-4 gap-6 overflow-hidden">
+            <!-- Sidebar trái với các form -->
+            <div class="lg:col-span-1 space-y-6 overflow-y-auto custom-scrollbar pr-2">
+                <!-- Thông tin tổ chức -->
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i class="fas fa-building"></i> Thông tin Tổ chức
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Tên ngắn gọn</label>
+                            <input id="inp-org-short" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Tên đầy đủ</label>
+                            <input id="inp-org-full" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Website</label>
+                            <input id="inp-org-website" type="url" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Logo URL</label>
+                            <input id="inp-org-logo" type="url" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Email</label>
+                            <input id="inp-org-email" type="email" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Thông tin ngân hàng -->
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i class="fas fa-university"></i> Thông tin Ngân hàng
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Ngân hàng</label>
+                            <select id="inp-org-bank" class="w-full py-2 input-minimal font-bold text-slate-700">
+                                <option value="">Chọn ngân hàng</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Tên tài khoản</label>
+                            <input id="inp-org-account-name" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Số tài khoản</label>
+                            <input id="inp-org-account-number" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Thông tin sự kiện -->
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i class="fas fa-calendar-star"></i> Thông tin Sự kiện
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Tên triển lãm</label>
+                            <input id="inp-event-title-full" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Địa điểm tổ chức</label>
+                            <input id="inp-event-venue" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Địa chỉ chi tiết</label>
+                            <input id="inp-event-address" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">Link Google Maps</label>
+                            <input id="inp-event-map" type="url" class="w-full py-2 input-minimal font-bold text-slate-700">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-400">Ngày bắt đầu</label>
+                                <input id="inp-event-start" type="text" class="w-full py-2 input-minimal font-bold text-slate-700 datepicker">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-400">Ngày kết thúc</label>
+                                <input id="inp-event-end" type="text" class="w-full py-2 input-minimal font-bold text-slate-700 datepicker">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kích thước mặt bằng -->
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i class="fas fa-ruler-combined"></i> Kích thước Mặt bằng
+                    </h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">RỘNG (cm)</label>
+                            <input id="inp-w" type="number" class="w-full py-2 input-minimal font-bold text-slate-700" oninput="drawLive()">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">CAO (cm)</label>
+                            <input id="inp-h" type="number" class="w-full py-2 input-minimal font-bold text-slate-700" oninput="drawLive()">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400 text-blue-600">TỶ LỆ (px/cm)</label>
+                            <input id="inp-ratio" type="number" step="0.1" class="w-full py-2 input-minimal font-bold text-blue-600" oninput="drawLive()">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lịch trình chi tiết -->
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fas fa-calendar-alt"></i> Lịch trình Chi tiết
+                        </h3>
+                        <button onclick="addScheduleRow()" class="text-blue-600 font-bold text-[10px] hover:underline">+ THÊM DÒNG</button>
+                    </div>
+                    <div id="schedule-list" class="space-y-3">
+                        <!-- Schedule rows will be inserted here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Main content với canvas và booth table -->
+            <div class="lg:col-span-3 flex flex-col gap-6 overflow-hidden">
+                <!-- Canvas Preview -->
+                <div class="bg-slate-200 rounded-[2.5rem] border-4 border-white shadow-inner relative overflow-hidden flex items-center justify-center min-h-[500px]">
+                    <div class="absolute top-6 left-6 z-10 bg-white/80 backdrop-blur px-4 py-2 rounded-full text-[10px] font-black text-slate-500 shadow-sm border border-white">
+                        <i class="fas fa-map-marked-alt mr-2"></i> BẢN ĐỒ BOOTHS - KÉO ĐỂ DI CHUYỂN, SCROLL ĐỂ ZOOM
+                    </div>
+                    <canvas id="main-canvas" class="bg-white shadow-2xl transition-all"></canvas>
+                </div>
+
+                <!-- Booth Management Table -->
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                        <h3 class="font-black text-slate-800 tracking-tight">
+                            <i class="fas fa-table-cells-large mr-2"></i> Quản lý Booths
+                        </h3>
+                        <div class="flex gap-3">
+                            <button onclick="exportToExcel()" class="bg-emerald-600 text-white px-6 py-2 rounded-xl text-[10px] font-black hover:bg-emerald-700 transition shadow-lg">
+                                <i class="fas fa-file-excel mr-2"></i> XUẤT EXCEL
+                            </button>
+                            <button onclick="addBoothRow()" class="bg-slate-900 text-white px-6 py-2 rounded-xl text-[10px] font-black hover:bg-blue-600 transition shadow-lg">
+                                <i class="fas fa-plus mr-2"></i> THÊM BOOTH MỚI
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-auto custom-scrollbar max-h-[500px]">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-white sticky top-0 z-10">
+                                <tr>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Area ID</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Booth ID</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Kích thước</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">X,Y (cm)</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">W×H (cm)</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Radius</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Hạng</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Giá (VND)</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Trạng thái</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="booth-table-body" class="divide-y divide-slate-50">
+                                <!-- Booth rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // const GAS_URL = "https://script.google.com/macros/s/AKfycbyvQQcmfEH-wQ_1xAOJorOdc0Ph6avtB1SxpBmgilbiNdEtx7FJUiuXM0z31F5klzkxvg/exec";
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw_xgpGGTOl8YT_XbxLn-kbJPxxA1KzD2O_tfRg4ZqCgX1mdcvb_PjOXNYdt6kah7MFDg/exec'
+        let state = { data: null, pass: "", banks: [] };
+        let canvas, ctx;
+        let camera = { x: 0, y: 0, zoom: 1 };
+        let isDragging = false;
+        let lastPos = { x: 0, y: 0 };
+
+        // Initialize datepickers
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.datepicker', {
+                dateFormat: 'd/m/Y',
+                locale: 'vi'
+            });
+        });
+
+        async function verifyAccess() {
+            const p = document.getElementById('admin-pass').value;
+            if(!p) return Swal.fire('Lỗi', 'Vui lòng nhập mật khẩu', 'warning');
+            
+            Swal.fire({ 
+                title: 'Đang xác thực...', 
+                didOpen: () => Swal.showLoading(),
+                allowOutsideClick: false 
+            });
+            
+            try {
+                const res = await fetch(GAS_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: 'checkPass', pass: p }) 
+                }).then(r => r.json());
+                
+                if(res.valid) {
+                    state.pass = p;
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('main-app').classList.remove('hidden');
+                    Swal.close();
+                    fetchData();
+                } else {
+                    Swal.fire('Lỗi', 'Mật khẩu không chính xác!', 'error');
+                }
+            } catch(e) { 
+                Swal.fire('Lỗi', 'Không thể kết nối đến hệ thống', 'error'); 
+            }
+        }
+
+        async function fetchData() {
+            Swal.fire({ 
+                title: 'Đang tải dữ liệu...', 
+                didOpen: () => Swal.showLoading(),
+                allowOutsideClick: false 
+            });
+            
+            try {
+                const res = await fetch(GAS_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: 'getInitData' }) 
+                }).then(r => r.json());
+                
+                state.data = res;
+                state.banks = res.banks || [];
+                
+                // Map organizer info
+                const org = res.organizer;
+                document.getElementById('org-logo').src = org.logo;
+                document.getElementById('nav-org-name').innerText = org.shortName;
+                document.getElementById('inp-org-short').value = org.shortName;
+                document.getElementById('inp-org-full').value = org.fullName;
+                document.getElementById('inp-org-website').value = org.website;
+                document.getElementById('inp-org-logo').value = org.logo;
+                document.getElementById('inp-org-email').value = org.email;
+                document.getElementById('inp-org-bank').value = org.bankName;
+                document.getElementById('inp-org-account-name').value = org.bankAccountName;
+                document.getElementById('inp-org-account-number').value = org.bankAccountNumber;
+                document.getElementById('inp-event-title').value = org.title;
+                document.getElementById('inp-event-title-full').value = org.title;
+                document.getElementById('inp-event-loc').value = org.location;
+                document.getElementById('inp-event-venue').value = org.location;
+                document.getElementById('inp-event-address').value = org.address;
+                document.getElementById('inp-event-map').value = org.mapLink;
+                document.getElementById('inp-event-start').value = org.startDate;
+                document.getElementById('inp-event-end').value = org.endDate;
+                document.getElementById('inp-w').value = org.width;
+                document.getElementById('inp-h').value = org.height;
+                document.getElementById('inp-ratio').value = org.ratio;
+
+                // Populate bank dropdown
+                const bankSelect = document.getElementById('inp-org-bank');
+                bankSelect.innerHTML = '<option value="">Chọn ngân hàng</option>';
+                state.banks.forEach(bank => {
+                    if (bank) {
+                        const option = document.createElement('option');
+                        option.value = bank;
+                        option.textContent = bank;
+                        bankSelect.appendChild(option);
+                    }
+                });
+
+                renderSchedule();
+                renderBoothTable();
+                initCanvas();
+                drawLive();
+                
+                Swal.close();
+            } catch(e) { 
+                Swal.fire('Lỗi', 'Không thể tải dữ liệu: ' + e.message, 'error'); 
+            }
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            list.innerHTML = state.data.organizer.schedule.map((s, idx) => `
+                <div class="bg-slate-50 p-4 rounded-2xl relative group border border-transparent hover:border-blue-100 transition-all">
+                    <div class="grid grid-cols-3 gap-2 mb-2">
+                        <input type="text" value="${s.date}" class="sc-date bg-transparent font-black text-[10px] w-full outline-none p-2 rounded-lg border" placeholder="dd/mm/yyyy">
+                        <input type="text" value="${s.start}" class="sc-start bg-transparent text-[10px] w-full outline-none p-2 rounded-lg border" placeholder="HH:MM">
+                        <input type="text" value="${s.end}" class="sc-end bg-transparent text-[10px] w-full outline-none p-2 rounded-lg border" placeholder="HH:MM">
+                    </div>
+                    <input type="text" value="${s.content}" class="sc-content bg-transparent text-sm font-medium text-slate-700 w-full outline-none p-2 rounded-lg border" placeholder="Nội dung chương trình">
+                    <button onclick="removeScheduleRow(${idx})" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderBoothTable() {
+            const body = document.getElementById('booth-table-body');
+            body.innerHTML = state.data.booths.map((b, idx) => `
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="p-4"><input class="b-area w-12 font-black text-slate-800 outline-none border rounded px-2 py-1" value="${b['Area ID'] || 'A'}"></td>
+                    <td class="p-4"><input class="b-id w-16 font-black text-slate-800 outline-none border rounded px-2 py-1" value="${b['Booth ID']}"></td>
+                    <td class="p-4"><input class="b-size w-24 font-medium text-slate-600 outline-none border rounded px-2 py-1" value="${b['Kích thước (cmxcm)'] || '100x100'}"></td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-1 text-[11px]">
+                            X:<input type="number" class="b-x w-16 bg-transparent outline-none border-b px-1" value="${b.X || 0}" oninput="drawLive()">
+                            Y:<input type="number" class="b-y w-16 bg-transparent outline-none border-b px-1" value="${b.Y || 0}" oninput="drawLive()">
+                        </div>
+                    </td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-1 text-[11px]">
+                            W:<input type="number" class="b-w w-16 bg-transparent outline-none border-b px-1" value="${b.Width || 100}" oninput="drawLive()">
+                            H:<input type="number" class="b-h w-16 bg-transparent outline-none border-b px-1" value="${b.Height || 100}" oninput="drawLive()">
+                        </div>
+                    </td>
+                    <td class="p-4"><input type="number" class="b-radius w-16 bg-transparent outline-none border-b px-1" value="${b.Radius || 0}" oninput="drawLive()"></td>
+                    <td class="p-4">
+                        <select class="b-rank text-[10px] font-bold bg-transparent outline-none border rounded px-2 py-1">
+                            <option value="Diamond" ${b['Hạng']=='Diamond'?'selected':''}>Diamond</option>
+                            <option value="Platinum" ${b['Hạng']=='Platinum'?'selected':''}>Platinum</option>
+                            <option value="Gold" ${b['Hạng']=='Gold'?'selected':''}>Gold</option>
+                            <option value="Silver" ${b['Hạng']=='Silver'?'selected':''}>Silver</option>
+                            <option value="Companion" ${b['Hạng']=='Companion'?'selected':''}>Companion</option>
+                            <option value="Free" ${b['Hạng']=='Free'?'selected':''}>Free</option>
+                        </select>
+                    </td>
+                    <td class="p-4">
+                        <input type="number" class="b-price w-32 bg-transparent outline-none font-bold text-blue-600 border rounded px-2 py-1" 
+                               value="${b['Giá (VND)'] || 0}" 
+                               onchange="updateVAT(this)">
+                    </td>
+                    <td class="p-4">
+                        <select class="b-status text-[10px] font-bold bg-transparent outline-none border rounded px-2 py-1">
+                            <option value="Available" ${b['Trạng thái']=='Available'?'selected':''}>Trống</option>
+                            <option value="Booked" ${b['Trạng thái']=='Booked'?'selected':''}>Đã giữ chỗ</option>
+                            <option value="Occupied" ${b['Trạng thái']=='Occupied'?'selected':''}>Đã chốt</option>
+                        </select>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="removeBoothRow(${idx})" class="text-slate-300 hover:text-red-500 transition mx-1"><i class="fas fa-trash"></i></button>
+                        <button onclick="duplicateBooth(${idx})" class="text-slate-300 hover:text-blue-500 transition mx-1"><i class="fas fa-copy"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById('main-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Mouse events for dragging
+            canvas.addEventListener('mousedown', startDrag);
+            canvas.addEventListener('mousemove', drag);
+            canvas.addEventListener('mouseup', endDrag);
+            canvas.addEventListener('mouseleave', endDrag);
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    startDrag(e.touches[0]);
+                }
+            });
+            canvas.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) {
+                    drag(e.touches[0]);
+                }
+            });
+            canvas.addEventListener('touchend', endDrag);
+            
+            // Zoom with wheel
+            canvas.addEventListener('wheel', handleWheel);
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            lastPos = { x: e.clientX, y: e.clientY };
+            canvas.style.cursor = 'grabbing';
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            const dx = e.clientX - lastPos.x;
+            const dy = e.clientY - lastPos.y;
+            camera.x += dx;
+            camera.y += dy;
+            lastPos = { x: e.clientX, y: e.clientY };
+            drawLive();
+        }
+
+        function endDrag() {
+            isDragging = false;
+            canvas.style.cursor = 'crosshair';
+        }
+
+        function handleWheel(e) {
+            e.preventDefault();
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            const mouseX = e.clientX - canvas.getBoundingClientRect().left;
+            const mouseY = e.clientY - canvas.getBoundingClientRect().top;
+            
+            const worldX = (mouseX - camera.x) / camera.zoom;
+            const worldY = (mouseY - camera.y) / camera.zoom;
+            
+            camera.zoom *= zoomFactor;
+            camera.x = mouseX - worldX * camera.zoom;
+            camera.y = mouseY - worldY * camera.zoom;
+            
+            drawLive();
+        }
+
+        function drawLive() {
+            if (!canvas) return;
+            
+            const w = Number(document.getElementById('inp-w').value) || 3000;
+            const h = Number(document.getElementById('inp-h').value) || 2000;
+            const r = Number(document.getElementById('inp-ratio').value) || 0.1;
+            
+            const displayWidth = w * r;
+            const displayHeight = h * r;
+            
+            canvas.width = window.innerWidth * 0.8;
+            canvas.height = window.innerHeight * 0.6;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Apply camera transform
+            ctx.save();
+            ctx.translate(camera.x, camera.y);
+            ctx.scale(camera.zoom, camera.zoom);
+            
+            // Draw floor plan background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, displayWidth, displayHeight);
+            
+            // Draw grid
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            const gridSize = 100 * r; // 100cm grid
+            
+            for (let x = 0; x <= displayWidth; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, displayHeight);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y <= displayHeight; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(displayWidth, y);
+                ctx.stroke();
+            }
+            
+            // Draw booths
+            document.querySelectorAll('#booth-table-body tr').forEach(tr => {
+                const bx = (Number(tr.querySelector('.b-x').value) || 0) * r;
+                const by = (Number(tr.querySelector('.b-y').value) || 0) * r;
+                const bw = (Number(tr.querySelector('.b-w').value) || 100) * r;
+                const bh = (Number(tr.querySelector('.b-h').value) || 100) * r;
+                const radius = (Number(tr.querySelector('.b-radius').value) || 0) * r;
+                const id = tr.querySelector('.b-id').value;
+                const rank = tr.querySelector('.b-rank').value;
+                const status = tr.querySelector('.b-status').value;
+                
+                // Set colors based on rank and status
+                let fillColor = '#ffffff';
+                let strokeColor = '#cbd5e1';
+                
+                if (status === 'Occupied') {
+                    fillColor = '#10b981'; // Green
+                    strokeColor = '#059669';
+                } else if (status === 'Booked') {
+                    fillColor = '#fbbf24'; // Yellow
+                    strokeColor = '#f59e0b';
+                } else {
+                    // Color by rank
+                    switch(rank) {
+                        case 'Diamond': fillColor = '#e0f2fe'; strokeColor = '#38bdf8'; break;
+                        case 'Platinum': fillColor = '#f1f5f9'; strokeColor = '#94a3b8'; break;
+                        case 'Gold': fillColor = '#fef3c7'; strokeColor = '#f59e0b'; break;
+                        case 'Silver': fillColor = '#f8fafc'; strokeColor = '#64748b'; break;
+                        case 'Companion': fillColor = '#fce7f3'; strokeColor = '#ec4899'; break;
+                        case 'Free': fillColor = '#dcfce7'; strokeColor = '#22c55e'; break;
+                    }
+                }
+                
+                // Draw booth
+                ctx.beginPath();
+                if (radius > 0) {
+                    ctx.roundRect(bx, by, bw, bh, radius);
+                } else {
+                    ctx.rect(bx, by, bw, bh);
+                }
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+                ctx.strokeStyle = strokeColor;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw booth ID
+                ctx.fillStyle = status === 'Available' ? '#64748b' : '#ffffff';
+                ctx.font = `bold ${Math.max(10, 12 * camera.zoom)}px Inter`;
+                ctx.fillText(id, bx + 5, by + 15);
+                
+                // Draw rank badge
+                ctx.fillStyle = strokeColor;
+                ctx.font = `bold ${Math.max(8, 10 * camera.zoom)}px Inter`;
+                ctx.fillText(rank.charAt(0), bx + bw - 15, by + 15);
+            });
+            
+            ctx.restore();
+        }
+
+        function updateVAT(input) {
+            const price = Number(input.value) || 0;
+            const vat = price * 1.1;
+            // Update VAT display if needed
+        }
+
+        function addScheduleRow() {
+            if (!state.data.organizer.schedule) {
+                state.data.organizer.schedule = [];
+            }
+            state.data.organizer.schedule.push({date: '', start: '', end: '', content: ''});
+            renderSchedule();
+        }
+
+        function removeScheduleRow(i) {
+            state.data.organizer.schedule.splice(i, 1);
+            renderSchedule();
+        }
+
+        function addBoothRow() {
+            if (!state.data.booths) {
+                state.data.booths = [];
+            }
+            state.data.booths.push({
+                "Area ID": "A",
+                "Booth ID": "NEW" + (state.data.booths.length + 1),
+                "Kích thước (cmxcm)": "100x100",
+                "X": 0,
+                "Y": 0,
+                "Width": 100,
+                "Height": 100,
+                "Radius": 0,
+                "Hạng": "Gold",
+                "Giá (VND)": 0,
+                "Giá gồm thuế (VAT 10%)": 0,
+                "Link QR thanh toán": "",
+                "Trạng thái": "Available"
+            });
+            renderBoothTable();
+            drawLive();
+        }
+
+        function removeBoothRow(i) {
+            if (confirm('Bạn có chắc muốn xóa booth này?')) {
+                state.data.booths.splice(i, 1);
+                renderBoothTable();
+                drawLive();
+            }
+        }
+
+        function duplicateBooth(i) {
+            const booth = JSON.parse(JSON.stringify(state.data.booths[i]));
+            booth["Booth ID"] = booth["Booth ID"] + "-COPY";
+            booth.X = (booth.X || 0) + 50;
+            state.data.booths.push(booth);
+            renderBoothTable();
+            drawLive();
+        }
+
+        async function submitAllData() {
+            Swal.fire({
+                title: 'Xác nhận lưu dữ liệu?',
+                text: 'Toàn bộ dữ liệu sẽ được ghi đè lên hệ thống',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý, lưu ngay!',
+                cancelButtonText: 'Hủy'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({ 
+                        title: 'Đang ghi dữ liệu...', 
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false 
+                    });
+                    
+                    // Collect schedule data
+                    const schedules = Array.from(document.querySelectorAll('#schedule-list > div')).map(div => ({
+                        date: div.querySelector('.sc-date').value,
+                        start: div.querySelector('.sc-start').value,
+                        end: div.querySelector('.sc-end').value,
+                        content: div.querySelector('.sc-content').value
+                    }));
+                    
+                    // Collect booth data
+                    const booths = Array.from(document.querySelectorAll('#booth-table-body tr')).map(tr => {
+                        const price = Number(tr.querySelector('.b-price').value) || 0;
+                        return {
+                            "Area ID": tr.querySelector('.b-area').value,
+                            "Booth ID": tr.querySelector('.b-id').value,
+                            "Kích thước (cmxcm)": tr.querySelector('.b-size').value,
+                            "X": Number(tr.querySelector('.b-x').value) || 0,
+                            "Y": Number(tr.querySelector('.b-y').value) || 0,
+                            "Width": Number(tr.querySelector('.b-w').value) || 100,
+                            "Height": Number(tr.querySelector('.b-h').value) || 100,
+                            "Radius": Number(tr.querySelector('.b-radius').value) || 0,
+                            "Hạng": tr.querySelector('.b-rank').value,
+                            "Giá (VND)": price,
+                            "Giá gồm thuế (VAT 10%)": price * 1.1,
+                            "Trạng thái": tr.querySelector('.b-status').value
+                        };
+                    });
+                    
+                    const payload = {
+                        action: 'saveFullData',
+                        pass: state.pass,
+                        organizer: {
+                            shortName: document.getElementById('inp-org-short').value,
+                            fullName: document.getElementById('inp-org-full').value,
+                            website: document.getElementById('inp-org-website').value,
+                            logo: document.getElementById('inp-org-logo').value,
+                            email: document.getElementById('inp-org-email').value,
+                            bankName: document.getElementById('inp-org-bank').value,
+                            bankAccountName: document.getElementById('inp-org-account-name').value,
+                            bankAccountNumber: document.getElementById('inp-org-account-number').value,
+                            title: document.getElementById('inp-event-title-full').value,
+                            location: document.getElementById('inp-event-venue').value,
+                            address: document.getElementById('inp-event-address').value,
+                            mapLink: document.getElementById('inp-event-map').value,
+                            width: document.getElementById('inp-w').value,
+                            height: document.getElementById('inp-h').value,
+                            ratio: document.getElementById('inp-ratio').value,
+                            startDate: document.getElementById('inp-event-start').value,
+                            endDate: document.getElementById('inp-event-end').value
+                        },
+                        schedule: schedules,
+                        booths: booths
+                    };
+                    
+                    try {
+                        const res = await fetch(GAS_URL, { 
+                            method: 'POST', 
+                            body: JSON.stringify(payload) 
+                        }).then(r => r.json());
+                        
+                        if(res.success) {
+                            Swal.fire('Thành công!', 'Dữ liệu đã được lưu thành công.', 'success');
+                        } else {
+                            Swal.fire('Lỗi!', res.message || 'Không thể lưu dữ liệu', 'error');
+                        }
+                    } catch(e) {
+                        Swal.fire('Lỗi!', 'Không thể kết nối đến máy chủ: ' + e.message, 'error');
+                    }
+                }
+            });
+        }
+
+        function exportToExcel() {
+            Swal.fire('Thông báo', 'Tính năng xuất Excel sẽ được tích hợp sau!', 'info');
+        }
+
+        // Auto-save every 5 minutes
+        setInterval(() => {
+            if (state.data && state.pass) {
+                console.log('Auto-saving...');
+            }
+        }, 300000);
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            // Check if already logged in
+            const savedPass = localStorage.getItem('exhibition_admin_pass');
+            if (savedPass) {
+                document.getElementById('admin-pass').value = savedPass;
+                verifyAccess();
+            }
+        });
+    </script>
+</body>
+</html>

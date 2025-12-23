@@ -1,0 +1,19 @@
+<svg width="1500" height="1600" viewBox="-50 -200 1550 1800" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Cung trên: parabol ngược siêu mượt (quadratic Bézier) -->
+  <path d="M 0,847 
+           Q 605,-1191 1442,1535" 
+        fill="none" stroke="yellow" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Cung dưới: parabol thuận siêu mượt (quadratic Bézier) - đã sửa chính xác -->
+  <path d="M 1442,1535 
+           Q 600,-950 0,847" 
+        fill="none" stroke="yellow" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Tô vùng khép kín giữa hai cung -->
+  <path d="M 0,847 
+           Q 605,-1191 1442,1535 
+           Q 600,-950 0,847 Z" 
+        fill="red" opacity="1"/>
+
+</svg>

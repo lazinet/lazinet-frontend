@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Sơ đồ Triển lãm Trực tuyến - LAZINET</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap');
+    body { font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; background: #f8fafc; }
+    #viewport { width: 100vw; height: calc(100vh - 80px); cursor: grab; touch-action: none; }
+    #viewport:active { cursor: grabbing; }
+    .chat-win { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: bottom right; }
+    .chat-hidden { transform: scale(0) translateY(100px); opacity: 0; pointer-events: none; }
+    .typing-dot { width: 6px; height: 6px; background: #94a3b8; border-radius: 50%; animation: typing 1.4s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  </style>
+</head>
+<body>
+  <nav class="h-20 px-6 md:px-10 flex items-center justify-between bg-white/90 backdrop-blur border-b border-slate-100 sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+      <img id="ui-logo" class="h-12 w-12 object-contain rounded-xl bg-slate-50 p-1 border">
+      <div>
+        <h1 id="ui-title" class="font-black text-xl tracking-tighter uppercase italic text-slate-900">Đang tải...</h1>
+        <p id="ui-loc" class="text-xs text-blue-600 font-bold uppercase tracking-widest"></p>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="hidden md:flex gap-6 text-xs font-black uppercase text-slate-500">
+        <span class="flex items-center gap-2"><i class="w-4 h-4 bg-white border rounded"></i> Trống</span>
+        <span class="flex items-center gap-2"><i class="w-4 h-4 bg-yellow-400 rounded"></i> Giữ chỗ</span>
+        <span class="flex items-center gap-2"><i class="w-4 h-4 bg-emerald-500 rounded"></i> Đã chốt</span>
+      </div>
+      <button onclick="resetView()" class="bg-slate-900 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-lg hover:bg-slate-800 transition active:scale-95">
+        Reset View
+      </button>
+    </div>
+  </nav>
+
+  <div id="viewport">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <!-- Chatbot -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+    <div id="chat-win" class="chat-win chat-hidden w-96 max-w-[90vw] h-[600px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border">
+      <div id="chat-header" class="p-5 flex justify-between items-center text-white">
+        <div class="flex items-center gap-3">
+          <img id="bot-logo" class="w-12 h-12 rounded-full border-4 border-white/30">
+          <div>
+            <p id="bot-name" class="font-black text-lg"></p>
+            <p class="text-xs opacity-80 uppercase tracking-wider">Trợ lý trực tuyến</p>
+          </div>
+        </div>
+        <button onclick="toggleChat()" class="w-10 h-10 rounded-full hover:bg-white/20 transition"><i class="fas fa-xmark text-xl"></i></button>
+      </div>
+      <div id="chat-body" class="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50">
+        <div class="flex justify-start">
+          <div class="bg-white border border-slate-200 p-4 rounded-3xl rounded-tl-none max-w-[85%] shadow-sm">
+            Xin chào! Tôi có thể giúp bạn tìm gian hàng phù hợp hoặc giải đáp thông tin triển lãm không?
+          </div>
+        </div>
+      </div>
+      <div id="typing" class="hidden px-6 py-3 flex items-center gap-2">
+        <span id="typing-msg" class="text-xs font-bold text-slate-500 uppercase"></span>
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+      <div class="p-4 border-t bg-white flex gap-3">
+        <input id="chat-input" type="text" placeholder="Hỏi về gian hàng..." class="flex-1 bg-slate-100 rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500">
+        <button onclick="sendMessage()" class="w-14 h-14 rounded-2xl text-white shadow-lg flex items-center justify-center hover:scale-110 transition active:scale-95">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+    <button onclick="toggleChat()" id="chat-btn" class="w-16 h-16 rounded-full shadow-2xl text-white text-3xl flex items-center justify-center hover:scale-110 transition active:scale-95">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+  </div>
+
+  <script>
+    // const GAS_URL = "https://script.google.com/macros/s/AKfycbyvJseiSvCkzGzo-sS0nLQ1mm6AxHdiDZ7Ykmp7a_Y9HzJEbpIXaZp8ufAVd_UdcLW-lA/exec";
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzPeiqQcBgxHpe0WAcub1FzqTQIMACmYyTtZ8zTWJQ-ngVVAuJhEyshAVnVNb6leJtghA/exec'
+    let data = null;
+    let canvas, ctx, camera = { x: 0, y: 0, zoom: 1 };
+    let dragging = false, last = { x: 0, y: 0 };
+
+    window.onload = async () => {
+      try {
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getInitData' }) });
+        data = await res.json();
+        if (!data.configs || !data.organizer) throw "Invalid data";
+        setupUI();
+        initCanvas();
+        renderMap();
+      } catch (e) {
+        Swal.fire('Lỗi', 'Không thể tải dữ liệu triển lãm. Vui lòng thử lại sau.', 'error');
+      }
+    };
+
+    function setupUI() {
+      document.getElementById('ui-title').innerText = data.organizer.title || 'TRIỂN LÃM';
+      document.getElementById('ui-loc').innerText = `${data.organizer.location || ''} | ${data.organizer.address || ''}`;
+      document.getElementById('ui-logo').src = data.organizer.logo || 'https://via.placeholder.com/50';
+
+      // Chatbot
+      document.getElementById('bot-name').innerText = data.configs.botName;
+      document.getElementById('bot-logo').src = data.configs.botLogo;
+      document.getElementById('typing-msg').innerText = data.configs.waitingMsg;
+      document.getElementById('chat-header').style.background = `linear-gradient(135deg, ${data.configs.themeColor1}, ${data.configs.themeColor2})`;
+      document.querySelector('#chat-btn').style.background = data.configs.themeColor1;
+      document.querySelector('#chat-win button[onclick="sendMessage()"]').style.background = data.configs.themeColor1;
+    }
+
+    function initCanvas() {
+      canvas = document.getElementById('canvas');
+      ctx = canvas.getContext('2d');
+      canvas.width = innerWidth;
+      canvas.height = innerHeight - 80;
+      window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight - 80; renderMap(); });
+
+      canvas.addEventListener('wheel', e => {
+        e.preventDefault();
+        const scale = e.deltaY > 0 ? 0.9 : 1.1;
+        const wx = e.clientX, wy = e.clientY - 80;
+        camera.x = wx - (wx - camera.x) * scale;
+        camera.y = wy - (wy - camera.y) * scale;
+        camera.zoom *= scale;
+        renderMap();
+      });
+
+      canvas.addEventListener('mousedown', e => { dragging = true; last = { x: e.clientX, y: e.clientY }; });
+      canvas.addEventListener('mousemove', e => {
+        if (!dragging) return;
+        camera.x += e.clientX - last.x;
+        camera.y += e.clientY - last.y;
+        last = { x: e.clientX, y: e.clientY };
+        renderMap();
+      });
+      canvas.addEventListener('mouseup', () => dragging = false);
+      canvas.addEventListener('mouseleave', () => dragging = false);
+
+      // Touch support
+      canvas.addEventListener('touchstart', e => { dragging = true; last = { x: e.touches[0].clientX, y: e.touches[0].clientY }; });
+      canvas.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        camera.x += e.touches[0].clientX - last.x;
+        camera.y += e.touches[0].clientY - last.y;
+        last = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        renderMap();
+      });
+      canvas.addEventListener('touchend', () => dragging = false);
+
+      canvas.addEventListener('click', handleClick);
+    }
+
+    function resetView() {
+      const ratio = data.organizer.ratio || 20;
+      const w = data.organizer.width * ratio;
+      const h = data.organizer.height * ratio;
+      camera.zoom = Math.min(canvas.width / w, canvas.height / h) * 0.9;
+      camera.x = (canvas.width - w * camera.zoom) / 2;
+      camera.y = (canvas.height - h * camera.zoom) / 2;
+      renderMap();
+    }
+
+    function renderMap() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (!data) return;
+
+      ctx.save();
+      ctx.translate(camera.x, camera.y);
+      ctx.scale(camera.zoom, camera.zoom);
+
+      const r = data.organizer.ratio || 20;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, data.organizer.width * r, data.organizer.height * r);
+
+      data.booths.forEach(b => {
+        const x = b.X * r, y = b.Y * r, w = b.Width * r, h = b.Height * r;
+        const radius = (b.Radius || 0) * r;
+
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, radius);
+        
+        if (b['Trạng thái'] === 'Occupied') ctx.fillStyle = '#10b981';
+        else if (b['Trạng thái'] === 'Booked') ctx.fillStyle = '#fbbf24';
+        else ctx.fillStyle = '#ffffff';
+
+        ctx.fill();
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 2 / camera.zoom;
+        ctx.stroke();
+
+        ctx.fillStyle = b['Trạng thái'] === 'Available' ? '#64748b' : '#ffffff';
+        ctx.font = `bold ${Math.max(10, 14 / camera.zoom)}px Inter`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(b['Booth ID'], x + w/2, y + h/2);
+      });
+
+      ctx.restore();
+    }
+
+    function handleClick(e) {
+      if (dragging) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left - camera.x) / camera.zoom;
+      const my = (e.clientY - rect.top - camera.y) / camera.zoom;
+      const r = data.organizer.ratio || 20;
+
+      const booth = data.booths.find(b =>
+        mx >= b.X * r && mx <= (b.X + b.Width) * r &&
+        my >= b.Y * r && my <= (b.Y + b.Height) * r
+      );
+
+      if (booth && booth['Trạng thái'] === 'Available') {
+        showBookingModal(booth);
+      } else if (booth) {
+        Swal.fire({
+          title: `Booth ${booth['Booth ID']}`,
+          text: booth['Trạng thái'] === 'Booked' ? 'Gian hàng đã được giữ chỗ' : 'Gian hàng đã được đặt',
+          icon: 'info'
+        });
+      }
+    }
+
+    function showBookingModal(booth) {
+      Swal.fire({
+        title: `<span class="font-black text-2xl uppercase">Đặt gian hàng ${booth['Booth ID']}</span>`,
+        html: `
+          <div class="text-left space-y-4 mt-4">
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div><strong>Hạng:</strong> ${booth['Hạng']}</div>
+              <div><strong>Kích thước:</strong> ${booth['Kích thước (cmxcm)']}</div>
+              <div><strong>Giá:</strong> ${parseInt(booth['Giá (VND)']).toLocaleString()} VND</div>
+              <div><strong>Giá có VAT:</strong> ${parseInt(booth['Giá gồm thuế (VAT 10%)']).toLocaleString()} VND</div>
+            </div>
+            <div class="flex justify-center my-4">
+              <img src="${booth['Link QR thanh toán']}" class="w-48 h-48 rounded-2xl shadow-lg">
+            </div>
+            <div class="space-y-3">
+              <input id="comp-short" placeholder="Tên công ty ngắn gọn *" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="comp-full" placeholder="Tên công ty đầy đủ" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="tax-code" placeholder="Mã số thuế" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="address" placeholder="Địa chỉ công ty" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="logo-url" placeholder="Link logo công ty (tùy chọn)" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="contact-name" placeholder="Người liên hệ *" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="phone" placeholder="Số điện thoại *" class="w-full p-4 rounded-2xl border bg-slate-50">
+              <input id="email" placeholder="Email *" class="w-full p-4 rounded-2xl border bg-slate-50">
+            </div>
+          </div>`,
+        width: '90%',
+        confirmButtonText: 'GỬI YÊU CẦU ĐẶT CHỖ',
+        confirmButtonColor: '#2563eb',
+        showCancelButton: true,
+        cancelButtonText: 'Hủy',
+        preConfirm: () => {
+          const required = ['comp-short', 'contact-name', 'phone', 'email'];
+          for (let id of required) {
+            if (!document.getElementById(id).value.trim()) {
+              Swal.showValidationMessage('Vui lòng điền đầy đủ các trường có *');
+              return false;
+            }
+          }
+          return {
+            compShort: document.getElementById('comp-short').value,
+            compFull: document.getElementById('comp-full').value,
+            tax: document.getElementById('tax-code').value,
+            address: document.getElementById('address').value,
+            logo: document.getElementById('logo-url').value,
+            name: document.getElementById('contact-name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value
+          };
+        }
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({ title: 'Đang gửi...', allowOutsideClick: false });
+          Swal.showLoading();
+          const res = await fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'bookBooth',
+              boothId: booth['Booth ID'],
+              info: result.value
+            })
+          }).then(r => r.json());
+
+          if (res.success) {
+            Swal.fire('Thành công!', res.message || 'Yêu cầu đã được gửi. Vui lòng thanh toán theo QR để hoàn tất.', 'success');
+            fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getInitData' }) })
+              .then(r => r.json()).then(d => { data = d; renderMap(); });
+          } else {
+            Swal.fire('Lỗi', res.message || 'Gian hàng vừa bị người khác đặt!', 'error');
+          }
+        }
+      });
+    }
+
+    function toggleChat() {
+      document.getElementById('chat-win').classList.toggle('chat-hidden');
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const body = document.getElementById('chat-body');
+      body.innerHTML += `<div class="flex justify-end"><div class="bg-blue-600 text-white p-4 rounded-3xl rounded-br-none max-w-[80%] shadow-md">${msg}</div></div>`;
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+
+      document.getElementById('typing').classList.remove('hidden');
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'chatAI', message: msg })
+      }).then(r => r.json());
+
+      document.getElementById('typing').classList.add('hidden');
+      body.innerHTML += `<div class="flex justify-start"><div class="bg-white border p-4 rounded-3xl rounded-tl-none max-w-[85%] shadow-sm">${res.answer}</div></div>`;
+      body.scrollTop = body.scrollHeight;
+    }
+  </script>
+
+  <script>
+    // Polyfill for roundRect
+    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+      if (w < 2 * r) r = w / 2;
+      if (h < 2 * r) r = h / 2;
+      this.beginPath();
+      this.moveTo(x + r, y);
+      this.arcTo(x + w, y, x + w, y + h, r);
+      this.arcTo(x + w, y + h, x, y + h, r);
+      this.arcTo(x, y + h, x, y, r);
+      this.arcTo(x, y, x + w, y, r);
+      this.closePath();
+      return this;
+    };
+  </script>
+</body>
+</html>
