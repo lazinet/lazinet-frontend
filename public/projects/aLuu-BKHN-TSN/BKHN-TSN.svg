@@ -1,13 +1,31 @@
 <svg width="500" height="500" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid #ccc">
   <rect x="0" y="0" width="1024" height="1024" fill="#F3C108" />
 
-  <g transform="translate(0, 1024) scale(5.213268)">
+  <!-- <g transform="translate(0, 1024) scale(5.213268)">
     <path
       d="M 198.109375 298.484375 L 1.6875 298.484375 L 1.6875 240.082031 L 69.3125 240.082031 C 71.027344 240.285156 79.847656 241.503906 80.132812 249.078125 C 80.132812 247.277344 80.644531 240.476562 88.152344 240.082031 L 198.082031 240.082031 Z"
       fill="#CE1628" 
       transform="translate(-1.6875, -298.484375)" />
-  </g>
-<rect x="0" y="0" width="1024" height="1024" fill="none" stroke="#CE1628" stroke-width="10"/>
+  </g> -->
+  <!-- <path
+    d="M 1024 1024 
+       L 0 1024 
+       L 0 719.535 
+       L 352.541 719.535 
+       C 361.472 720.594 407.410 726.942 408.895 766.388 
+       C 408.895 757.009 411.560 721.591 450.661 719.535 
+       L 1023.858 719.535 Z"
+    fill="#CE1628" /> -->
+<path
+    d="M 1024 1024 
+       L 0 1024 
+       L 0 719.535 
+       L 542.541 719.535 
+       C 551.472 720.594 587.410 726.942 588.895 766.388 
+       C 588.895 757.009 591.560 721.591 630.661 719.535 
+       L 1024 719.535 Z"
+    fill="#CE1628" />
+<rect x="0" y="0" width="1024" height="1024" fill="none" stroke="#CE1628" stroke-width="15"/>
 
   <g transform="translate(-100, 0) scale(1.1)">
     
@@ -86,5 +104,14 @@
            style="fill:#cd2029;fill-opacity:1;stroke:none"
            transform="matrix(1.3333333,0,0,-1.3333333,905.21333,393.92827)" />
   </g>
-
+<text 
+    x="512" 
+    y="930" 
+    font-family="'Linh Avant Garde', sans-serif" 
+    font-size="175" 
+    fill="#ffffff" 
+    text-anchor="middle" 
+    font-weight="bold">
+    BKHN-TSN
+  </text>
 </svg>
