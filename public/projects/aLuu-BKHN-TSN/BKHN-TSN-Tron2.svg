@@ -7,7 +7,7 @@
     r="800" 
     fill="white" 
     stroke="#cd2029" 
-    stroke-width="10" 
+    stroke-width="5" 
   />
 
 <g transform="translate(370, 1550) scale(1.35)">
@@ -21,7 +21,7 @@
          L 1024 0 Z"
       fill="#F3C309"
       stroke="#cd2029" 
-      stroke-width="6"/>
+      stroke-width="5"/>
      </g>
   <!-- <circle 
     cx="1024" 
@@ -37,7 +37,7 @@
   <path 
     fill="#F3C309" 
     stroke="#cd2029" 
-    stroke-width="10" 
+    stroke-width="5" 
     fill-rule="evenodd"
     d="
       M 1024, 1024
@@ -137,7 +137,7 @@
     x="1024" 
     y="1454" 
     font-family="'Linh Avant Garde', sans-serif" 
-    font-size="250" 
+    font-size="220" 
     fill="#cd2029" 
     text-anchor="middle" 
     font-weight="bold">
