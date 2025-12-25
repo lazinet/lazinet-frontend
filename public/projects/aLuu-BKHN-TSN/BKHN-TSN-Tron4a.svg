@@ -9,18 +9,19 @@
 
   />
 
-<g transform="translate(370, 1200) scale(1.5)">
+<g transform="translate(335, 1200) scale(1.5)">
 <path d="M 1024 100
+         L 810 400
          L 510 500
-         L -80 300
+         L 50 380
          L -100 100 
-         L -100 0 
+         L -150 0 
          L 432.541 0 
          C 446.472 1.059 473.410 7.407 473.895 46.853 
          C 473.895 37.474 476.560 2.056 515.661 0 
          L 1024 0 Z"
-      fill="#F3C309"
-      stroke="#cd2029" 
+      fill="#cd2029"
+      stroke="#ffffff" 
       stroke-width="5"/>
      </g>
   <!-- <circle 
@@ -38,7 +39,7 @@
     fill="#cd2029" 
     fill-rule="evenodd"
       stroke="#ffffff" 
-      stroke-width="10"
+      stroke-width="20"
     d="
       M 1024, 1024
       m -1000, 0
@@ -138,7 +139,7 @@
     y="1494" 
     font-family="'Linh Avant Garde', sans-serif" 
     font-size="180" 
-    fill="#cd2029" 
+    fill="#ffffff" 
     text-anchor="middle"
     letter-spacing="-15" 
     font-weight="bold">
@@ -190,4 +191,5 @@
 <g transform="translate(1610, 1460) scale(3)">
    <path d="M 36.730469 32.203125 L 40.691406 20.03125 L 44.640625 32.203125 L 57.421875 32.203125 L 47.0625 39.710938 L 51.011719 51.882812 L 40.664062 44.347656 L 30.292969 51.9375 L 34.253906 39.765625 L 23.894531 32.257812 Z" fill="#F3C309"/>
 </g>
+
 </svg>
