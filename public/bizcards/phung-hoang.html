@@ -366,7 +366,7 @@
 <body>
   <!-- Business Card -->
   <div class="card business-card" id="business-card">
-    <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+    <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
     <div class="left-section">
       <div class="logo">
         <a href="https://lazinet.com/" style="text-decoration: none; color: inherit;">
@@ -507,7 +507,142 @@ END:VCARD
     }
 
     
-    
+       // Tech Grid Animation
+    const canvas = document.getElementById("tech-grid");
+    const ctx = canvas.getContext("2d");
+    const card = document.getElementById("business-card");
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    const nodes = [];
+    const numNodes = 15;
+    let mouseNode = null;
+
+    function randomRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function initializeNodes() {
+      nodes.length = 0;
+      for (let i = 0; i < numNodes; i++) {
+        nodes.push({
+          x: randomRange(10, canvas.width - 10),
+          y: randomRange(10, canvas.height - 10),
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          color: getRandomColor()
+        });
+      }
+      const edgeNodes = [
+        { x: randomRange(10, canvas.width - 10), y: 10, vx: (Math.random() - 0.5) * 1, edge: 'top', color: getRandomColor() },
+        { x: canvas.width - 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'right', color: getRandomColor() },
+        { x: randomRange(10, canvas.width - 10), y: canvas.height - 10, vx: (Math.random() - 0.5) * 1, edge: 'bottom', color: getRandomColor() },
+        { x: 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'left', color: getRandomColor() }
+      ];
+      nodes.push(...edgeNodes);
+    }
+
+    function getRandomColor() {
+      const avoidColors = ["#000000", "#ff6302", "#0000ff"];
+      let r, g, b, color;
+      do {
+        r = Math.floor(Math.random() * 256);
+        g = Math.floor(Math.random() * 256);
+        b = Math.floor(Math.random() * 256);
+        color = `rgba(${r}, ${g}, ${b}, 0.5)`;
+      } while (avoidColors.some(c => isColorClose(color, c)));
+      return color;
+    }
+
+    function isColorClose(color1, color2) {
+      const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
+      const [r2, g2, b2] = color2.match(/#?([\da-f]{2})([\da-f]{2})([\da-f]{2})/i).slice(1).map(x => parseInt(x, 16));
+      return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2) < 100;
+    }
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const allNodes = mouseNode ? [...nodes, mouseNode] : nodes;
+      for (let i = 0; i < allNodes.length; i++) {
+        for (let j = i + 1; j < allNodes.length; j++) {
+          const dist = Math.hypot(allNodes[i].x - allNodes[j].x, allNodes[i].y - allNodes[j].y);
+          if (dist < 100) {
+            const gradient = ctx.createLinearGradient(allNodes[i].x, allNodes[i].y, allNodes[j].x, allNodes[j].y);
+            gradient.addColorStop(0, allNodes[i].color.replace(/[\d.]+\)$/, "0.1)"));
+            gradient.addColorStop(1, allNodes[j].color.replace(/[\d.]+\)$/, "0.1)"));
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 1 + Math.sin(Date.now() / 500) * 0.5;
+            ctx.beginPath();
+            ctx.moveTo(allNodes[i].x, allNodes[i].y);
+            ctx.lineTo(allNodes[j].x, allNodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      allNodes.forEach(node => {
+        const size = node.isMouse ? 4 : (node.edge ? 3 : 2 + Math.sin(Date.now() / 300) * 1);
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.shadowBlur = node.isMouse ? 15 : 10;
+        ctx.shadowColor = node.color.replace(/[\d.]+\)$/, "0.3)");
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    }
+
+    function updateNodes() {
+      nodes.forEach(node => {
+        if (node.edge) {
+          if (node.edge === 'top' || node.edge === 'bottom') {
+            node.x += node.vx;
+            if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          } else if (node.edge === 'left' || node.edge === 'right') {
+            node.y += node.vy;
+            if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+          }
+        } else {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+        }
+        if (Math.random() < 0.02) node.color = getRandomColor();
+      });
+    }
+
+    card.addEventListener('mousemove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const canvasX = event.clientX - rect.left;
+      const canvasY = event.clientY - rect.top;
+      if (canvasX >= 0 && canvasX <= canvas.width && canvasY >= 0 && canvasY <= canvas.height) {
+        if (!mouseNode) {
+          mouseNode = { x: canvasX, y: canvasY, color: 'rgba(255, 99, 2, 0.8)', isMouse: true };
+        } else {
+          mouseNode.x = canvasX;
+          mouseNode.y = canvasY;
+        }
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      mouseNode = null;
+    });
+
+    function animate() {
+      updateNodes();
+      drawGrid();
+      requestAnimationFrame(animate);
+    }
+
+    initializeNodes();
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      initializeNodes();
+      mouseNode = null;
+    }); 
 
     // Contact Form Handling
     const contactCard = document.getElementById("contact");

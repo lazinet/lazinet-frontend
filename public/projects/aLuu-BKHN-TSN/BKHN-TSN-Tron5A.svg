@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="2048" height="2048">
-  <rect width="100%" height="100%" fill="#000000" />
+  <!-- <rect width="100%" height="100%" fill="#000000" /> -->
 
     <circle 
     cx="1024" 
@@ -153,7 +153,7 @@
     <!-- <path id="textCurveTop" d="M 24,1024 A 1000,1000 0 0,1 2024,1024" /> -->
     <!-- <path id="textCurveTop" d="M 74,1024 A 950,950 0 0,1 1974,1024" /> -->
     <!-- <path id="textCurveTop" d="M 84,1024 A 940,940 0 0,1 1964,1024" /> -->
-        <path id="textCurveTop" d="M 84,1024 A 940,940 0 0,1 1964,1024" />
+        <path id="textCurveTop" d="M 554,1838 A 940,940 0 1,1 1494,1838" />
 
 
 
