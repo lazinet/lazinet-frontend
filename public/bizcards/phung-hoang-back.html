@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"> -->
   <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -17,7 +17,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -25,10 +26,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: top;
       min-height: 100vh;
-      margin: 0;
-      padding: 20px;
     }
     .card {
       width: 500px;
@@ -109,7 +108,7 @@
     }
     .export-buttons button {
       padding: 8px 16px;
-      background: #ff6302; /* Nút màu cam */
+      background: #0000ff; /* Nút màu cam */
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -123,7 +122,8 @@
 
     @media (max-width: 550px) {
       .card {
-        width: 90%;
+        width: 300px;
+        height: 500px;
       }
       .services-list ul {
         grid-template-columns: 1fr;
@@ -142,7 +142,7 @@
   <div class="card business-card" id="business-card">
     <div class="logo">
       <a href="https://lazinet.com/">
-        <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullv2_vi.png" alt="LAZINET Logo">
+        <img src="../assets/img/logo-lazinet/lazinet_logoFullv2_vi.png" alt="LAZINET Logo">
       </a>
     </div>
 
@@ -186,8 +186,9 @@
 
   <!-- Export Buttons -->
   <div class="export-buttons">
-    <button onclick="exportToPNG()">Export PNG</button>
-    <button onclick="exportToPDF()">Export PDF</button>
+    <button onclick="exportToPNG()"><i class="fas fa-download"></i> PNG</button>
+    <button onclick="exportToPDF()"><i class="fas fa-download"></i> PDF</button>
+    <button onclick="viewFront()">View Front</button>
   </div>
 
   <script>
@@ -216,6 +217,9 @@
         doc.save("LAZINET Phung-Hoang Back.pdf");
       });
     }
+    function viewFront() {
+        window.location.href = "phung-hoang.html";
+    }    
   </script>
 </body>
 </html>

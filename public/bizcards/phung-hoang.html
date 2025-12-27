@@ -2,7 +2,8 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"> -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">  
   <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
   <meta name="description"
     content="LAZINET - AI, IoT, and Cloud solutions for business growth and digital transformation. Elevate efficiency with cutting-edge technology.">
@@ -20,8 +21,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->  
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -29,10 +29,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: top;
       min-height: 100vh;
-      margin: 0;
-      padding: 20px;
     }
     .card {
       background-image: url('../assets/img/background/pngwing_003.png');
@@ -285,6 +283,30 @@
       left: 50%;
       transform: translateX(-50%);
     }
+    #google_translate_element {
+      max-width: 200px;
+      white-space: nowrap;
+    }
+
+    .goog-te-gadget-simple {
+      padding: 5px;
+      border-radius: 5px;
+      background-color: linear-gradient(to right, #106eea, #FFCC99);
+      border: 1px solid #0000ff;
+      display: flex;
+      align-items: center;
+    }
+
+    .goog-te-gadget img {
+      display: none !important;
+    }
+
+    .goog-te-gadget span {
+      font-size: 12px;
+      color: var(--accent-secondary-color);
+      /* #ff6302; */
+    }
+
     @media (max-width: 550px) {
       .card {
         width: 300px;
@@ -401,19 +423,22 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Export Buttons -->
   <div class="export-buttons">
-    <button onclick="exportToPNG()">Export PNG</button>
-    <button onclick="exportToVCard()">Export vCard</button>
-    <button onclick="exportToPDF()">Export PDF</button>
-    <button onclick="toggleContactForm()">Text Me</button>
+    <button onclick="toggleContactForm()">Chat</button>
+    <button onclick="exportToPNG()"><i class="fas fa-download"></i> PNG</button>
+    <button onclick="exportToVCard()"><i class="fas fa-download"></i> vCard</button>
+    <button onclick="exportToPDF()"><i class="fas fa-download"></i> PDF</button>
+    <button onclick="viewBack()">Back</button>
   </div>
-
+  
+  <div id="google_translate_element"></div>
+  
   <!-- Contact Section -->
   <div class="card contact-card" id="contact">
     <form id="contact-form" method="post">
-      <h3 style="align-self: center; color: #ff6302;">Drop me a text, we'll move next!</h3>
+      <h3 style="align-self: center; color: #ff6302;">Drop me a text, we'll go next!</h3>
       <div class="input-row">
         <div class="input-group">
           <i class="bi bi-person icon-orange"></i>
@@ -506,7 +531,9 @@ END:VCARD
       });
     }
 
-    
+    function viewBack() {
+        window.location.href = "phung-hoang-back.html";
+    }
        // Tech Grid Animation
     const canvas = document.getElementById("tech-grid");
     const ctx = canvas.getContext("2d");
@@ -686,9 +713,6 @@ END:VCARD
           button.textContent = 'Send Message'; // Reset nút
           button.style.color = '#fff'; // Reset màu
           button.disabled = false; // Mở khóa nút
-          // document.getElementById('contact-form').reset(); // Reset form
-          // window.location.href = 'https://lazinet.com';
-          // Tùy chọn 2: Mở liên kết trong tab mới (bỏ comment nếu muốn dùng)
           window.open('https://lazinet.com', '_blank');
         }, 2000);
       } catch (error) {
@@ -698,5 +722,20 @@ END:VCARD
       }
     });
   </script>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: "en",
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      includedLanguages:
+        "vi,zh-CN,hi,es,fr,ar,ru,pt,ja,ko,id,ms,th,my,km,lo,tl,de,it,fa,ur,pl,tr,uk,ro,nl,sv,cs,he,el,hu,da,fi",
+      autoDisplay: false,
+    },
+    "google_translate_element"
+  );
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
