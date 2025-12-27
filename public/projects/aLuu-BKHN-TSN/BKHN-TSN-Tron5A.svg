@@ -183,9 +183,6 @@
 
 
 
-Có lẻ góc bán nguyệt chưa đủ phủ hết text này, nên chữ Đầu (C trong CỘNG) và chữ cuối (T trong NHẤT) bị che mất
-
-
 
     <path id="textCurveBottom" d="M 174,1024 A 850,850 0 0,0 1874,1024" />
     <!-- <path id="textCurveBottom" d="M 124,1024 A 900,900 0 0,0 1924,1024" /> -->
