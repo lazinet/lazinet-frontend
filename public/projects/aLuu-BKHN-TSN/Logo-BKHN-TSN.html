@@ -5,6 +5,7 @@
     <title>LAZINET - Thiết Kế Web, Logo, In Ấn Chuyên Nghiệp & Giải Pháp Chuyển Đổi Số Toàn Diện</title>
     <meta name="description" content="LAZINET - Đối tác chuyển đổi số & thiết kế sáng tạo hàng đầu Việt Nam. Dịch vụ thiết kế website chuẩn SEO, thiết kế logo thương hiệu chuyên nghiệp, thiết kế ấn phẩm in ấn cao cấp, phát triển phần mềm ERP/MES/CRM/AI/IoT tùy chỉnh. Tư vấn miễn phí 1:1 - Demo trải nghiệm - Hỗ trợ 24/7.">
     <meta name="keywords" content="LAZINET, thiết kế website, thiết kế logo, thiết kế thương hiệu, thiết kế in ấn, chuyển đổi số, phần mềm ERP, phần mềm MES, phần mềm CRM, giải pháp AI, IoT công nghiệp, phát triển phần mềm tùy chỉnh, digital transformation, thiết kế web chuẩn SEO, branding, in ấn cao cấp, agency thiết kế Việt Nam">
+    
     <!-- === FAVICON & APP ICONS - TỐI ƯU PWA === -->
     <link rel="icon" type="image/x-icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.ico">
     <link rel="icon" type="image/png" sizes="192x192" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
@@ -14,6 +15,7 @@
     <link rel="apple-touch-icon" sizes="120x120" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
     <link rel="apple-touch-icon" sizes="76x76" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
     <link rel="mask-icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.svg" color="#0052FF">
+    
     <!-- === OPEN GRAPH / FACEBOOK / LINKEDIN === -->
     <meta property="og:title" content="LAZINET - Thiết Kế Web, Logo Chuyên Nghiệp & Giải Pháp Chuyển Đổi Số Toàn Diện">
     <meta property="og:description" content="Từ ý tưởng đến hiện thực: Thiết kế logo thương hiệu đẳng cấp, website chuẩn SEO hiện đại, ấn phẩm in ấn cao cấp và phần mềm chuyển đổi số (ERP, MES, CRM, AI, IoT) tùy chỉnh theo nhu cầu doanh nghiệp. LAZINET - Đối tác sáng tạo & công nghệ đáng tin cậy.">
@@ -103,10 +105,16 @@
     ]
     }
     </script>
+    
+    <!-- === RESPONSIVE META === -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover">
+    
+    <!-- === CSS LIBS === -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- === CUSTOM CSS - TỐI ƯU MOBILE ĐỈNH NÓC === -->
     <style>
         :root {
             --lz-bg: #0F162C;
@@ -114,37 +122,93 @@
             --lz-accent: #3F82FB;
             --lz-border: rgba(255, 255, 255, 0.1);
             --lz-orange: #ff5000;
+            --lz-content-max-width: 1400px;
+            --lz-mobile-padding: 16px;
+            --lz-desktop-padding: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         body {
             background-color: var(--lz-bg);
             color: #fff;
             font-family: "Be Vietnam Pro", "Inter", sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        /* === CONTAINER TỐI ƯU === */
+        .container-ultra-wide {
             width: 100%;
-            min-height: 100vh;
-            padding: 20px 0;
+            max-width: var(--lz-content-max-width);
+            margin: 0 auto;
+            padding-left: var(--lz-mobile-padding);
+            padding-right: var(--lz-mobile-padding);
+        }
+
+        @media (min-width: 768px) {
+            .container-ultra-wide {
+                padding-left: var(--lz-desktop-padding);
+                padding-right: var(--lz-desktop-padding);
+            }
+        }
+
+        /* === HEADER RESPONSIVE === */
+        .header-main {
+            width: 100%;
+            padding: 20px 0 30px;
+            text-align: center;
+        }
+
+        .header-logo-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .header-logo-frame {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 16px;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .header-logo {
+            height: 60px;
+            width: auto;
+            max-width: 100%;
+            display: block;
+        }
+
+        .header-title {
             margin: 0;
-        }
-
-        
-        .header {
+            font-weight: 800;
+            font-size: clamp(1.4rem, 4vw, 1.8rem);
+            color: #fff;
             text-align: center;
-            margin-bottom: 30px;
+            line-height: 1.2;
         }
 
-        .logo {
-            height: 100px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        h1 {
-            color: var(--primary-color);
-            margin: 15px 0;
-            font-size: 2.2em;
-            text-align: center;
-        }
-
-        /* ==================== MÀN HÌNH LOGIN ==================== */
+        /* === MÀN HÌNH LOGIN - OPTIMIZED === */
         #loginScreen {
             position: fixed;
             inset: 0;
@@ -154,33 +218,42 @@
             justify-content: center;
             z-index: 1000;
             transition: opacity 0.6s ease;
+            padding: 20px;
         }
 
         .login-card {
             background: var(--lz-card);
             backdrop-filter: blur(20px);
             border: 1px solid var(--lz-border);
-            border-radius: 28px;
-            padding: 50px 40px;
-            width: 90%;
+            border-radius: 24px;
+            padding: 40px 24px;
+            width: 100%;
             max-width: 460px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
+        @media (min-width: 576px) {
+            .login-card {
+                padding: 50px 40px;
+            }
+        }
+
         .login-title {
-            font-size: 2rem;
+            font-size: clamp(1.8rem, 5vw, 2rem);
             font-weight: 800;
             margin-bottom: 10px;
             background: linear-gradient(90deg, #ff6302, #3F82FB);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
         .login-subtitle {
             opacity: 0.7;
-            margin-bottom: 40px;
-            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            line-height: 1.4;
         }
 
         .login-input {
@@ -189,9 +262,15 @@
             color: #fff;
             border-radius: 16px;
             padding: 16px 20px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-align: center;
             width: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .login-input {
+                font-size: 1.1rem;
+            }
         }
 
         .login-input::placeholder {
@@ -199,17 +278,23 @@
         }
 
         .login-btn {
-            margin-top: 30px;
+            margin-top: 25px;
             background: linear-gradient(90deg, var(--lz-orange), #E64A19);
             border: none;
             color: white;
             padding: 16px;
             border-radius: 16px;
-            font-weight: 800;
+            font-weight: 700;
             width: 100%;
-            font-size: 1.1rem;
+            font-size: 1rem;
             box-shadow: 0 10px 30px rgba(230, 74, 25, 0.4);
             transition: all 0.3s;
+        }
+
+        @media (min-width: 576px) {
+            .login-btn {
+                font-size: 1.1rem;
+            }
         }
 
         .login-btn:hover {
@@ -217,20 +302,78 @@
             box-shadow: 0 15px 35px rgba(230, 74, 25, 0.5);
         }
 
-        /* ==================== TRANG CHÍNH ==================== */
-        #mainContent { display: none; }
+        /* === TRANG CHÍNH === */
+        #mainContent {
+            display: none;
+            width: 100%;
+        }
 
+        /* === SECTION TITLE === */
+        .section-title {
+            text-align: center;
+            margin: 40px 0 25px;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                margin: 60px 0 30px;
+            }
+        }
+
+        .section-title h1 {
+            font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(63,130,251,0.4);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.75;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        /* === CARD LAYOUT TỐI ƯU === */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .logo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+                margin-bottom: 60px;
+            }
+        }
+
+        /* === CARD STYLE === */
         .glass-card {
             background: var(--lz-card);
             border: 1px solid var(--lz-border);
-            border-radius: 28px;
+            border-radius: 24px;
             backdrop-filter: blur(15px);
-            padding: 30px 30px; /* Padding card vừa đủ */
+            padding: 24px 20px;
             text-align: center;
-            height: 100%;
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .glass-card {
+                padding: 30px 24px;
+                border-radius: 28px;
+            }
         }
 
         .glass-card:hover {
@@ -238,12 +381,13 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
-        .preview-title {
-            font-weight: 800;
-            font-size: 1.5rem;
+        .card-title {
+            font-weight: 700;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             margin-bottom: 20px;
             color: var(--lz-accent);
             text-shadow: 0 0 15px rgba(63, 130, 251, 0.3);
+            line-height: 1.2;
         }
 
         .logo-container {
@@ -251,34 +395,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 480px; /* Đảm bảo đủ không gian thở */
+            min-height: 300px;
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        @media (min-width: 576px) {
+            .logo-container {
+                min-height: 350px;
+                padding: 30px 0;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .logo-container {
+                min-height: 400px;
+            }
         }
 
         .logo-img {
             max-width: 100%;
-            max-height: 480px; /* Logo lớn hơn */
-            /* padding: 60px; */
+            max-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: contain;
-            border-radius: 20px;
-            /* box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7); */
-        }
-
-        .download-btn {
-            margin-top: 30px;
-            background: linear-gradient(90deg, var(--lz-orange), #E64A19);
-            border: none;
-            color: white;
-            padding: 14px 32px;
-            border-radius: 14px;
-            font-weight: 800;
-            font-size: 1rem;
-            box-shadow: 0 10px 25px rgba(230, 74, 25, 0.4);
-            transition: all 0.3s;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(230, 74, 25, 0.5);
+            border-radius: 16px;
         }
 
         .checkerboard {
@@ -292,25 +433,222 @@
             background-color: #eee;
         }
 
-        footer {
+        .download-btn {
+            margin-top: 25px;
+            background: linear-gradient(90deg, var(--lz-orange), #E64A19);
+            border: none;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            box-shadow: 0 10px 25px rgba(230, 74, 25, 0.4);
+            transition: all 0.3s;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(230, 74, 25, 0.5);
+            color: white;
+        }
+
+        /* === CONTENT SECTION - TỐI ƯU MOBILE === */
+        .content-section {
+            width: 100%;
+            margin: 40px auto;
+            text-align: left;
+        }
+
+        @media (min-width: 768px) {
+            .content-section {
+                margin: 60px auto;
+                max-width: 1200px;
+            }
+        }
+
+        .content-wrapper {
+            padding: 0;
+        }
+
+        @media (min-width: 768px) {
+            .content-wrapper {
+                padding: 0 20px;
+            }
+        }
+
+        /* === LIST ITEMS TỐI ƯU === */
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 20px 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 14px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-list-icon {
+            color: #3F82FB;
+            margin-right: 12px;
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .feature-list-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .feature-list-text strong {
+            font-weight: 600;
+        }
+
+        /* === GRID LAYOUT FOR FEATURE BLOCKS === */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (min-width: 768px) {
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+        }
+
+        .feature-block {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* === FOOTER TỐI ƯU === */
+        .footer-main {
             text-align: center;
             margin-top: 60px;
-            padding-top: 30px;
+            padding-top: 40px;
             border-top: 1px solid var(--lz-border);
             color: rgba(255,255,255,0.6);
             font-size: 0.95rem;
+            width: 100%;
         }
 
-        @media (max-width: 991.98px) {
-            .logo-container {
-                padding: 60px 20px; /* Mobile vẫn rộng rãi */
-                min-height: 400px;
+        .footer-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        @media (min-width: 576px) {
+            .footer-logo {
+                width: 100px;
+                height: 100px;
             }
-            .logo-img {
-                max-height: 380px;
-            }
+        }
+
+        .footer-text {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .footer-copyright {
+            opacity: 0.5;
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+
+        /* === UTILITY CLASSES === */
+        .mt-40 { margin-top: 40px; }
+        .mb-30 { margin-bottom: 30px; }
+        .py-30 { padding-top: 30px; padding-bottom: 30px; }
+
+        @media (min-width: 768px) {
+            .mt-60 { margin-top: 60px; }
+            .mb-40 { margin-bottom: 40px; }
+            .py-40 { padding-top: 40px; padding-bottom: 40px; }
+        }
+
+        /* === SVG CONTAINER FIX === */
+        .svg-container {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .svg-container object {
+            width: 100%;
+            height: 100%;
+            max-height: 400px;
+        }
+
+        /* === IMPROVED SCROLLBAR === */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--lz-accent);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--lz-orange);
+        }
+
+        /* === FIX FOR IOS SAFARI === */
+        @supports (-webkit-touch-callout: none) {
             .glass-card {
-                padding: 25px 20px;
+                backdrop-filter: none;
+            }
+            
+            .login-card {
+                backdrop-filter: none;
+            }
+        }
+
+        /* === PRINT STYLES === */
+        @media print {
+            #loginScreen, .download-btn, .header-main {
+                display: none !important;
+            }
+            
+            #mainContent {
+                display: block !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .glass-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
             }
         }
     </style>
@@ -321,7 +659,7 @@
         <canvas id="tech-grid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
         <div class="login-card">
             <a href="https://lazinet.com/lazinet-support-pricing.html" target="_blank" style="text-decoration: none; color: inherit;">
-                <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="Logo" style="width: 120px; margin-bottom: 30px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,255,255,0.3);">
+                <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="Logo" style="width: 100px; margin-bottom: 20px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,255,255,0.3);">
                 <h1 class="login-title">LAZINET</h1>
                 <p class="login-subtitle">Logo được thiết kế theo đơn đặt hàng của <br><strong>Cộng đồng BKHN khu vực Tân Sơn Nhất</strong></p>
             </a>
@@ -331,170 +669,192 @@
         </div>
     </div>
 
-<!-- Header -->
-<div class="header">
-    <a href="https://lazinet.com/lazinet-support-pricing.html" target="_blank" style="text-decoration: none; color: inherit;">
-        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-            <!-- Bọc logo bằng khung trắng viền tròn -->
-            <div style="
-                background: #ffffff; 
-                padding: 10px 10px; 
-                border-radius: 10px; 
-                display: inline-flex; 
-                align-items: center; 
-                justify-content: center;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                margin-bottom: 16px;
-            ">
-                <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoFullv2.png" 
-                     alt="LAZINET Logo" 
-                     class="logo" 
-                     style="height: 60px; display: block;">
-            </div>
-            
-            <h1 style="margin: 0; font-weight: 800; font-size: 1.8rem; color: #fff; text-align: center;">
-                LAZINET Digital Design
-            </h1>
-        </div>
-    </a>
-</div>
     <!-- TRANG CHÍNH -->
-    <div id="mainContent" class="container">
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold" style="margin-top: 60px; color: #fff; text-shadow: 0 0 20px rgba(63,130,251,0.4);">
-                PHẦN I. SỰ KẾ THỪA
-            </h1>
-            <p class="lead opacity-75">Logo được thiết kế dựa trên sự sáng tạo có tính kế thừa từ</p>
-        </div>
-        <div class="row row-cols-1 row-cols-lg-2 g-4"> <!-- g-4 để các ô sát nhau hơn -->
-            <!-- BKHN Logo -->
-            <div class="col">
-                <div class="glass-card checkerboard">
-                    <div class="preview-title">1. Logo của Trường ĐH BKHN</div>
-                    <div class="logo-container">
-                        <img src="BKHN-LogoOriginal.svg" alt="Logo PNG trong suốt" class="logo-img" style="border-radius: 0;">
+    <div id="mainContent" class="container-ultra-wide">
+        <!-- Header -->
+        <div class="header-main">
+            <a href="https://lazinet.com/lazinet-support-pricing.html" target="_blank" style="text-decoration: none; color: inherit;">
+                <div class="header-logo-wrapper">
+                    <div class="header-logo-frame">
+                        <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoFullv2.png" 
+                             alt="LAZINET Logo" 
+                             class="header-logo">
                     </div>
+                    
+                    <h1 class="header-title" style="color: #ff6302">
+                        LAZINET Digital Design
+                    </h1>
                 </div>
-            </div>
-            <!-- BKHN Alumni Logo -->
-            <div class="col">
-                <div class="glass-card checkerboard">
-                    <div class="preview-title">2. Logo của BKHN Alumni</div>
-                    <div class="logo-container">
-                        <img src="BKHN-Original.svg" alt="Logo PNG trong suốt" class="logo-img" style="border-radius: 0;">
-                    </div>
-                </div>
-            </div>
+            </a>
         </div>
-      
 
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold" style="margin-top: 60px; color: #fff; text-shadow: 0 0 20px rgba(63,130,251,0.4);">
-                PHẦN II. THIẾT KẾ LOGO BKHN-TSN
-            </h1>
+        <!-- PHẦN I. SỰ KẾ THỪA -->
+        <div class="section-title">
+            <h1>PHẦN I. SỰ KẾ THỪA</h1>
+            <p class="section-subtitle">Logo được thiết kế dựa trên sự sáng tạo có tính kế thừa từ</p>
+        </div>
+        
+        <div class="logo-grid">
+            <!-- BKHN Logo -->
+            <div class="glass-card checkerboard">
+                <div class="card-title">1. Logo của Trường ĐH BKHN</div>
+                <div class="logo-container">
+                    <img src="BKHN-LogoOriginal.svg" alt="Logo PNG trong suốt" class="logo-img" style="border-radius: 0;">
+                </div>
+            </div>
             
-            <div class="lead opacity-75" style="text-align: left; max-width: 1200px; margin: 0 auto; padding: 20px;">
-                <p>Logo BKHN-TSN được thiết kế dựa trên sự sáng tạo có tính kế thừa từ hệ thống nhận diện thương hiệu Đại học Bách Khoa Hà Nội, đồng thời bổ sung những yếu tố đặc trưng của mạng lưới cựu sinh viên khu vực Tân Sơn Nhất:</p>
+            <!-- BKHN Alumni Logo -->
+            <div class="glass-card checkerboard">
+                <div class="card-title">2. Logo của BKHN Alumni</div>
+                <div class="logo-container">
+                    <img src="BKHN-Original.svg" alt="Logo PNG trong suốt" class="logo-img" style="border-radius: 0;">
+                </div>
+            </div>
+        </div>
+
+        <!-- PHẦN II. THIẾT KẾ LOGO BKHN-TSN -->
+        <div class="section-title mt-60">
+            <h1>PHẦN II. THIẾT KẾ LOGO BKHN-TSN</h1>
+        </div>
+        
+        <div class="content-section">
+            <div class="content-wrapper">
+                <p class="section-subtitle mb-30" style="text-align: left;">Logo BKHN-TSN được thiết kế dựa trên sự sáng tạo có tính kế thừa từ hệ thống nhận diện thương hiệu Đại học Bách Khoa Hà Nội, đồng thời bổ sung những yếu tố đặc trưng của mạng lưới cựu sinh viên khu vực Tân Sơn Nhất:</p>
                 
-                <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid #ff5000;">
+                <div class="feature-block" style="border-left: 4px solid #ff5000;">
                     <h5 style="color: #ff5000; margin-bottom: 15px;">YẾU TỐ KẾ THỪA & SÁNG TẠO:</h5>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
-                                <i class="fas fa-check-circle" style="color: #3F82FB; margin-right: 12px; margin-top: 7px; font-size: 14px; flex-shrink: 0;"></i>
-                                <div><strong>Tinh thần gốc:</strong> Giữ nguyên âm hưởng bộ màu gốc đỏ, vàng và trắng của ĐHBK Hà Nội</div></li>
-                            <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
-                                <i class="fas fa-check-circle" style="color: #3F82FB; margin-right: 12px; margin-top: 7px; font-size: 14px; flex-shrink: 0;"></i>
-                                <div><strong>Bản sắc cộng đồng:</strong> Giữ nguyên nhận diện "Alumni Bách Khoa" - đặc trưng của mạng lưới cựu sinh viên</div></li>
-                            <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
-                                <i class="fas fa-check-circle" style="color: #3F82FB; margin-right: 12px; margin-top: 7px; font-size: 14px; flex-shrink: 0;"></i>
-                                <div><strong>Nền tảng tri thức:</strong> Nền đỏ cuốn sách mở ra tượng trưng cho nền tảng tri thức Bách Khoa, đồng thời gợi hình đôi cánh máy bay - biểu tượng của khu vực Tân Sơn Nhất</div></li>
-                            <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
-                                <i class="fas fa-check-circle" style="color: #3F82FB; margin-right: 12px; margin-top: 7px; font-size: 14px; flex-shrink: 0;"></i>
-                                <div><strong>Định vị khu vực:</strong> Cụm từ "TAN SON NHAT" được tích hợp rõ ràng, khẳng định định vị khu vực (regional hub)</div></li>
-                            <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
-                                <i class="fas fa-check-circle" style="color: #3F82FB; margin-right: 12px; margin-top: 7px; font-size: 14px; flex-shrink: 0;"></i>
-                                <div><strong>Thông điệp cốt lõi:</strong> Cặp cụm từ cong "BACH KHOA ALUMNI" và "SHARING VALUES" vừa đủ nghĩa, vừa giữ slogan chiến lược</div></li>
-                            <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
-                                <i class="fas fa-check-circle" style="color: #3F82FB; margin-right: 12px; margin-top: 7px; font-size: 14px; flex-shrink: 0;"></i>
-                                <div><strong>Biểu tượng Việt:</strong> Ngôi sao vàng điểm xuyến, là màu cờ sắc áo Việt Nam, thể hiện bản sắc dân tộc</div></li>
+                    <ul class="feature-list">
+                        <li>
+                            <i class="fas fa-check-circle feature-list-icon"></i>
+                            <div class="feature-list-text">
+                                <strong>Tinh thần gốc:</strong> Giữ nguyên âm hưởng bộ màu gốc đỏ, vàng và trắng của ĐHBK Hà Nội
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle feature-list-icon"></i>
+                            <div class="feature-list-text">
+                                <strong>Bản sắc cộng đồng:</strong> Giữ nguyên nhận diện "Alumni Bách Khoa" - đặc trưng của mạng lưới cựu sinh viên
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle feature-list-icon"></i>
+                            <div class="feature-list-text">
+                                <strong>Nền tảng tri thức:</strong> Nền đỏ cuốn sách mở ra tượng trưng cho nền tảng tri thức Bách Khoa, đồng thời gợi hình đôi cánh máy bay - biểu tượng của khu vực Tân Sơn Nhất
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle feature-list-icon"></i>
+                            <div class="feature-list-text">
+                                <strong>Định vị khu vực:</strong> Cụm từ "TAN SON NHAT" được tích hợp rõ ràng, khẳng định định vị khu vực (regional hub)
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle feature-list-icon"></i>
+                            <div class="feature-list-text">
+                                <strong>Thông điệp cốt lõi:</strong> Cặp cụm từ cong "BACH KHOA ALUMNI" và "SHARING VALUES" vừa đủ nghĩa, vừa giữ slogan chiến lược
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle feature-list-icon"></i>
+                            <div class="feature-list-text">
+                                <strong>Biểu tượng Việt:</strong> Ngôi sao vàng điểm xuyến, là màu cờ sắc áo Việt Nam, thể hiện bản sắc dân tộc
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 
-                <h4 class="mt-4" style="color: #3F82FB; border-bottom: 2px solid rgba(63,130,251,0.3); padding-bottom: 10px;">
-                    <i class="fas fa-analytics me-2"></i>I. PHÂN TÍCH CONCEPT LOGO 5A CỦA MẠNG LƯỚI CỰU HỌC VIÊN, CỰU SINH VIÊN ĐHBK HÀ NỘI
+                <h4 class="mt-40 mb-20" style="color: #3F82FB; border-bottom: 2px solid rgba(63,130,251,0.3); padding-bottom: 10px;">
+                    <i class="fas fa-analytics me-2"></i>PHÂN TÍCH CONCEPT LOGO 5A CỦA MẠNG LƯỚI CỰU HỌC VIÊN, CỰU SINH VIÊN ĐHBK HÀ NỘI
                 </h4>
                 
-                <div style="background: rgba(15,22,44,0.7); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                <div class="feature-block mb-30">
                     <p>Concept logo 5A của mạng lưới cựu học viên – cựu sinh viên Đại học Bách Khoa Hà Nội thể hiện rõ tư duy <strong>kế thừa – kết nối – phát triển</strong>, với các lớp ý nghĩa sau:</p>
                 </div>
                 
-                <h5 style="color: #ff5000; margin-top: 20px;">1. Cấu trúc tổng thể – "Huy hiệu cộng đồng"</h5>
-                <ul>
-                    <li><strong>Dạng hình tròn:</strong> Biểu trưng cho sự bền vững, bao trùm, không loại trừ – đúng tinh thần mạng lưới alumni đa thế hệ</li>
-                    <li><strong>Bố cục seal/badge:</strong> Giúp logo dễ dùng trong: avatar nhóm, cờ hiệu, backdrop sự kiện, huy hiệu áo, ấn phẩm chính thức</li>
-                </ul>
-                
-                <h5 style="color: #ff5000; margin-top: 20px;">2. Trục trung tâm – Bản sắc Bách Khoa</h5>
-                <ul>
-                    <li><strong>Chữ "BACH KHOA ALUMNI"</strong> đặt ở trung tâm khẳng định nguồn gốc trí tuệ chung và sự thống nhất bản sắc với hệ sinh thái alumni toàn quốc</li>
-                    <li><strong>Biểu tượng cách điệu chữ A</strong> gợi liên tưởng: Alumni – Achievement – Aspiration, đồng thời mang hình ảnh cánh chim / mũi tên đi lên – tinh thần kỹ thuật, chinh phục, tiên phong</li>
-                </ul>
-                
-                <h5 style="color: #ff5000; margin-top: 20px;">3. Không gian địa phương – "Tân Sơn Nhất"</h5>
-                <ul>
-                    <li>Việc đưa <strong>"TÂN SƠN NHẤT"</strong> vào logo khẳng định định vị khu vực rõ ràng (regional hub)</li>
-                    <li>Gợi liên tưởng đến đầu mối giao thương – kết nối – hội tụ (sân bay, dòng chảy tri thức)</li>
-                    <li>Phù hợp với chiến lược phát triển các cụm alumni theo địa bàn, nhưng vẫn thống nhất một chuẩn nhận diện chung</li>
-                </ul>
-                
-                <h5 style="color: #ff5000; margin-top: 20px;">4. Thông điệp "Sharing Values" – Linh hồn của 5A</h5>
-                <p>Khẩu hiệu <strong>"SHARING VALUES"</strong> là điểm "neo chiến lược", hàm ý mô hình 5A có thể được diễn giải như:</p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 15px 0;">
-                    <div style="background: rgba(63,130,251,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(63,130,251,0.3);">
-                        <strong style="color: #3F82FB;">Association</strong><br>Liên kết
-                    </div>
-                    <div style="background: rgba(63,130,251,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(63,130,251,0.3);">
-                        <strong style="color: #3F82FB;">Alumni</strong><br>Cộng đồng cựu sinh viên
-                    </div>
-                    <div style="background: rgba(63,130,251,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(63,130,251,0.3);">
-                        <strong style="color: #3F82FB;">Action</strong><br>Hành động thực chất
-                    </div>
-                    <div style="background: rgba(63,130,251,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(63,130,251,0.3);">
-                        <strong style="color: #3F82FB;">Advancement</strong><br>Phát triển đi lên
-                    </div>
-                    <div style="background: rgba(63,130,251,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(63,130,251,0.3);">
-                        <strong style="color: #3F82FB;">Added Value</strong><br>Giá trị gia tăng
-                    </div>
-                </div>
-                <p><em>Đây là khác biệt lớn giữa hội gặp mặt và mạng lưới có chiều sâu.</em></p>
-                
-                <h5 style="color: #ff5000; margin-top: 20px;">5. Màu sắc – Tính chính danh & cảm xúc</h5>
-                <ul>
-                    <li><strong>Đỏ – Vàng:</strong> Kế thừa màu truyền thống của Bách Khoa, tạo cảm giác tự hào – năng lượng – chính danh</li>
-                    <li><strong>Trắng:</strong> Trung hòa, tạo không gian cho tri thức, sự minh bạch và kết nối lâu dài</li>
-                </ul>
-                
-                <h5 style="color: #ff5000; margin-top: 20px;">6. Đánh giá tổng hợp (Executive View)</h5>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 15px 0;">
-                    <div style="background: rgba(10, 160, 100, 0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(10, 160, 100, 0.3);">
-                        <h6 style="color: #0AA064; margin-bottom: 10px;"><i class="fas fa-thumbs-up me-2"></i>ĐIỂM MẠNH</h6>
-                        <ul style="font-size: 0.9rem;">
-                            <li>Rõ nguồn gốc – rõ khu vực – rõ thông điệp</li>
-                            <li>Dễ mở rộng cho các cụm khác (BKHN–Đông, BKHN–Tây, BKHN–MN…)</li>
-                            <li>Phù hợp dùng lâu dài cho tổ chức bán chính thức → chính thức</li>
-                        </ul>
-                    </div>
-                    <div style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 193, 7, 0.3);">
-                        <h6 style="color: #F3C107; margin-bottom: 10px;"><i class="fas fa-lightbulb me-2"></i>KẾT QUẢ BÌNH CHỌN</h6>
-                        <ul style="font-size: 0.9rem;">
-                            <li>5A được chọn với Vote: </li>
-                            <li>5C có Vote: </li>
-                            <li>5B có Vote: </li>
-                        </ul>
-                    </div>
+                <div class="mb-30">
+                    <h5 style="color: #ff5000; margin-top: 20px; margin-bottom: 10px;">1. Cấu trúc tổng thể – "Huy hiệu cộng đồng"</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Dạng hình tròn:</strong> Biểu trưng cho sự bền vững, bao trùm, không loại trừ – đúng tinh thần mạng lưới alumni đa thế hệ</li>
+                        <li><strong>Bố cục seal/badge:</strong> Giúp logo dễ dùng trong: avatar nhóm, cờ hiệu, backdrop sự kiện, huy hiệu áo, ấn phẩm chính thức</li>
+                    </ul>
                 </div>
                 
-                <div style="background: linear-gradient(90deg, rgba(206,22,40,0.1), rgba(243,193,8,0.1)); border-radius: 12px; padding: 20px; margin: 25px 0; border-left: 5px solid #CE1628;">
+                <div class="mb-30">
+                    <h5 style="color: #ff5000; margin-top: 20px; margin-bottom: 10px;">2. Trục trung tâm – Bản sắc Bách Khoa</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Chữ "BACH KHOA ALUMNI"</strong> đặt ở trung tâm khẳng định nguồn gốc trí tuệ chung và sự thống nhất bản sắc với hệ sinh thái alumni toàn quốc</li>
+                        <li><strong>Biểu tượng cách điệu chữ A</strong> gợi liên tưởng: Alumni – Achievement – Aspiration, đồng thời mang hình ảnh cánh chim / mũi tên đi lên – tinh thần kỹ thuật, chinh phục, tiên phong</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-30">
+                    <h5 style="color: #ff5000; margin-top: 20px; margin-bottom: 10px;">3. Không gian địa phương – "Tân Sơn Nhất"</h5>
+                    <ul style="padding-left: 20px;">
+                        <li>Việc đưa <strong>"TÂN SƠN NHẤT"</strong> vào logo khẳng định định vị khu vực rõ ràng (regional hub)</li>
+                        <li>Gợi liên tưởng đến đầu mối giao thương – kết nối – hội tụ (sân bay, dòng chảy tri thức)</li>
+                        <li>Phù hợp với chiến lược phát triển các cụm alumni theo địa bàn, nhưng vẫn thống nhất một chuẩn nhận diện chung</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-30">
+                    <h5 style="color: #ff5000; margin-top: 20px; margin-bottom: 10px;">4. Thông điệp "Sharing Values" – Linh hồn của 5A</h5>
+                    <p>Khẩu hiệu <strong>"SHARING VALUES"</strong> là điểm "neo chiến lược", hàm ý mô hình 5A có thể được diễn giải như:</p>
+                    <div class="feature-grid mt-20 mb-20">
+                        <div class="feature-block">
+                            <strong style="color: #3F82FB; display: block; margin-bottom: 5px;">Association</strong>
+                            Liên kết
+                        </div>
+                        <div class="feature-block">
+                            <strong style="color: #3F82FB; display: block; margin-bottom: 5px;">Alumni</strong>
+                            Cộng đồng cựu sinh viên
+                        </div>
+                        <div class="feature-block">
+                            <strong style="color: #3F82FB; display: block; margin-bottom: 5px;">Action</strong>
+                            Hành động thực chất
+                        </div>
+                        <div class="feature-block">
+                            <strong style="color: #3F82FB; display: block; margin-bottom: 5px;">Advancement</strong>
+                            Phát triển đi lên
+                        </div>
+                        <div class="feature-block">
+                            <strong style="color: #3F82FB; display: block; margin-bottom: 5px;">Added Value</strong>
+                            Giá trị gia tăng
+                        </div>
+                    </div>
+                    <p><em>Đây là khác biệt lớn giữa hội gặp mặt và mạng lưới có chiều sâu.</em></p>
+                </div>
+                
+                <div class="mb-30">
+                    <h5 style="color: #ff5000; margin-top: 20px; margin-bottom: 10px;">5. Màu sắc – Tính chính danh & cảm xúc</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Đỏ – Vàng:</strong> Kế thừa màu truyền thống của Bách Khoa, tạo cảm giác tự hào – năng lượng – chính danh</li>
+                        <li><strong>Trắng:</strong> Trung hòa, tạo không gian cho tri thức, sự minh bạch và kết nối lâu dài</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-40">
+                    <h5 style="color: #ff5000; margin-top: 20px; margin-bottom: 15px;">6. Đánh giá tổng hợp (Executive View)</h5>
+                    <div class="feature-grid">
+                        <div class="feature-block" style="background: rgba(10, 160, 100, 0.1); border-color: rgba(10, 160, 100, 0.3);">
+                            <h6 style="color: #0AA064; margin-bottom: 10px;"><i class="fas fa-thumbs-up me-2"></i>ĐIỂM MẠNH</h6>
+                            <ul style="font-size: 0.9rem; padding-left: 20px;">
+                                <li>Rõ nguồn gốc – rõ khu vực – rõ thông điệp</li>
+                                <li>Dễ mở rộng cho các cụm khác (BKHN–Đông, BKHN–Tây, BKHN–MN…)</li>
+                                <li>Phù hợp dùng lâu dài cho tổ chức bán chính thức → chính thức</li>
+                            </ul>
+                        </div>
+                        <div class="feature-block" style="background: rgba(255, 193, 7, 0.1); border-color: rgba(255, 193, 7, 0.3);">
+                            <h6 style="color: #F3C107; margin-bottom: 10px;"><i class="fas fa-lightbulb me-2"></i>KẾT QUẢ BÌNH CHỌN</h6>
+                            <ul style="font-size: 0.9rem; padding-left: 20px;">
+                                <li>5A được chọn với Vote: </li>
+                                <li>5C có Vote: </li>
+                                <li>5B có Vote: </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-block" style="background: linear-gradient(90deg, rgba(206,22,40,0.1), rgba(243,193,8,0.1)); border-left: 5px solid #CE1628;">
                     <h5 style="color: #fff; margin-bottom: 15px; text-shadow: 0 0 10px rgba(206,22,40,0.5);">
                         <i class="fas fa-star me-2"></i>KẾT LUẬN
                     </h5>
@@ -504,51 +864,44 @@
                     </p>
                 </div>
                 
-                <div style="margin-top: 25px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                <div class="feature-block mt-30">
                     <p><i class="fas fa-info-circle me-2" style="color: #3F82FB;"></i><strong>Tài liệu tham khảo:</strong> Hệ thống nhận diện thương hiệu ĐHBK Hà Nội - Bộ Logo, Quy định màu sắc (#CE1628 đỏ, #F3C108 vàng), Font chữ chính (LINH AVANTGARDE)</p>
                 </div>
             </div>
         </div>
 
-        <div   class="text-center mb-5">
-            <h1 class="display-5 fw-bold" style="margin-top: 60px; color: #fff; text-shadow: 0 0 20px rgba(63,130,251,0.4);">
-                PHẦN III. KẾT QUẢ (5A)
-            </h1>
-            <p class="lead opacity-75">Logo được bàn giao gồm 2 bản (PNG và SVG)</p>
+        <!-- PHẦN III. KẾT QUẢ (5A) -->
+        <div class="section-title mt-60">
+            <h1>PHẦN III. KẾT QUẢ (5A)</h1>
+            <p class="section-subtitle">Logo được bàn giao gồm 2 bản (PNG và SVG)</p>
         </div>
 
-        <div class="row row-cols-1 row-cols-lg-2 g-4"> <!-- g-4 để các ô sát nhau hơn -->
+        <div class="logo-grid">
             <!-- BKHN-TSN 1 -->
-            <div class="col">
-                <div class="glass-card">
-                    <div class="preview-title">1. Phối trên nền tối (Dark Mode)</div>
-                    <div class="logo-container">
-                        <img src="BKHN-TSN-5A-Finalized-Trans.png" alt="Logo trên nền đen" class="logo-img">
-                    </div>
+            <div class="glass-card">
+                <div class="card-title">1. Phối trên nền tối (Dark Mode)</div>
+                <div class="logo-container">
+                    <img src="BKHN-TSN-5A-Finalized-Trans.png" alt="Logo trên nền đen" class="logo-img">
                 </div>
             </div>
 
             <!-- BKHN-TSN 2 -->
-            <div class="col">
-                <div class="glass-card" style="background: #ffffff; color: #000; border-color: #ddd;">
-                    <div class="preview-title" style="color: #333;">2. Phối trên nền sáng (Light Mode)</div>
-                    <div class="logo-container">
-                        <img src="BKHN-TSN-5A-Finalized-Trans.png" alt="Logo trên nền trắng" class="logo-img">
-                    </div>
+            <div class="glass-card" style="background: #ffffff; color: #000; border-color: #ddd;">
+                <div class="card-title" style="color: #333;">2. Phối trên nền sáng (Light Mode)</div>
+                <div class="logo-container">
+                    <img src="BKHN-TSN-5A-Finalized-Trans.png" alt="Logo trên nền trắng" class="logo-img">
                 </div>
             </div>
 
             <!-- BKHN-TSN 3 -->
-            <div class="col">
-                <div class="glass-card checkerboard">
-                    <div class="preview-title">3. Phối trên nền sáng tối (Checkerboard)</div>
-                    <div class="logo-container">
-                        <img src="BKHN-TSN-5A-Finalized-Trans.png" alt="Logo PNG trong suốt" class="logo-img">
-                    </div>
-                    <button class="download-btn" onclick="downloadPNG()">
-                        <i class="fas fa-download me-2"></i>Tải ảnh Logo .PNG
-                    </button>
+            <div class="glass-card checkerboard">
+                <div class="card-title">3. Phối trên nền sáng tối (Checkerboard)</div>
+                <div class="logo-container">
+                    <img src="BKHN-TSN-5A-Finalized-Trans.png" alt="Logo PNG trong suốt" class="logo-img">
                 </div>
+                <button class="download-btn" onclick="downloadPNG()">
+                    <i class="fas fa-download me-2"></i>Tải ảnh Logo .PNG
+                </button>
             </div>
 
             <!-- BKHN-TSN 4 -->
@@ -556,7 +909,7 @@
                 <div class="glass-card checkerboard">
                     <div class="preview-title">4. Vector SVG (Phóng to vô hạn không vỡ)</div>
                         <div class="logo-container">
-                            <div style="width: 100%; max-width: 480px;">
+                            <div style="width: 100%">
                                 <object type="image/svg+xml" data="BKHN-TSN-5A-Finalized.svg" 
                                         style="width: 100%; height: 100%;">
                                     <!-- Fallback nếu SVG không load được -->
@@ -570,19 +923,21 @@
                 </div>
             </div>
         </div>
-        <footer>
-            <div class="header">
+
+        <!-- FOOTER -->
+        <footer class="footer-main py-40">
+            <div>
                 <a href="https://lazinet.com/lazinet-support-pricing.html" target="_blank" style="text-decoration: none; color: inherit;">
-                    <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="Logo" style="width: 120px; margin-bottom: 30px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,255,255,0.3);">
-                    <p>Thiết kế & Phát triển bởi <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span> &copy; 2025</p>
+                    <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="Logo" class="footer-logo">
+                    <p class="footer-text">Thiết kế & Phát triển bởi <span style="color: #ff6302;"><b>LAZI</b></span><span style="color: #0000ff;"><b>NET</b></span> &copy; 2025</p>
                 </a>
                 
-                <small class="opacity-50">Logo chính thức của Cộng đồng BKHN khu vực Tân Sơn Nhất (BKHN-TSN)</small>
+                <p class="footer-copyright">Logo chính thức của Cộng đồng BKHN khu vực Tân Sơn Nhất (BKHN-TSN)</p>
             </div>
         </footer>
-            
     </div>
 
+    <!-- === JAVASCRIPT === -->
     <script>
         const CORRECT_PASSWORD = "BKHNTSN2025"; // Thay đổi nếu cần
 
@@ -593,6 +948,7 @@
                 setTimeout(() => {
                     document.getElementById('loginScreen').style.display = 'none';
                     document.getElementById('mainContent').style.display = 'block';
+                    window.scrollTo(0, 0);
                 }, 600);
             } else {
                 document.getElementById('passwordInput').value = '';
@@ -628,145 +984,178 @@
             link.download = `LAZINET-Logo-BKHN-TSN-${getTimestamp()}.svg`;
             link.click();
         }
+
+        // Handle responsive behavior on resize
+        window.addEventListener('resize', function() {
+            // Force repaint for smooth transitions
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                document.body.style.overflow = '';
+            }, 100);
+        });
+
+        // Touch-friendly improvements
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // Prevent zoom on double-tap for better mobile experience
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
+    
+    <!-- Tech Grid Animation Script -->
     <script>
-    // Tech Grid Animation
+        // Tech Grid Animation
         const canvas = document.getElementById("tech-grid");
         const ctx = canvas.getContext("2d");
         const card = document.getElementById("loginScreen");
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        
+        // Set initial canvas size
+        function resizeCanvas() {
+            canvas.width = card.offsetWidth;
+            canvas.height = card.offsetHeight;
+        }
+        
+        resizeCanvas();
+        
         const nodes = [];
         const numNodes = 35;
         let mouseNode = null;
 
         function randomRange(min, max) {
-        return min + Math.random() * (max - min);
+            return min + Math.random() * (max - min);
         }
 
         function initializeNodes() {
-        nodes.length = 0;
-        for (let i = 0; i < numNodes; i++) {
-            nodes.push({
-            x: randomRange(10, canvas.width - 10),
-            y: randomRange(10, canvas.height - 10),
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            color: getRandomColor()
-            });
-        }
-        const edgeNodes = [
-            { x: randomRange(10, canvas.width - 10), y: 10, vx: (Math.random() - 0.5) * 1, edge: 'top', color: getRandomColor() },
-            { x: canvas.width - 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'right', color: getRandomColor() },
-            { x: randomRange(10, canvas.width - 10), y: canvas.height - 10, vx: (Math.random() - 0.5) * 1, edge: 'bottom', color: getRandomColor() },
-            { x: 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'left', color: getRandomColor() }
-        ];
-        nodes.push(...edgeNodes);
+            nodes.length = 0;
+            for (let i = 0; i < numNodes; i++) {
+                nodes.push({
+                    x: randomRange(10, canvas.width - 10),
+                    y: randomRange(10, canvas.height - 10),
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    color: getRandomColor()
+                });
+            }
+            
+            const edgeNodes = [
+                { x: randomRange(10, canvas.width - 10), y: 10, vx: (Math.random() - 0.5) * 1, edge: 'top', color: getRandomColor() },
+                { x: canvas.width - 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'right', color: getRandomColor() },
+                { x: randomRange(10, canvas.width - 10), y: canvas.height - 10, vx: (Math.random() - 0.5) * 1, edge: 'bottom', color: getRandomColor() },
+                { x: 10, y: randomRange(10, canvas.height - 10), vy: (Math.random() - 0.5) * 1, edge: 'left', color: getRandomColor() }
+            ];
+            
+            nodes.push(...edgeNodes);
         }
 
         function getRandomColor() {
-        const avoidColors = ["#000000", "#ff6302", "#0000ff"];
-        let r, g, b, color;
-        do {
-            r = Math.floor(Math.random() * 256);
-            g = Math.floor(Math.random() * 256);
-            b = Math.floor(Math.random() * 256);
-            color = `rgba(${r}, ${g}, ${b}, 0.5)`;
-        } while (avoidColors.some(c => isColorClose(color, c)));
-        return color;
+            const avoidColors = ["#000000", "#ff6302", "#0000ff"];
+            let r, g, b, color;
+            do {
+                r = Math.floor(Math.random() * 256);
+                g = Math.floor(Math.random() * 256);
+                b = Math.floor(Math.random() * 256);
+                color = `rgba(${r}, ${g}, ${b}, 0.5)`;
+            } while (avoidColors.some(c => isColorClose(color, c)));
+            return color;
         }
 
         function isColorClose(color1, color2) {
-        const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
-        const [r2, g2, b2] = color2.match(/#?([\da-f]{2})([\da-f]{2})([\da-f]{2})/i).slice(1).map(x => parseInt(x, 16));
-        return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2) < 100;
+            const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
+            const [r2, g2, b2] = color2.match(/#?([\da-f]{2})([\da-f]{2})([\da-f]{2})/i).slice(1).map(x => parseInt(x, 16));
+            return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2) < 100;
         }
 
         function drawGrid() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const allNodes = mouseNode ? [...nodes, mouseNode] : nodes;
-        for (let i = 0; i < allNodes.length; i++) {
-            for (let j = i + 1; j < allNodes.length; j++) {
-            const dist = Math.hypot(allNodes[i].x - allNodes[j].x, allNodes[i].y - allNodes[j].y);
-            if (dist < 100) {
-                const gradient = ctx.createLinearGradient(allNodes[i].x, allNodes[i].y, allNodes[j].x, allNodes[j].y);
-                gradient.addColorStop(0, allNodes[i].color.replace(/[\d.]+\)$/, "0.1)"));
-                gradient.addColorStop(1, allNodes[j].color.replace(/[\d.]+\)$/, "0.1)"));
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 1 + Math.sin(Date.now() / 500) * 0.5;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const allNodes = mouseNode ? [...nodes, mouseNode] : nodes;
+            
+            for (let i = 0; i < allNodes.length; i++) {
+                for (let j = i + 1; j < allNodes.length; j++) {
+                    const dist = Math.hypot(allNodes[i].x - allNodes[j].x, allNodes[i].y - allNodes[j].y);
+                    if (dist < 100) {
+                        const gradient = ctx.createLinearGradient(allNodes[i].x, allNodes[i].y, allNodes[j].x, allNodes[j].y);
+                        gradient.addColorStop(0, allNodes[i].color.replace(/[\d.]+\)$/, "0.1)"));
+                        gradient.addColorStop(1, allNodes[j].color.replace(/[\d.]+\)$/, "0.1)"));
+                        ctx.strokeStyle = gradient;
+                        ctx.lineWidth = 1 + Math.sin(Date.now() / 500) * 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(allNodes[i].x, allNodes[i].y);
+                        ctx.lineTo(allNodes[j].x, allNodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            allNodes.forEach(node => {
+                const size = node.isMouse ? 10 : (node.edge ? 3 : 2 + Math.sin(Date.now() / 300) * 1);
                 ctx.beginPath();
-                ctx.moveTo(allNodes[i].x, allNodes[i].y);
-                ctx.lineTo(allNodes[j].x, allNodes[j].y);
-                ctx.stroke();
-            }
-            }
-        }
-        allNodes.forEach(node => {
-            const size = node.isMouse ? 10 : (node.edge ? 3 : 2 + Math.sin(Date.now() / 300) * 1);
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
-            ctx.fillStyle = node.color;
-            ctx.shadowBlur = node.isMouse ? 15 : 10;
-            ctx.shadowColor = node.color.replace(/[\d.]+\)$/, "0.3)");
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        });
+                ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+                ctx.fillStyle = node.color;
+                ctx.shadowBlur = node.isMouse ? 15 : 10;
+                ctx.shadowColor = node.color.replace(/[\d.]+\)$/, "0.3)");
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            });
         }
 
         function updateNodes() {
-        nodes.forEach(node => {
-            if (node.edge) {
-            if (node.edge === 'top' || node.edge === 'bottom') {
-                node.x += node.vx;
-                if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
-            } else if (node.edge === 'left' || node.edge === 'right') {
-                node.y += node.vy;
-                if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
-            }
-            } else {
-            node.x += node.vx;
-            node.y += node.vy;
-            if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
-            if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
-            }
-            if (Math.random() < 0.02) node.color = getRandomColor();
-        });
+            nodes.forEach(node => {
+                if (node.edge) {
+                    if (node.edge === 'top' || node.edge === 'bottom') {
+                        node.x += node.vx;
+                        if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+                    } else if (node.edge === 'left' || node.edge === 'right') {
+                        node.y += node.vy;
+                        if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+                    }
+                } else {
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+                    if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+                }
+                if (Math.random() < 0.02) node.color = getRandomColor();
+            });
         }
 
         card.addEventListener('mousemove', (event) => {
-        const rect = canvas.getBoundingClientRect();
-        const canvasX = event.clientX - rect.left;
-        const canvasY = event.clientY - rect.top;
-        if (canvasX >= 0 && canvasX <= canvas.width && canvasY >= 0 && canvasY <= canvas.height) {
-            if (!mouseNode) {
-            mouseNode = { x: canvasX, y: canvasY, color: 'rgba(255, 99, 2, 0.8)', isMouse: true };
-            } else {
-            mouseNode.x = canvasX;
-            mouseNode.y = canvasY;
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = event.clientX - rect.left;
+            const canvasY = event.clientY - rect.top;
+            if (canvasX >= 0 && canvasX <= canvas.width && canvasY >= 0 && canvasY <= canvas.height) {
+                if (!mouseNode) {
+                    mouseNode = { x: canvasX, y: canvasY, color: 'rgba(255, 99, 2, 0.8)', isMouse: true };
+                } else {
+                    mouseNode.x = canvasX;
+                    mouseNode.y = canvasY;
+                }
             }
-        }
         });
 
         card.addEventListener('mouseleave', () => {
-        mouseNode = null;
+            mouseNode = null;
         });
 
         function animate() {
-        updateNodes();
-        drawGrid();
-        requestAnimationFrame(animate);
+            updateNodes();
+            drawGrid();
+            requestAnimationFrame(animate);
         }
 
         initializeNodes();
         animate();
 
         window.addEventListener("resize", () => {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        initializeNodes();
-        mouseNode = null;
-        }); 
-
+            resizeCanvas();
+            initializeNodes();
+            mouseNode = null;
+        });
     </script>
 </body>
 </html>
