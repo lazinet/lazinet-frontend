@@ -23,15 +23,29 @@
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->  
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: top;
-      min-height: 100vh;
-    }
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  
+  /* Mặc định cho Desktop/Tablet: Căn giữa toàn bộ */
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  body {
+    /* Mobile: Căn về phía trên bên trái */
+    align-items: flex-start; 
+    justify-content: flex-start;
+    padding: 20px; /* Bắt buộc có cái này để nội dung không dính sát mép màn hình */
+  }
+}
+
+
     .card {
       background-image: url('../assets/img/background/pngwing_003.png');
       background-size: cover;
@@ -424,6 +438,7 @@
     </div>
   </div>
   
+  <!-- <div style="align-items: center; justify-content: center"> -->
   <!-- Export Buttons -->
   <div class="export-buttons">
     <button onclick="toggleContactForm()">Chat</button>
@@ -434,7 +449,7 @@
   </div>
   
   <div id="google_translate_element"></div>
-  
+  <!-- </div> -->
   <!-- Contact Section -->
   <div class="card contact-card" id="contact">
     <form id="contact-form" method="post">
