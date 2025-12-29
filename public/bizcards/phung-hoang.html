@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">  
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">   -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
   <meta name="description"
     content="LAZINET - AI, IoT, and Cloud solutions for business growth and digital transformation. Elevate efficiency with cutting-edge technology.">
@@ -24,27 +25,45 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Font Awesome chỉ để dùng icon Wechat-->  
   <style>
 body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0;
-  
-  /* Mặc định cho Desktop/Tablet: Căn giữa toàn bộ */
-  align-items: center;
-  justify-content: center;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* Desktop & Tablet: Căn giữa 2 trục */
+    align-items: center;
+    justify-content: center;
 }
 
+/* Mobile: body sát trái + sát trên, full width */
 @media (max-width: 768px) {
-  body {
-    /* Mobile: Căn về phía trên bên trái */
-    align-items: flex-start; 
-    justify-content: flex-start;
-    padding: 20px; /* Bắt buộc có cái này để nội dung không dính sát mép màn hình */
-  }
-}
+    body {
+        align-items: flex-start;       /* Sát trái */
+        justify-content: flex-start;   /* Sát trên */
+        padding: 16px 20px 60px;       /* Khoảng thở hợp lý, tránh dính mép */
+    }
 
+    /* TẤT CẢ phần tử con trực tiếp của body → căn giữa 2 trục */
+    body > * {
+        width: 100%;
+        max-width: 500px;              /* Giới hạn chiều rộng dễ đọc */
+        margin: 0 auto;                /* Căn giữa ngang */
+        display: flex;
+        flex-direction: column;
+        align-items: center;           /* Căn giữa ngang các phần tử bên trong */
+        justify-content: center;       /* Căn giữa dọc nếu cần (tùy nội dung) */
+    }
+
+    /* Nếu phần tử con có nội dung cần căn giữa dọc hoàn toàn (ví dụ card cao) */
+    body > .center-both {
+        min-height: 80vh;              /* Chiếm gần hết màn hình để căn giữa dọc */
+        justify-content: center;
+    }
+}
 
     .card {
       background-image: url('../assets/img/background/pngwing_003.png');
