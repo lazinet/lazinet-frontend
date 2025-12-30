@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>LAZINET - CEO PHUNG HOANG | AI & IoT Solutions</title>
+  <meta name="description" content="Digital Transformation with AI, IoT & Cloud Technologies">
+  
+  <!-- Favicons -->
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="apple-touch-icon">
+  
+  <!-- Vendor Files -->
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    /* ===== RESET & VARIABLES ===== */
+    :root {
+      --card-width: 500px;
+      --card-height: 300px;
+      --aspect-ratio: calc(300 / 500); /* 0.6 */
+      --primary-blue: #0066cc;
+      --accent-orange: #ff6302;
+      --light-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --font-scale: 1;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      background: var(--light-bg);
+      overflow-x: hidden;
+    }
+    
+    /* ===== FONT SCALING - RESPONSIVE TYPOGAPHY ===== */
+    /* Base font scaling based on viewport width */
+    @media (min-width: 1400px) { :root { --font-scale: 1.1; } }
+    @media (min-width: 1600px) { :root { --font-scale: 1.15; } }
+    @media (max-width: 1200px) { :root { --font-scale: 0.95; } }
+    @media (max-width: 992px) { :root { --font-scale: 0.9; } }
+    @media (max-width: 768px) { :root { --font-scale: 0.85; } }
+    @media (max-width: 576px) { :root { --font-scale: 0.8; } }
+    @media (max-width: 400px) { :root { --font-scale: 0.75; } }
+    
+    /* ===== MAIN BODY - RESPONSIVE PERFECT ===== */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-attachment: fixed;
+      font-size: calc(14px * var(--font-scale));
+    }
+    
+    /* iPad Mini & Tablet Optimization */
+    @media (max-width: 1024px) and (min-width: 768px) {
+      body {
+        justify-content: center;
+        padding: 15px;
+      }
+    }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      body {
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 12px;
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+      }
+    }
+    
+    /* ===== CARD CONTAINER - INTELLIGENT SCALING ===== */
+    .card-container {
+      width: min(90vw, var(--card-width));
+      height: min(54vw, var(--card-height)); /* 54vw = 0.6 * 90vw */
+      margin: 0 auto 20px;
+      position: relative;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    /* Desktop Large */
+    @media (min-width: 1400px) {
+      .card-container {
+        width: min(550px, 38vw);
+        height: min(330px, 22.8vw);
+      }
+    }
+    
+    /* Desktop Standard */
+    @media (min-width: 1200px) and (max-width: 1399px) {
+      .card-container {
+        width: min(500px, 40vw);
+        height: min(300px, 24vw);
+      }
+    }
+    
+    /* iPad Landscape & Desktop Medium */
+    @media (min-width: 992px) and (max-width: 1199px) {
+      .card-container {
+        width: min(480px, 48vw);
+        height: min(288px, 28.8vw);
+      }
+    }
+    
+    /* iPad Portrait & Tablet */
+    @media (min-width: 768px) and (max-width: 991px) {
+      .card-container {
+        width: min(460px, 60vw);
+        height: min(276px, 36vw);
+      }
+    }
+    
+    /* Mobile */
+    @media (max-width: 767px) {
+      .card-container {
+        width: 92vw;
+        height: calc(92vw * var(--aspect-ratio));
+      }
+    }
+    
+    /* Small Mobile */
+    @media (max-width: 480px) {
+      .card-container {
+        width: 94vw;
+        height: calc(94vw * var(--aspect-ratio));
+      }
+    }
+    
+    /* Very Small Mobile */
+    @media (max-width: 360px) {
+      .card-container {
+        width: 96vw;
+        height: calc(96vw * var(--aspect-ratio));
+      }
+    }
+    
+    /* ===== BUSINESS CARD ===== */
+    .business-card {
+      width: 100%;
+      height: 100%;
+      background: #fff url('../assets/img/background/pngwing_003.png') center/cover;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Tech Grid Canvas */
+    #tech-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    
+    /* ===== LEFT SECTION - DYNAMIC SCALING ===== */
+    .left-section {
+      width: 40%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+      padding: clamp(12px, 3vw, 20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+      position: relative;
+    }
+    
+    .logo-box {
+      text-align: center;
+    }
+    
+    .logo-box img {
+      width: clamp(100px, 26vw, 130px);
+      height: clamp(100px, 26vw, 130px);
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    
+    .logo-box img:hover {
+      transform: scale(1.05);
+    }
+    
+    .profile-box {
+      text-align: center;
+    }
+    
+    .profile-box img {
+      width: clamp(65px, 16vw, 80px);
+      height: clamp(65px, 16vw, 80px);
+      border-radius: 50%;
+      border: clamp(2px, 0.5vw, 3px) solid white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      object-fit: cover;
+    }
+    
+    .website-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: clamp(4px, 1vw, 8px);
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-size: calc(11px * var(--font-scale));
+      font-weight: 500;
+    }
+    
+    .website-link i {
+      color: var(--accent-orange);
+      font-size: calc(10px * var(--font-scale));
+    }
+    
+    /* ===== RIGHT SECTION - SMART TYPOGRAPHY ===== */
+    .right-section {
+      width: 60%;
+      padding: clamp(15px, 4vw, 25px);
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 1;
+      position: relative;
+    }
+    
+    .personal-info {
+      margin-bottom: clamp(10px, 2vw, 15px);
+    }
+    
+    .name {
+      font-size: calc(24px * var(--font-scale));
+      color: var(--accent-orange);
+      font-weight: 700;
+      margin-bottom: clamp(3px, 1vw, 5px);
+      line-height: 1.2;
+    }
+    
+    .position {
+      font-size: calc(13px * var(--font-scale));
+      color: var(--primary-blue);
+      font-weight: 600;
+      margin-bottom: clamp(12px, 3vw, 15px);
+    }
+    
+    /* Contact Info - Responsive Text */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 2vw, 10px);
+      margin-bottom: clamp(10px, 2vw, 15px);
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: clamp(8px, 2vw, 10px);
+    }
+    
+    .contact-item i {
+      color: var(--accent-orange);
+      font-size: calc(16px * var(--font-scale));
+      flex-shrink: 0;
+      margin-top: 2px;
+      width: calc(16px * var(--font-scale));
+    }
+    
+    .contact-item a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-size: calc(13px * var(--font-scale));
+      line-height: 1.4;
+      flex: 1;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      hyphens: auto;
+      transition: color 0.2s ease;
+    }
+    
+    .contact-item a:hover {
+      color: var(--accent-orange);
+      text-decoration: underline;
+    }
+    
+    /* ===== SOCIAL & QR SECTION ===== */
+    .action-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: auto;
+      gap: clamp(10px, 3vw, 15px);
+    }
+    
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 1.5vw, 8px);
+    }
+    
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(4px, 1vw, 6px);
+      text-decoration: none;
+      color: white;
+      background: var(--primary-blue);
+      padding: clamp(5px, 1.2vw, 6px) clamp(10px, 2.5vw, 12px);
+      border-radius: clamp(4px, 1vw, 6px);
+      font-size: calc(11px * var(--font-scale));
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    
+    .social-btn:hover {
+      background: var(--accent-orange);
+      transform: translateY(-1px);
+    }
+    
+    .qr-box {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    
+    .qr-box img {
+      width: clamp(70px, 18vw, 90px);
+      height: clamp(70px, 18vw, 90px);
+      border: clamp(2px, 0.5vw, 3px) solid var(--primary-blue);
+      border-radius: clamp(6px, 1.5vw, 8px);
+      padding: clamp(3px, 1vw, 5px);
+      background: white;
+    }
+    
+    /* ===== ACTION BUTTONS - SCALING PERFECT ===== */
+    .action-buttons {
+      display: flex;
+      gap: clamp(8px, 2vw, 10px);
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: min(500px, 90vw);
+      width: 100%;
+      margin: 0 auto clamp(10px, 3vw, 15px);
+      padding: 0 clamp(5px, 2vw, 10px);
+    }
+    
+    .action-btn {
+      padding: clamp(10px, 2.5vw, 12px) clamp(16px, 4vw, 20px);
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: clamp(6px, 1.5vw, 8px);
+      font-size: calc(14px * var(--font-scale));
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(6px, 1.5vw, 8px);
+      transition: all 0.3s ease;
+      min-height: calc(44px * var(--font-scale));
+      min-width: calc(44px * var(--font-scale));
+      flex: 1;
+      max-width: 130px;
+      justify-content: center;
+    }
+    
+    .action-btn:hover {
+      background: var(--accent-orange);
+      transform: translateY(-2px);
+    }
+    
+    /* iPad Mini Specific */
+    @media (max-width: 768px) and (min-width: 600px) {
+      .action-btn {
+        max-width: 140px;
+        padding: 12px 18px;
+      }
+    }
+    
+    /* ===== GOOGLE TRANSLATE - RESPONSIVE ===== */
+    .translate-wrapper {
+      width: 100%;
+      max-width: min(200px, 40vw);
+      margin: clamp(8px, 2vw, 10px) auto;
+      text-align: center;
+    }
+    
+    .goog-te-gadget-simple {
+      padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 15px) !important;
+      border-radius: clamp(6px, 1.5vw, 8px) !important;
+      background: linear-gradient(135deg, var(--primary-blue), #004d99) !important;
+      border: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: clamp(6px, 1.5vw, 8px) !important;
+      width: 100% !important;
+    }
+    
+    .goog-te-gadget-simple span {
+      color: white !important;
+      font-size: calc(13px * var(--font-scale)) !important;
+    }
+    
+    .goog-te-menu-value span {
+      color: #333 !important;
+    }
+    
+    /* ===== CONTACT FORM - RESPONSIVE ===== */
+    .contact-form-container {
+      width: 100%;
+      max-width: min(500px, 90vw);
+      background: white;
+      border-radius: 12px;
+      padding: clamp(20px, 5vw, 25px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      display: none;
+      margin-top: clamp(15px, 4vw, 20px);
+    }
+    
+    .contact-form-container.active {
+      display: block;
+      animation: slideUp 0.3s ease;
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 3vw, 15px);
+    }
+    
+    .form-row {
+      display: flex;
+      gap: clamp(8px, 2vw, 10px);
+    }
+    
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: clamp(8px, 2vw, 10px);
+      }
+    }
+    
+    .form-group {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 2vw, 10px);
+    }
+    
+    .form-group i {
+      color: var(--accent-orange);
+      font-size: calc(16px * var(--font-scale));
+      width: calc(20px * var(--font-scale));
+      flex-shrink: 0;
+    }
+    
+    .form-control {
+      flex: 1;
+      padding: clamp(8px, 2vw, 10px);
+      border: 1px solid #ddd;
+      border-radius: clamp(4px, 1vw, 6px);
+      font-size: calc(14px * var(--font-scale));
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 0 3px rgba(255, 99, 2, 0.1);
+    }
+    
+    textarea.form-control {
+      min-height: clamp(70px, 18vw, 80px);
+      resize: vertical;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    /* ===== UTILITIES ===== */
+    .text-center { text-align: center; }
+    .mt-1 { margin-top: 10px; }
+    .mb-1 { margin-bottom: 10px; }
+    
+    /* ===== PRINT STYLES ===== */
+    @media print {
+      body {
+        background: white !important;
+        padding: 0 !important;
+      }
+      
+      .action-buttons,
+      .translate-wrapper,
+      .contact-form-container {
+        display: none !important;
+      }
+      
+      .business-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+      }
+    }
+    
+    /* ===== HOVER EFFECTS ===== */
+    @media (hover: hover) {
+      .business-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .business-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- CARD CONTAINER - INTELLIGENT SCALING -->
+  <div class="card-container">
+    <div class="business-card" id="business-card">
+      <canvas id="tech-grid"></canvas>
+      
+      <div class="left-section">
+        <div class="logo-box">
+          <a href="https://lazinet.com/" target="_blank" style="text-decoration: none;">
+            <img src="../assets/img/logo-lazinet/lazinet_logoFullSquare2.png" alt="LAZINET">
+          </a>
+        </div>
+        
+        <div class="profile-box">
+          <a href="https://lazinet.com/" target="_blank" style="text-decoration: none;">
+            <img src="../assets/img/team/Phung-Hoang.png" alt="Phung Hoang">
+            <div class="website-link">
+              <i class="bi bi-globe"></i>
+              <span>lazinet.com</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="right-section">
+        <div class="personal-info">
+          <div class="name">HOÀNG MINH PHỤNG</div>
+          <div class="position">Founder & CEO | Innovation Principal</div>
+          
+          <div class="contact-list">
+            <div class="contact-item">
+              <i class="bi bi-geo-alt"></i>
+              <a href="https://maps.app.goo.gl/CCeyNR1RC91fMmeu7" target="_blank">
+                89 Phan Dinh Phung, Phu Nhuan, HCMC
+              </a>
+            </div>
+            
+            <div class="contact-item">
+              <i class="bi bi-phone"></i>
+              <a href="http://zalo.me/0908556220" target="_blank">
+                (+84) 0908 556 220
+              </a>
+            </div>
+            
+            <div class="contact-item">
+              <i class="bi bi-envelope"></i>
+              <a href="mailto:email@lazinet.com">
+                email@lazinet.com
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="action-section">
+          <div class="social-buttons">
+            <a href="https://www.linkedin.com/company/lazinet" target="_blank" class="social-btn">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61567050494124" target="_blank" class="social-btn">
+              <i class="bi bi-facebook"></i> Facebook
+            </a>
+            <a href="../assets/img/team/Phung-Hoang-Wechat.jpeg" target="_blank" class="social-btn">
+              <i class="fab fa-weixin"></i> WeChat
+            </a>
+          </div>
+          
+          <div class="qr-box" id="qrcode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ACTION BUTTONS -->
+  <div class="action-buttons">
+    <button class="action-btn" onclick="toggleContactForm()">
+      <i class="bi bi-chat-dots"></i> Chat
+    </button>
+    <button class="action-btn" onclick="exportToPNG()">
+      <i class="fas fa-download"></i> PNG
+    </button>
+    <button class="action-btn" onclick="exportToVCard()">
+      <i class="fas fa-download"></i> vCard
+    </button>
+    <button class="action-btn" onclick="exportToPDF()">
+      <i class="fas fa-download"></i> PDF
+    </button>
+    <button class="action-btn" onclick="viewBack()">
+      <i class="bi bi-arrow-left"></i> Back
+    </button>
+  </div>
+  
+  <!-- GOOGLE TRANSLATE -->
+  <div class="translate-wrapper">
+    <div id="google_translate_element"></div>
+  </div>
+  
+  <!-- CONTACT FORM -->
+  <div class="contact-form-container" id="contactForm">
+    <form class="contact-form" id="contactFormElement">
+      <div class="form-row">
+        <div class="form-group">
+          <i class="bi bi-person"></i>
+          <input type="text" class="form-control" placeholder="Your name" id="name" required>
+        </div>
+        <div class="form-group">
+          <i class="bi bi-briefcase"></i>
+          <input type="text" class="form-control" placeholder="Your position" id="title" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <i class="bi bi-phone"></i>
+          <input type="tel" class="form-control" placeholder="Phone number" id="phone" required>
+        </div>
+        <div class="form-group">
+          <i class="bi bi-envelope"></i>
+          <input type="email" class="form-control" placeholder="Email address" id="email" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <i class="bi bi-chat-left-text"></i>
+        <textarea class="form-control" placeholder="Your message..." id="message" rows="3" required></textarea>
+      </div>
+      
+      <button type="submit" class="action-btn" style="width: 100%;">
+        Send Message
+      </button>
+      
+      <div id="formMessage" class="text-center mt-1" style="display: none; color: green; font-size: 14px;">
+        Message sent successfully!
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // QR Code Generation
+    const url = "https://lazinet.com";
+    const qrElement = document.getElementById("qrcode");
+    
+    // Clear existing QR code
+    qrElement.innerHTML = '';
+    
+    // Create new QR code with responsive size
+    function createQRCode() {
+      const containerWidth = qrElement.offsetWidth || 90;
+      const qrSize = Math.min(containerWidth, 90);
+      
+      new QRCode(qrElement, {
+        text: url,
+        width: qrSize,
+        height: qrSize,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+    
+    // Wait for DOM to be fully loaded
+    setTimeout(createQRCode, 100);
+    
+    // Export Functions với loading state
+    function exportToPNG() {
+      const button = event.target.closest('.action-btn');
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      button.disabled = true;
+      
+      html2canvas(document.getElementById("business-card"), { 
+        scale: 4,
+        useCORS: true,
+        backgroundColor: null,
+        logging: false
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "LAZINET-Phung-Hoang.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      }).catch(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      });
+    }
+
+    function exportToVCard() {
+      const button = event.target.closest('.action-btn');
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      button.disabled = true;
+      
+      setTimeout(() => {
+        const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+N:Hoang;Phung;;;
+FN:Phung Hoang
+ORG:LAZINET
+TITLE:Founder & CEO | Innovation Principal
+ADR;TYPE=WORK:;;89 Phan Dinh Phung, Phu Nhuan;HCMC;;Vietnam
+TEL;TYPE=WORK,VOICE:+84908556220
+EMAIL:email@lazinet.com
+URL:https://lazinet.com/
+END:VCARD
+        `.trim();
+        
+        const blob = new Blob([vCardData], { type: "text/vcard" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "LAZINET-Phung-Hoang.vcf";
+        link.click();
+        URL.revokeObjectURL(url);
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      }, 100);
+    }
+
+    function exportToPDF() {
+      const button = event.target.closest('.action-btn');
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      button.disabled = true;
+      
+      const { jsPDF } = window.jspdf;
+      const cardElement = document.getElementById("business-card");
+      const isMobile = window.innerWidth <= 768;
+      
+      const doc = new jsPDF({
+        orientation: isMobile ? "portrait" : "landscape",
+        unit: "px",
+        format: isMobile ? [300, 500] : [500, 300]
+      });
+      
+      html2canvas(cardElement, { 
+        scale: 4,
+        useCORS: true,
+        backgroundColor: null
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const width = isMobile ? 300 : 500;
+        const height = isMobile ? 500 : 300;
+        doc.addImage(imgData, "PNG", 0, 0, width, height);
+        doc.save("LAZINET-Phung-Hoang.pdf");
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      }).catch(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+      });
+    }
+
+    function viewBack() {
+      window.location.href = "phung-hoang-back.html";
+    }
+
+    // Tech Grid Animation
+    const canvas = document.getElementById("tech-grid");
+    const ctx = canvas.getContext("2d");
+    const card = document.getElementById("business-card");
+    
+    function resizeCanvas() {
+      canvas.width = card.offsetWidth;
+      canvas.height = card.offsetHeight;
+    }
+    
+    resizeCanvas();
+    
+    const nodes = [];
+    const numNodes = 15;
+    let mouseNode = null;
+
+    function randomRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function initializeNodes() {
+      nodes.length = 0;
+      for (let i = 0; i < numNodes; i++) {
+        nodes.push({
+          x: randomRange(10, canvas.width - 10),
+          y: randomRange(10, canvas.height - 10),
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          color: getRandomColor()
+        });
+      }
+      
+      ['top', 'right', 'bottom', 'left'].forEach(edge => {
+        const node = {
+          x: edge === 'left' ? 10 : edge === 'right' ? canvas.width - 10 : randomRange(10, canvas.width - 10),
+          y: edge === 'top' ? 10 : edge === 'bottom' ? canvas.height - 10 : randomRange(10, canvas.height - 10),
+          edge: edge,
+          color: getRandomColor()
+        };
+        
+        if (edge === 'top' || edge === 'bottom') {
+          node.vx = (Math.random() - 0.5) * 1;
+          node.vy = 0;
+        } else {
+          node.vx = 0;
+          node.vy = (Math.random() - 0.5) * 1;
+        }
+        
+        nodes.push(node);
+      });
+    }
+
+    function getRandomColor() {
+      const colors = [
+        'rgba(0, 102, 204, 0.3)',
+        'rgba(255, 99, 2, 0.3)',
+        'rgba(100, 181, 246, 0.3)',
+        'rgba(171, 71, 188, 0.3)',
+        'rgba(255, 193, 7, 0.3)'
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const allNodes = mouseNode ? [...nodes, mouseNode] : nodes;
+      
+      // Draw connections
+      for (let i = 0; i < allNodes.length; i++) {
+        for (let j = i + 1; j < allNodes.length; j++) {
+          const dx = allNodes[i].x - allNodes[j].x;
+          const dy = allNodes[i].y - allNodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 100) {
+            const opacity = 1 - (dist / 100);
+            ctx.beginPath();
+            ctx.moveTo(allNodes[i].x, allNodes[i].y);
+            ctx.lineTo(allNodes[j].x, allNodes[j].y);
+            ctx.strokeStyle = `rgba(0, 102, 204, ${opacity * 0.15})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      
+      // Draw nodes
+      allNodes.forEach(node => {
+        ctx.beginPath();
+        const size = node.isMouse ? 3 : (node.edge ? 2.5 : 2);
+        ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.fill();
+      });
+    }
+
+    function updateNodes() {
+      nodes.forEach(node => {
+        if (node.edge) {
+          switch(node.edge) {
+            case 'top':
+            case 'bottom':
+              node.x += node.vx;
+              if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+              break;
+            case 'left':
+            case 'right':
+              node.y += node.vy;
+              if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+              break;
+          }
+        } else {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < 10 || node.x > canvas.width - 10) node.vx *= -1;
+          if (node.y < 10 || node.y > canvas.height - 10) node.vy *= -1;
+        }
+      });
+    }
+
+    function animate() {
+      updateNodes();
+      drawGrid();
+      requestAnimationFrame(animate);
+    }
+
+    initializeNodes();
+    animate();
+
+    // Mouse interaction
+    card.addEventListener('mousemove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      if (!mouseNode) {
+        mouseNode = { x, y, color: 'rgba(255, 99, 2, 0.5)', isMouse: true };
+      } else {
+        mouseNode.x = x;
+        mouseNode.y = y;
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      mouseNode = null;
+    });
+
+    // Resize handler - responsive
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      initializeNodes();
+      // Recreate QR code on resize
+      qrElement.innerHTML = '';
+      setTimeout(createQRCode, 50);
+    });
+
+    // Contact Form
+    const contactCard = document.getElementById("contactForm");
+    
+    function toggleContactForm() {
+      contactCard.classList.toggle("active");
+      if (contactCard.classList.contains("active")) {
+        contactCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    document.getElementById('contactFormElement').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = e.target.querySelector('button[type="submit"]');
+      const messageDiv = document.getElementById('formMessage');
+      const originalText = button.textContent;
+      
+      button.textContent = 'Sending...';
+      button.disabled = true;
+      messageDiv.style.display = 'none';
+
+      const formData = {
+        name: document.getElementById('name').value,
+        title: document.getElementById('title').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value
+      };
+
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbz4t2LtIb1In7obXC_EKujEH3ZJGbvrz3uevuqVw4d-zErIj3Tf10QWwxlWH2-5IJ7KqA/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        button.textContent = '✓ Sent!';
+        messageDiv.style.display = 'block';
+        
+        setTimeout(() => {
+          contactCard.classList.remove("active");
+          button.textContent = originalText;
+          button.disabled = false;
+          messageDiv.style.display = 'none';
+          e.target.reset();
+        }, 2000);
+      } catch (error) {
+        button.textContent = '✗ Error';
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      }
+    });
+
+    // Google Translate
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'vi,zh-CN,zh-TW,ko,ja,fr,es,de,ru,ar',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
