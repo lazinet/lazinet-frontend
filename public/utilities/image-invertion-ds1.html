@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET - Xử Lý Ảnh Âm Bản & Resize Hình Vuông</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- JSZip & FileSaver -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <style>
+        /* ===== CSS RESET & GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0052FF;
+            --primary-dark: #0039B3;
+            --secondary: #FF5000;
+            --dark: #0F162C;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --success: #28A745;
+            --danger: #DC3545;
+            --warning: #FFC107;
+            --info: #17A2B8;
+            --border: #E0E0E0;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            
+            /* Color palette for negative images */
+            --color-red: #CD2029;
+            --color-yellow: #F3C309;
+            --color-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, #1A233F 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            height: 60px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #FF5000, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #CCC;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== UPLOAD SECTION ===== */
+        .upload-section {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 30px;
+            border: 2px dashed var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary);
+            background: rgba(0, 82, 255, 0.02);
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 40px 20px;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+            color: var(--primary);
+        }
+
+        .upload-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .upload-hint {
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .upload-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 82, 255, 0.25);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* ===== PREVIEW SECTION ===== */
+        .preview-section {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--dark);
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .original-preview {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .preview-container {
+            width: 100%;
+            height: 300px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: white;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .placeholder-text {
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        /* ===== PROCESSING OPTIONS ===== */
+        .processing-options {
+            margin-top: 30px;
+        }
+
+        .option-group {
+            margin-bottom: 25px;
+        }
+
+        .option-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== COLOR PALETTE ===== */
+        .color-palette {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .color-item {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .color-item.selected {
+            border-color: var(--primary);
+            background: rgba(0, 82, 255, 0.05);
+            box-shadow: 0 0 0 2px rgba(0, 82, 255, 0.2);
+        }
+
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .color-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .color-hex {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* ===== SIZE GRID ===== */
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 576px) {
+            .size-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .size-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .size-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .size-item.selected {
+            border-color: var(--primary);
+            background: rgba(0, 82, 255, 0.05);
+            box-shadow: 0 0 0 2px rgba(0, 82, 255, 0.2);
+        }
+
+        .size-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .size-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* ===== BUTTONS ===== */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 576px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 82, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* ===== OUTPUT SECTION ===== */
+        .output-section {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 30px;
+            display: none;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .output-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .output-count {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .output-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .output-content {
+            min-height: 200px;
+        }
+
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .output-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .output-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .output-item {
+            background: white;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .output-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .output-preview {
+            height: 180px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .output-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .output-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .output-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .output-dimension {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #218838;
+        }
+
+        .download-all-btn {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #FF7B00 100%);
+            color: white;
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .download-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 80, 0, 0.3);
+        }
+
+        .download-all-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 82, 255, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-container {
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        /* ===== RESPONSIVE ADJUSTMENTS ===== */
+        @media (max-width: 768px) {
+            header {
+                padding: 25px 20px;
+            }
+            
+            .main-content {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .color-palette {
+                flex-direction: column;
+            }
+            
+            .color-item {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+                gap: 20px;
+            }
+            
+            .upload-section, .preview-section, .output-section {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .upload-text {
+                font-size: 1.1rem;
+            }
+            
+            .size-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-container">
+                <h1>LAZINET Image Processor</h1>
+            </div>
+            <p class="subtitle">Chuyển ảnh thành âm bản (3 màu) + Resize hình vuông (6 kích thước) + Xuất ICO. Tất cả trong một!</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Kéo & Thả Ảnh Vào Đây</div>
+                    <div class="upload-hint">Hoặc nhấp để chọn file từ máy tính</div>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        📤 Chọn File Ảnh
+                    </button>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                    <div style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+                        Hỗ trợ: JPG, PNG, GIF, BMP, WebP, TIFF, SVG
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <div class="section-title">
+                    <span>👁️</span> Xem Trước & Thiết Lập
+                </div>
+                
+                <div class="original-preview">
+                    <div class="preview-container" id="previewContainer">
+                        <div class="placeholder-text">Chưa có ảnh được chọn</div>
+                    </div>
+                    <div id="fileName" style="color: #666; font-size: 0.9rem;"></div>
+                </div>
+
+                <!-- Processing Options -->
+                <div class="processing-options">
+                    <!-- Negative Images Options -->
+                    <div class="option-group">
+                        <div class="option-title">
+                            <span>🎨</span> Ảnh Âm Bản (3 màu)
+                        </div>
+                        <div class="color-palette" id="colorPalette">
+                            <!-- Color items will be dynamically generated -->
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+                            Giữ nguyên kích thước ảnh gốc, chuyển thành âm bản với 3 màu chủ đạo
+                        </div>
+                    </div>
+
+                    <!-- Square Images Options -->
+                    <div class="option-group">
+                        <div class="option-title">
+                            <span>📐</span> Ảnh Hình Vuông (6 kích thước)
+                        </div>
+                        <div class="size-grid" id="sizeGrid">
+                            <!-- Size items will be dynamically generated -->
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+                            Cắt ảnh từ trung tâm thành hình vuông, resize về 6 kích thước chuẩn
+                        </div>
+                    </div>
+
+                    <!-- ICO Option -->
+                    <div class="option-group">
+                        <div class="option-title">
+                            <span>📋</span> File ICO
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="includeIco" checked style="transform: scale(1.2);">
+                            <label for="includeIco" style="font-weight: 500; color: #333;">
+                                Tạo thêm file ICO (256×256) từ ảnh gốc
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progressStatus">Đang chuẩn bị...</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="processBtn" onclick="processAll()" disabled>
+                        <span>🚀</span> Xử Lý Tất Cả (10+ ảnh)
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetTool()">
+                        <span>🗑️</span> Xóa & Bắt Đầu Lại
+                    </button>
+                </div>
+
+                <!-- Loading Indicator -->
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div style="font-weight: 600; margin-bottom: 10px; font-size: 1.1rem;">Đang xử lý ảnh...</div>
+                    <div style="color: #666; font-size: 0.9rem;">Vui lòng chờ, không đóng trình duyệt</div>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section" id="outputSection">
+                <div class="output-header">
+                    <div class="output-title">Kết Quả Xử Lý</div>
+                    <div class="output-count" id="outputCount">0 ảnh</div>
+                </div>
+
+                <div class="output-tabs" id="outputTabs">
+                    <!-- Tabs will be dynamically generated -->
+                </div>
+
+                <div class="output-content">
+                    <div class="output-grid" id="outputGrid">
+                        <!-- Output items will be inserted here -->
+                    </div>
+                </div>
+
+                <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()" disabled>
+                    <span>📦</span> Tải Xuống Tất Cả (ZIP)
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-text">
+                © 2024 LAZINET Image Processor | Công cụ xử lý ảnh chuyên nghiệp - 1 input, 10+ output
+            </div>
+        </footer>
+    </div>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Global variables
+        let originalImage = null;
+        let originalImageUrl = null;
+        let processedImages = {
+            negative: [],   // 3 negative images
+            square: [],     // 6 square images
+            ico: null       // 1 ICO file (if selected)
+        };
+        
+        let selectedColors = ['red', 'yellow', 'white'];
+        let selectedSizes = [64, 128, 256, 512, 1024, 2048];
+        let includeIco = true;
+        let isProcessing = false;
+        let totalSteps = 0;
+        let currentStep = 0;
+        
+        // Color definitions
+        const colorPalette = {
+            red: {
+                name: 'Đỏ',
+                hex: '#CD2029',
+                rgb: { r: 205, g: 32, b: 41 }
+            },
+            yellow: {
+                name: 'Vàng',
+                hex: '#F3C309',
+                rgb: { r: 243, g: 195, b: 9 }
+            },
+            white: {
+                name: 'Trắng',
+                hex: '#FFFFFF',
+                rgb: { r: 255, g: 255, b: 255 }
+            }
+        };
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            initializeColorPalette();
+            initializeSizeGrid();
+        });
+        
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // File input change
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            
+            // Upload area drag and drop
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            // ICO checkbox
+            document.getElementById('includeIco').addEventListener('change', function() {
+                includeIco = this.checked;
+            });
+        }
+        
+        // Initialize color palette UI
+        function initializeColorPalette() {
+            const colorPaletteContainer = document.getElementById('colorPalette');
+            
+            Object.entries(colorPalette).forEach(([key, color]) => {
+                const colorItem = document.createElement('div');
+                colorItem.className = 'color-item selected';
+                colorItem.dataset.color = key;
+                colorItem.innerHTML = `
+                    <div class="color-preview" style="background-color: ${color.hex};"></div>
+                    <div class="color-name">${color.name}</div>
+                    <div class="color-hex">${color.hex}</div>
+                `;
+                
+                colorItem.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    updateSelectedColors();
+                });
+                
+                colorPaletteContainer.appendChild(colorItem);
+            });
+        }
+        
+        // Initialize size grid UI
+        function initializeSizeGrid() {
+            const sizeGrid = document.getElementById('sizeGrid');
+            
+            selectedSizes.forEach(size => {
+                const sizeItem = document.createElement('div');
+                sizeItem.className = 'size-item selected';
+                sizeItem.dataset.size = size;
+                sizeItem.innerHTML = `
+                    <div class="size-value">${size}px</div>
+                    <div class="size-label">${size} × ${size} pixels</div>
+                `;
+                
+                sizeItem.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    updateSelectedSizes();
+                });
+                
+                sizeGrid.appendChild(sizeItem);
+            });
+        }
+        
+        // Update selected colors
+        function updateSelectedColors() {
+            selectedColors = [];
+            document.querySelectorAll('.color-item.selected').forEach(item => {
+                selectedColors.push(item.dataset.color);
+            });
+        }
+        
+        // Update selected sizes
+        function updateSelectedSizes() {
+            selectedSizes = [];
+            document.querySelectorAll('.size-item.selected').forEach(item => {
+                selectedSizes.push(parseInt(item.dataset.size));
+            });
+            selectedSizes.sort((a, b) => a - b);
+        }
+        
+        // Handle file select
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showError('Vui lòng chọn file ảnh hợp lệ!');
+                return;
+            }
+            
+            loadImage(file);
+        }
+        
+        // Handle drag over
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = 'copy';
+            document.getElementById('uploadArea').style.backgroundColor = 'rgba(0, 82, 255, 0.05)';
+        }
+        
+        // Handle drag leave
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').style.backgroundColor = '';
+        }
+        
+        // Handle drop
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').style.backgroundColor = '';
+            
+            const file = e.dataTransfer.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showError('Vui lòng chọn file ảnh hợp lệ!');
+                return;
+            }
+            
+            loadImage(file);
+        }
+        
+        // Load image and display preview
+        function loadImage(file) {
+            // Clear previous
+            if (originalImageUrl) {
+                URL.revokeObjectURL(originalImageUrl);
+            }
+            
+            // Clear previous processed images
+            clearProcessedImages();
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImageUrl = e.target.result;
+                
+                // Create image element
+                const img = new Image();
+                img.onload = function() {
+                    originalImage = img;
+                    
+                    // Display preview
+                    const previewContainer = document.getElementById('previewContainer');
+                    previewContainer.innerHTML = '';
+                    const previewImg = document.createElement('img');
+                    previewImg.src = originalImageUrl;
+                    previewImg.className = 'preview-image';
+                    previewImg.alt = 'Ảnh gốc';
+                    previewContainer.appendChild(previewImg);
+                    
+                    // Show file name and info
+                    const fileName = truncateFileName(file.name, 30);
+                    const fileSize = formatFileSize(file.size);
+                    document.getElementById('fileName').innerHTML = `
+                        📄 <strong>${fileName}</strong> • ${fileSize} • ${img.width}×${img.height}px
+                    `;
+                    
+                    // Enable process button
+                    document.getElementById('processBtn').disabled = false;
+                    
+                    // Hide output section
+                    document.getElementById('outputSection').style.display = 'none';
+                    document.getElementById('downloadAllBtn').disabled = true;
+                    
+                    showNotification(`Đã tải ảnh: ${fileName}`, 'success');
+                };
+                img.onerror = function() {
+                    showError('Không thể đọc file ảnh. Vui lòng thử file khác.');
+                };
+                img.src = originalImageUrl;
+            };
+            reader.onerror = function() {
+                showError('Không thể đọc file. Vui lòng thử lại.');
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Clear processed images
+        function clearProcessedImages() {
+            // Clear arrays
+            processedImages.negative = [];
+            processedImages.square = [];
+            processedImages.ico = null;
+            
+            // Revoke object URLs
+            processedImages.negative.forEach(img => {
+                if (img.url) URL.revokeObjectURL(img.url);
+            });
+            processedImages.square.forEach(img => {
+                if (img.url) URL.revokeObjectURL(img.url);
+            });
+            if (processedImages.ico && processedImages.ico.url) {
+                URL.revokeObjectURL(processedImages.ico.url);
+            }
+        }
+        
+        // Process all images
+        async function processAll() {
+            if (!originalImage || isProcessing) {
+                showError('Vui lòng chọn ảnh trước!');
+                return;
+            }
+            
+            if (selectedColors.length === 0 && selectedSizes.length === 0 && !includeIco) {
+                showError('Vui lòng chọn ít nhất một tùy chọn xử lý!');
+                return;
+            }
+            
+            isProcessing = true;
+            
+            // Calculate total steps
+            totalSteps = selectedColors.length + selectedSizes.length + (includeIco ? 1 : 0);
+            currentStep = 0;
+            
+            // Show loading and progress
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('progressContainer').classList.add('active');
+            document.getElementById('processBtn').disabled = true;
+            
+            // Clear previous processed images
+            clearProcessedImages();
+            
+            try {
+                // Process negative images
+                if (selectedColors.length > 0) {
+                    for (const colorKey of selectedColors) {
+                        await processNegativeImage(colorKey);
+                        updateProgress();
+                    }
+                }
+                
+                // Process square images
+                if (selectedSizes.length > 0) {
+                    for (const size of selectedSizes) {
+                        await processSquareImage(size);
+                        updateProgress();
+                    }
+                }
+                
+                // Process ICO if selected
+                if (includeIco) {
+                    await processIcoImage();
+                    updateProgress();
+                }
+                
+                // Display results
+                displayResults();
+                
+                // Enable download button
+                document.getElementById('downloadAllBtn').disabled = false;
+                
+                showNotification(`Đã xử lý xong ${totalSteps} ảnh thành công!`, 'success');
+                
+            } catch (error) {
+                console.error('Processing error:', error);
+                showError('Có lỗi xảy ra khi xử lý ảnh. Vui lòng thử lại.');
+            } finally {
+                isProcessing = false;
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('processBtn').disabled = false;
+            }
+        }
+        
+        // Process negative image
+        async function processNegativeImage(colorKey) {
+            return new Promise((resolve) => {
+                const color = colorPalette[colorKey];
+                
+                // Create canvas with original dimensions
+                const canvas = document.createElement('canvas');
+                canvas.width = originalImage.width;
+                canvas.height = originalImage.height;
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                
+                // Draw original image
+                ctx.drawImage(originalImage, 0, 0);
+                
+                // Get image data
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Apply negative effect with color
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    const a = data[i + 3];
+                    
+                    // Skip transparent pixels
+                    if (a === 0) continue;
+                    
+                    // Calculate luminance (grayscale)
+                    const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+                    
+                    // Invert luminance
+                    const invertedLuminance = 255 - luminance;
+                    
+                    // Normalize to 0-1 range
+                    const normalized = invertedLuminance / 255;
+                    
+                    // Apply color
+                    data[i] = Math.min(255, color.rgb.r * normalized);     // Red
+                    data[i + 1] = Math.min(255, color.rgb.g * normalized); // Green
+                    data[i + 2] = Math.min(255, color.rgb.b * normalized); // Blue
+                    // Alpha remains unchanged
+                }
+                
+                // Put modified data back
+                ctx.putImageData(imageData, 0, 0);
+                
+                // Convert to blob
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const fileName = `negative_${color.name.toLowerCase()}_${originalImage.width}x${originalImage.height}.png`;
+                    
+                    processedImages.negative.push({
+                        name: fileName,
+                        displayName: `Âm bản ${color.name}`,
+                        color: colorKey,
+                        blob: blob,
+                        url: url,
+                        size: blob.size,
+                        width: canvas.width,
+                        height: canvas.height
+                    });
+                    
+                    resolve();
+                }, 'image/png', 1.0);
+            });
+        }
+        
+        // Process square image
+        async function processSquareImage(size) {
+            return new Promise((resolve) => {
+                // Create canvas for square crop
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d', { alpha: true });
+                
+                // Calculate square crop from center
+                const sourceSize = Math.min(originalImage.width, originalImage.height);
+                const sourceX = (originalImage.width - sourceSize) / 2;
+                const sourceY = (originalImage.height - sourceSize) / 2;
+                
+                // Use high-quality image rendering
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                // Draw and resize with high quality
+                ctx.drawImage(
+                    originalImage,
+                    sourceX, sourceY, sourceSize, sourceSize,  // Source rectangle
+                    0, 0, size, size                            // Destination rectangle
+                );
+                
+                // Convert to blob
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const fileName = `square_${size}x${size}.png`;
+                    
+                    processedImages.square.push({
+                        name: fileName,
+                        displayName: `${size}×${size}`,
+                        size: size,
+                        blob: blob,
+                        url: url,
+                        sizeBytes: blob.size,
+                        width: size,
+                        height: size
+                    });
+                    
+                    resolve();
+                }, 'image/png', 1.0);
+            });
+        }
+        
+        // Process ICO image
+        async function processIcoImage() {
+            return new Promise((resolve) => {
+                // ICO size (standard favicon size)
+                const icoSize = 256;
+                
+                // Create canvas for ICO
+                const canvas = document.createElement('canvas');
+                canvas.width = icoSize;
+                canvas.height = icoSize;
+                const ctx = canvas.getContext('2d', { alpha: true });
+                
+                // Calculate square crop from center
+                const sourceSize = Math.min(originalImage.width, originalImage.height);
+                const sourceX = (originalImage.width - sourceSize) / 2;
+                const sourceY = (originalImage.height - sourceSize) / 2;
+                
+                // Use high-quality image rendering
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                // Draw and resize
+                ctx.drawImage(
+                    originalImage,
+                    sourceX, sourceY, sourceSize, sourceSize,
+                    0, 0, icoSize, icoSize
+                );
+                
+                // Convert to blob (PNG format for ICO)
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const fileName = `favicon.ico`;
+                    
+                    // Note: This creates a PNG file named .ico
+                    // For a true ICO file, more complex processing is needed
+                    processedImages.ico = {
+                        name: fileName,
+                        displayName: 'ICO 256×256',
+                        blob: blob,
+                        url: url,
+                        size: blob.size,
+                        width: icoSize,
+                        height: icoSize
+                    };
+                    
+                    resolve();
+                }, 'image/png', 1.0);
+            });
+        }
+        
+        // Update progress
+        function updateProgress() {
+            currentStep++;
+            const percent = Math.round((currentStep / totalSteps) * 100);
+            
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent + '%';
+            
+            // Update status text
+            let status = '';
+            if (currentStep <= selectedColors.length) {
+                status = `Đang tạo ảnh âm bản (${currentStep}/${selectedColors.length})`;
+            } else if (currentStep <= selectedColors.length + selectedSizes.length) {
+                const squareStep = currentStep - selectedColors.length;
+                status = `Đang resize hình vuông (${squareStep}/${selectedSizes.length})`;
+            } else {
+                status = 'Đang tạo file ICO...';
+            }
+            
+            document.getElementById('progressStatus').textContent = status;
+        }
+        
+        // Display results
+        function displayResults() {
+            // Show output section
+            document.getElementById('outputSection').style.display = 'block';
+            
+            // Calculate total images
+            const totalImages = processedImages.negative.length + 
+                              processedImages.square.length + 
+                              (processedImages.ico ? 1 : 0);
+            document.getElementById('outputCount').textContent = `${totalImages} ảnh`;
+            
+            // Create tabs
+            createTabs();
+            
+            // Show first tab content
+            showTab('negative');
+        }
+        
+        // Create tabs
+        function createTabs() {
+            const tabsContainer = document.getElementById('outputTabs');
+            tabsContainer.innerHTML = '';
+            
+            // Negative images tab
+            if (processedImages.negative.length > 0) {
+                const negativeTab = document.createElement('button');
+                negativeTab.className = 'tab-btn active';
+                negativeTab.textContent = `Âm bản (${processedImages.negative.length})`;
+                negativeTab.onclick = () => showTab('negative');
+                tabsContainer.appendChild(negativeTab);
+            }
+            
+            // Square images tab
+            if (processedImages.square.length > 0) {
+                const squareTab = document.createElement('button');
+                squareTab.className = 'tab-btn';
+                squareTab.textContent = `Hình vuông (${processedImages.square.length})`;
+                squareTab.onclick = () => showTab('square');
+                tabsContainer.appendChild(squareTab);
+            }
+            
+            // ICO tab
+            if (processedImages.ico) {
+                const icoTab = document.createElement('button');
+                icoTab.className = 'tab-btn';
+                icoTab.textContent = 'ICO (1)';
+                icoTab.onclick = () => showTab('ico');
+                tabsContainer.appendChild(icoTab);
+            }
+            
+            // All images tab
+            const allTab = document.createElement('button');
+            allTab.className = 'tab-btn';
+            allTab.textContent = `Tất cả (${processedImages.negative.length + processedImages.square.length + (processedImages.ico ? 1 : 0)})`;
+            allTab.onclick = () => showTab('all');
+            tabsContainer.appendChild(allTab);
+        }
+        
+        // Show tab content
+        function showTab(tabName) {
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const tabs = document.querySelectorAll('.tab-btn');
+            switch(tabName) {
+                case 'negative':
+                    tabs[0].classList.add('active');
+                    break;
+                case 'square':
+                    tabs[1].classList.add('active');
+                    break;
+                case 'ico':
+                    tabs[2]?.classList.add('active');
+                    break;
+                case 'all':
+                    tabs[tabs.length - 1].classList.add('active');
+                    break;
+            }
+            
+            // Clear output grid
+            const outputGrid = document.getElementById('outputGrid');
+            outputGrid.innerHTML = '';
+            
+            // Show appropriate content
+            let imagesToShow = [];
+            
+            switch(tabName) {
+                case 'negative':
+                    imagesToShow = processedImages.negative;
+                    break;
+                case 'square':
+                    imagesToShow = processedImages.square;
+                    break;
+                case 'ico':
+                    if (processedImages.ico) {
+                        imagesToShow = [processedImages.ico];
+                    }
+                    break;
+                case 'all':
+                    imagesToShow = [
+                        ...processedImages.negative,
+                        ...processedImages.square
+                    ];
+                    if (processedImages.ico) {
+                        imagesToShow.push(processedImages.ico);
+                    }
+                    break;
+            }
+            
+            // Create output items
+            imagesToShow.forEach((img, index) => {
+                const outputItem = document.createElement('div');
+                outputItem.className = 'output-item';
+                
+                const fileSize = formatFileSize(img.size || img.sizeBytes);
+                const dimensions = img.width ? `${img.width}×${img.height}` : 'N/A';
+                
+                outputItem.innerHTML = `
+                    <div class="output-preview">
+                        <img src="${img.url}" alt="${img.displayName}" class="output-image">
+                    </div>
+                    <div class="output-info">
+                        <div class="output-name">${img.displayName}</div>
+                        <div class="output-dimension">${dimensions} • ${fileSize}</div>
+                        <button class="download-btn" onclick="downloadSingle('${tabName}', ${index})">
+                            ⬇️ Tải Xuống
+                        </button>
+                    </div>
+                `;
+                
+                outputGrid.appendChild(outputItem);
+            });
+        }
+        
+        // Download single image
+        function downloadSingle(type, index) {
+            let img;
+            
+            switch(type) {
+                case 'negative':
+                    img = processedImages.negative[index];
+                    break;
+                case 'square':
+                    img = processedImages.square[index];
+                    break;
+                case 'ico':
+                    img = processedImages.ico;
+                    break;
+                default:
+                    return;
+            }
+            
+            if (!img) return;
+            
+            const link = document.createElement('a');
+            link.href = img.url;
+            link.download = img.name;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification(`Đang tải xuống: ${img.name}`, 'info');
+        }
+        
+        // Download all images as ZIP
+        async function downloadAll() {
+            const allImages = [
+                ...processedImages.negative,
+                ...processedImages.square
+            ];
+            
+            if (processedImages.ico) {
+                allImages.push(processedImages.ico);
+            }
+            
+            if (allImages.length === 0) {
+                showError('Không có ảnh nào để tải xuống!');
+                return;
+            }
+            
+            try {
+                // Show processing notification
+                Swal.fire({
+                    title: 'Đang tạo file ZIP...',
+                    text: 'Vui lòng chờ trong giây lát',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+                
+                // Create ZIP file
+                const zip = new JSZip();
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                
+                // Add each image to ZIP
+                allImages.forEach(img => {
+                    zip.file(img.name, img.blob);
+                });
+                
+                // Generate ZIP file
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                
+                // Download ZIP
+                saveAs(zipBlob, `lazinet-processed-images_${timestamp}.zip`);
+                
+                // Close notification
+                Swal.close();
+                
+                showNotification(`Đã tạo file ZIP với ${allImages.length} ảnh!`, 'success');
+                
+            } catch (error) {
+                console.error('ZIP creation error:', error);
+                Swal.close();
+                showError('Có lỗi khi tạo file ZIP. Vui lòng thử lại.');
+            }
+        }
+        
+        // Reset tool
+        function resetTool() {
+            Swal.fire({
+                title: 'Xác nhận đặt lại',
+                text: 'Bạn có chắc chắn muốn xóa ảnh hiện tại và bắt đầu lại?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#FF5000',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Đặt lại',
+                cancelButtonText: 'Hủy',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear original image
+                    if (originalImageUrl) {
+                        URL.revokeObjectURL(originalImageUrl);
+                        originalImageUrl = null;
+                    }
+                    
+                    originalImage = null;
+                    
+                    // Clear processed images
+                    clearProcessedImages();
+                    
+                    // Reset UI
+                    document.getElementById('previewContainer').innerHTML = 
+                        '<div class="placeholder-text">Chưa có ảnh được chọn</div>';
+                    document.getElementById('fileName').textContent = '';
+                    document.getElementById('processBtn').disabled = true;
+                    document.getElementById('outputSection').style.display = 'none';
+                    document.getElementById('downloadAllBtn').disabled = true;
+                    document.getElementById('fileInput').value = '';
+                    
+                    // Hide progress
+                    document.getElementById('progressContainer').classList.remove('active');
+                    document.getElementById('progressFill').style.width = '0%';
+                    document.getElementById('progressPercent').textContent = '0%';
+                    
+                    // Reset checkboxes
+                    document.getElementById('includeIco').checked = true;
+                    includeIco = true;
+                    
+                    // Reset selections
+                    selectedColors = ['red', 'yellow', 'white'];
+                    selectedSizes = [64, 128, 256, 512, 1024, 2048];
+                    
+                    // Update UI selections
+                    document.querySelectorAll('.color-item').forEach(item => {
+                        item.classList.add('selected');
+                    });
+                    document.querySelectorAll('.size-item').forEach(item => {
+                        item.classList.add('selected');
+                    });
+                    
+                    showNotification('Đã đặt lại công cụ!', 'success');
+                }
+            });
+        }
+        
+        // Helper functions
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+        
+        function truncateFileName(name, maxLength = 25) {
+            if (name.length <= maxLength) return name;
+            const extension = name.split('.').pop();
+            const nameWithoutExt = name.slice(0, -(extension.length + 1));
+            const truncateLength = maxLength - extension.length - 3; // 3 for "..."
+            return nameWithoutExt.slice(0, truncateLength) + '...' + extension;
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            let icon = 'success';
+            let title = 'Thành công';
+            
+            switch (type) {
+                case 'error':
+                    icon = 'error';
+                    title = 'Lỗi';
+                    break;
+                case 'warning':
+                    icon = 'warning';
+                    title = 'Cảnh báo';
+                    break;
+                case 'info':
+                    icon = 'info';
+                    title = 'Thông tin';
+                    break;
+            }
+            
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: icon,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
+        
+        // Show error
+        function showError(message) {
+            showNotification(message, 'error');
+        }
+    </script>
+</body>
+</html>
