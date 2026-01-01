@@ -3,87 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vương Chả - Hathyo Merchant</title>
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Email Template</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; color: #333; }
-        h1 { text-align: center; color: #d32f2f; }
-        .info { text-align: center; margin: 20px 0; font-size: 18px; }
-        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .product { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
-        .product h3 { margin: 10px 0; color: #1976d2; }
-        .price-original { text-decoration: line-through; color: #999; }
-        .price-sale { font-size: 24px; color: #d32f2f; font-weight: bold; }
-        .discount { background: #ffeb3b; padding: 5px 10px; border-radius: 4px; font-weight: bold; }
-        footer { margin-top: 50px; text-align: center; font-size: 14px; color: #666; }
-        a { color: #1976d2; text-decoration: none; }
+        /* Email-safe CSS */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            background-color: #fafafa;
+        }
+        
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #fafafa;
+            padding-bottom: 40px;
+        }
+        
+        .main-table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-spacing: 0;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333333;
+        }
+        
+        .header {
+            background-color: #187752;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            background-color: white;
+            padding: 0;
+        }
+        
+        .image-container {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .responsive-image {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .footer {
+            background-color: #187752;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            .main-table {
+                width: 100% !important;
+            }
+        }
+        
+        /* Outlook specific */
+        .outer-table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
-    <h1>Vương Chả</h1>
-    <div class="info">
-        <p>Số sản phẩm: 9 | Tham gia: 5 tháng</p>
-        <p><a href="https://hathyo.com/merchant/36" target="_blank">Xem trang gốc trên Hathyo</a></p>
-    </div>
-
-    <div class="products">
-        <div class="product">
-            <h3>Chả Lụa</h3>
-            <p class="price-original">150.000 ₫</p>
-            <p class="price-sale">100.000 ₫</p>
-            <span class="discount">-33%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Mộc Cua</h3>
-            <p class="price-original">170.000 ₫</p>
-            <p class="price-sale">120.000 ₫</p>
-            <span class="discount">-29%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Tôm</h3>
-            <p class="price-original">190.000 ₫</p>
-            <p class="price-sale">140.000 ₫</p>
-            <span class="discount">-26%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Bò Tai Ớt Xanh</h3>
-            <p class="price-original">210.000 ₫</p>
-            <p class="price-sale">160.000 ₫</p>
-            <span class="discount">-24%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Bò Thượng Hạng</h3>
-            <p class="price-original">260.000 ₫</p>
-            <p class="price-sale">210.000 ₫</p>
-            <span class="discount">-19%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Cua vo viên</h3>
-            <p class="price-original">270.000 ₫</p>
-            <p class="price-sale">220.000 ₫</p>
-            <span class="discount">-19%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Bò Viên</h3>
-            <p class="price-original">350.000 ₫</p>
-            <p class="price-sale">300.000 ₫</p>
-            <span class="discount">-14%</span>
-        </div>
-        <div class="product">
-            <h3>Chả Mực</h3>
-            <p class="price-original">400.000 ₫</p>
-            <p class="price-sale">350.000 ₫</p>
-            <span class="discount">-12%</span>
-        </div>
-        <div class="product">
-            <h3>Hộp quà Chả Bò thượng hạng</h3>
-            <p>(Liên hệ để biết giá chi tiết)</p>
-        </div>
-    </div>
-
-    <footer>
-        <p>Nguồn: Hathyo.com - Công ty TNHH Cuộc Sống Vui Khỏe</p>
-        <p>Liên hệ: phunghm@gmail.com | 0908556220</p>
-        <p><a href="https://hathyo.com/merchant/36" target="_blank">Xem đầy đủ và mua hàng tại đây</a></p>
-    </footer>
+    <!--[if mso]>
+    <center>
+    <table class="outer-table" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+    <td>
+    <![endif]-->
+    
+    <table class="wrapper" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td align="center">
+                <table class="main-table" border="0" cellpadding="0" cellspacing="0" width="600">
+                    <!-- Header -->
+                    <tr>
+                        <td class="header">
+                            <h1 style="margin: 0; font-size: 24px;">ĐẶC SẢN QUÊ HƯƠNG</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content Images -->
+                    <tr>
+                        <td class="content">
+                            <!-- Image 1 -->
+                            <div class="image-container">
+                                <a href="https://hathyo.com/merchant/36" target="_blank">
+                                    <img src="https://lazinet.com/projects/VuongCha/compaign-20260101/letter.webp" 
+                                         class="responsive-image" 
+                                         alt="Thư chào mừng"
+                                         width="600"
+                                         border="0">
+                                </a>
+                            </div>
+                            
+                            <!-- Image 2 -->
+                            <div class="image-container">
+                                <a href="https://hathyo.com/merchant/36" target="_blank">
+                                    <img src="https://lazinet.com/projects/VuongCha/compaign-20260101/products.jpg" 
+                                         class="responsive-image" 
+                                         alt="Sản phẩm đặc biệt"
+                                         width="600"
+                                         border="0">
+                                </a>
+                            </div>
+                            
+                            <!-- Signature -->
+                            <div style="text-align: center; padding: 30px 20px; border-top: 2px solid #187752;">
+                                <img src="https://lazinet.com/projects/VuongCha/logo2.svg" 
+                                     alt="Vương Chả" 
+                                     width="150"
+                                     style="margin-bottom: 15px;">
+                                
+                                <div style="color: #187752; font-size: 18px; font-weight: bold; margin: 10px 0;">
+                                    VƯƠNG CHẢ
+                                </div>
+                                
+                                <div style="color: #666; font-size: 14px; margin: 5px 0;">
+                                    0965652727 (Zalo)<br>
+                                    Công ty TNHH MTV Vương Anh Quốc (MST: 6400399252)
+                                </div>
+                                
+                                <div style="margin-top: 15px;">
+                                    <a href="https://maps.app.goo.gl/a3dECn5SJ8zTsETT8" 
+                                       style="color: #B91C1C; text-decoration: none; font-size: 14px;">
+                                        34/1 Tân Thới Hiệp 13, phường Tân Thới Hiệp, thành phố Hồ Chí Minh
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer">
+                            <div style="margin-bottom: 10px;">
+                                HATHYO - Sàn TMĐT Sức Khoẻ & Lành Mạnh
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                Hotline: 0084-827000248 | Email: email@hathyo.com
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <a href="https://hathyo.com/static-content/privacy-policy" style="margin: 0 10px;">Chính sách bảo mật</a>
+                                <a href="https://hathyo.com/static-content/terms-of-use" style="margin: 0 10px;">Điều khoản sử dụng</a>
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 11px;">
+                                <a href="https://hathyo.com/helps/feedback" style="color: #FFD700;">
+                                    Hủy đăng ký nhận email
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+    <!--[if mso]>
+    </td>
+    </tr>
+    </table>
+    </center>
+    <![endif]-->
 </body>
 </html>
