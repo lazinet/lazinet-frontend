@@ -1,0 +1,56 @@
+<svg width="3800" height="1200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3800 1200">
+  <defs>
+    <style type="text/css">
+      @font-face {
+        font-family: 'Arial Black Embedded';
+        src: url('data:font/woff2;charset=utf-8;base64,[BASE64_STRING_HERE]') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Arial Black Embedded';
+        src: url('data:font/woff2;charset=utf-8;base64,[BASE64_STRING_HERE]') format('woff2');
+        font-weight: bold;
+        font-style: normal;
+      }
+    </style>
+  </defs>
+
+<svg width="3800" height="1200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3800 1200">
+  <!-- Vòng blue lớn (nằm dưới cùng) -->
+  <!-- <circle cx="600" cy="602" r="502" fill="blue" /> -->
+  <circle cx="600" cy="702" r="122" fill="blue">
+    <animate attributeName="cy" values="982;602" dur="8s"  begin="0s" repeatCount="indefinite" />
+    <animate attributeName="r"  values="122;502" dur="8s"  begin="0s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Vòng trắng lớn -->
+  <circle cx="600" cy="802" r="122" fill="white">
+    <animate attributeName="cy" values="982;702" dur="8s"  begin="0s" repeatCount="indefinite" />
+    <animate attributeName="r"  values="122;402" dur="8s"  begin="0s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Vòng blue nhỏ -->
+  <circle cx="600" cy="902" r="122" fill="blue">
+    <animate attributeName="cy" values="982;802" dur="8s"  begin="0s" repeatCount="indefinite" />
+    <animate attributeName="r"  values="122;302" dur="8s"  begin="0s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Vòng trắng nhỏ -->
+  <circle cx="600" cy="902" r="122" fill="white">
+    <animate attributeName="cy" values="982;902" dur="8s"  begin="0s" repeatCount="indefinite" />
+    <animate attributeName="r"  values="122;202" dur="8s"  begin="0s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Vòng cam (nằm trên cùng) -->
+  <circle cx="600" cy="982" r="0" fill="#ff6302">
+    <animate attributeName="cy" values="1043;982" dur="1s" begin="0s" repeatCount="indefinite" />
+    <animate attributeName="r"  values="0;122"    dur="1s" begin="0s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Text dùng font đã embed -->
+  <text x="1235" y="550" font-family="'Arial Black Embedded', sans-serif" font-weight="900" font-size="500" fill="#ff6300">LAZI</text>
+  <text x="2490" y="550" font-family="'Arial Black Embedded', sans-serif" font-weight="900" font-size="500" fill="#0000FF">NET</text>
+  <line x1="1265" x2="3620" y1="715" y2="715" stroke="#ff6300" stroke-width="20"/>
+  <text x="1260" y="1000" font-family="Arial, sans-serif" font-size="208" fill="#0000FF">CÔNG NGHỆ HIỆU QUẢ</text>
+</svg>
