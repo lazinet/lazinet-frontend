@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Frontend - Performance Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 900px;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-a {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-b {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-append {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            grid-column: span 2;
+        }
+        
+        .performance-panel {
+            background: #1a1a2e;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .metric {
+            background: #162447;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .metric-title {
+            font-size: 0.9em;
+            color: #a9a9a9;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+        
+        .metric-unit {
+            font-size: 0.8em;
+            color: #a9a9a9;
+            margin-left: 5px;
+        }
+        
+        .metric-detail {
+            font-size: 0.9em;
+            color: #e6e6e6;
+            margin-top: 5px;
+        }
+        
+        .status {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status.error {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .status.success {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .results-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .results-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .action-badge {
+            background: #333;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .data-list {
+            list-style: none;
+        }
+        
+        .data-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .data-index {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .no-data {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #1976d2;
+        }
+        
+        .log {
+            font-family: 'Courier New', monospace;
+            background: #1a1a2e;
+            color: #4facfe;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.85em;
+            overflow-x: auto;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .log-time {
+            color: #00f2fe;
+            font-weight: bold;
+        }
+        
+        .log-action {
+            color: #f093fb;
+            font-weight: bold;
+        }
+        
+        .log-duration {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .log-error {
+            color: #ff6b6b;
+        }
+        
+        .log-success {
+            color: #4CAF50;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .timeline-point {
+            position: relative;
+            z-index: 2;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .timeline-point.active {
+            background: #667eea;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+        
+        .timeline-label {
+            position: absolute;
+            top: 40px;
+            font-size: 0.8em;
+            color: #666;
+            text-align: center;
+            width: 100px;
+        }
+        
+        .chart-container {
+            height: 100px;
+            margin: 20px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 5px 5px 0 0;
+            transition: height 0.5s ease;
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.8em;
+            text-align: center;
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏱️ Google Sheets Performance Monitor</h1>
+        <p class="subtitle">Đo thời gian xử lý toàn trình dữ liệu</p>
+        
+        <div class="controls">
+            <button class="btn-a" onclick="fetchData('A')">
+                <span>📋</span> Lấy Config A
+            </button>
+            <button class="btn-b" onclick="fetchData('B')">
+                <span>📄</span> Lấy Config B
+            </button>
+            <button class="btn-append" onclick="appendData()">
+                <span>📝</span> Ghi Log
+            </button>
+        </div>
+        
+        <!-- Performance Metrics Panel -->
+        <div class="performance-panel">
+            <div class="metric">
+                <div class="metric-title">Thời gian lấy Config A</div>
+                <div>
+                    <span class="metric-value" id="configATime">0.00</span>
+                    <span class="metric-unit">giây</span>
+                </div>
+                <div class="metric-detail" id="configADetail">Chưa đo</div>
+            </div>
+            
+            <div class="metric">
+                <div class="metric-title">Thời gian lấy Config B</div>
+                <div>
+                    <span class="metric-value" id="configBTime">0.00</span>
+                    <span class="metric-unit">giây</span>
+                </div>
+                <div class="metric-detail" id="configBDetail">Chưa đo</div>
+            </div>
+            
+            <div class="metric">
+                <div class="metric-title">Thời gian ghi Log</div>
+                <div>
+                    <span class="metric-value" id="appendTime">0.00</span>
+                    <span class="metric-unit">giây</span>
+                </div>
+                <div class="metric-detail" id="appendDetail">Chưa đo</div>
+            </div>
+            
+            <div class="metric">
+                <div class="metric-title">Trung bình</div>
+                <div>
+                    <span class="metric-value" id="avgTime">0.00</span>
+                    <span class="metric-unit">giây</span>
+                </div>
+                <div class="metric-detail" id="avgDetail">0 lượt đo</div>
+            </div>
+        </div>
+        
+        <!-- Timeline Visualization -->
+        <div class="timeline">
+            <div class="timeline-point" id="timelineStart">1</div>
+            <div class="timeline-point" id="timelineRequest">2</div>
+            <div class="timeline-point" id="timelineProcessing">3</div>
+            <div class="timeline-point" id="timelineResponse">4</div>
+            <div class="timeline-point" id="timelineComplete">5</div>
+        </div>
+        
+        <div class="timeline" style="margin-top: 40px;">
+            <div class="timeline-label" style="left: 0;">Bắt đầu</div>
+            <div class="timeline-label" style="left: 20%;">Gửi request</div>
+            <div class="timeline-label" style="left: 40%;">Xử lý server</div>
+            <div class="timeline-label" style="left: 60%;">Nhận response</div>
+            <div class="timeline-label" style="left: 80%;">Hiển thị UI</div>
+        </div>
+        
+        <div class="chart-container" id="chartContainer">
+            <!-- Chart bars will be added dynamically -->
+        </div>
+        
+        <div id="status" class="status">
+            👆 Nhấn vào nút bên trên để bắt đầu đo thời gian
+        </div>
+        
+        <div class="results-container">
+            <div class="results-header">
+                <span class="results-title">📈 Kết Quả Dữ Liệu</span>
+                <span id="actionBadge" class="action-badge">Chưa có</span>
+            </div>
+            <ul id="results" class="data-list">
+                <li class="no-data">Chưa có dữ liệu nào được tải</li>
+            </ul>
+        </div>
+        
+        <!-- Performance Log -->
+        <div class="log">
+            <div style="color: #fff; font-weight: bold; margin-bottom: 10px;">📊 Performance Log</div>
+            <div id="logEntries">
+                <div class="log-entry">
+                    <span class="log-time">[00:00:00]</span>
+                    <span class="log-action">Hệ thống đã sẵn sàng</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <strong>📝 Hướng dẫn đo thời gian:</strong>
+            <p>1. <strong>Config A/B</strong>: Thời gian từ lúc bấm nút đến khi HTML nhận được dữ liệu</p>
+            <p>2. <strong>Ghi Log</strong>: Thời gian từ lúc bấm nút đến khi nhận xác nhận dữ liệu đã được ghi</p>
+            <p>3. Timeline hiển thị 5 bước: Bắt đầu → Gửi request → Xử lý server → Nhận response → Hiển thị UI</p>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ THAY ĐỔI URL NÀY THÀNH URL WEB APP CỦA BẠN
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwLfp8elga_zQqpNvomtC_0eBraWLycr-u2zEQgfRPJs0FKZvY3pual9Ys6mMvN4JPy/exec';
+        
+        // Biến lưu trữ hiệu suất
+        const performanceData = {
+            configA: [],
+            configB: [],
+            append: [],
+            chartData: []
+        };
+        
+        // Khởi tạo callback global
+        window.jsonpCallback = null;
+        
+        // Hiển thị trạng thái
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+        }
+        
+        // Thêm log entry
+        function addLogEntry(action, message, duration = null, success = true) {
+            const logEntries = document.getElementById('logEntries');
+            const time = new Date().toLocaleTimeString();
+            
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            let logText = `<span class="log-time">[${time}]</span> `;
+            logText += `<span class="log-action">${action}:</span> ${message}`;
+            
+            if (duration !== null) {
+                logText += ` <span class="log-duration">(${duration.toFixed(2)}s)</span>`;
+            }
+            
+            if (!success) {
+                entry.classList.add('log-error');
+            } else if (duration !== null) {
+                entry.classList.add('log-success');
+            }
+            
+            entry.innerHTML = logText;
+            logEntries.insertBefore(entry, logEntries.firstChild);
+            
+            // Giới hạn số lượng log entries
+            if (logEntries.children.length > 20) {
+                logEntries.removeChild(logEntries.lastChild);
+            }
+        }
+        
+        // Cập nhật timeline
+        function updateTimeline(step) {
+            const steps = ['timelineStart', 'timelineRequest', 'timelineProcessing', 'timelineResponse', 'timelineComplete'];
+            
+            // Reset all steps
+            steps.forEach(stepId => {
+                const element = document.getElementById(stepId);
+                element.classList.remove('active');
+            });
+            
+            // Activate steps up to current
+            for (let i = 0; i <= step; i++) {
+                const element = document.getElementById(steps[i]);
+                if (element) {
+                    element.classList.add('active');
+                    
+                    // Add slight delay for animation effect
+                    setTimeout(() => {
+                        element.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            element.style.transform = 'scale(1)';
+                        }, 200);
+                    }, i * 100);
+                }
+            }
+        }
+        
+        // Cập nhật biểu đồ
+        function updateChart() {
+            const container = document.getElementById('chartContainer');
+            container.innerHTML = '';
+            
+            // Get last 10 data points
+            const recentData = performanceData.chartData.slice(-10);
+            
+            // Find max duration for scaling
+            const maxDuration = Math.max(...recentData.map(d => d.duration), 1);
+            
+            // Create bars
+            recentData.forEach((data, index) => {
+                const barHeight = (data.duration / maxDuration) * 80;
+                const barLeft = (index * 35) + 10;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${barHeight}px`;
+                bar.style.left = `${barLeft}px`;
+                bar.title = `${data.action}: ${data.duration.toFixed(2)}s`;
+                
+                const label = document.createElement('div');
+                label.className = 'chart-label';
+                label.style.left = `${barLeft}px`;
+                label.textContent = data.action;
+                
+                container.appendChild(bar);
+                container.appendChild(label);
+            });
+        }
+        
+        // Tính toán và hiển thị thống kê
+        function updatePerformanceStats(action, duration) {
+            // Lưu dữ liệu
+            performanceData[action].push(duration);
+            performanceData.chartData.push({
+                action: action,
+                duration: duration,
+                timestamp: new Date()
+            });
+            
+            // Cập nhật giá trị
+            const elementId = action === 'configA' ? 'configATime' : 
+                             action === 'configB' ? 'configBTime' : 'appendTime';
+            const detailId = action === 'configA' ? 'configADetail' : 
+                            action === 'configB' ? 'configBDetail' : 'appendDetail';
+            
+            document.getElementById(elementId).textContent = duration.toFixed(2);
+            document.getElementById(detailId).textContent = 
+                `${performanceData[action].length} lượt đo | Min: ${Math.min(...performanceData[action]).toFixed(2)}s | Max: ${Math.max(...performanceData[action]).toFixed(2)}s`;
+            
+            // Tính trung bình
+            const allTimes = [...performanceData.configA, ...performanceData.configB, ...performanceData.append];
+            if (allTimes.length > 0) {
+                const avg = allTimes.reduce((a, b) => a + b, 0) / allTimes.length;
+                document.getElementById('avgTime').textContent = avg.toFixed(2);
+                document.getElementById('avgDetail').textContent = `${allTimes.length} lượt đo tổng`;
+            }
+            
+            // Cập nhật biểu đồ
+            updateChart();
+        }
+        
+        // Tạo script tag cho JSONP
+        function createJsonpScript(url, callbackName) {
+            return new Promise((resolve, reject) => {
+                // Xóa callback cũ nếu có
+                if (window[callbackName]) {
+                    delete window[callbackName];
+                }
+                
+                // Tạo callback function mới
+                window[callbackName] = function(data) {
+                    // Xóa script tag sau khi dùng
+                    const oldScript = document.getElementById('jsonp-script');
+                    if (oldScript) {
+                        oldScript.remove();
+                    }
+                    
+                    // Xóa callback
+                    delete window[callbackName];
+                    
+                    resolve(data);
+                };
+                
+                // Tạo và thêm script tag
+                const script = document.createElement('script');
+                script.id = 'jsonp-script';
+                script.src = url;
+                script.onerror = reject;
+                document.body.appendChild(script);
+                
+                // Timeout sau 30 giây
+                setTimeout(() => {
+                    const scriptEl = document.getElementById('jsonp-script');
+                    if (scriptEl) {
+                        scriptEl.remove();
+                        reject(new Error('Request timeout (30s)'));
+                    }
+                }, 30000);
+            });
+        }
+        
+        // Lấy dữ liệu từ backend
+        async function fetchData(action) {
+            const startTime = performance.now();
+            updateTimeline(1);
+            showStatus('⏳ Đang gửi request lấy dữ liệu...', 'loading');
+            addLogEntry(`GET ${action}`, 'Bắt đầu gửi request');
+            
+            try {
+                updateTimeline(2);
+                addLogEntry(`GET ${action}`, 'Request đã gửi, đang xử lý server');
+                
+                // Tạo URL với tham số
+                const url = `${scriptUrl}?action=${action}&callback=jsonpCallback&t=${Date.now()}`;
+                
+                // Gọi API bằng JSONP
+                const data = await createJsonpScript(url, 'jsonpCallback');
+                
+                const receiveTime = performance.now();
+                updateTimeline(3);
+                addLogEntry(`GET ${action}`, 'Đã nhận response từ server');
+                
+                if (data.error) {
+                    updateTimeline(4);
+                    const totalTime = (receiveTime - startTime) / 1000;
+                    showStatus(`❌ Lỗi: ${data.error} (${totalTime.toFixed(2)}s)`, 'error');
+                    addLogEntry(`GET ${action}`, `Lỗi: ${data.error}`, totalTime, false);
+                    updatePerformanceStats(`config${action}`, totalTime);
+                    return;
+                }
+                
+                // Hiển thị kết quả
+                updateTimeline(4);
+                displayResults(data);
+                
+                const displayTime = performance.now();
+                const totalTime = (displayTime - startTime) / 1000;
+                const serverTime = (receiveTime - startTime) / 1000;
+                const renderTime = (displayTime - receiveTime) / 1000;
+                
+                updateTimeline(5);
+                showStatus(`✅ Đã tải ${data.data.length} mục từ cột ${action} (Tổng: ${totalTime.toFixed(2)}s)`, 'success');
+                addLogEntry(`GET ${action}`, `Thành công! Server: ${serverTime.toFixed(2)}s, Render: ${renderTime.toFixed(2)}s`, totalTime);
+                updatePerformanceStats(`config${action}`, totalTime);
+                
+            } catch (error) {
+                const totalTime = (performance.now() - startTime) / 1000;
+                showStatus(`❌ Lỗi kết nối: ${error.message} (${totalTime.toFixed(2)}s)`, 'error');
+                addLogEntry(`GET ${action}`, `Lỗi kết nối: ${error.message}`, totalTime, false);
+                updatePerformanceStats(`config${action}`, totalTime);
+                console.error('Fetch error:', error);
+            }
+        }
+        
+        // Thêm dữ liệu mới
+        async function appendData() {
+            const startTime = performance.now();
+            updateTimeline(1);
+            showStatus('⏳ Đang gửi request ghi dữ liệu...', 'loading');
+            addLogEntry('APPEND', 'Bắt đầu gửi request ghi log');
+            
+            try {
+                updateTimeline(2);
+                addLogEntry('APPEND', 'Request đã gửi, đang xử lý server');
+                
+                const timestamp = new Date().toLocaleTimeString();
+                const url = `${scriptUrl}?action=appendData&value=Data+added+at+${encodeURIComponent(timestamp)}&callback=jsonpCallback&t=${Date.now()}`;
+                
+                const data = await createJsonpScript(url, 'jsonpCallback');
+                
+                const receiveTime = performance.now();
+                updateTimeline(3);
+                addLogEntry('APPEND', 'Đã nhận xác nhận từ server');
+                
+                if (data.error) {
+                    updateTimeline(4);
+                    const totalTime = (receiveTime - startTime) / 1000;
+                    showStatus(`❌ Lỗi: ${data.error} (${totalTime.toFixed(2)}s)`, 'error');
+                    addLogEntry('APPEND', `Lỗi: ${data.error}`, totalTime, false);
+                    updatePerformanceStats('append', totalTime);
+                    return;
+                }
+                
+                updateTimeline(4);
+                const displayTime = performance.now();
+                const totalTime = (displayTime - startTime) / 1000;
+                const serverTime = (receiveTime - startTime) / 1000;
+                const confirmTime = (displayTime - receiveTime) / 1000;
+                
+                updateTimeline(5);
+                showStatus(`✅ ${data.message} (Tổng: ${totalTime.toFixed(2)}s)`, 'success');
+                addLogEntry('APPEND', `Ghi thành công! Server: ${serverTime.toFixed(2)}s, Xác nhận: ${confirmTime.toFixed(2)}s`, totalTime);
+                updatePerformanceStats('append', totalTime);
+                
+                // Tải lại dữ liệu để cập nhật
+                fetchData('A');
+                
+            } catch (error) {
+                const totalTime = (performance.now() - startTime) / 1000;
+                showStatus(`❌ Lỗi: ${error.message} (${totalTime.toFixed(2)}s)`, 'error');
+                addLogEntry('APPEND', `Lỗi: ${error.message}`, totalTime, false);
+                updatePerformanceStats('append', totalTime);
+            }
+        }
+        
+        // Hiển thị dữ liệu
+        function displayResults(response) {
+            const resultsEl = document.getElementById('results');
+            const actionBadge = document.getElementById('actionBadge');
+            
+            // Cập nhật badge
+            actionBadge.textContent = `Cột ${response.action}`;
+            actionBadge.style.background = response.action === 'A' ? '#667eea' : '#f5576c';
+            
+            // Xóa nội dung cũ
+            resultsEl.innerHTML = '';
+            
+            // Kiểm tra nếu không có dữ liệu
+            if (!response.data || response.data.length === 0) {
+                const noData = document.createElement('li');
+                noData.className = 'no-data';
+                noData.textContent = 'Không có dữ liệu trong cột này';
+                resultsEl.appendChild(noData);
+                return;
+            }
+            
+            // Thêm từng mục dữ liệu
+            response.data.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'data-item';
+                
+                const indexSpan = document.createElement('span');
+                indexSpan.className = 'data-index';
+                indexSpan.textContent = index + 1;
+                
+                const contentSpan = document.createElement('span');
+                contentSpan.textContent = item;
+                
+                li.appendChild(indexSpan);
+                li.appendChild(contentSpan);
+                resultsEl.appendChild(li);
+            });
+            
+            // Thêm timestamp và thông tin hiệu suất
+            const infoDiv = document.createElement('div');
+            infoDiv.style.cssText = 'text-align: right; font-size: 0.8em; color: #666; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;';
+            infoDiv.textContent = `Cập nhật: ${new Date().toLocaleTimeString()} | ${response.data.length} mục`;
+            resultsEl.appendChild(infoDiv);
+        }
+        
+        // Hàm khởi tạo
+        function init() {
+            addLogEntry('SYSTEM', 'Hệ thống đã sẵn sàng');
+            console.log('Performance Monitor loaded successfully');
+            console.log('Script URL:', scriptUrl);
+            
+            // Khởi tạo timeline
+            setTimeout(() => updateTimeline(0), 500);
+            
+            // Tạo dữ liệu biểu đồ mẫu
+            performanceData.chartData = [
+                { action: 'A', duration: 0.5, timestamp: new Date() },
+                { action: 'B', duration: 0.7, timestamp: new Date() },
+                { action: 'APPEND', duration: 1.2, timestamp: new Date() }
+            ];
+            updateChart();
+        }
+        
+        // Khởi chạy khi trang tải xong
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

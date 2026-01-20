@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo Frontend - Backend GAS (HTML độc lập)</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { margin: 5px; padding: 10px; cursor: pointer; }
+    #display { margin-top: 20px; border: 1px solid #ccc; padding: 15px; min-height: 100px; }
+    input { padding: 8px; width: 300px; }
+  </style>
+</head>
+<body>
+  <h1>Demo Giao Tiếp Frontend (HTML độc lập) ↔ Backend (GAS API)</h1>
+  
+  <h2>Lấy dữ liệu từ sheet Configs</h2>
+  <button onclick="loadColumn('A')">Action A: Load cột A</button>
+  <button onclick="loadColumn('B')">Action B: Load cột B</button>
+  
+  <div id="display">Kết quả sẽ hiện ở đây...</div>
+  
+  <h2>Append dòng mới vào sheet Data</h2>
+  <label>Giá trị ghi vào cột C: </label>
+  <input type="text" id="valueC" value="Giá trị mẫu từ frontend">
+  <br><br>
+  <button onclick="appendRow()">Append dòng (timestamp tự động + cột C)</button>
+
+  <script>
+    // URL WEB APP CỦA BẠN (đã cập nhật theo mã bạn cung cấp)
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwPgq8Nd95w1bBm7WGwLr9XZRJ2uiqQjOLENat1WxcxkpkMr1kLOJfPegbU5tOyk3F5/exec';
+
+    async function loadColumn(action) {
+      const display = document.getElementById('display');
+      display.innerHTML = 'Đang tải...';
+      
+      const startTime = Date.now(); // Bắt đầu đo thời gian
+      
+      try {
+        const response = await fetch(`${GAS_URL}?action=${action}`);
+        const result = await response.json();
+        
+        const duration = Date.now() - startTime; // Kết thúc đo thời gian
+        
+        if (result.success) {
+          display.innerHTML = `<h3>Dữ liệu cột ${action}:</h3><ul>`;
+          if (result.data.length === 0) {
+            display.innerHTML += '<li>Không có dữ liệu</li>';
+          } else {
+            result.data.forEach(item => {
+              display.innerHTML += `<li>${item || '(trống)'}</li>`;
+            });
+          }
+          display.innerHTML += '</ul>';
+          
+          // Chỉ hiển thị thời gian round-trip cho Action A (theo yêu cầu)
+          if (action === 'A') {
+            display.innerHTML += `<p><strong>Thời gian xử lý round-trip (từ bấm nút đến nhận dữ liệu): ${duration} ms</strong></p>`;
+          }
+          
+        } else {
+          display.innerHTML = `<p style="color:red;">Lỗi: ${result.error}</p>`;
+          if (action === 'A') {
+            display.innerHTML += `<p><strong>Thời gian đến khi nhận lỗi: ${duration} ms</strong></p>`;
+          }
+        }
+      } catch (err) {
+        const duration = Date.now() - startTime;
+        display.innerHTML = `<p style="color:red;">Lỗi kết nối: ${err.message}</p>`;
+        if (action === 'A') {
+          display.innerHTML += `<p><strong>Thời gian đến khi lỗi kết nối: ${duration} ms</strong></p>`;
+        }
+      }
+    }
+
+    async function appendRow() {
+      const valueC = document.getElementById('valueC').value.trim();
+      if (!valueC) {
+        alert('Vui lòng nhập giá trị cho cột C');
+        return;
+      }
+      
+      const startTime = Date.now(); // Bắt đầu đo thời gian
+      
+      try {
+        // Dùng GET với query param
+        const response = await fetch(`${GAS_URL}?action=append&valueForC=${encodeURIComponent(valueC)}`);
+        const result = await response.json();
+        
+        const duration = Date.now() - startTime; // Kết thúc đo thời gian
+        
+        if (result.success) {
+          alert(`${result.message} (Thời gian round-trip: ${duration} ms)\nKiểm tra sheet Data để xem dòng mới`);
+        } else {
+          alert(`Lỗi: ${result.error} (Thời gian đến lỗi: ${duration} ms)`);
+        }
+      } catch (err) {
+        const duration = Date.now() - startTime;
+        alert(`Lỗi kết nối: ${err.message} (Thời gian đến lỗi: ${duration} ms)`);
+      }
+    }
+  </script>
+</body>
+</html>

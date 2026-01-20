@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông số Màn hình & Thiết bị</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a73e8; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .section-title { font-weight: bold; font-size: 1.2em; color: #5f6368; margin-top: 20px; margin-bottom: 10px; display: flex; align-items: center; }
+        .section-title::before { content: "•"; color: #1a73e8; font-size: 2em; margin-right: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        td { padding: 12px 15px; border-bottom: 1px solid #edf0f2; }
+        td:first-child { font-weight: 600; color: #555; width: 45%; }
+        td:last-child { font-family: 'Courier New', Courier, monospace; color: #d93025; font-weight: bold; text-align: right; }
+        
+        tr:hover { background-color: #f8f9fa; }
+        .highlight { background-color: #e8f0fe; }
+
+        .note { font-size: 0.85em; color: #777; font-style: italic; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>System Screen Monitor</h1>
+
+    <div class="section-title">Kích thước Vật lý & Độ phân giải</div>
+    <table>
+        <tr><td>Độ phân giải màn hình (Width x Height)</td><td id="scr-res"></td></tr>
+        <tr><td>Vùng khả dụng (trừ taskbar/dock)</td><td id="scr-avail"></td></tr>
+        <tr><td>Độ sâu màu (Color Depth)</td><td id="scr-color"></td></tr>
+        <tr><td>Tỉ lệ điểm ảnh (Device Pixel Ratio)</td><td id="scr-dpr"></td></tr>
+    </table>
+
+    <div class="section-title">Cửa sổ Trình duyệt (Viewport)</div>
+    <table>
+        <tr class="highlight"><td>Kích thước khung hình hiện tại</td><td id="win-inner"></td></tr>
+        <tr><td>Kích thước toàn bộ trình duyệt</td><td id="win-outer"></td></tr>
+        <tr><td>Mức độ Phóng to (Zoom Level)</td><td id="win-zoom"></td></tr>
+    </table>
+
+    <div class="section-title">Thông tin Bổ sung</div>
+    <table>
+        <tr><td>Hướng màn hình (Orientation)</td><td id="scr-orient"></td></tr>
+        <tr><td>Trạng thái Cảm ứng (Touch Support)</td><td id="dev-touch"></td></tr>
+        <tr><td>Hệ điều hành / Trình duyệt</td><td id="dev-ua" style="font-size: 0.8em; word-break: break-all;"></td></tr>
+    </table>
+
+    <p class="note">* Thông số sẽ tự động cập nhật khi bạn thay đổi kích thước cửa sổ hoặc xoay màn hình.</p>
+</div>
+
+<script>
+    function updateMetrics() {
+        // 1. Thông số màn hình vật lý
+        document.getElementById('scr-res').innerText = `${screen.width} x ${screen.height} px`;
+        document.getElementById('scr-avail').innerText = `${screen.availWidth} x ${screen.availHeight} px`;
+        document.getElementById('scr-color').innerText = `${screen.colorDepth}-bit`;
+        document.getElementById('scr-dpr').innerText = `${window.devicePixelRatio.toFixed(2)}`;
+
+        // 2. Thông số cửa sổ trình duyệt
+        document.getElementById('win-inner').innerText = `${window.innerWidth} x ${window.innerHeight} px`;
+        document.getElementById('win-outer').innerText = `${window.outerWidth} x ${window.outerHeight} px`;
+        
+        // Tính toán Zoom Level tương đối
+        const zoom = Math.round(window.devicePixelRatio * 100);
+        document.getElementById('win-zoom').innerText = `${zoom}%`;
+
+        // 3. Thông tin thiết bị
+        const orientation = screen.orientation ? screen.orientation.type : "N/A";
+        document.getElementById('scr-orient').innerText = orientation;
+
+        const hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        document.getElementById('dev-touch').innerText = hasTouch ? "Có (Cảm ứng)" : "Không";
+        
+        document.getElementById('dev-ua').innerText = navigator.userAgent;
+    }
+
+    // Chạy lần đầu khi load trang
+    updateMetrics();
+
+    // Lắng nghe sự kiện thay đổi kích thước hoặc xoay
+    window.addEventListener('resize', updateMetrics);
+    if (screen.orientation) {
+        screen.orientation.addEventListener('change', updateMetrics);
+    }
+</script>
+
+</body>
+</html>

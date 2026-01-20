@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAZINET Birthday Card Playground</title>
+<link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  body { font-family: 'Be Vietnam Pro', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+  .config-panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 100vh; overflow-y: auto; position: sticky; top: 0; }
+  .preview-card { position: relative; min-height: 100vh; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .card-content { background: rgba(255,255,255,0.92); border-radius: 20px; padding: 40px; max-width: 90%; box-shadow: 0 15px 40px rgba(0,0,0,0.3); text-align: center; }
+  canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  h1 { color: #187752; font-size: 2.5rem; }
+  .wish-text { font-size: 1.3em; line-height: 1.8; white-space: pre-wrap; margin: 30px 0; }
+  .effect-select, .bg-select { margin-bottom: 15px; }
+  .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.7); color: white; padding: 20px; border-radius: 10px; z-index: 9999; }
+</style>
+</head>
+<body>
+<div class="container-fluid p-0">
+  <div class="row g-0">
+    <!-- Config Panel -->
+    <div class="col-lg-4 col-12 config-panel">
+      <h4 class="mb-4">Cấu hình thiệp sinh nhật</h4>
+      <hr>
+
+      <label class="form-label fw-bold">Người nhận</label>
+      <select id="personSelect" class="form-select mb-3">
+        <option value="default">Mặc định (chung)</option>
+      </select>
+
+      <label class="form-label fw-bold mt-3">Background</label>
+      <select id="bgSelect" class="form-select bg-select"></select>
+      <input type="text" id="bgUrl" class="form-control my-2" placeholder="Hoặc dán URL ảnh nền">
+      <input type="file" id="bgFile" class="form-control my-2" accept="image/*">
+
+      <label class="form-label fw-bold mt-3">Lời chúc</label>
+      <select id="wishSelect" class="form-select mb-3"></select>
+      <textarea id="wishText" class="form-control" rows="10" placeholder="Chỉnh sửa lời chúc trực tiếp..."></textarea>
+
+      <label class="form-label fw-bold mt-3">Hiệu ứng</label>
+      <select id="effectSelect" class="form-select effect-select mb-4">
+        <option value="none">Không hiệu ứng</option>
+        <option value="grid">Tech Grid (phung-hoang style)</option>
+        <option value="confetti">Confetti khi click</option>
+        <option value="flowers">Falling Flowers</option>
+        <option value="balloons">Balloons & Butterflies</option>
+      </select>
+
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" onclick="generateEvents()">Tạo lại sự kiện lịch sử</button>
+        <button class="btn btn-success" onclick="generateWish()">Tạo lại lời chúc bằng AI</button>
+        <button class="btn btn-info mt-3" onclick="exportImage()">Xuất Ảnh PNG</button>
+        <button class="btn btn-warning" onclick="exportPDF()">Xuất PDF</button>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="col-lg-8 col-12 preview-card" id="preview">
+      <canvas id="effectCanvas"></canvas>
+      <div class="card-content" id="cardContent">
+        <h1 id="greetingTitle">Chúc mừng sinh nhật!</h1>
+        <div class="wish-text" id="wishDisplay"></div>
+        <div id="eventsDisplay" class="mt-4 fw-bold"></div>
+        <div class="signature mt-5" id="signature">
+          <img id="sigLogo" src="" style="max-width:250px; margin-bottom: 20px;">
+          <p class="mb-0"><strong id="sigName"></strong></p>
+          <p id="sigOrg" class="text-muted"></p>
+        </div>
+        
+        <!-- Content Images (quảng cáo) -->
+        <div id="contentImages" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loading" class="loading" style="display:none;">Đang tải dữ liệu...</div>
+
+<script>
+// === THAY ĐỔI 2 CHỖ NÀY SAU KHI DEPLOY GAS ===
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz69V1R9zyi27XUIa_R7iANi1w6ecfp8ww6-nH8790sDbeJyVwOCW1Gbz5MWQwnrupb7w/exec'; // URL WEB APP CỦA BẠN
+const PROXY = 'https://corsproxy.io/?';  // Proxy fix CORS (rất ổn định)
+
+let data = { settings: {}, birthdays: [], events: '' };
+let currentBg = '';
+let currentPerson = { title: '', name: '', company: '' };
+let canvas, ctx;
+
+// Hàm fetch qua proxy (fix CORS 100%)
+async function fetchViaProxy(url, options = {}) {
+  const proxyUrl = PROXY + encodeURIComponent(url);
+  const resp = await fetch(proxyUrl, options);
+  if (!resp.ok) throw new Error('Proxy error');
+  return await resp.json();
+}
+
+// Load dữ liệu từ backend
+async function loadData() {
+  document.getElementById('loading').style.display = 'block';
+  try {
+    const json = await fetchViaProxy(`${BACKEND_URL}?action=getInitData`);
+    if (!json.success) throw new Error(json.message || 'Lỗi backend');
+    data = json;
+
+    // Backgrounds
+    const bgSelect = document.getElementById('bgSelect');
+    bgSelect.innerHTML = '';
+    data.settings.backgrounds.forEach((url, i) => {
+      const opt = document.createElement('option');
+      opt.value = url;
+      opt.textContent = `Background ${i + 1}`;
+      bgSelect.appendChild(opt);
+    });
+    currentBg = data.settings['Background-00'] || data.settings.backgrounds[0] || '';
+    bgSelect.value = currentBg;
+
+    // Default wishes
+    const wishSelect = document.getElementById('wishSelect');
+    wishSelect.innerHTML = '';
+    data.settings.defaultWishes.forEach((w, i) => {
+      const opt = document.createElement('option');
+      opt.value = w;
+      opt.textContent = `Mẫu lời chúc ${i + 1}`;
+      wishSelect.appendChild(opt);
+    });
+
+    // Birthdays today
+    const personSelect = document.getElementById('personSelect');
+    personSelect.innerHTML = '<option value="default">Mặc định (chung)</option>';
+    data.birthdays.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = `${p.title || 'Quý khách'} ${p.name} (${p.company || 'N/A'})`;
+      personSelect.appendChild(opt);
+    });
+
+    updatePreview();
+  } catch (e) {
+    alert('Lỗi kết nối backend: ' + e.message);
+    console.error(e);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+// Cập nhật preview realtime
+function updatePreview() {
+  document.getElementById('preview').style.backgroundImage = currentBg ? `url('${currentBg}')` : 'none';
+  
+  const title = currentPerson.name ? `Chúc mừng sinh nhật ${currentPerson.title} ${currentPerson.name}!` : 'Chúc mừng sinh nhật!';
+  document.getElementById('greetingTitle').textContent = title;
+  
+  document.getElementById('wishDisplay').innerHTML = document.getElementById('wishText').value.replace(/\n/g, '<br>');
+  
+  document.getElementById('eventsDisplay').innerHTML = data.events ? 
+    `<strong>Cùng ngày sinh nhật với những nhân vật/sự kiện nổi bật:</strong><br>${data.events.replace(/\n/g, '<br>')}` : '';
+  
+  document.getElementById('sigName').textContent = data.settings['Signature-Name'] || '';
+  document.getElementById('sigOrg').textContent = data.settings['Signature-Organization-Full'] || '';
+  document.getElementById('sigLogo').src = data.settings['Signature-Logo-URL'] || '';
+
+  // Content images (quảng cáo)
+  const contentDiv = document.getElementById('contentImages');
+  contentDiv.innerHTML = '';
+  if (data.settings['Content-Image1-URL']) {
+    const a = document.createElement('a');
+    a.href = data.settings['Content-Image1-HREF'] || '#';
+    a.target = '_blank';
+    const img = document.createElement('img');
+    img.src = data.settings['Content-Image1-URL'];
+    img.style.maxWidth = '100%';
+    img.style.marginTop = '20px';
+    a.appendChild(img);
+    contentDiv.appendChild(a);
+  }
+  if (data.settings['Content-Image2-URL']) {
+    const a = document.createElement('a');
+    a.href = data.settings['Content-Image2-HREF'] || '#';
+    a.target = '_blank';
+    const img = document.createElement('img');
+    img.src = data.settings['Content-Image2-URL'];
+    img.style.maxWidth = '100%';
+    img.style.marginTop = '20px';
+    a.appendChild(img);
+    contentDiv.appendChild(a);
+  }
+}
+
+// Tạo lại sự kiện lịch sử
+async function generateEvents() {
+  try {
+    const json = await fetchViaProxy(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({action: 'generateEvents'})
+    });
+    if (json.success) {
+      data.events = json.events;
+      updatePreview();
+    }
+  } catch (e) { alert('Lỗi: ' + e.message); }
+}
+
+// Tạo lại lời chúc AI
+async function generateWish() {
+  try {
+    const json = await fetchViaProxy(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({action: 'generateWish', person: currentPerson, events: data.events})
+    });
+    if (json.success) {
+      document.getElementById('wishText').value = json.wish;
+      updatePreview();
+    }
+  } catch (e) { alert('Lỗi: ' + e.message); }
+}
+
+// Event listeners
+document.getElementById('bgSelect').onchange = e => { currentBg = e.target.value; updatePreview(); };
+document.getElementById('bgUrl').oninput = e => { currentBg = e.target.value; updatePreview(); };
+document.getElementById('bgFile').onchange = e => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = ev => { currentBg = ev.target.result; updatePreview(); };
+    reader.readAsDataURL(file);
+  }
+};
+document.getElementById('wishSelect').onchange = e => {
+  document.getElementById('wishText').value = e.target.value;
+  updatePreview();
+};
+document.getElementById('wishText').oninput = updatePreview;
+document.getElementById('personSelect').onchange = e => {
+  if (e.target.value === 'default') {
+    currentPerson = {title:'', name:'', company:''};
+    document.getElementById('wishText').value = data.settings.defaultWishes[0] || '';
+  } else {
+    const p = data.birthdays.find(b => b.id == e.target.value);
+    currentPerson = p || {title:'', name:'', company:''};
+    document.getElementById('wishText').value = p?.wish || data.settings.defaultWishes[0] || '';
+  }
+  updatePreview();
+};
+
+// Effects
+function clearEffect() {
+  if (canvas) canvas.remove();
+  document.getElementById('preview').onclick = null;
+  document.querySelectorAll('.falling-flower, .balloon-container').forEach(el => el.remove());
+}
+
+function initEffect(effect) {
+  clearEffect();
+  canvas = document.createElement('canvas');
+  canvas.id = 'effectCanvas';
+  document.getElementById('preview').prepend(canvas);
+  ctx = canvas.getContext('2d');
+  canvas.width = document.getElementById('preview').offsetWidth;
+  canvas.height = document.getElementById('preview').offsetHeight;
+
+  if (effect === 'grid') initTechGrid();
+  else if (effect === 'confetti') document.getElementById('preview').onclick = () => confetti({particleCount: 200, spread: 100});
+  else if (effect === 'flowers') initFallingFlowers();
+  else if (effect === 'balloons') initBalloonsButterflies();
+}
+
+function initTechGrid() {
+  let nodes = [];
+  for (let i = 0; i < 60; i++) {
+    nodes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: Math.random() * 2 - 1,
+      vy: Math.random() * 2 - 1,
+      color: 'rgba(255, 99, 2, 0.8)'
+    });
+  }
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+      ctx.fillStyle = n.color;
+      ctx.fillRect(n.x - 2, n.y - 2, 4, 4);
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+function initFallingFlowers() {
+  const flowers = ['🌸','🌺','🌼','🌻','🌷','🥀','🌹','🌷'];
+  setInterval(() => {
+    const f = document.createElement('div');
+    f.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+    f.style.position = 'absolute';
+    f.style.left = Math.random() * 100 + 'vw';
+    f.style.fontSize = (20 + Math.random() * 20) + 'px';
+    f.style.animation = 'fall 8s linear forwards';
+    f.style.pointerEvents = 'none';
+    f.style.zIndex = '2';
+    document.getElementById('preview').appendChild(f);
+    setTimeout(() => f.remove(), 8000);
+  }, 600);
+}
+
+function initBalloonsButterflies() {
+  // Balloons (tương tự duc-lan-10aug.html)
+  const colors = ['#ff0000','#ff8800','#ffff00','#00ff00','#0000ff','#ff00ff'];
+  for (let i = 0; i < 10; i++) {
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.left = `${5 + Math.random() * 90}%`;
+    container.style.top = `${-100}px`;
+    container.style.animation = 'float 15s linear forwards';
+    container.style.animationDelay = `${i * 1.5}s`;
+
+    const balloon = document.createElement('div');
+    balloon.style.width = '50px';
+    balloon.style.height = '60px';
+    balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+    balloon.style.borderRadius = '50%';
+    balloon.style.position = 'relative';
+
+    container.appendChild(balloon);
+    document.getElementById('preview').appendChild(container);
+  }
+}
+
+document.getElementById('effectSelect').onchange = e => initEffect(e.target.value);
+
+// Export functions
+async function exportImage() {
+  clearEffect(); // Tạm tắt hiệu ứng để export sạch
+  const card = document.getElementById('cardContent');
+  const canvas = await html2canvas(card, {scale: 2, backgroundColor: null, useCORS: true});
+  const link = document.createElement('a');
+  link.download = 'lazinet-birthday-card.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  initEffect(document.getElementById('effectSelect').value); // Bật lại
+}
+
+async function exportPDF() {
+  clearEffect();
+  const card = document.getElementById('cardContent');
+  const canvas = await html2canvas(card, {scale: 2});
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const width = pdf.internal.pageSize.getWidth();
+  const height = (canvas.height * width) / canvas.width;
+  pdf.addImage(imgData, 'PNG', 10, 10, width - 20, height);
+  pdf.save('lazinet-birthday-card.pdf');
+  initEffect(document.getElementById('effectSelect').value);
+}
+
+// Resize canvas khi window thay đổi
+window.addEventListener('resize', () => {
+  if (canvas) {
+    canvas.width = document.getElementById('preview').offsetWidth;
+    canvas.height = document.getElementById('preview').offsetHeight;
+  }
+});
+
+// Init
+loadData();
+initEffect('none');
+
+</script>
+
+<style>
+@keyframes fall { from {transform: translateY(-100px) rotate(0deg);} to {transform: translateY(110vh) rotate(360deg);} }
+@keyframes float { from {top: -100px;} to {top: 110vh;} }
+</style>
+</body>
+</html>

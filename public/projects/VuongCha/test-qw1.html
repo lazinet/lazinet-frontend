@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GAS Frontend</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    button { margin: 10px; padding: 8px 16px; }
+    pre { background: #f0f0f0; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Google Apps Script + External HTML</h2>
+  
+  <button onclick="fetchData('A')">Load Column A</button>
+  <button onclick="fetchData('B')">Load Column B</button>
+  <button onclick="saveData()">Save Timestamp + Col C to Data Sheet</button>
+
+  <h3>Response:</h3>
+  <pre id="output">Click a button...</pre>
+
+  <script>
+    // ⚠️ THAY THẾ BẰNG URL WEB APP CỦA BẠN
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwpYHabYimFH4W8n_GoOTmYNQaRKFFCjnWSE3IpMM0RtsbN663H5-NbY3imq_n26ICK/exec";
+
+    async function fetchData(action) {
+      try {
+        const url = `${WEB_APP_URL}?action=${action}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("output").textContent = "Error: " + err.message;
+      }
+    }
+
+    async function saveData() {
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          mode: 'cors'
+        });
+        const data = await response.json();
+        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("output").textContent = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
