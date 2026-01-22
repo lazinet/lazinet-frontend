@@ -302,7 +302,7 @@ function initContactAntiSpam() {
 
     try {
       await fetch(
-        "https://script.google.com/macros/s/AKfycbz4t2LtIb1In7obXC_EKujEH3ZJGbvrz3uevuqVw4d-zErIj3Tf10QWwxlWH2-5IJ7KqA/exec",
+        "https://script.google.com/macros/s/AKfycbwn9zWu5PUjDcfN_XyvNpTtHSuSvATgl9NRCR_qFW-pQq6as9yMqVwbtpg708Sdu5LSQg/exec",
         {
           method: "POST",
           mode: "no-cors",
