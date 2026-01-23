@@ -798,7 +798,7 @@ header.main-header .container-fluid{
 .hero.hero-bg-image{
 	position: relative;
 	display: block;
-	background: url('../images/hero-bg_Original.webp') no-repeat;
+	background: url('../img/background/LAZINET_BG_006_W2048.webp') no-repeat;
 	background-position: center center;
 	background-size: cover;
 	padding: 270px 0 160px;

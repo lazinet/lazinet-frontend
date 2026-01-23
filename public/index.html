@@ -281,10 +281,19 @@
         <!-- Video Start -->
         <div class="hero-bg-video">
             <!-- Selfhosted Video Start -->
-            <!-- <video autoplay muted loop id="myvideo"><source src="assets/images/hero-bg-video.mp4" type="video/mp4"></video> -->
             <!-- <video autoplay muted loop id="myvideo"><source src="https://demo.awaikenthemes.com/assets/videos/netzon-video.mp4" type="video/mp4"></video> -->
             <video autoplay muted loop id="myvideo"><source src="assets/videos/main-video.mp4" type="video/mp4"></video>
             
+            <!-- Đoạn dưới dùng để random 1 video load từ list -->
+            <!-- <video autoplay muted loop id="myvideo"></video>
+                <script>
+                const videos = [
+                    "assets/videos/main-video.mp4",
+                    "assets/img/background/HCMC.mp4"
+                ];
+                const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+                document.getElementById("myvideo").innerHTML = `<source src="${randomVideo}" type="video/mp4">`;
+                </script> -->
             <!-- Selfhosted Video End -->
 
             <!-- Youtube Video Start -->
@@ -1256,7 +1265,8 @@
                     <div class="intro-video-box">
                         <!-- Our Video Circle Start -->
                         <div class="our-video-circle">
-                            <a href="https://www.youtube.com/watch?v=Y-x0efG1seA" class="popup-video" data-cursor-text="Play">
+                            <a href="assets/img/background/HCMC.mp4" class="popup-video" data-cursor-text="Play">
+                                <!-- <video autoplay muted loop id="myvideo"><source src="assets/img/background/HCMC.mp4" type="video/mp4"></video> -->
                                 <img src="assets/images/our-video-circle.svg" alt="">
                             </a> 
                         </div>     
