@@ -9,10 +9,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
@@ -21,24 +20,53 @@
             --secondary: #B91C1C;
             --text: #333;
             --font: 'Inter', sans-serif;
+            
+            /* --- THAY LINK ẢNH PLACEHOLDER TẠI ĐÂY (Ảnh chụp card hoàn thiện) --- */
+            /* Đây là ảnh sẽ hiện ngay lập tức khi vào web */
+            --placeholder-front: url('../../assets/img/logo-lazinet/LAZINET_PhungHoang.png');
+            --placeholder-back: url('../../assets/img/logo-lazinet/LAZINET_PhungHoangBack.png');
+            
+            /* Màu nền mặc định khi chưa load video/ảnh nền */
+            --bg-fallback: #1a1a1a; 
         }
 
         body {
             font-family: var(--font);
             color: var(--text);
             overflow-x: hidden;
-            background-color: #fafafa;
+            background-color: var(--bg-fallback); /* Màu nền ngay lập tức */
         }
 
+        /* --- XỬ LÝ TRẠNG THÁI LOADING (SKELETON) --- */
+        
+        /* Khi body có class 'loading-mode', ẩn hết nội dung chữ/icon bên trong card */
+        body.loading-mode .bizcard > * {
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* Nhưng hiện background image (placeholder) */
+        body.loading-mode #card-front {
+            background-image: var(--placeholder-front) !important;
+            background-size: cover;
+        }
+        
+        body.loading-mode #card-back {
+            background-image: var(--placeholder-back) !important;
+            background-size: cover;
+        }
+
+        /* Hiệu ứng chuyển đổi mượt mà khi data về */
+        .bizcard, .bizcard > * {
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+        }
+
+        /* --- CÁC STYLE CŨ --- */
+
         .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            filter: brightness(0.6);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; object-fit: cover; filter: brightness(0.6);
+            background-color: var(--bg-fallback);
         }
 
         .card-container {
@@ -50,18 +78,13 @@
         }
 
         .bizcard {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             border-radius: 12px;
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            padding: 1.5rem;
+            background-size: cover; background-position: center;
+            position: relative; padding: 1.5rem;
             color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            display: flex; flex-direction: column; justify-content: space-between;
             overflow: hidden;
         }
 
@@ -107,7 +130,6 @@
             font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.5;
         }
         
-        /* CSS CHO MARKDOWN */
         .chat-bubble strong { font-weight: 700; color: inherit; }
         .chat-bubble em { font-style: italic; }
         .chat-bubble ul, .chat-bubble ol { margin: 0.5rem 0 0.5rem 1.2rem; }
@@ -121,7 +143,6 @@
             background-color: var(--primary); color: white;
             align-self: flex-end; border-bottom-right-radius: 0.25rem;
         }
-        /* Highlight đậm của user */
         .chat-bubble-user strong { color: #fcd34d; } 
 
         .chat-bubble-bot {
@@ -148,7 +169,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen loading-mode">
     <video id="bg-video" autoplay muted loop class="video-background">
         <source src="" type="video/mp4">
     </video>
@@ -304,7 +325,7 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        // *** THAY ĐỔI URL DƯỚI ĐÂY BẰNG URL SAU KHI DEPLOY ***
+        // *** REPLACE THIS WITH YOUR DEPLOYED WEB APP URL ***
         const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwM_va_078RTDWqyVJjxS2XaFtDEkmmwmRy7v2nEaklcud6aQDv1yqCPxnj2tmTH8lCuQ/exec';
         
         let configData = null;
@@ -326,6 +347,9 @@
 
         function applyData() {
             if (!bizData) return;
+            
+            // Xóa class loading-mode để hiện nội dung thật
+            document.body.classList.remove('loading-mode');
 
             // Global settings
             document.title = bizData.htmlTitle;
@@ -510,7 +534,7 @@
             } catch (err) {
                 console.error(err);
                 alert("Đã gửi, nhưng có lỗi xảy ra khi kết nối máy chủ.");
-                if (payload.chat) switchToChat(payload.name, payload.company, "Chào bạn, tôi đã nhận thông tin.");
+                if (payload.chat) switchToChat(payload.name, payload.company, "Chào quý khách, tôi đã nhận thông tin.");
             }
         };
 
@@ -526,7 +550,6 @@
             const bubble = document.createElement('div');
             bubble.className = `chat-bubble ${role === 'assistant' ? 'chat-bubble-bot' : 'chat-bubble-user'}`;
             
-            // XỬ LÝ MARKDOWN KHI LÀ TIN NHẮN CỦA BOT
             if (role === 'assistant') {
                 bubble.innerHTML = marked.parse(text);
             } else {
@@ -546,12 +569,19 @@
             appendMessage('user', text);
             input.value = '';
 
-            // Loading indicator
             const history = document.getElementById('chat-history');
             const loader = document.createElement('div');
             loader.id = 'chat-loader';
             loader.className = 'chat-bubble chat-bubble-bot flex gap-1 items-center';
-            loader.innerHTML = '<div class="typing-dot"></div><div class="typing-dot" style="animation-delay: 0.2s"></div><div class="typing-dot" style="animation-delay: 0.4s"></div>';
+            
+            const botName = bizData ? bizData.chatbotName : 'Bot';
+            loader.innerHTML = `
+                <span class="font-bold text-xs text-gray-500 mr-2">${botName} đang trả lời</span>
+                <div class="typing-dot"></div>
+                <div class="typing-dot" style="animation-delay: 0.2s"></div>
+                <div class="typing-dot" style="animation-delay: 0.4s"></div>
+            `;
+            
             history.appendChild(loader);
             history.scrollTop = history.scrollHeight;
 
