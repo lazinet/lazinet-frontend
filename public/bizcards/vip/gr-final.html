@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="html-title">Bizcard</title>
+  <link rel="icon" href="" id="favicon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    .bizcard { width: 100%; max-width: 550px; aspect-ratio: 90 / 54; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .bizcard:hover { transform: scale(1.02); transition: 0.3s; }
+    #bg-video { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
+    .text-shadow { text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+    .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .chat-bubble { max-width: 85%; padding: 10px 14px; border-radius: 14px; margin-bottom: 10px; line-height: 1.5; }
+    .bot { background: #f1f1f1; color: #333; border-bottom-left-radius: 4px; }
+    .user { background: #187752; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans flex flex-col">
+
+  <div id="loading" class="fixed inset-0 z-50 bg-white flex items-center justify-center flex-col">
+    <div class="loader"></div>
+    <p class="mt-4 text-gray-600">Đang tải...</p>
+  </div>
+
+  <video autoplay muted loop playsinline id="bg-video" poster=""></video>
+  <div class="fixed inset-0 bg-black/30 z-[-1]"></div>
+
+  <div id="app" class="relative z-10 flex-1 flex flex-col px-4 py-6 max-w-7xl mx-auto w-full opacity-0 transition-opacity duration-1000">
+    
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur rounded-full px-6 py-3 mb-8 shadow-lg flex justify-between items-center">
+      <div>
+        <h1 id="header-name" class="font-bold text-lg text-gray-800"></h1>
+        <p id="header-intro" class="text-sm text-gray-600">Hân hạnh hợp tác cùng quý khách</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div id="google-translate" class="text-sm"></div>
+        <script type="text/javascript">
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'vi'}, 'google-translate');
+          }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+      </div>
+    </header>
+
+    <!-- Cards -->
+    <div id="cards-container" class="flex flex-col lg:flex-row gap-8 justify-center items-start flex-1">
+      <div id="front" class="bizcard"></div>
+      <div id="back" class="bizcard"></div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-10 grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto">
+      <button onclick="openChat()" class="col-span-2 md:col-span-1 bg-gradient-to-r from-green-600 to-green-700 text-white py-4 rounded-xl shadow-xl flex flex-col items-center gap-2 text-sm font-bold">
+        <i class="fas fa-comments text-2xl"></i> Tư vấn ngay
+      </button>
+      <button onclick="shareLink()" class="bg-white py-4 rounded-xl shadow flex flex-col items-center gap-2"><i class="fas fa-share-alt text-2xl"></i><span class="text-xs font-bold">Share</span></button>
+      <button onclick="exportCard('png')" class="bg-white py-4 rounded-xl shadow flex flex-col items-center gap-2"><i class="fas fa-image text-2xl"></i><span class="text-xs font-bold">PNG</span></button>
+      <button onclick="downloadVCard()" class="bg-white py-4 rounded-xl shadow flex flex-col items-center gap-2"><i class="fas fa-address-card text-2xl"></i><span class="text-xs font-bold">vCard</span></button>
+      <button onclick="exportCard('pdf')" class="bg-white py-4 rounded-xl shadow flex flex-col items-center gap-2"><i class="fas fa-file-pdf text-2xl"></i><span class="text-xs font-bold">PDF</span></button>
+    </div>
+
+    <!-- Chat Section -->
+    <div id="chat-section" class="mt-8 hidden">
+      <div id="contact-form" class="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl mx-auto">
+        <div class="flex items-center gap-6 mb-8">
+          <img id="chat-avatar" src="" class="w-24 h-24 rounded-full border-4 border-green-500 object-cover">
+          <div>
+            <h3 id="chat-name" class="text-2xl font-bold"></h3>
+            <p id="chat-pos" class="text-gray-600"></p>
+            <span class="inline-block w-4 h-4 bg-green-500 rounded-full"></span><span class="ml-2 text-green-600 font-bold">Đang trực tuyến</span>
+          </div>
+        </div>
+        <form id="contactForm" class="grid md:grid-cols-2 gap-6">
+          <input type="text" id="inp-name" placeholder="Họ và tên *" required class="p-4 border rounded-xl">
+          <input type="text" id="inp-company" placeholder="Công ty" class="p-4 border rounded-xl">
+          <input type="tel" id="inp-phone" placeholder="Số điện thoại *" required class="p-4 border rounded-xl">
+          <input type="email" id="inp-email" placeholder="Email" class="p-4 border rounded-xl">
+          <textarea id="inp-message" rows="3" placeholder="Nội dung cần hỗ trợ..." class="p-4 border rounded-xl md:col-span-2"></textarea>
+          <div class="md:col-span-2 flex items-center gap-3">
+            <input type="checkbox" id="want-chat" checked>
+            <label for="want-chat" class="text-gray-700">Muốn được tư vấn ngay</label>
+          </div>
+          <button type="submit" class="md:col-span-2 bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700">Gửi thông tin</button>
+        </form>
+      </div>
+
+      <div id="chat-interface" class="hidden bg-white rounded-2xl shadow-2xl max-w-4xl mx-auto flex flex-col" style="height: 600px;">
+        <div class="p-6 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-t-2xl flex items-center gap-4">
+          <img id="chat-avatar2" src="" class="w-12 h-12 rounded-full">
+          <div>
+            <h3 id="chat-name2" class="font-bold"></h3>
+            <p class="text-sm opacity-90">Đang trò chuyện...</p>
+          </div>
+        </div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+        <div class="p-4 border-t flex gap-3">
+          <input id="chat-input" type="text" placeholder="Nhập tin nhắn..." class="flex-1 p-4 border rounded-xl" onkeypress="if(event.key==='Enter') sendMessage()">
+          <button onclick="sendMessage()" class="bg-green-600 text-white w-12 h-12 rounded-xl flex items-center justify-center"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="export-container" class="fixed -top-full"></div>
+
+  <script>
+    // === THAY ĐỔI URL NÀY SAU KHI DEPLOY GAS ===
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwIwgPJYhzH3kyc_oDIrJeHxr9FjO5JVZUX9HDT1a3EsRP6leDXge99rfe1bW8MlQeCsA/exec'; // <<< THAY BẰNG URL CỦA BẠN
+
+    let CFG = {}, userInfo = null;
+
+    window.onload = async () => {
+      try {
+        const res = await fetch(API_URL, {method: 'POST', body: JSON.stringify({action: 'getConfig'})});
+        const json = await res.json();
+        if (json.status === 'success') {
+          CFG = json.data.bizcard;
+          const conf = json.data.config;
+          CFG.chatbotValidity = conf.chatbotValidity;
+
+          document.title = CFG.htmlTitle || 'Bizcard';
+          document.getElementById('favicon').href = CFG.htmlFavicon || '';
+          document.body.style.fontFamily = CFG.fontFamily || 'sans-serif';
+          document.getElementById('bg-video').src = CFG.backgroundVideo;
+          document.getElementById('bg-video').poster = CFG.bizcardBackgroundImage1;
+          document.querySelector('.fixed').style.background = CFG.backgroundColor || '#fff';
+
+          renderCards();
+          renderHeader();
+          renderChatInfo();
+
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('app').classList.remove('opacity-0');
+        }
+      } catch (e) { alert('Lỗi tải dữ liệu'); }
+    };
+
+    function renderHeader() {
+      document.getElementById('header-name').innerText = `${CFG.bizcardPersonName} - ${CFG.bizcardPersonPosition}`;
+    }
+
+    function renderCards() {
+      // Front
+      const front = document.getElementById('front');
+      front.innerHTML = `
+        <img src="${CFG.bizcardBackgroundImage1}" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
+          <div class="flex justify-between">
+            <img src="${CFG.bizcardLogoURL}" class="h-16 object-contain drop-shadow-lg">
+            <div id="qr-front" class="bg-white p-2 rounded-lg w-20 h-20"></div>
+          </div>
+          <div>
+            <h2 class="text-3xl font-black uppercase text-shadow">${CFG.bizcardPersonName}</h2>
+            <p class="text-lg uppercase tracking-wider opacity-90 text-shadow">${CFG.bizcardPersonPosition}</p>
+            <p class="text-xl font-bold mt-2 text-shadow">${CFG.bizcardCompanyName}</p>
+
+            <div class="flex gap-6 mt-6 justify-center">
+              ${CFG.bizcardLinkZalo ? `<button onclick="updateQR('${CFG.bizcardLinkZalo}')"><i class="fab fa-zalo text-3xl"></i></button>` : ''}
+              ${CFG.bizcardLinkWhatsapp ? `<button onclick="updateQR('${CFG.bizcardLinkWhatsapp}')"><i class="fab fa-whatsapp text-3xl"></i></button>` : ''}
+              ${CFG.bizcardLinkViber ? `<button onclick="updateQR('${CFG.bizcardLinkViber}')"><i class="fab fa-viber text-3xl"></i></button>` : ''}
+              ${CFG.bizcardLinkWechat ? `<button onclick="updateQR('${CFG.bizcardLinkWechat}')"><i class="fab fa-weixin text-3xl"></i></button>` : ''}
+            </div>
+
+            <div class="mt-8 space-y-3 text-sm">
+              <div class="flex items-center gap-3"><i class="fas fa-phone"></i>${CFG.bizcardPersonMobile}</div>
+              <div class="flex items-center gap-3"><i class="fas fa-envelope"></i>${CFG.bizcardPersonEmail}</div>
+              <div class="flex items-center gap-3"><i class="fas fa-globe"></i><a href="${CFG.bizcardPompanyWebsite}" class="underline">${CFG.bizcardPompanyWebsite.replace(/^https?:\/\//,'')}</a></div>
+              <div class="flex items-center gap-3"><i class="fas fa-map-marker-alt"></i><a href="${CFG.bizcardCompanyAddressURL}" class="underline">VP: ${CFG.bizcardCompanyAddress}</a></div>
+              ${CFG.bizcardCompanyAddress2 ? `<div class="flex items-center gap-3"><i class="fas fa-warehouse"></i><a href="${CFG.bizcardCompanyAddress2URL}" class="underline">Kho: ${CFG.bizcardCompanyAddress2}</a></div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // QR Front
+      const qrDiv = document.getElementById('qr-front');
+      if (CFG.bizcardQRImage) {
+        qrDiv.innerHTML = `<img src="${CFG.bizcardQRImage}" class="w-full h-full object-contain">`;
+      } else {
+        new QRCode(qrDiv, {text: CFG.bizcardQRText || window.location.href, width: 72, height: 72});
+      }
+
+      // Back
+      const back = document.getElementById('back');
+      back.innerHTML = `
+        <img src="${CFG.bizcardBackgroundImage2 || CFG.bizcardBackgroundImage1}" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 p-8 flex flex-col text-white">
+          <div class="flex justify-between">
+            <img src="${CFG.bizcardLogoURL}" class="h-14 object-contain brightness-0 invert">
+            <div id="qr-back" class="bg-white p-2 rounded-lg w-20 h-20"></div>
+          </div>
+          <h3 class="text-center text-2xl font-black uppercase mt-8 text-shadow">${CFG.bizcardCompanyName}</h3>
+          <div class="grid grid-cols-2 gap-8 mt-8 text-sm">
+            <ul class="space-y-3 list-disc pl-6">
+              ${CFG.bizcardBusiness1 ? `<li>${CFG.bizcardBusiness1}</li>` : ''}
+              ${CFG.bizcardBusiness2 ? `<li>${CFG.bizcardBusiness2}</li>` : ''}
+              ${CFG.bizcardBusiness3 ? `<li>${CFG.bizcardBusiness3}</li>` : ''}
+            </ul>
+            <ul class="space-y-3 list-disc pl-6">
+              ${CFG.bizcardBusiness4 ? `<li>${CFG.bizcardBusiness4}</li>` : ''}
+              ${CFG.bizcardBusiness5 ? `<li>${CFG.bizcardBusiness5}</li>` : ''}
+              ${CFG.bizcardBusiness6 ? `<li>${CFG.bizcardBusiness6}</li>` : ''}
+            </ul>
+          </div>
+          <div class="mt-auto pt-6 border-t border-white/30 text-center text-xs space-y-1">
+            <div>${CFG.bizcardPersonMobile} • ${CFG.bizcardPersonEmail} • ${CFG.bizcardPompanyWebsite.replace(/^https?:\/\//,'')}</div>
+            <div><a href="${CFG.bizcardCompanyAddressURL}" class="underline">${CFG.bizcardCompanyAddress}</a></div>
+          </div>
+        </div>
+      `;
+      new QRCode(document.getElementById('qr-back'), {text: window.location.href, width: 72, height: 72});
+    }
+
+    function updateQR(link) {
+      ['qr-front', 'qr-back'].forEach(id => {
+        const div = document.getElementById(id);
+        div.innerHTML = '';
+        new QRCode(div, {text: link, width: 72, height: 72});
+      });
+    }
+
+    function renderChatInfo() {
+      document.getElementById('chat-avatar').src = document.getElementById('chat-avatar2').src = CFG.chatbotAvatar;
+      document.getElementById('chat-name').innerText = document.getElementById('chat-name2').innerText = CFG.chatbotName;
+      document.getElementById('chat-pos').innerText = CFG.chatbotPosition;
+    }
+
+    // Export
+    async function exportCard(type) {
+      const container = document.getElementById('export-container');
+      container.innerHTML = '';
+      const wrapper = document.createElement('div');
+      wrapper.style = 'display:flex; gap:40px; padding:40px; background:white; width:1200px; flex-wrap:wrap; justify-content:center;';
+      ['front', 'back'].forEach(id => {
+        const clone = document.getElementById(id).cloneNode(true);
+        clone.style.transform = 'none';
+        clone.style.boxShadow = 'none';
+        wrapper.appendChild(clone);
+      });
+      container.appendChild(wrapper);
+
+      await new Promise(r => setTimeout(r, 500));
+      const canvas = await html2canvas(wrapper, {scale: 3, useCORS: true, backgroundColor: '#ffffff'});
+
+      if (type === 'png') {
+        const a = document.createElement('a');
+        a.download = `Bizcard-${CFG.bizcardPersonName}.png`;
+        a.href = canvas.toDataURL();
+        a.click();
+      } else {
+        const {jsPDF} = window.jspdf;
+        const pdf = new jsPDF('l', 'mm', 'a4');
+        const imgData = canvas.toDataURL('image/png');
+        const pdfW = 297, margin = 15;
+        const imgProps = pdf.getImageProperties(imgData);
+        const printW = pdfW - margin*2;
+        const printH = (imgProps.height * printW) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', margin, margin, printW, printH);
+        pdf.save(`Bizcard-${CFG.bizcardPersonName}.pdf`);
+      }
+      container.innerHTML = '';
+    }
+
+    function downloadVCard() {
+      const vcf = `BEGIN:VCARD
+VERSION:3.0
+FN:${CFG.bizcardPersonName}
+N:${CFG.bizcardPersonName};;;
+ORG:${CFG.bizcardCompanyName}
+TITLE:${CFG.bizcardPersonPosition}
+TEL:${CFG.bizcardPersonMobile}
+EMAIL:${CFG.bizcardPersonEmail}
+URL:${CFG.bizcardPompanyWebsite}
+ADR:;;${CFG.bizcardCompanyAddress};;;;
+END:VCARD`;
+      const blob = new Blob([vcf], {type: 'text/vcard'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${CFG.bizcardPersonName}.vcf`;
+      a.click();
+    }
+
+    function shareLink() {
+      if (navigator.share) navigator.share({title: document.title, url: location.href});
+      else prompt('Chia sẻ link:', location.href);
+    }
+
+    // Chat
+    function openChat() {
+      document.getElementById('chat-section').classList.remove('hidden');
+      document.getElementById('contact-form').classList.remove('hidden');
+    }
+
+    document.getElementById('contactForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('inp-name').value,
+        company: document.getElementById('inp-company').value,
+        phone: document.getElementById('inp-phone').value,
+        email: document.getElementById('inp-email').value,
+        message: document.getElementById('inp-message').value,
+        wantChat: document.getElementById('want-chat').checked
+      };
+      userInfo = payload;
+
+      const res = await fetch(API_URL, {method: 'POST', body: JSON.stringify({action: 'submitForm', payload})});
+      const json = await res.json();
+      if (json.status === 'success') {
+        if (payload.wantChat && CFG.chatbotValidity) {
+          document.getElementById('contact-form').classList.add('hidden');
+          document.getElementById('chat-interface').classList.remove('hidden');
+          addMessage('bot', `Xin chào ${payload.name}, em là ${CFG.chatbotName} - thư ký của anh ${CFG.bizcardPersonName}. Em rất vui được hỗ trợ anh/chị hôm nay ạ 🌸`);
+          if (payload.message) addMessage('user', payload.message);
+        } else {
+          alert('Cảm ơn quý khách! Chúng tôi đã nhận thông tin.');
+        }
+      } else {
+        alert('Lỗi gửi thông tin');
+      }
+    };
+
+    async function sendMessage() {
+      const inp = document.getElementById('chat-input');
+      const msg = inp.value.trim();
+      if (!msg) return;
+      addMessage('user', msg);
+      inp.value = '';
+
+      const loader = document.createElement('div');
+      loader.id = 'typing';
+      loader.innerHTML = '<div class="chat-bubble bot"><div class="flex gap-2"><div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div><div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div></div></div>';
+      document.getElementById('chat-messages').appendChild(loader);
+
+      const res = await fetch(API_URL, {method: 'POST', body: JSON.stringify({action: 'chatAI', payload: {message: msg, userInfo}})});
+      const json = await res.json();
+      loader.remove();
+      addMessage('bot', json.reply || 'Xin lỗi, em không hiểu ạ');
+    }
+
+    function addMessage(role, text) {
+      const div = document.createElement('div');
+      div.className = role === 'user' ? 'flex justify-end' : 'flex justify-start';
+      div.innerHTML = `<div class="chat-bubble ${role}">${text.replace(/\n/g, '<br>')}</div>`;
+      document.getElementById('chat-messages').appendChild(div);
+      div.scrollIntoView({behavior: 'smooth'});
+    }
+  </script>
+</body>
+</html>

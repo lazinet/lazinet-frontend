@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mr. Lê Minh Phụng - Phó Tổng Giám đốc NECS</title>
+  <link rel="icon" href="https://necs.vn/wp-content/uploads/2021/06/necs-log-vi.svg" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      background-color: #FAFAFA;
+      color: #FF6300;
+      overflow-x: hidden;
+    }
+    video#bg-video {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+      z-index: 10;
+    }
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .lang-switch {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(255,255,255,0.8); padding: 5px 10px;
+      border-radius: 20px; font-size: 0.9rem;
+    }
+    .bizcard-container {
+      display: flex;
+      gap: 30px;
+      margin: 30px 0;
+    }
+    .bizcard {
+      width: 100%;
+      aspect-ratio: 90 / 54;
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .bizcard::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+      z-index: 1;
+    }
+    .bizcard-content {
+      position: relative;
+      z-index: 2;
+    }
+    .bizcard-logo {
+      height: 40px;
+      margin-bottom: 10px;
+    }
+    .bizcard h2 { font-size: 1.4rem; margin-bottom: 5px; }
+    .bizcard p { font-size: 0.95rem; margin: 4px 0; line-height: 1.4; }
+    .bizcard a { color: inherit; text-decoration: underline; }
+    @media (max-width: 768px) {
+      .bizcard-container { flex-direction: column; }
+      .bizcard { width: 100% !important; aspect-ratio: unset; min-height: 250px; }
+    }
+    .actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #187752;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn:hover { opacity: 0.9; }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      color: #333;
+    }
+    .form-group {
+      margin: 15px 0;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .chat-window {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 350px;
+      height: 450px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+    }
+    .chat-header {
+      background: #187752;
+      color: white;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chat-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #ddd;
+    }
+    .chat-body {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .message {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+    .bot { background: #e9f5ec; align-self: flex-start; }
+    .user { background: #d1e7ff; align-self: flex-end; }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+    }
+    .chat-input button {
+      background: #187752;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-left: 10px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <video autoplay muted loop id="bg-video">
+    <source src="https://necs.vn/wp-content/uploads/2026/01/Wms-01.mp4" type="video/mp4">
+  </video>
+
+  <div class="container">
+    <header>
+      <h1 id="intro-text">Đang tải...</h1>
+      <div class="lang-switch">VI / EN</div>
+    </header>
+
+    <div class="bizcard-container">
+      <div class="bizcard" id="front-card"></div>
+      <div class="bizcard" id="back-card"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="openContactForm()">💬 Chat</button>
+      <button class="btn" onclick="alert('Chức năng chia sẻ sẽ sớm ra mắt!')">📤 Share</button>
+      <button class="btn" onclick="alert('Xuất PNG/PDF cần backend. Liên hệ để kích hoạt.')">🖼️ Tải PNG</button>
+      <button class="btn" onclick="downloadVCard()">📇 Tải vCard</button>
+      <button class="btn" onclick="alert('PDF cần backend render. Liên hệ để kích hoạt.')">📄 Tải PDF</button>
+    </div>
+  </div>
+
+  <!-- Contact Form -->
+  <div class="modal" id="contactModal">
+    <div class="modal-content">
+      <h3>Liên hệ tư vấn</h3>
+      <div class="form-group">
+        <label>Tên *</label>
+        <input type="text" id="contact-name" required>
+      </div>
+      <div class="form-group">
+        <label>Công ty</label>
+        <input type="text" id="contact-company">
+      </div>
+      <div class="form-group">
+        <label>SĐT *</label>
+        <input type="tel" id="contact-phone" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="contact-email">
+      </div>
+      <div class="form-group">
+        <label>Nội dung</label>
+        <textarea id="contact-message" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="contact-want-consult" checked> Muốn được tư vấn thêm?
+        </label>
+      </div>
+      <button class="btn" style="width:100%" onclick="submitContactForm()">Gửi thông tin</button>
+    </div>
+  </div>
+
+  <!-- Chat Window -->
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <img src="https://necs.vn/wp-content/uploads/2026/01/lady02.jpg" class="chat-avatar">
+      <div>
+        <div id="chatName">Mai Anh Đào</div>
+        <div style="font-size:0.8rem">Đang chờ...</div>
+      </div>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input">
+      <input type="text" id="userMessage" placeholder="Nhập tin nhắn..." onkeypress="if(event.key==='Enter') sendMessage()">
+      <button onclick="sendMessage()">Gửi</button>
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzCNBwZLCJUkUbwQt6IpaqxN8BoWJBv9egsyw0Ztc5_vkjOi_hOn8k_BTyiAZCHBeT8uQ/exec';
+
+    let CONFIG = null;
+    let BIZCARD = null;
+    let CHAT_HISTORY = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const resp = await fetch(WEB_APP_URL + '?action=getConfig');
+        const data = await resp.json();
+        if (data.error) throw new Error(data.error);
+        CONFIG = data.config;
+        BIZCARD = data.bizcard;
+
+        document.title = BIZCARD.htmlTitle || 'Business Card';
+        document.querySelector('#intro-text').textContent = BIZCARD.bizcardPersonName + ' - ' + BIZCARD.bizcardPersonPosition;
+
+        renderBizCards();
+      } catch (e) {
+        console.error('Failed to load config:', e);
+        document.querySelector('#intro-text').textContent = '❌ Lỗi tải dữ liệu. Vui lòng thử lại sau.';
+      }
+    });
+
+    function renderBizCards() {
+      const front = document.getElementById('front-card');
+      const back = document.getElementById('back-card');
+
+      front.style.backgroundImage = `url(${BIZCARD.bizcardBackgroundImage1 || ''})`;
+      back.style.backgroundImage = `url(${BIZCARD.bizcardBackgroundImage2 || ''})`;
+
+      front.innerHTML = `
+        <div class="bizcard-content">
+          <img src="${BIZCARD.bizcardLogoURL}" class="bizcard-logo" alt="Logo">
+          <h2>${BIZCARD.bizcardPersonName}</h2>
+          <p>${BIZCARD.bizcardPersonPosition}</p>
+          <p>${BIZCARD.bizcardCompanyName}</p>
+          <p>📞 ${BIZCARD.bizcardPersonMobile}</p>
+          <p>✉️ ${BIZCARD.bizcardPersonEmail}</p>
+          <p>🌐 <a href="${BIZCARD.bizcardPompanyWebsite}" target="_blank">${BIZCARD.bizcardPompanyWebsite}</a></p>
+        </div>
+      `;
+
+      back.innerHTML = `
+        <div class="bizcard-content">
+          <img src="${BIZCARD.bizcardLogoURL}" class="bizcard-logo" alt="Logo">
+          <h3>Dịch vụ chính</h3>
+          <p>• ${BIZCARD.bizcardBusiness1 || ''}</p>
+          <p>• ${BIZCARD.bizcardBusiness2 || ''}</p>
+          <p>• ${BIZCARD.bizcardBusiness3 || ''}</p>
+          <p>• ${BIZCARD.bizcardBusiness4 || ''}</p>
+          <p>• ${BIZCARD.bizcardBusiness5 || ''}</p>
+          <p>• ${BIZCARD.bizcardBusiness6 || ''}</p>
+          <p>📍 VP: <a href="${BIZCARD.bizcardCompanyAddressURL}" target="_blank">Xem bản đồ</a></p>
+          <p>🏭 Kho: <a href="${BIZCARD.bizcardCompanyAddress2URL}" target="_blank">Xem bản đồ</a></p>
+        </div>
+      `;
+    }
+
+    function openContactForm() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+
+    async function submitContactForm() {
+      const data = {
+        name: document.getElementById('contact-name').value,
+        company: document.getElementById('contact-company').value,
+        phone: document.getElementById('contact-phone').value,
+        email: document.getElementById('contact-email').value,
+        message: document.getElementById('contact-message').value,
+        wantConsult: document.getElementById('contact-want-consult').checked
+      };
+
+      if (!data.name || !data.phone) {
+        alert('Vui lòng nhập tên và số điện thoại.');
+        return;
+      }
+
+      try {
+        const resp = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'saveContact', data })
+        });
+        const result = await resp.json();
+        if (result.error) throw new Error(result.error);
+
+        document.getElementById('contactModal').style.display = 'none';
+
+        if (data.wantConsult && CONFIG.chatbotValidity) {
+          showChatWindow(data);
+        } else {
+          alert('Thông tin đã được gửi thành công!');
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Gửi thất bại: ' + e.message);
+      }
+    }
+
+    function showChatWindow(contactData) {
+      document.getElementById('chatWindow').style.display = 'flex';
+      const greeting = `Xin chào ${contactData.name}! Tôi là Mai Anh Đào, thư ký của anh Phụng. Cảm ơn bạn đã quan tâm đến NECS. Bạn có thể hỏi tôi bất kỳ điều gì về dịch vụ kho lạnh, logistics, hoặc hỗ trợ tài chính nhé!`;
+      addMessage(greeting, 'bot');
+      CHAT_HISTORY = [{ role: 'user', content: `Tên: ${contactData.name}, Công ty: ${contactData.company}, SĐT: ${contactData.phone}, Email: ${contactData.email}, Nội dung: ${contactData.message}` }];
+    }
+
+    function addMessage(text, sender) {
+      const chatBody = document.getElementById('chatBody');
+      const div = document.createElement('div');
+      div.className = `message ${sender}`;
+      div.textContent = text;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('userMessage');
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage(text, 'user');
+      input.value = '';
+
+      try {
+        const resp = await fetch(Wifest, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'chat', prompt: text, history: CHAT_HISTORY })
+        });
+        const result = await resp.json();
+        if (result.error) throw new Error(result.error);
+        addMessage(result.reply, 'bot');
+        CHAT_HISTORY.push({ role: 'user', content: text }, { role: 'assistant', content: result.reply });
+      } catch (e) {
+        console.error(e);
+        addMessage('Xin lỗi, hiện tại tôi không thể trả lời. Vui lòng thử lại sau.', 'bot');
+      }
+    }
+
+    function downloadVCard() {
+      const vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `FN:${BIZCARD.bizcardPersonName}`,
+        `ORG:${BIZCARD.bizcardCompanyName}`,
+        `TITLE:${BIZCARD.bizcardPersonPosition}`,
+        `TEL;TYPE=CELL:${BIZCARD.bizcardPersonMobile}`,
+        `EMAIL:${BIZCARD.bizcardPersonEmail}`,
+        `URL:${BIZCARD.bizcardPompanyWebsite}`,
+        `ADR;TYPE=WORK:;;${BIZCARD.bizcardCompanyAddress}`,
+        'END:VCARD'
+      ].join('\n');
+
+      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${BIZCARD.bizcardPersonName.replace(/\s+/g, '_')}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    window.onclick = (e) => {
+      const modal = document.getElementById('contactModal');
+      if (e.target === modal) modal.style.display = 'none';
+    };
+  </script>
+</body>
+</html>

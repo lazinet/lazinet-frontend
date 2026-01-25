@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Business Card | Mr. Lê Minh Phụng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #187752;
+            --secondary: #B91C1C;
+            --accent: #FF6300;
+            --light: #FAFAFA;
+            --dark: #333333;
+            --card: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* VIDEO BACKGROUND */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        #bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+        }
+        
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,248,248,0.9) 100%);
+            z-index: -1;
+        }
+        
+        /* MAIN CONTAINER */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.98);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .intro-text {
+            flex: 1;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 500;
+            padding-right: 20px;
+        }
+        
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        
+        .lang-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* BIZCARD CONTAINER */
+        .bizcard-wrapper {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 1024px) {
+            .bizcard-wrapper {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        /* CARD STYLES */
+        .card {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        .card-front, .card-back {
+            aspect-ratio: 90/54;
+            min-height: 324px;
+            padding: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .card-front, .card-back {
+                min-height: 240px;
+                padding: 20px;
+            }
+        }
+        
+        .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* FRONT CARD */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            height: 50px;
+            width: auto;
+            max-width: 200px;
+            object-fit: contain;
+        }
+        
+        .person-info {
+            text-align: right;
+        }
+        
+        .person-name {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+        
+        .person-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        
+        .contact-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .contact-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .contact-text {
+            flex: 1;
+            color: var(--dark);
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+        
+        /* BACK CARD */
+        .services-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 20px 0;
+            flex: 1;
+        }
+        
+        @media (max-width: 480px) {
+            .services-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .service-column h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+        }
+        
+        .service-list {
+            list-style: none;
+        }
+        
+        .service-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-list li:before {
+            content: "✓";
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .qr-section {
+            text-align: center;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+        }
+        
+        #qr-code {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .qr-text {
+            font-size: 0.8rem;
+            color: #666;
+            word-break: break-all;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: var(--secondary);
+        }
+        
+        /* ACTION BUTTONS */
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: 0 5px 20px rgba(24, 119, 82, 0.3);
+            min-width: 160px;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(24, 119, 82, 0.4);
+        }
+        
+        .action-btn i {
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .actions-container {
+                gap: 15px;
+            }
+            
+            .action-btn {
+                min-width: 140px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        /* CONTACT FORM */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f9f9f9;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(24, 119, 82, 0.1);
+        }
+        
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+        
+        .checkbox-group label {
+            flex: 1;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(24, 119, 82, 0.3);
+        }
+        
+        /* CHAT INTERFACE */
+        .chat-agent {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .agent-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .agent-info h3 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+        
+        .agent-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            color: #4CAF50;
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 20px;
+            max-width: 85%;
+            word-wrap: break-word;
+            animation: messageAppear 0.3s ease;
+            line-height: 1.5;
+        }
+        
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.assistant {
+            background: white;
+            color: var(--dark);
+            border: 1px solid #e8e8e8;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 20px;
+            width: fit-content;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f9f9f9;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+        
+        .send-btn {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(24, 119, 82, 0.3);
+        }
+        
+        /* SHARE MODAL */
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .share-option {
+            padding: 25px 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .share-option:hover {
+            background: white;
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .share-option i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .share-option span {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 18px 25px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            max-width: 350px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.error {
+            background: var(--secondary);
+        }
+        
+        .toast.success {
+            background: #4CAF50;
+        }
+        
+        .toast i {
+            font-size: 1.2rem;
+        }
+        
+        /* LOADING SPINNER */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* UTILITY CLASSES */
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--secondary); }
+        .mb-20 { margin-bottom: 20px; }
+        .mt-20 { margin-top: 20px; }
+        .hidden { display: none; }
+        
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .intro-text {
+                padding-right: 0;
+                text-align: center;
+            }
+            
+            .person-name {
+                font-size: 1.5rem;
+            }
+            
+            .person-title {
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .actions-container {
+                gap: 10px;
+            }
+            
+            .action-btn {
+                width: calc(50% - 10px);
+                min-width: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 10px;
+            }
+            
+            .card-front, .card-back {
+                min-height: 200px;
+                padding: 15px;
+            }
+            
+            .person-name {
+                font-size: 1.3rem;
+            }
+            
+            .contact-item {
+                padding: 8px 0;
+            }
+            
+            .action-btn {
+                width: 100%;
+            }
+            
+            .share-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <div class="video-container">
+        <video id="bg-video" autoplay muted loop playsinline>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="intro-text" id="introText">
+                Chào mừng đến với danh thiếp điện tử chuyên nghiệp
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn active" onclick="changeLanguage('vi')">VI</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+            </div>
+        </header>
+
+        <!-- Bizcard -->
+        <div class="bizcard-wrapper">
+            <!-- Front Card -->
+            <div class="card card-front">
+                <div class="card-bg" id="frontBg"></div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <img src="" alt="Logo" class="logo" id="logoFront">
+                        <div class="person-info">
+                            <h1 class="person-name" id="personName"></h1>
+                            <div class="person-title" id="personTitle"></div>
+                        </div>
+                    </div>
+                    <div class="contact-grid" id="contactGrid"></div>
+                </div>
+            </div>
+
+            <!-- Back Card -->
+            <div class="card card-back">
+                <div class="card-bg" id="backBg"></div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <img src="" alt="Logo" class="logo" id="logoBack">
+                        <div class="person-info">
+                            <h1 class="person-name" id="personNameBack"></h1>
+                            <div class="person-title" id="personTitleBack"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="services-section">
+                        <div class="service-column">
+                            <h4>Dịch vụ chính</h4>
+                            <ul class="service-list" id="servicesCol1"></ul>
+                        </div>
+                        <div class="service-column">
+                            <h4>Dịch vụ hỗ trợ</h4>
+                            <ul class="service-list" id="servicesCol2"></ul>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-section">
+                        <div id="qr-code"></div>
+                        <div class="qr-text" id="qrText"></div>
+                    </div>
+                    
+                    <div class="social-links" id="socialLinks"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-container">
+            <button class="action-btn" onclick="openContactModal()">
+                <i class="fas fa-comments"></i> <span id="btnChat">Chat</span>
+            </button>
+            <button class="action-btn" onclick="openShareModal()">
+                <i class="fas fa-share-alt"></i> <span id="btnShare">Chia sẻ</span>
+            </button>
+            <button class="action-btn" onclick="downloadPNG()">
+                <i class="fas fa-download"></i> <span id="btnPNG">PNG</span>
+            </button>
+            <button class="action-btn" onclick="downloadVCard()">
+                <i class="fas fa-address-card"></i> <span id="btnVCard">vCard</span>
+            </button>
+            <button class="action-btn" onclick="downloadPDF()">
+                <i class="fas fa-file-pdf"></i> <span id="btnPDF">PDF</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalContactTitle">Liên hệ ngay</h2>
+                <button class="close-btn" onclick="closeModal('contactModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-agent">
+                    <img src="" alt="Agent" class="agent-avatar" id="agentAvatar">
+                    <div class="agent-info">
+                        <h3 id="agentName">Mai Anh Đào</h3>
+                        <p id="agentPosition">Thư ký PTGĐ</p>
+                        <div class="agent-status">
+                            <div class="status-dot"></div>
+                            <span id="agentStatus">Sẵn sàng hỗ trợ</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label class="form-label" for="contactName">Họ và tên *</label>
+                        <input type="text" id="contactName" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contactCompany">Công ty *</label>
+                        <input type="text" id="contactCompany" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contactPhone">Số điện thoại *</label>
+                        <input type="tel" id="contactPhone" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contactEmail">Email *</label>
+                        <input type="email" id="contactEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contactMessage">Nội dung tin nhắn *</label>
+                        <textarea id="contactMessage" class="form-input" required></textarea>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="wantChat" checked>
+                        <label for="wantChat" id="wantChatLabel">Tôi muốn được tư vấn thêm với trợ lý</label>
+                    </div>
+                    <button type="submit" class="form-submit" id="btnSubmit">Gửi thông tin</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalChatTitle">Trò chuyện với trợ lý</h2>
+                <button class="close-btn" onclick="closeModal('chatModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-agent">
+                    <img src="" alt="Chatbot" class="agent-avatar" id="chatbotAvatar">
+                    <div class="agent-info">
+                        <h3 id="chatbotName">Mai Anh Đào</h3>
+                        <p id="chatbotPosition">Thư ký PTGĐ</p>
+                        <div class="agent-status">
+                            <div class="status-dot"></div>
+                            <span id="chatbotStatus">Đang trực tuyến</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages"></div>
+                
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" 
+                           placeholder="Nhập tin nhắn của bạn..." autocomplete="off">
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalShareTitle">Chia sẻ danh thiếp</h2>
+                <button class="close-btn" onclick="closeModal('shareModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="share-options">
+                    <div class="share-option" onclick="shareSocial('facebook')">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="share-option" onclick="shareSocial('linkedin')">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </div>
+                    <div class="share-option" onclick="shareSocial('twitter')">
+                        <i class="fab fa-twitter"></i>
+                        <span>Twitter</span>
+                    </div>
+                    <div class="share-option" onclick="shareSocial('zalo')">
+                        <i class="fab fa-weixin"></i>
+                        <span>Zalo</span>
+                    </div>
+                    <div class="share-option" onclick="shareSocial('whatsapp')">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </div>
+                    <div class="share-option" onclick="copyLink()">
+                        <i class="fas fa-copy"></i>
+                        <span id="copyText">Sao chép link</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        // ========== CONFIGURATION ==========
+        const CONFIG = {
+            GAS_URL: 'https://script.google.com/macros/s/AKfycbyaXT6VpkkWxGbNmQTIZ4izitWNk4VHlerxthV7a9-YY8q0hr4yjwWJoRgrHiAU0v1NeQ/exec', // Paste your GAS web app URL here
+            VERSION: '2.0',
+            languages: {
+                vi: {
+                    intro: 'Chào mừng đến với danh thiếp điện tử chuyên nghiệp',
+                    chat: 'Chat',
+                    share: 'Chia sẻ',
+                    png: 'PNG',
+                    vcard: 'vCard',
+                    pdf: 'PDF',
+                    contactTitle: 'Liên hệ ngay',
+                    chatTitle: 'Trò chuyện với trợ lý',
+                    shareTitle: 'Chia sẻ danh thiếp',
+                    name: 'Họ và tên *',
+                    company: 'Công ty *',
+                    phone: 'Số điện thoại *',
+                    email: 'Email *',
+                    message: 'Nội dung tin nhắn *',
+                    wantChat: 'Tôi muốn được tư vấn thêm với trợ lý',
+                    submit: 'Gửi thông tin',
+                    agentReady: 'Sẵn sàng hỗ trợ',
+                    chatbotOnline: 'Đang trực tuyến',
+                    typeMessage: 'Nhập tin nhắn của bạn...',
+                    copyText: 'Sao chép link',
+                    loading: 'Đang tải...',
+                    saved: 'Đã lưu thông tin thành công!',
+                    error: 'Đã có lỗi xảy ra',
+                    copied: 'Đã sao chép link!',
+                    downloading: 'Đang tải xuống...',
+                    noChatbot: 'Dịch vụ chatbot tạm thời không khả dụng'
+                },
+                en: {
+                    intro: 'Welcome to the professional digital business card',
+                    chat: 'Chat',
+                    share: 'Share',
+                    png: 'PNG',
+                    vcard: 'vCard',
+                    pdf: 'PDF',
+                    contactTitle: 'Contact Now',
+                    chatTitle: 'Chat with Assistant',
+                    shareTitle: 'Share Business Card',
+                    name: 'Full Name *',
+                    company: 'Company *',
+                    phone: 'Phone Number *',
+                    email: 'Email *',
+                    message: 'Message *',
+                    wantChat: 'I want to chat with assistant',
+                    submit: 'Submit Information',
+                    agentReady: 'Ready to assist',
+                    chatbotOnline: 'Online',
+                    typeMessage: 'Type your message...',
+                    copyText: 'Copy Link',
+                    loading: 'Loading...',
+                    saved: 'Information saved successfully!',
+                    error: 'An error occurred',
+                    copied: 'Link copied!',
+                    downloading: 'Downloading...',
+                    noChatbot: 'Chatbot service is temporarily unavailable'
+                }
+            }
+        };
+
+        // ========== GLOBAL VARIABLES ==========
+        let currentLang = 'vi';
+        let bizcardData = {};
+        let configData = {};
+        let chatHistory = [];
+        let currentFormData = null;
+        let isProcessing = false;
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
+            setupEventListeners();
+            
+            // Auto-play video
+            const video = document.getElementById('bg-video');
+            if (video) {
+                video.play().catch(e => console.log('Video autoplay prevented:', e));
+            }
+        });
+
+        // ========== DATA LOADING ==========
+        async function loadData() {
+            showToast(CONFIG.languages[currentLang].loading, 'info');
+            
+            try {
+                // Try to load from GAS
+                if (CONFIG.GAS_URL) {
+                    const response = await fetch(`${CONFIG.GAS_URL}?action=getConfig&t=${Date.now()}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            bizcardData = data.bizcard;
+                            configData = data.config;
+                            renderBizcard();
+                            updateLanguage();
+                            return;
+                        }
+                    }
+                }
+                
+                // Fallback to default data
+                loadDefaultData();
+                
+            } catch (error) {
+                console.warn('Using fallback data:', error);
+                loadDefaultData();
+            }
+        }
+
+        function loadDefaultData() {
+            bizcardData = {
+                htmlTitle: 'Mr. Lê Minh Phụng - Phó Tổng Giám đốc Công ty Cổ phần Kho Lạnh Kỷ Nguyên Mới (NECS)',
+                backgroundVideo: 'https://assets.mixkit.co/videos/preview/mixkit-white-flowers-6982-large.mp4',
+                backgroundColor: '#FAFAFA',
+                primaryColor: '#187752',
+                secondaryColor: '#B91C1C',
+                textColor: '#FF6300',
+                fontFamily: 'Tahoma, Arial, sans-serif',
+                bizcardLogoURL: 'https://necs.vn/wp-content/uploads/2021/06/necs-log-vi.svg',
+                bizcardBackgroundImage1: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-1.2.1&auto=format&fit=crop&w=2048&q=80',
+                bizcardPersonName: 'Lê Minh Phụng',
+                bizcardPersonPosition: 'Phó Tổng Giám đốc',
+                bizcardCompanyName: 'Công ty Cổ phần Kho Lạnh Kỷ Nguyên Mới (NECS)',
+                bizcardPersonMobile: '0901494666',
+                bizcardPersonEmail: 'phunglm@necs.vn',
+                bizcardPompanyWebsite: 'https://necs.vn',
+                bizcardCompanyAddress: 'Lầu 8, 262 Nam Kỳ Khởi Nghĩa, phường Xuân Hòa, TP.HCM',
+                bizcardCompanyAddress2: 'B28-2 Đường Dọc 2, KCN Phú An Thạnh, Bến Lức, Long An',
+                bizcardBusiness1: 'Cho thuê kho lạnh, kho mát, kho khô',
+                bizcardBusiness2: 'Kho ngoại quan lạnh lớn nhất VN',
+                bizcardBusiness3: 'Chia chọn, phân loại/ size hàng hóa',
+                bizcardBusiness4: 'Cảng quốc tế',
+                bizcardBusiness5: 'Đại lý hải quan',
+                bizcardBusiness6: 'Hỗ trợ tài chính',
+                chatbotName: 'Mai Anh Đào',
+                chatbotPosition: 'Thư ký PTGĐ',
+                chatbotAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                bizcardQRText: 'https://necs.vn'
+            };
+            
+            configData = {
+                chatbotValidity: 'TRUE'
+            };
+            
+            renderBizcard();
+            updateLanguage();
+        }
+
+        // ========== RENDER BIZCARD ==========
+        function renderBizcard() {
+            // Set CSS variables
+            document.documentElement.style.setProperty('--primary', bizcardData.primaryColor || '#187752');
+            document.documentElement.style.setProperty('--secondary', bizcardData.secondaryColor || '#B91C1C');
+            document.documentElement.style.setProperty('--accent', bizcardData.textColor || '#FF6300');
+            document.documentElement.style.setProperty('--light', bizcardData.backgroundColor || '#FAFAFA');
+            
+            // Set document title
+            document.title = bizcardData.htmlTitle || 'Business Card';
+            
+            // Set video background
+            const video = document.getElementById('bg-video');
+            if (video && bizcardData.backgroundVideo) {
+                video.src = bizcardData.backgroundVideo;
+                video.load();
+            }
+            
+            // Set card backgrounds
+            document.getElementById('frontBg').style.backgroundImage = 
+                `url('${bizcardData.bizcardBackgroundImage1 || ''}')`;
+            document.getElementById('backBg').style.backgroundImage = 
+                `url('${bizcardData.bizcardBackgroundImage2 || bizcardData.bizcardBackgroundImage1 || ''}')`;
+            
+            // Set logos
+            document.querySelectorAll('.logo').forEach(logo => {
+                logo.src = bizcardData.bizcardLogoURL || '';
+                logo.alt = bizcardData.bizcardCompanyName || 'Logo';
+            });
+            
+            // Set person info
+            document.getElementById('personName').textContent = bizcardData.bizcardPersonName || '';
+            document.getElementById('personTitle').textContent = bizcardData.bizcardPersonPosition || '';
+            document.getElementById('personNameBack').textContent = bizcardData.bizcardPersonName || '';
+            document.getElementById('personTitleBack').textContent = bizcardData.bizcardPersonPosition || '';
+            
+            // Set contact grid
+            const contactGrid = document.getElementById('contactGrid');
+            contactGrid.innerHTML = `
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-building"></i></div>
+                    <div class="contact-text">${bizcardData.bizcardCompanyName || ''}</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div class="contact-text">${bizcardData.bizcardPersonMobile || ''}</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-text">${bizcardData.bizcardPersonEmail || ''}</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-globe"></i></div>
+                    <div class="contact-text">${bizcardData.bizcardPompanyWebsite || ''}</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-text">${bizcardData.bizcardCompanyAddress || ''}</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-warehouse"></i></div>
+                    <div class="contact-text">${bizcardData.bizcardCompanyAddress2 || ''}</div>
+                </div>
+            `;
+            
+            // Set services
+            document.getElementById('servicesCol1').innerHTML = `
+                ${bizcardData.bizcardBusiness1 ? `<li>${bizcardData.bizcardBusiness1}</li>` : ''}
+                ${bizcardData.bizcardBusiness2 ? `<li>${bizcardData.bizcardBusiness2}</li>` : ''}
+                ${bizcardData.bizcardBusiness3 ? `<li>${bizcardData.bizcardBusiness3}</li>` : ''}
+            `;
+            
+            document.getElementById('servicesCol2').innerHTML = `
+                ${bizcardData.bizcardBusiness4 ? `<li>${bizcardData.bizcardBusiness4}</li>` : ''}
+                ${bizcardData.bizcardBusiness5 ? `<li>${bizcardData.bizcardBusiness5}</li>` : ''}
+                ${bizcardData.bizcardBusiness6 ? `<li>${bizcardData.bizcardBusiness6}</li>` : ''}
+            `;
+            
+            // Generate QR code
+            const qrText = bizcardData.bizcardQRText || window.location.href;
+            QRCode.toCanvas(document.getElementById('qr-code'), qrText, {
+                width: 120,
+                height: 120,
+                margin: 1,
+                color: {
+                    dark: bizcardData.primaryColor || '#187752',
+                    light: '#FFFFFF'
+                }
+            });
+            document.getElementById('qrText').textContent = qrText;
+            
+            // Set social links
+            const socialLinks = document.getElementById('socialLinks');
+            socialLinks.innerHTML = '';
+            
+            const socials = [
+                { icon: 'fab fa-zalo', url: bizcardData.bizcardLinkZalo, color: '#0068FF' },
+                { icon: 'fab fa-whatsapp', url: bizcardData.bizcardLinkWhatsapp, color: '#25D366' },
+                { icon: 'fab fa-weixin', url: bizcardData.bizcardLinkWechat, color: '#07C160' },
+                { icon: 'fab fa-viber', url: bizcardData.bizcardLinkViber, color: '#7360F2' }
+            ];
+            
+            socials.forEach(social => {
+                if (social.url) {
+                    const link = document.createElement('a');
+                    link.href = social.url;
+                    link.className = 'social-link';
+                    link.target = '_blank';
+                    link.style.background = social.color;
+                    link.innerHTML = `<i class="${social.icon}"></i>`;
+                    socialLinks.appendChild(link);
+                }
+            });
+            
+            // Set chatbot info
+            document.getElementById('agentName').textContent = bizcardData.chatbotName || 'Mai Anh Đào';
+            document.getElementById('agentPosition').textContent = bizcardData.chatbotPosition || 'Thư ký PTGĐ';
+            document.getElementById('agentAvatar').src = bizcardData.chatbotAvatar || '';
+            document.getElementById('chatbotName').textContent = bizcardData.chatbotName || 'Mai Anh Đào';
+            document.getElementById('chatbotPosition').textContent = bizcardData.chatbotPosition || 'Thư ký PTGĐ';
+            document.getElementById('chatbotAvatar').src = bizcardData.chatbotAvatar || '';
+        }
+
+        // ========== LANGUAGE MANAGEMENT ==========
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Update buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(`'${lang}'`));
+            });
+            
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const t = CONFIG.languages[currentLang];
+            
+            // Update text elements
+            document.getElementById('introText').textContent = t.intro;
+            document.getElementById('btnChat').textContent = t.chat;
+            document.getElementById('btnShare').textContent = t.share;
+            document.getElementById('btnPNG').textContent = t.png;
+            document.getElementById('btnVCard').textContent = t.vcard;
+            document.getElementById('btnPDF').textContent = t.pdf;
+            document.getElementById('modalContactTitle').textContent = t.contactTitle;
+            document.getElementById('modalChatTitle').textContent = t.chatTitle;
+            document.getElementById('modalShareTitle').textContent = t.shareTitle;
+            document.getElementById('agentStatus').textContent = t.agentReady;
+            document.getElementById('chatbotStatus').textContent = t.chatbotOnline;
+            document.getElementById('copyText').textContent = t.copyText;
+            document.getElementById('btnSubmit').textContent = t.submit;
+            document.getElementById('wantChatLabel').textContent = t.wantChat;
+            document.getElementById('chatInput').placeholder = t.typeMessage;
+            
+            // Update form labels
+            document.querySelector('label[for="contactName"]').textContent = t.name;
+            document.querySelector('label[for="contactCompany"]').textContent = t.company;
+            document.querySelector('label[for="contactPhone"]').textContent = t.phone;
+            document.querySelector('label[for="contactEmail"]').textContent = t.email;
+            document.querySelector('label[for="contactMessage"]').textContent = t.message;
+        }
+
+        // ========== EVENT LISTENERS ==========
+        function setupEventListeners() {
+            // Contact form submission
+            document.getElementById('contactForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (isProcessing) return;
+                isProcessing = true;
+                
+                const formData = {
+                    name: document.getElementById('contactName').value,
+                    company: document.getElementById('contactCompany').value,
+                    phone: document.getElementById('contactPhone').value,
+                    email: document.getElementById('contactEmail').value,
+                    message: document.getElementById('contactMessage').value,
+                    chat: document.getElementById('wantChat').checked
+                };
+                
+                currentFormData = formData;
+                
+                // Save to backend
+                if (CONFIG.GAS_URL) {
+                    try {
+                        const response = await fetch(CONFIG.GAS_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                action: 'save',
+                                formData: formData
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        if (!result.success) {
+                            throw new Error(result.error);
+                        }
+                    } catch (error) {
+                        console.warn('Save failed:', error);
+                    }
+                }
+                
+                showToast(CONFIG.languages[currentLang].saved, 'success');
+                
+                if (formData.chat) {
+                    closeModal('contactModal');
+                    setTimeout(() => {
+                        openChatModal();
+                        sendGreeting(formData);
+                    }, 500);
+                } else {
+                    closeModal('contactModal');
+                }
+                
+                // Reset form
+                document.getElementById('contactForm').reset();
+                document.getElementById('wantChat').checked = true;
+                
+                isProcessing = false;
+            });
+            
+            // Chat input enter key
+            document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Close modals on outside click
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+        }
+
+        // ========== MODAL FUNCTIONS ==========
+        function openContactModal() {
+            openModal('contactModal');
+        }
+
+        function openChatModal() {
+            // Check chatbot validity
+            if (configData.chatbotValidity !== 'TRUE') {
+                showToast(CONFIG.languages[currentLang].noChatbot, 'error');
+                return;
+            }
+            
+            openModal('chatModal');
+            chatHistory = [];
+            document.getElementById('chatMessages').innerHTML = '';
+        }
+
+        function openShareModal() {
+            openModal('shareModal');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ========== CHAT FUNCTIONS ==========
+        async function sendGreeting(formData) {
+            const greeting = currentLang === 'vi'
+                ? `Xin chào ${formData.name}! Tôi là ${bizcardData.chatbotName || 'Mai Anh Đào'}, ${bizcardData.chatbotPosition || 'Thư ký PTGĐ'}. Rất vui được hỗ trợ bạn từ ${formData.company}. Bạn có câu hỏi nào về dịch vụ của chúng tôi không?`
+                : `Hello ${formData.name}! I'm ${bizcardData.chatbotName || 'Mai Anh Đào'}, ${bizcardData.chatbotPosition || 'Assistant'}. Nice to assist you from ${formData.company}. Do you have any questions about our services?`;
+            
+            addMessage('assistant', greeting);
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message || isProcessing) return;
+            
+            input.value = '';
+            addMessage('user', message);
+            showTypingIndicator();
+            
+            isProcessing = true;
+            
+            try {
+                // Add to history
+                chatHistory.push({ role: 'user', content: message });
+                
+                let response;
+                
+                if (CONFIG.GAS_URL) {
+                    // Call backend
+                    const result = await fetch(CONFIG.GAS_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'chat',
+                            query: message,
+                            formData: currentFormData,
+                            history: chatHistory
+                        })
+                    });
+                    
+                    const data = await result.json();
+                    
+                    if (data.success) {
+                        response = data.response;
+                        chatHistory.push({ role: 'assistant', content: response });
+                    } else {
+                        throw new Error(data.error);
+                    }
+                } else {
+                    // Mock response for demo
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    response = currentLang === 'vi'
+                        ? `Cảm ơn bạn đã hỏi về "${message}". Tôi là ${bizcardData.chatbotName || 'Mai Anh Đào'}, thư ký của ${bizcardData.bizcardPersonName || 'ông Phụng'}. Vui lòng liên hệ trực tiếp qua số ${bizcardData.bizcardPersonMobile || '0901494666'} để được tư vấn chi tiết hơn.`
+                        : `Thank you for asking about "${message}". I'm ${bizcardData.chatbotName || 'Mai Anh Đào'}, assistant to ${bizcardData.bizcardPersonName || 'Mr. Phung'}. Please contact directly at ${bizcardData.bizcardPersonMobile || '0901494666'} for more detailed consultation.`;
+                    
+                    chatHistory.push({ role: 'assistant', content: response });
+                }
+                
+                removeTypingIndicator();
+                addMessage('assistant', response);
+                
+            } catch (error) {
+                console.error('Chat error:', error);
+                removeTypingIndicator();
+                
+                const errorMsg = currentLang === 'vi'
+                    ? 'Xin lỗi, có lỗi xảy ra. Vui lòng thử lại sau.'
+                    : 'Sorry, an error occurred. Please try again later.';
+                
+                addMessage('assistant', errorMsg);
+            }
+            
+            isProcessing = false;
+        }
+
+        function addMessage(role, content) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingDiv = document.getElementById('typingIndicator');
+            if (typingDiv) {
+                typingDiv.remove();
+            }
+        }
+
+        // ========== SHARE FUNCTIONS ==========
+        function shareSocial(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(bizcardData.bizcardPersonName || 'Business Card');
+            const text = encodeURIComponent(bizcardData.bizcardCompanyName || '');
+            
+            const shareUrls = {
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+                twitter: `https://twitter.com/intent/tweet?text=${title}&url=${url}`,
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+                whatsapp: `https://wa.me/?text=${title} ${url}`,
+                zalo: `https://zalo.me/share?text=${title} ${url}`
+            };
+            
+            if (shareUrls[platform]) {
+                window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+            }
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast(CONFIG.languages[currentLang].copied, 'success');
+            });
+        }
+
+        // ========== DOWNLOAD FUNCTIONS ==========
+        async function downloadPNG() {
+            showToast(CONFIG.languages[currentLang].downloading, 'info');
+            
+            try {
+                const card = document.querySelector('.card-front');
+                const canvas = await html2canvas(card, {
+                    scale: 3,
+                    backgroundColor: null,
+                    useCORS: true,
+                    logging: false
+                });
+                
+                const link = document.createElement('a');
+                link.download = `business-card-${bizcardData.bizcardPersonName || 'card'}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (error) {
+                console.error('PNG download error:', error);
+                showToast(CONFIG.languages[currentLang].error, 'error');
+            }
+        }
+
+        async function downloadVCard() {
+            try {
+                if (CONFIG.GAS_URL) {
+                    const response = await fetch(`${CONFIG.GAS_URL}?action=getVCard&t=${Date.now()}`);
+                    const vcard = await response.text();
+                    
+                    const blob = new Blob([vcard], { type: 'text/vcard' });
+                    const link = document.createElement('a');
+                    link.download = `contact-${bizcardData.bizcardPersonName || 'contact'}.vcf`;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                } else {
+                    // Generate local vCard
+                    const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${bizcardData.bizcardPersonName || ''}
+ORG:${bizcardData.bizcardCompanyName || ''}
+TITLE:${bizcardData.bizcardPersonPosition || ''}
+TEL;TYPE=WORK,VOICE:${bizcardData.bizcardPersonMobile || ''}
+EMAIL:${bizcardData.bizcardPersonEmail || ''}
+URL:${bizcardData.bizcardPompanyWebsite || ''}
+ADR;TYPE=WORK:;;${bizcardData.bizcardCompanyAddress || ''}
+NOTE:${bizcardData.bizcardBusiness1 || ''}
+END:VCARD`;
+                    
+                    const blob = new Blob([vcard], { type: 'text/vcard' });
+                    const link = document.createElement('a');
+                    link.download = `contact.vcf`;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                }
+                
+                showToast(CONFIG.languages[currentLang].downloading, 'info');
+            } catch (error) {
+                console.error('vCard download error:', error);
+                showToast(CONFIG.languages[currentLang].error, 'error');
+            }
+        }
+
+        async function downloadPDF() {
+            showToast(CONFIG.languages[currentLang].downloading, 'info');
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('l', 'mm', [90, 54]);
+                
+                const frontCard = document.querySelector('.card-front');
+                const backCard = document.querySelector('.card-back');
+                
+                // Front card
+                const frontCanvas = await html2canvas(frontCard, {
+                    scale: 3,
+                    backgroundColor: null,
+                    useCORS: true,
+                    logging: false
+                });
+                
+                // Back card
+                const backCanvas = await html2canvas(backCard, {
+                    scale: 3,
+                    backgroundColor: null,
+                    useCORS: true,
+                    logging: false
+                });
+                
+                // Add front page
+                pdf.addImage(frontCanvas.toDataURL('image/png'), 'PNG', 0, 0, 90, 54);
+                
+                // Add back page
+                pdf.addPage([90, 54], 'l');
+                pdf.addImage(backCanvas.toDataURL('image/png'), 'PNG', 0, 0, 90, 54);
+                
+                pdf.save(`business-card-${bizcardData.bizcardPersonName || 'card'}.pdf`);
+            } catch (error) {
+                console.error('PDF download error:', error);
+                showToast(CONFIG.languages[currentLang].error, 'error');
+            }
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

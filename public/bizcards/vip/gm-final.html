@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card Loading...</title>
+    <link rel="icon" type="image/x-icon" id="favicon">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        /* CSS Variables sẽ được update bằng JS */
+        :root {
+            --primary: #187752;
+            --secondary: #B91C1C;
+            --text: #FF6300;
+            --font: 'Tahoma', sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            overflow-x: hidden;
+        }
+
+        /* Video Background */
+        #bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        /* Bizcard Ratio 90:54 */
+        .bizcard-container {
+            width: 100%;
+            aspect-ratio: 90 / 54;
+            position: relative;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        /* Hiệu ứng hover nhẹ */
+        .bizcard-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .card-bg-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chat UI */
+        .chat-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: fadeIn 0.3s;
+        }
+        .user-msg {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .bot-msg {
+            background: #f1f1f1;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Google Translate customization */
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+        }
+        
+        /* Ẩn trên mobile nếu cần */
+        @media (max-width: 768px) {
+            .mobile-column {
+                flex-direction: column;
+            }
+            .bizcard-container {
+                width: 100%;
+                /* Mobile có thể cho width 100% nhưng vẫn giữ ratio hoặc auto height tuỳ ý, ở đây giữ ratio cho đẹp */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="loading-screen" class="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+        <div class="loader mb-4" id="intro-loader"></div>
+        <p class="text-gray-500 font-semibold animate-pulse">Đang tải dữ liệu doanh nhân...</p>
+    </div>
+
+    <video autoplay muted loop playsinline id="bg-video"></video>
+    <div id="bg-overlay" class="fixed inset-0 bg-white/70"></div>
+
+    <div id="app-container" class="relative z-10 w-full max-w-6xl mx-auto opacity-0 transition-opacity duration-700 flex flex-col gap-6">
+
+        <header class="glass-panel rounded-full px-6 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex flex-col">
+                <h1 id="header-name" class="text-lg font-bold text-gray-800 leading-tight"></h1>
+                <p id="header-sub" class="text-xs text-gray-600 font-medium italic">Hân hạnh hợp tác cùng quý khách</p>
+            </div>
+            
+            <div id="google_translate_element" class="opacity-80 hover:opacity-100 transition"></div>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-6 items-stretch justify-center">
+            
+            <div id="card-front" class="bizcard-container rounded-xl">
+                <img id="f-bg" class="card-bg-img" src="" crossorigin="anonymous">
+                <div class="absolute inset-0 bg-black/5"></div> <div class="card-content p-6 md:p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <img id="f-logo" src="" class="h-10 md:h-14 object-contain" crossorigin="anonymous">
+                        <div id="f-qr-box" class="bg-white p-1 rounded shadow-md w-16 h-16 md:w-20 md:h-20 flex items-center justify-center overflow-hidden">
+                            </div>
+                    </div>
+
+                    <div class="mt-auto mb-4">
+                        <h2 id="f-name" class="text-2xl md:text-3xl font-bold uppercase leading-none mb-1 text-shadow" style="color: var(--primary)"></h2>
+                        <p id="f-pos" class="text-sm md:text-base font-medium text-gray-700 uppercase tracking-wide mb-1"></p>
+                        <p id="f-comp" class="text-xs md:text-sm font-bold text-gray-500 uppercase"></p>
+                    </div>
+
+                    <div class="flex gap-3 mb-4">
+                        <button onclick="handleSocial('zalo')" class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center hover:scale-110 transition shadow"><i class="fas fa-comment"></i></button>
+                        <button onclick="handleSocial('whatsapp')" class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition shadow"><i class="fab fa-whatsapp"></i></button>
+                        <button onclick="handleSocial('viber')" class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center hover:scale-110 transition shadow"><i class="fab fa-viber"></i></button>
+                        <button onclick="handleSocial('wechat')" class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center hover:scale-110 transition shadow"><i class="fab fa-weixin"></i></button>
+                    </div>
+
+                    <div class="text-[10px] md:text-[11px] space-y-1 font-medium text-gray-700 border-t border-gray-300 pt-3">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="flex items-center gap-1"><i class="fas fa-phone-alt text-[var(--secondary)]"></i> <span id="f-phone"></span></span>
+                            <span>|</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-envelope text-[var(--secondary)]"></i> <span id="f-email"></span></span>
+                            <span>|</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-globe text-[var(--secondary)]"></i> <span id="f-web"></span></span>
+                        </div>
+                        <div class="flex items-start gap-1">
+                            <i class="fas fa-map-marker-alt mt-0.5 text-[var(--secondary)]"></i>
+                            <a id="f-addr1-link" href="#" target="_blank" class="hover:underline text-gray-800"><span id="f-addr1"></span></a>
+                        </div>
+                        <div class="flex items-start gap-1">
+                            <i class="fas fa-warehouse mt-0.5 text-[var(--secondary)]"></i>
+                            <a id="f-addr2-link" href="#" target="_blank" class="hover:underline text-gray-800"><span id="f-addr2"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="card-back" class="bizcard-container rounded-xl">
+                <img id="b-bg" class="card-bg-img" src="" crossorigin="anonymous">
+                <div class="absolute inset-0 bg-white/80"></div> <div class="card-content p-6 md:p-8 flex flex-col">
+                     <div class="flex justify-between items-center mb-2 border-b border-gray-300 pb-2">
+                        <img id="b-logo" src="" class="h-8 md:h-10 object-contain brightness-0" style="filter: brightness(0) saturate(100%) invert(31%) sepia(12%) saturate(2255%) hue-rotate(106deg) brightness(96%) contrast(93%);" crossorigin="anonymous"> <div id="b-qr-box" class="w-10 h-10 bg-white shadow-sm flex items-center justify-center"></div>
+                    </div>
+
+                    <h3 id="b-comp-name" class="text-center font-bold text-sm md:text-base uppercase mb-4 text-[var(--primary)]"></h3>
+
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 flex-grow content-start">
+                        <ul id="b-col1" class="list-disc pl-4 space-y-1 text-[10px] md:text-xs font-semibold text-gray-700"></ul>
+                        <ul id="b-col2" class="list-disc pl-4 space-y-1 text-[10px] md:text-xs font-semibold text-gray-700"></ul>
+                    </div>
+
+                    <div class="mt-auto pt-2 border-t border-gray-300 text-[9px] md:text-[10px] text-center text-gray-600">
+                        <p class="mb-0.5">
+                            <span id="b-phone"></span> • <span id="b-email"></span> • <span id="b-web"></span>
+                        </p>
+                        <p id="b-addr" class="truncate"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-5 gap-2 md:gap-4 max-w-4xl mx-auto w-full">
+            <button onclick="scrollToForm()" class="col-span-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-2.5 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition flex flex-col items-center justify-center gap-1 group">
+                <i class="fas fa-comments text-lg group-hover:animate-bounce"></i> 
+                <span class="text-[10px] font-bold uppercase">Chat</span>
+            </button>
+            <button onclick="shareCard()" class="bg-white text-gray-700 py-2 rounded-lg shadow hover:bg-gray-50 flex flex-col items-center justify-center gap-1">
+                <i class="fas fa-share-nodes text-lg text-[var(--secondary)]"></i>
+                <span class="text-[10px] font-bold uppercase">Share</span>
+            </button>
+            <button onclick="exportCard('png')" class="bg-white text-gray-700 py-2 rounded-lg shadow hover:bg-gray-50 flex flex-col items-center justify-center gap-1">
+                <i class="fas fa-image text-lg text-[var(--secondary)]"></i>
+                <span class="text-[10px] font-bold uppercase">PNG</span>
+            </button>
+            <button onclick="downloadVCard()" class="bg-white text-gray-700 py-2 rounded-lg shadow hover:bg-gray-50 flex flex-col items-center justify-center gap-1">
+                <i class="fas fa-address-book text-lg text-[var(--secondary)]"></i>
+                <span class="text-[10px] font-bold uppercase">vCard</span>
+            </button>
+            <button onclick="exportCard('pdf')" class="bg-white text-gray-700 py-2 rounded-lg shadow hover:bg-gray-50 flex flex-col items-center justify-center gap-1">
+                <i class="fas fa-file-pdf text-lg text-[var(--secondary)]"></i>
+                <span class="text-[10px] font-bold uppercase">PDF</span>
+            </button>
+        </div>
+
+        <div id="interaction-area" class="w-full glass-panel rounded-xl shadow-xl overflow-hidden transition-all duration-500 ease-in-out">
+            
+            <div id="contact-form" class="p-6 md:p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-1 text-center">Liên hệ & Tư vấn</h3>
+                <p class="text-xs text-gray-500 text-center mb-6">Để lại thông tin, chúng tôi sẽ phản hồi ngay lập tức.</p>
+
+                <form onsubmit="handleFormSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input id="inp-name" type="text" placeholder="Họ và tên *" required class="p-3 bg-white/80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none">
+                    <input id="inp-comp" type="text" placeholder="Công ty" class="p-3 bg-white/80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none">
+                    <input id="inp-phone" type="tel" placeholder="Số điện thoại *" required class="p-3 bg-white/80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none">
+                    <input id="inp-email" type="email" placeholder="Email" class="p-3 bg-white/80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none">
+                    
+                    <textarea id="inp-msg" rows="2" placeholder="Nội dung cần hỗ trợ..." class="md:col-span-2 p-3 bg-white/80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none"></textarea>
+                    
+                    <div class="md:col-span-2 flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="inp-consult" class="w-4 h-4 text-[var(--primary)] rounded focus:ring-[var(--primary)]" checked>
+                            <span class="text-sm font-medium text-gray-700">Tôi muốn chat tư vấn ngay</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="btn-submit" class="md:col-span-2 w-full bg-[var(--primary)] text-white font-bold py-3 rounded-lg hover:brightness-110 transition shadow-lg flex items-center justify-center gap-2">
+                        <span>GỬI THÔNG TIN</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div id="chat-interface" class="hidden flex flex-col h-[500px]">
+                <div class="bg-[var(--primary)] p-4 flex items-center gap-3 text-white shadow-md shrink-0">
+                    <div class="relative">
+                        <img id="chat-avatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-white">
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></span>
+                    </div>
+                    <div>
+                        <h4 id="chat-botname" class="font-bold text-sm"></h4>
+                        <p id="chat-botpos" class="text-[10px] uppercase opacity-90"></p>
+                    </div>
+                </div>
+
+                <div id="chat-box" class="flex-grow overflow-y-auto p-4 bg-gray-50 flex flex-col gap-2">
+                    </div>
+
+                <div class="p-3 bg-white border-t flex gap-2 shrink-0">
+                    <input id="chat-input" type="text" placeholder="Nhập câu hỏi..." class="flex-grow px-4 py-2 rounded-full border bg-gray-50 focus:bg-white outline-none focus:ring-1 focus:ring-[var(--primary)] text-sm" onkeypress="if(event.key==='Enter') sendChat()">
+                    <button onclick="sendChat()" class="w-10 h-10 bg-[var(--primary)] text-white rounded-full flex items-center justify-center hover:shadow-lg transition">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="h-10"></div> </div>
+
+    <div id="export-container" class="fixed top-0 left-0 opacity-0 pointer-events-none -z-50"></div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyPR7bpCfiFlHbM_egpxv61XCvrWrwCAOJzyumkC4H56_W99wDNxARDpRp7nx4lg1Kj/exec'; 
+        
+        let CFG = {};
+        let userData = {};
+
+        // --- INIT ---
+        window.onload = async () => {
+            // Setup Google Translate
+            const script = document.createElement('script');
+            script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+            document.body.appendChild(script);
+
+            try {
+                const req = await fetch(API_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: 'getConfig' }) 
+                });
+                const res = await req.json();
+                
+                if (res.status === 'success') {
+                    CFG = res.data;
+                    renderData();
+                    
+                    // Hide loader
+                    document.getElementById('loading-screen').classList.add('hidden');
+                    document.getElementById('app-container').classList.remove('opacity-0');
+                } else {
+                    alert('Lỗi tải dữ liệu: ' + res.message);
+                }
+            } catch (e) { console.error(e); alert('Lỗi kết nối Server!'); }
+        };
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'vi', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+        }
+
+        function renderData() {
+            // Metadata
+            document.title = CFG.htmlTitle || "Business Card";
+            document.getElementById('favicon').href = CFG.htmlFavicon;
+            
+            // CSS Vars
+            const root = document.documentElement;
+            root.style.setProperty('--primary', CFG.primaryColor);
+            root.style.setProperty('--secondary', CFG.secondaryColor);
+            root.style.setProperty('--text', CFG.textColor);
+            root.style.setProperty('--font', CFG.fontFamily);
+
+            // Backgrounds
+            const vid = document.getElementById('bg-video');
+            vid.src = CFG.backgroundVideo;
+            vid.poster = CFG.bizcardBackgroundImage1;
+            document.getElementById('bg-overlay').style.backgroundColor = CFG.backgroundColor;
+
+            // Header
+            document.getElementById('header-name').innerHTML = `${CFG.bizcardPersonPosition} <span style="color:var(--secondary)">${CFG.bizcardPersonName}</span>`;
+
+            // --- FRONT CARD ---
+            document.getElementById('f-bg').src = CFG.bizcardBackgroundImage1;
+            document.getElementById('f-logo').src = CFG.bizcardLogoURL;
+            document.getElementById('f-name').innerText = CFG.bizcardPersonName;
+            document.getElementById('f-pos').innerText = CFG.bizcardPersonPosition;
+            document.getElementById('f-comp').innerText = CFG.bizcardCompanyName;
+            
+            document.getElementById('f-phone').innerText = CFG.bizcardPersonMobile;
+            document.getElementById('f-email').innerText = CFG.bizcardPersonEmail;
+            document.getElementById('f-web').innerText = CFG.bizcardPompanyWebsite.replace(/^https?:\/\//, '');
+            
+            document.getElementById('f-addr1').innerText = CFG.bizcardCompanyAddress;
+            document.getElementById('f-addr1-link').href = CFG.bizcardCompanyAddressURL;
+            
+            document.getElementById('f-addr2').innerText = CFG.bizcardCompanyAddress2;
+            document.getElementById('f-addr2-link').href = CFG.bizcardCompanyAddress2URL;
+
+            // QR Generation
+            generateQR(CFG.bizcardQRText);
+
+            // --- BACK CARD ---
+            document.getElementById('b-bg').src = CFG.bizcardBackgroundImage2;
+            document.getElementById('b-logo').src = CFG.bizcardLogoURL;
+            document.getElementById('b-comp-name').innerText = CFG.bizcardCompanyName;
+
+            const b1 = document.getElementById('b-col1');
+            const b2 = document.getElementById('b-col2');
+            [CFG.bizcardBusiness1, CFG.bizcardBusiness2, CFG.bizcardBusiness3].forEach(t => t && (b1.innerHTML += `<li>${t}</li>`));
+            [CFG.bizcardBusiness4, CFG.bizcardBusiness5, CFG.bizcardBusiness6].forEach(t => t && (b2.innerHTML += `<li>${t}</li>`));
+
+            document.getElementById('b-phone').innerText = CFG.bizcardPersonMobile;
+            document.getElementById('b-email').innerText = CFG.bizcardPersonEmail;
+            document.getElementById('b-web').innerText = CFG.bizcardPompanyWebsite.replace(/^https?:\/\//, '');
+            document.getElementById('b-addr').innerText = CFG.bizcardCompanyAddress;
+
+            // Generate small QR for back
+            const bQrBox = document.getElementById('b-qr-box');
+            bQrBox.innerHTML = '';
+            new QRCode(bQrBox, { text: CFG.bizcardQRText, width: 36, height: 36 });
+
+            // Chat Info
+            document.getElementById('chat-avatar').src = CFG.chatbotAvatar;
+            document.getElementById('chat-botname').innerText = CFG.chatbotName;
+            document.getElementById('chat-botpos').innerText = CFG.chatbotPosition;
+        }
+
+        function generateQR(text, customImg) {
+            const box = document.getElementById('f-qr-box');
+            box.innerHTML = '';
+            
+            if (customImg) {
+                // Nếu là image (trường hợp custom) - Code này để mở rộng
+                // Hiện tại requirement ưu tiên tạo QR từ text
+            }
+            
+            if (CFG.bizcardQRImage && !text.includes('zalo') && !text.includes('whatsapp')) {
+                // Dùng ảnh QR mặc định nếu chưa bấm social
+                const img = document.createElement('img');
+                img.src = CFG.bizcardQRImage;
+                img.className = 'w-full h-full object-contain';
+                box.appendChild(img);
+            } else {
+                // Tạo mã QR động
+                new QRCode(box, { 
+                    text: text, 
+                    width: 72, 
+                    height: 72,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff"
+                });
+            }
+        }
+
+        function handleSocial(type) {
+            let url = '';
+            switch(type) {
+                case 'zalo': url = CFG.bizcardLinkZalo; break;
+                case 'whatsapp': url = CFG.bizcardLinkWhatsapp; break;
+                case 'viber': url = CFG.bizcardLinkViber; break;
+                case 'wechat': url = CFG.bizcardLinkWechat; break;
+            }
+            if(url) {
+                generateQR(url);
+                // Có thể mở link ngay nếu muốn: window.open(url, '_blank');
+                scrollToForm(); // Hoặc cuộn xuống form
+            }
+        }
+
+        function scrollToForm() {
+            document.getElementById('interaction-area').scrollIntoView({behavior: 'smooth'});
+        }
+
+        // --- EXPORT LOGIC ---
+        async function exportCard(type) {
+            // Setup Export DOM (Clone to clean styles)
+            const container = document.getElementById('export-container');
+            container.innerHTML = '';
+            
+            // Wrapper để chứa cả 2 mặt khi xuất ảnh/pdf
+            const wrapper = document.createElement('div');
+            wrapper.style.width = '1000px'; 
+            wrapper.style.display = 'flex';
+            wrapper.style.flexDirection = 'column';
+            wrapper.style.gap = '20px';
+            wrapper.style.padding = '20px';
+            wrapper.style.background = '#ffffff';
+
+            const front = document.getElementById('card-front').cloneNode(true);
+            const back = document.getElementById('card-back').cloneNode(true);
+            
+            // Remove transform/shadow for clean export
+            [front, back].forEach(el => {
+                el.style.transform = 'none';
+                el.style.boxShadow = 'none';
+                el.style.borderRadius = '0';
+                el.style.aspectRatio = '90/54';
+                el.style.width = '100%';
+                el.style.height = 'auto';
+            });
+
+            wrapper.appendChild(front);
+            wrapper.appendChild(back);
+            container.appendChild(wrapper);
+            
+            // Wait render
+            await new Promise(r => setTimeout(r, 500));
+
+            try {
+                const canvas = await html2canvas(wrapper, {
+                    scale: 3, // High Quality
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false
+                });
+
+                if (type === 'png') {
+                    const link = document.createElement('a');
+                    link.download = `Bizcard-${CFG.bizcardPersonName}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } else {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    const pdfW = 210; 
+                    const margin = 10;
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const printW = pdfW - (margin * 2);
+                    const printH = (imgProps.height * printW) / imgProps.width;
+
+                    pdf.addImage(imgData, 'PNG', margin, margin, printW, printH);
+                    pdf.save(`Bizcard-${CFG.bizcardPersonName}.pdf`);
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Lỗi xuất file. Hãy đảm bảo ảnh (Logo/BG) có quyền truy cập CORS.');
+            } finally {
+                container.innerHTML = '';
+            }
+        }
+
+        function downloadVCard() {
+             const vcf = `BEGIN:VCARD
+VERSION:3.0
+N:${CFG.bizcardPersonName};;;;
+FN:${CFG.bizcardPersonName}
+ORG:${CFG.bizcardCompanyName}
+TITLE:${CFG.bizcardPersonPosition}
+TEL;TYPE=WORK,VOICE:${CFG.bizcardPersonMobile}
+EMAIL:${CFG.bizcardPersonEmail}
+URL:${CFG.bizcardPompanyWebsite}
+ADR;TYPE=WORK:;;${CFG.bizcardCompanyAddress};;;;
+END:VCARD`;
+            const blob = new Blob([vcf], { type: 'text/vcard;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${CFG.bizcardPersonName}.vcf`;
+            link.click();
+        }
+
+        function shareCard() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: `Business Card: ${CFG.bizcardPersonName}`,
+                    url: window.location.href
+                });
+            } else {
+                prompt("Copy link để chia sẻ:", window.location.href);
+            }
+        }
+
+        // --- FORM & CHAT LOGIC ---
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<div class="loader" style="width:20px;height:20px;border-width:2px"></div> Đang gửi...';
+            btn.disabled = true;
+
+            const data = {
+                name: document.getElementById('inp-name').value,
+                company: document.getElementById('inp-comp').value,
+                phone: document.getElementById('inp-phone').value,
+                email: document.getElementById('inp-email').value,
+                message: document.getElementById('inp-msg').value,
+                wantConsult: document.getElementById('inp-consult').checked
+            };
+            userData = data; // Save for chat context
+
+            try {
+                // Submit to GAS
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'submitForm', payload: data })
+                }).then(r => r.json());
+
+                if (res.status === 'success') {
+                    if (data.wantConsult) {
+                        // Switch to Chat UI
+                        document.getElementById('contact-form').classList.add('hidden');
+                        document.getElementById('chat-interface').classList.remove('hidden');
+                        document.getElementById('chat-interface').classList.add('flex');
+                        
+                        // Initial Bot Greeting
+                        addMsg('bot', `Chào anh/chị ${data.name}. Tôi là ${CFG.chatbotName}, thư ký của anh ${CFG.bizcardPersonName}.<br>Tôi đã nhận được thông tin và lời nhắn của anh/chị. Tôi có thể giúp gì thêm cho anh/chị về ${CFG.bizcardCompanyName} không ạ?`);
+                        
+                        // Nếu khách có lời nhắn, tự động gửi lời nhắn đó vào chat để bot phân tích trả lời tiếp
+                        if(data.message) {
+                            addMsg('user', data.message);
+                            callBot(data.message);
+                        }
+
+                    } else {
+                        alert('Đã gửi thông tin thành công! Chúng tôi sẽ liên hệ lại sớm.');
+                        document.getElementById('contact-form').reset();
+                    }
+                } else {
+                    alert('Có lỗi xảy ra: ' + res.message);
+                }
+            } catch (err) {
+                alert('Lỗi kết nối!');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function addMsg(role, text) {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = `chat-bubble ${role === 'user' ? 'user-msg' : 'bot-msg'}`;
+            div.innerHTML = text;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function sendChat() {
+            const inp = document.getElementById('chat-input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+
+            addMsg('user', txt);
+            inp.value = '';
+            
+            // Loading bubble
+            const box = document.getElementById('chat-box');
+            const loadId = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = loadId;
+            loadingDiv.className = 'chat-bubble bot-msg';
+            loadingDiv.innerHTML = '<div class="loader" style="width:16px;height:16px;border-width:2px;border-top-color:#555;border-color:#ccc"></div>';
+            box.appendChild(loadingDiv);
+            box.scrollTop = box.scrollHeight;
+
+            await callBot(txt, loadId);
+        }
+
+        async function callBot(msg, loadIdToRemove) {
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ 
+                        action: 'chatAI', 
+                        payload: { 
+                            message: msg,
+                            history: [] // Có thể implement history nếu muốn
+                        } 
+                    })
+                }).then(r => r.json());
+
+                if (loadIdToRemove) document.getElementById(loadIdToRemove).remove();
+
+                if (res.status === 'success') {
+                    addMsg('bot', res.reply.replace(/\n/g, '<br>'));
+                } else {
+                    addMsg('bot', 'Xin lỗi, ' + res.reply);
+                }
+            } catch (e) {
+                if (loadIdToRemove) document.getElementById(loadIdToRemove).remove();
+                addMsg('bot', 'Mất kết nối với Chatbot.');
+            }
+        }
+
+    </script>
+</body>
+</html>
