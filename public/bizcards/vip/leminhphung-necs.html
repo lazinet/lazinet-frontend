@@ -396,16 +396,16 @@
         </div>
 
         <div class="action-grid mb-8">
-            <button onclick="toggleChat()" class="btn-action bg-green-600 hover:bg-green-700 btn-item btn-item-main">
+            <button onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
                 <i class="fas fa-comments"></i> TƯ VẤN NGAY
             </button>
-            <button onclick="shareLink()" class="btn-action bg-blue-600 hover:bg-blue-700 btn-item btn-item-sub">
+            <button onclick="shareLink()" class="btn-action bg-green-600 hover:bg-green-700 btn-item btn-item-sub">
                 <i class="fas fa-share-nodes"></i> Chia sẻ
             </button>
             <button onclick="downloadVCard()" class="btn-action bg-amber-600 hover:bg-amber-700 btn-item btn-item-sub">
                 <i class="fas fa-address-book"></i> Danh bạ
             </button>
-            <button onclick="exportPNG()" class="btn-action bg-slate-700 hover:bg-slate-800 btn-item btn-item-sub">
+            <button onclick="exportPNG()" class="btn-action bg-purple-700 hover:bg-purple-800 btn-item btn-item-sub">
                 <i class="fas fa-download"></i> Tải PNG
             </button>
             <button onclick="exportPDF()" class="btn-action bg-red-700 hover:bg-red-800 btn-item btn-item-sub">
@@ -444,10 +444,10 @@
                         </div>
                         <textarea name="message" rows="3" placeholder="Lời nhắn..." class="w-full p-2 bg-gray-50 border rounded text-sm"></textarea>
                         <div class="flex items-center gap-2">
-                            <input type="checkbox" id="wantChat" name="chat" checked class="accent-green-600 w-4 h-4">
+                            <input type="checkbox" id="wantChat" name="chat" checked class="accent-[#2F54A2] w-4 h-4">
                             <label for="wantChat" class="text-xs text-gray-700 font-bold">Tôi muốn tư vấn thêm</label>
                         </div>
-                        <button type="submit" class="w-full bg-green-700 text-white py-3 rounded font-bold uppercase text-sm mt-auto">Gửi & Bắt đầu</button>
+                        <button type="submit" class="w-full bg-[#2F54A2] text-white py-3 rounded font-bold uppercase text-sm mt-auto">Gửi & Bắt đầu</button>
                     </form>
                 </div>
 
@@ -718,7 +718,14 @@ END:VCARD`;
             e.preventDefault();
             const btn = e.target.querySelector('button');
             const old = btn.innerText;
-            btn.disabled = true; btn.innerText = "ĐANG GỬI...";
+            
+            // 1. Khóa nút và đặt trạng thái đầu tiên
+            btn.disabled = true; 
+            btn.innerText = "ĐANG GỬI ...";
+
+            // 2. Lên lịch thay đổi trạng thái (chạy song song, không chặn fetch)
+            const timer1 = setTimeout(() => { btn.innerText = "ĐANG TRA CỨU ..."; }, 2000);
+            const timer2 = setTimeout(() => { btn.innerText = "ĐANG PHÂN CÔNG ..."; }, 4000);
             
             const fd = new FormData(e.target);
             const payload = {
@@ -729,8 +736,10 @@ END:VCARD`;
             };
 
             try {
+                // 3. Thực hiện gửi dữ liệu
                 const res = await fetch(GAS_WEB_APP_URL, {method:'POST', body: JSON.stringify(payload)});
                 const data = await res.json();
+                
                 if(payload.chat) {
                     document.getElementById('form-container').classList.add('hidden');
                     document.getElementById('chat-window').classList.remove('hidden');
@@ -740,8 +749,15 @@ END:VCARD`;
                 } else {
                     alert("Gửi thành công!"); toggleChat();
                 }
-            } catch(e) { alert("Lỗi kết nối!"); } 
-            finally { btn.disabled = false; btn.innerText = old; }
+            } catch(e) { 
+                alert("Lỗi kết nối!"); 
+            } finally { 
+                // 4. Dọn dẹp: Hủy các timer nếu mạng nhanh hơn dự kiến & trả lại nút bấm
+                clearTimeout(timer1);
+                clearTimeout(timer2);
+                btn.disabled = false; 
+                btn.innerText = old; 
+            }
         };
 
         function appendMsg(role, text) {
