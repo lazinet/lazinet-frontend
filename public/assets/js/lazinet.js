@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  function openAIChat() {
-    // Thêm logic mở AI chat của bạn ở đây
-    console.log("Opening AI Chat...");
-    // Ví dụ: window.open('/ai-chat', '_blank');
-  }
+function openAIChat() {
+    // Thay đường dẫn dưới đây bằng link thật của file bizcard của bạn
+    const bizcardUrl = "bizcards/hoangminhphung-lazinet.html?chat=true";
+    window.open(bizcardUrl, "_blank");
+}
 
   // Optional: Đóng menu khi click ra ngoài
   document.addEventListener("click", function (e) {
