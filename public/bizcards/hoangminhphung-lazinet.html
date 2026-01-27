@@ -396,7 +396,7 @@
         </div>
 
         <div class="action-grid mb-8">
-            <button onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
+            <button id="chat-button" onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
                 <i class="fas fa-comments"></i> TƯ VẤN NGAY
             </button>
             <button onclick="shareLink()" class="btn-action bg-green-600 hover:bg-green-700 btn-item btn-item-sub">
@@ -711,8 +711,12 @@
 
         function toggleChat() {
             const p = document.getElementById('interaction-panel');
+            const b = document.getElementById('chat-button');
             p.classList.toggle('hidden');
-            if(!p.classList.contains('hidden')) p.scrollIntoView({behavior:'smooth'});
+            if(!p.classList.contains('hidden')) {
+                p.scrollIntoView({behavior:'smooth'});
+                b.innerText = 'ẨN TƯ VẤN';
+            } else {b.innerText = 'TƯ VẤN NGAY';};
         }
 
         function shareLink() {
