@@ -396,7 +396,7 @@
         </div>
 
         <div class="action-grid mb-8">
-            <button onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
+            <button id="chat-button" onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
                 <i class="fas fa-comments"></i> TƯ VẤN NGAY
             </button>
             <button onclick="shareLink()" class="btn-action bg-green-600 hover:bg-green-700 btn-item btn-item-sub">
@@ -432,20 +432,20 @@
                 <button onclick="toggleChat()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 hidden md:block z-20"><i class="fas fa-times text-xl"></i></button>
 
                 <div id="form-container" class="flex flex-col h-full p-6 overflow-y-auto">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Để lại thông tin tư vấn</h3>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Gửi yêu cầu của bạn đến NECS</h3>
                     <form id="lead-form" class="space-y-3 flex-grow">
                         <div class="grid grid-cols-2 gap-3">
                             <input type="text" name="name" placeholder="Họ tên *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
-                            <input type="text" name="company" placeholder="Công ty" class="w-full p-2 bg-gray-50 border rounded text-sm">
+                            <input type="text" name="company" placeholder="Công ty *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <input type="tel" name="phone" placeholder="SĐT *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
-                            <input type="email" name="email" placeholder="Email" class="w-full p-2 bg-gray-50 border rounded text-sm">
+                            <input type="email" name="email" placeholder="Email *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
                         </div>
-                        <textarea name="message" rows="3" placeholder="Lời nhắn..." class="w-full p-2 bg-gray-50 border rounded text-sm"></textarea>
+                        <textarea name="message" rows="3" placeholder="Lời nhắn *" required class="w-full p-2 bg-gray-50 border rounded text-sm"></textarea>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="wantChat" name="chat" checked class="accent-[#2F54A2] w-4 h-4">
-                            <label for="wantChat" class="text-xs text-gray-700 font-bold">Tôi muốn tư vấn thêm</label>
+                            <label for="wantChat" class="text-xs text-gray-700 font-bold">Tôi muốn chat tư vấn thêm</label>
                         </div>
                         <button type="submit" class="w-full bg-[#2F54A2] text-white py-3 rounded font-bold uppercase text-sm mt-auto">Gửi & Bắt đầu</button>
                     </form>
@@ -555,6 +555,16 @@
         function exportPDF() { captureCard('pdf'); }
 
         // --- 3. DATA LOGIC ---
+        // async function init() {
+        //     try {
+        //         const response = await fetch(`${GAS_WEB_APP_URL}?action=getData`);
+        //         const result = await response.json();
+        //         configData = result.config;
+        //         bizData = result.biz;
+        //         applyData();
+        //     } catch (err) { console.error("API Error", err); }
+        // }
+        
         async function init() {
             try {
                 const response = await fetch(`${GAS_WEB_APP_URL}?action=getData`);
@@ -562,8 +572,22 @@
                 configData = result.config;
                 bizData = result.biz;
                 applyData();
-            } catch (err) { console.error("API Error", err); }
+
+                // --- THÊM LOGIC NÀY VÀO CUỐI HÀM INIT ---
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('chat') === 'true') {
+                    // Đợi một chút để card render xong rồi bung chat
+                    setTimeout(() => {
+                        toggleChat();
+                    }, 800); 
+                }
+                // ----------------------------------------
+
+            } catch (err) {
+                console.error("API Error", err);
+            }
         }
+
 
         function applyData() {
             if (!bizData) return;
@@ -687,8 +711,12 @@
 
         function toggleChat() {
             const p = document.getElementById('interaction-panel');
+            const b = document.getElementById('chat-button');
             p.classList.toggle('hidden');
-            if(!p.classList.contains('hidden')) p.scrollIntoView({behavior:'smooth'});
+            if(!p.classList.contains('hidden')) {
+                p.scrollIntoView({behavior:'smooth'});
+                b.innerText = 'ẨN TƯ VẤN';
+            } else {b.innerText = 'TƯ VẤN NGAY';};
         }
 
         function shareLink() {
@@ -721,11 +749,11 @@ END:VCARD`;
             
             // 1. Khóa nút và đặt trạng thái đầu tiên
             btn.disabled = true; 
-            btn.innerText = "ĐANG GỬI ...";
+            btn.innerText = "ĐANG GỬI TIN ...";
 
             // 2. Lên lịch thay đổi trạng thái (chạy song song, không chặn fetch)
-            const timer1 = setTimeout(() => { btn.innerText = "ĐANG TRA CỨU ..."; }, 2000);
-            const timer2 = setTimeout(() => { btn.innerText = "ĐANG PHÂN CÔNG ..."; }, 4000);
+            const timer1 = setTimeout(() => { btn.innerText = "ĐANG GHI NHẬN ..."; }, 3000);
+            const timer2 = setTimeout(() => { btn.innerText = "ĐANG KIỂM TRA ..."; }, 6000);
             
             const fd = new FormData(e.target);
             const payload = {
