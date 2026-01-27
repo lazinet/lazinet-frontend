@@ -137,7 +137,7 @@
         .card-top {
             flex: 0 0 auto; 
             display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
         
         /* FIX #2: Logo Height = QR Height (70px) */
@@ -440,9 +440,9 @@
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <input type="tel" name="phone" placeholder="SĐT *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
-                            <input type="email" name="email" placeholder="Email" class="w-full p-2 bg-gray-50 border rounded text-sm">
+                            <input type="email" name="email" placeholder="Email *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
                         </div>
-                        <textarea name="message" rows="3" placeholder="Lời nhắn..." class="w-full p-2 bg-gray-50 border rounded text-sm"></textarea>
+                        <textarea name="message" rows="3" placeholder="Lời nhắn *" required class="w-full p-2 bg-gray-50 border rounded text-sm"></textarea>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="wantChat" name="chat" checked class="accent-[#2F54A2] w-4 h-4">
                             <label for="wantChat" class="text-xs text-gray-700 font-bold">Tôi muốn chat tư vấn thêm</label>
