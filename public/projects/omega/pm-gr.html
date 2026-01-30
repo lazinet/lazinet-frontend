@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    
+    <title>Gantt Chart Viewer | Tích hợp Google Sheets - LAZINET</title>
+    <meta name="description" content="Công cụ hiển thị Gantt Chart từ Google Sheets qua Google App Script. Chỉ xem, thống kê, xuất PNG/PDF.">
+    
+    <link rel="icon" type="image/x-icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0052FF;
+            --secondary-color: #FF6F00;
+            --bg-color: #0F162C;
+            --card-bg: #1A2238;
+            --text-color: #FFFFFF;
+            --border-color: #2D3748;
+            --accent-color: #3F82FB;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --info-color: #3B82F6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Instrument Sans', 'Geist', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #1E293B 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .logo { height: 50px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+
+        .title-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(to right, #FFFFFF, #E2E8F0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .title-section p { font-size: 0.9rem; opacity: 0.9; margin-top: 0.25rem; }
+
+        .header-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+        .main-content { padding: 1.5rem; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--accent-color); }
+        .stat-label { font-size: 0.85rem; opacity: 0.8; }
+
+        .gantt-container {
+            background: var(--card-bg);
+            padding: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .gantt-header {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .gantt-title { font-size: 1.2rem; font-weight: 600; color: var(--accent-color); }
+        .gantt-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        #gantt_here {
+            width: 100% !important;
+            height: calc(100vh - 350px);
+            min-height: 600px;
+            background: var(--card-bg);
+        }
+
+        .notification { position: fixed; top: 1rem; right: 1rem; background: var(--card-bg); border-left: 4px solid var(--success-color); padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 0.75rem; z-index: 10000; transform: translateX(120%); transition: transform 0.3s ease; max-width: 400px; }
+        .notification.show { transform: translateX(0); }
+        .notification.success { border-left-color: var(--success-color); }
+        .notification.error { border-left-color: var(--danger-color); }
+
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 22, 44, 0.95);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .loading-overlay.active { opacity: 1; visibility: visible; }
+        .spinner { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1.5rem; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="loadingText">Đang tải dữ liệu từ Google Sheets...</div>
+    </div>
+
+    <div class="notification" id="notification">
+        <div class="notification-icon" id="notificationIcon"></div>
+        <div id="notificationMessage"></div>
+    </div>
+
+    <header class="header">
+        <div class="logo-section">
+            <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="LAZINET" class="logo">
+            <div class="title-section">
+                <h1>LAZINET Gantt Chart Viewer</h1>
+                <p>Hiển thị dự án từ Google Sheets</p>
+            </div>
+        </div>
+        <div class="header-controls">
+            <button class="btn btn-secondary" onclick="autoFitTimeline()">
+                <i class="fas fa-compress-arrows-alt"></i> Fit View
+            </button>
+            <button class="btn btn-primary" onclick="downloadChart('png')">
+                <i class="fas fa-image"></i> Xuất PNG
+            </button>
+            <button class="btn btn-success" onclick="downloadChart('pdf')">
+                <i class="fas fa-file-pdf"></i> Xuất PDF
+            </button>
+            <button class="btn btn-secondary" onclick="loadFromBackend()">
+                <i class="fas fa-sync"></i> Tải lại
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-value" id="totalTasks">0</div><div class="stat-label">Tổng công việc</div></div>
+                <div class="stat-card"><div class="stat-value" id="completedTasks">0</div><div class="stat-label">Đã hoàn thành</div></div>
+                <div class="stat-card"><div class="stat-value" id="totalDuration">0</div><div class="stat-label">Tổng thời gian (ngày)</div></div>
+                <div class="stat-card"><div class="stat-value" id="parentTasks">0</div><div class="stat-label">Công việc chính</div></div>
+            </div>
+
+            <div class="gantt-container">
+                <div class="gantt-header">
+                    <div class="gantt-title"><i class="fas fa-project-diagram"></i> Biểu đồ Gantt</div>
+                    <div class="gantt-controls">
+                        <select id="scaleSelect" class="form-control" onchange="updateScale()" style="width:auto; padding:0.5rem;">
+                            <option value="">-- Auto fit --</option>
+                            <option value="day">Theo ngày</option>
+                            <option value="week">Theo tuần</option>
+                            <option value="month" selected>Theo tháng</option>
+                            <option value="quarter">Theo quý</option>
+                            <option value="year">Theo năm</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="gantt.zoomIn()"><i class="fas fa-search-plus"></i></button>
+                        <button class="btn btn-secondary" onclick="gantt.zoomOut()"><i class="fas fa-search-minus"></i></button>
+                        <button class="btn btn-secondary" onclick="autoFitTimeline()"><i class="fas fa-compress-arrows-alt"></i> Fit</button>
+                    </div>
+                </div>
+                <div id="gantt_here"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    
+    <script>
+        // === THAY ĐỔI URL GAS TẠI ĐÂY ===
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyHxzB5iMlDTZ8uKeCntFJz7ryDCXL41y1ymJpRL4DZCi91xXiXBluKfUtpR6_2F5uygA/exec';  // <-- Dán URL Web App thực tế vào đây
+
+        let allTasks = [];
+
+        gantt.config.date_format = "%Y-%m-%d";
+        gantt.config.scale_unit = "month";
+        gantt.config.step = 1;
+        gantt.config.subscales = [{unit: "day", step: 1, date: "%d"}];
+        gantt.config.row_height = 40;
+        gantt.config.bar_height = 20;
+        gantt.config.readonly = true;
+        gantt.config.grid_resize = true;
+        gantt.config.columns = [
+            {name: "text", label: "Tên công việc", width: 250, tree: true, resize: true},
+            {name: "start_date", label: "Bắt đầu", width: 100, align: "center", resize: true},
+            {name: "end_date", label: "Kết thúc", width: 100, align: "center", resize: true},
+            {name: "progress", label: "Tiến độ", width: 80, align: "center", template: t => t.progress + "%", resize: true},
+            {name: "owner", label: "Người phụ trách", width: 120, resize: true}
+        ];
+
+        gantt.init("gantt_here");
+
+        function updateAllTasks() {
+            allTasks = [];
+            gantt.eachTask(task => allTasks.push(task));
+        }
+
+        function updateStatistics() {
+            updateAllTasks();
+            const totalTasks = allTasks.length;
+            const completedTasks = allTasks.filter(t => t.progress >= 100).length;
+            const totalDuration = allTasks.reduce((sum, t) => sum + (t.duration || 0), 0);
+            const parentTasks = allTasks.filter(t => !t.parent || t.parent === 0).length;
+
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('totalDuration').textContent = totalDuration;
+            document.getElementById('parentTasks').textContent = parentTasks;
+        }
+
+        function loadFromBackend() {
+            if (!GAS_URL || GAS_URL.includes('...')) {
+                showNotification('Vui lòng thay URL GAS trong code!', 'error');
+                hideLoading();
+                return;
+            }
+
+            showLoading('Đang tải dữ liệu từ Google Sheets...');
+
+            fetch(GAS_URL + '?t=' + Date.now())
+                .then(r => {
+                    if (!r.ok) throw new Error('Lỗi kết nối hoặc GAS không trả JSON');
+                    return r.json();
+                })
+                .then(json => {
+                    json.data.forEach(task => {
+                        if (!task.duration && task.start_date && task.end_date) {
+                            const start = new Date(task.start_date);
+                            const end = new Date(task.end_date);
+                            task.duration = Math.ceil((end - start) / 86400000) + 1;
+                        }
+                        task.open = !task.parent || task.parent === 0;
+                    });
+
+                    gantt.clearAll();
+                    gantt.parse(json);
+                    updateStatistics();
+                    autoFitTimeline();
+                    hideLoading();
+                    showNotification('Tải dữ liệu thành công!', 'success');
+                })
+                .catch(err => {
+                    hideLoading();
+                    showNotification('Lỗi: ' + err.message, 'error');
+                    console.error(err);
+                });
+        }
+
+        function autoFitTimeline() {
+            try {
+                let minDate = null, maxDate = null;
+                gantt.eachTask(task => {
+                    if (!task.start_date) return;
+                    const start = gantt.date.str_to_date(task.start_date);
+                    const end = task.end_date ? gantt.date.str_to_date(task.end_date) : gantt.calculateEndDate({start_date: task.start_date, duration: task.duration || 1});
+                    if (!minDate || start < minDate) minDate = start;
+                    if (!maxDate || end > maxDate) maxDate = end;
+                });
+
+                if (!minDate || !maxDate) {
+                    minDate = new Date();
+                    maxDate = new Date();
+                    maxDate.setMonth(maxDate.getMonth() + 3);
+                }
+
+                const padding = (maxDate - minDate) * 0.1;
+                const startDate = new Date(minDate.getTime() - padding);
+                const endDate = new Date(maxDate.getTime() + padding);
+
+                const selectedScale = document.getElementById('scaleSelect').value || "month";
+                gantt.config.scale_unit = selectedScale;
+                updateScale();
+                gantt.showDate(startDate);
+                setTimeout(() => gantt.render(), 100);
+            } catch (e) { console.error(e); }
+        }
+
+        function updateScale() {
+            const scale = document.getElementById('scaleSelect').value || "month";
+            gantt.config.scale_unit = scale;
+            switch(scale) {
+                case 'day': gantt.config.subscales = []; gantt.config.scale_height = 50; break;
+                case 'week': gantt.config.subscales = [{unit: "day", step: 1, date: "%d"}]; gantt.config.scale_height = 60; break;
+                case 'month': gantt.config.subscales = [{unit: "week", step: 1, date: "Tuần #%W"}]; gantt.config.scale_height = 70; break;
+                case 'quarter': gantt.config.subscales = [{unit: "month", step: 1, date: "%F"}]; gantt.config.scale_height = 80; break;
+                case 'year': gantt.config.subscales = [{unit: "month", step: 1, date: "%F"}]; gantt.config.scale_height = 80; break;
+            }
+            gantt.render();
+        }
+
+        function downloadChart(format) {  // ĐÃ SỬA Ở ĐÂY
+            showLoading('Đang xuất...');
+            setTimeout(() => {
+                html2canvas(document.getElementById('gantt_here'), {scale: 2}).then(canvas => {
+                    if (format === 'png') {
+                        const link = document.createElement('a');
+                        link.download = `gantt_chart_${new Date().toISOString().split('T')[0]}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    } else {
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('l', 'mm', 'a4');
+                        const imgData = canvas.toDataURL('image/png');
+                        const width = pdf.internal.pageSize.getWidth() - 20;
+                        const height = canvas.height * width / canvas.width;
+                        pdf.addImage(imgData, 'PNG', 10, 10, width, height);
+                        pdf.save(`gantt_chart_${new Date().toISOString().split('T')[0]}.pdf`);
+                    }
+                    hideLoading();
+                    showNotification('Xuất thành công!', 'success');
+                });
+            }, 500);
+        }
+
+        function showNotification(message, type = 'success') {
+            const n = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            document.getElementById('notificationMessage').textContent = message;
+            n.className = 'notification ' + type;
+            icon.innerHTML = type === 'success' ? '✅' : '❌';
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 4000);
+        }
+
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text || 'Đang tải dữ liệu từ Google Sheets...';
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // Tự động tải dữ liệu khi mở trang
+        window.addEventListener('DOMContentLoaded', () => {
+            showLoading();
+            loadFromBackend();
+        });
+
+        // Tự động fit khi resize
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(autoFitTimeline, 250);
+        });
+    </script>
+</body>
+</html>

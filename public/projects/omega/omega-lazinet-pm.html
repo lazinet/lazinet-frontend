@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Project Timeline Viewer - LAZINET</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    
+    <style>
+        /* --- GỐC: Bộ màu & biến CSS --- */
+        :root {
+            --primary-color: #0052FF;
+            --secondary-color: #FF6F00;
+            --bg-color: #0F162C;
+            --card-bg: #1A2238;
+            --text-color: #FFFFFF;
+            --border-color: #2D3748;
+            --accent-color: #3F82FB;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #1E293B 100%);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Header: Dark Mode --- */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .logo-section h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .header-controls { display: flex; gap: 0.5rem; align-items: center; }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.5rem; padding: 0.5rem 1rem;
+            border: none; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; transition: all 0.3s;
+            text-decoration: none; white-space: nowrap;
+        }
+        
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.1);
+            color: white; border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+        }
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Dropdown Custom */
+        select.btn-glass {
+            appearance: none; -webkit-appearance: none;
+            padding-right: 2rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+        }
+        select.btn-glass option { background: var(--card-bg); color: white; }
+
+        /* --- Stats Bar --- */
+        .stats-bar {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 1.5rem;
+            display: flex; gap: 2rem; align-items: center;
+            flex-shrink: 0; overflow-x: auto;
+        }
+        .stat-item { display: flex; align-items: center; gap: 0.8rem; min-width: max-content; }
+        .stat-value { font-size: 1.2rem; font-weight: 700; color: var(--accent-color); line-height: 1; }
+        .stat-label { font-size: 0.75rem; opacity: 0.7; }
+        .stat-icon { font-size: 1.2rem; opacity: 0.8; }
+
+        /* --- Gantt Container --- */
+        .gantt-wrapper {
+            flex: 1; position: relative; width: 100%;
+            background: #ffffff; /* Nền trắng cho vùng chart để dễ đọc */
+            overflow: hidden;
+        }
+        #gantt_here { width: 100%; height: 100%; background: #ffffff; }
+
+        /* --- FIX VẤN ĐỀ 1: CHỮ ĐEN TRÊN NỀN TRẮNG --- */
+        
+        /* 1. Header Cột */
+        .gantt_grid_scale, .gantt_grid_head_cell {
+            background-color: #f8fafc !important;
+            color: #1e293b !important; /* Chữ tối */
+            font-weight: 700 !important;
+            border-right: 1px solid #e2e8f0 !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        /* 2. Dòng dữ liệu (Tasks) */
+        .gantt_grid_data .gantt_row, 
+        .gantt_task_row {
+            background-color: #ffffff !important;
+            color: #334155 !important; /* Chữ xám đậm thay vì trắng */
+            border-bottom: 1px solid #f1f5f9 !important;
+        }
+        
+        /* Màu chữ trong ô */
+        .gantt_cell {
+            color: #334155 !important;
+        }
+
+        /* Dòng chẵn lẻ */
+        .gantt_grid_data .gantt_row.odd,
+        .gantt_task_row.odd {
+            background-color: #f8fafc !important; /* Xám rất nhạt */
+        }
+        
+        /* Hover dòng */
+        .gantt_grid_data .gantt_row:hover {
+            background-color: #eff6ff !important; /* Xanh nhạt khi hover */
+        }
+        
+        /* 3. Timeline Scale (Thước đo thời gian) */
+        .gantt_task_scale {
+            background-color: #f8fafc !important;
+            color: #1e293b !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+        .gantt_scale_cell { border-right: 1px solid #e2e8f0 !important; }
+
+        /* 4. Task Bars */
+        .gantt_task_line {
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: none !important;
+        }
+        .gantt_task_progress {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px 0 0 4px;
+        }
+        
+        /* Màu trạng thái */
+        .gantt_task_line.completed { background: #10B981 !important; } /* Xanh lá */
+        .gantt_task_line.delayed { background: #EF4444 !important; } /* Đỏ */
+        .gantt_task_line.inprogress { background: #3B82F6 !important; } /* Xanh dương */
+
+        /* 5. Resize Handles */
+        .gantt_grid_resize_area { background-color: var(--accent-color) !important; opacity: 0.5; }
+
+        /* --- Utilities --- */
+        .loading-overlay {
+            position: fixed; inset: 0; background: rgba(15, 22, 44, 0.95);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.3s;
+        }
+        .loading-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .spinner {
+            width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-color); border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .notification {
+            position: fixed; top: 90px; right: 20px;
+            background: var(--card-bg); border-left: 4px solid var(--success-color);
+            padding: 1rem; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: translateX(150%); transition: transform 0.3s; z-index: 10000;
+            display: flex; align-items: center; gap: 10px; color: white;
+            border: 1px solid var(--border-color);
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.error { border-left-color: var(--danger-color); }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="loadingText">Đang tải dữ liệu dự án...</div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notificationMsg"></span>
+    </div>
+
+    <header class="header">
+        <div class="logo-section">
+            <h1><i class="fas fa-project-diagram"></i> Dự án OMEGA Website - LAZINET PM</h1>
+        </div>
+        
+        <div class="header-controls">
+            <select id="scaleSelect" class="btn btn-glass" onchange="updateScale(this.value)">
+                <option value="day">Theo Ngày</option>
+                <option value="week">Theo Tuần</option>
+                <option value="month" selected>Theo Tháng</option>
+                <option value="quarter">Theo Quý</option>
+                <option value="year">Theo Năm</option>
+            </select>
+            
+            <button class="btn btn-glass" onclick="gantt.zoomIn()"><i class="fas fa-search-plus"></i></button>
+            <button class="btn btn-glass" onclick="gantt.zoomOut()"><i class="fas fa-search-minus"></i></button>
+            
+            <button class="btn btn-glass" onclick="autoFitTimeline()"><i class="fas fa-compress-arrows-alt"></i> Fit View</button>
+            
+            <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2); margin: 0 5px;"></div>
+
+            <button class="btn btn-glass" onclick="loadDataFromGAS()"><i class="fas fa-sync-alt"></i> Reload</button>
+            <button class="btn btn-glass" onclick="exportPNG()"><i class="fas fa-image"></i> PNG</button>
+        </div>
+    </header>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <i class="fas fa-tasks stat-icon" style="color: var(--accent-color)"></i>
+            <div>
+                <div class="stat-value" id="totalTasks">0</div>
+                <div class="stat-label">Tổng công việc</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-check-circle stat-icon" style="color: var(--success-color)"></i>
+            <div>
+                <div class="stat-value" id="completedTasks">0</div>
+                <div class="stat-label">Đã hoàn thành</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-spinner stat-icon" style="color: var(--warning-color)"></i>
+            <div>
+                <div class="stat-value" id="inProgressTasks">0</div>
+                <div class="stat-label">Đang thực hiện</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-exclamation-triangle stat-icon" style="color: var(--danger-color)"></i>
+            <div>
+                <div class="stat-value" id="delayedTasks">0</div>
+                <div class="stat-label">Trễ hạn</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gantt-wrapper">
+        <div id="gantt_here"></div>
+    </div>
+
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    
+    <script src="https://export.dhtmlx.com/gantt/api.js"></script> 
+
+    <script>
+        // --- API URL (Thay bằng link của bạn) ---
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzxE-bWluibO2YakJepuU4x3Z7g1GX89O6x_u3XCbhnUom93RIAfiAoaPpvRADMhFkVcw/exec"; 
+
+        // --- CẤU HÌNH GANTT ---
+        gantt.config.date_format = "%Y-%m-%d";
+        gantt.config.readonly = true;
+        
+        // Resize Cột & Grid
+        gantt.config.grid_resize = true;
+        gantt.config.keep_grid_width = false;
+        gantt.config.grid_width = 450;
+
+        // Cấu hình Cột
+        gantt.config.columns = [
+            {name: "text", label: "Tên công việc", tree: true, width: 250, resize: true},
+            {name: "start_date", label: "Bắt đầu", align: "center", width: 90, resize: true},
+            {name: "duration", label: "Ngày", align: "center", width: 60, resize: true},
+            {name: "progress", label: "%", align: "center", width: 60, resize: true, template: function(obj){
+                return Math.round((obj.progress || 0) * 100) + "%";
+            }},
+            {name: "owner", label: "Phụ trách", align: "center", width: 100, resize: true}
+        ];
+
+        // Scale
+        gantt.config.scale_unit = "month";
+        gantt.config.step = 1;
+        gantt.config.date_scale = "%F, %Y";
+        gantt.config.subscales = [{unit: "week", step: 1, date: "Tuần #%W"}];
+        gantt.config.scale_height = 60;
+        gantt.config.row_height = 40;
+        gantt.config.min_column_width = 40;
+        
+        gantt.plugins({ tooltip: true });
+
+        // Styling Class cho Task
+        gantt.templates.task_class = function(start, end, task){
+            const progress = task.progress || 0;
+            if(progress >= 1) return "completed";
+            
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            if(end < today && progress < 1) return "delayed";
+            return "inprogress";
+        };
+
+        gantt.init("gantt_here");
+
+        // --- LOGIC LOAD DỮ LIỆU ---
+        async function loadDataFromGAS() {
+            showLoading(true);
+            try {
+                const response = await fetch(GAS_API_URL);
+                if (!response.ok) throw new Error("Server Error");
+                
+                const rawData = await response.json();
+                if(rawData.error) throw new Error(rawData.error);
+
+                const parsedData = processData(rawData.data);
+                
+                gantt.clearAll();
+                gantt.parse(parsedData);
+                calculateStats(parsedData.data);
+                
+                showNotification("Đã tải dữ liệu thành công!", "success");
+                setTimeout(autoFitTimeline, 300);
+
+            } catch (error) {
+                console.error(error);
+                showNotification("Lỗi: " + error.message, "error");
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function processData(tasks) {
+            const links = [];
+            let linkId = 1;
+            const processedTasks = tasks.map(task => {
+                if(task.dependencies) {
+                    const deps = task.dependencies.toString().split(',');
+                    deps.forEach(dep => {
+                        const sourceId = dep.trim();
+                        if(sourceId) {
+                            links.push({ id: linkId++, source: sourceId, target: task.id, type: "0" });
+                        }
+                    });
+                }
+                return { ...task, open: true };
+            });
+            return { data: processedTasks, links: links };
+        }
+
+        // --- AUTO FIT ---
+        function autoFitTimeline() {
+            try {
+                const tasks = gantt.getTaskByTime();
+                if (!tasks.length) return;
+
+                let minDate = null;
+                let maxDate = null;
+
+                tasks.forEach(task => {
+                    if (task.start_date && (!minDate || task.start_date < minDate)) minDate = task.start_date;
+                    if (task.end_date && (!maxDate || task.end_date > maxDate)) maxDate = task.end_date;
+                });
+
+                if (!minDate || !maxDate) return;
+
+                const totalDuration = maxDate.getTime() - minDate.getTime();
+                const padding = totalDuration * 0.1; 
+                
+                const startDate = new Date(minDate.getTime() - padding);
+                const endDate = new Date(maxDate.getTime() + padding);
+                
+                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                let scaleUnit = "month";
+                
+                if (daysDiff > 730) scaleUnit = "year";
+                else if (daysDiff > 180) scaleUnit = "quarter";
+                else if (daysDiff > 60) scaleUnit = "month";
+                else if (daysDiff > 14) scaleUnit = "week";
+                else scaleUnit = "day";
+
+                document.getElementById('scaleSelect').value = scaleUnit;
+                updateScale(scaleUnit);
+                gantt.showDate(startDate);
+                gantt.showDate(endDate);
+
+            } catch (e) {
+                console.error("Auto fit error", e);
+            }
+        }
+
+        function updateScale(level) {
+            gantt.config.scale_unit = level;
+            switch(level){
+                case "day":
+                    gantt.config.step = 1;
+                    gantt.config.subscales = []; 
+                    gantt.config.min_column_width = 30;
+                    break;
+                case "week":
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [{unit:"day", step:1, date:"%d"}];
+                    gantt.config.min_column_width = 40;
+                    break;
+                case "month":
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [{unit:"week", step:1, date:"Tuần #%W"}];
+                    gantt.config.min_column_width = 50;
+                    break;
+                case "quarter":
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [{unit:"month", step:1, date:"%M"}];
+                    gantt.config.min_column_width = 50;
+                    break;
+                case "year":
+                    gantt.config.step = 1;
+                    gantt.config.subscales = [{unit:"month", step:1, date:"%M"}];
+                    gantt.config.min_column_width = 50;
+                    break;
+            }
+            gantt.render();
+        }
+
+        function calculateStats(tasks) {
+            const total = tasks.length;
+            const completed = tasks.filter(t => (t.progress || 0) >= 1).length;
+            const inProgress = tasks.filter(t => (t.progress || 0) > 0 && (t.progress || 0) < 1).length;
+            
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const delayed = tasks.filter(t => {
+                if ((t.progress || 0) >= 1) return false;
+                
+                let endDate = t.end_date;
+                if (typeof endDate === 'string' && endDate.trim()) {
+                    endDate = gantt.date.str_to_date(endDate);
+                } else if (!endDate && t.start_date && t.duration) {
+                    let start = typeof t.start_date === 'string' ? gantt.date.str_to_date(t.start_date) : t.start_date;
+                    endDate = gantt.calculateEndDate(start, t.duration);
+                }
+
+                return endDate && endDate < today;
+            }).length;
+
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('inProgressTasks').textContent = inProgress;
+            document.getElementById('delayedTasks').textContent = delayed;
+        }
+
+        function showLoading(show) {
+            const el = document.getElementById('loadingOverlay');
+            if(show) el.classList.remove('hidden'); else el.classList.add('hidden');
+        }
+
+        function showNotification(msg, type) {
+            const el = document.getElementById('notification');
+            const msgEl = document.getElementById('notificationMsg');
+            el.className = 'notification ' + (type === 'error' ? 'error' : '');
+            msgEl.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        // --- EXPORT FUNCTION (FIXED) ---
+        function exportPNG(){
+             // Dùng API trực tiếp từ export.dhtmlx.com/gantt/api.js
+             if (gantt.exportToPNG) {
+                 gantt.exportToPNG({
+                     name: "project_timeline.png",
+                     header: "<h1>Dự án OMEGA Website</h1>",
+                     footer: "Generated by LAZINET PM",
+                     locale: "vi",
+                     raw: true 
+                 });
+                 showNotification("Đang xử lý xuất ảnh...", "success");
+             } else {
+                 showNotification("Lỗi: Module Export chưa được tải.", "error");
+             }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadDataFromGAS);
+
+    </script>
+</body>
+</html>
