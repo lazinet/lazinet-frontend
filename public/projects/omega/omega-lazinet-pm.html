@@ -2,511 +2,491 @@
 <html lang="vi-VN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Project Timeline Viewer - LAZINET</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <title>Tiến độ Dự Án - OMEGA x LAZINET</title>
+    <meta name="description" content="Hệ thống quản lý tiến độ dự án OMEGA x LAZINET. Theo dõi Gantt Chart, trạng thái công việc và mốc thời gian thực tế.">
+    <meta name="keywords" content="OMEGA, LAZINET, Project Management, Gantt Chart, Tiến độ dự án, ERP Software">
+    
+    <link rel="icon" type="image/png" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    <link rel="apple-touch-icon" href="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png">
+    
+    <meta property="og:title" content="Tiến độ Dự Án - OMEGA x LAZINET">
+    <meta property="og:description" content="Theo dõi tiến độ triển khai dự án website và phần mềm OMEGA x LAZINET.">
+    <meta property="og:image" content="https://lazinet.com/assets/img/logo-lazinet/lazinet_logoFullSquare2.png">
+    <meta property="og:type" content="website">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    <link href="https://cdn.dhtmlx.com/gantt/edge/skins/dhtmlxgantt_material.css" rel="stylesheet">
+
     <style>
-        /* --- GỐC: Bộ màu & biến CSS --- */
+        /* --- 1. BIẾN MÀU SẮC --- */
         :root {
-            --primary-color: #0052FF;
-            --secondary-color: #FF6F00;
-            --bg-color: #0F162C;
-            --card-bg: #1A2238;
-            --text-color: #FFFFFF;
-            --border-color: #2D3748;
-            --accent-color: #3F82FB;
-            --success-color: #10B981;
-            --warning-color: #F59E0B;
-            --danger-color: #EF4444;
+            --bg-body: #F8F9FA;
+            --text-main: #1F2937;
+            --border: #E5E7EB;
+            
+            /* Màu trạng thái */
+            --color-tre-lich: #EF4444;    /* Đỏ */
+            --color-xong-muon: #3B82F6;   /* Xanh dương */
+            --color-xong-kip: #15803D;    /* Xanh lục đậm */
+            --color-xong-som: #7030A0;    /* Tím/Xanh đậm */
+            --color-dang-lam: #F59E0B;    /* Vàng/Cam */
+            --color-chua-lam: #374151;    /* Đen/Xám đậm */
+            
+            /* Highlight chọn dòng */
+            --color-selected: #CCECFF;    /* Aqua nhạt */
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Instrument Sans', sans-serif;
-            background: linear-gradient(135deg, var(--bg-color) 0%, #1E293B 100%);
-            color: var(--text-color);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background: var(--bg-body); 
+            color: var(--text-main); 
+            height: 100dvh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
         }
 
-        /* --- Header: Dark Mode --- */
+        /* --- 2. HEADER & TITLE RESPONSIVE --- */
         .header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            flex-shrink: 0;
-            z-index: 100;
-        }
-
-        .logo-section h1 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 0;
-            color: #fff;
-            display: flex; align-items: center; gap: 10px;
-        }
-
-        .header-controls { display: flex; gap: 0.5rem; align-items: center; }
-
-        /* --- Buttons --- */
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 0.5rem; padding: 0.5rem 1rem;
-            border: none; border-radius: 8px;
-            font-size: 0.85rem; font-weight: 500;
-            cursor: pointer; transition: all 0.3s;
-            text-decoration: none; white-space: nowrap;
+            background: #fff; border-bottom: 1px solid var(--border);
+            padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;
+            height: 60px; flex-shrink: 0; z-index: 20;
         }
         
-        .btn-glass {
-            background: rgba(255, 255, 255, 0.1);
-            color: white; border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(4px);
-        }
-        .btn-glass:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
+        .app-title { font-size: 18px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 10px; }
+        .title-desktop { display: inline; }
+        .title-mobile { display: none; }
+        
+        .omega-header-logo { height: 28px; width: auto; border-radius: 4px; display: block; }
+
+        @media (max-width: 768px) {
+            .title-desktop { display: none; }
+            .title-mobile { display: inline; }
+            .btn span { display: none; }
+            .btn { padding: 0 10px; }
         }
 
-        /* Dropdown Custom */
-        select.btn-glass {
-            appearance: none; -webkit-appearance: none;
-            padding-right: 2rem;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.8rem center;
+        .controls { display: flex; gap: 8px; align-items: center; }
+        .btn, .form-select {
+            height: 34px; padding: 0 12px; border-radius: 6px; border: 1px solid #D1D5DB;
+            background: #fff; color: #374151; font-size: 13px; font-weight: 500;
+            cursor: pointer; outline: none; display: inline-flex; align-items: center; gap: 5px;
         }
-        select.btn-glass option { background: var(--card-bg); color: white; }
+        .btn:hover { background: #F3F4F6; }
 
-        /* --- Stats Bar --- */
-        .stats-bar {
-            background: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.8rem 1.5rem;
-            display: flex; gap: 2rem; align-items: center;
+        /* --- 3. DASHBOARD --- */
+        .dashboard {
+            background: #fff; border-bottom: 1px solid var(--border);
+            padding: 10px 15px;
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
             flex-shrink: 0; overflow-x: auto;
         }
-        .stat-item { display: flex; align-items: center; gap: 0.8rem; min-width: max-content; }
-        .stat-value { font-size: 1.2rem; font-weight: 700; color: var(--accent-color); line-height: 1; }
-        .stat-label { font-size: 0.75rem; opacity: 0.7; }
-        .stat-icon { font-size: 1.2rem; opacity: 0.8; }
-
-        /* --- Gantt Container --- */
-        .gantt-wrapper {
-            flex: 1; position: relative; width: 100%;
-            background: #ffffff; /* Nền trắng cho vùng chart để dễ đọc */
-            overflow: hidden;
+        .stat-card {
+            border: 1px solid var(--border); border-radius: 6px;
+            padding: 8px; text-align: center; min-width: 80px;
+            border-top: 3px solid transparent;
         }
-        #gantt_here { width: 100%; height: 100%; background: #ffffff; }
-
-        /* --- FIX VẤN ĐỀ 1: CHỮ ĐEN TRÊN NỀN TRẮNG --- */
+        .stat-num { font-size: 18px; font-weight: 700; }
+        .stat-label { font-size: 11px; text-transform: uppercase; color: #6B7280; margin-top: 2px; font-weight: 600; }
         
-        /* 1. Header Cột */
+        .lbl-mobile { display: none; }
+        @media (max-width: 992px) {
+            .lbl-desktop { display: none; }
+            .lbl-mobile { display: inline; }
+            .stat-card { min-width: 60px; padding: 5px; }
+            .stat-num { font-size: 16px; }
+        }
+
+        /* --- 4. GANTT STYLE --- */
+        .gantt-container { 
+            flex: 1; 
+            position: relative; 
+            width: 100%; 
+            background: #fff;
+            min-height: 0; 
+        }
+        #gantt_here { width: 100%; height: 100%; }
+
+        /* Header Grid */
         .gantt_grid_scale, .gantt_grid_head_cell {
-            background-color: #f8fafc !important;
-            color: #1e293b !important; /* Chữ tối */
-            font-weight: 700 !important;
-            border-right: 1px solid #e2e8f0 !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-
-        /* 2. Dòng dữ liệu (Tasks) */
-        .gantt_grid_data .gantt_row, 
-        .gantt_task_row {
-            background-color: #ffffff !important;
-            color: #334155 !important; /* Chữ xám đậm thay vì trắng */
-            border-bottom: 1px solid #f1f5f9 !important;
+            background-color: #F9FAFB !important; color: #374151 !important;
+            font-weight: 700 !important; font-size: 12px !important; text-transform: uppercase;
         }
         
-        /* Màu chữ trong ô */
-        .gantt_cell {
-            color: #334155 !important;
+        /* Row Styles */
+        .gantt_task_row, .gantt_grid_data .gantt_row {
+            background-color: #fff !important; border-bottom: 1px solid #F3F4F6 !important; color: #1F2937 !important;
+            transition: background-color 0.2s;
+        }
+        .gantt_task_row.odd, .gantt_grid_data .gantt_row.odd { background-color: #F9FAFB !important; }
+
+        /* Highlight Row */
+        .gantt_grid_data .gantt_row.gantt_selected, 
+        .gantt_task_row.gantt_selected {
+            background-color: var(--color-selected) !important;
         }
 
-        /* Dòng chẵn lẻ */
-        .gantt_grid_data .gantt_row.odd,
-        .gantt_task_row.odd {
-            background-color: #f8fafc !important; /* Xám rất nhạt */
+        /* Task Bars */
+        .gantt_task_line { 
+            border-radius: 4px; border: none !important; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            z-index: 2;
         }
-        
-        /* Hover dòng */
-        .gantt_grid_data .gantt_row:hover {
-            background-color: #eff6ff !important; /* Xanh nhạt khi hover */
-        }
-        
-        /* 3. Timeline Scale (Thước đo thời gian) */
-        .gantt_task_scale {
-            background-color: #f8fafc !important;
-            color: #1e293b !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-        .gantt_scale_cell { border-right: 1px solid #e2e8f0 !important; }
+        .gantt_task_progress { background-color: rgba(255,255,255,0.4); }
 
-        /* 4. Task Bars */
-        .gantt_task_line {
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: none !important;
-        }
-        .gantt_task_progress {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px 0 0 4px;
-        }
-        
-        /* Màu trạng thái */
-        .gantt_task_line.completed { background: #10B981 !important; } /* Xanh lá */
-        .gantt_task_line.delayed { background: #EF4444 !important; } /* Đỏ */
-        .gantt_task_line.inprogress { background: #3B82F6 !important; } /* Xanh dương */
+        /* Màu Task Logic */
+        .task-tre-lich { background-color: var(--color-tre-lich) !important; }
+        .task-xong-muon { background-color: var(--color-xong-muon) !important; }
+        .task-xong-kip { background-color: var(--color-xong-kip) !important; }
+        .task-xong-som { background-color: var(--color-xong-som) !important; box-shadow: 0 0 5px rgba(0,255,0,0.4); }
+        .task-dang-lam { background-color: var(--color-dang-lam) !important; }
+        .task-chua-lam { background-color: var(--color-chua-lam) !important; }
 
-        /* 5. Resize Handles */
-        .gantt_grid_resize_area { background-color: var(--accent-color) !important; opacity: 0.5; }
+        /* Marker Hôm nay */
+        .today_marker {
+            background-color: #FF69B4;
+            opacity: 0.6;
+            z-index: 1;
+            pointer-events: none;
+        }
 
-        /* --- Utilities --- */
-        .loading-overlay {
-            position: fixed; inset: 0; background: rgba(15, 22, 44, 0.95);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.3s;
-        }
-        .loading-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .spinner {
-            width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: var(--accent-color); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 1rem;
-        }
+        /* Popup Quick Info */
+        .gantt_cal_light { background: #fff !important; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 9000; }
+        .gantt_cal_light .gantt_cal_header { background: #F3F4F6; border-radius: 8px 8px 0 0; color: #333; font-weight: bold; }
+
+        /* Utilities */
+        .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .loading-overlay.hidden { display: none; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #E5E7EB; border-top-color: #3B82F6; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        .notification {
-            position: fixed; top: 90px; right: 20px;
-            background: var(--card-bg); border-left: 4px solid var(--success-color);
-            padding: 1rem; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transform: translateX(150%); transition: transform 0.3s; z-index: 10000;
-            display: flex; align-items: center; gap: 10px; color: white;
-            border: 1px solid var(--border-color);
-        }
+        .notification { position: fixed; top: 70px; right: 20px; background: #10B981; color: white; padding: 10px 20px; border-radius: 6px; transform: translateX(150%); transition: 0.3s; z-index: 10001; }
         .notification.show { transform: translateX(0); }
-        .notification.error { border-left-color: var(--danger-color); }
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* === MOBILE LAYOUT FIX (QUAN TRỌNG) === */
+        @media (max-width: 992px) {
+            /* Ép buộc các cell grid phải full width */
+            .gantt_layout_cell.grid_cell,
+            .gantt_layout_outer_scroll,
+            .gantt_layout_outer_scroll_horizontal,
+            .gantt_layout_content {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            /* Đảm bảo grid bên trong cũng giãn tối đa */
+            .gantt_grid, .gantt_grid_scale, .gantt_grid_data {
+                width: 100% !important;
+            }
+            
+            /* Tắt margin thừa nếu có */
+            .gantt_layout_cell {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
     </style>
+    
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
 </head>
 <body>
+    
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <div id="loadingText">Đang tải dữ liệu dự án...</div>
+        <div style="margin-top:10px; font-weight:500; color:#555">Đang tải dữ liệu...</div>
     </div>
-
-    <div class="notification" id="notification">
-        <i class="fas fa-info-circle"></i>
-        <span id="notificationMsg"></span>
-    </div>
+    <div class="notification" id="notification">Thông báo</div>
 
     <header class="header">
-        <div class="logo-section">
-            <h1><i class="fas fa-project-diagram"></i> Dự án OMEGA Website - LAZINET PM</h1>
-        </div>
-        
-        <div class="header-controls">
-            <select id="scaleSelect" class="btn btn-glass" onchange="updateScale(this.value)">
-                <option value="day">Theo Ngày</option>
-                <option value="week">Theo Tuần</option>
-                <option value="month" selected>Theo Tháng</option>
-                <option value="quarter">Theo Quý</option>
-                <option value="year">Theo Năm</option>
+        <h1 class="app-title">
+            <img src="assets/img-logo/omega-logo-square.png" alt="OMEGA" class="omega-header-logo">
+            <span class="title-desktop">OMEGA Project Timeline by LAZINET</span>
+            <span class="title-mobile">OMEGA</span>
+        </h1>
+        <div class="controls">
+            <select id="scaleSelect" class="form-select" onchange="updateScale(this.value)">
+                <option value="day">Ngày</option>
+                <option value="week" selected>Tuần</option> <option value="month">Tháng</option>
+                <option value="year">Năm</option>
             </select>
-            
-            <button class="btn btn-glass" onclick="gantt.zoomIn()"><i class="fas fa-search-plus"></i></button>
-            <button class="btn btn-glass" onclick="gantt.zoomOut()"><i class="fas fa-search-minus"></i></button>
-            
-            <button class="btn btn-glass" onclick="autoFitTimeline()"><i class="fas fa-compress-arrows-alt"></i> Fit View</button>
-            
-            <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2); margin: 0 5px;"></div>
-
-            <button class="btn btn-glass" onclick="loadDataFromGAS()"><i class="fas fa-sync-alt"></i> Reload</button>
-            <button class="btn btn-glass" onclick="exportPNG()"><i class="fas fa-image"></i> PNG</button>
+            <button class="btn" onclick="loadData()"><i class="fas fa-sync"></i></button>
+            <button class="btn" onclick="exportPNG()"><i class="fas fa-camera"></i> <span>PNG</span></button>
         </div>
     </header>
 
-    <div class="stats-bar">
-        <div class="stat-item">
-            <i class="fas fa-tasks stat-icon" style="color: var(--accent-color)"></i>
-            <div>
-                <div class="stat-value" id="totalTasks">0</div>
-                <div class="stat-label">Tổng công việc</div>
-            </div>
+    <div class="dashboard">
+        <div class="stat-card" style="border-top-color: var(--color-xong-som); color: var(--color-xong-som)">
+            <div class="stat-num" id="st-xong-som">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Xong sớm</span><span class="lbl-mobile">Sớm</span></div>
         </div>
-        <div class="stat-item">
-            <i class="fas fa-check-circle stat-icon" style="color: var(--success-color)"></i>
-            <div>
-                <div class="stat-value" id="completedTasks">0</div>
-                <div class="stat-label">Đã hoàn thành</div>
-            </div>
+        <div class="stat-card" style="border-top-color: var(--color-xong-kip); color: var(--color-xong-kip)">
+            <div class="stat-num" id="st-xong-kip">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Xong kịp</span><span class="lbl-mobile">Kịp</span></div>
         </div>
-        <div class="stat-item">
-            <i class="fas fa-spinner stat-icon" style="color: var(--warning-color)"></i>
-            <div>
-                <div class="stat-value" id="inProgressTasks">0</div>
-                <div class="stat-label">Đang thực hiện</div>
-            </div>
+        <div class="stat-card" style="border-top-color: var(--color-xong-muon); color: var(--color-xong-muon)">
+            <div class="stat-num" id="st-xong-muon">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Xong muộn</span><span class="lbl-mobile">Muộn</span></div>
         </div>
-        <div class="stat-item">
-            <i class="fas fa-exclamation-triangle stat-icon" style="color: var(--danger-color)"></i>
-            <div>
-                <div class="stat-value" id="delayedTasks">0</div>
-                <div class="stat-label">Trễ hạn</div>
-            </div>
+        <div class="stat-card" style="border-top-color: var(--color-dang-lam); color: var(--color-dang-lam)">
+            <div class="stat-num" id="st-dang-lam">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Đang làm</span><span class="lbl-mobile">Đang</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color: var(--color-tre-lich); color: var(--color-tre-lich)">
+            <div class="stat-num" id="st-tre-lich">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Trễ lịch</span><span class="lbl-mobile">Trễ</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color: var(--color-chua-lam); color: var(--color-chua-lam)">
+            <div class="stat-num" id="st-chua-lam">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Chưa làm</span><span class="lbl-mobile">Chưa</span></div>
         </div>
     </div>
 
-    <div class="gantt-wrapper">
+    <div class="gantt-container">
         <div id="gantt_here"></div>
     </div>
 
-    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
-    
-    <script src="https://export.dhtmlx.com/gantt/api.js"></script> 
-
     <script>
-        // --- API URL (Thay bằng link của bạn) ---
-        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzxE-bWluibO2YakJepuU4x3Z7g1GX89O6x_u3XCbhnUom93RIAfiAoaPpvRADMhFkVcw/exec"; 
+        const API_URL = "https://script.google.com/macros/s/AKfycbzxE-bWluibO2YakJepuU4x3Z7g1GX89O6x_u3XCbhnUom93RIAfiAoaPpvRADMhFkVcw/exec"; 
 
-        // --- CẤU HÌNH GANTT ---
-        gantt.config.date_format = "%Y-%m-%d";
-        gantt.config.readonly = true;
-        
-        // Resize Cột & Grid
-        gantt.config.grid_resize = true;
-        gantt.config.keep_grid_width = false;
-        gantt.config.grid_width = 450;
-
-        // Cấu hình Cột
-        gantt.config.columns = [
-            {name: "text", label: "Tên công việc", tree: true, width: 250, resize: true},
-            {name: "start_date", label: "Bắt đầu", align: "center", width: 90, resize: true},
-            {name: "duration", label: "Ngày", align: "center", width: 60, resize: true},
-            {name: "progress", label: "%", align: "center", width: 60, resize: true, template: function(obj){
-                return Math.round((obj.progress || 0) * 100) + "%";
-            }},
-            {name: "owner", label: "Phụ trách", align: "center", width: 100, resize: true}
-        ];
-
-        // Scale
-        gantt.config.scale_unit = "month";
-        gantt.config.step = 1;
-        gantt.config.date_scale = "%F, %Y";
-        gantt.config.subscales = [{unit: "week", step: 1, date: "Tuần #%W"}];
-        gantt.config.scale_height = 60;
-        gantt.config.row_height = 40;
-        gantt.config.min_column_width = 40;
-        
-        gantt.plugins({ tooltip: true });
-
-        // Styling Class cho Task
-        gantt.templates.task_class = function(start, end, task){
-            const progress = task.progress || 0;
-            if(progress >= 1) return "completed";
-            
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            
-            if(end < today && progress < 1) return "delayed";
-            return "inprogress";
-        };
-
-        gantt.init("gantt_here");
-
-        // --- LOGIC LOAD DỮ LIỆU ---
-        async function loadDataFromGAS() {
-            showLoading(true);
-            try {
-                const response = await fetch(GAS_API_URL);
-                if (!response.ok) throw new Error("Server Error");
-                
-                const rawData = await response.json();
-                if(rawData.error) throw new Error(rawData.error);
-
-                const parsedData = processData(rawData.data);
-                
-                gantt.clearAll();
-                gantt.parse(parsedData);
-                calculateStats(parsedData.data);
-                
-                showNotification("Đã tải dữ liệu thành công!", "success");
-                setTimeout(autoFitTimeline, 300);
-
-            } catch (error) {
-                console.error(error);
-                showNotification("Lỗi: " + error.message, "error");
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        function processData(tasks) {
-            const links = [];
-            let linkId = 1;
-            const processedTasks = tasks.map(task => {
-                if(task.dependencies) {
-                    const deps = task.dependencies.toString().split(',');
-                    deps.forEach(dep => {
-                        const sourceId = dep.trim();
-                        if(sourceId) {
-                            links.push({ id: linkId++, source: sourceId, target: task.id, type: "0" });
-                        }
-                    });
+        // 1. Template Màu %
+        function getProgressColor(progress) {
+            if (progress > 1) progress = 1; if (progress < 0) progress = 0;
+            const stops = [
+                { pct: 0.00, color: {r: 0, g: 0, b: 0} },       
+                { pct: 0.25, color: {r: 255, g: 0, b: 0} },     
+                { pct: 0.50, color: {r: 255, g: 180, b: 0} },   
+                { pct: 0.75, color: {r: 0, g: 82, b: 255} },    
+                { pct: 1.00, color: {r: 0, g: 128, b: 0} }      
+            ];
+            let start = stops[0], end = stops[stops.length - 1];
+            for (let i = 0; i < stops.length - 1; i++) {
+                if (progress >= stops[i].pct && progress <= stops[i+1].pct) {
+                    start = stops[i]; end = stops[i+1]; break;
                 }
-                return { ...task, open: true };
-            });
-            return { data: processedTasks, links: links };
+            }
+            const ratio = (progress - start.pct) / (end.pct - start.pct);
+            const r = Math.round(start.color.r + (end.color.r - start.color.r) * ratio);
+            const g = Math.round(start.color.g + (end.color.g - start.color.g) * ratio);
+            const b = Math.round(start.color.b + (end.color.b - start.color.b) * ratio);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+        const templateProgress = (obj) => {
+            const p = obj.progress || 0;
+            return `<span style="color: ${getProgressColor(p)}; font-weight: 700;">${Math.round(p * 100)}%</span>`;
+        };
+        const templateDate = (date) => date ? `${date.getDate()}/${date.getMonth() + 1}` : "";
+
+        // 2. Logic Trạng Thái
+        function getTaskStatus(task) {
+            const today = new Date(); today.setHours(0,0,0,0);
+            const start = task.start_date, end = task.end_date, p = task.progress || 0;
+            if (!start || !end) return 'unknown';
+
+            if (start <= today) {
+                if (end < today) return (p < 1) ? 'tre-lich' : 'xong-kip';
+                if (end.getTime() === today.getTime()) return (p < 1) ? 'tre-lich' : 'xong-kip';
+                if (end > today) return (p < 1) ? 'dang-lam' : 'xong-som';
+            } else {
+                return (p == 0) ? 'chua-lam' : 'dang-lam';
+            }
+            return 'chua-lam';
         }
 
-        // --- AUTO FIT ---
-        function autoFitTimeline() {
-            try {
-                const tasks = gantt.getTaskByTime();
-                if (!tasks.length) return;
+        // 3. Khởi tạo Gantt
+        function initGantt() {
+            gantt.plugins({ 
+                marker: true,      
+                quick_info: true,  
+                export_api: true,  
+                tooltip: true   
+            });
 
-                let minDate = null;
-                let maxDate = null;
+            const today = new Date();
+            gantt.addMarker({
+                start_date: today,
+                css: "today_marker",
+                text: "" 
+            });
 
-                tasks.forEach(task => {
-                    if (task.start_date && (!minDate || task.start_date < minDate)) minDate = task.start_date;
-                    if (task.end_date && (!maxDate || task.end_date > maxDate)) maxDate = task.end_date;
-                });
-
-                if (!minDate || !maxDate) return;
-
-                const totalDuration = maxDate.getTime() - minDate.getTime();
-                const padding = totalDuration * 0.1; 
+            gantt.templates.quick_info_content = function(start, end, task){ 
+                const sttMap = {
+                    'tre-lich': 'Trễ lịch', 'xong-muon': 'Xong muộn', 'xong-kip': 'Xong kịp',
+                    'xong-som': 'Xong sớm', 'dang-lam': 'Đang làm', 'chua-lam': 'Chưa làm'
+                };
+                const statusKey = getTaskStatus(task);
+                const statusTxt = sttMap[statusKey] || statusKey;
+                const fmt = gantt.date.date_to_str("%d/%m/%Y");
                 
-                const startDate = new Date(minDate.getTime() - padding);
-                const endDate = new Date(maxDate.getTime() + padding);
-                
-                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-                let scaleUnit = "month";
-                
-                if (daysDiff > 730) scaleUnit = "year";
-                else if (daysDiff > 180) scaleUnit = "quarter";
-                else if (daysDiff > 60) scaleUnit = "month";
-                else if (daysDiff > 14) scaleUnit = "week";
-                else scaleUnit = "day";
+                return `<b>Trạng thái:</b> ${statusTxt}<br/>
+                        <b>Tiến độ:</b> ${Math.round((task.progress||0)*100)}%<br/>
+                        <b>Phụ trách:</b> ${task.owner || 'Chưa gán'}<br/>
+                        <b>Thời gian:</b> ${fmt(start)} - ${fmt(end)}`;
+            };
 
-                document.getElementById('scaleSelect').value = scaleUnit;
-                updateScale(scaleUnit);
-                gantt.showDate(startDate);
-                gantt.showDate(endDate);
+            const isMobile = window.innerWidth <= 992;
+            
+            // Cấu hình chung
+            gantt.config.date_format = "%Y-%m-%d";
+            gantt.config.readonly = true;
+            gantt.config.row_height = 36;
+            gantt.config.bar_height = 20;
+            gantt.config.scale_height = 50;
+            gantt.config.grid_resize = true;
+            gantt.config.select_task = true;
+            gantt.config.touch = "force"; 
 
-            } catch (e) {
-                console.error("Auto fit error", e);
+            // === LAYOUT RESPONSIVE CẢI TIẾN ===
+            gantt.config.layout = isMobile ? {
+                css: "gantt_container",
+                rows: [
+                    {
+                        cols: [
+                            { view: "grid", scrollX: "gridScroll", scrollY: "scrollVer" },
+                            { view: "scrollbar", id: "scrollVer" }
+                        ]
+                    },
+                    { view: "scrollbar", id: "gridScroll", group: "horizontal" },
+                    { resizer: true, width: 1 },
+                    { view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
+                    { view: "scrollbar", id: "scrollHor", group: "horizontal" }
+                ]
+            } : {
+                css: "gantt_container",
+                cols: [
+                    { 
+                        width: 420, min_width: 300, 
+                        rows: [
+                            { view: "grid", scrollX: "gridScroll", scrollY: "scrollVer" },
+                            { view: "scrollbar", id: "gridScroll" }
+                        ]
+                    },
+                    { resizer: true, width: 1 }, 
+                    { 
+                        rows: [
+                            { view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
+                            { view: "scrollbar", id: "scrollHor" }
+                        ]
+                    },
+                    { view: "scrollbar", id: "scrollVer" }
+                ]
+            };
+
+            // Cột (Sửa cột tên để tự co giãn trên mobile)
+            gantt.config.columns = [
+                // Quan trọng: width: '*' giúp cột này chiếm hết khoảng trống còn lại
+                {name: "text", label: "Công việc", tree: true, width: isMobile ? '*' : 250, resize: true},
+                {name: "start_date", label: "Bắt đầu", align: "center", width: 60, resize: true, template: (obj) => templateDate(obj.start_date)},
+                {name: "progress", label: "%", align: "center", width: 50, resize: true, template: templateProgress}
+            ];
+            if (!isMobile) {
+                gantt.config.columns.push({name: "owner", label: "PIC", align: "center", width: 80, resize: true});
             }
+
+            gantt.templates.task_class = (start, end, task) => "task-" + getTaskStatus(task);
+            // tooltip = false;
+            gantt.templates.tooltip_text = function(start,end,task){
+                const fmt = gantt.date.date_to_str("%d/%m/%Y");
+                return `<b>${task.text}</b><br/>
+                        ${fmt(start)} - ${fmt(end)}<br/>
+                        Tiến độ: ${Math.round((task.progress||0)*100)}%`;
+            };
+
+            gantt.init("gantt_here");
         }
 
         function updateScale(level) {
             gantt.config.scale_unit = level;
-            switch(level){
-                case "day":
-                    gantt.config.step = 1;
-                    gantt.config.subscales = []; 
-                    gantt.config.min_column_width = 30;
-                    break;
-                case "week":
-                    gantt.config.step = 1;
-                    gantt.config.subscales = [{unit:"day", step:1, date:"%d"}];
-                    gantt.config.min_column_width = 40;
-                    break;
-                case "month":
-                    gantt.config.step = 1;
-                    gantt.config.subscales = [{unit:"week", step:1, date:"Tuần #%W"}];
-                    gantt.config.min_column_width = 50;
-                    break;
-                case "quarter":
-                    gantt.config.step = 1;
-                    gantt.config.subscales = [{unit:"month", step:1, date:"%M"}];
-                    gantt.config.min_column_width = 50;
-                    break;
-                case "year":
-                    gantt.config.step = 1;
-                    gantt.config.subscales = [{unit:"month", step:1, date:"%M"}];
-                    gantt.config.min_column_width = 50;
-                    break;
+            if(level === "day") {
+                gantt.config.step = 1; gantt.config.date_scale = "%d/%m"; gantt.config.subscales = []; gantt.config.min_column_width = 30;
+            } else if(level === "week") {
+                gantt.config.step = 1; gantt.config.date_scale = "Tuần %W"; gantt.config.subscales = [{unit:"day", step:1, date:"%d/%m"}]; gantt.config.min_column_width = 50;
+            } else if(level === "month") {
+                gantt.config.step = 1; gantt.config.date_scale = "Tháng %m"; gantt.config.subscales = [{unit:"week", step:1, date:"Tuần %W"}]; gantt.config.min_column_width = 50;
+            } else if(level === "year") {
+                 gantt.config.step = 1; gantt.config.date_scale = "Năm %Y"; gantt.config.subscales = [{unit:"month", step:1, date:"T%m"}]; gantt.config.min_column_width = 50;
             }
             gantt.render();
         }
 
-        function calculateStats(tasks) {
-            const total = tasks.length;
-            const completed = tasks.filter(t => (t.progress || 0) >= 1).length;
-            const inProgress = tasks.filter(t => (t.progress || 0) > 0 && (t.progress || 0) < 1).length;
-            
-            const today = new Date();
-            today.setHours(0,0,0,0);
+        function autoFit() {
+            const tasks = gantt.getTaskByTime();
+            if(!tasks.length) return;
+            let min = tasks[0].start_date, max = tasks[0].end_date;
+            tasks.forEach(t => {
+                if(t.start_date < min) min = t.start_date;
+                if(t.end_date > max) max = t.end_date;
+            });
+            gantt.config.start_date = gantt.date.add(min, -2, "day");
+            gantt.config.end_date = gantt.date.add(max, 5, "day");
+            gantt.render();
+        }
 
-            const delayed = tasks.filter(t => {
-                if ((t.progress || 0) >= 1) return false;
+        async function loadData() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            try {
+                const res = await fetch(API_URL);
+                const json = await res.json();
+                if(json.error) throw new Error(json.error);
                 
-                let endDate = t.end_date;
-                if (typeof endDate === 'string' && endDate.trim()) {
-                    endDate = gantt.date.str_to_date(endDate);
-                } else if (!endDate && t.start_date && t.duration) {
-                    let start = typeof t.start_date === 'string' ? gantt.date.str_to_date(t.start_date) : t.start_date;
-                    endDate = gantt.calculateEndDate(start, t.duration);
-                }
+                const links = []; let lid=1;
+                const tasks = json.data.map(t => {
+                    if(t.dependencies) {
+                        t.dependencies.toString().split(',').forEach(d => {
+                            if(d.trim()) links.push({id:lid++, source:d.trim(), target:t.id, type:"0"});
+                        });
+                    }
+                    return {...t, open: true};
+                });
 
-                return endDate && endDate < today;
-            }).length;
-
-            document.getElementById('totalTasks').textContent = total;
-            document.getElementById('completedTasks').textContent = completed;
-            document.getElementById('inProgressTasks').textContent = inProgress;
-            document.getElementById('delayedTasks').textContent = delayed;
+                gantt.clearAll();
+                gantt.parse({data: tasks, links: links});
+                calculateDashboard(tasks);
+                autoFit();
+                
+                showNotify("Cập nhật dữ liệu thành công!");
+            } catch (e) { console.error(e); showNotify("Lỗi tải dữ liệu!", true); }
+            finally { document.getElementById('loadingOverlay').classList.add('hidden'); }
         }
 
-        function showLoading(show) {
-            const el = document.getElementById('loadingOverlay');
-            if(show) el.classList.remove('hidden'); else el.classList.add('hidden');
+        function calculateDashboard(tasks) {
+            const counts = { 'xong-som':0, 'xong-kip':0, 'xong-muon':0, 'dang-lam':0, 'tre-lich':0, 'chua-lam':0 };
+            tasks.forEach(t => {
+                const gt = gantt.getTask(t.id);
+                if(gt) { const s = getTaskStatus(gt); if(counts[s] !== undefined) counts[s]++; }
+            });
+            Object.keys(counts).forEach(k => {
+                const el = document.getElementById('st-'+k);
+                if(el) el.innerText = counts[k];
+            });
         }
 
-        function showNotification(msg, type) {
+        function showNotify(msg, isError) {
             const el = document.getElementById('notification');
-            const msgEl = document.getElementById('notificationMsg');
-            el.className = 'notification ' + (type === 'error' ? 'error' : '');
-            msgEl.textContent = msg;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 3000);
+            el.innerText = msg; el.style.background = isError ? '#EF4444' : '#10B981';
+            el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3000);
         }
 
-        // --- EXPORT FUNCTION (FIXED) ---
-        function exportPNG(){
-             // Dùng API trực tiếp từ export.dhtmlx.com/gantt/api.js
-             if (gantt.exportToPNG) {
-                 gantt.exportToPNG({
-                     name: "project_timeline.png",
-                     header: "<h1>Dự án OMEGA Website</h1>",
-                     footer: "Generated by LAZINET PM",
-                     locale: "vi",
-                     raw: true 
-                 });
-                 showNotification("Đang xử lý xuất ảnh...", "success");
-             } else {
-                 showNotification("Lỗi: Module Export chưa được tải.", "error");
-             }
+        function exportPNG() {
+            if (gantt.exportToPNG) gantt.exportToPNG({ name: "tiendo_omega.png", locale: "vi" });
+            else showNotify("Chức năng chưa sẵn sàng", true);
         }
 
-        window.addEventListener('DOMContentLoaded', loadDataFromGAS);
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => { initGantt(); gantt.render(); }, 200);
+        });
 
+        window.addEventListener('DOMContentLoaded', () => {
+            initGantt();
+            updateScale("week");
+            loadData();
+        });
     </script>
 </body>
 </html>
