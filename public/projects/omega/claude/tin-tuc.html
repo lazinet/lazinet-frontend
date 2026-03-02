@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tin Tức - OMEGA ERP</title>
+  <meta name="description" content="Cập nhật tin tức mới nhất về ERP, chuyển đổi số, kế toán, dự án và sự kiện từ OMEGA — giải pháp quản trị doanh nghiệp hàng đầu Việt Nam.">
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ─── News filter bar ─── */
+    .news-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 32px 0 48px;
+    }
+    .filter-btn {
+      padding: 9px 22px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(1,166,82,0.3);
+      background: transparent;
+      color: #555;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(1,166,82,0.3);
+    }
+
+    /* ─── News grid & cards ─── */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .news-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.07);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+      border-color: rgba(1,166,82,0.2);
+    }
+    .news-card-img {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .news-card-img .category-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-erp        { background: rgba(0,120,212,0.9); color:#fff; }
+    .badge-chuyen-doi-so { background: rgba(1,166,82,0.9); color:#fff; }
+    .badge-ke-toan    { background: rgba(126,217,87,0.9); color:#0d1b2a; }
+    .badge-du-an      { background: rgba(229,57,53,0.9); color:#fff; }
+    .badge-su-kien    { background: rgba(255,152,0,0.9); color:#fff; }
+    .badge-tuyen-dung { background: rgba(156,39,176,0.9); color:#fff; }
+
+    .news-card-body {
+      padding: 24px 24px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .news-card-meta i { color: #01a652; }
+    .news-card-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0d1b2a;
+      line-height: 1.45;
+      margin-bottom: 12px;
+      flex: 1;
+    }
+    .news-card-body h3 a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .news-card-body h3 a:hover { color: #01a652; }
+    .news-card-excerpt {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .news-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #01a652;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .news-read-more:hover { gap: 12px; }
+
+    /* Illustration for news card images */
+    .news-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+    }
+
+    /* ─── Pagination ─── */
+    .pagination-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 56px;
+    }
+    .page-btn {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(1,166,82,0.25);
+      background: transparent;
+      color: #555;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page-btn.active,
+    .page-btn:hover {
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      border-color: transparent;
+      color: #fff;
+    }
+    .page-btn-nav {
+      padding: 0 18px;
+      width: auto;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    /* Hidden cards for filter */
+    .news-card[style*="display:none"] { display: none !important; }
+
+    @media (max-width: 1024px) {
+      .news-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .news-grid { grid-template-columns: 1fr; }
+      .news-filter-bar { gap: 8px; }
+      .filter-btn { padding: 7px 16px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+  <img src="assets/img/preloader.svg" alt="Loading OMEGA...">
+</div>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" title="Về đầu trang"><i class="fas fa-angle-up"></i></button>
+
+<!-- Mobile Nav Overlay -->
+<div class="overlay"></div>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <button class="close-nav"><i class="fas fa-times"></i></button>
+  <ul>
+    <li><a href="index.html">Trang Chủ</a></li>
+    <li><a href="ve-omega.html">Về Omega</a></li>
+    <li><a href="giai-phap.html">Giải Pháp</a></li>
+    <li><a href="khach-hang.html">Khách Hàng</a></li>
+    <li><a href="san-pham.html">Sản Phẩm</a></li>
+    <li><a href="dich-vu.html">Dịch Vụ</a></li>
+    <li><a href="tin-tuc.html" class="active">Tin Tức</a></li>
+    <li><a href="lien-he.html">Liên Hệ</a></li>
+  </ul>
+  <a href="lien-he.html" class="mobile-cta">Đăng Ký Demo</a>
+</nav>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fas fa-phone-alt"></i> <a href="tel:02835128448">028 3512 8448</a></span>
+        <span><i class="fas fa-envelope"></i> <a href="mailto:info@omega.com.vn">info@omega.com.vn</a></span>
+        <span><i class="fas fa-map-marker-alt"></i> 277A Nguyễn Văn Đậu, TP.HCM</span>
+      </div>
+      <div class="topbar-social">
+        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="logo-light">
+        <img src="assets/img/logo-dark.svg" alt="OMEGA ERP" class="logo-dark">
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="ve-omega.html">Về Omega</a></li>
+        <li>
+          <a href="giai-phap.html">Giải Pháp</a>
+          <ul class="dropdown">
+            <li><a href="giai-phap.html#san-xuat">Sản xuất</a></li>
+            <li><a href="giai-phap.html#thuong-mai">Thương mại</a></li>
+            <li><a href="giai-phap.html#bat-dong-san">Bất động sản</a></li>
+            <li><a href="giai-phap.html#fb">F&amp;B</a></li>
+            <li><a href="giai-phap.html#fmcg">FMCG</a></li>
+          </ul>
+        </li>
+        <li><a href="khach-hang.html">Khách Hàng</a></li>
+        <li>
+          <a href="san-pham.html">Sản Phẩm</a>
+          <ul class="dropdown">
+            <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+            <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+            <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+            <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          </ul>
+        </li>
+        <li><a href="dich-vu.html">Dịch Vụ</a></li>
+        <li><a href="tin-tuc.html" class="active">Tin Tức</a></li>
+        <li><a href="lien-he.html">Liên Hệ</a></li>
+        <li><a href="lien-he.html" class="nav-cta"><i class="fas fa-calendar-check"></i> Đăng Ký Demo</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     PAGE BANNER
+     ============================================================ -->
+<section class="page-banner">
+  <div class="container">
+    <h1 class="fade-up">Tin Tức</h1>
+    <nav class="breadcrumb fade-up delay-1">
+      <a href="index.html">Trang Chủ</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Tin Tức</span>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================================================
+     NEWS SECTION
+     ============================================================ -->
+<section class="section-padding">
+  <div class="container">
+
+    <!-- Filter bar -->
+    <div class="news-filter-bar fade-up">
+      <button class="filter-btn active" data-filter="all">Tất Cả</button>
+      <button class="filter-btn" data-filter="chuyen-doi-so">Chuyển Đổi Số</button>
+      <button class="filter-btn" data-filter="erp">ERP</button>
+      <button class="filter-btn" data-filter="ke-toan">Kế Toán</button>
+      <button class="filter-btn" data-filter="du-an">Dự Án</button>
+      <button class="filter-btn" data-filter="su-kien">Sự Kiện</button>
+      <button class="filter-btn" data-filter="tuyen-dung">Tuyển Dụng</button>
+    </div>
+
+    <!-- News grid -->
+    <div class="news-grid" id="newsGrid">
+
+      <!-- Card 1: ERP -->
+      <div class="news-card fade-up delay-1" data-category="erp">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#0078d4 0%,#004e8c 100%);">
+          <span class="category-badge badge-erp">ERP</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-robot"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 15/02/2026</span>
+            <span><i class="fas fa-tag"></i> ERP</span>
+          </div>
+          <h3><a href="#">OMEGA.ERP 2026: Cập nhật tính năng AI trong quản trị sản xuất</a></h3>
+          <p class="news-card-excerpt">Phiên bản mới nhất của OMEGA.ERP tích hợp trí tuệ nhân tạo giúp dự báo nhu cầu nguyên liệu và tối ưu lịch sản xuất, mang lại hiệu quả vượt trội cho doanh nghiệp...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 2: Chuyen doi so -->
+      <div class="news-card fade-up delay-2" data-category="chuyen-doi-so">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#01a652 0%,#0d5e30 100%);">
+          <span class="category-badge badge-chuyen-doi-so">Chuyển Đổi Số</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-digital-tachograph"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 10/02/2026</span>
+            <span><i class="fas fa-tag"></i> Chuyển Đổi Số</span>
+          </div>
+          <h3><a href="#">Chuyển đổi số: Hành trình 3 năm của doanh nghiệp sản xuất Việt</a></h3>
+          <p class="news-card-excerpt">Câu chuyện thực tế về cách một doanh nghiệp sản xuất nhựa quy mô 300 nhân viên đã thay đổi hoàn toàn nhờ ERP, từ sổ sách thủ công đến hệ thống quản trị thống nhất...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 3: Du an -->
+      <div class="news-card fade-up delay-3" data-category="du-an">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#e53935 0%,#7b1a1a 100%);">
+          <span class="category-badge badge-du-an">Dự Án</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-trophy"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 05/02/2026</span>
+            <span><i class="fas fa-tag"></i> Dự Án</span>
+          </div>
+          <h3><a href="#">Case Study: Nam Thái Sơn tiết kiệm 40% chi phí sau triển khai OMEGA</a></h3>
+          <p class="news-card-excerpt">Sau 6 tháng triển khai OMEGA.ERP, Công ty Nam Thái Sơn ghi nhận mức tiết kiệm đáng kể trong chi phí vận hành, đặc biệt ở các khâu quản lý kho và quy trình kế toán...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 4: Ke toan -->
+      <div class="news-card fade-up delay-1" data-category="ke-toan">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#558b2f 0%,#2d5016 100%);">
+          <span class="category-badge badge-ke-toan">Kế Toán</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.25);">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 28/01/2026</span>
+            <span><i class="fas fa-tag"></i> Kế Toán</span>
+          </div>
+          <h3><a href="#">Thông tư 200 và những thay đổi kế toán doanh nghiệp cần biết năm 2026</a></h3>
+          <p class="news-card-excerpt">Tổng hợp các điểm mới trong chính sách kế toán tài chính áp dụng từ đầu năm 2026, và cách OMEGA.ERP hỗ trợ doanh nghiệp tuân thủ đầy đủ quy định pháp luật...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 5: Su kien -->
+      <div class="news-card fade-up delay-2" data-category="su-kien">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#f57c00 0%,#7c3c00 100%);">
+          <span class="category-badge badge-su-kien">Sự Kiện</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-microphone-alt"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 20/01/2026</span>
+            <span><i class="fas fa-tag"></i> Sự Kiện</span>
+          </div>
+          <h3><a href="#">OMEGA tham dự Vietnam ERP Summit 2026</a></h3>
+          <p class="news-card-excerpt">Đội ngũ Omega đã có buổi trình bày ấn tượng về xu hướng ERP cho doanh nghiệp vừa và nhỏ tại hội nghị Vietnam ERP Summit 2026, thu hút hơn 500 đại biểu tham dự...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 6: ERP -->
+      <div class="news-card fade-up delay-3" data-category="erp">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#0078d4 0%,#004e8c 100%);">
+          <span class="category-badge badge-erp">ERP</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 15/01/2026</span>
+            <span><i class="fas fa-tag"></i> ERP</span>
+          </div>
+          <h3><a href="#">Mobile ERP: Quản trị doanh nghiệp mọi lúc mọi nơi</a></h3>
+          <p class="news-card-excerpt">OMEGA Mobile Apps mang lại sự linh hoạt cho nhà quản lý — phê duyệt chứng từ, tra cứu số liệu và xem báo cáo ngay trên smartphone, bất kể đang ở đâu...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 7: Chuyen doi so -->
+      <div class="news-card fade-up delay-1" data-category="chuyen-doi-so">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#01a652 0%,#0d5e30 100%);">
+          <span class="category-badge badge-chuyen-doi-so">Chuyển Đổi Số</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-utensils"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 08/01/2026</span>
+            <span><i class="fas fa-tag"></i> Chuyển Đổi Số</span>
+          </div>
+          <h3><a href="#">6 lý do doanh nghiệp F&amp;B cần phần mềm ERP</a></h3>
+          <p class="news-card-excerpt">Ngành F&B đang phát triển mạnh mẽ kéo theo nhu cầu quản lý chuỗi cung ứng, tồn kho và nhân sự ngày càng phức tạp. ERP là giải pháp không thể thiếu...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 8: Tuyen dung -->
+      <div class="news-card fade-up delay-2" data-category="tuyen-dung">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#7b1fa2 0%,#3a0657 100%);">
+          <span class="category-badge badge-tuyen-dung">Tuyển Dụng</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-user-plus"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 02/01/2026</span>
+            <span><i class="fas fa-tag"></i> Tuyển Dụng</span>
+          </div>
+          <h3><a href="#">OMEGA tuyển dụng: Chuyên viên tư vấn triển khai ERP</a></h3>
+          <p class="news-card-excerpt">Chúng tôi đang tìm kiếm những ứng viên đam mê công nghệ, có kiến thức về quy trình doanh nghiệp để gia nhập đội ngũ chuyên gia triển khai ERP của Omega...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Card 9: Du an -->
+      <div class="news-card fade-up delay-3" data-category="du-an">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#e53935 0%,#7b1a1a 100%);">
+          <span class="category-badge badge-du-an">Dự Án</span>
+          <div class="news-img-placeholder" style="color:rgba(255,255,255,0.3);">
+            <i class="fas fa-building"></i>
+          </div>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> 28/12/2025</span>
+            <span><i class="fas fa-tag"></i> Dự Án</span>
+          </div>
+          <h3><a href="#">Hanel và hành trình số hóa 500 nhân viên cùng OMEGA.HRM</a></h3>
+          <p class="news-card-excerpt">Giai đoạn 2 dự án triển khai OMEGA.HRM tại Hanel Corporation đã hoàn thành với kết quả vượt kỳ vọng — toàn bộ quy trình nhân sự, chấm công và tính lương được tự động hóa...</p>
+          <a href="#" class="news-read-more">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+    </div><!-- /news-grid -->
+
+    <!-- Pagination -->
+    <div class="pagination-wrap fade-up">
+      <button class="page-btn page-btn-nav" id="prevPage" onclick="changePage(-1)">
+        <i class="fas fa-chevron-left"></i> Trước
+      </button>
+      <button class="page-btn active" id="page1" onclick="setPage(1)">1</button>
+      <button class="page-btn" id="page2" onclick="setPage(2)">2</button>
+      <button class="page-btn" id="page3" onclick="setPage(3)">3</button>
+      <button class="page-btn page-btn-nav" id="nextPage" onclick="changePage(1)">
+        Sau <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA SECTION
+     ============================================================ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-text fade-left">
+      <h2>Muốn Nhận Bản Tin Từ Omega?</h2>
+      <p>Đăng ký nhận thông tin mới nhất về ERP, xu hướng công nghệ và chính sách pháp luật ảnh hưởng đến doanh nghiệp — ngay trong hộp thư của bạn.</p>
+      <ul style="margin-top:24px;display:flex;flex-direction:column;gap:12px;">
+        <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.9);">
+          <i class="fas fa-check-circle" style="color:white;font-size:16px;"></i>
+          Tin tức ERP &amp; công nghệ hàng tuần
+        </li>
+        <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.9);">
+          <i class="fas fa-check-circle" style="color:white;font-size:16px;"></i>
+          Cập nhật chính sách kế toán &amp; pháp luật
+        </li>
+        <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.9);">
+          <i class="fas fa-check-circle" style="color:white;font-size:16px;"></i>
+          Case study thực tế từ doanh nghiệp Việt
+        </li>
+      </ul>
+    </div>
+    <div class="cta-form-wrap fade-right">
+      <h3>Đăng Ký Tư Vấn Miễn Phí</h3>
+      <form class="cta-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Họ và tên *</label>
+            <input type="text" placeholder="Nguyễn Văn A" required>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại *</label>
+            <input type="tel" placeholder="0908 xxx xxx" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email công ty</label>
+          <input type="email" placeholder="name@company.com">
+        </div>
+        <div class="form-group">
+          <label>Tên doanh nghiệp *</label>
+          <input type="text" placeholder="Công ty TNHH..." required>
+        </div>
+        <div class="form-group">
+          <label>Lĩnh vực / Ngành nghề</label>
+          <select>
+            <option value="">-- Chọn ngành nghề --</option>
+            <option>Sản xuất</option>
+            <option>Thương mại / Phân phối</option>
+            <option>Bất động sản</option>
+            <option>F&amp;B (Nhà hàng / Chuỗi)</option>
+            <option>FMCG</option>
+            <option>Thủy hải sản</option>
+            <option>Gỗ / Nội thất</option>
+            <option>Khác</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nhu cầu cụ thể</label>
+          <textarea placeholder="Mô tả ngắn về vấn đề quản trị bạn muốn giải quyết..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          <i class="fas fa-paper-plane"></i> Gửi Yêu Cầu Tư Vấn
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand fade-up">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="footer-logo">
+        <p>Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA — Đồng hành cùng doanh nghiệp Việt Nam trên hành trình chuyển đổi số.</p>
+        <div class="footer-social">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Zalo"><i class="fas fa-comment-dots"></i></a>
+        </div>
+      </div>
+      <div class="footer-col fade-up delay-1">
+        <h4>Sản Phẩm</h4>
+        <ul>
+          <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+          <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+          <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+          <li><a href="san-pham.html#edu">OMEGA.EDU</a></li>
+          <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          <li><a href="san-pham.html#gama">GAMA.SMB</a></li>
+        </ul>
+      </div>
+      <div class="footer-col fade-up delay-2">
+        <h4>Dịch Vụ</h4>
+        <ul>
+          <li><a href="dich-vu.html">Tư vấn &amp; Triển khai</a></li>
+          <li><a href="dich-vu.html">Đào tạo &amp; Chuyển giao</a></li>
+          <li><a href="dich-vu.html">Bảo hành &amp; Bảo trì</a></li>
+          <li><a href="ve-omega.html">Về Omega</a></li>
+          <li><a href="khach-hang.html">Khách hàng</a></li>
+          <li><a href="tin-tuc.html">Tin tức</a></li>
+        </ul>
+      </div>
+      <div class="footer-col fade-up delay-3">
+        <h4>Liên Hệ</h4>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Lầu 6, Tòa nhà Hà Sơn, 277A Nguyễn Văn Đậu, P. Bình Lợi Trung, TP.HCM</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span><a href="tel:02835128448" style="color:inherit;">028 3512 8448</a><br>
+          <a href="tel:0708994462" style="color:inherit;">0708 994 462 (Ms. Nghi)</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span><a href="mailto:info@omega.com.vn" style="color:inherit;">info@omega.com.vn</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Phòng 507-B8, 8A Hoàng Ngọc Phách, Đống Đa, Hà Nội</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2026 <a href="index.html">Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</a>. Tất cả quyền được bảo lưu. | <a href="lien-he.html">Chính sách bảo mật</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  // ─── News Filter Logic ───
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const newsCards  = document.querySelectorAll('.news-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      newsCards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ─── Simple Pagination Logic ───
+  let currentPage = 1;
+  const totalPages = 3;
+
+  function setPage(page) {
+    currentPage = page;
+    document.querySelectorAll('.page-btn:not(.page-btn-nav)').forEach((btn, i) => {
+      btn.classList.toggle('active', i + 1 === page);
+    });
+    document.getElementById('prevPage').disabled = page === 1;
+    document.getElementById('nextPage').disabled = page === totalPages;
+  }
+
+  function changePage(dir) {
+    const next = currentPage + dir;
+    if (next >= 1 && next <= totalPages) setPage(next);
+  }
+
+  setPage(1);
+</script>
+</body>
+</html>

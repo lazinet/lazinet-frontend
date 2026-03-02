@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160.276" height="32.845" viewBox="0 0 160.276 32.845">
+  <circle cx="20.48" cy="20.48" r="5.47" fill="#ED1C24"/>
+
+  <path d="M 5.41 34.05 L 13.10 27.13 A 9.94 9.94 0 1 1 27.84 27.13 L 35.53 34.05 A 20.28 20.28 0 1 0 5.41 34.05" fill="#00A651"/>
+
+  <path d="M 6.40 35.07 L 16.11 26.33 A 7.30 7.30 0 0 0 24.86 26.33 L 34.57 35.07 A 20.28 20.28 0 0 1 6.40 35.07" fill="#00A651"/>
+
+  <text x="48.4" y="18" font-family="Arial Black, Arial, sans-serif" font-weight="bold" font-size="16" fill="#ED1C24">OMEGA.ERP</text>
+
+  <line x1="49" x2="152" y1="23.6" y2="23.6" stroke="#00A651" stroke-width="0.6"/>
+
+  <text x="49" y="34" font-family="Arial, sans-serif" font-weight="bold" font-size="6" fill="#00A651">ĐỒNG HÀNH CÙNG DOANH NGHIỆP</text>
+</svg>
