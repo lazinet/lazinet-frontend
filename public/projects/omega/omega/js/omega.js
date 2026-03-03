@@ -41,13 +41,26 @@
       label: '',
       prependTo: '.responsive-menu',
       allowParentLinks: true,
+      afterClose: function () {
+        // Hide the menu container after slicknav finishes its slideUp animation
+        $('.slicknav_menu').hide();
+      }
     });
   }
 
   // Connect custom hamburger to SlickNav menu
-  $('#mobileToggle').on('click', function () {
+  // NOTE: .triggerHandler() vs .trigger() - must use triggerHandler to prevent
+  // event bubbling back up to #mobileToggle (slicknav_btn is injected inside navbar-toggle)
+  $('#mobileToggle').on('click', function (e) {
+    if ($(e.target).closest('.slicknav_btn').length) return;
+    var isOpen = $(this).hasClass('open');
     $(this).toggleClass('open');
-    $('.slicknav_btn').trigger('click');
+    if (!isOpen) {
+      // Opening: show container first so slicknav can animate nav inside it
+      $('.slicknav_menu').show();
+    }
+    // Closing: slicknav slideUp nav, then afterClose callback hides container
+    $('.slicknav_btn').triggerHandler('click');
   });
 
   /* ==============================
@@ -415,15 +428,17 @@ function openAIChat() {
 }
 
   // Optional: Đóng menu khi click ra ngoài
-  document.addEventListener("click", function (e) {
-    if (
-      !e.target.closest(".lazinet-contact-floating") &&
-      contactButtons.classList.contains("active")
-    ) {
-      contactButtons.classList.remove("active");
-      mainBtn.classList.remove("hidden");
-    }
-  });
+  if (mainBtn && contactButtons) {
+    document.addEventListener("click", function (e) {
+      if (
+        !e.target.closest(".lazinet-contact-floating") &&
+        contactButtons.classList.contains("active")
+      ) {
+        contactButtons.classList.remove("active");
+        mainBtn.classList.remove("hidden");
+      }
+    });
+  }
 });
 
 // ========== Bong bóng chat - Floating buttons ===========

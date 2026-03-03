@@ -944,22 +944,84 @@ textarea.form-control-omega { resize: vertical; min-height: 120px; }
    ======================== */
 .slicknav_menu {
   display: none;
-  background: var(--dark-bg);
-  padding: 16px;
-  border-radius: var(--radius-md);
-  margin-top: 8px;
+  background: #fff;
+  border-top: 3px solid var(--green-primary);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  padding: 8px 0 12px;
+  margin-top: 0;
 }
 .slicknav_btn {
   display: none;
 }
-.slicknav_nav { list-style: none; padding: 0; }
-.slicknav_nav a {
-  color: rgba(255,255,255,0.85) !important;
-  font-size: 14px; padding: 10px 12px !important;
-  display: block;
-  border-radius: var(--radius-sm);
+/* Top-level nav list */
+.slicknav_nav,
+.slicknav_nav ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
 }
-.slicknav_nav a:hover { background: rgba(0,166,81,0.15); color: var(--green-light) !important; }
+/* Every link & row */
+.slicknav_nav a,
+.slicknav_nav .slicknav_row {
+  color: var(--text-dark) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 11px 20px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 0 !important;
+  text-decoration: none !important;
+  transition: background 0.2s, color 0.2s !important;
+  background: transparent !important;
+}
+.slicknav_nav a:hover,
+.slicknav_nav .slicknav_row:hover {
+  background: rgba(0,166,81,0.07) !important;
+  color: var(--green-primary) !important;
+  border-radius: 0 !important;
+}
+/* Parent item (has submenu): link is inline, arrow floats right */
+.slicknav_nav .slicknav_item a {
+  display: inline !important;
+  padding: 0 !important;
+  flex: 1 !important;
+}
+/* Arrow */
+.slicknav_nav .slicknav_arrow {
+  color: var(--red-accent) !important;
+  font-style: normal !important;
+  font-size: 11px !important;
+  margin-left: auto !important;
+  padding-left: 8px !important;
+  line-height: 1 !important;
+  transition: transform 0.2s !important;
+}
+.slicknav_nav .slicknav_open > .slicknav_row .slicknav_arrow,
+.slicknav_nav .slicknav_open > a .slicknav_arrow {
+  transform: rotate(90deg);
+}
+/* Divider between top-level items */
+.slicknav_nav > li {
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+}
+.slicknav_nav > li:last-child { border-bottom: none !important; }
+/* Sub-menu items */
+.slicknav_nav .slicknav_nav a,
+.slicknav_nav .slicknav_nav .slicknav_row {
+  padding: 9px 20px 9px 36px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-mid) !important;
+  background: rgba(0,166,81,0.03) !important;
+}
+.slicknav_nav .slicknav_nav a:hover,
+.slicknav_nav .slicknav_nav .slicknav_row:hover {
+  background: rgba(0,166,81,0.09) !important;
+  color: var(--green-primary) !important;
+}
 
 /* ========================
    26. Animations
