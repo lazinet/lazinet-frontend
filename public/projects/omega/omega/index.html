@@ -146,6 +146,11 @@
                 </li>
               </ul>
             </div>
+
+          <!-- Search Toggle -->
+          <button class="search-toggle" id="searchToggle" aria-label="Tìm kiếm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
             <div class="header-btn ms-3">
               <a class="btn-default" href="lien-he.html">Tư vấn miễn phí</a>
             </div>
@@ -162,6 +167,27 @@
     </div>
   </header>
   <!-- ============ /HEADER ============ -->
+
+  <!-- ============ SEARCH OVERLAY ============ -->
+  <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Tìm kiếm">
+    <div class="search-overlay-inner">
+      <button class="search-close" id="searchClose" aria-label="Đóng tìm kiếm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="search-box">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-icon-inner"></i>
+          <input type="text" id="searchInput" class="search-input"
+            placeholder="Tìm giải pháp, sản phẩm, dịch vụ..."
+            autocomplete="off" spellcheck="false">
+          <kbd class="search-shortcut">Esc</kbd>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <p class="search-hint">Gõ ít nhất 2 ký tự &nbsp;·&nbsp; <kbd>↑</kbd><kbd>↓</kbd> điều hướng &nbsp;·&nbsp; <kbd>Enter</kbd> mở trang &nbsp;·&nbsp; <kbd>Esc</kbd> đóng</p>
+    </div>
+  </div>
+  <!-- ============ /SEARCH OVERLAY ============ -->
 
   <!-- ============ HERO ============ -->
   <section class="hero-section">
@@ -932,7 +958,7 @@
         <!-- AI Bot / Customer Care -->
         <div class="lazinet-contact-btn ai-bot" title="Chat với Chăm sóc Khách hàng">
             <img src="images/omega-radar-sonar.svg" alt="Customer Care">
-            <span class="lazinet-contact-label">Customer Care OMEGA</span>
+            <span class="lazinet-contact-label">CSKH OMEGA</span>
         </div>
         
         <!-- Messenger -->
