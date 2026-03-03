@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta -->
+  <title>Giải pháp ERP theo ngành – Phần mềm quản trị chuyên biệt | Omega</title>
+  <meta name="description" content="Omega cung cấp giải pháp ERP chuyên biệt cho từng ngành: nhựa, gỗ nội thất, F&B, FMCG, thủy hải sản, thiết bị y tế. Tối ưu quy trình, minh bạch dữ liệu.">
+  <meta name="keywords" content="giải pháp ERP ngành, phần mềm ERP chuyên biệt, ERP nhựa, ERP gỗ nội thất, ERP F&B, ERP FMCG, ERP thủy hải sản, ERP thiết bị y tế">
+  <meta name="author" content="Công ty TNHH Công nghệ và Giải pháp Omega">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://omega.com.vn/giai-phap/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:site_name" content="OMEGA ERP">
+  <meta property="og:title" content="Giải pháp ERP theo ngành – Phần mềm quản trị chuyên biệt | Omega">
+  <meta property="og:description" content="Omega cung cấp giải pháp ERP chuyên biệt cho từng ngành sản xuất và phân phối tại Việt Nam.">
+  <meta property="og:url" content="https://omega.com.vn/giai-phap/">
+  <meta property="og:image" content="https://omega.com.vn/images/omega-5A-rect-trans-name.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+
+  <!-- Preconnect fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/animate.css">
+  <link rel="stylesheet" href="../css/swiper-bundle.min.css">
+  <link rel="stylesheet" href="../css/slicknav.min.css">
+  <link rel="stylesheet" href="../css/omega.css">
+
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 40%, #00a651 100%);
+      padding: 120px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .page-header h1 { color: #fff; font-weight: 800; }
+    .breadcrumb-item a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .breadcrumb-item.active { color: rgba(255,255,255,0.95); }
+    .breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,0.5); }
+    .industry-card {
+      display: block;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      height: 100%;
+    }
+    .industry-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,166,81,0.2);
+    }
+    .industry-card-header {
+      padding: 32px 28px 24px;
+      background: linear-gradient(135deg, #f8fffe 0%, #e8f8f0 100%);
+      border-bottom: 3px solid var(--green-primary, #00a651);
+    }
+    .industry-card-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: var(--gradient-green, linear-gradient(135deg, #00a651, #007a3d));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 28px;
+      color: #fff;
+    }
+    .industry-card-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0a2540;
+      margin-bottom: 4px;
+    }
+    .industry-card-header .industry-tag {
+      display: inline-block;
+      background: rgba(0,166,81,0.12);
+      color: #007a3d;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+    .industry-card-body { padding: 24px 28px; }
+    .industry-card-body p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .industry-card-body .feature-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .feature-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #f0f0f0;
+      color: #555;
+    }
+    .industry-card-body .read-more {
+      font-size: 14px;
+      font-weight: 700;
+      color: #00a651;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+    .industry-card:hover .read-more { gap: 10px; }
+    .other-industries-card {
+      background: #f8fffe;
+      border: 2px dashed rgba(0,166,81,0.3);
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .other-industries-card:hover { border-color: #00a651; background: #edfaf3; }
+    .other-industries-card h4 { color: #0a2540; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .other-industries-card p { color: #666; font-size: 14px; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- ============ PRELOADER ============ -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <img src="../images/omega-radar-sonar.svg" alt="Omega" class="preloader-logo">
+      <!-- <div class="preloader-bar"></div> -->
+    </div>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="main-header">
+    <div class="header-sticky">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand" href="../index.html">
+            <img src="../images/omega-5A-rect-trans-name.png" alt="Omega ERP Logo" class="logo-default">
+            <img src="../images/omega-5A-rect-trans-name.png" alt="Omega ERP Logo" class="logo-sticky" style="display:none">
+          </a>
+          <div class="collapse navbar-collapse main-menu" id="navbarNav">
+            <div class="nav-menu-wrapper ms-auto">
+              <ul class="navbar-nav" id="menu">
+                <li class="nav-item"><a class="nav-link" href="../index.html">Trang chủ</a></li>
+                <li class="nav-item submenu"><a class="nav-link" href="../ve-omega.html">Về Omega</a>
+                  <ul>
+                    <li class="nav-item"><a class="nav-link" href="../ve-omega.html#dinh-vi">Định vị & Năng lực</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../ve-omega.html#tam-nhin">Tầm nhìn & Sứ mệnh</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../ve-omega.html#gia-tri">Giá trị cốt lõi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../ve-omega.html#doi-ngu">Đội ngũ nhân sự</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item submenu active"><a class="nav-link active" href="../giai-phap.html">Giải pháp</a>
+                  <ul>
+                    <li class="nav-item"><a class="nav-link" href="nganh-nhua.html">Ngành nhựa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nganh-go-noi-that.html">Ngành gỗ – Nội thất</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nganh-fb.html">Ngành F&B</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nganh-fmcg.html">Ngành FMCG</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nganh-thuy-hai-san.html">Ngành thủy – hải sản</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nganh-thiet-bi-y-te.html">Thiết bị y tế</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item submenu"><a class="nav-link" href="../san-pham.html">Sản phẩm</a>
+                  <ul>
+                    <li class="nav-item"><a class="nav-link" href="../san-pham.html#phan-mem">Phần mềm ERP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../san-pham.html#mobile-app">Mobile App</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="../dich-vu.html">Dịch vụ</a></li>
+                <li class="nav-item"><a class="nav-link" href="../khach-hang.html">Khách hàng</a></li>
+                <li class="nav-item submenu"><a class="nav-link" href="../tin-tuc.html">Tin tức</a>
+                  <ul>
+                    <li class="nav-item"><a class="nav-link" href="../tin-tuc.html#chuyen-doi-so">Chuyển đổi số</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../tin-tuc.html#erp">ERP – Quản trị</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../tin-tuc.html#ke-toan">Kế toán – Tài chính</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../tin-tuc.html#su-kien">Sự kiện</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../tin-tuc.html#tuyen-dung">Tuyển dụng</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="../lien-he.html">Liên hệ</a></li>
+              </ul>
+            </div>
+            <div class="header-btn ms-3">
+              <a class="btn-default" href="../lien-he.html">Tư vấn miễn phí</a>
+            </div>
+          </div>
+          <div class="navbar-toggle" id="mobileToggle">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </nav>
+      <div class="responsive-menu container-fluid px-4"></div>
+    </div>
+  </header>
+
+  <!-- ============ PAGE HEADER ============ -->
+  <section class="page-header">
+    <div class="container position-relative" style="z-index:1;">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="../index.html">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Giải pháp</li>
+        </ol>
+      </nav>
+      <div class="row align-items-center">
+        <div class="col-lg-7 wow fadeInUp">
+          <span class="label mb-3 d-inline-block" style="background:rgba(255,255,255,0.15);color:#fff;">
+            <i class="fa-solid fa-industry"></i> Giải pháp theo ngành
+          </span>
+          <h1 style="font-size:clamp(28px,4vw,52px);margin-bottom:20px;">
+            ERP chuyên biệt<br><span style="color:#7fffb8;">cho từng ngành</span>
+          </h1>
+          <p style="color:rgba(255,255,255,0.85);font-size:17px;line-height:1.8;max-width:540px;">
+            Omega không cung cấp giải pháp "một size cho tất cả". Chúng tôi xây dựng ERP chuyên sâu cho từng lĩnh vực – hiểu rõ nghiệp vụ đặc thù, tối ưu quy trình riêng biệt của từng ngành.
+          </p>
+        </div>
+        <div class="col-lg-5 wow fadeInRight d-none d-lg-flex justify-content-center">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:320px;">
+            <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:32px;font-weight:800;color:#7fffb8;">6+</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.8);">Ngành chuyên biệt</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:32px;font-weight:800;color:#7fffb8;">16+</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.8);">Năm kinh nghiệm</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:32px;font-weight:800;color:#7fffb8;">1000+</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.8);">Doanh nghiệp</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:32px;font-weight:800;color:#7fffb8;">98%</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.8);">Hài lòng</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTRO ============ -->
+  <section class="section-gap" style="background:#fff;">
+    <div class="container">
+      <div class="section-title centered wow fadeInUp">
+        <span class="label"><i class="fa-solid fa-puzzle-piece"></i> Phương pháp của Omega</span>
+        <h2>Giải pháp <span>đúng ngành</span>, đúng bài toán</h2>
+        <p>Mỗi ngành có đặc thù riêng về quy trình, nghiệp vụ và thách thức quản trị. Omega đầu tư chuyên sâu để mang đến giải pháp ERP thực sự phù hợp với từng lĩnh vực – không phải cấu hình chung chung.</p>
+      </div>
+      <div class="row g-4 wow fadeInUp">
+        <div class="col-md-4">
+          <div class="omega-card text-center h-100">
+            <div class="card-icon mx-auto"><i class="fa-solid fa-microscope"></i></div>
+            <h3>Nghiên cứu chuyên sâu</h3>
+            <p>Omega dành thời gian nghiên cứu quy trình, luồng công việc và điểm đau đặc thù của từng ngành trước khi xây dựng giải pháp.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="omega-card text-center h-100">
+            <div class="card-icon mx-auto"><i class="fa-solid fa-sliders"></i></div>
+            <h3>Tùy chỉnh linh hoạt</h3>
+            <p>Nền tảng ERP mạnh mẽ kết hợp với khả năng tùy chỉnh theo nghiệp vụ riêng của từng doanh nghiệp trong ngành.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="omega-card text-center h-100">
+            <div class="card-icon mx-auto"><i class="fa-solid fa-handshake"></i></div>
+            <h3>Đồng hành triển khai</h3>
+            <p>Chuyên gia Omega am hiểu ngành đồng hành trong suốt quá trình triển khai, đảm bảo hệ thống hoạt động đúng kỳ vọng.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDUSTRY GRID ============ -->
+  <section class="section-gap" style="background:var(--bg-section);">
+    <div class="container">
+      <div class="section-title centered wow fadeInUp">
+        <span class="label"><i class="fa-solid fa-layer-group"></i> Các ngành triển khai</span>
+        <h2>Giải pháp <span>6 ngành</span> chuyên biệt</h2>
+        <p>Khám phá giải pháp ERP Omega dành riêng cho ngành của bạn</p>
+      </div>
+      <div class="row g-4">
+
+        <!-- Ngành Nhựa -->
+        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+          <a href="nganh-nhua.html" class="industry-card">
+            <div class="industry-card-header">
+              <div class="industry-card-icon">
+                <i class="fa-solid fa-recycle"></i>
+              </div>
+              <h3>Ngành Nhựa</h3>
+              <span class="industry-tag">Sản xuất &amp; Chế biến</span>
+            </div>
+            <div class="industry-card-body">
+              <p>Giải pháp ERP chuyên biệt cho ngành nhựa Việt Nam – tăng trưởng 23.9%. Quản lý BOM, MPS/MRP, lệnh sản xuất, tính giá thành minh bạch.</p>
+              <div class="feature-pills">
+                <span class="feature-pill">BOM/Công thức</span>
+                <span class="feature-pill">MPS/MRP</span>
+                <span class="feature-pill">Giá thành</span>
+                <span class="feature-pill">Tồn kho</span>
+                <span class="feature-pill">QC</span>
+              </div>
+              <span class="read-more">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Ngành Gỗ -->
+        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.15s">
+          <a href="nganh-go-noi-that.html" class="industry-card">
+            <div class="industry-card-header">
+              <div class="industry-card-icon">
+                <i class="fa-solid fa-tree"></i>
+              </div>
+              <h3>Gỗ &amp; Nội thất</h3>
+              <span class="industry-tag">Sản xuất &amp; Xuất khẩu</span>
+            </div>
+            <div class="industry-card-body">
+              <p>ERP ngành gỗ và nội thất – quản lý nguyên liệu theo quy cách, BOM đa tầng, kế hoạch sản xuất theo đơn hàng, tính giá thành chính xác.</p>
+              <div class="feature-pills">
+                <span class="feature-pill">Quy cách gỗ</span>
+                <span class="feature-pill">BOM đa tầng</span>
+                <span class="feature-pill">Đơn hàng</span>
+                <span class="feature-pill">Giá thành</span>
+              </div>
+              <span class="read-more">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Ngành F&B -->
+        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+          <a href="nganh-fb.html" class="industry-card">
+            <div class="industry-card-header">
+              <div class="industry-card-icon">
+                <i class="fa-solid fa-utensils"></i>
+              </div>
+              <h3>Ngành F&amp;B</h3>
+              <span class="industry-tag">Thực phẩm &amp; Đồ uống</span>
+            </div>
+            <div class="industry-card-body">
+              <p>ERP ngành thực phẩm và đồ uống – quản lý công thức/recipe, kiểm soát hạn sử dụng, truy xuất nguồn gốc ATTP, xuất kho theo FEFO.</p>
+              <div class="feature-pills">
+                <span class="feature-pill">Recipe/Công thức</span>
+                <span class="feature-pill">FEFO</span>
+                <span class="feature-pill">Truy xuất gốc</span>
+                <span class="feature-pill">ATTP</span>
+              </div>
+              <span class="read-more">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Ngành FMCG -->
+        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.25s">
+          <a href="nganh-fmcg.html" class="industry-card">
+            <div class="industry-card-header">
+              <div class="industry-card-icon">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </div>
+              <h3>Ngành FMCG</h3>
+              <span class="industry-tag">Hàng tiêu dùng nhanh</span>
+            </div>
+            <div class="industry-card-body">
+              <p>ERP ngành FMCG – quản lý kênh phân phối DMS, chính sách chiết khấu theo kênh, công nợ đại lý, dashboard bán hàng real-time.</p>
+              <div class="feature-pills">
+                <span class="feature-pill">DMS</span>
+                <span class="feature-pill">Đại lý</span>
+                <span class="feature-pill">Chiết khấu</span>
+                <span class="feature-pill">SKU</span>
+                <span class="feature-pill">Dashboard</span>
+              </div>
+              <span class="read-more">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Ngành Thủy Hải Sản -->
+        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+          <a href="nganh-thuy-hai-san.html" class="industry-card">
+            <div class="industry-card-header">
+              <div class="industry-card-icon">
+                <i class="fa-solid fa-fish"></i>
+              </div>
+              <h3>Thủy – Hải sản</h3>
+              <span class="industry-tag">Chế biến &amp; Xuất khẩu</span>
+            </div>
+            <div class="industry-card-body">
+              <p>ERP ngành thủy hải sản – truy xuất nguồn gốc từ ao nuôi đến xuất khẩu, quản lý lô/hạn/nhiệt độ, hồ sơ chứng nhận ASC/BAP.</p>
+              <div class="feature-pills">
+                <span class="feature-pill">Truy xuất gốc</span>
+                <span class="feature-pill">Lô/Hạn</span>
+                <span class="feature-pill">Chứng nhận</span>
+                <span class="feature-pill">Tỷ lệ thu hồi</span>
+              </div>
+              <span class="read-more">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Thiết Bị Y Tế -->
+        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.35s">
+          <a href="nganh-thiet-bi-y-te.html" class="industry-card">
+            <div class="industry-card-header">
+              <div class="industry-card-icon">
+                <i class="fa-solid fa-stethoscope"></i>
+              </div>
+              <h3>Thiết bị Y tế</h3>
+              <span class="industry-tag">Phân phối &amp; Dịch vụ</span>
+            </div>
+            <div class="industry-card-body">
+              <p>ERP thiết bị y tế – quản lý serial/lot từng thiết bị, bảo hành bảo trì, hồ sơ pháp lý, đấu thầu bệnh viện và kiểm soát nhập khẩu.</p>
+              <div class="feature-pills">
+                <span class="feature-pill">Serial/Lot</span>
+                <span class="feature-pill">Bảo hành</span>
+                <span class="feature-pill">Pháp lý</span>
+                <span class="feature-pill">Đấu thầu</span>
+              </div>
+              <span class="read-more">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OTHER INDUSTRIES ============ -->
+  <section class="section-gap" style="background:#fff;">
+    <div class="container">
+      <div class="section-title centered wow fadeInUp">
+        <span class="label"><i class="fa-solid fa-plus-circle"></i> Mở rộng</span>
+        <h2>Đang triển khai thêm <span>nhiều ngành</span></h2>
+        <p>Omega liên tục mở rộng danh mục giải pháp ngành. Liên hệ để trao đổi về nhu cầu của doanh nghiệp bạn.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="other-industries-card">
+            <div style="font-size:40px;margin-bottom:12px;color:#0a2540;">
+              <i class="fa-solid fa-building"></i>
+            </div>
+            <h4>Bất động sản</h4>
+            <p>ERP quản lý dự án BĐS, quỹ căn hộ, hợp đồng mua bán, tiến độ thu tiền và pháp lý dự án. <strong style="color:#00a651;">Sắp ra mắt</strong></p>
+          </div>
+        </div>
+        <div class="col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+          <div class="other-industries-card">
+            <div style="font-size:40px;margin-bottom:12px;color:#0a2540;">
+              <i class="fa-solid fa-capsules"></i>
+            </div>
+            <h4>Dược phẩm</h4>
+            <p>ERP ngành dược – quản lý số đăng ký thuốc, lô/hạn sử dụng, kiểm soát nhiệt độ bảo quản, chứng nhận GMP/GDP. <strong style="color:#00a651;">Sắp ra mắt</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-5 wow fadeInUp">
+        <a href="../lien-he.html" class="btn-primary-omega">
+          <i class="fa-solid fa-paper-plane"></i> Trao đổi về ngành của bạn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-section">
+    <div class="container position-relative" style="z-index:1;">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-7 wow fadeInLeft">
+          <div class="section-title mb-0">
+            <h2 style="color:#fff;font-size:clamp(24px,3.5vw,40px);">Chưa thấy ngành của bạn?<br><strong>Hãy trao đổi với chuyên gia Omega</strong></h2>
+            <p style="color:rgba(255,255,255,0.85);">Omega sẵn sàng phân tích bài toán cụ thể và đề xuất giải pháp ERP phù hợp nhất cho doanh nghiệp bạn, dù ở bất kỳ ngành nào.</p>
+          </div>
+        </div>
+        <div class="col-lg-5 text-lg-end wow fadeInRight">
+          <a href="../lien-he.html" class="btn-white-omega me-3">
+            <i class="fa-solid fa-paper-plane"></i> Tư vấn miễn phí
+          </a>
+          <a href="tel:0908303609" class="btn-red-omega">
+            <i class="fa-solid fa-phone"></i> Gọi ngay
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="main-footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <!-- Brand -->
+          <div class="col-lg-4">
+            <div class="footer-brand">
+              <img src="../images/omega-4B-rect-trans-full.png" alt="Omega ERP" onerror="this.src='../images/omega-5A-rect-trans-name.png'">
+            </div>
+            <p class="footer-desc">Omega – Đồng hành cùng doanh nghiệp trên hành trình chuyển đổi số với các giải pháp ERP toàn diện, thực chất và hiệu quả.</p>
+            <div class="footer-social">
+              <a href="https://zalo.me/908303609" target="_blank" aria-label="Zalo Omega"><i class="fa-solid fa-comment-dots"></i></a>
+              <a href="https://www.facebook.com/PhanMemQuanTriDoanhNghiepOMEGAERP/" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="https://www.youtube.com/@omegaerp9461" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+              <a href="https://linkedin.com/company/omegaerp" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+          </div>
+
+          <!-- Products -->
+          <div class="col-6 col-lg-2">
+            <h4 class="footer-heading">Sản phẩm</h4>
+            <ul class="footer-links">
+              <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+              <li><a href="san-pham.html#gl">OMEGA.GL</a></li>
+              <li><a href="san-pham.html#hr">OMEGA.HR</a></li>
+              <li><a href="san-pham.html#mm">OMEGA.MM</a></li>
+              <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+              <li><a href="san-pham.html#mobile-app">Mobile Apps</a></li>
+            </ul>
+          </div>
+
+          <!-- Solutions -->
+          <div class="col-6 col-lg-2">
+            <h4 class="footer-heading">Giải pháp</h4>
+            <ul class="footer-links">
+              <li><a href="giai-phap.html#nganh-nhua">Ngành nhựa</a></li>
+              <li><a href="giai-phap.html#nganh-go">Gỗ – Nội thất</a></li>
+              <li><a href="giai-phap.html#nganh-fb">Ngành F&B</a></li>
+              <li><a href="giai-phap.html#nganh-fmcg">Ngành FMCG</a></li>
+              <li><a href="giai-phap.html#nganh-thuy-san">Thủy – Hải sản</a></li>
+              <li><a href="giai-phap.html#nganh-y-te">Thiết bị y tế</a></li>
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div class="col-6 col-lg-2">
+            <h4 class="footer-heading">Dịch vụ</h4>
+            <ul class="footer-links">
+              <li><a href="dich-vu.html#dich-vu-tong-quan">Dịch vụ</a></li>
+              <li><a href="dich-vu.html#quy-trinh">Quy trình</a></li>
+              <li><a href="khach-hang.html#khach-hang">Khách hàng</a></li>
+              <li><a href="khach-hang.html#case-study">Case Study</a></li>
+              <li><a href="khach-hang.html#danh-gia">Đánh giá</a></li>
+              <li><a href="dich-vu.html#faq">Hỏi đáp</a></li>
+            </ul>
+          </div>
+
+          <!-- Company -->
+          <div class="col-6 col-lg-2">
+            <h4 class="footer-heading">Công ty</h4>
+            <ul class="footer-links">
+              <li><a href="ve-omega.html">Về Omega</a></li>
+              <li><a href="dich-vu.html">Dịch vụ</a></li>
+              <li><a href="khach-hang.html">Khách hàng</a></li>
+              <li><a href="tin-tuc.html">Tin tức</a></li>
+              <li><a href="tin-tuc.html#tuyen-dung">Tuyển dụng</a></li>
+              <li><a href="lien-he.html">Liên hệ</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div class="col-12">
+            <h4 class="footer-heading">Liên hệ</h4>
+            <div class="footer-contact-item"><h3 style="color: #00A651;">CÔNG TY TNHH CÔNG NGHỆ & GIẢI PHÁP OMEGA</h3></div>
+            <div class="footer-contact-item"><h4 style="color: rgba(255,255,255,0.6); font-style: italic;">Omega Solutions & Technologies Co., Ltd.</h4></div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-city"></i>
+              <span style="color:rgba(255,255,255,0.6);"><u>Trụ sở chính</u>: <a href="https://maps.app.goo.gl/gasARGjfY3sZy1vQ8" target="_blank" style="color: inherit;">Lầu 6 - Tòa nhà Hà Sơn, số 277A Nguyễn Văn Đậu, Phường Bình Lợi Trung, TP. HCM</a>. Liên hệ: <a href="https://zalo.me/0708994462">0708 994 462 (Ms. Thục Nghi)</a></span></div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-building me-2"></i>
+              <span style="color:rgba(255,255,255,0.6);"><u>Văn phòng Miền Bắc</u>: <a href="https://maps.app.goo.gl/Ehcb8NsZNC64B8w37" target="_blank" style="color: inherit;">Phòng 507 – B8, số 8A Hoàng Ngọc Phách, Phường Đống Đa, Hà Nội</a>. Liên hệ: <a href="https://zalo.me/0972735899">0972 735 899 (Mr. Tuấn Anh)</a></span></div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-phone"></i> <a href="tel:+84835128448" style="color:rgba(255,255,255,0.6);">(+84-8) 3512 8448</a>
+              <i class="fa-solid fa-fax"></i> Fax: (+84-8) 3514 7280
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-envelope"></i><a href="mailto:info@omega.com.vn" style="color:rgba(255,255,255,0.6);">info@omega.com.vn</a>
+              <i class="fa-solid fa-mobile"></i><a href="https://zalo.me/0908303609">0908 303 609 (Mr. Nhân)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">© 2025 <a href="index.html">Công ty TNHH Công nghệ và Giải pháp Omega</a>. All rights reserved.</p>
+          <p class="footer-copy"><a href="chinh-sach-bao-mat.html">Chính sách bảo mật</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <a href="#" id="back-to-top" style="position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--gradient-green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;z-index:999;opacity:0;transition:opacity 0.3s;box-shadow:0 4px 16px rgba(0,166,81,0.4);" aria-label="Lên đầu trang">
+    <i class="fa-solid fa-chevron-up"></i>
+  </a>
+  <style>#back-to-top.show{opacity:1;}</style>
+
+  <!-- JS -->
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/swiper-bundle.min.js"></script>
+  <script src="../js/wow.min.js"></script>
+  <script src="../js/jquery.waypoints.min.js"></script>
+  <script src="../js/jquery.counterup.min.js"></script>
+  <script src="../js/jquery.slicknav.js"></script>
+  <script src="../js/omega.js"></script>
+</body>
+</html>
