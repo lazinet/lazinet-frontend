@@ -288,8 +288,8 @@
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
       for (var p = 1; p < pts.length; p++) ctx.lineTo(pts[p].x, pts[p].y);
-      ctx.strokeStyle = 'rgba(237,28,36,'+alpha+')';
-      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = 'rgba(255,26,34,'+Math.min(alpha*1.3,0.95)+')';
+      ctx.lineWidth = 1.5;
       ctx.shadowColor = '#00FFFF';
       ctx.shadowBlur = 6;
       ctx.stroke();
@@ -310,7 +310,7 @@
             drawLightning(letters[i].x, letters[i].y, letters[j].x, letters[j].y, a);
           } else if (dist < CONNECT_DIST && !letters[i].isOmega && !letters[j].isOmega) {
             ctx.beginPath();
-            ctx.strokeStyle = 'rgba(0,166,81,'+(1-dist/CONNECT_DIST)*0.3+')';
+            ctx.strokeStyle = 'rgba(255,255,255,'+(1-dist/CONNECT_DIST)*0.25+')';
             ctx.lineWidth = 0.7;
             ctx.moveTo(letters[i].x, letters[i].y);
             ctx.lineTo(letters[j].x, letters[j].y);
@@ -324,7 +324,7 @@
         ctx.translate(l.x, l.y);
         ctx.rotate(l.angle);
         ctx.font = (l.bold ? 'bold ' : '') + l.size + 'px serif';
-        ctx.fillStyle = l.isOmega ? 'rgba(237,28,36,0.85)' : 'rgba(0,166,81,0.75)';
+        ctx.fillStyle = l.isOmega ? 'rgba(255,26,34,0.90)' : 'rgba(255,255,255,0.75)';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(l.ch, 0, 0);
         ctx.restore();
@@ -418,7 +418,7 @@
         ctx.translate(l.x, l.y);
         ctx.rotate(l.angle);
         ctx.font = l.size + 'px sans-serif';
-        ctx.fillStyle = 'rgba(0,166,81,0.5)';
+        ctx.fillStyle = 'rgba(255,255,255,0.30)';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(l.ch, 0, 0);
         ctx.restore();
@@ -457,10 +457,10 @@
         var fSize = Math.min(W * 0.07, 52) * (1 + flashAlpha * 0.35);
         /* glow */
         ctx.save();
-        ctx.shadowColor = '#ED1C24';
+        ctx.shadowColor = '#FF1A22';
         ctx.shadowBlur  = 30 * flashAlpha;
         ctx.font = 'bold ' + fSize + 'px sans-serif';
-        ctx.fillStyle = 'rgba(237,28,36,' + flashAlpha + ')';
+        ctx.fillStyle = 'rgba(255,26,34,' + flashAlpha + ')';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('OMEGA', convergeCx, convergeCy);
         ctx.restore();
@@ -493,7 +493,7 @@
           ctx.translate(l.x, l.y);
           ctx.rotate(l.angle);
           ctx.font = 'bold ' + l.size + 'px sans-serif';
-          ctx.fillStyle = 'rgba(237,28,36,0.85)';
+          ctx.fillStyle = 'rgba(255,26,34,0.85)';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(l.ch, 0, 0);
           ctx.restore();
@@ -577,14 +577,14 @@
       /* star field */
       stars.forEach(function(s) {
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(180,255,210,' + s.a + ')'; ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,' + s.a + ')'; ctx.fill();
       });
 
       /* orbit ellipses */
       for (var ri = 2; ri >= 0; ri--) {
         ctx.beginPath();
         ctx.ellipse(cx, cy, dims[ri].rx, dims[ri].ry, 0, 0, Math.PI*2);
-        ctx.strokeStyle = 'rgba(0,166,81,' + (0.10 + (2-ri)*0.06) + ')';
+        ctx.strokeStyle = 'rgba(255,255,255,' + (0.12 + (2-ri)*0.08) + ')';
         ctx.lineWidth = 0.7; ctx.setLineDash([4, 12]); ctx.stroke(); ctx.setLineDash([]);
       }
 
@@ -625,7 +625,7 @@
       var sorted = nodes.slice().sort(function(a, b) { return a.depth - b.depth; });
       sorted.forEach(function(n) {
         ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(n.wx, n.wy);
-        ctx.strokeStyle = 'rgba(0,166,81,' + (0.03 + n.depth * 0.10) + ')';
+        ctx.strokeStyle = 'rgba(255,255,255,' + (0.04 + n.depth * 0.12) + ')';
         ctx.lineWidth = 0.5; ctx.stroke();
       });
 
@@ -633,7 +633,7 @@
       beams = beams.filter(function(b) {
         b.life -= 0.025;
         ctx.beginPath(); ctx.moveTo(b.x1, b.y1); ctx.lineTo(b.x2, b.y2);
-        ctx.strokeStyle = 'rgba(237,28,36,' + b.life * 0.55 + ')';
+        ctx.strokeStyle = 'rgba(255,26,34,' + b.life * 0.90 + ')';
         ctx.lineWidth = 1.2; ctx.stroke();
         return b.life > 0;
       });
@@ -650,11 +650,11 @@
         ctx.fillStyle = 'rgba(0,8,18,' + (0.65 + n.depth * 0.30) + ')'; ctx.fill();
         var bAlpha = n.glow > 0.05 ? 0.4 + n.glow * 0.6 : 0.18 + n.depth * 0.45;
         ctx.strokeStyle = n.glow > 0.05
-          ? 'rgba(237,28,36,' + bAlpha + ')' : 'rgba(0,166,81,' + bAlpha + ')';
+          ? 'rgba(255,26,34,' + bAlpha + ')' : 'rgba(255,255,255,' + bAlpha + ')';
         ctx.lineWidth = 0.7 + n.depth * 0.5; ctx.stroke();
-        if (n.glow > 0.05) { ctx.shadowColor = '#ED1C24'; ctx.shadowBlur = 8 * n.glow; }
+        if (n.glow > 0.05) { ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 16 * n.glow; }
         ctx.fillStyle = n.glow > 0.05
-          ? 'rgba(255,120,120,' + alpha + ')' : 'rgba(80,255,140,' + alpha + ')';
+          ? 'rgba(255,120,120,' + alpha + ')' : 'rgba(200,255,220,' + alpha + ')';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(n.name, 0, 0); ctx.shadowBlur = 0; ctx.restore();
       });
@@ -663,13 +663,13 @@
       omegaPulse += 0.038;
       var fCx = Math.min(W, H) * 0.078;
       var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, fCx * 1.6);
-      grad.addColorStop(0, 'rgba(237,28,36,0.22)'); grad.addColorStop(1, 'rgba(237,28,36,0)');
+      grad.addColorStop(0, 'rgba(255,26,34,0.22)'); grad.addColorStop(1, 'rgba(255,26,34,0)');
       ctx.beginPath(); ctx.arc(cx, cy, fCx * 1.6, 0, Math.PI*2);
       ctx.fillStyle = grad; ctx.fill();
       ctx.font = 'bold ' + fCx + 'px sans-serif';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.shadowColor = '#ED1C24'; ctx.shadowBlur = 14 + Math.sin(omegaPulse) * 7;
-      ctx.fillStyle = '#ED1C24'; ctx.fillText('Ω', cx, cy); ctx.shadowBlur = 0;
+      ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 22 + Math.sin(omegaPulse) * 10;
+      ctx.fillStyle = '#FF1A22'; ctx.fillText('Ω', cx, cy); ctx.shadowBlur = 0;
 
       requestAnimationFrame(draw);
     }
@@ -728,7 +728,7 @@
     function draw() {
       ctx.clearRect(0, 0, W, H);
       /* grid lines */
-      ctx.strokeStyle = 'rgba(0,166,81,0.12)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 0.8;
       var cols = Math.ceil(W/GRID)+1, rows = Math.ceil(H/GRID)+1;
       for (var c = 0; c <= cols; c++) { ctx.beginPath(); ctx.moveTo(c*GRID,0); ctx.lineTo(c*GRID,H); ctx.stroke(); }
@@ -737,15 +737,15 @@
       nodes.forEach(function(n) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, 2.5, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(0,166,81,0.45)';
+        ctx.fillStyle = 'rgba(255,255,255,0.50)';
         ctx.fill();
       });
       /* packets */
       packets.forEach(function(p, idx) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
-        ctx.fillStyle = p.isRed ? 'rgba(237,28,36,0.9)' : 'rgba(126,217,87,0.9)';
-        ctx.shadowColor = p.isRed ? '#ED1C24' : '#00A651';
+        ctx.fillStyle = p.isRed ? 'rgba(255,26,34,0.9)' : 'rgba(126,217,87,0.95)';
+        ctx.shadowColor = p.isRed ? '#FF1A22' : '#7EE057';
         ctx.shadowBlur = 8;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -753,7 +753,7 @@
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(p.x - p.vx*14, p.y - p.vy*14);
-        ctx.strokeStyle = p.isRed ? 'rgba(237,28,36,0.4)' : 'rgba(0,166,81,0.4)';
+        ctx.strokeStyle = p.isRed ? 'rgba(255,26,34,0.4)' : 'rgba(126,217,87,0.5)';
         ctx.lineWidth = 2;
         ctx.stroke();
         p.x += p.vx; p.y += p.vy;
@@ -831,11 +831,11 @@
 
       /* draw edges */
       edges.forEach(function(e) {
-        var a = (1 - e.d / LINK_DIST) * (e.a.isHub || e.b.isHub ? 0.55 : 0.22);
+        var a = (1 - e.d / LINK_DIST) * (e.a.isHub || e.b.isHub ? 0.88 : 0.22);
         ctx.beginPath();
         ctx.strokeStyle = e.a.isHub || e.b.isHub
-          ? 'rgba(237,28,36,'+a+')'
-          : 'rgba(0,166,81,'+a+')';
+          ? 'rgba(255,26,34,'+a+')'
+          : 'rgba(255,255,255,'+a*0.6+')';
         ctx.lineWidth = e.a.isHub || e.b.isHub ? 1.2 : 0.6;
         ctx.moveTo(e.a.x, e.a.y);
         ctx.lineTo(e.b.x, e.b.y);
@@ -859,8 +859,8 @@
         var py = pu.ay + (pu.by-pu.ay)*pu.t;
         ctx.beginPath();
         ctx.arc(px, py, 3, 0, Math.PI*2);
-        ctx.fillStyle = '#ED1C24';
-        ctx.shadowColor = '#ED1C24'; ctx.shadowBlur = 10;
+        ctx.fillStyle = '#FF1A22';
+        ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 16;
         ctx.fill(); ctx.shadowBlur = 0;
         if (pu.t >= 1) pulses.splice(p, 1);
       }
@@ -873,12 +873,12 @@
           if (n.glow > 1 || n.glow < 0) n.glowDir *= -1;
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.r + 8 + n.glow*6, 0, Math.PI*2);
-          ctx.strokeStyle = 'rgba(237,28,36,'+(0.15+n.glow*0.25)+')';
+          ctx.strokeStyle = 'rgba(255,26,34,'+(0.15+n.glow*0.25)+')';
           ctx.lineWidth = 1.5; ctx.stroke();
           /* core */
           ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-          ctx.fillStyle = '#ED1C24';
-          ctx.shadowColor = '#ED1C24'; ctx.shadowBlur = 14;
+          ctx.fillStyle = '#FF1A22';
+          ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 20;
           ctx.fill(); ctx.shadowBlur = 0;
           /* Ω label */
           ctx.font = 'bold 12px serif';
@@ -887,12 +887,12 @@
           ctx.fillText('Ω', n.x, n.y);
         } else {
           ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-          ctx.fillStyle = 'rgba(0,166,81,0.7)';
-          ctx.shadowColor = '#00A651'; ctx.shadowBlur = 4;
+          ctx.fillStyle = 'rgba(126,217,87,0.90)';
+          ctx.shadowColor = '#7EE057'; ctx.shadowBlur = 5;
           ctx.fill(); ctx.shadowBlur = 0;
           if (n.showLabel) {
             ctx.font = '10px sans-serif';
-            ctx.fillStyle = 'rgba(126,217,87,0.7)';
+            ctx.fillStyle = 'rgba(255,255,255,0.80)';
             ctx.textAlign = 'center';
             ctx.fillText(n.label, n.x, n.y - n.r - 4);
           }
@@ -993,8 +993,8 @@
       bubbles.forEach(function(b) {
         b.pulse += b.pulseSp;
         var glow = 0.5 + Math.sin(b.pulse) * 0.5;
-        var baseColor = b.hot ? '237,28,36' : '0,166,81';
-        var lightColor = b.hot ? '255,80,80' : '126,217,87';
+        var baseColor = b.hot ? '237,28,36' : '100,210,140';
+        var lightColor = b.hot ? '255,80,80' : '180,255,210';
 
         /* outer glow ring */
         var grad = ctx.createRadialGradient(b.x, b.y, b.r*0.6, b.x, b.y, b.r*1.3);
@@ -1018,7 +1018,7 @@
         /* text */
         var fSize = Math.max(9, Math.round(b.r * 0.52));
         ctx.font = (b.hot ? 'bold ' : '') + fSize + 'px "Be Vietnam Pro", sans-serif';
-        ctx.fillStyle = b.hot ? 'rgba(255,255,255,0.95)' : 'rgba(200,255,220,0.9)';
+        ctx.fillStyle = b.hot ? 'rgba(255,255,255,0.97)' : 'rgba(255,255,255,0.92)';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(b.word, b.x, b.y);
 
