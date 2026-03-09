@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+    <title>LAZINET LUCKY DRAW NEW YEAR 2026 | Professional Utility</title>
+    <meta name="description" content="🎯 Công cụ quay thưởng chuyên nghiệp từ LAZINET cho năm mới 2026. Tùy chỉnh giải thưởng, âm thanh hoành tráng và minh bạch.">
+    <meta name="author" content="LAZINET - Công Ty Công Nghệ Hàng Đầu Việt Nam">
+
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --lz-bg: #0F162C;
+            --lz-card: rgba(255, 255, 255, 0.03);
+            --lz-accent: #3F82FB;
+            --lz-border: rgba(255, 255, 255, 0.1);
+            --lz-orange: #ff5000;
+        }
+
+        body { background-color: var(--lz-bg); color: #fff; font-family: "Be Vietnam Pro", sans-serif; overflow-x: hidden; }
+        .glass-card { background: var(--lz-card); border: 1px solid var(--lz-border); border-radius: 24px; backdrop-filter: blur(15px); padding: 25px; height: 100%; }
+
+        /* Responsive Title */
+        .brand-container { display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 15px; }
+        .brand-year { font-weight: 800; letter-spacing: 1px; font-size: clamp(1.2rem, 3vw, 1.6rem); color: #fff; text-shadow: 0 0 20px rgba(63, 130, 251, 0.5); text-align: right; flex: 1; min-width: 250px; }
+        
+        .wheel-wrapper { position: relative; max-width: 420px; margin: 0 auto; }
+        #wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); z-index: 100; width: 45px; filter: drop-shadow(0 5px 12px rgba(255, 80, 0, 0.6)); }
+        canvas { width: 100%; height: auto; }
+
+        .lz-input, .lz-select { background: rgba(255,255,255,0.05) !important; border: 1px solid var(--lz-border) !important; color: #fff !important; border-radius: 12px; }
+        .lz-select option { background: #161d31; color: #fff; }
+
+        .reward-item { display: grid; grid-template-columns: 1fr 45px 65px 30px; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .btn-spin { background: linear-gradient(90deg, var(--lz-orange), #E64A19); border: none; color: white; padding: 18px; border-radius: 16px; font-weight: 800; width: 100%; transition: 0.3s; box-shadow: 0 10px 20px rgba(230, 74, 25, 0.3); }
+
+        .history-list-box { height: 465px; overflow-y: auto; }
+        .history-row { padding: 12px 15px; border-radius: 14px; margin-bottom: 10px; display: grid; grid-template-columns: 40px 1fr 1fr 85px; font-size: 0.85rem; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--lz-border); }
+        
+        .audio-bar { background: rgba(63, 130, 251, 0.08); border-radius: 14px; padding: 10px 18px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(63, 130, 251, 0.15); }
+        
+        #lastResult { transition: all 0.4s ease; }
+
+        @media (max-width: 768px) {
+            .brand-container { justify-content: center; text-align: center; }
+            .brand-year { text-align: center; }
+        }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--lz-accent); border-radius: 10px; }
+        .cursor-pointer { cursor: pointer; }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-transparent py-3">
+        <div class="container">
+            <div class="brand-container">
+                <a class="navbar-brand" href="https://lazinet.com">
+                    <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" height="50">
+                </a>
+                <div class="brand-year">LUCKY DRAW NEW YEAR 2026</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-2">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-4">
+                <div class="d-flex flex-column gap-4 h-100">
+                    <div class="glass-card text-center d-flex flex-column justify-content-center" style="border: 2px dashed var(--lz-accent); min-height: 200px;">
+                        <span class="small opacity-50 text-uppercase fw-bold">Kết quả vừa quay</span>
+                        <div id="lastResult" class="my-3 h1 fw-bold text-white">—</div>
+                        <div id="lastWinner" class="badge bg-primary px-3 py-2 rounded-pill mx-auto">Sẵn sàng</div>
+                    </div>
+                    <div class="glass-card flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0 text-primary small text-uppercase">Danh sách trúng giải</h6>
+                            <i class="fas fa-file-excel text-success cursor-pointer" onclick="exportExcel('stats')"></i>
+                        </div>
+                        <div id="miniStats"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <div id="playZone" class="row h-100 align-items-center">
+                        <div class="col-md-7">
+                            <div class="wheel-wrapper">
+                                <div id="wheel-pointer">
+                                    <svg viewBox="0 0 24 24" fill="#ff5000" stroke="#ffffff"><path d="M12 24l8-12h-16l8 12zM12 0c-1.1 0-2 .9-2 2v10h4v-10c0-1.1-.9-2-2-2z"/></svg>
+                                </div>
+                                <canvas id="wheelCanvas" width="800" height="800"></canvas>
+                                <img src="../assets/img/logo-lazinet/lazinet_LogoOnly.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; z-index: 50; border-radius: 50%; box-shadow: 0 0 15px #fff;">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="ps-md-4 py-4">
+                                <div class="audio-bar">
+                                    <div class="audio-main-btn cursor-pointer" onclick="toggleMute()">
+                                        <i class="fas fa-volume-up" id="muteIcon"></i> <span class="ms-1 small fw-bold">ÂM THANH</span>
+                                    </div>
+                                    <input type="file" id="audioUpload" accept="audio/*" class="d-none" onchange="loadMedia(this)">
+                                    <label for="audioUpload" class="mb-0 cursor-pointer opacity-50 small">THAY NHẠC</label>
+                                    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+                                </div>
+                                <label class="small fw-bold text-primary mb-2 opacity-75">TÊN NGƯỜI QUAY</label>
+                                <input type="text" id="currentPlayer" class="form-control lz-input mb-4 p-3 fw-bold" placeholder="Nhập tên...">
+                                <button id="spinBtn" class="btn-spin" onclick="spin()">BẮT ĐẦU QUAY</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="glass-card">
+                    <div class="mb-4">
+                        <label class="small fw-bold text-primary mb-2">MẪU CẤU HÌNH (PRESET)</label>
+                        <select id="presetSelect" class="form-select lz-select" onchange="confirmAndApplyPreset(this.value)">
+                            <option value="">-- Chọn mẫu quay phổ biến --</option>
+                            <option value="default">🎁 Quay trúng thưởng (mặc định)</option>
+                            <option value="nhau">🍻 Quay ăn nhậu</option>
+                            <option value="monan">🍲 Quay ăn món gì</option>
+                            <option value="congiap">🐉 Quay chọn con giáp</option>
+                            <option value="thang">📅 Quay chọn tháng</option>
+                            <option value="thu">📆 Quay chọn ngày (tuần)</option>
+                            <option value="tinh63">🇻🇳 Quay 63 tỉnh thành (cũ)</option>
+                            <option value="tinh34">🇻🇳 Quay 34 tỉnh thành (mới 2025)</option>
+                            <option value="xaphuong">🏘️ Quay xã/phường (chọn tỉnh trước)</option>
+                        </select>
+                    </div>
+
+                    <div id="provinceFilter" class="mb-4 d-none">
+                        <label class="small fw-bold text-primary mb-2">CHỌN TỈNH ĐỂ LẤY XÃ/PHƯỜNG</label>
+                        <select id="provinceSelect" class="form-select lz-select" onchange="loadWards(this.value)">
+                            <option value="">-- Chọn tỉnh/thành phố --</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-end mb-2">
+                        <div>
+                            <h6 class="fw-bold mb-0 text-primary">DANH SÁCH GIẢI</h6>
+                            <small class="opacity-50">(SL ∞ là vô hạn)</small>
+                        </div>
+                        <div>
+                            <i class="fas fa-trash text-white-50 cursor-pointer" onclick="clearRewards()" title="Xóa tất cả giải"></i>
+                        </div>
+                    </div>
+
+                    <div id="rewardContainer" style="max-height: 350px; overflow-y: auto; overflow-x: hidden;"></div>
+                    
+                    <button onclick="addRewardRow()" class="btn btn-outline-light btn-sm w-100 mt-3 border-0 py-2" style="background: var(--lz-border);">
+                        <i class="fas fa-plus me-1"></i>Thêm dòng giải thưởng
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0 text-primary">LỊCH SỬ QUAY</h5>
+                        <div>
+                            <button onclick="clearHistoryUI()" class="btn btn-link btn-sm text-danger p-0 me-3"><i class="fas fa-trash"></i></button>
+                            <button onclick="exportExcel('history')" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel me-1"></i>Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div id="historyList" class="history-list-box">
+                        <div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay nào...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const rewardContainer = document.getElementById('rewardContainer');
+        const winSound = document.getElementById('winSound');
+        const spinBtn = document.getElementById('spinBtn');
+        
+        let activeRewards = [];
+        let winnerStats = {};
+        let turnCount = 0;
+        let currentAngle = 0;
+        let isSpinning = false;
+        let wardData = []; // Toàn bộ dữ liệu JSON tỉnh + xã/phường
+
+        const TINH_63 = ["An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận","Cà Mau","Cần Thơ","Cao Bằng","Đà Nẵng","Đắk Lắk","Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang","Hà Nam","Hà Nội","Hà Tĩnh","Hải Dương","Hải Phòng","Hậu Giang","Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum","Lai Châu","Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An","Ninh Bình","Ninh Thuận","Phú Thọ","Phú Yên","Quảng Bình","Quảng Nam","Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng","Sơn La","Tây Ninh","Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","TP Hồ Chí Minh","Trà Vinh","Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"];
+
+        function getRandomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        }
+
+        function clearAllHistory() {
+            turnCount = 0;
+            winnerStats = {};
+            document.getElementById('historyList').innerHTML = '<div id="emptyHistory" class="text-center py-5 text-white-50 small italic">Chưa có lượt quay nào...</div>';
+            document.getElementById('miniStats').innerHTML = "";
+            const res = document.getElementById('lastResult');
+            res.innerText = "—"; res.style.color = "#fff"; res.style.textShadow = "none";
+            document.getElementById('lastWinner').innerText = "Sẵn sàng";
+        }
+
+        function confirmAndApplyPreset(val) {
+            if (!val) return;
+
+            Swal.fire({
+                title: 'Áp dụng mẫu mới?',
+                text: "Lịch sử quay và danh sách giải hiện tại sẽ bị xóa!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    applyPreset(val);
+                } else {
+                    document.getElementById('presetSelect').value = "";
+                }
+            });
+        }
+
+        async function applyPreset(val) {
+            clearAllHistory();
+            rewardContainer.innerHTML = "";
+            document.getElementById('provinceFilter').classList.add('d-none');
+
+            if (val === 'default') {
+                addRewardRow("Giải Đặc Biệt", "#FF6300", "1");
+                addRewardRow("Giải Nhất", "#0070C0", "2");
+                addRewardRow("Giải Nhì", "#0A703F", "3");
+                addRewardRow("Giải Ba", "#EA2035", "5");
+                addRewardRow("Khuyến Khích", "#7030A0", "");
+            } else if (val === 'tinh63') {
+                TINH_63.forEach(t => addRewardRow(t, getRandomColor(), ""));
+            } else if (val === 'tinh34' || val === 'xaphuong') {
+                await loadProvinceData(val);
+            } else {
+                const presets = {
+                    nhau: ["Uống 100%", "Nhấp môi", "Uống nửa ly", "Bên trái uống", "Bên phải uống", "Miễn uống", "Hát bài", "Nhảy điệu"],
+                    monan: ["Bún đậu mắm tôm", "Phở bò", "Cơm tấm", "Gà rán", "Pizza", "Sushi", "Lẩu thái", "Bánh mì"],
+                    congiap: ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"],
+                    thang: Array.from({length:12}, (_,i)=>`Tháng ${i+1}`),
+                    thu: ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"]
+                };
+                presets[val].forEach(n => addRewardRow(n, getRandomColor(), ""));
+            }
+        }
+
+        async function loadProvinceData(mode) {
+            try {
+                const res = await fetch('../assets/refs/vn-xaphuong-2025-main/danhmucxaphuong.json');
+                if (!res.ok) throw new Error();
+                wardData = await res.json();
+
+                if (mode === 'tinh34') {
+                    wardData.forEach(p => addRewardRow(p.tentinhmoi, getRandomColor(), ""));
+                } else if (mode === 'xaphuong') {
+                    const pSelect = document.getElementById('provinceSelect');
+                    pSelect.innerHTML = '<option value="">-- Chọn tỉnh/thành phố --</option>';
+                    wardData.forEach(p => {
+                        const opt = document.createElement('option');
+                        opt.value = p.matinhBNV;
+                        opt.textContent = p.tentinhmoi;
+                        pSelect.appendChild(opt);
+                    });
+                    document.getElementById('provinceFilter').classList.remove('d-none');
+                }
+            } catch (e) {
+                Swal.fire("Lỗi tải dữ liệu", "Không thể tải file JSON tỉnh/xã. Kiểm tra đường dẫn file.", "error");
+            }
+        }
+
+        function loadWards(pId) {
+            if (!pId) {
+                rewardContainer.innerHTML = "";
+                refresh();
+                return;
+            }
+            rewardContainer.innerHTML = "";
+            const province = wardData.find(p => p.matinhBNV == pId);
+            if (province && province.phuongxa) {
+                province.phuongxa.forEach(w => addRewardRow(w.tenphuongxa, getRandomColor(), ""));
+            }
+        }
+
+        function addRewardRow(name = "", color = "", qty = "") {
+            const row = document.createElement('div');
+            row.className = 'reward-item';
+            row.innerHTML = `
+                <input type="text" class="form-control lz-input rew-name p-1 ps-2" value="${name}" oninput="refresh()">
+                <input type="color" class="rew-color" value="${color || getRandomColor()}" onchange="refresh()" style="width:100%; height:32px; border:none; background:none; cursor:pointer">
+                <input type="number" class="form-control lz-input rew-qty text-center p-1" placeholder="∞" value="${qty}" oninput="refresh()">
+                <button class="btn btn-link text-danger p-0" onclick="this.parentElement.remove(); refresh()"><i class="fas fa-times"></i></button>
+            `;
+            rewardContainer.appendChild(row);
+            refresh();
+        }
+
+        function clearRewards() {
+            Swal.fire({
+                title: 'Xóa tất cả giải thưởng?',
+                icon: 'warning',
+                showCancelButton: true
+            }).then(r => {
+                if (r.isConfirmed) {
+                    rewardContainer.innerHTML = "";
+                    refresh();
+                }
+            });
+        }
+
+        function refresh() {
+            const names = document.querySelectorAll('.rew-name'), colors = document.querySelectorAll('.rew-color'), qtys = document.querySelectorAll('.rew-qty');
+            activeRewards = [];
+            names.forEach((n, i) => {
+                const nameStr = n.value.trim();
+                if(nameStr) {
+                    const qVal = qtys[i].value === "" ? null : parseInt(qtys[i].value);
+                    if(qVal === null || qVal > 0) activeRewards.push({ name: nameStr, color: colors[i].value, qty: qVal, input: qtys[i] });
+                }
+            });
+            draw();
+            updateMiniStatsUI();
+        }
+
+        function draw() {
+            const r = canvas.width / 2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if(activeRewards.length === 0) return;
+            const slice = (Math.PI * 2) / activeRewards.length;
+            activeRewards.forEach((item, i) => {
+                const angle = currentAngle + i * slice;
+                ctx.beginPath(); ctx.fillStyle = item.color; ctx.moveTo(r, r);
+                ctx.arc(r, r, r - 10, angle, angle + slice); ctx.fill();
+                ctx.save(); ctx.translate(r, r); ctx.rotate(angle + slice / 2);
+                ctx.textAlign = "right"; ctx.fillStyle = "#fff"; 
+                const fontSize = activeRewards.length > 40 ? 12 : (activeRewards.length > 20 ? 16 : 20);
+                ctx.font = `bold ${fontSize}px sans-serif`;
+                ctx.fillText(item.name.substring(0, 30), r - 40, 6); ctx.restore();
+            });
+        }
+
+        function spin() {
+            if (isSpinning || activeRewards.length === 0) return;
+            isSpinning = true; spinBtn.disabled = true;
+            const duration = 5000;
+            const totalRot = (10 * Math.PI * 2) + Math.random() * Math.PI * 2;
+            const start = performance.now();
+            function animate(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                currentAngle = (1 - Math.pow(1 - progress, 3)) * totalRot;
+                draw();
+                if (progress < 1) requestAnimationFrame(animate);
+                else finalize();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function finalize() {
+            isSpinning = false; spinBtn.disabled = false;
+            const slice = (Math.PI * 2) / activeRewards.length;
+            const norm = (1.5 * Math.PI - (currentAngle % (Math.PI * 2))) % (Math.PI * 2);
+            const idx = Math.floor((norm < 0 ? norm + Math.PI * 2 : norm) / slice);
+            const prize = activeRewards[idx];
+            const player = document.getElementById('currentPlayer').value.trim() || "Khách";
+
+            if(prize.qty !== null) { prize.qty--; prize.input.value = prize.qty || ""; }
+            turnCount++;
+            if(!winnerStats[prize.name]) winnerStats[prize.name] = [];
+            winnerStats[prize.name].push({ name: player, color: prize.color });
+
+            const resEl = document.getElementById('lastResult');
+            resEl.innerText = prize.name; 
+            resEl.style.color = prize.color;
+            resEl.style.textShadow = `0 0 20px ${prize.color}`;
+            
+            document.getElementById('lastWinner').innerText = `Người quay: ${player}`;
+
+            if(!winSound.muted) { winSound.currentTime = 0; winSound.play(); }
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            
+            updateHistoryUI(player, prize);
+            updateMiniStatsUI();
+            document.getElementById('currentPlayer').value = "";
+            refresh();
+        }
+
+        function updateHistoryUI(player, prize) {
+            const list = document.getElementById('historyList');
+            const empty = document.getElementById('emptyHistory'); if(empty) empty.remove();
+            const div = document.createElement('div');
+            div.className = 'history-row shadow-sm';
+            div.style.borderLeft = `5px solid ${prize.color}`;
+            div.innerHTML = `<div>${turnCount}</div><div class="fw-bold">${player}</div><div style="color:${prize.color}">${prize.name}</div><div class="text-end opacity-50 small">${new Date().toLocaleTimeString('vi-VN')}</div>`;
+            list.prepend(div);
+        }
+
+        function updateMiniStatsUI() {
+            const container = document.getElementById('miniStats');
+            if (Object.keys(winnerStats).length === 0) {
+                container.innerHTML = '<div class="text-center py-4 opacity-25 small italic">Chưa có dữ liệu...</div>';
+                return;
+            }
+            container.innerHTML = Object.keys(winnerStats).map(gn => `
+                <div class="mb-2 border-bottom border-white-10 pb-2">
+                    <div class="fw-bold small" style="color:${winnerStats[gn][0].color}">${gn}</div>
+                    <div class="opacity-75 small">${winnerStats[gn].map(w=>w.name).join(', ')}</div>
+                </div>
+            `).join('');
+        }
+
+        function clearHistoryUI() { 
+            Swal.fire({
+                title: 'Xóa toàn bộ lịch sử?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý'
+            }).then(r => { if(r.isConfirmed) clearAllHistory(); }); 
+        }
+
+        function toggleMute() { winSound.muted = !winSound.muted; document.getElementById('muteIcon').className = winSound.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up'; }
+        function loadMedia(input) { if(input.files[0]) winSound.src = URL.createObjectURL(input.files[0]); }
+
+        function exportExcel(type) {
+            let data = [];
+            if(type === 'history') {
+                document.querySelectorAll('.history-row').forEach(row => {
+                    const ds = row.querySelectorAll('div');
+                    data.push({ "Lượt": ds[0].innerText, "Người quay": ds[1].innerText, "Giải thưởng": ds[2].innerText, "Thời gian": ds[3].innerText });
+                });
+            } else {
+                Object.keys(winnerStats).forEach(gn => {
+                    winnerStats[gn].forEach(w => data.push({ "Giải thưởng": gn, "Người trúng": w.name }));
+                });
+            }
+            if (data.length === 0) {
+                Swal.fire("Thông báo", "Chưa có dữ liệu để xuất!", "info");
+                return;
+            }
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data");
+            XLSX.writeFile(wb, `Lazinet_LuckyDraw_${type == 'history' ? 'LichSu' : 'ThongKe'}.xlsx`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            clearAllHistory();
+            applyPreset('default'); // Load preset mặc định mà không hỏi confirm
+        });
+    </script>
+</body>
+</html>

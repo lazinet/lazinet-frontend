@@ -1,0 +1,21 @@
+﻿TYPE,DATA,SIZE,MARGIN,COLORDARK,COLORLIGHT,STYLE,ERRORCORRECTION,IMAGE_URL,FILENAME
+url,https://lazinet.com/demo-qr,300,5,#3F82FB,#FFFFFF,dots,H,,Lazinet_QR_Demo
+text,Ma san pham: SP0012345,250,4,#000000,#F0F0F0,square,M,,Product_SP001
+phone,987654321,200,3,#CC0000,#FFFFFF,rounded,Q,,Phone_Hotline
+wifi,TenWifi_Store;WPA;MatKhau123,280,4,#008000,#FFFFFF,classy-rounded,L,,Wifi_Office
+url,https://google.com,350,6,#DB4437,#FFFFFF,extra-rounded,H,https://i.imgur.com/GzB8Zf7.png,Google_Link_Logo
+vcard,Nguyen Van A;0901234567;a.nv@company.com,400,4,#000000,#FFFBE6,square,H,,vCard_NVA
+url,https://facebook.com/lazinet,250,4,#1877F2,#FFFFFF,classy,Q,,Facebook_Page
+text,So lo hang: L00202501,220,3,#333333,#FFFFFF,dots,M,,Lot_L00202501
+phone,2866868888,250,5,#0A0A0A,#EBEBEB,square,H,,Phone_Office
+url,https://lazinet.com/services,300,4,#FF6302,#FFFFFF,rounded,Q,,Service_Link
+text,Xin chao Viet Nam! - Chung toi la LAZINET,280,4,#000000,#CCFFCC,horizontal,L,,Chào_VN
+wifi,StoreWifi_Guest;WEP;Pass12345,250,3,#000000,#FFFFFF,vertical,M,,Wifi_Store_Guest
+vcard,Le Thi B;0909999888;b.lt@company.com,350,5,#6A0DAD,#F3E0FF,dots,H,,vCard_LTB
+url,https://lazinet.com/contact,200,2,#00BFFF,#FFFFFF,square,L,,Contact_Us
+text,LAZINET: Chuyen doi so toan dien,320,4,#000080,#E0E0FF,classy,Q,,Slogan_Deep
+phone,912345678,250,5,#FF00FF,#FFFFFF,rounded,H,,Phone_VIP_Style
+url,https://lazinet.com/products,270,3,#FFA500,#FFFFFF,extra-rounded,M,,Products_Link
+vietqr,10000019|970405|100000|Thanh toan don hang Lazinet,300,4,#000000,#F2F2F2,square,H,,VietQR_100k
+email,support@lazinet.com,250,5,#20B2AA,#FFFFFF,dots,Q,,Email_Support
+text,Ma tai san: TS999 - Vi tri: Kho A,260,4,#A52A2A,#FFE4E1,classy-rounded,L,,Asset_TS999

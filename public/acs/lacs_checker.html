@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>LAZINET LACS - Xác Thực Sản Phẩm Chính Hãng</title>
+    <!-- Meta tags giống file gốc, nhưng update title/description cho LACS chung -->
+    <meta name="description" content="Xác thực sản phẩm chính hãng qua LACS. Quét QR hoặc nhập mã để kiểm tra.">
+    <meta name="keywords" content="LACS, LAZINET, chống hàng giả, quét QR">
+    <!-- ... (giữ nguyên các meta og, twitter, etc. từ file gốc, thay title/desc phù hợp) -->
+    <link rel="canonical" href="https://script.google.com/macros/s/AKfycbxnCiOk5YTKwIlfN01FxZO3AjcjgcoKPKv_rbXb3EZHMGQDurjbzcyxybXs7SL3J7k1/exec"> <!-- Thay YOUR_GAS_ID bằng GAS deployment URL -->
+    <!-- Load libs giống file gốc: Tailwind, QRCode.js, jsQR, html5-qrcode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.1.0/dist/jsQR.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>/* Giữ nguyên style từ file gốc */</style>
+</head>
+<body class="container-layout flex justify-center items-start lg:items-center">
+    <div id="appContainer" class="w-full max-w-6xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-100 transition-all duration-300">
+        <!-- Header giống file gốc, nhưng title LACS chung -->
+        <div class="text-center mb-8">
+            <div class="flex flex-col sm:flex-row items-center justify-center mb-4">
+                <div class="w-24 h-24 sm:w-20 sm:h-20 flex items-center justify-center mb-4 sm:mb-0 sm:mr-4 p-2">
+                    <img id="brandLogo" src="" alt="Brand Logo" class="w-full h-full object-contain"> <!-- Dynamic từ response -->
+                </div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">LAZINET Anti-Counterfeit System (LACS™)</h1>
+                    <h2 class="text-lg sm:text-xl font-semibold text-gray-700">Xác Thực Sản Phẩm Chính Hãng</h2>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500">Nhập mã hoặc quét QR để kiểm tra nguồn gốc sản phẩm</p>
+        </div>
+
+        <!-- Phần input + buttons giống file gốc -->
+        <div class="mb-8">
+            <!-- ... (giữ nguyên input #code, buttons scan/upload, với oninput=handleInputChange) -->
+            <input type="text" id="code" placeholder="Nhập mã LACS (ví dụ: ACS0000T16XTIY)" class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 placeholder-gray-400" maxlength="50" oninput="handleInputChange()">
+        </div>
+
+        <!-- Section ảnh + QR giống file gốc -->
+        <div id="imageSection" class="mb-8">
+            <!-- ... (giữ nguyên scannedImageBox, qr-code-box với #qrcode) -->
+        </div>
+
+        <!-- Loading giống file gốc -->
+        <div id="loadingIndicator" class="hidden text-center py-4">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p class="mt-2 text-gray-600">Đang xác thực...</p>
+        </div>
+
+        <!-- Result section giống file gốc, nhưng dynamic với response -->
+        <div id="resultSection" class="hidden mb-8 result-section">
+            <div class="p-6 border rounded-xl">
+                <h3 id="resultTitle" class="text-xl font-bold mb-2"></h3>
+                <p id="resultDetail" class="text-gray-600 mb-4"></p>
+                <div id="productInfo" class="hidden space-y-2">
+                    <p><strong>Tên sản phẩm:</strong> <span id="productName"></span></p>
+                    <p><strong>Mô tả:</strong> <span id="productDesc"></span></p>
+                    <a id="productLink" href="" class="product-link inline-block bg-blue-600 text-white px-4 py-2 rounded-lg">Xem chi tiết sản phẩm</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company info dynamic -->
+        <div id="companyInfo" class="hidden text-center text-sm text-gray-500 mt-4">
+            <p id="companyName"></p>
+            <p id="websiteUrl"></p>
+        </div>
+
+        <!-- Scripts -->
+        <script>
+            // GAS URL (thay bằng deployment URL của bạn)
+            const GAS_URL = 'https://script.google.com/macros/s/AKfycbxnCiOk5YTKwIlfN01FxZO3AjcjgcoKPKv_rbXb3EZHMGQDurjbzcyxybXs7SL3J7k1/exec';
+            const CHECKER_URL = GAS_URL; // checker_url từ config, nhưng dùng GAS serve HTML
+
+            // Client ID (session_id) từ lazibot2
+            function getClientId() {
+                let clientId = localStorage.getItem('lacs_clientId');
+                if (!clientId) {
+                    clientId = crypto.randomUUID();
+                    localStorage.setItem('lacs_clientId', clientId);
+                }
+                return clientId;
+            }
+
+            // Gather browser info từ browser-info-general (async cho battery)
+            let browserInfo = {};
+            async function gatherBrowserInfo() {
+                // IP
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json');
+                    const data = await res.json();
+                    browserInfo.ip = data.ip;
+                } catch (e) { browserInfo.ip = 'N/A'; }
+
+                // Device type
+                const ua = navigator.userAgent;
+                browserInfo.device_type = /Mobile|Android|iP(hone|od)|Windows Phone|BlackBerry/i.test(ua) ? 'Mobile' :
+                                         /iPad|Tablet/i.test(ua) ? 'Tablet' : 'Desktop';
+                if (navigator.maxTouchPoints > 0 && browserInfo.device_type === 'Desktop') {
+                    browserInfo.device_type = 'Touch Device';
+                }
+
+                // Timezone
+                browserInfo.time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                // Battery
+                if ('getBattery' in navigator) {
+                    try {
+                        const battery = await navigator.getBattery();
+                        browserInfo.battery_info = `${Math.round(battery.level * 100)}% ${battery.charging ? '(Charging)' : ''}`;
+                    } catch (e) { browserInfo.battery_info = 'N/A'; }
+                } else {
+                    browserInfo.battery_info = 'N/A';
+                }
+
+                browserInfo.user_agent = navigator.userAgent;
+                browserInfo.session_id = getClientId();
+            }
+
+            // Submit code với browser info
+            async function submitCode(code) {
+                if (!code) return;
+                showLoading(true);
+                hideResultSection();
+
+                // Gather info nếu chưa
+                if (Object.keys(browserInfo).length === 0) await gatherBrowserInfo();
+
+                const postData = {
+                    code: code,
+                    ...browserInfo
+                };
+
+                try {
+                    const response = await fetch(GAS_URL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(postData)
+                    });
+                    const result = await response.json();
+
+                    showLoading(false);
+                    displayResult(result, code);
+                } catch (error) {
+                    showLoading(false);
+                    displayResult({ valid: false, error: error.message }, code);
+                }
+            }
+
+            // Display result (giống file gốc, nhưng dùng response fields)
+            function displayResult(result, code) {
+                const resultSection = document.getElementById('resultSection');
+                const resultTitle = document.getElementById('resultTitle');
+                const resultDetail = document.getElementById('resultDetail');
+                const productInfo = document.getElementById('productInfo');
+                const productName = document.getElementById('productName');
+                const productDesc = document.getElementById('productDesc');
+                const productLink = document.getElementById('productLink');
+                const brandLogo = document.getElementById('brandLogo');
+                const companyName = document.getElementById('companyName');
+                const websiteUrl = document.getElementById('websiteUrl');
+
+                resultSection.classList.remove('hidden');
+
+                if (result.valid) {
+                    // Valid
+                    resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-green-300 bg-green-50';
+                    resultTitle.textContent = "✅ XÁC THỰC CHÍNH HÃNG";
+                    resultTitle.className = "text-xl font-bold mb-2 text-green-700";
+                    resultDetail.textContent = "Sản phẩm của bạn là hàng chính hãng.";
+                    productInfo.classList.remove('hidden');
+                    productName.textContent = result.product_name || 'N/A';
+                    productDesc.textContent = result.product_desc || 'N/A';
+                    productLink.href = result.product_url || '#';
+                    productLink.textContent = 'Xem chi tiết sản phẩm';
+                    brandLogo.src = result.brand_logo_url || '';
+                    companyName.textContent = result.company_name || '';
+                    websiteUrl.innerHTML = `<a href="${result.website_url || '#'}" class="text-blue-600 hover:underline">${result.website_url || ''}</a>`;
+                    document.getElementById('companyInfo').classList.remove('hidden');
+                } else {
+                    // Invalid
+                    resultSection.querySelector('.border').className = 'p-6 border rounded-xl border-red-300 bg-red-50';
+                    resultTitle.textContent = "❌ KHÔNG PHẢI HÀNG CHÍNH HÃNG";
+                    resultTitle.className = "text-xl font-bold mb-2 text-red-700";
+                    resultDetail.textContent = `Mã "${code}" không hợp lệ hoặc đã hết hiệu lực. Có thể là hàng giả.`;
+                    productInfo.classList.add('hidden');
+                    document.getElementById('companyInfo').classList.add('hidden');
+                }
+            }
+
+            // Generate QR (giống file gốc, nhưng text = CHECKER_URL + ?code=)
+            function generateQR(code) {
+                document.getElementById("qrcode").innerHTML = "";
+                new QRCode(document.getElementById("qrcode"), {
+                    text: `${CHECKER_URL}?code=${encodeURIComponent(code)}`,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+
+            // Các hàm khác giống file gốc: handleInputChange (debounce 5s submit), startScanner, handleScan, etc.
+            // ... (paste toàn bộ script từ lazinet-nonson-deep-dive-ok.html, chỉ modify submitCode và generateQR như trên)
+
+            // Init: Gather info + check URL param
+            async function init() {
+                await gatherBrowserInfo();
+                // Check URL param code
+                const urlParams = new URLSearchParams(window.location.search);
+                const initialCode = urlParams.get('code');
+                if (initialCode) {
+                    document.getElementById('code').value = initialCode;
+                    generateQR(initialCode);
+                    submitCode(initialCode);
+                }
+                // ... (giữ nguyên event listeners từ file gốc)
+            }
+
+            window.addEventListener('DOMContentLoaded', init);
+        </script>
+    </div>
+</body>
+</html>

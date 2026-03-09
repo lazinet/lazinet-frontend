@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+    <title>Gantt Chart GoJS Trực Quan Tương Tác | Import Excel/CSV Miễn Phí - LAZINET</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://gojs.net/latest/release/go.js"></script>
+
+    <style>
+        /* Global Variables from LAZINET Style */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --accent-color: #3F82FB;
+            --text-color: #FFFFFF;
+            --background-color: #1a1a1a;
+            --header-bg: #101010;
+            --divider-color: #ffffff1a;
+            --error-color: #ff5000;
+            --gantt-bg-color: #2a2a2a; 
+            /* Màu Hex cứng cho GoJS */
+            --bar-color-dev: #00bcd4; 
+            --bar-color-design: #ff5000; 
+            --bar-color-test: #ffc107; 
+            --bar-color-analysis: #fbc02d; 
+            --bar-color-deploy: #4caf50; 
+            --bar-color-int: #9c27b0; 
+            --bar-color-default: #555555;
+            --progress-color: #4CAF50;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: var(--header-bg);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--divider-color);
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .main-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .main-content {
+                grid-template-columns: 350px 1fr; 
+            }
+        }
+
+        .control-panel, .template-guide, #data-table-container {
+            background: var(--secondary-color);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--divider-color);
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--divider-color);
+        }
+
+        .form-control, .form-select {
+            background-color: #333;
+            border: 1px solid #555;
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .btn-secondary {
+            background-color: #555;
+            border-color: #555;
+            color: var(--primary-color);
+        }
+        
+        /* === GOJS GANTT MULTI-DIAGRAM CONTAINER === */
+        #gantt-container {
+            width: 100%;
+            height: 700px;
+            background-color: var(--gantt-bg-color);
+            border-radius: 15px;
+            border: 1px solid var(--divider-color);
+            display: flex;
+            overflow: hidden; 
+        }
+
+        #myTasksDiv {
+            width: 250px; /* Cột tên nhiệm vụ */
+            margin-right: 2px;
+            border-right: solid 1px var(--divider-color);
+            background-color: var(--gantt-bg-color);
+        }
+
+        #gantt-chart-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #myTimelineDiv {
+            width: 100%;
+            height: 35px; /* Cột ngày tháng */
+            border-bottom: solid 1px var(--divider-color);
+            background-color: var(--gantt-bg-color);
+        }
+
+        #myGanttDiv {
+            flex-grow: 1;
+            width: 100%; /* Khu vực chính của Gantt Bar */
+            background-color: var(--gantt-bg-color);
+            overflow: hidden;
+        }
+        
+        /* Chỉnh style cho các Node Text/Shape */
+        .gojs-gantt-text {
+            fill: var(--text-color) !important;
+        }
+        
+        #initial-message {
+            position: absolute;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        /* Excel Template Table and Data Table */
+        .data-display-table th, .data-display-table td {
+            color: var(--text-color);
+            border-color: var(--divider-color);
+            background-color: #333;
+            font-size: 0.85rem;
+        }
+
+    </style>
+</head>
+
+<body onload="initGoJS()">
+    <div class="header">
+        <span class="logo">LAZINET</span>
+        <h1><i class="fas fa-chart-gantt"></i> Công Cụ Biểu Đồ Gantt GoJS</h1>
+        <p class="subtitle">Nhập liệu từ Excel/CSV, vẽ biểu đồ tương tác, Responsive Mọi Nền Tảng</p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="main-content">
+            <div class="control-panel">
+                <div class="section-title">
+                    <span>⚙️</span>
+                    <span>Nạp Dữ Liệu & Tùy Chọn</span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fileInput" class="form-label">Tải file Dữ Liệu (Excel/CSV)</label>
+                    <input class="form-control" type="file" id="fileInput" accept=".xlsx, .xls, .csv">
+                    <div class="form-text text-white-50">Dữ liệu phải đúng cấu trúc mẫu.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="widthSlider" class="form-label">Phóng to/Thu nhỏ (Ngày)</label>
+                    <input type="range" class="form-range" min="10" max="60" value="24" id="widthSlider">
+                </div>
+                
+                <div class="mb-4 form-check">
+                    <input class="form-check-input" type="checkbox" id="showWeekends" checked disabled>
+                    <label class="form-check-label" for="showWeekends">
+                      Hiển thị Cuối tuần
+                    </label>
+                </div>
+                
+                <button id="renderBtn" class="btn btn-primary w-100" disabled>
+                    <i class="fas fa-play-circle"></i> Vẽ Biểu Đồ
+                </button>
+                
+                <button id="toggleDataBtn" class="btn btn-secondary w-100 mt-2" disabled data-bs-toggle="collapse" data-bs-target="#data-table-container" aria-expanded="false" aria-controls="data-table-container">
+                    <i class="fas fa-table"></i> Xem Dữ Liệu Đã Nạp
+                </button>
+                
+                <button id="downloadBtn" class="btn btn-secondary w-100 mt-2" disabled onclick="exportGojs()">
+                    <i class="fas fa-download"></i> Tải ảnh (PNG)
+                </button>
+            </div>
+
+            <div>
+                <div id="gantt-container">
+                    <div id="myTasksDiv"></div>
+
+                    <div id="gantt-chart-area">
+                        <div id="myTimelineDiv"></div>
+                        <div id="myGanttDiv"></div>
+                    </div>
+                    
+                    <p id="initial-message" style="position: absolute; margin: auto;"><i class="fas fa-spinner fa-spin"></i> Đang tải và khởi tạo GoJS...</p>
+                </div>
+                
+                <div class="collapse mt-4" id="data-table-container">
+                    <div class="section-title">
+                        <span>📊</span>
+                        <span>Dữ Liệu Nhiệm Vụ Đã Nạp</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm data-display-table" id="loaded-data-table">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="template-guide mt-4">
+                    <div class="section-title">
+                        <span>📝</span>
+                        <span>Cấu Trúc Dữ Liệu Bắt Buộc</span>
+                    </div>
+                    <p class="text-white-75">File Excel/CSV của bạn phải có các cột theo đúng thứ tự và tên sau. **Ngày tháng** phải ở định dạng **YYYY-MM-DD**.</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm data-display-table">
+                            <thead>
+                                <tr>
+                                    <th>Cột</th>
+                                    <th>Tên Trường</th>
+                                    <th>Định Dạng</th>
+                                    <th>Ghi Chú</th>
+                                    <th>Ví Dụ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>A</td><td>`id`</td><td>String</td><td>**Bắt buộc**. ID duy nhất (GoJS Key).</td><td>Task 1</td></tr>
+                                <tr><td>B</td><td>`name`</td><td>String</td><td>**Bắt buộc**. Tên nhiệm vụ.</td><td>Thiết kế UX/UI</td></tr>
+                                <tr><td>C</td><td>`start`</td><td>Date</td><td>**Bắt buộc**. Ngày bắt đầu (YYYY-MM-DD).</td><td>2025-10-01</td></tr>
+                                <tr><td>D</td><td>`end`</td><td>Date</td><td>**Bắt buộc**. Ngày kết thúc (YYYY-MM-DD).</td><td>2025-10-15</td></tr>
+                                <tr><td>E</td><td>`progress`</td><td>Number</td><td>Tiến độ (0 - 100).</td><td>50</td></tr>
+                                <tr><td>F</td><td>`dependencies`</td><td>String</td><td>ID của nhiệm vụ phụ thuộc (cách nhau bởi dấu phẩy).</td><td>Task 0, Task 1</td></tr>
+                                <tr><td>G</td><td>`custom_class`</td><td>String</td><td>Phân loại để tạo màu sắc (Ví dụ: Design, Development).</td><td>Design</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // === GLOBAL VARIABLES ===
+        let $ = go.GraphObject.make;
+        let myGantt = null;
+        let myTasks = null;
+        let myTimeline = null;
+        let myModel = null;
+        
+        let tasks = []; 
+        let nodeDataArray = []; 
+        let linkDataArray = []; 
+
+        const fileInput = document.getElementById('fileInput');
+        const renderBtn = document.getElementById('renderBtn');
+        const toggleDataBtn = document.getElementById('toggleDataBtn');
+        const loadedDataTable = document.getElementById('loaded-data-table');
+        const initialMessage = document.getElementById('initial-message');
+        const widthSlider = document.getElementById('widthSlider');
+
+        const EXPECTED_HEADERS = ['id', 'name', 'start', 'end', 'progress', 'dependencies', 'custom_class'];
+        let PIXELS_PER_DAY = 24; 
+        const GridCellHeight = 30;
+        const TimelineHeight = 30;
+        
+        // SỬ DỤNG MÃ HEX CỨNG ĐÃ ĐỊNH NGHĨA TRONG CSS VARS
+        const COLOR_MAP = {
+            'development': '#00bcd4', 
+            'design': '#ff5000',      
+            'testing': '#ffc107',     
+            'analysis': '#fbc02d',    
+            'deployment': '#4caf50',  
+            'integration': '#9c27b0', 
+            'default': '#555555',
+            'progress': '#4CAF50',
+            'text': '#FFFFFF',
+            'accent': '#3F82FB'
+        };
+        
+        // === HÀM HỖ TRỢ ===
+        function daysBetween(start, end) {
+            if (!start || !end) return 1;
+            const oneDay = 24 * 60 * 60 * 1000;
+            const diffDays = Math.round(Math.abs((new Date(end) - new Date(start)) / oneDay)) + 1;
+            return diffDays > 0 ? diffDays : 1;
+        }
+
+        function getStyleColor(className) {
+            return COLOR_MAP[className] || COLOR_MAP.default;
+        }
+
+        // === 1. GOJS INITIALIZATION (Dựa trên mẫu chính thức) ===
+        function initGoJS() {
+            // Kiểm tra thư viện GoJS
+            if (typeof go === 'undefined') {
+                document.body.onload = function() {
+                    initialMessage.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: ${COLOR_MAP.default};"></i> Lỗi tải thư viện GoJS. Vui lòng kiểm tra kết nối mạng hoặc **Tải lại cứng (Ctrl+Shift+R)**.`;
+                }
+                return;
+            }
+            
+            initialMessage.innerHTML = '<i class="fas fa-info-circle"></i> Đang khởi tạo...';
+            
+            // --- 1.1. Custom Layout (Từ mẫu GoJS Gantt) ---
+            function GanttLayout() {
+                go.Layout.call(this);
+            }
+            go.Diagram.inherit(GanttLayout, go.Layout);
+            GanttLayout.prototype.doLayout = function(coll) {
+                const diagram = this.diagram;
+                if (!diagram) return;
+
+                let earliest = null;
+                diagram.nodes.each(node => {
+                    const start = node.data.startDate;
+                    if (start && (!earliest || start < earliest)) earliest = start;
+                });
+                if (!earliest) earliest = new Date();
+                
+                const startDayTime = earliest.getTime();
+
+                // Đặt vị trí X cho thanh Gantt
+                diagram.nodes.each(node => {
+                    const data = node.data;
+                    const nodeStartDayTime = data.startDate.getTime();
+                    const offset = Math.round((nodeStartDayTime - startDayTime) / (24 * 60 * 60 * 1000));
+                    
+                    const x = offset * PIXELS_PER_DAY;
+                    node.location = new go.Point(x, node.location.y);
+                });
+                
+                // Căn chỉnh myGantt và myTimeline để hiển thị đúng ngày
+                diagram.model.modelData.startTime = earliest;
+                diagram.model.modelData.earliest = earliest;
+                diagram.model.setKeyForNodeData(diagram.model.modelData, "model");
+
+                this.commitLayout();
+            };
+            
+            // --- 1.2. Định nghĩa Task Node (Thanh Gantt) ---
+            const taskNodeTemplate = 
+                $(go.Node, "Spot",
+                    {
+                        locationSpot: go.Spot.Left,
+                        locationObjectName: "BAR",
+                        resizable: true, 
+                        resizeObjectName: "BAR",
+                        fromSpot: go.Spot.RightSide,
+                        toSpot: go.Spot.LeftSide,
+                        selectionAdorned: false,
+                        cursor: "pointer",
+                        minLocation: new go.Point(0, NaN),
+                        maxLocation: new go.Point(Infinity, NaN),
+                        // Đảm bảo chỉ kéo theo trục X (Ngày)
+                        dragComputation: function(part, oldLoc, newLoc) {
+                            const newX = Math.round(newLoc.x / PIXELS_PER_DAY) * PIXELS_PER_DAY;
+                            return new go.Point(newX, newLoc.y);
+                        },
+                        // Khi thay đổi kích thước, cập nhật duration
+                        'resizeAdornmentTemplate': 
+                            $(go.Adornment, "Spot",
+                                $(go.Placeholder),
+                                $(go.Shape, "Rectangle", { fill: null, stroke: COLOR_MAP.accent, strokeWidth: 2 }),
+                                // Bắt sự kiện resize để cập nhật duration
+                                $(go.Shape, "Rectangle", { alignment: go.Spot.Right, cursor: "col-resize", desiredSize: new go.Size(6, 20), fill: COLOR_MAP.accent, stroke: null }),
+                                {
+                                    'Selected': (part, old) => { if (old) part.adornedPart.isOngoing = true; },
+                                    'Resizing': (part, old) => { 
+                                        const node = part.adornedPart;
+                                        const dur = Math.round(node.actualBounds.width / PIXELS_PER_DAY);
+                                        // Cập nhật model data
+                                        node.diagram.model.set(node.data, "duration", Math.max(1, dur));
+                                        
+                                        // Cập nhật lại ngày kết thúc
+                                        const newEnd = new Date(node.data.startDate);
+                                        newEnd.setDate(newEnd.getDate() + Math.max(1, dur) - 1);
+                                        node.diagram.model.set(node.data, "endDate", newEnd);
+                                    },
+                                    'FinishedResizing': (part) => { part.adornedPart.isOngoing = false; }
+                                }
+                            )
+                    },
+                    new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+                    
+                    // Thanh Gantt (Container)
+                    $(go.Panel, "Spot",
+                        { 
+                            name: "BAR", 
+                            height: 20,
+                            minDesiredSize: new go.Size(PIXELS_PER_DAY, 20),
+                            background: "transparent",
+                            toolTip: 
+                                $("ToolTip",
+                                    $(go.TextBlock, { margin: 4, stroke: COLOR_MAP.text },
+                                        new go.Binding("text", "", function(data) {
+                                            const end = new Date(data.startDate);
+                                            end.setDate(end.getDate() + data.duration - 1);
+                                            return `ID: ${data.key}\nNhiệm vụ: ${data.text}\nBắt đầu: ${data.startDate.toLocaleDateString('vi-VN')}\nKết thúc: ${end.toLocaleDateString('vi-VN')}\nTiến độ: ${data.progress}%\nPhân loại: ${data.custom_class || 'Khác'}`;
+                                        })
+                                    )
+                                )
+                        },
+                        // Thanh Nền (Bar)
+                        $(go.Shape, "Rectangle",
+                            { 
+                                name: "BARSHAPE", 
+                                fill: COLOR_MAP.default, 
+                                desiredSize: new go.Size(1, 20),
+                                strokeWidth: 0,
+                                alignment: go.Spot.Left
+                            },
+                            new go.Binding("width", "duration", function(d) { return d * PIXELS_PER_DAY; }),
+                            new go.Binding("fill", "custom_class", function(c) { 
+                                return getStyleColor(c); 
+                            })
+                        ),
+                        // Thanh Tiến độ (Progress)
+                        $(go.Shape, "Rectangle",
+                            { 
+                                fill: COLOR_MAP.progress, 
+                                strokeWidth: 0, 
+                                alignment: go.Spot.Left,
+                                width: 1 
+                            },
+                            new go.Binding("width", "", function(data) { 
+                                const fullWidth = data.duration * PIXELS_PER_DAY;
+                                return fullWidth * (data.progress / 100);
+                            })
+                        ),
+                        // Text Hiển thị Tiến độ (%)
+                        $(go.TextBlock,
+                            {
+                                alignment: go.Spot.Center,
+                                font: "bold 10pt Arial, sans-serif",
+                                stroke: "white"
+                            },
+                            new go.Binding("text", "progress", function(p) { return p + "%"; })
+                        )
+                    ) // End of Spot Panel BAR
+                ); 
+
+            // --- 1.3. Định nghĩa Link Template ---
+            const linkTemplate =
+                $(go.Link,
+                    { 
+                        routing: go.Link.AvoidsNodes, 
+                        curve: go.Link.JumpGap, 
+                        corner: 5,
+                        layerName: "Background"
+                    },
+                    $(go.Shape, { stroke: COLOR_MAP.accent, strokeWidth: 1.5 }),
+                    $(go.Shape, { toArrow: "Standard", fill: COLOR_MAP.accent, stroke: null })
+                );
+
+            // --- 1.4. Định nghĩa Task Name Node (myTasks) ---
+            const taskNameTemplate = 
+                $(go.Part, go.Panel.TableRow,
+                    { 
+                        selectable: false, isLayoutPositioned: false, copyable: false, movable: false, height: GridCellHeight,
+                        background: 'transparent'
+                    },
+                    $(go.TextBlock,
+                        { 
+                            column: 0, margin: 5, font: "bold 12pt Arial, sans-serif", 
+                            stroke: COLOR_MAP.text,
+                            wrap: go.TextBlock.None
+                        },
+                        new go.Binding("text", "text")
+                    )
+                );
+            
+            // --- 1.5. Định nghĩa Timeline Part (myTimeline) ---
+            const timelinePart = 
+                $(go.Part,
+                    { 
+                        layerName: "Foreground", isLayoutPositioned: false, 
+                        selectable: false, isPanelMain: true,
+                        // Vẽ lưới ngày/tuần
+                        itemTemplate: 
+                            $(go.Panel, "Vertical",
+                                new go.Binding("position", "left", function(l) { return new go.Point(l, 0); }),
+                                $(go.Shape, "Rectangle", { width: 1, height: 35, stroke: "white", strokeWidth: 0.5, alignment: go.Spot.TopLeft }),
+                                $(go.TextBlock, { stroke: COLOR_MAP.text, font: "10pt Segoe UI, sans-serif" }, new go.Binding("text", "text"))
+                            )
+                    }
+                );
+
+
+            // --- 1.6. Khởi tạo 3 Diagram ---
+            myModel = $(go.GraphLinksModel, {
+                modelData: { startTime: new Date(), earliest: new Date() },
+                linkDataArray: []
+            });
+
+            myGantt = $(go.Diagram, "myGanttDiv",
+                {
+                    nodeTemplate: taskNodeTemplate,
+                    linkTemplate: linkTemplate,
+                    "undoManager.isEnabled": true,
+                    layout: $(GanttLayout),
+                    padding: new go.Margin(TimelineHeight + 4, PIXELS_PER_DAY * 7, GridCellHeight, 0),
+                    model: myModel
+                });
+                
+            myTasks = $(go.Diagram, "myTasksDiv",
+                {
+                    nodeTemplate: taskNameTemplate,
+                    layout: $(go.GridLayout, { isViewportSized: true, wrappingWidth: 1 }),
+                    padding: new go.Margin(TimelineHeight + 4, 0, GridCellHeight, 0),
+                    model: myModel
+                });
+                
+            myTimeline = $(go.Diagram, "myTimelineDiv",
+                {
+                    maxSelectionCount: 0, // Không cho phép chọn
+                    "scrollMode": go.Diagram.InfiniteScroll,
+                    allowVerticalScroll: false,
+                    allowHorizontalScroll: false,
+                    initialAutoScale: go.Diagram.None,
+                    padding: new go.Margin(0, 0, 0, 0),
+                    model: myModel,
+                    layer: null // Không cần layer
+                });
+                
+            // --- 1.7. Đồng bộ hóa Cuộn và Vị trí ---
+            myGantt.scrollMargin = new go.Margin(0, PIXELS_PER_DAY * 7, 0, 0);
+
+            // Đồng bộ cuộn dọc của Task Names và Gantt Bars
+            let changingView = false;
+            myGantt.addDiagramListener("ViewportBoundsChanged", e => {
+                if (changingView) return;
+                changingView = true;
+                myTasks.position = new go.Point(myTasks.position.x, myGantt.viewportBounds.position.y);
+                changingView = false;
+            });
+
+            myTasks.addDiagramListener("ViewportBoundsChanged", e => {
+                if (changingView) return;
+                changingView = true;
+                myGantt.position = new go.Point(myGantt.position.x, myTasks.viewportBounds.position.y); 
+                myTimeline.position = new go.Point(myTimeline.position.x, myGantt.viewportBounds.position.y);
+                changingView = false;
+            });
+            
+            // Đồng bộ cuộn ngang của Timeline và Gantt Bars
+            myGantt.addDiagramListener("ViewportBoundsChanged", e => {
+                myTimeline.position = new go.Point(myGantt.viewportBounds.position.x, myTimeline.position.y);
+            });
+            
+            // --- 1.8. Bắt sự kiện Rescale ---
+            widthSlider.addEventListener('input', rescale);
+            rescale(); // Khởi tạo lần đầu
+
+            initialMessage.style.display = 'none';
+            showNotification('Khởi tạo GoJS thành công. Vui lòng tải file dữ liệu.', 'success');
+        }
+        
+        // Cập nhật scale khi kéo thanh trượt
+        function rescale() {
+            if (!myGantt) return;
+            const val = parseFloat(widthSlider.value);
+            PIXELS_PER_DAY = val;
+            
+            myGantt.commit(diag => {
+                diag.scrollMargin = new go.Margin(0, PIXELS_PER_DAY * 7, 0, 0);
+                // Cập nhật tool properties để snapping và resizing đúng
+                diag.toolManager.draggingTool.gridSnapCellSize = new go.Size(PIXELS_PER_DAY, GridCellHeight);
+                diag.toolManager.resizingTool.cellSize = new go.Size(PIXELS_PER_DAY, GridCellHeight);
+                diag.toolManager.resizingTool.minSize = new go.Size(PIXELS_PER_DAY, GridCellHeight);
+                diag.updateAllTargetBindings();
+                diag.layout.cellHeight = GridCellHeight;
+                diag.layoutDiagram(true);
+                diag.padding = new go.Margin(TimelineHeight + 4, PIXELS_PER_DAY * 7, GridCellHeight, 0);
+                myTasks.padding = new go.Margin(TimelineHeight + 4, 0, GridCellHeight, 0);
+
+                // Cập nhật Timeline
+                updateTimeline();
+
+            }, null);
+        }
+
+        // Cập nhật Timeline (Header ngày tháng)
+        function updateTimeline() {
+            if (!myTimeline || !myGantt.model.modelData.earliest) return;
+            
+            const earliest = myGantt.model.modelData.earliest;
+            const latest = myGantt.model.modelData.latest;
+
+            // Tính toán tổng số ngày và kích thước của biểu đồ
+            const totalDays = daysBetween(earliest, latest || new Date());
+            const totalWidth = totalDays * PIXELS_PER_DAY;
+            
+            const daysData = [];
+            const currentDate = new Date(earliest);
+
+            for (let i = 0; i <= totalDays; i++) {
+                // Tạo ngày tháng cho mỗi cột
+                daysData.push({ 
+                    text: currentDate.getDate(), 
+                    left: i * PIXELS_PER_DAY 
+                });
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            myTimeline.model = new go.GraphLinksModel(daysData);
+            myTimeline.contentSize = new go.Size(totalWidth, TimelineHeight); // Cập nhật kích thước vùng timeline
+        }
+        
+        // === 2. XỬ LÝ FILE EXCEL/CSV (SheetJS) ===
+        function handleFile(e) {
+            if (typeof go === 'undefined' || !myGantt) {
+                showNotification('Thư viện GoJS chưa tải hoặc khởi tạo thất bại. Vui lòng thử tải lại cứng (Ctrl+Shift+R).', 'error');
+                return;
+            }
+            
+            const file = e.target.files[0];
+            if (!file) return;
+
+            showNotification('Đang xử lý file...', 'info', true);
+            renderBtn.disabled = true;
+            document.getElementById('downloadBtn').disabled = true;
+            toggleDataBtn.disabled = true;
+            tasks = [];
+            nodeDataArray = [];
+            linkDataArray = [];
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    if (json.length < 2) {
+                        throw new Error("File không có đủ dữ liệu.");
+                    }
+                    
+                    const rawData = json.slice(1);
+                    let rowY = 0; 
+
+                    rawData.forEach((row, index) => {
+                        let task = {};
+                        for (let i = 0; i < EXPECTED_HEADERS.length; i++) {
+                            const key = EXPECTED_HEADERS[i];
+                            let value = row[i];
+                            
+                            if (key === 'progress') {
+                                task[key] = Math.max(0, Math.min(100, parseInt(value) || 0));
+                            } else if (key === 'custom_class') {
+                                task[key] = value ? String(value).trim().replace(/\s/g, '').toLowerCase() : '';
+                            } else {
+                                task[key] = value ? String(value).trim() : null;
+                            }
+                        }
+                        task['dependencies'] = row[5] ? String(row[5]).trim() : '';
+                        
+                        if (!task.id || !task.name || !task.start || !task.end) {
+                            return; 
+                        }
+                        tasks.push(task);
+                        
+                        // Định dạng lại cho GoJS
+                        const durationDays = daysBetween(task.start, task.end);
+                        
+                        nodeDataArray.push({
+                            key: task.id,
+                            text: task.name,
+                            startDate: new Date(task.start), 
+                            duration: durationDays, 
+                            progress: task.progress,
+                            custom_class: task.custom_class,
+                            loc: `0 ${index * GridCellHeight}` // Đảm bảo vị trí Y được tính theo GridCellHeight
+                        });
+
+                        // Xử lý Dependencies để tạo Link Data
+                        if (task.dependencies) {
+                            const deps = task.dependencies.split(',').map(d => d.trim()).filter(d => d.length > 0);
+                            deps.forEach(depId => {
+                                linkDataArray.push({ from: depId, to: task.id });
+                            });
+                        }
+                    }); 
+
+                    if (tasks.length === 0) {
+                        throw new Error("Không tìm thấy nhiệm vụ hợp lệ nào trong file.");
+                    }
+                    
+                    showNotification(`Đã nạp thành công ${tasks.length} nhiệm vụ! Bấm "Vẽ Biểu Đồ" để hiển thị.`, 'success');
+                    renderBtn.disabled = false;
+                    
+                    updateDataTable(tasks); 
+
+                } catch (error) {
+                    Swal.close();
+                    showNotification(`LỖI: ${error.message || 'Lỗi không xác định khi đọc file.'} Vui lòng kiểm tra lại cấu trúc file.`, 'error');
+                    tasks = [];
+                    nodeDataArray = [];
+                    linkDataArray = [];
+                    renderBtn.disabled = true;
+                    toggleDataBtn.disabled = true;
+                    updateDataTable([]); 
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+        
+        // === 3. RENDER GANTT CHART (GoJS) ===
+        function renderGantt() {
+            if (typeof go === 'undefined' || !myGantt) {
+                 showNotification('Thư viện GoJS chưa tải hoặc khởi tạo thất bại. Không thể vẽ biểu đồ.', 'error');
+                 return;
+            }
+            if (nodeDataArray.length === 0) {
+                showNotification('Vui lòng tải dữ liệu hợp lệ trước khi vẽ biểu đồ.', 'warning');
+                return;
+            }
+            
+            // Cập nhật Model cho cả 3 Diagram (vì chúng dùng chung Model)
+            myModel.nodeDataArray = nodeDataArray;
+            myModel.linkDataArray = linkDataArray;
+            
+            // Kích hoạt Layout và vẽ lại
+            myGantt.layoutDiagram(true);
+            myTasks.layoutDiagram(true);
+
+            document.getElementById('downloadBtn').disabled = false;
+            document.getElementById('toggleDataBtn').disabled = false;
+            showNotification(`Đã vẽ ${nodeDataArray.length} nhiệm vụ thành công!`, 'success');
+        }
+
+        // === 4. CẬP NHẬT BẢNG DỮ LIỆU VÀ DOWNLOAD ===
+        function updateDataTable(data) {
+            const thead = loadedDataTable.querySelector('thead');
+            const tbody = loadedDataTable.querySelector('tbody');
+            
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${EXPECTED_HEADERS.length}" class="text-center text-white-50">Không có dữ liệu nhiệm vụ.</td></tr>`;
+                return;
+            }
+            
+            const headerRow = document.createElement('tr');
+            EXPECTED_HEADERS.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header.charAt(0).toUpperCase() + header.slice(1); 
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            
+            data.forEach(task => {
+                const tr = document.createElement('tr');
+                EXPECTED_HEADERS.forEach(key => {
+                    const td = document.createElement('td');
+                    td.textContent = task[key] !== null ? task[key] : 'N/A';
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportGojs() {
+            if (typeof go === 'undefined' || !myGantt) {
+                 showNotification('Thư viện GoJS chưa tải. Không thể xuất ảnh.', 'error');
+                 return;
+            }
+            
+            if (!myGantt.nodes.count) {
+                showNotification('Chưa có biểu đồ để tải xuống.', 'error');
+                return;
+            }
+            
+            // Sử dụng chức năng Export của GoJS
+            const img = myGantt.makeImage({
+                scale: 1,
+                maxSize: new go.Size(NaN, NaN),
+                type: "image/png"
+            });
+            
+            // Chuyển Data URL sang Blob và tải về
+            img.onload = function() {
+                img.toBlob(function(blob) {
+                    saveAs(blob, `LAZINET_GoJS_GanttChart_${new Date().toISOString().slice(0, 10)}.png`);
+                    showNotification('Đã tải xuống file PNG chất lượng cao!', 'success');
+                }, 'image/png');
+            };
+        }
+
+        // === 5. HÀM HỖ TRỢ & UI ===
+        function showNotification(message, type = 'success', isLoading = false) {
+            let icon = '✅', title = 'Thành công';
+            let timer = isLoading ? false : 3000;
+            let showConfirmButton = isLoading ? false : false;
+            
+            switch (type) {
+                case 'error': icon = '❌'; title = 'Lỗi'; break;
+                case 'warning': icon = '⚠️'; title = 'Cảnh báo'; break;
+                case 'info': icon = 'ℹ️'; title = 'Thông tin'; break;
+            }
+
+            if (isLoading) {
+                title = 'Đang tải...';
+                icon = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+            
+            Swal.fire({
+                title: title,
+                html: `<div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="font-size: 24px;">${icon}</div>
+                    <div>${message}</div>
+                </div>`,
+                timer: timer,
+                showConfirmButton: showConfirmButton,
+                toast: true,
+                position: 'top-end',
+                background: '#333',
+                color: COLOR_MAP.text,
+                showClass: { popup: 'animate__animated animate__fadeInDown' },
+                hideClass: { popup: 'animate__animated animate__fadeOutUp' }
+            });
+        }
+    </script>
+</body>
+</html>

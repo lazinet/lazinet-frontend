@@ -1,0 +1,898 @@
+/**
+ * LAZINET EXHIBITION SYSTEM - BACKEND V8.0
+ * Cập nhật với chatbot API chuẩn từ ví dụ thành công
+ */
+
+const SS = SpreadsheetApp.getActiveSpreadsheet();
+const CONFIG_SHEET = 'Configs';
+const ORGANIZER_SHEET = 'Organizer';
+const BOOTHS_SHEET = 'Booths';
+const BANKS_SHEET = 'Banks';
+
+// Cache để giảm số lần đọc sheet
+let cache = CacheService.getScriptCache();
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) {
+    return createResponse({ 
+      success: false, 
+      message: "Hệ thống đang bận, vui lòng thử lại sau" 
+    });
+  }
+  
+  try {
+    const request = JSON.parse(e.postData.contents);
+    const action = request.action;
+    const configSh = SS.getSheetByName(CONFIG_SHEET);
+    
+    // Check system status (except for password check)
+    const isActive = configSh.getRange('B2').getValue();
+    const inactiveMsg = configSh.getRange('B3').getValue();
+    
+    if (isActive !== true && action !== 'checkPass') {
+      return createResponse({ 
+        success: false, 
+        message: inactiveMsg || "Hệ thống đang bảo trì" 
+      });
+    }
+    
+    // Route actions
+    switch(action) {
+      case 'getInitData':
+        return createResponse(getInitData());
+        
+      case 'checkPass':
+        const adminPass = configSh.getRange('B4').getValue();
+        return createResponse({ 
+          valid: String(request.pass) === String(adminPass) 
+        });
+        
+      case 'saveFullData':
+        return createResponse(saveFullData(request));
+        
+      case 'bookBooth':
+        return createResponse(bookBooth(request));
+        
+      case 'chatAI':
+        return createResponse(handleChatAI(request.message));
+        
+      default:
+        return createResponse({ 
+          success: false, 
+          message: "Hành động không được hỗ trợ" 
+        });
+    }
+  } catch (error) {
+    console.error('API Error:', error);
+    return createResponse({ 
+      success: false, 
+      message: "Lỗi hệ thống: " + error.toString() 
+    });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function doGet(e) {
+  return HtmlService.createHtmlOutput('API chỉ hỗ trợ POST requests');
+}
+
+/**
+ * Get all system data with caching
+ */
+function getInitData() {
+  const cacheKey = 'init_data_v3';
+  const cached = cache.get(cacheKey);
+  
+  if (cached) {
+    return JSON.parse(cached);
+  }
+  
+  const configSh = SS.getSheetByName(CONFIG_SHEET);
+  const orgSh = SS.getSheetByName(ORGANIZER_SHEET);
+  const boothSh = SS.getSheetByName(BOOTHS_SHEET);
+  const bankSh = SS.getSheetByName(BANKS_SHEET);
+  
+  // Get banks list
+  let banks = [];
+  if (bankSh) {
+    const bankData = bankSh.getRange('A2:C' + Math.max(2, bankSh.getLastRow())).getValues();
+    banks = bankData
+      .filter(row => row[2] && row[2].toString().trim() !== '')
+      .map(row => row[2].toString().trim());
+  }
+  
+  // Get configs
+  const configs = {
+    botName: getCellValue(configSh, 'B8'),
+    botLogo: getCellValue(configSh, 'B9'),
+    themeColor1: getCellValue(configSh, 'B10'),
+    themeColor2: getCellValue(configSh, 'B11'),
+    bgColor: getCellValue(configSh, 'B12'),
+    waitingMsg: getCellValue(configSh, 'B13'),
+    systemPrompt: getCellValue(configSh, 'B14'),
+    // Chatbot configs
+    model: getCellValue(configSh, 'B5'),
+    apiKey: getCellValue(configSh, 'B6'),
+    maxTokens: getCellValue(configSh, 'B7') || 1500
+  };
+  
+  // Get organizer data
+  const organizer = {
+    shortName: getCellValue(orgSh, 'B2'),
+    fullName: getCellValue(orgSh, 'B3'),
+    website: getCellValue(orgSh, 'B4'),
+    logo: getCellValue(orgSh, 'B5'),
+    email: getCellValue(orgSh, 'B6'),
+    bankName: getCellValue(orgSh, 'B7'),
+    bankAccountName: getCellValue(orgSh, 'B9'),
+    bankAccountNumber: getCellValue(orgSh, 'B10'),
+    title: getCellValue(orgSh, 'B14'),
+    location: getCellValue(orgSh, 'B15'),
+    address: getCellValue(orgSh, 'B16'),
+    mapLink: getCellValue(orgSh, 'B17'),
+    width: getCellValue(orgSh, 'B18'),
+    height: getCellValue(orgSh, 'B19'),
+    ratio: getCellValue(orgSh, 'B20'),
+    startDate: formatDate(getCellValue(orgSh, 'B21')),
+    endDate: formatDate(getCellValue(orgSh, 'B22'))
+  };
+  
+  // Get schedule
+  const scheduleRows = orgSh.getRange('A25:D' + Math.max(25, orgSh.getLastRow())).getValues();
+  const schedule = scheduleRows
+    .filter(row => row[0] && row[0].toString().trim() !== '')
+    .map(row => ({
+      date: formatDate(row[0]),
+      start: row[1] ? row[1].toString() : '',
+      end: row[2] ? row[2].toString() : '',
+      content: row[3] ? row[3].toString() : ''
+    }));
+    
+  organizer.schedule = schedule;
+  
+  // Get booths
+  const bData = boothSh.getDataRange().getValues();
+  const headers = bData[0].map(h => h.toString().trim());
+  const booths = bData.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((h, idx) => {
+      let value = row[idx];
+      // Format dates
+      if (h === 'Thời gian đặt' && value instanceof Date) {
+        value = Utilities.formatDate(value, 'GMT+7', 'dd/MM/yyyy HH:mm');
+      }
+      obj[h] = value;
+    });
+    return obj;
+  });
+  
+  const result = {
+    configs: configs,
+    organizer: organizer,
+    booths: booths,
+    banks: banks
+  };
+  
+  // Cache for 5 minutes
+  cache.put(cacheKey, JSON.stringify(result), 300);
+  
+  return result;
+}
+
+/**
+ * Save all data from organizer
+ */
+function saveFullData(req) {
+  if (!req.pass) {
+    return { success: false, message: "Yêu cầu mật khẩu" };
+  }
+  
+  // Verify password
+  const configSh = SS.getSheetByName(CONFIG_SHEET);
+  const adminPass = configSh.getRange('B4').getValue();
+  if (String(req.pass) !== String(adminPass)) {
+    return { success: false, message: "Mật khẩu không chính xác" };
+  }
+  
+  const orgSh = SS.getSheetByName(ORGANIZER_SHEET);
+  const boothSh = SS.getSheetByName(BOOTHS_SHEET);
+  const o = req.organizer;
+  
+  try {
+    // Save organizer info
+    const updates = [
+      {cell: 'B2', value: o.shortName},
+      {cell: 'B3', value: o.fullName},
+      {cell: 'B4', value: o.website},
+      {cell: 'B5', value: o.logo},
+      {cell: 'B6', value: o.email},
+      {cell: 'B7', value: o.bankName},
+      {cell: 'B9', value: o.bankAccountName},
+      {cell: 'B10', value: o.bankAccountNumber},
+      {cell: 'B14', value: o.title},
+      {cell: 'B15', value: o.location},
+      {cell: 'B16', value: o.address},
+      {cell: 'B17', value: o.mapLink},
+      {cell: 'B18', value: o.width},
+      {cell: 'B19', value: o.height},
+      {cell: 'B20', value: o.ratio},
+      {cell: 'B21', value: parseDate(o.startDate)},
+      {cell: 'B22', value: parseDate(o.endDate)}
+    ];
+    
+    updates.forEach(update => {
+      setCellValue(orgSh, update.cell, update.value);
+    });
+    
+    // Save schedule
+    orgSh.getRange('A25:D100').clearContent();
+    if (req.schedule && req.schedule.length > 0) {
+      const sRows = req.schedule.map(s => [
+        parseDate(s.date),
+        s.start,
+        s.end,
+        s.content
+      ]);
+      orgSh.getRange(25, 1, sRows.length, 4).setValues(sRows);
+    }
+    
+    // Save booths
+    const oldData = boothSh.getDataRange().getValues();
+    const headers = oldData[0];
+    
+    // Preserve customer booking data (columns M onward)
+    const oldBoothMap = {};
+    oldData.slice(1).forEach(row => {
+      const boothId = row[1] ? row[1].toString() : '';
+      if (boothId) {
+        oldBoothMap[boothId] = row.slice(12); // From column M
+      }
+    });
+    
+    // Clear old booth data (keep headers)
+    if (boothSh.getLastRow() > 1) {
+      boothSh.getRange(2, 1, boothSh.getLastRow() - 1, headers.length).clearContent();
+    }
+    
+    const newBoothRows = req.booths.map(b => {
+      const price = Number(b['Giá (VND)']) || 0;
+      const vatPrice = price * 1.1;
+      const baseInfo = [
+        b['Area ID'] || 'A',
+        b['Booth ID'],
+        b['Kích thước (cmxcm)'] || '100x100',
+        Number(b.X) || 0,
+        Number(b.Y) || 0,
+        Number(b.Width) || 100,
+        Number(b.Height) || 100,
+        Number(b.Radius) || 0,
+        b['Hạng'] || 'Gold',
+        price,
+        vatPrice,
+        generateQRCode(b, o, vatPrice)
+      ];
+      
+      // Add preserved customer data or empty columns
+      const customerInfo = oldBoothMap[b['Booth ID']] || Array(headers.length - 12).fill('');
+      
+      return baseInfo.concat(customerInfo);
+    });
+    
+    if (newBoothRows.length > 0) {
+      boothSh.getRange(2, 1, newBoothRows.length, headers.length).setValues(newBoothRows);
+    }
+    
+    // Clear cache
+    cache.remove('init_data_v3');
+    
+    // Log the update
+    logActivity('SAVE_DATA', `Organizer updated ${req.booths.length} booths`);
+    
+    return { 
+      success: true, 
+      message: "Dữ liệu đã được cập nhật thành công!" 
+    };
+    
+  } catch (error) {
+    console.error('Save error:', error);
+    return { 
+      success: false, 
+      message: "Lỗi khi lưu dữ liệu: " + error.toString() 
+    };
+  }
+}
+
+/**
+ * Handle booth booking
+ */
+function bookBooth(req) {
+  const boothSh = SS.getSheetByName(BOOTHS_SHEET);
+  const data = boothSh.getDataRange().getValues();
+  const headers = data[0].map(h => h.toString().trim());
+  
+  const idIdx = headers.indexOf('Booth ID');
+  const statusIdx = headers.indexOf('Trạng thái');
+  
+  // Find the booth
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][idIdx] && data[i][idIdx].toString() === req.boothId.toString()) {
+      
+      // Check if available
+      const currentStatus = data[i][statusIdx];
+      if (currentStatus !== 'Available' && currentStatus !== 'Trống') {
+        return { 
+          success: false, 
+          message: "Gian hàng này đã được đặt. Vui lòng chọn gian hàng khác." 
+        };
+      }
+      
+      const row = i + 1;
+      const info = req.info;
+      
+      // Update booth data
+      const updates = {
+        'Trạng thái': 'Booked',
+        'Thời gian đặt': new Date(),
+        'Tên công ty ngắn gọn': info.compShort,
+        'Tên công ty đầy đủ': info.compFull,
+        'Mã số thuế': info.tax,
+        'Địa chỉ': info.address,
+        'Logo URL': info.logoUrl || '',
+        'Tên người đặt': info.name,
+        'SĐT người đặt': info.phone,
+        'Email người đặt': info.email,
+        'Trạng thái thanh toán': 'Chờ thanh toán',
+        'Ghi chú': `Đăng ký lúc: ${new Date().toLocaleString('vi-VN')}`
+      };
+      
+      Object.entries(updates).forEach(([colName, value]) => {
+        const colIdx = headers.indexOf(colName);
+        if (colIdx > -1) {
+          boothSh.getRange(row, colIdx + 1).setValue(value);
+        }
+      });
+      
+      // Clear cache
+      cache.remove('init_data_v3');
+      
+      // Send emails
+      sendBookingEmails(req, data[i]);
+      
+      // Log booking
+      logActivity('BOOK_BOOTH', `${info.compShort} booked ${req.boothId}`);
+      
+      return { 
+        success: true, 
+        message: "Đã đăng ký thành công! Vui lòng thanh toán để hoàn tất đặt chỗ." 
+      };
+    }
+  }
+  
+  return { 
+    success: false, 
+    message: "Không tìm thấy gian hàng" 
+  };
+}
+
+/**
+ * Handle AI chat - Cập nhật với API chuẩn
+ */
+function handleChatAI(userMsg) {
+  try {
+    const configSh = SS.getSheetByName(CONFIG_SHEET);
+    
+    // Lấy config từ sheet
+    const model = getCellValue(configSh, 'B5') || 'Gemini';
+    const apiKey = getCellValue(configSh, 'B6');
+    const maxTokens = parseInt(getCellValue(configSh, 'B7') || 1500);
+    const systemPrompt = getCellValue(configSh, 'B14') || 
+      'Bạn là trợ lý AI cho triển lãm. Trả lời dựa trên thông tin hiện có về gian hàng và sự kiện.';
+    
+    if (!apiKey) {
+      return { answer: "Chatbot chưa được cấu hình API key. Vui lòng liên hệ ban tổ chức." };
+    }
+    
+    // Lấy thông tin booths hiện tại
+    const boothSh = SS.getSheetByName(BOOTHS_SHEET);
+    const bData = boothSh.getDataRange().getValues();
+    const headers = bData[0].map(h => h.toString().trim());
+    
+    const statusIdx = headers.indexOf('Trạng thái');
+    const idIdx = headers.indexOf('Booth ID');
+    const rankIdx = headers.indexOf('Hạng');
+    const priceIdx = headers.indexOf('Giá (VND)');
+    
+    // Lấy thông tin booths trống
+    const availableBooths = bData.slice(1)
+      .filter(row => {
+        const status = row[statusIdx];
+        return status === 'Available' || status === 'Trống' || !status;
+      })
+      .map(row => ({
+        id: row[idIdx] || '',
+        rank: row[rankIdx] || 'Standard',
+        price: row[priceIdx] || 0,
+        status: row[statusIdx] || 'Available'
+      }))
+      .filter(b => b.id);
+    
+    // Lấy thông tin sự kiện
+    const orgSh = SS.getSheetByName(ORGANIZER_SHEET);
+    const eventTitle = getCellValue(orgSh, 'B14') || 'Triển lãm';
+    const eventDates = `${getCellValue(orgSh, 'B21') || ''} - ${getCellValue(orgSh, 'B22') || ''}`;
+    const eventLocation = getCellValue(orgSh, 'B15') || '';
+    
+    // Tạo context chi tiết
+    const boothSummary = availableBooths.slice(0, 15)
+      .map(b => `${b.id} (${b.rank}): ${formatCurrency(b.price)}`)
+      .join(', ');
+    
+    const context = `
+BẠN LÀ: Trợ lý AI cho triển lãm "${eventTitle}"
+
+THÔNG TIN SỰ KIỆN:
+- Tên: ${eventTitle}
+- Thời gian: ${eventDates}
+- Địa điểm: ${eventLocation}
+
+THÔNG TIN GIAN HÀNG HIỆN TẠI:
+- Tổng số gian hàng trống: ${availableBooths.length}
+- Một số gian hàng có sẵn: ${boothSummary || 'Đang cập nhật'}
+- Các hạng gian hàng: Diamond (cao cấp nhất), Platinum, Gold, Silver, Companion, Free
+
+HƯỚNG DẪN TRẢ LỜI:
+${systemPrompt}
+
+QUY TẮC:
+1. Chỉ trả lời câu hỏi liên quan đến triển lãm, gian hàng, giá cả, thủ tục đăng ký
+2. Không trả lời câu hỏi ngoài chủ đề
+3. Nếu không biết, đề nghị liên hệ ban tổ chức qua hotline
+4. Luôn lịch sự, nhiệt tình, chuyên nghiệp
+5. Khuyến khích đặt hàng sớm vì số lượng có hạn
+
+NGỮ CẢNH HIỆN TẠI: ${new Date().toLocaleString('vi-VN')}
+
+CÂU HỎI TỪ KHÁCH HÀNG: "${userMsg}"
+
+HÃY TRẢ LỜI BẰNG TIẾNG VIỆT, NGẮN GỌN, RÕ RÀNG VÀ HỮU ÍCH:
+    `;
+    
+    // Gọi API AI với model và config
+    const answer = callAI(context, model, apiKey, maxTokens);
+    
+    // Log chat
+    logActivity('CHAT_AI', `Model: ${model}, Q: ${userMsg.substring(0, 100)}`);
+    
+    return { answer: answer };
+    
+  } catch (error) {
+    console.error('Chat error:', error);
+    return { 
+      answer: "Xin lỗi, có lỗi xảy ra với hệ thống chatbot. Vui lòng liên hệ ban tổ chức qua email hoặc hotline." 
+    };
+  }
+}
+
+/**
+ * Gọi API AI - Phiên bản chuẩn từ ví dụ thành công
+ */
+function callAI(prompt, model, apiKey, maxTokens) {
+  let url, payload, headers = {"Content-Type": "application/json"};
+  let modelName;
+
+  if (model === "Gemini") {
+    if (!apiKey) return "Lỗi: Chưa có Gemini API Key";
+    modelName = "gemini-2.5-flash";  // Model hiện tại nhanh & mạnh
+    url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`;
+    payload = { 
+      contents: [{ 
+        parts: [{ 
+          text: prompt 
+        }] 
+      }],
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: maxTokens
+      }
+    };
+    // Không cần Bearer cho Gemini (key trong query)
+  } else if (model === "DeepSeek") {
+    if (!apiKey) return "Lỗi: Chưa có DeepSeek API Key";
+    modelName = "deepseek-chat";
+    url = "https://api.deepseek.com/chat/completions";
+    headers["Authorization"] = `Bearer ${apiKey}`;
+    payload = {
+      model: modelName,
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: maxTokens,
+      temperature: 0.7,
+      stream: false
+    };
+  } else if (model === "Grok") {
+    if (!apiKey) return "Lỗi: Chưa có Grok API Key";
+    modelName = "grok-3";  // Thay grok-beta đã deprecated
+    url = "https://api.x.ai/v1/chat/completions";
+    headers["Authorization"] = `Bearer ${apiKey}`;
+    payload = {
+      model: modelName,
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: maxTokens,
+      temperature: 0.7
+    };
+  } else {
+    return "Lỗi: Model AI không được hỗ trợ. Vui lòng chọn Gemini, DeepSeek hoặc Grok.";
+  }
+
+  const options = {
+    method: "post",
+    headers: headers,
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true,
+    timeout: 30000
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(url, options);
+    const code = response.getResponseCode();
+    const text = response.getContentText();
+
+    if (code !== 200) {
+      console.error(`API Error ${model} (${modelName}) - Code: ${code} - Response: ${text.substring(0,500)}`);
+      
+      // Thông báo lỗi thân thiện
+      if (code === 401 || code === 403) {
+        return "Xin lỗi, API key không hợp lệ hoặc đã hết hạn. Vui lòng liên hệ ban tổ chức.";
+      } else if (code === 429) {
+        return "Hệ thống đang quá tải, vui lòng thử lại sau ít phút.";
+      } else if (code >= 500) {
+        return "Dịch vụ AI đang gặp sự cố, vui lòng thử lại sau.";
+      }
+      
+      return `Xin lỗi, có lỗi kỹ thuật với dịch vụ AI (mã lỗi ${code}).`;
+    }
+
+    const json = JSON.parse(text);
+
+    let content;
+    if (model === "Gemini") {
+      if (!json.candidates?.[0]?.content?.parts?.[0]?.text) {
+        console.error("Gemini response lỗi cấu trúc: " + text.substring(0, 200));
+        return "Xin lỗi, tôi không thể xử lý câu trả lời từ AI lúc này.";
+      }
+      content = json.candidates[0].content.parts[0].text;
+    } else {
+      if (!json.choices?.[0]?.message?.content) {
+        console.error("Response lỗi cấu trúc: " + text.substring(0, 200));
+        return "Xin lỗi, tôi không thể xử lý câu trả lời từ AI lúc này.";
+      }
+      content = json.choices[0].message.content;
+    }
+
+    // Làm sạch response
+    content = content
+      .replace(/```html|```|\[.*?\]|\(.*?\)/g, "")
+      .replace(/\*\*/g, "")
+      .trim();
+    
+    // Đảm bảo có nội dung
+    if (!content || content.length < 5) {
+      return "Xin lỗi, tôi không hiểu câu hỏi đó. Bạn có thể hỏi về gian hàng, giá cả, hoặc thủ tục đăng ký không?";
+    }
+    
+    return content;
+    
+  } catch (e) {
+    console.error("Exception in callAI: " + e.toString());
+    return "Xin lỗi, có lỗi kết nối đến dịch vụ AI. Vui lòng thử lại sau hoặc liên hệ ban tổ chức.";
+  }
+}
+
+/**
+ * Generate QR code URL for payment
+ */
+function generateQRCode(booth, organizer, amount) {
+  if (!organizer.bankName || !organizer.bankAccountNumber || !organizer.bankAccountName) {
+    return "Chưa cấu hình thông tin ngân hàng";
+  }
+  
+  const bankCode = getBankCode(organizer.bankName);
+  const boothId = booth['Booth ID'] || 'UNKNOWN';
+  
+  if (!bankCode) {
+    console.log(`Bank not supported: ${organizer.bankName}`);
+    return "Ngân hàng chưa được hỗ trợ QR";
+  }
+  
+  // VietQR format - cập nhật URL chính xác
+  const accountName = encodeURIComponent(organizer.bankAccountName);
+  
+  return `https://img.vietqr.io/image/${bankCode}-${organizer.bankAccountNumber}-qr_only.png?` +
+         `amount=${amount}&addInfo=${boothId}&accountName=${accountName}`;
+}
+
+/**
+ * Get bank code for VietQR
+ */
+function getBankCode(bankName) {
+  const bankMap = {
+    'Techcombank': '970407',
+    'Vietcombank': '970436',
+    'BIDV': '970418',
+    'VietinBank': '970415',
+    'Agribank': '970405',
+    'Sacombank': '970403',
+    'ACB': '970416',
+    'MB Bank': '970422',
+    'TPBank': '970423',
+    'VPBank': '970432',
+    'SHB': '970443',
+    'VIB': '970441',
+    'HDBank': '970437',
+    'Oceanbank': '970414',
+    'PG Bank': '970430',
+    'PVcomBank': '970412',
+    'SeABank': '970440',
+    'ABBANK': '970425',
+    'NAMABANK': '970428',
+    'BAC A BANK': '970409',
+    'SCB': '970429',
+    'Dong A Bank': '970406',
+    'Kien Long Bank': '970452',
+    'LienVietPostBank': '970449'
+  };
+  
+  // Tìm bank code - không phân biệt hoa thường
+  const normalizedBankName = bankName.toString().toLowerCase().trim();
+  for (const [key, value] of Object.entries(bankMap)) {
+    if (normalizedBankName.includes(key.toLowerCase())) {
+      return value;
+    }
+  }
+  
+  return '';
+}
+
+/**
+ * Send booking emails
+ */
+function sendBookingEmails(req, boothData) {
+  try {
+    const orgSh = SS.getSheetByName(ORGANIZER_SHEET);
+    const organizerEmail = getCellValue(orgSh, 'B6');
+    const organizerName = getCellValue(orgSh, 'B2');
+    const eventTitle = getCellValue(orgSh, 'B14');
+    
+    const customerEmail = req.info.email;
+    const boothId = req.boothId;
+    
+    if (!customerEmail) {
+      console.log('No customer email provided');
+      return;
+    }
+    
+    // Email to customer
+    const customerSubject = `[${eventTitle}] Xác nhận đăng ký Booth ${boothId}`;
+    const customerBody = `
+Kính gửi Quý khách ${req.info.name},
+
+Cảm ơn bạn đã đăng ký gian hàng tại ${eventTitle}.
+
+THÔNG TIN ĐĂNG KÝ:
+- Booth ID: ${boothId}
+- Tên công ty: ${req.info.compFull}
+- Mã số thuế: ${req.info.tax}
+- Người đại diện: ${req.info.name}
+- SĐT: ${req.info.phone}
+- Email: ${req.info.email}
+- Thời gian đăng ký: ${new Date().toLocaleString('vi-VN')}
+
+HƯỚNG DẪN THANH TOÁN:
+1. Quét mã QR trong website/email để thanh toán
+2. Thanh toán trong vòng 24h để giữ chỗ
+3. Sau khi thanh toán, booth sẽ được chuyển sang trạng thái "Đã chốt"
+4. Liên hệ ban tổ chức nếu cần hỗ trợ
+
+Trân trọng,
+Ban tổ chức ${organizerName}
+${organizerEmail || 'Hotline: 1900 1234'}
+    `;
+    
+    // Email to organizer
+    const organizerSubject = `[${eventTitle}] ĐĂNG KÝ MỚI - Booth ${boothId}`;
+    const organizerBody = `
+THÔNG BÁO ĐĂNG KÝ MỚI
+
+THÔNG TIN BOOTH:
+- Booth ID: ${boothId}
+- Hạng: ${boothData[8] || 'N/A'}
+- Giá: ${formatCurrency(boothData[9] || 0)}
+- Giá đã VAT: ${formatCurrency(boothData[10] || 0)}
+
+THÔNG TIN KHÁCH HÀNG:
+- Công ty: ${req.info.compFull} (${req.info.compShort})
+- MST: ${req.info.tax}
+- Địa chỉ: ${req.info.address}
+- Người liên hệ: ${req.info.name}
+- SĐT: ${req.info.phone}
+- Email: ${req.info.email}
+- Logo URL: ${req.info.logoUrl || 'Chưa có'}
+
+THỜI GIAN ĐĂNG KÝ: ${new Date().toLocaleString('vi-VN')}
+
+Vui lòng kiểm tra và cập nhật trạng thái thanh toán khi khách đã chuyển khoản.
+    `;
+    
+    // Send emails
+    try {
+      if (customerEmail) {
+        MailApp.sendEmail({
+          to: customerEmail,
+          subject: customerSubject,
+          body: customerBody,
+          name: organizerName || 'Ban tổ chức Triển lãm'
+        });
+      }
+    } catch (emailError) {
+      console.error('Failed to send customer email:', emailError);
+    }
+    
+    try {
+      if (organizerEmail) {
+        MailApp.sendEmail({
+          to: organizerEmail,
+          subject: organizerSubject,
+          body: organizerBody
+        });
+      }
+    } catch (emailError) {
+      console.error('Failed to send organizer email:', emailError);
+    }
+    
+  } catch (error) {
+    console.error('Email error:', error);
+  }
+}
+
+/**
+ * Helper functions
+ */
+function getCellValue(sheet, cell) {
+  try {
+    const value = sheet.getRange(cell).getValue();
+    return value !== null && value !== undefined ? value.toString().trim() : '';
+  } catch (e) {
+    console.error(`Error getting ${cell}:`, e);
+    return '';
+  }
+}
+
+function setCellValue(sheet, cell, value) {
+  try {
+    sheet.getRange(cell).setValue(value);
+  } catch (e) {
+    console.error(`Error setting ${cell}:`, e);
+  }
+}
+
+function formatDate(dateValue) {
+  if (!dateValue) return '';
+  if (dateValue instanceof Date) {
+    return Utilities.formatDate(dateValue, 'GMT+7', 'dd/MM/yyyy');
+  }
+  return dateValue.toString();
+}
+
+function parseDate(dateStr) {
+  if (!dateStr || dateStr.toString().trim() === '') return '';
+  
+  try {
+    const str = dateStr.toString().trim();
+    
+    // Try dd/mm/yyyy format
+    const parts = str.split('/');
+    if (parts.length === 3) {
+      const day = parseInt(parts[0]);
+      const month = parseInt(parts[1]) - 1;
+      const year = parseInt(parts[2]);
+      
+      // Handle 2-digit year
+      const fullYear = year < 100 ? year + 2000 : year;
+      
+      const date = new Date(fullYear, month, day);
+      
+      // Validate date
+      if (date.getFullYear() === fullYear && 
+          date.getMonth() === month && 
+          date.getDate() === day) {
+        return date;
+      }
+    }
+    
+    // Try other formats or return string as is
+    return dateStr;
+    
+  } catch (e) {
+    console.error('Date parse error:', e, 'for:', dateStr);
+    return dateStr;
+  }
+}
+
+function formatCurrency(amount) {
+  try {
+    const num = Number(amount);
+    if (isNaN(num)) return '0 ₫';
+    
+    return num.toLocaleString('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      minimumFractionDigits: 0
+    });
+  } catch (e) {
+    return amount + ' ₫';
+  }
+}
+
+function createResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function logActivity(action, details) {
+  try {
+    let logSh = SS.getSheetByName('Logs');
+    if (!logSh) {
+      logSh = SS.insertSheet('Logs', SS.getNumSheets());
+      logSh.getRange('A1:D1').setValues([['Thời gian', 'Hành động', 'Chi tiết', 'IP']]);
+    }
+    
+    const timestamp = Utilities.formatDate(new Date(), 'GMT+7', 'dd/MM/yyyy HH:mm:ss');
+    logSh.appendRow([timestamp, action, details.substring(0, 495), '']);
+    
+    // Giữ log tối đa 1000 dòng
+    const maxRows = 1000;
+    if (logSh.getLastRow() > maxRows) {
+      logSh.deleteRows(2, logSh.getLastRow() - maxRows);
+    }
+    
+  } catch (e) {
+    console.error('Log error:', e);
+  }
+}
+
+/**
+ * Test function for debugging
+ */
+function testChatAI() {
+  const testMessage = "Có những booth nào còn trống?";
+  const result = handleChatAI(testMessage);
+  console.log('Test Chat Result:', result);
+  return result;
+}
+
+/**
+ * Test function for booking
+ */
+function testBookBooth() {
+  const testRequest = {
+    boothId: "A01",
+    info: {
+      compShort: "TEST",
+      compFull: "Công ty Test",
+      tax: "123456789",
+      address: "123 Test Street",
+      logoUrl: "https://example.com/logo.png",
+      name: "Nguyễn Văn Test",
+      phone: "0901234567",
+      email: "test@example.com"
+    }
+  };
+  
+  const result = bookBooth(testRequest);
+  console.log('Test Booking Result:', result);
+  return result;
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển Đổi URL Thành Text Với Định Vị (Hỗ trợ Dynamic)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input[type="url"], input[type="text"] { width: 100%; padding: 10px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background: #4285f4; color: white; border: none; cursor: pointer; }
+        button:hover { background: #3367d6; }
+        #output { margin-top: 20px; padding: 15px; background: #f1f3f4; border-radius: 5px; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+        #status { margin-top: 10px; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .anchor-link { color: #4285f4; text-decoration: none; font-weight: bold; }
+        .anchor-link:hover { text-decoration: underline; }
+        h1, h2, h3, h4, h5, h6 { margin-top: 20px; color: #333; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Chuyển Đổi URL Thành Text Với Định Vị (Hỗ trợ Dynamic)</h1>
+    <p>Nhập URL và selector. Tool tự detect định vị từ content (headers/ID/hash). Nếu site dynamic (như hathyo.com), tick "Full Render" để thử proxy render JS (chậm hơn).</p>
+    
+    <input type="url" id="urlInput" placeholder="https://hathyo.com" value="https://hathyo.com">
+    <input type="text" id="selectorInput" placeholder="Selector (tùy chọn): #intro, h1, .content">
+    <label>
+        <input type="checkbox" id="fullRender"> Full Render (JS dynamic – chậm, dùng render-tron proxy)
+    </label>
+    <button onclick="convertToText()">Chuyển Đổi</button>
+    
+    <div id="status"></div>
+    <div id="output"></div>
+
+    <script>
+        async function convertToText() {
+            const urlInput = document.getElementById('urlInput');
+            const selectorInput = document.getElementById('selectorInput');
+            const fullRenderCb = document.getElementById('fullRender');
+            const statusDiv = document.getElementById('status');
+            const outputDiv = document.getElementById('output');
+            
+            let targetUrl = urlInput.value.trim();
+            let selector = selectorInput.value.trim();
+            const fullRender = fullRenderCb.checked;
+            
+            if (!targetUrl) {
+                showStatus('Vui lòng nhập URL hợp lệ.', 'error');
+                return;
+            }
+            
+            // Tự động extract selector từ hash
+            const url = new URL(targetUrl, window.location.origin);
+            if (url.hash) {
+                selector = selector || url.hash.substring(1);
+                targetUrl = url.origin + url.pathname;
+            }
+            
+            statusDiv.innerHTML = `Đang tải... (Selector: ${selector || 'Toàn bộ'} | Mode: ${fullRender ? 'Full JS' : 'Static'})`;
+            statusDiv.className = '';
+            outputDiv.innerHTML = '';
+            
+            try {
+                let htmlContent;
+                if (fullRender) {
+                    // Proxy hỗ trợ JS render (render-tron: snapshot HTML sau JS)
+                    const proxyUrl = `https://render-tron.appspot.com/render/${encodeURIComponent(targetUrl)}`;
+                    console.log('Full render qua proxy:', proxyUrl);
+                    
+                    const response = await fetch(proxyUrl, { method: 'GET', mode: 'cors' });
+                    if (!response.ok) throw new Error(`Proxy render fail: ${response.status}`);
+                    
+                    const renderedHtml = await response.text();
+                    // Extract body từ full HTML (render-tron return full page)
+                    const tempParser = new DOMParser();
+                    const tempDoc = tempParser.parseFromString(renderedHtml, 'text/html');
+                    htmlContent = tempDoc.body.innerHTML;  // Chỉ body để sạch
+                } else {
+                    // Static fetch như cũ
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                    const response = await fetch(proxyUrl, { method: 'GET', mode: 'cors' });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const proxyData = await response.json();
+                    htmlContent = proxyData.contents;
+                }
+                
+                // Parse và extract
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                
+                const unwanted = doc.querySelectorAll('script, style, noscript');
+                unwanted.forEach(el => el.remove());
+                
+                let targetElement = selector ? doc.querySelector(selector) : doc.body;
+                if (!targetElement && selector) {
+                    throw new Error(`Không tìm thấy selector "${selector}".`);
+                }
+                
+                const positionedText = extractTextWithPositions(targetElement, selector);
+                outputDiv.innerHTML = positionedText;
+                
+                // Check length để warn dynamic
+                const textLength = (targetElement.innerText || '').length;
+                let statusMsg = `Thành công! Extract ${textLength} ký tự từ "${selector || 'body'}" của "${targetUrl}".`;
+                let statusType = 'success';
+                
+                if (textLength < 500) {
+                    statusMsg += ' <strong>CẢNH BÁO:</strong> Nội dung ngắn – có thể site dynamic (JS load). Thử tick "Full Render" hoặc extract thủ công (F12 > Console: document.body.innerText).';
+                    statusType = 'warning';
+                }
+                
+                showStatus(statusMsg, statusType);
+                
+            } catch (error) {
+                console.error('Lỗi:', error);
+                showStatus(`Lỗi: ${error.message}. Thử proxy khác hoặc URL static.`, 'error');
+            }
+        }
+        
+        function extractTextWithPositions(element, baseSelector = '') {
+            let htmlOutput = '';
+            const walker = document.createTreeWalker(
+                element,
+                NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            
+            let currentNode, lastAnchor = '';
+            while (currentNode = walker.nextNode()) {
+                if (currentNode.nodeType === Node.TEXT_NODE) {
+                    let text = currentNode.textContent.trim();
+                    if (text) {
+                        if (!lastAnchor && currentNode.parentElement.tagName.match(/^H[1-6]$/i)) {
+                            // Header
+                            const headerText = currentNode.parentElement.textContent.trim();
+                            const id = currentNode.parentElement.id || generateAnchor(headerText);
+                            currentNode.parentElement.id = id;
+                            lastAnchor = `<a href="#${id}" class="anchor-link">[${id}]</a> `;
+                            const level = currentNode.parentElement.tagName[1];
+                            htmlOutput += `<h${level} id="${id}">${lastAnchor}${headerText}</h${level}>\n`;
+                        } else {
+                            // Text thường, thêm anchor nếu có ID parent hoặc fallback
+                            let anchor = lastAnchor;
+                            if (currentNode.parentElement.id && !lastAnchor) {
+                                anchor = `<a href="#${currentNode.parentElement.id}" class="anchor-link">[${currentNode.parentElement.id}]</a> `;
+                            } else if (!lastAnchor && text.length > 50) {  // Fallback cho para dài
+                                const paraId = generateAnchor(text.substring(0, 20));
+                                anchor = `<a name="${paraId}" class="anchor-link" href="#${paraId}">[${paraId}]</a> `;
+                            }
+                            htmlOutput += anchor + text + '<br>\n';
+                            lastAnchor = '';  // Reset
+                        }
+                    }
+                }
+            }
+            
+            if (baseSelector) {
+                const mainId = baseSelector.startsWith('#') ? baseSelector.substring(1) : baseSelector;
+                htmlOutput = `<a name="${mainId}" class="anchor-link" href="#${mainId}">[${mainId}]</a>\n` + htmlOutput;
+            }
+            
+            return htmlOutput || '<p>Không có nội dung (có thể dynamic – dùng Full Render).</p>';
+        }
+        
+        function generateAnchor(text) {
+            return text.toLowerCase().replace(/[^a-z0-9\u00C0-\u1EF9\s]+/g, '').trim().replace(/\s+/g, '-').substring(0, 20);  // Hỗ trợ tiếng Việt
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = message;
+            statusDiv.className = type;
+        }
+        
+        // Enter để convert
+        ['urlInput', 'selectorInput'].forEach(id => {
+            document.getElementById(id).addEventListener('keypress', e => { if (e.key === 'Enter') convertToText(); });
+        });
+    </script>
+</body>
+</html>

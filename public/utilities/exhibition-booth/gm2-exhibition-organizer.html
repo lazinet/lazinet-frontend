@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Hub - Hệ thống Quản trị Triển lãm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .input-focus { transition: all 0.3s ease; border-bottom: 2px solid #e2e8f0; }
+        .input-focus:focus { border-bottom-color: #2563eb; outline: none; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div id="login-screen" class="fixed inset-0 bg-slate-900 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl text-center">
+            <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-200">
+                <i class="fas fa-fingerprint text-white text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2 tracking-tight uppercase">Organizer Access</h2>
+            <p class="text-slate-400 text-sm mb-8 font-medium">Vui lòng nhập mật khẩu quản trị (Configs!B4)</p>
+            <input type="password" id="admin-pass" class="w-full bg-slate-50 border-none p-5 rounded-2xl mb-6 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold tracking-widest" placeholder="••••••••">
+            <button onclick="verifyAccess()" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-bold py-5 rounded-2xl transition-all shadow-lg active:scale-95">XÁC MINH DANH TÁNH</button>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 p-4 px-8 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img id="logo-preview" class="h-10 w-10 object-contain rounded-lg">
+                <div>
+                    <h1 class="font-black text-slate-800 leading-none tracking-tighter text-xl" id="display-short-name">LAZINET</h1>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Organizer Panel</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="fetchData()" class="p-2 text-slate-400 hover:text-blue-600 transition"><i class="fas fa-sync-alt"></i></button>
+                <button onclick="submitData()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-bold shadow-lg shadow-blue-100 transition-all active:scale-95">LƯU TẤT CẢ THAY ĐỔI</button>
+            </div>
+        </header>
+
+        <main class="p-8 max-w-[1800px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
+            
+            <div class="xl:col-span-4 space-y-8">
+                <section class="glass-card p-8 rounded-[2rem] shadow-sm">
+                    <h3 class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                        <i class="fas fa-info-circle"></i> Thông tin triển lãm
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-slate-500 mb-1">TÊN TRIỂN LÃM / TRƯNG BÀY</label>
+                            <input id="inp-title" class="w-full py-2 bg-transparent input-focus text-lg font-bold text-slate-800">
+                        </div>
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-slate-500 mb-1">ĐỊA ĐIỂM TỔ CHỨC</label>
+                            <input id="inp-loc" class="w-full py-2 bg-transparent input-focus font-semibold text-slate-600">
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 mb-1">RỘNG (CM)</label>
+                                <input id="inp-w" type="number" class="w-full py-2 bg-transparent input-focus font-bold" oninput="drawLive()">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 mb-1">CAO (CM)</label>
+                                <input id="inp-h" type="number" class="w-full py-2 bg-transparent input-focus font-bold" oninput="drawLive()">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 mb-1">RATIO</label>
+                                <input id="inp-ratio" type="number" class="w-full py-2 bg-transparent input-focus font-bold text-blue-600" oninput="drawLive()">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="glass-card p-8 rounded-[2rem] shadow-sm">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] flex items-center gap-2">
+                            <i class="fas fa-calendar-alt"></i> Lịch trình sự kiện
+                        </h3>
+                        <button onclick="addRow()" class="text-blue-600 font-bold text-xs">+ Thêm dòng</button>
+                    </div>
+                    <div id="schedule-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                        </div>
+                </section>
+            </div>
+
+            <div class="xl:col-span-8 space-y-8">
+                <section class="glass-card rounded-[2.5rem] shadow-sm overflow-hidden border-2 border-white">
+                    <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                        <span class="text-xs font-black text-slate-400 tracking-widest uppercase">Bản đồ mặt bằng trực quan</span>
+                        <div class="flex gap-4">
+                            <span class="flex items-center gap-2 text-[10px] font-bold text-slate-500"><i class="w-3 h-3 rounded-full border bg-white"></i> Trống</span>
+                            <span class="flex items-center gap-2 text-[10px] font-bold text-slate-500"><i class="w-3 h-3 rounded-full bg-yellow-400"></i> Giữ chỗ</span>
+                            <span class="flex items-center gap-2 text-[10px] font-bold text-slate-500"><i class="w-3 h-3 rounded-full bg-emerald-500"></i> Đã chốt</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-200 overflow-auto relative flex items-center justify-center p-8" style="height: 550px;">
+                        <canvas id="main-canvas" class="shadow-2xl bg-white transition-all"></canvas>
+                    </div>
+                </section>
+
+                <section class="glass-card rounded-[2.5rem] shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-100">
+                                    <th class="p-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">ID</th>
+                                    <th class="p-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Hạng / Giá (VAT)</th>
+                                    <th class="p-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Kích thước / Tọa độ</th>
+                                    <th class="p-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="booth-table-body" class="divide-y divide-slate-50">
+                                </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwrTMBEFZqszW4uobt5ZTA7lYRRcwGPJy0Obu-Xl8TerS1bvRk6exL5I1fRJ9hvUwFZkw/exec";
+        let state = { data: null, pass: "" };
+
+        async function verifyAccess() {
+            const p = document.getElementById('admin-pass').value;
+            if(!p) return;
+            
+            Swal.fire({ title: 'Đang xác thực...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'checkPass', pass: p }) }).then(r => r.json());
+                if(res.valid) {
+                    state.pass = p;
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    Swal.close();
+                    fetchData();
+                } else {
+                    Swal.fire('Lỗi', 'Mật khẩu quản trị không chính xác!', 'error');
+                }
+            } catch(e) {
+                Swal.fire('Lỗi kết nối', 'Không thể liên lạc với máy chủ GAS', 'error');
+            }
+        }
+
+        async function fetchData() {
+            const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getInitData' }) }).then(r => r.json());
+            state.data = res;
+            
+            // Map values
+            document.getElementById('display-short-name').innerText = res.organizer.shortName;
+            document.getElementById('logo-preview').src = res.organizer.logo;
+            document.getElementById('inp-title').value = res.organizer.event.title;
+            document.getElementById('inp-loc').value = res.organizer.event.location;
+            document.getElementById('inp-w').value = res.organizer.event.width;
+            document.getElementById('inp-h').value = res.organizer.event.height;
+            document.getElementById('inp-ratio').value = res.organizer.event.ratio;
+
+            renderSchedule();
+            renderBooths();
+            drawLive();
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            list.innerHTML = state.data.organizer.schedule.map((s, idx) => `
+                <div class="flex gap-2 items-start bg-slate-50 p-4 rounded-2xl group border border-transparent hover:border-blue-100 transition-all">
+                    <div class="flex-1 space-y-2">
+                        <input type="text" value="${s.date}" class="bg-transparent font-bold text-xs w-full outline-none schedule-date" placeholder="Ngày">
+                        <div class="flex gap-2">
+                            <input type="text" value="${s.start}" class="bg-transparent text-[10px] w-full outline-none schedule-start" placeholder="Bắt đầu">
+                            <input type="text" value="${s.end}" class="bg-transparent text-[10px] w-full outline-none schedule-end" placeholder="Kết thúc">
+                        </div>
+                        <input type="text" value="${s.content}" class="bg-transparent text-xs w-full outline-none text-slate-500 schedule-content" placeholder="Nội dung">
+                    </div>
+                    <button onclick="removeRow(${idx})" class="text-slate-300 hover:text-red-500 p-1 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addRow() {
+            state.data.organizer.schedule.push({ date: '', start: '', end: '', content: '' });
+            renderSchedule();
+        }
+
+        function removeRow(idx) {
+            state.data.organizer.schedule.splice(idx, 1);
+            renderSchedule();
+        }
+
+        function renderBooths() {
+            const body = document.getElementById('booth-table-body');
+            body.innerHTML = state.data.booths.map(b => `
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="p-5 font-black text-slate-800">${b['Booth ID']}</td>
+                    <td class="p-5">
+                        <div class="font-bold text-xs text-blue-600">${b['Hạng']}</div>
+                        <div class="text-[10px] text-slate-400">${parseInt(b['Giá gồm thuế (VAT 10%)']).toLocaleString()} VNĐ</div>
+                    </td>
+                    <td class="p-5">
+                        <div class="text-[10px] font-bold text-slate-600">${b['Kích thước (cmxcm)']} cm</div>
+                        <div class="text-[9px] text-slate-400 italic">X:${b.X}, Y:${b.Y}</div>
+                    </td>
+                    <td class="p-5">
+                        <select onchange="updateBoothStatus('${b['Booth ID']}', this.value)" class="text-[10px] font-black uppercase px-4 py-2 rounded-xl border-none outline-none shadow-sm ${getStatusClass(b['Trạng thái'])}">
+                            <option value="Available" ${b['Trạng thái'] === 'Available' ? 'selected' : ''}>Available</option>
+                            <option value="Booked" ${b['Trạng thái'] === 'Booked' ? 'selected' : ''}>Booked</option>
+                            <option value="Occupied" ${b['Trạng thái'] === 'Occupied' ? 'selected' : ''}>Occupied</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getStatusClass(st) {
+            if(st === 'Available') return 'bg-white text-slate-400';
+            if(st === 'Booked') return 'bg-yellow-100 text-yellow-600';
+            return 'bg-emerald-100 text-emerald-600';
+        }
+
+        function updateBoothStatus(id, newStatus) {
+            const b = state.data.booths.find(x => x['Booth ID'] === id);
+            if(b) b['Trạng thái'] = newStatus;
+            drawLive();
+        }
+
+        function drawLive() {
+            const canvas = document.getElementById('main-canvas');
+            const ctx = canvas.getContext('2d');
+            const w = Number(document.getElementById('inp-w').value);
+            const h = Number(document.getElementById('inp-h').value);
+            const r = Number(document.getElementById('inp-ratio').value);
+
+            canvas.width = w * r;
+            canvas.height = h * r;
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            // Vẽ lưới Grid (mỗi 100cm)
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for(let x=0; x<canvas.width; x += 100*r) { ctx.moveTo(x,0); ctx.lineTo(x, canvas.height); }
+            for(let y=0; y<canvas.height; y += 100*r) { ctx.moveTo(0,y); ctx.lineTo(canvas.width, y); }
+            ctx.stroke();
+
+            state.data.booths.forEach(b => {
+                const bx = b.X*r, by = b.Y*r, bw = b.Width*r, bh = b.Height*r, br = (b.Radius||0)*r;
+                
+                ctx.beginPath();
+                ctx.roundRect(bx, by, bw, bh, br);
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                if(b['Trạng thái'] === 'Occupied') ctx.fillStyle = '#10b981';
+                else if(b['Trạng thái'] === 'Booked') ctx.fillStyle = '#fbbf24';
+                else ctx.fillStyle = '#ffffff';
+                ctx.fill();
+
+                ctx.fillStyle = b['Trạng thái'] === 'Available' ? '#94a3b8' : '#ffffff';
+                ctx.font = `bold ${12*r/20}px Inter`;
+                ctx.fillText(b['Booth ID'], bx + 5, by + 15);
+            });
+        }
+
+        async function submitData() {
+            // Lấy lại schedule từ DOM
+            const schedules = [];
+            document.querySelectorAll('#schedule-list > div').forEach(row => {
+                schedules.push({
+                    date: row.querySelector('.schedule-date').value,
+                    start: row.querySelector('.schedule-start').value,
+                    end: row.querySelector('.schedule-end').value,
+                    content: row.querySelector('.schedule-content').value
+                });
+            });
+
+            const payload = {
+                title: document.getElementById('inp-title').value,
+                location: document.getElementById('inp-loc').value,
+                width: document.getElementById('inp-w').value,
+                height: document.getElementById('inp-h').value,
+                ratio: document.getElementById('inp-ratio').value
+            };
+
+            Swal.fire({ title: 'Đang lưu dữ liệu...', didOpen: () => Swal.showLoading() });
+            
+            const res = await fetch(GAS_URL, { 
+                method: 'POST', 
+                body: JSON.stringify({ action: 'saveOrganizer', payload, schedule: schedules, pass: state.pass }) 
+            }).then(r => r.json());
+
+            if(res.success) Swal.fire('Thành công', 'Dữ liệu đã được ghi đè lên Google Sheets.', 'success');
+            else Swal.fire('Lỗi', 'Không thể lưu dữ liệu.', 'error');
+        }
+    </script>
+</body>
+</html>

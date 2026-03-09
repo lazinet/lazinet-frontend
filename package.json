@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
+  }
+}

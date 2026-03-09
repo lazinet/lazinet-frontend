@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head>
+    <!-- === META FOUNDATION === -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+    <!-- === PRIMARY META - TỐI ƯU HÀNG ĐẦU === -->
+    <title>BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU | LAZINET GASV1.0_R20251213</title>
+    <meta name="description" content="🎯 Tự động hóa nạp dữ liệu từ Excel vào template Google Docs, xuất hàng loạt Docs & PDF. Ứng dụng BIỂU MẪU ĐỘNG miễn phí từ LAZINET. Tạo chứng thư, hợp đồng, giấy khen nhanh chóng, chính xác. Tích hợp linh hoạt, giữ nguyên định dạng.">
+    <meta name="keywords" content="tự động hóa tài liệu, nạp dữ liệu hàng loạt, template Google Docs, xuất PDF tự động, biểu mẫu động, LAZINET GAS, tạo chứng thư hàng loạt, soạn hợp đồng tự động, giấy khen tự động, tích hợp tự động hóa">
+
+    <!-- === AUTHORITY & OWNERSHIP === -->
+    <meta name="author" content="LAZINET - Công Ty Công Nghệ Hàng Đầu Việt Nam">
+    <meta name="publisher" content="LAZINET Technologies">
+    <meta name="copyright" content="LAZINET © 2025">
+    <meta name="designer" content="LAZINET Design Team">
+    <meta name="reply-to" content="email@lazinet.com">
+
+    <!-- === ROBOTS & CRAWLING - TỐI ƯU CRAWL === -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="slurp" content="index, follow, max-image-preview:large">
+    <meta name="msnbot" content="index, follow, max-image-preview:large">
+    <meta name="alexabot" content="index, follow">
+
+    <!-- === CANONICAL & LANGUAGE === -->
+    <link rel="canonical" href="https://lazinet.com/doc-automator.html">
+    <link rel="alternate" hreflang="vi-VN" href="https://lazinet.com/doc-automator.html">
+    <link rel="alternate" hreflang="vi" href="https://lazinet.com/doc-automator.html">
+    <link rel="alternate" hreflang="en" href="https://lazinet.com/en/doc-automator.html">
+    <link rel="alternate" hreflang="x-default" href="https://lazinet.com/doc-automator.html">
+
+    <!-- === SITEMAP & SEO LINKS === -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://lazinet.com/sitemap.xml">
+    <link rel="author" href="https://lazinet.com/humans.txt">
+
+    <!-- === FAVICON & APP ICONS - TỐI ƯU PWA === -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/img/logo-lazinet/lazinet_LogoOnly-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/logo-lazinet/lazinet_LogoOnly-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/logo-lazinet/lazinet_LogoOnly-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../assets/img/logo-lazinet/lazinet_LogoOnly-152x152.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../assets/img/logo-lazinet/lazinet_LogoOnly-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/logo-lazinet/lazinet_LogoOnly-76x76.png">
+    <link rel="mask-icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.svg" color="#0052FF">
+
+    <!-- === OPEN GRAPH - TỐI ƯU SOCIAL SHARING === -->
+    <meta property="og:title" content="BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU | LAZINET GASV1.0_R20251213">
+    <meta property="og:description" content="Tự động hóa nạp dữ liệu từ Excel vào template Google Docs, xuất hàng loạt Docs & PDF. Ứng dụng BIỂU MẪU ĐỘNG miễn phí từ LAZINET.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lazinet.com/doc-automator.html">
+    <meta property="og:image" content="https://lazinet.com/assets/img/social/doc-automator-og-1200x630.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Giao diện bộ công cụ tự động hóa dữ liệu LAZINET">
+    <meta property="og:site_name" content="LAZINET - Công Ty Công Nghệ Hàng Đầu">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:article:author" content="LAZINET">
+    <meta property="og:article:publisher" content="https://www.facebook.com/lazinet.vn">
+
+    <!-- === TWITTER CARD - TỐI ƯU TWITTER === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@lazinet_vn">
+    <meta name="twitter:creator" content="@lazinet_tech">
+    <meta name="twitter:title" content="BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU | LAZINET GASV1.0_R20251213">
+    <meta name="twitter:description" content="Tự động hóa nạp dữ liệu từ Excel vào template Google Docs, xuất hàng loạt Docs & PDF. Ứng dụng BIỂU MẪU ĐỘNG miễn phí từ LAZINET.">
+    <meta name="twitter:image" content="https://lazinet.com/assets/img/social/doc-automator-twitter-1200x600.jpg">
+    <meta name="twitter:image:alt" content="Bộ công cụ tự động hóa tài liệu LAZINET">
+    <meta name="twitter:label1" content="Thời gian đọc">
+    <meta name="twitter:data1" content="4 phút">
+    <meta name="twitter:label2" content="Loại công cụ">
+    <meta name="twitter:data2" content="Tự động hóa dữ liệu">
+
+    <!-- === WHATSAPP SPECIFIC === -->
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:secure_url" content="https://lazinet.com/assets/img/social/doc-automator-whatsapp-300x300.jpg">
+
+    <!-- === LINKEDIN OPTIMIZATION === -->
+    <meta property="og:image:linkedin" content="https://lazinet.com/assets/img/social/doc-automator-linkedin-1200x627.jpg">
+
+    <!-- === PINTEREST === -->
+    <meta name="pinterest" content="nopin" description="Bộ công cụ tự động hóa dữ liệu LAZINET">
+
+    <!-- === MOBILE & PWA OPTIMIZATION === -->
+    <meta name="theme-color" content="#0052FF">
+    <meta name="msapplication-TileColor" content="#0052FF">
+    <meta name="msapplication-TileImage" content="../assets/img/logo-lazinet/lazinet_LogoOnly-144x144.png">
+    <meta name="msapplication-config" content="../browserconfig.xml">
+    <meta name="apple-mobile-web-app-title" content="LAZINET Doc Automator">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="LAZINET Document Automator">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <!-- === SCHEMA.ORG STRUCTURED DATA - CẢI THIỆN RICH SNIPPETS === -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "LAZINET Document Automator GASV1.0_R20251213",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Google Apps Script",
+        "description": "Bộ công cụ tự động hóa nạp dữ liệu từ Excel vào template Google Docs, xuất hàng loạt tài liệu Docs & PDF. Ứng dụng BIỂU MẪU ĐỘNG miễn phí, linh hoạt, chính xác.",
+        "url": "https://lazinet.com/doc-automator.html",
+        "image": "https://lazinet.com/assets/img/social/doc-automator-schema-1200x630.jpg",
+        "author": {
+            "@type": "Organization",
+            "name": "LAZINET Technologies",
+            "url": "https://lazinet.com",
+            "logo": "https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoFullv2.png"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "VND",
+            "availability": "https://schema.org/InStock",
+            "url": "https://lazinet.com/doc-automator.html"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "850",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "featureList": [
+            "Ứng dụng BIỂU MẪU ĐỘNG",
+            "Phát hành chứng thư hàng loạt",
+            "Soạn thảo hợp đồng tự động",
+            "Tạo giấy khen, thẻ, biểu mẫu",
+            "Tích hợp tự động hóa phần mềm",
+            "Tuỳ chỉnh mẫu và locale linh hoạt",
+            "Giữ nguyên định dạng cấu trúc",
+            "Chính xác, tự động, tăng hiệu suất"
+        ],
+        "softwareVersion": "GASV1.0_R20251213",
+        "datePublished": "2025-12-13",
+        "dateModified": "2025-12-14"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Trang chủ",
+                "item": "https://lazinet.com"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Công cụ miễn phí",
+                "item": "https://lazinet.com/utilities.html"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Tự Động Hóa Tài Liệu",
+                "item": "https://lazinet.com/doc-automator.html"
+            }
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU | LAZINET",
+        "description": "Giới thiệu bộ công cụ tự động hóa nạp dữ liệu vào tài liệu hàng loạt với đầy đủ tính năng và lợi ích",
+        "url": "https://lazinet.com/doc-automator.html",
+        "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://lazinet.com/assets/img/social/doc-automator-og-1200x630.jpg",
+            "width": 1200,
+            "height": 630
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "LAZINET",
+            "url": "https://lazinet.com",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://lazinet.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        },
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [".main-content", ".tool-description"]
+        },
+        "inLanguage": "vi-VN"
+    }
+    </script>
+
+    <!-- === ADDITIONAL SEO ENHANCEMENTS === -->
+    <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE">
+    <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION">
+    <meta name="baidu-site-verification" content="YOUR_BAIDU_VERIFICATION">
+    <meta name="facebook-domain-verification" content="YOUR_FACEBOOK_VERIFICATION">
+
+    <!-- === PERFORMANCE & CACHING HINTS === -->
+    <meta http-equiv="Cache-Control" content="max-age=31536000, public">
+    <meta http-equiv="Expires" content="Mon, 10 Dec 2026 00:00:00 GMT">
+    <meta http-equiv="Pragma" content="public">
+    <meta http-equiv="Content-Language" content="vi">
+
+    <!-- === SECURITY HEADERS (để tham khảo cho .htaccess) === -->
+    <!-- 
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    -->
+    
+    <!-- === PRELOAD CRITICAL RESOURCES === -->
+    <link rel="preload" href="../assets/img/logo-lazinet/lazinet_LogoFullv2.png" as="image">
+    
+    <!-- === CSS FILES from OLD LAZINET === -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/vendor/aos/aos.css">
+    <link rel="stylesheet" href="../assets/vendor/glightbox/css/glightbox.min.css">
+    <link rel="stylesheet" href="../assets/vendor/swiper/swiper-bundle.min.css">
+
+	<!-- === CSS FILES from NEW LAZINET === -->
+	<link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Sans:wght@400..700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap">
+	<link rel="stylesheet" href="../assets/css/bootstrap.min.css" media="screen">
+	<link rel="stylesheet" href="../assets/css/slicknav.min.css">
+	<link rel="stylesheet" href="../assets/css/swiper-bundle.min.css">
+	<link rel="stylesheet" href="../assets/css/all.min.css" media="screen">
+	<link rel="stylesheet" href="../assets/css/animate.css">
+	<link rel="stylesheet" href="../assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="../assets/css/mousecursor.css">
+	<link rel="stylesheet" href="../assets/css/custom.css" media="screen">
+	<link rel="stylesheet" href="../assets/css/lazinet.css">
+
+    <!-- Custom Styles for Doc Automator Tool - Wide body for screenshots -->
+    <style>
+        body {
+            font-family: 'Geist', 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            overflow-x: auto; /* Allow horizontal scroll for wide screenshots */
+        }
+
+        .container-fluid {
+            max-width: none !important; /* Full width for body */
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .main-content {
+            max-width: 100% !important;
+            padding: 0 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(15, 36, 83, 0.95), rgba(63, 130, 251, 0.95));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 5vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff5000, #3F82FB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 80px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff5000;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Responsive solution set - up to 6 columns on large screens */
+        .solution-set {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        @media (min-width: 1400px) {
+            .solution-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            .solution-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .solution-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .solution-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, var(--accent-secondary-color), var(--accent-color));
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .solution-card:hover {
+            transform: scale(1.05);
+        }
+
+        .solution-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .solution-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, #ff5000, #3F82FB);
+        }
+
+        .cta-btn {
+            background: white;
+            color: #ff5000;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .screenshot-section {
+            padding: 80px 0;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .screenshot-img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+        }
+
+        footer {
+            background: var(--accent-secondary-color);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .footer-logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Logo Header -->
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 1000;">
+        <a href="../index.html"><img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" style="width: 200px; height: auto;"></a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="version-badge">Phiên bản LAZINET GASV1.0_R20251213</div>
+                    <h1 class="hero-title">BỘ CÔNG CỤ TỰ ĐỘNG HOÁ DỮ LIỆU VÀO HÀNG LOẠT TÀI LIỆU</h1>
+                    <p class="hero-subtitle">Ứng dụng BIỂU MẪU ĐỘNG miễn phí từ LAZINET - Nạp dữ liệu Excel tự động vào template Google Docs, xuất hàng loạt Docs & PDF với độ chính xác 100%. Tiết kiệm thời gian, tăng hiệu suất cho doanh nghiệp.</p>
+                    <a href="#features" class="cta-btn">Khám Phá Tính Năng</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-grid">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 style="text-align: center; color: white; margin-bottom: 60px; font-size: 2.5rem;">Tính Năng Nổi Bật</h2>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Ứng Dụng BIỂU MẪU ĐỘNG</h3>
+                        <p class="feature-desc">Tạo và quản lý biểu mẫu động từ dữ liệu Excel, phù hợp cho mọi loại tài liệu hành chính, pháp lý.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">📜</div>
+                        <h3 class="feature-title">Phát Hành Chứng Thư Hàng Loạt</h3>
+                        <p class="feature-desc">Tự động sinh chứng thư, thư mời, thông báo theo danh sách dữ liệu, đảm bảo tính nhất quán và chuyên nghiệp.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3 class="feature-title">Soạn Thảo Hợp Đồng Tự Động</h3>
+                        <p class="feature-desc">Nạp thông tin khách hàng, điều khoản vào template hợp đồng, xuất hàng loạt chỉ trong vài giây.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3 class="feature-title">Tạo Giấy Khen, Thẻ, Biểu Mẫu</h3>
+                        <p class="feature-desc">Thiết kế và in ấn giấy khen, thẻ nhân viên, chứng nhận với dữ liệu cá nhân hóa nhanh chóng.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔗</div>
+                        <h3 class="feature-title">Tích Hợp Vào Phần Mềm Tự Động Hóa</h3>
+                        <p class="feature-desc">Kết nối API với CRM, ERP để tự động hóa quy trình từ dữ liệu đến tài liệu hoàn chỉnh.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3 class="feature-title">Tuỳ Chỉnh Linh Hoạt Mẫu & Locale</h3>
+                        <p class="feature-desc">Hỗ trợ đa ngôn ngữ, định dạng số, ngày tháng theo locale, dễ dàng chỉnh sửa template mà không mất định dạng.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">📐</div>
+                        <h3 class="feature-title">Giữ Nguyên Định Dạng & Cấu Trúc Mẫu</h3>
+                        <p class="feature-desc">Bảo toàn font chữ, bảng biểu, hình ảnh từ template gốc, đảm bảo tài liệu xuất ra chuyên nghiệp như thiết kế ban đầu.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3 class="feature-title">Chính Xác, Tự Động, Tăng Hiệu Suất</h3>
+                        <p class="feature-desc">Giảm lỗi thủ công 99%, xử lý hàng nghìn tài liệu/phút, tiết kiệm thời gian cho đội ngũ hành chính và pháp lý.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshot Section - Wide for large images -->
+    <section class="screenshot-section">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <h2 style="text-align: center; color: white; margin-bottom: 60px; font-size: 2.5rem;">Xem Demo Thực Tế</h2>
+                    <img src="path/to/your/screenshot1-large.jpg" alt="Giao diện tải template và dữ liệu" class="screenshot-img">
+                    <img src="path/to/your/screenshot2-large.jpg" alt="Preview và xử lý dữ liệu" class="screenshot-img">
+                    <img src="path/to/your/screenshot3-large.jpg" alt="Kết quả xuất PDF hàng loạt" class="screenshot-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Set - Responsive up to 6 columns -->
+    <section class="solution-set">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 style="text-align: center; color: white; margin-bottom: 60px; font-size: 2.5rem;">Bộ Giải Pháp Tích Hợp</h2>
+                </div>
+                <div class="solution-grid">
+                    <div class="solution-card">
+                        <div class="solution-icon">📋</div>
+                        <h3 class="solution-title">BIỂU MẪU ĐỘNG</h3>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-icon">📧</div>
+                        <h3 class="solution-title">Chứng Thư Hàng Loạt</h3>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-icon">📄</div>
+                        <h3 class="solution-title">Hợp Đồng Tự Động</h3>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-icon">🎖️</div>
+                        <h3 class="solution-title">Giấy Khen & Thẻ</h3>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-icon">⚡</div>
+                        <h3 class="solution-title">Tích Hợp API</h3>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-icon">🌍</div>
+                        <h3 class="solution-title">Đa Locale</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 style="color: white; margin-bottom: 30px; font-size: 2.5rem;">Sẵn Sàng Tăng Tốc Quy Trình?</h2>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; margin-bottom: 40px;">Bắt đầu với phiên bản miễn phí ngay hôm nay. Tải ứng dụng GAS và trải nghiệm tự động hóa tài liệu chuyên nghiệp.</p>
+                    <a href="https://script.google.com/home" class="cta-btn">Tải Ứng Dụng GAS</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo" class="footer-logo">
+                    <p style="opacity: 0.8; margin-top: 20px;">LAZINET Technologies © 2025 | Giải pháp tự động hóa thông minh cho doanh nghiệp Việt Nam.</p>
+                    <p style="opacity: 0.6; font-size: 0.9rem;">Phiên bản GASV1.0_R20251213 - Phát hành ngày 13/12/2025</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/vendor/aos/aos.js"></script>
+    <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="../assets/vendor/php-email-form/validate.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu Viettel Software (VTIT)</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Giới thiệu tóm tắt về Viettel Software (VTIT) - Thành viên Tập đoàn Viettel">
+    <meta name="keywords" content="Viettel Software, VTIT, gia công phần mềm, giải pháp CNTT, chuyển đổi số">
+    <meta name="author" content="Viettel Software">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Giới thiệu Viettel Software (VTIT)">
+    <meta property="og:description" content="Viettel Software (VTIT) - Nhà cung cấp hàng đầu dịch vụ gia công phần mềm và giải pháp CNTT">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.viettelsoftware.com">
+    <meta property="og:image" content="https://www.viettelsoftware.com/logo.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Giới thiệu Viettel Software (VTIT)">
+    <meta name="twitter:description" content="Viettel Software (VTIT) - Nhà cung cấp hàng đầu dịch vụ gia công phần mềm và giải pháp CNTT">
+    <meta name="twitter:image" content="https://www.viettelsoftware.com/logo.png">
+    
+    <!-- Favicon -->
+    <link href="https://www.viettel.vn/favicon.ico" rel="icon">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script type="text/javascript">
+        window.addeventatc = window.addeventatc || {};
+        window.addeventatc.settings = {
+            css: false,
+            dropcheck: true
+        };
+    </script>
+    <script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
+    
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #e9ecef 0%, #faf9f8 100%);
+            font-family: 'Montserrat', sans-serif;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .card {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            padding: 15mm;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(42, 92, 154, 0.2);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .card::before, .card::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #2A5C9A 0%, #F15E22 50%, #3A7D44 100%);
+        }
+
+        .card::before { top: 0; }
+        .card::after { bottom: 0; }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2A5C9A;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 80px;
+            width: auto;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2A5C9A;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: #F15E22;
+            text-align: center;
+            margin: 20px 0;
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2A5C9A;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #F15E22;
+        }
+
+        .content-editable {
+            min-height: 50px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .content-editable:focus {
+            outline: none;
+            border: 1px solid #2A5C9A;
+            background-color: #f8f9fa;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .contact-card {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #2A5C9A;
+        }
+
+        .contact-card h3 {
+            margin-top: 0;
+            color: #F15E22;
+            font-size: 16px;
+        }
+
+        .contact-details {
+            font-size: 14px;
+        }
+
+        .contact-details p {
+            margin: 5px 0;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px auto;
+            justify-content: center;
+            max-width: 210mm;
+        }
+
+        .toolbar button {
+            padding: 10px 15px;
+            background: #2A5C9A;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .toolbar button:hover {
+            background: #E67E22;
+            transform: translateY(-2px);
+        }
+
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .upload-btn {
+            padding: 8px 15px;
+            background: #3A7D44;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .corner-decoration {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            opacity: 0.15;
+        }
+
+        .corner-1 {
+            top: 20px;
+            left: 20px;
+            border-top: 3px solid #2A5C9A;
+            border-left: 3px solid #2A5C9A;
+        }
+
+        .corner-2 {
+            top: 20px;
+            right: 20px;
+            border-top: 3px solid #F15E22;
+            border-right: 3px solid #F15E22;
+        }
+
+        .corner-3 {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 3px solid #3A7D44;
+            border-left: 3px solid #3A7D44;
+        }
+
+        .corner-4 {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 3px solid #d35400;
+            border-right: 3px solid #d35400;
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            
+            .toolbar {
+                display: none;
+            }
+            
+            .content-editable {
+                border: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .card {
+                width: 100%;
+                padding: 10mm;
+            }
+            
+            .two-column {
+                flex-direction: column;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card" id="brochure-card">
+            <div class="corner-decoration corner-1"></div>
+            <div class="corner-decoration corner-2"></div>
+            <div class="corner-decoration corner-3"></div>
+            <div class="corner-decoration corner-4"></div>
+
+            <div class="header">
+                <div class="logo-container">
+                    <img id="logoImage" src="https://www.viettel.vn/favicon.ico" alt="Viettel Logo" class="logo">
+                    <div class="company-name">VIETTEL SOFTWARE</div>
+                </div>
+                <div class="image-upload">
+                    <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+                    <button class="upload-btn" onclick="document.getElementById('logoUpload').click()">Đổi logo</button>
+                </div>
+            </div>
+
+            <div class="title" contenteditable="true">GIỚI THIỆU TÓM TẮT</div>
+
+            <div class="section">
+                <div class="section-title">VỀ VIETTEL SOFTWARE</div>
+                <div class="content-editable" contenteditable="true">
+                    <strong>Viettel Software</strong> (VTIT), thành viên của <strong>Tập đoàn Viettel</strong>, là nhà cung cấp hàng đầu các dịch vụ gia công phần mềm và giải pháp CNTT tiên tiến. Với hơn <strong>1.500</strong> chuyên gia cùng đội ngũ không ngừng mở rộng, chúng tôi cam kết thúc đẩy chuyển đổi số tại Việt Nam và vươn tầm công nghệ toàn cầu. Nhờ đội ngũ tài năng, công nghệ hiện đại và tiêu chuẩn chất lượng cao, chúng tôi mang đến những giải pháp tối ưu giúp doanh nghiệp phát triển mạnh mẽ trong kỷ nguyên số.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">LÝ DO HỢP TÁC VỚI VIETTEL SOFTWARE</div>
+                <div class="content-editable" contenteditable="true">
+                    <ul>
+                        <li><strong>Tùy biến chuyên sâu</strong>: Giải quyết triệt để vấn đề nhức nhối, thích ứng cao độ mô hình kinh doanh.</li>
+                        <li><strong>Tiêu chuẩn toàn cầu</strong>: Quy trình tối ưu, đạt chứng nhận quốc tế <strong>CMMI5</strong>, <strong>ISO-27001</strong> và <strong>ISO-9001</strong>.</li>
+                        <li><strong>Công nghệ vượt trội</strong>: Dẫn đầu về <strong>AI</strong>, <strong>IoT</strong>, <strong>Blockchain</strong> và <strong>Big Data</strong>, triển khai hệ thống <strong>lớn</strong> và <strong>phức tạp</strong>.</li>
+                        <li><strong>Uy tín vững chắc</strong>: Đối tác tin cậy thực chứng tại <strong>Việt Nam</strong> và <strong>Quốc tế</strong>, tập trung chất lượng và hiệu quả.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">DỊCH VỤ CỦA VIETTEL SOFTWARE</div>
+                <div class="content-editable" contenteditable="true">
+                    <ul>
+                        <li><strong>Tư vấn giải pháp</strong>: Xây dựng chiến lược, thiết kế giải pháp toàn trình, toàn diện, phát triển bền vững.</li>
+                        <li><strong>Nghiên cứu & phát triển</strong>: <strong>Tiên phong</strong> & <strong>đồng hành</strong> phát triển giải pháp và ứng dụng <strong>công nghệ mới</strong>.</li>
+                        <li><strong>Gia công phần mềm</strong>: Chuyển đổi, nâng cấp, phát triển mới phần mềm <strong>tùy chỉnh</strong>, hợp tác <strong>linh động</strong>.</li>
+                        <li><strong>Phái cử chuyên gia</strong>: Nhân sự <strong>năng lực cao</strong> (kỹ năng, kinh nghiệm), <strong>giám sát</strong> hiệu quả, quản lý tuân thủ.</li>
+                        <li><strong>Vận hành & bảo trì</strong>: Đảm bảo <strong>hiệu năng</strong> và sự ổn định của hệ thống theo sát SLA, <strong>an toàn</strong> thông tin.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">KINH NGHIỆM CỦA VIETTEL SOFTWARE</div>
+                <div class="content-editable" contenteditable="true">
+                    <ul>
+                        <li><strong>Viễn thông & công nghệ mới</strong>: OSS, BSS, RMS, VAS, Big Data & Analytics, AI/ OCR/ LLM/ Callbot & Chatbot, Hàng không (SMS, EFB, FMS, AMS), SDS (Smart City, e-Government, AgriTech, Edutech/HIS).</li>
+                        <li><strong>Quản trị doanh nghiệp</strong>: ERP/ EAS, CRM, Super App/Portal, SMOS, MES, e-OFFICE, QPMS/LIMS.</li>
+                        <li><strong>Tài chính số</strong>: Ví điện tử, Ngân hàng số, Cổng tài chính, Thu hồi/ Xử lý nợ, Bảo hiểm, Xổ số, Phiếu tặng.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">LIÊN HỆ VỚI VIETTEL SOFTWARE</div>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="contact-card">
+                            <h3>TRỤ SỞ CHÍNH</h3>
+                            <div class="contact-details">
+                                <p><i class="bi bi-geo-alt"></i> 36A Dịch Vọng Hậu, Cầu Giấy, Hà Nội</p>
+                                <p><i class="bi bi-telephone"></i> +84 988889446</p>
+                                <p><i class="bi bi-envelope"></i> contact@viettelsoftware.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="contact-card">
+                            <h3>VĂN PHÒNG MIỀN NAM</h3>
+                            <div class="contact-details">
+                                <p><i class="bi bi-geo-alt"></i> Tòa nhà Viettel, 285 CMT8, Hòa Hưng, HCM</p>
+                                <p><i class="bi bi-telephone"></i> +84-983667248 (Mr. Phụng)</p>
+                                <p><i class="bi bi-envelope"></i> phunghm2@viettel.com.vn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-editable" contenteditable="true" style="margin-top: 15px;">
+                    <p><strong>Website:</strong> https://www.viettelsoftware.com</p>
+                    <p><strong>MST:</strong> 2801045888</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <button onclick="shareContent()">Chia sẻ</button>
+            <button class="add-to-calendar-btn" id="addToCalendarBtn">Thêm vào lịch</button>
+            <button onclick="exportToPNG()">Xuất ảnh</button>
+            <button onclick="exportToPDF()">Xuất PDF</button>
+            <button onclick="exportToWord()">Xuất Word</button>
+            <button onclick="exportToVCard()">Xuất vCard</button>
+            <input type="file" id="backgroundUpload" accept="image/*" style="display: none;">
+            <button onclick="document.getElementById('backgroundUpload').click()">Đổi nền</button>
+        </div>
+    </div>
+
+    <!-- Hidden calendar config -->
+    <div class="atcb" id="addToCalendarConfig" style="display:none;">
+        {
+        "name":"Tìm hiểu về Viettel Software (VTIT)",
+        "description":"Viettel Software (VTIT) - Nhà cung cấp hàng đầu dịch vụ gia công phần mềm và giải pháp CNTT tiên tiến",
+        "startDate":"2024-01-01",
+        "endDate":"2024-01-01",
+        "startTime":"09:00",
+        "endTime":"17:00",
+        "location":"Trụ sở: 36A Dịch Vọng Hậu, Cầu Giấy, Hà Nội",
+        "options":["Apple","Google","iCal","Microsoft365","MicrosoftTeams","Outlook.com","Yahoo"],
+        "timeZone":"Asia/Ho_Chi_Minh",
+        "iCalFileName":"Gioi-thieu-Viettel-Software",
+        "listStyle":"modal",
+        "trigger":"click"
+        }
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.1/docx.js"></script>
+    
+    <script>
+        const { jsPDF } = window.jspdf;
+        
+        // Xử lý upload logo
+        document.getElementById('logoUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('logoImage').src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Xử lý upload background
+        document.getElementById('backgroundUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('brochure-card').style.backgroundImage = `url(${event.target.result})`;
+                    document.getElementById('brochure-card').style.backgroundSize = 'cover';
+                    document.getElementById('brochure-card').style.backgroundPosition = 'center';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Hàm tắt hiệu ứng trước khi export
+        function disableEffectsBeforeExport() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                body, .card, * {
+                    opacity: 1 !important;
+                    animation: none !important;
+                    transform: none !important;
+                    box-shadow: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+            return style;
+        }
+        
+        // Export to PNG
+        function exportToPNG() {
+            const styleElement = disableEffectsBeforeExport();
+            
+            setTimeout(() => {
+                html2canvas(document.getElementById('brochure-card'), {
+                    scale: 3,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'Viettel-Software-Introduction.png';
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+                    document.head.removeChild(styleElement);
+                });
+            }, 500);
+        }
+        
+        // Export to PDF
+        function exportToPDF() {
+            const styleElement = disableEffectsBeforeExport();
+            
+            setTimeout(() => {
+                html2canvas(document.getElementById('brochure-card'), {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+                    
+                    const imgWidth = 210;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+                    pdf.save('Viettel-Software-Introduction.pdf');
+                    document.head.removeChild(styleElement);
+                });
+            }, 500);
+        }
+        
+        // Export to Word
+        function exportToWord() {
+            // Lấy nội dung từ thẻ contenteditable
+            const title = document.querySelector('.title').innerText;
+            const aboutContent = document.querySelectorAll('.content-editable')[0].innerHTML;
+            const reasonsContent = document.querySelectorAll('.content-editable')[1].innerHTML;
+            const servicesContent = document.querySelectorAll('.content-editable')[2].innerHTML;
+            const experienceContent = document.querySelectorAll('.content-editable')[3].innerHTML;
+            const contactContent = document.querySelectorAll('.content-editable')[4].innerHTML;
+            
+            // Tạo nội dung HTML cho Word
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        h1 { color: #F15E22; text-align: center; }
+                        h2 { color: #2A5C9A; border-bottom: 1px solid #F15E22; padding-bottom: 5px; }
+                        ul { padding-left: 20px; }
+                        li { margin-bottom: 8px; }
+                        .contact-card { 
+                            background: #f8f9fa; 
+                            padding: 15px; 
+                            margin: 10px 0; 
+                            border-left: 4px solid #2A5C9A; 
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${title}</h1>
+                    
+                    <h2>VỀ VIETTEL SOFTWARE</h2>
+                    ${aboutContent}
+                    
+                    <h2>LÝ DO HỢP TÁC VỚI VIETTEL SOFTWARE</h2>
+                    ${reasonsContent}
+                    
+                    <h2>DỊCH VỤ CỦA VIETTEL SOFTWARE</h2>
+                    ${servicesContent}
+                    
+                    <h2>KINH NGHIỆM CỦA VIETTEL SOFTWARE</h2>
+                    ${experienceContent}
+                    
+                    <h2>LIÊN HỆ VỚI VIETTEL SOFTWARE</h2>
+                    ${contactContent}
+                </body>
+                </html>
+            `;
+            
+            // Tạo blob và tải xuống
+            const blob = new Blob([htmlContent], { type: 'application/msword' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Viettel-Software-Introduction.doc';
+            link.click();
+        }
+        
+        // Export to vCard
+        function exportToVCard() {
+            const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+FN:Mr. Lê Minh Phụng
+ORG:Viettel Software
+TEL;TYPE=CELL,WORK:+84983667248
+EMAIL;TYPE=WORK:phunghm2@viettel.com.vn
+EMAIL;TYPE=WORK:phunghm@viettelsoftware.com
+ADR;TYPE=WORK:;;Tòa nhà Viettel, 285 CMT8;Hòa Hưng;Hồ Chí Minh;;Việt Nam
+URL:https://www.viettelsoftware.com
+END:VCARD`;
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Lê Minh Phụng_Viettel Software.vcf';
+            link.click();
+        }
+        
+        // Share content
+        function shareContent() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Giới thiệu Viettel Software (VTIT)',
+                    text: 'Tìm hiểu về Viettel Software - Nhà cung cấp hàng đầu dịch vụ gia công phần mềm và giải pháp CNTT tiên tiến',
+                    url: window.location.href
+                }).catch(err => console.error('Lỗi chia sẻ:', err));
+            } else {
+                alert('Chức năng chia sẻ không được hỗ trợ trên thiết bị này. Bạn có thể sử dụng tính năng xuất file.');
+            }
+        }
+        
+        // Initialize calendar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '1';
+            
+            // Initialize calendar button
+            document.getElementById('addToCalendarBtn').addEventListener('click', function() {
+                try {
+                    const configElement = document.getElementById('addToCalendarConfig');
+                    if (configElement && typeof window.addtocalendar === 'function') {
+                        const config = JSON.parse(configElement.textContent.trim());
+                        window.addtocalendar(config);
+                    } else {
+                        // Fallback to Google Calendar
+                        const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Tìm hiểu về Viettel Software (VTIT)')}&dates=20240101T090000/20240101T170000&details=${encodeURIComponent('Viettel Software (VTIT) - Nhà cung cấp hàng đầu dịch vụ gia công phần mềm và giải pháp CNTT tiên tiến')}&location=${encodeURIComponent('Trụ sở: 36A Dịch Vọng Hậu, Cầu Giấy, Hà Nội')}&ctz=Asia/Ho_Chi_Minh`;
+                        window.open(url, '_blank');
+                    }
+                } catch (e) {
+                    console.error('Lỗi khi thêm vào lịch:', e);
+                    alert('Có lỗi xảy ra khi thêm vào lịch. Vui lòng thử lại.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

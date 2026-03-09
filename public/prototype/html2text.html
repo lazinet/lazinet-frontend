@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển Đổi URL Thành Text Content</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input[type="url"] { width: 100%; padding: 10px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background: #4285f4; color: white; border: none; cursor: pointer; }
+        button:hover { background: #3367d6; }
+        #output { margin-top: 20px; padding: 15px; background: #f1f3f4; border-radius: 5px; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+        #status { margin-top: 10px; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Chuyển Đổi URL Thành Text Content (Vanilla JS)</h1>
+    <p>Nhập URL (ví dụ: https://example.com), click button để lấy và extract text thuần (loại bỏ HTML tags, styles, scripts).</p>
+    
+    <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
+    <button onclick="convertToText()">Chuyển Đổi</button>
+    
+    <div id="status"></div>
+    <div id="output"></div>
+
+    <script>
+        async function convertToText() {
+            const urlInput = document.getElementById('urlInput');
+            const statusDiv = document.getElementById('status');
+            const outputDiv = document.getElementById('output');
+            
+            const targetUrl = urlInput.value.trim();
+            if (!targetUrl) {
+                showStatus('Vui lòng nhập URL hợp lệ.', 'error');
+                return;
+            }
+            
+            statusDiv.innerHTML = 'Đang tải...';
+            statusDiv.className = '';
+            outputDiv.innerHTML = '';
+            
+            try {
+                // Sử dụng CORS proxy miễn phí để bypass CORS (vì JS thuần không fetch cross-origin trực tiếp)
+                // Proxy: https://api.allorigins.win/get?url= (an toàn, không cần key)
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                
+                console.log('Fetching qua proxy:', proxyUrl); // Debug log
+                
+                const response = await fetch(proxyUrl, {
+                    method: 'GET',
+                    mode: 'cors'  // An toàn vì proxy hỗ trợ CORS
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: Không thể tải trang.`);
+                }
+                
+                const proxyData = await response.json();
+                const htmlContent = proxyData.contents;  // Lấy HTML từ proxy response
+                
+                // Parse HTML thành DOM và extract text thuần (vanilla JS, không thư viện)
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                
+                // Loại bỏ script/style (tùy chọn, để tránh nội dung không mong muốn)
+                const scripts = doc.querySelectorAll('script, style');
+                scripts.forEach(el => el.remove());
+                
+                // Lấy text thuần từ body, thay thế multiple spaces/newlines bằng single
+                let textContent = doc.body.innerText || doc.body.textContent;
+                textContent = textContent.replace(/\s+/g, ' ').trim();  // Normalize whitespace
+                
+                outputDiv.textContent = textContent;
+                showStatus(`Thành công! Đã extract ${textContent.length} ký tự text từ "${targetUrl}".`, 'success');
+                
+            } catch (error) {
+                console.error('Lỗi chi tiết:', error);
+                showStatus(`Lỗi: ${error.message}. Kiểm tra URL hoặc thử proxy khác nếu cần.`, 'error');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = type;
+        }
+        
+        // Auto-convert khi Enter trong input
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                convertToText();
+            }
+        });
+    </script>
+</body>
+</html>

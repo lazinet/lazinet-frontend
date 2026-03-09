@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Hồ Sơ</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #f4f7fa; }
+    form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    input, select, button { width: 100%; padding: 14px; margin: 12px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+    button { background: #0066ff; color: white; border: none; cursor: pointer; font-weight: bold; }
+    button:hover { background: #0052cc; }
+    #loading { display: none; text-align: center; color: #0066ff; font-weight: bold; }
+    @media (max-width: 480px) { body { padding: 10px; } }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Điền Thông Tin Hồ Sơ</h1>
+  <form id="profileForm">
+    <input type="text" id="hoten" placeholder="Họ và tên" required>
+    <select id="gioitinh" required>
+      <option value="">Chọn giới tính</option>
+      <option value="Nam">Nam</option>
+      <option value="Nữ">Nữ</option>
+      <option value="Khác">Khác</option>
+    </select>
+    <input type="file" id="anh" accept="image/*" required>
+    <button type="submit">Gửi Hồ Sơ</button>
+  </form>
+  <div id="loading">Đang upload ảnh và gửi dữ liệu...</div>
+
+  <script>
+    const workerUrl = 'https://api-proxy.contact-omegaerp.workers.dev'; // ← THAY BẰNG URL WORKER THỰC
+
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const loading = document.getElementById('loading');
+      loading.style.display = 'block';
+      this.querySelector('button').disabled = true;
+
+      try {
+        // 1. Upload ảnh
+        const formData = new FormData();
+        formData.append('image', document.getElementById('anh').files[0]);
+        const uploadRes = await fetch(workerUrl + '/upload-image', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        if (!uploadData.url) throw new Error('Upload ảnh thất bại');
+
+        // 2. Submit form
+        const submitData = new URLSearchParams();
+        submitData.append('hoten', document.getElementById('hoten').value);
+        submitData.append('gioitinh', document.getElementById('gioitinh').value);
+        submitData.append('anhurl', uploadData.url);
+
+        const submitRes = await fetch(workerUrl + '/submit-form', {
+          method: 'POST',
+          body: submitData
+        });
+
+        if (submitRes.ok) {
+          alert('✅ Gửi thành công! Chờ admin approve trong Google Sheet.');
+          this.reset();
+        } else throw new Error('Gửi form thất bại');
+      } catch (err) {
+        alert('❌ Lỗi: ' + err.message);
+      } finally {
+        loading.style.display = 'none';
+        this.querySelector('button').disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

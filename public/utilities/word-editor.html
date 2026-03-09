@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa file Word Online</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script src="https://unpkg.com/html-docx-js@0.3.1/dist/html-docx.js"></script>
+    <style>
+        body { 
+            font-family: "Times New Roman", Arial, sans-serif; 
+            margin: 20px; 
+        }
+        #editor { 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            min-height: 400px; 
+            margin: 10px 0; 
+            font-family: "Times New Roman", Arial, sans-serif !important;
+        }
+        button { margin: 5px; padding: 10px; }
+        input[type="file"] { margin: 10px 0; }
+        /* Force font hỗ trợ tiếng Việt cho tất cả nội dung */
+        #editor * {
+            font-family: "Times New Roman", Arial, sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chỉnh sửa file Word (.docx) trực tiếp trên web</h1>
+    <p>Chọn file .docx để load, chỉnh sửa nội dung trong ô bên dưới (giữ nguyên định dạng cơ bản), rồi download.</p>
+    <p><strong>Lưu ý:</strong> Đã fix lỗi font tiếng Việt bằng cách force dùng font "Times New Roman" (hỗ trợ Unicode đầy đủ). Nếu vẫn lỗi, thử file gốc không có font đặc biệt.</p>
+    
+    <input type="file" id="fileInput" accept=".docx" />
+    <button onclick="loadFile()">Load File</button>
+    
+    <div id="editor" contenteditable="true" style="display: none;"></div>
+    
+    <button onclick="downloadFile()" id="downloadBtn" style="display: none;">Download .docx</button>
+
+    <script>
+        let originalHtml = "";
+        
+        async function loadFile() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Vui lòng chọn file .docx!");
+                return;
+            }
+            
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const result = await mammoth.convertToHtml({ 
+                    arrayBuffer,
+                    options: {
+                        ignoreEmptyParagraphs: false,
+                        includeDefaultStyleMap: true
+                    }
+                });
+                originalHtml = result.value;
+                
+                // Wrap HTML với style font hỗ trợ tiếng Việt - use single quotes inside
+                const wrappedHtml = "<div style=\"font-family: 'Times New Roman', Arial, sans-serif;\">" + originalHtml + "</div>";
+                
+                const editor = document.getElementById("editor");
+                editor.innerHTML = wrappedHtml;
+                editor.style.display = "block";
+                document.getElementById("downloadBtn").style.display = "inline-block";
+                
+                console.log("File loaded successfully. Định dạng cơ bản được giữ nguyên (text, bold, italic, lists, tables). Font tiếng Việt đã được fix.");
+            } catch (error) {
+                console.error("Lỗi khi load file:", error);
+                alert("Lỗi khi load file: " + error.message);
+            }
+        }
+        
+        function downloadFile() {
+            const editor = document.getElementById("editor");
+            if (!editor.innerHTML || editor.innerHTML === originalHtml) {
+                alert("Vui lòng chỉnh sửa nội dung trước khi download!");
+                return;
+            }
+            
+            try {
+                // Build fullHtml by concatenation
+                let fullHtml = "<html lang=\"vi\">";
+                fullHtml += "<head>";
+                fullHtml += "<meta charset=\"UTF-8\">";
+                fullHtml += "<style>";
+                fullHtml += "body { font-family: 'Times New Roman', Arial, sans-serif; }";
+                fullHtml += "* { font-family: 'Times New Roman', Arial, sans-serif !important; }";
+                fullHtml += "</style>";
+                fullHtml += "</head>";
+                fullHtml += "<body>";
+                fullHtml += editor.innerHTML;
+                fullHtml += "</body>";
+                fullHtml += "</html>";
+                
+                const docx = htmlDocx.asBlob(fullHtml);
+                const url = URL.createObjectURL(docx);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "edited_document.docx";
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                console.log("File downloaded. Định dạng và font tiếng Việt được cố gắng giữ nguyên dựa trên HTML.");
+            } catch (error) {
+                console.error("Lỗi khi download:", error);
+                alert("Lỗi khi download: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liên Hệ - OMEGA ERP</title>
+  <meta name="description" content="Liên hệ với OMEGA để được tư vấn miễn phí về giải pháp ERP. Văn phòng tại TP.HCM và Hà Nội. Hotline: 028 3512 8448.">
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ─── Contact section layout ─── */
+    .contact-section {
+      padding: 80px 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ─── Contact info cards ─── */
+    .contact-info-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(1,166,82,0.12);
+      padding: 22px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: all 0.3s ease;
+    }
+    .contact-card:hover {
+      border-color: rgba(1,166,82,0.35);
+      box-shadow: 0 12px 32px rgba(1,166,82,0.09);
+      transform: translateX(4px);
+    }
+    .contact-card-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, rgba(1,166,82,0.12), rgba(126,217,87,0.12));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #01a652;
+      flex-shrink: 0;
+    }
+    .contact-card-body h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0d1b2a;
+      margin-bottom: 6px;
+    }
+    .contact-card-body p,
+    .contact-card-body a {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.7;
+      text-decoration: none;
+      display: block;
+    }
+    .contact-card-body a:hover { color: #01a652; }
+
+    /* Social card */
+    .social-contact-card {
+      background: linear-gradient(135deg, #0d1b2a, #0f2a1e);
+      border: 1px solid rgba(1,166,82,0.2);
+      border-radius: 14px;
+      padding: 22px 24px;
+    }
+    .social-contact-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .social-links {
+      display: flex;
+      gap: 12px;
+    }
+    .social-link {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      color: #fff;
+    }
+    .social-link.fb  { background: #1877f2; }
+    .social-link.yt  { background: #ff0000; }
+    .social-link.li  { background: #0077b5; }
+    .social-link:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+
+    /* ─── Contact form container ─── */
+    .contact-form-container {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid rgba(1,166,82,0.12);
+      padding: 40px 40px 44px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    }
+    .contact-form-container h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0d1b2a;
+      margin-bottom: 8px;
+    }
+    .contact-form-container .form-subtitle {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 14px;
+      color: #333;
+      background: #fafafa;
+      transition: all 0.25s ease;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #01a652;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(1,166,82,0.1);
+    }
+    .form-group textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px 24px;
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      margin-top: 6px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(1,166,82,0.4);
+    }
+
+    /* ─── Map section ─── */
+    .map-section {
+      padding: 0 0 80px;
+    }
+    .map-placeholder {
+      background: #0d1b2a;
+      border: 1px solid rgba(1,166,82,0.2);
+      border-radius: 20px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: rgba(255,255,255,0.4);
+      font-size: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(1,166,82,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(1,166,82,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .map-placeholder-icon {
+      font-size: 48px;
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+    .map-placeholder p {
+      position: relative;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+    }
+    .map-placeholder small {
+      position: relative;
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ─── FAQ accordion ─── */
+    .faq-section {
+      padding: 80px 0;
+      background: #f8fafb;
+    }
+    .faq-list {
+      max-width: 860px;
+      margin: 50px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .faq-item {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(1,166,82,0.1);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+    .faq-item.open {
+      border-color: rgba(1,166,82,0.3);
+      box-shadow: 0 8px 24px rgba(1,166,82,0.08);
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      cursor: pointer;
+      gap: 16px;
+      user-select: none;
+    }
+    .faq-question h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0d1b2a;
+      flex: 1;
+      margin: 0;
+      transition: color 0.2s;
+    }
+    .faq-item.open .faq-question h4 { color: #01a652; }
+    .faq-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(1,166,82,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #01a652;
+      transition: transform 0.3s ease, background 0.3s;
+      flex-shrink: 0;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: #01a652;
+      color: #fff;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+    }
+    .faq-answer p {
+      padding: 0 24px 22px;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.75;
+      margin: 0;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-form-container { padding: 30px 24px 34px; }
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form-container h2 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+  <img src="assets/img/preloader.svg" alt="Loading OMEGA...">
+</div>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" title="Về đầu trang"><i class="fas fa-angle-up"></i></button>
+
+<!-- Mobile Nav Overlay -->
+<div class="overlay"></div>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <button class="close-nav"><i class="fas fa-times"></i></button>
+  <ul>
+    <li><a href="index.html">Trang Chủ</a></li>
+    <li><a href="ve-omega.html">Về Omega</a></li>
+    <li><a href="giai-phap.html">Giải Pháp</a></li>
+    <li><a href="khach-hang.html">Khách Hàng</a></li>
+    <li><a href="san-pham.html">Sản Phẩm</a></li>
+    <li><a href="dich-vu.html">Dịch Vụ</a></li>
+    <li><a href="tin-tuc.html">Tin Tức</a></li>
+    <li><a href="lien-he.html" class="active">Liên Hệ</a></li>
+  </ul>
+  <a href="lien-he.html" class="mobile-cta">Đăng Ký Demo</a>
+</nav>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fas fa-phone-alt"></i> <a href="tel:02835128448">028 3512 8448</a></span>
+        <span><i class="fas fa-envelope"></i> <a href="mailto:info@omega.com.vn">info@omega.com.vn</a></span>
+        <span><i class="fas fa-map-marker-alt"></i> 277A Nguyễn Văn Đậu, TP.HCM</span>
+      </div>
+      <div class="topbar-social">
+        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="logo-light">
+        <img src="assets/img/logo-dark.svg" alt="OMEGA ERP" class="logo-dark">
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="ve-omega.html">Về Omega</a></li>
+        <li>
+          <a href="giai-phap.html">Giải Pháp</a>
+          <ul class="dropdown">
+            <li><a href="giai-phap.html#san-xuat">Sản xuất</a></li>
+            <li><a href="giai-phap.html#thuong-mai">Thương mại</a></li>
+            <li><a href="giai-phap.html#bat-dong-san">Bất động sản</a></li>
+            <li><a href="giai-phap.html#fb">F&amp;B</a></li>
+            <li><a href="giai-phap.html#fmcg">FMCG</a></li>
+          </ul>
+        </li>
+        <li><a href="khach-hang.html">Khách Hàng</a></li>
+        <li>
+          <a href="san-pham.html">Sản Phẩm</a>
+          <ul class="dropdown">
+            <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+            <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+            <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+            <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          </ul>
+        </li>
+        <li><a href="dich-vu.html">Dịch Vụ</a></li>
+        <li><a href="tin-tuc.html">Tin Tức</a></li>
+        <li><a href="lien-he.html" class="active">Liên Hệ</a></li>
+        <li><a href="lien-he.html" class="nav-cta"><i class="fas fa-calendar-check"></i> Đăng Ký Demo</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     PAGE BANNER
+     ============================================================ -->
+<section class="page-banner">
+  <div class="container">
+    <h1 class="fade-up">Liên Hệ</h1>
+    <nav class="breadcrumb fade-up delay-1">
+      <a href="index.html">Trang Chủ</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Liên Hệ</span>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT SECTION
+     ============================================================ -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- LEFT: Contact info cards -->
+      <div class="contact-info-cards">
+
+        <!-- Card 1: HCM Office -->
+        <div class="contact-card fade-up delay-1">
+          <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="contact-card-body">
+            <h4>Văn Phòng TP.HCM</h4>
+            <p>Lầu 6, Tòa nhà Hà Sơn, 277A Nguyễn Văn Đậu,<br>P. Bình Lợi Trung, Q. Bình Thạnh, TP.HCM</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Phone -->
+        <div class="contact-card fade-up delay-2">
+          <div class="contact-card-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="contact-card-body">
+            <h4>Điện Thoại</h4>
+            <a href="tel:02835128448">028 3512 8448</a>
+            <a href="tel:02835147280" style="color:#999;">Fax: 028 3514 7280</a>
+            <a href="tel:0708994462">Ms. Nghi: 0708 994 462</a>
+            <a href="tel:0908303609">Mr. Nhân: 0908 303 609</a>
+          </div>
+        </div>
+
+        <!-- Card 3: Email -->
+        <div class="contact-card fade-up delay-3">
+          <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+          <div class="contact-card-body">
+            <h4>Email</h4>
+            <a href="mailto:info@omega.com.vn">info@omega.com.vn</a>
+          </div>
+        </div>
+
+        <!-- Card 4: Hanoi Office -->
+        <div class="contact-card fade-up delay-4">
+          <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="contact-card-body">
+            <h4>Văn Phòng Hà Nội</h4>
+            <p>Phòng 507-B8, 8A Hoàng Ngọc Phách,<br>Đống Đa, Hà Nội</p>
+            <a href="tel:0972735899">Mr. Tuấn Anh: 0972 735 899</a>
+          </div>
+        </div>
+
+        <!-- Card 5: Social -->
+        <div class="social-contact-card fade-up delay-5">
+          <h4><i class="fas fa-share-alt" style="color:#01a652;margin-right:8px;"></i>Kết Nối Với Chúng Tôi</h4>
+          <div class="social-links">
+            <a href="#" class="social-link fb" title="Facebook OMEGA">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link yt" title="YouTube OMEGA">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="social-link li" title="LinkedIn OMEGA">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Contact form -->
+      <div class="contact-form-container fade-up delay-2">
+        <h2>Đăng Ký Tư Vấn Miễn Phí</h2>
+        <p class="form-subtitle">Điền thông tin bên dưới — chuyên gia của chúng tôi sẽ liên hệ trong vòng 24 giờ làm việc.</p>
+
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Họ Tên *</label>
+              <input type="text" name="fullname" placeholder="Nguyễn Văn A" required>
+            </div>
+            <div class="form-group">
+              <label>Điện Thoại *</label>
+              <input type="tel" name="phone" placeholder="0908 xxx xxx" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="name@company.com">
+          </div>
+          <div class="form-group">
+            <label>Tên Doanh Nghiệp *</label>
+            <input type="text" name="company" placeholder="Công ty TNHH..." required>
+          </div>
+          <div class="form-group">
+            <label>Ngành Nghề</label>
+            <select name="industry">
+              <option value="">-- Chọn ngành nghề --</option>
+              <option value="san-xuat">Sản xuất</option>
+              <option value="thuong-mai">Thương mại / Phân phối</option>
+              <option value="bat-dong-san">Bất động sản</option>
+              <option value="fb">F&amp;B (Nhà hàng / Chuỗi)</option>
+              <option value="fmcg">FMCG</option>
+              <option value="thuy-hai-san">Thủy hải sản</option>
+              <option value="go-noi-that">Gỗ / Nội thất</option>
+              <option value="xay-dung">Xây dựng</option>
+              <option value="duoc">Dược phẩm</option>
+              <option value="khac">Khác</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Nhu Cầu</label>
+            <textarea name="need" placeholder="Mô tả ngắn về bài toán quản trị bạn đang gặp phải và mong muốn giải quyết..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">
+            <i class="fas fa-paper-plane"></i> Gửi Yêu Cầu Tư Vấn
+          </button>
+        </form>
+
+        <!-- Success message (hidden by default) -->
+        <div id="formSuccess" style="display:none;text-align:center;padding:32px 20px;">
+          <div style="font-size:52px;background:linear-gradient(135deg,#01a652,#7ed957);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3 style="font-size:20px;font-weight:700;color:#0d1b2a;margin-bottom:8px;">Gửi Thành Công!</h3>
+          <p style="color:#666;font-size:15px;line-height:1.6;">Cảm ơn bạn đã liên hệ. Chuyên gia của chúng tôi sẽ gọi lại trong vòng 24 giờ làm việc.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MAP SECTION
+     ============================================================ -->
+<section class="map-section">
+  <div class="container">
+    <div class="map-placeholder fade-up">
+      <div class="map-placeholder-icon"><i class="fas fa-map-marked-alt"></i></div>
+      <p>Bản đồ Google Maps - Hồ Chí Minh</p>
+      <small>Lầu 6, Tòa nhà Hà Sơn, 277A Nguyễn Văn Đậu, P. Bình Lợi Trung, Q. Bình Thạnh, TP.HCM</small>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ SECTION
+     ============================================================ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-header fade-up" style="text-align:center;">
+      <span class="tag-label">Câu Hỏi Thường Gặp</span>
+      <h2>Những Câu Hỏi Về Triển Khai ERP</h2>
+      <p style="color:#666;">Giải đáp các thắc mắc phổ biến nhất từ doanh nghiệp trước khi triển khai hệ thống ERP</p>
+    </div>
+    <div class="faq-list">
+
+      <!-- FAQ 1 -->
+      <div class="faq-item fade-up delay-1">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h4>Thời gian triển khai hệ thống ERP mất bao lâu?</h4>
+          <div class="faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-answer">
+          <p>Thời gian triển khai phụ thuộc vào quy mô và độ phức tạp của doanh nghiệp. Thông thường, với doanh nghiệp vừa (50-200 nhân viên) triển khai các module cơ bản như kế toán, kho và bán hàng, thời gian dao động từ 2-4 tháng. Với các dự án lớn hơn tích hợp nhiều module và tùy chỉnh sâu, có thể kéo dài 6-12 tháng. OMEGA sẽ lập kế hoạch chi tiết ngay từ giai đoạn khởi động dự án.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item fade-up delay-2">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h4>Chi phí triển khai ERP gồm những gì và có thể ước tính không?</h4>
+          <div class="faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-answer">
+          <p>Chi phí ERP thường bao gồm: phí bản quyền phần mềm (theo số module và user), phí triển khai &amp; tư vấn, phí đào tạo và phí bảo trì hằng năm. OMEGA cung cấp báo giá minh bạch, chi tiết theo phạm vi thực tế của doanh nghiệp. Để có ước tính chính xác, chúng tôi cần trao đổi về quy mô, số lượng người dùng và các module cần triển khai. Vui lòng liên hệ để được tư vấn miễn phí.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item fade-up delay-3">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h4>Doanh nghiệp có cần bộ phận IT riêng để vận hành ERP không?</h4>
+          <div class="faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-answer">
+          <p>Không bắt buộc. OMEGA.ERP được thiết kế để người dùng nghiệp vụ có thể vận hành mà không cần kiến thức IT sâu. Tuy nhiên, với các doanh nghiệp lớn muốn tự quản lý hạ tầng server, việc có một người phụ trách IT sẽ giúp ích. Đội ngũ hỗ trợ của OMEGA sẵn sàng hỗ trợ kỹ thuật từ xa theo cam kết SLA trong suốt thời gian bảo hành và bảo trì.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item fade-up delay-4">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h4>Dữ liệu hiện có của doanh nghiệp có thể chuyển vào hệ thống mới không?</h4>
+          <div class="faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-answer">
+          <p>Có. OMEGA hỗ trợ chuyển đổi (migrate) dữ liệu từ các hệ thống cũ — bao gồm Excel, phần mềm kế toán khác hoặc ERP cũ — vào OMEGA.ERP. Quy trình gồm: làm sạch dữ liệu, định dạng lại theo chuẩn hệ thống, kiểm tra và nhập liệu. Đây là bước quan trọng được thực hiện kỹ lưỡng để đảm bảo tính chính xác của dữ liệu ban đầu.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="faq-item fade-up delay-5">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h4>Sau khi triển khai, OMEGA hỗ trợ như thế nào khi có sự cố?</h4>
+          <div class="faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="faq-answer">
+          <p>OMEGA cung cấp hỗ trợ kỹ thuật theo cam kết SLA rõ ràng: tiếp nhận yêu cầu qua hotline, email và hệ thống ticket trong giờ hành chính (8/5). Đối với sự cố nghiêm trọng ảnh hưởng đến hoạt động kinh doanh, đội ngũ kỹ thuật sẽ ưu tiên xử lý trong thời gian cam kết ngắn nhất. Ngoài ra, chúng tôi cũng cập nhật phiên bản phần mềm định kỳ để đảm bảo tuân thủ pháp luật và bổ sung tính năng mới.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA SECTION
+     ============================================================ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-text fade-left">
+      <h2>Sẵn Sàng Bắt Đầu Cùng Omega?</h2>
+      <p>Hàng nghìn doanh nghiệp Việt Nam đã tin tưởng chọn Omega là đối tác chuyển đổi số. Để lại thông tin — chuyên gia của chúng tôi sẽ liên hệ tư vấn miễn phí trong 24 giờ làm việc.</p>
+      <div style="margin-top:28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);">Gọi ngay</div>
+            <a href="tel:02835128448" style="font-size:18px;font-weight:700;color:#fff;text-decoration:none;">028 3512 8448</a>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);">Email</div>
+            <a href="mailto:info@omega.com.vn" style="font-size:16px;font-weight:600;color:#fff;text-decoration:none;">info@omega.com.vn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cta-form-wrap fade-right">
+      <h3>Đăng Ký Tư Vấn Miễn Phí</h3>
+      <form class="cta-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Họ và tên *</label>
+            <input type="text" placeholder="Nguyễn Văn A" required>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại *</label>
+            <input type="tel" placeholder="0908 xxx xxx" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email công ty</label>
+          <input type="email" placeholder="name@company.com">
+        </div>
+        <div class="form-group">
+          <label>Tên doanh nghiệp *</label>
+          <input type="text" placeholder="Công ty TNHH..." required>
+        </div>
+        <div class="form-group">
+          <label>Lĩnh vực / Ngành nghề</label>
+          <select>
+            <option value="">-- Chọn ngành nghề --</option>
+            <option>Sản xuất</option>
+            <option>Thương mại / Phân phối</option>
+            <option>Bất động sản</option>
+            <option>F&amp;B (Nhà hàng / Chuỗi)</option>
+            <option>FMCG</option>
+            <option>Thủy hải sản</option>
+            <option>Gỗ / Nội thất</option>
+            <option>Khác</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nhu cầu cụ thể</label>
+          <textarea placeholder="Mô tả ngắn về vấn đề quản trị bạn muốn giải quyết..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          <i class="fas fa-paper-plane"></i> Gửi Yêu Cầu Tư Vấn
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand fade-up">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="footer-logo">
+        <p>Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA — Đồng hành cùng doanh nghiệp Việt Nam trên hành trình chuyển đổi số.</p>
+        <div class="footer-social">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Zalo"><i class="fas fa-comment-dots"></i></a>
+        </div>
+      </div>
+      <div class="footer-col fade-up delay-1">
+        <h4>Sản Phẩm</h4>
+        <ul>
+          <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+          <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+          <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+          <li><a href="san-pham.html#edu">OMEGA.EDU</a></li>
+          <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          <li><a href="san-pham.html#gama">GAMA.SMB</a></li>
+        </ul>
+      </div>
+      <div class="footer-col fade-up delay-2">
+        <h4>Dịch Vụ</h4>
+        <ul>
+          <li><a href="dich-vu.html">Tư vấn &amp; Triển khai</a></li>
+          <li><a href="dich-vu.html">Đào tạo &amp; Chuyển giao</a></li>
+          <li><a href="dich-vu.html">Bảo hành &amp; Bảo trì</a></li>
+          <li><a href="ve-omega.html">Về Omega</a></li>
+          <li><a href="khach-hang.html">Khách hàng</a></li>
+          <li><a href="tin-tuc.html">Tin tức</a></li>
+        </ul>
+      </div>
+      <div class="footer-col fade-up delay-3">
+        <h4>Liên Hệ</h4>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Lầu 6, Tòa nhà Hà Sơn, 277A Nguyễn Văn Đậu, P. Bình Lợi Trung, TP.HCM</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span><a href="tel:02835128448" style="color:inherit;">028 3512 8448</a><br>
+          <a href="tel:0708994462" style="color:inherit;">0708 994 462 (Ms. Nghi)</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span><a href="mailto:info@omega.com.vn" style="color:inherit;">info@omega.com.vn</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Phòng 507-B8, 8A Hoàng Ngọc Phách, Đống Đa, Hà Nội</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2026 <a href="index.html">Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</a>. Tất cả quyền được bảo lưu. | <a href="lien-he.html">Chính sách bảo mật</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  // ─── FAQ Accordion ───
+  function toggleFAQ(questionEl) {
+    const item = questionEl.parentElement;
+    const isOpen = item.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+    // Open clicked if it was closed
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ─── Contact Form Submission ───
+  const contactForm = document.getElementById('contactForm');
+  const formSuccess = document.getElementById('formSuccess');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      contactForm.style.display = 'none';
+      formSuccess.style.display = 'block';
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+function doGet(e) {
+  return ContentService.createTextOutput('Welcome').setMimeType(ContentService.MimeType.TEXT);
+}
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    if (data.action === 'getData') {
+      return ContentService.createTextOutput(JSON.stringify(getBoothData())).setMimeType(ContentService.MimeType.JSON);
+    } else if (data.action === 'reserve') {
+      const result = reserveBooth(data.boothId, data.companyData);
+      return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, message: 'Error: ' + error.message}));
+  }
+}
+
+function getBoothData() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Booths');
+  const data = sheet.getDataRange().getValues();
+  const headers = data[0];
+  const booths = [];
+  for (let i = 1; i < data.length; i++) {
+    let obj = {};
+    headers.forEach((h, idx) => obj[h.trim()] = data[i][idx]);
+    booths.push(obj);
+  }
+  return booths;
+}
+
+function reserveBooth(boothId, companyData) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Booths');
+  const data = sheet.getDataRange().getValues();
+  const headers = data[0];
+  const idIdx = headers.indexOf('Booth ID');
+  const statusIdx = headers.indexOf('Trạng thái');
+  const companyIdx = headers.indexOf('Công ty');
+  const logoIdx = headers.indexOf('Logo URL');
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][idIdx] === boothId && data[i][statusIdx] === 'Available') {
+      sheet.getRange(i + 1, statusIdx + 1).setValue('Occupied');
+      sheet.getRange(i + 1, companyIdx + 1).setValue(companyData.company);
+      sheet.getRange(i + 1, logoIdx + 1).setValue(companyData.logoUrl);
+      return {success: true, message: 'Đặt booth thành công!'};
+    }
+  }
+  return {success: false, message: 'Booth đã được đặt hoặc không tồn tại.'};
+}

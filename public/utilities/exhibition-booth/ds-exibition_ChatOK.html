@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sơ đồ Triển lãm Trực tuyến - LAZINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            overflow: hidden; 
+            background: #f1f5f9; 
+            touch-action: none;
+        }
+        
+        nav { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        #viewport { 
+            width: 100vw; 
+            height: calc(100vh - 80px); 
+            cursor: grab; 
+            touch-action: none; 
+            position: relative; 
+            overflow: hidden;
+        }
+        #viewport:active { cursor: grabbing; }
+        #viewport.dragging { cursor: grabbing; }
+
+        .chat-win { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform-origin: bottom right; 
+        }
+        .chat-hidden { 
+            transform: scale(0) translateY(100px); 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        
+        .typing-dot { 
+            width: 6px; 
+            height: 6px; 
+            background: #94a3b8; 
+            border-radius: 50%; 
+            animation: typing 1.4s infinite; 
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-5px); } 
+        }
+
+        .booth-available { background: #ffffff; border: 2px solid #e2e8f0; }
+        .booth-booked { background: linear-gradient(135deg, #fef3c7, #fbbf24); border: 2px solid #f59e0b; }
+        .booth-occupied { background: linear-gradient(135deg, #d1fae5, #10b981); border: 2px solid #059669; }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-available { background: #94a3b8; }
+        .status-booked { background: #f59e0b; }
+        .status-occupied { background: #10b981; }
+
+        /* Custom scrollbar */
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="h-20 px-6 md:px-10 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <img id="ui-logo" class="h-10 w-10 object-contain rounded-xl bg-slate-50 p-1 border border-slate-200 shadow-sm">
+            <div class="leading-tight">
+                <h1 id="ui-title" class="font-black text-slate-900 text-lg md:text-xl tracking-tight"></h1>
+                <p id="ui-loc-info" class="text-[10px] font-bold text-blue-600 tracking-widest flex items-center">
+                    <i class="fas fa-map-marker-alt mr-1"></i>
+                    <span id="ui-location"></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="hidden lg:flex gap-5 text-[10px] font-black uppercase tracking-widest text-slate-600">
+                <span class="flex items-center gap-2">
+                    <span class="status-indicator status-available"></span>Trống
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="status-indicator status-booked"></span>Giữ chỗ
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="status-indicator status-occupied"></span>Đã chốt
+                </span>
+            </div>
+            <button onclick="resetCamera()" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-[10px] font-black hover:bg-slate-800 transition active:scale-95 shadow-lg shadow-slate-200/50 flex items-center gap-2">
+                <i class="fas fa-expand-alt"></i>
+                Reset View
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Viewport -->
+    <div id="viewport">
+        <canvas id="map-canvas"></canvas>
+        
+        <!-- Info Panel -->
+        <div id="info-panel" class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg max-w-xs hidden">
+            <div class="flex justify-between items-start mb-3">
+                <div>
+                    <h3 id="selected-booth" class="font-black text-slate-900 text-lg"></h3>
+                    <p id="selected-size" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"></p>
+                </div>
+                <button onclick="closeInfoPanel()" class="text-slate-400 hover:text-slate-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between">
+                    <span class="text-[11px] font-bold text-slate-500">Hạng:</span>
+                    <span id="selected-rank" class="text-[11px] font-black text-blue-600"></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-[11px] font-bold text-slate-500">Giá:</span>
+                    <span id="selected-price" class="text-[11px] font-black text-emerald-600"></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-[11px] font-bold text-slate-500">Trạng thái:</span>
+                    <span id="selected-status" class="text-[11px] font-black"></span>
+                </div>
+            </div>
+            <button id="book-btn" onclick="openBookingModal()" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-md">
+                <i class="fas fa-calendar-check mr-2"></i>ĐẶT NGAY
+            </button>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4">
+        <div id="chat-win" class="chat-win chat-hidden w-[350px] h-[500px] bg-white rounded-[2rem] shadow-2xl flex flex-col overflow-hidden border border-slate-100">
+            <div id="chat-header" class="p-5 flex items-center justify-between text-white">
+                <div class="flex items-center gap-3">
+                    <img id="bot-logo" class="w-10 h-10 rounded-full border-2 border-white/30 bg-white object-cover">
+                    <div>
+                        <p id="bot-name" class="font-black text-sm tracking-tight"></p>
+                        <p class="text-[9px] font-medium opacity-80 uppercase tracking-widest">AI Assistant</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="hover:bg-black/10 w-8 h-8 rounded-full transition flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="chat-body" class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50/50 scrollbar-thin">
+                <div class="flex justify-start">
+                    <div class="bg-white border border-slate-100 p-4 rounded-2xl rounded-tl-none text-sm text-slate-700 shadow-sm max-w-[85%]">
+                        Xin chào! Tôi là trợ lý AI của triển lãm. Tôi có thể giúp bạn tìm gian hàng, thông tin sự kiện, hoặc hỗ trợ đặt chỗ!
+                    </div>
+                </div>
+            </div>
+
+            <div id="ai-typing" class="hidden px-5 py-3 flex items-center gap-2 bg-white/80 border-t">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <span id="ai-waiting-msg" class="text-[10px] font-bold text-slate-400 ml-2"></span>
+            </div>
+
+            <div class="p-4 bg-white border-t border-slate-100 flex gap-2">
+                <input id="chat-inp" type="text" 
+                       class="flex-1 bg-slate-100 border-none p-3 rounded-2xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
+                       placeholder="Nhập câu hỏi về gian hàng, giá cả..."
+                       onkeypress="if(event.key === 'Enter') sendChat()">
+                <button onclick="sendChat()" id="btn-send" 
+                        class="w-12 h-12 rounded-2xl text-white shadow-lg flex items-center justify-center transition active:scale-90">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <button id="chat-toggle-btn" onclick="toggleChat()" 
+                class="w-14 h-14 rounded-full shadow-2xl text-white text-xl flex items-center justify-center hover:scale-110 transition active:scale-95">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <script>
+        // const GAS_URL = "https://script.google.com/macros/s/AKfycbyvQQcmfEH-wQ_1xAOJorOdc0Ph6avtB1SxpBmgilbiNdEtx7FJUiuXM0z31F5klzkxvg/exec";
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw_xgpGGTOl8YT_XbxLn-kbJPxxA1KzD2O_tfRg4ZqCgX1mdcvb_PjOXNYdt6kah7MFDg/exec'
+        let app = null;
+        let canvas, ctx;
+        let camera = { x: 0, y: 0, zoom: 1 };
+        let isDragging = false;
+        let lastPos = { x: 0, y: 0 };
+        let selectedBooth = null;
+        let touchStartDistance = 0;
+
+        // Load data on page load
+        window.onload = async () => {
+            try {
+                const res = await fetch(GAS_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: 'getInitData' }) 
+                }).then(r => r.json());
+                
+                if (res && res.organizer) {
+                    app = res;
+                    setupUI();
+                    initMap();
+                    animate();
+                } else {
+                    Swal.fire('Lỗi', 'Không thể tải dữ liệu triển lãm', 'error');
+                }
+            } catch (e) {
+                console.error('Load error:', e);
+                Swal.fire('Lỗi', 'Không thể kết nối máy chủ dữ liệu.', 'error');
+            }
+        };
+
+        function setupUI() {
+            document.getElementById('ui-title').innerText = app.organizer.title || 'Triển lãm';
+            document.getElementById('ui-location').innerText = app.organizer.location || '';
+            document.getElementById('ui-loc-info').innerText = `${app.organizer.location} | ${app.organizer.address || ''}`;
+            document.getElementById('ui-logo').src = app.organizer.logo || 'https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoFullv2.png';
+
+            // Setup chatbot
+            const cfg = app.configs || {};
+            document.getElementById('bot-name').innerText = cfg.botName || 'LAZINET Assistant';
+            document.getElementById('bot-logo').src = cfg.botLogo || 'https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png';
+            document.getElementById('ai-waiting-msg').innerText = cfg.waitingMsg || 'Đang trả lời...';
+            
+            // Apply chatbot theme colors
+            const chatHeader = document.getElementById('chat-header');
+            const btnSend = document.getElementById('btn-send');
+            const chatToggle = document.getElementById('chat-toggle-btn');
+            
+            if (cfg.themeColor1 && cfg.themeColor2) {
+                chatHeader.style.background = `linear-gradient(135deg, ${cfg.themeColor1}, ${cfg.themeColor2})`;
+                btnSend.style.background = cfg.themeColor1;
+                chatToggle.style.background = cfg.themeColor1;
+            }
+        }
+
+        function initMap() {
+            canvas = document.getElementById('map-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Handle window resize
+            window.addEventListener('resize', resize);
+            resize();
+            resetCamera();
+
+            // Mouse events
+            canvas.addEventListener('mousedown', startDrag);
+            window.addEventListener('mousemove', drag);
+            window.addEventListener('mouseup', endDrag);
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+            canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+            canvas.addEventListener('touchend', handleTouchEnd);
+            
+            // Wheel for zoom
+            canvas.addEventListener('wheel', handleWheel, { passive: false });
+            
+            // Click to select booth
+            canvas.addEventListener('click', handleMapClick);
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - 80;
+        }
+
+        function resetCamera() {
+            if (!app || !app.organizer) return;
+            
+            const r = app.organizer.ratio || 0.1;
+            const mapW = (app.organizer.width || 3000) * r;
+            const mapH = (app.organizer.height || 2000) * r;
+            
+            // Center and fit to view
+            const scaleX = canvas.width / mapW;
+            const scaleY = canvas.height / mapH;
+            camera.zoom = Math.min(scaleX, scaleY) * 0.9;
+            
+            camera.x = (canvas.width - mapW * camera.zoom) / 2;
+            camera.y = (canvas.height - mapH * camera.zoom) / 2;
+            
+            draw();
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            lastPos = { x: e.clientX, y: e.clientY };
+            document.getElementById('viewport').classList.add('dragging');
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            
+            const dx = e.clientX - lastPos.x;
+            const dy = e.clientY - lastPos.y;
+            
+            camera.x += dx;
+            camera.y += dy;
+            lastPos = { x: e.clientX, y: e.clientY };
+            
+            draw();
+            e.preventDefault();
+        }
+
+        function endDrag() {
+            isDragging = false;
+            document.getElementById('viewport').classList.remove('dragging');
+        }
+
+        // Touch handlers for pinch zoom
+        function handleTouchStart(e) {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                lastPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                document.getElementById('viewport').classList.add('dragging');
+            } else if (e.touches.length === 2) {
+                // Calculate distance for pinch zoom
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+                isDragging = false;
+            }
+            e.preventDefault();
+        }
+
+        function handleTouchMove(e) {
+            if (e.touches.length === 1 && isDragging) {
+                const dx = e.touches[0].clientX - lastPos.x;
+                const dy = e.touches[0].clientY - lastPos.y;
+                
+                camera.x += dx;
+                camera.y += dy;
+                lastPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                draw();
+            } else if (e.touches.length === 2) {
+                // Handle pinch zoom
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const touchDistance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (touchStartDistance > 0) {
+                    const zoomFactor = touchDistance / touchStartDistance;
+                    camera.zoom *= zoomFactor;
+                    camera.zoom = Math.max(0.1, Math.min(5, camera.zoom)); // Limit zoom
+                    touchStartDistance = touchDistance;
+                    draw();
+                }
+            }
+            e.preventDefault();
+        }
+
+        function handleTouchEnd(e) {
+            isDragging = false;
+            touchStartDistance = 0;
+            document.getElementById('viewport').classList.remove('dragging');
+        }
+
+        function handleWheel(e) {
+            e.preventDefault();
+            
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Convert mouse position to world coordinates
+            const worldX = (mouseX - camera.x) / camera.zoom;
+            const worldY = (mouseY - camera.y) / camera.zoom;
+            
+            // Apply zoom
+            camera.zoom *= zoomFactor;
+            camera.zoom = Math.max(0.1, Math.min(5, camera.zoom)); // Limit zoom
+            
+            // Adjust camera position to zoom towards mouse
+            camera.x = mouseX - worldX * camera.zoom;
+            camera.y = mouseY - worldY * camera.zoom;
+            
+            draw();
+        }
+
+        function draw() {
+            if (!app || !app.organizer) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            
+            // Apply camera transform
+            ctx.translate(camera.x, camera.y);
+            ctx.scale(camera.zoom, camera.zoom);
+            
+            const r = app.organizer.ratio || 0.1;
+            const floorWidth = (app.organizer.width || 3000) * r;
+            const floorHeight = (app.organizer.height || 2000) * r;
+            
+            // Draw floor background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, floorWidth, floorHeight);
+            
+            // Draw grid (every 100cm)
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            const gridSize = 100 * r;
+            
+            for (let x = 0; x <= floorWidth; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, floorHeight);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y <= floorHeight; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(floorWidth, y);
+                ctx.stroke();
+            }
+            
+            // Draw border
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, floorWidth, floorHeight);
+            
+            // Draw booths
+            app.booths.forEach(b => {
+                if (!b || !b.X) return;
+                
+                const bx = b.X * r;
+                const by = b.Y * r;
+                const bw = (b.Width || 100) * r;
+                const bh = (b.Height || 100) * r;
+                const radius = (b.Radius || 0) * r;
+                const status = b['Trạng thái'] || 'Available';
+                const rank = b['Hạng'] || 'Standard';
+                
+                // Set colors based on status
+                let fillColor, strokeColor, textColor;
+                
+                switch(status) {
+                    case 'Occupied':
+                        fillColor = 'rgba(16, 185, 129, 0.3)';
+                        strokeColor = '#10b981';
+                        textColor = '#ffffff';
+                        break;
+                    case 'Booked':
+                        fillColor = 'rgba(245, 158, 11, 0.3)';
+                        strokeColor = '#f59e0b';
+                        textColor = '#ffffff';
+                        break;
+                    default: // Available
+                        fillColor = 'rgba(255, 255, 255, 0.9)';
+                        strokeColor = '#cbd5e1';
+                        textColor = '#64748b';
+                }
+                
+                // Draw booth
+                ctx.beginPath();
+                if (radius > 0) {
+                    ctx.roundRect(bx, by, bw, bh, radius);
+                } else {
+                    ctx.rect(bx, by, bw, bh);
+                }
+                
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+                ctx.strokeStyle = strokeColor;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw booth ID
+                ctx.fillStyle = textColor;
+                ctx.font = `bold ${Math.max(10, 14 * camera.zoom)}px Inter`;
+                ctx.textAlign = 'left';
+                ctx.fillText(b['Booth ID'] || 'B00', bx + 5, by + 15);
+                
+                // Draw rank indicator
+                if (rank && status === 'Available') {
+                    ctx.fillStyle = getRankColor(rank);
+                    ctx.font = `bold ${Math.max(8, 10 * camera.zoom)}px Inter`;
+                    ctx.fillText(rank.charAt(0), bx + bw - 15, by + 15);
+                }
+            });
+            
+            ctx.restore();
+        }
+
+        function getRankColor(rank) {
+            switch(rank) {
+                case 'Diamond': return '#38bdf8';
+                case 'Platinum': return '#94a3b8';
+                case 'Gold': return '#f59e0b';
+                case 'Silver': return '#64748b';
+                case 'Companion': return '#ec4899';
+                case 'Free': return '#22c55e';
+                default: return '#64748b';
+            }
+        }
+
+        function animate() {
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        function handleMapClick(e) {
+            if (isDragging) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Convert to world coordinates
+            const worldX = (mouseX - camera.x) / camera.zoom;
+            const worldY = (mouseY - camera.y) / camera.zoom;
+            
+            const r = app.organizer.ratio || 0.1;
+            
+            // Find clicked booth
+            selectedBooth = null;
+            for (const b of app.booths) {
+                if (!b || !b.X) continue;
+                
+                const bx = b.X * r;
+                const by = b.Y * r;
+                const bw = (b.Width || 100) * r;
+                const bh = (b.Height || 100) * r;
+                
+                if (worldX >= bx && worldX <= bx + bw && 
+                    worldY >= by && worldY <= by + bh) {
+                    selectedBooth = b;
+                    break;
+                }
+            }
+            
+            if (selectedBooth) {
+                showBoothInfo(selectedBooth);
+            } else {
+                closeInfoPanel();
+            }
+        }
+
+        function showBoothInfo(booth) {
+            const panel = document.getElementById('info-panel');
+            const bookBtn = document.getElementById('book-btn');
+            
+            document.getElementById('selected-booth').textContent = booth['Booth ID'];
+            document.getElementById('selected-size').textContent = booth['Kích thước (cmxcm)'] || '100x100 cm';
+            document.getElementById('selected-rank').textContent = booth['Hạng'] || 'Standard';
+            
+            const price = parseInt(booth['Giá (VND)'] || 0);
+            document.getElementById('selected-price').textContent = 
+                price.toLocaleString('vi-VN') + ' VND';
+            
+            const status = booth['Trạng thái'] || 'Available';
+            document.getElementById('selected-status').textContent = 
+                status === 'Available' ? 'Còn trống' : 
+                status === 'Booked' ? 'Đã giữ chỗ' : 'Đã chốt';
+            
+            document.getElementById('selected-status').className = 
+                `text-[11px] font-black ${status === 'Available' ? 'text-emerald-600' : 
+                                          status === 'Booked' ? 'text-yellow-600' : 'text-slate-600'}`;
+            
+            // Show/hide book button based on status
+            if (status === 'Available') {
+                bookBtn.style.display = 'block';
+                bookBtn.disabled = false;
+            } else {
+                bookBtn.style.display = 'none';
+            }
+            
+            panel.classList.remove('hidden');
+        }
+
+        function closeInfoPanel() {
+            document.getElementById('info-panel').classList.add('hidden');
+            selectedBooth = null;
+        }
+
+        function openBookingModal() {
+            if (!selectedBooth) return;
+            
+            const booth = selectedBooth;
+            const price = parseInt(booth['Giá (VND)'] || 0);
+            const vatPrice = price * 1.1;
+            const qrLink = booth['Link QR thanh toán'] || 
+                         `https://img.vietqr.io/image/Techcombank-19021803916010-qr_only.png?amount=${vatPrice}&addInfo=${booth['Booth ID']}`;
+            
+            Swal.fire({
+                title: `<span class="font-black text-2xl text-blue-600">ĐĂNG KÝ BOOTH ${booth['Booth ID']}</span>`,
+                html: `
+                    <div class="text-left space-y-6">
+                        <!-- Booth Info -->
+                        <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Kích thước</p>
+                                    <p class="text-lg font-black text-slate-800">${booth['Kích thước (cmxcm)'] || '100x100cm'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Hạng</p>
+                                    <p class="text-lg font-black text-slate-800">${booth['Hạng'] || 'Standard'}</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Giá gốc</p>
+                                    <p class="text-xl font-black text-slate-800">${price.toLocaleString('vi-VN')} VND</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Giá đã VAT (10%)</p>
+                                    <p class="text-xl font-black text-emerald-600">${vatPrice.toLocaleString('vi-VN')} VND</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- QR Code -->
+                        <div class="text-center">
+                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Quét mã QR để thanh toán</p>
+                            <img src="${qrLink}" class="w-48 h-48 mx-auto bg-white p-4 rounded-2xl shadow-lg border">
+                            <p class="text-[9px] text-slate-400 font-medium mt-2">Thanh toán để hoàn tất đăng ký</p>
+                        </div>
+                        
+                        <!-- Company Info Form -->
+                        <div class="space-y-4">
+                            <h4 class="font-black text-slate-800 text-sm">Thông tin Công ty</h4>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Tên công ty ngắn *</label>
+                                    <input id="sw-comp-short" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="LAZINET">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Mã số thuế *</label>
+                                    <input id="sw-tax" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="0318751953">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Tên công ty đầy đủ *</label>
+                                <input id="sw-comp-full" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Công ty TNHH Công nghệ Ứng dụng LAZINET">
+                            </div>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Địa chỉ *</label>
+                                <input id="sw-address" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Số 428 Trường Sa, Phường 02, Quận Phú Nhuận...">
+                            </div>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Logo URL</label>
+                                <input id="sw-logo" type="url" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/logo.png">
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Info Form -->
+                        <div class="space-y-4">
+                            <h4 class="font-black text-slate-800 text-sm">Thông tin Người đại diện</h4>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Họ tên *</label>
+                                    <input id="sw-name" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nguyễn Văn A">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500 block mb-1">SĐT *</label>
+                                    <input id="sw-phone" type="tel" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="0901234567">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 block mb-1">Email *</label>
+                                <input id="sw-email" type="email" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="contact@company.com">
+                            </div>
+                        </div>
+                    </div>
+                `,
+                width: 600,
+                padding: '2rem',
+                showCancelButton: true,
+                confirmButtonText: 'GỬI ĐĂNG KÝ & THANH TOÁN',
+                cancelButtonText: 'Hủy',
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#64748b',
+                preConfirm: () => {
+                    const requiredFields = [
+                        { id: 'sw-comp-short', name: 'Tên công ty ngắn' },
+                        { id: 'sw-tax', name: 'Mã số thuế' },
+                        { id: 'sw-comp-full', name: 'Tên công ty đầy đủ' },
+                        { id: 'sw-address', name: 'Địa chỉ' },
+                        { id: 'sw-name', name: 'Họ tên' },
+                        { id: 'sw-phone', name: 'Số điện thoại' },
+                        { id: 'sw-email', name: 'Email' }
+                    ];
+                    
+                    const missing = [];
+                    const values = {};
+                    
+                    requiredFields.forEach(field => {
+                        const val = document.getElementById(field.id).value.trim();
+                        if (!val) missing.push(field.name);
+                        values[field.id.replace('sw-', '')] = val;
+                    });
+                    
+                    if (missing.length > 0) {
+                        Swal.showValidationMessage(`Vui lòng nhập: ${missing.join(', ')}`);
+                        return false;
+                    }
+                    
+                    return {
+                        boothId: booth['Booth ID'],
+                        info: {
+                            compShort: values['comp-short'],
+                            compFull: values['comp-full'],
+                            tax: values['tax'],
+                            address: values['address'],
+                            logoUrl: document.getElementById('sw-logo').value.trim(),
+                            name: values['name'],
+                            phone: values['phone'],
+                            email: values['email']
+                        }
+                    };
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed && result.value) {
+                    Swal.fire({ 
+                        title: 'Đang xử lý...', 
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false 
+                    });
+                    
+                    try {
+                        const bookResult = await fetch(GAS_URL, { 
+                            method: 'POST', 
+                            body: JSON.stringify({ 
+                                action: 'bookBooth', 
+                                boothId: result.value.boothId,
+                                info: result.value.info 
+                            }) 
+                        }).then(r => r.json());
+                        
+                        if (bookResult.success) {
+                            Swal.fire({
+                                title: 'Thành công!',
+                                html: `
+                                    <div class="text-center">
+                                        <i class="fas fa-check-circle text-5xl text-emerald-500 mb-4"></i>
+                                        <p class="font-bold text-lg mb-2">${bookResult.message}</p>
+                                        <p class="text-sm text-slate-600 mb-4">
+                                            Thông tin đăng ký đã được gửi đến email của bạn.<br>
+                                            Vui lòng kiểm tra và hoàn tất thanh toán.
+                                        </p>
+                                        <div class="bg-blue-50 p-4 rounded-xl text-left">
+                                            <p class="text-[10px] font-black text-blue-600 uppercase">Lưu ý:</p>
+                                            <ul class="text-xs text-slate-600 list-disc pl-4 mt-2">
+                                                <li>Booth sẽ được giữ chỗ trong 24h</li>
+                                                <li>Thanh toán qua QR Code bên trên</li>
+                                                <li>Liên hệ ban tổ chức nếu cần hỗ trợ</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                `,
+                                icon: null,
+                                confirmButtonText: 'Đã hiểu',
+                                willClose: () => location.reload()
+                            });
+                        } else {
+                            Swal.fire('Thông báo', bookResult.message || 'Có lỗi xảy ra', 'info');
+                        }
+                    } catch (error) {
+                        Swal.fire('Lỗi', 'Không thể kết nối máy chủ', 'error');
+                    }
+                }
+            });
+        }
+
+        // Chatbot functions
+        function toggleChat() {
+            const chatWin = document.getElementById('chat-win');
+            chatWin.classList.toggle('chat-hidden');
+        }
+
+async function sendChat() {
+    const inp = document.getElementById('chat-inp');
+    const msg = inp.value.trim();
+    if (!msg) return;
+    
+    const body = document.getElementById('chat-body');
+    
+    // Add user message
+    body.innerHTML += `
+        <div class="flex justify-end">
+            <div class="bg-blue-600 text-white p-4 rounded-2xl rounded-tr-none text-sm shadow-md max-w-[80%]">
+                ${msg}
+            </div>
+        </div>
+    `;
+    
+    inp.value = '';
+    body.scrollTop = body.scrollHeight;
+    
+    // Show typing indicator
+    document.getElementById('ai-typing').classList.remove('hidden');
+    
+    try {
+        const res = await fetch(GAS_URL, { 
+            method: 'POST', 
+            body: JSON.stringify({ action: 'chatAI', message: msg }) 
+        }).then(r => r.json());
+        
+        document.getElementById('ai-typing').classList.add('hidden');
+        
+        // Add bot response
+        body.innerHTML += `
+            <div class="flex justify-start">
+                <div class="bg-white border border-slate-100 p-4 rounded-2xl rounded-tl-none text-sm text-slate-700 shadow-sm max-w-[80%]">
+                    ${res.answer || 'Xin lỗi, tôi không thể trả lời câu hỏi này. Vui lòng thử lại sau.'}
+                </div>
+            </div>
+        `;
+        
+        body.scrollTop = body.scrollHeight;
+    } catch (error) {
+        document.getElementById('ai-typing').classList.add('hidden');
+        
+        body.innerHTML += `
+            <div class="flex justify-start">
+                <div class="bg-white border border-slate-100 p-4 rounded-2xl rounded-tl-none text-sm text-slate-700 shadow-sm max-w-[80%]">
+                    Kết nối chatbot đang gặp sự cố. Vui lòng liên hệ hotline: 1900 1234
+                </div>
+            </div>
+        `;
+        
+        body.scrollTop = body.scrollHeight;
+        console.error('Chat error:', error);
+    }
+}
+        // Auto refresh data every 30 seconds
+        setInterval(async () => {
+            if (app) {
+                try {
+                    const res = await fetch(GAS_URL, { 
+                        method: 'POST', 
+                        body: JSON.stringify({ action: 'getInitData' }) 
+                    }).then(r => r.json());
+                    
+                    if (res && res.booths) {
+                        app.booths = res.booths;
+                        // Update other data if needed
+                    }
+                } catch (e) {
+                    console.log('Auto-refresh failed:', e);
+                }
+            }
+        }, 30000);
+
+        // Handle Enter key in chat
+        document.getElementById('chat-inp').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendChat();
+            }
+        });
+    </script>
+</body>
+</html>

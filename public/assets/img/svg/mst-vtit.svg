@@ -1,0 +1,22 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền hình tròn với gradient -->
+  <circle cx="60" cy="60" r="55" fill="url(#gradient)"/>
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0056b3"/>
+      <stop offset="100%" stop-color="#0088ff"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Biểu tượng tài liệu -->
+  <rect x="40" y="35" width="40" height="50" rx="3" fill="white" stroke="#003366" stroke-width="2"/>
+  <rect x="45" y="40" width="30" height="5" rx="2" fill="#e6f2ff"/>
+  <rect x="45" y="50" width="30" height="5" rx="2" fill="#e6f2ff"/>
+  <rect x="45" y="60" width="20" height="5" rx="2" fill="#e6f2ff"/>
+  
+  <!-- Chữ MST -->
+  <text x="60" y="95" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">MST</text>
+  
+  <!-- Viền tròn trang trí -->
+  <circle cx="60" cy="60" r="58" stroke="#003366" stroke-width="1" stroke-dasharray="4 2" opacity="0.7"/>
+</svg>

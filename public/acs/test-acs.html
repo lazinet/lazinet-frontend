@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Checker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
+        input, button { width: 100%; margin: 10px 0; padding: 10px; }
+        #qrcode { margin: 20px 0; text-align: center; }
+        #result { font-size: 18px; font-weight: bold; color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>Nhập mã để tạo QR và kiểm tra</h2>
+    <input type="text" id="code" placeholder="Nhập mã (ví dụ: secret123)" />
+    <button onclick="generateQR()">Tạo QR Code</button>
+    <div id="qrcode"></div>
+    <button onclick="submitCode()">Submit để kiểm tra</button>
+    <div id="result"></div>
+
+    <script>
+        function generateQR() {
+            var code = document.getElementById('code').value;
+            if (!code) {
+                alert('Vui lòng nhập mã!');
+                return;
+            }
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById('qrcode'), {
+                text: code,
+                width: 200,
+                height: 200
+            });
+        }
+
+        async function submitCode() {
+    var code = document.getElementById('code').value;
+    if (!code) {
+        alert('Vui lòng nhập mã!');
+        return;
+    }
+    
+    // Thay YOUR_WEB_APP_URL bằng URL thực của bạn
+    const url = 'https://script.google.com/macros/s/AKfycbxHdbTVB5bNvSTRZqORVjdgb1mk7NUzyxlkY41btZBNNCqqoqHRqcKvBRxBdzvRZHiv/exec';
+    
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',  // <-- Thay đổi này để bypass preflight
+            },
+            body: JSON.stringify({ code: code })  // Vẫn gửi JSON, backend sẽ parse
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network error');
+        }
+        
+        const data = await response.json();
+        var resultDiv = document.getElementById('result');
+        if (data.error) {
+            resultDiv.innerHTML = '<span class="error">Lỗi: ' + data.error + '</span>';
+        } else {
+            resultDiv.innerHTML = data.valid ? '<span style="color: green;">True</span>' : '<span style="color: red;">False</span>';
+        }
+    } catch (error) {
+        document.getElementById('result').innerHTML = '<span class="error">Lỗi kết nối: ' + error.message + '</span>';
+    }
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị Triển lãm - LAZINET HUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .nav-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .input-minimal { border-bottom: 1px solid #e2e8f0; transition: all 0.3s; }
+        .input-minimal:focus { border-bottom-color: #2563eb; outline: none; }
+        canvas { touch-action: none; cursor: crosshair; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div id="login-screen" class="fixed inset-0 bg-slate-900 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl text-center">
+            <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-200">
+                <i class="fas fa-user-shield text-white text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2 tracking-tighter uppercase">Admin Hub Access</h2>
+            <p class="text-slate-400 text-sm mb-8 font-medium">Nhập mật khẩu quản trị để tiếp tục</p>
+            <input type="password" id="admin-pass" class="w-full bg-slate-50 border-none p-5 rounded-2xl mb-6 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold tracking-widest" placeholder="••••••••">
+            <button onclick="verifyAccess()" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-bold py-5 rounded-2xl transition-all active:scale-95 shadow-xl">XÁC MINH</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden flex-1 flex flex-col">
+        <nav class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 sticky top-0 z-50 nav-shadow">
+            <div class="flex items-center gap-4">
+                <img id="org-logo" class="h-10 w-10 object-contain rounded-lg bg-slate-50 p-1">
+                <div>
+                    <h1 id="nav-org-name" class="font-black text-slate-800 leading-none tracking-tighter text-xl">LAZINET</h1>
+                    <span class="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em]">Management System</span>
+                </div>
+            </div>
+
+            <div class="flex-1 max-w-xl mx-10 hidden lg:block">
+                <div class="flex gap-6 items-center bg-slate-50 px-6 py-2 rounded-2xl border border-slate-100">
+                    <div class="flex-1">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Sự kiện đang chỉnh sửa</p>
+                        <input id="inp-event-title" class="w-full bg-transparent font-bold text-sm text-slate-700 outline-none" placeholder="Tên sự kiện...">
+                    </div>
+                    <div class="w-[1px] h-8 bg-slate-200"></div>
+                    <div>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Địa điểm</p>
+                        <input id="inp-event-loc" class="w-full bg-transparent font-bold text-xs text-slate-500 outline-none" placeholder="Địa điểm...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="fetchData()" class="p-3 text-slate-400 hover:text-blue-600 transition"><i class="fas fa-sync-alt"></i></button>
+                <button onclick="submitAllData()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-100 transition-all active:scale-95">
+                    <i class="fas fa-cloud-upload-alt mr-2"></i> LƯU & GHI ĐÈ SHEET
+                </button>
+            </div>
+        </nav>
+
+        <div class="flex-1 p-6 grid grid-cols-12 gap-6 overflow-hidden">
+            <div class="col-span-12 lg:col-span-3 space-y-6 overflow-y-auto custom-scrollbar pr-2">
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i class="fas fa-ruler-combined"></i> Kích thước mặt bằng
+                    </h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">RỘNG (CM)</label>
+                            <input id="inp-w" type="number" class="w-full py-2 input-minimal font-bold text-slate-700" oninput="drawLive()">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400">CAO (CM)</label>
+                            <input id="inp-h" type="number" class="w-full py-2 input-minimal font-bold text-slate-700" oninput="drawLive()">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-slate-400 text-blue-600">RATIO</label>
+                            <input id="inp-ratio" type="number" step="0.01" class="w-full py-2 input-minimal font-bold text-blue-600" oninput="drawLive()">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fas fa-calendar-alt"></i> Lịch trình chi tiết
+                        </h3>
+                        <button onclick="addScheduleRow()" class="text-blue-600 font-bold text-[10px] hover:underline">+ THÊM DÒNG</button>
+                    </div>
+                    <div id="schedule-list" class="space-y-3">
+                        </div>
+                </section>
+            </div>
+
+            <div class="col-span-12 lg:col-span-9 flex flex-col gap-6 overflow-hidden">
+                <div class="bg-slate-200 rounded-[2.5rem] border-4 border-white shadow-inner relative overflow-hidden flex items-center justify-center min-h-[450px]">
+                    <div class="absolute top-6 left-6 z-10 bg-white/80 backdrop-blur px-4 py-2 rounded-full text-[10px] font-black text-slate-500 shadow-sm border border-white">
+                        LIVE PREVIEW CANVAS
+                    </div>
+                    <canvas id="main-canvas" class="bg-white shadow-2xl transition-all"></canvas>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                        <h3 class="font-black text-slate-800 tracking-tight">Cấu trúc Booth (Layout Data)</h3>
+                        <button onclick="addBoothRow()" class="bg-slate-900 text-white px-6 py-2 rounded-xl text-[10px] font-black hover:bg-blue-600 transition shadow-lg">
+                            + THÊM BOOTH MỚI
+                        </button>
+                    </div>
+                    <div class="flex-1 overflow-auto custom-scrollbar max-h-[400px]">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-white sticky top-0 z-10">
+                                <tr>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">ID</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tọa độ (X,Y)</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Kích thước (W,H)</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Hạng</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Giá (VNĐ)</th>
+                                    <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="booth-table-body" class="divide-y divide-slate-50">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwp5KujatRHegAw84kfI2XYgdjDCUP9UHQ3DnVR_z-OL8UZMwgWqvNitcDovFWVZxXLLA/exec"; // Thay link Web App của bạn vào đây
+        let state = { data: null, pass: "" };
+
+        async function verifyAccess() {
+            const p = document.getElementById('admin-pass').value;
+            if(!p) return;
+            Swal.fire({ title: 'Đang xác thực...', didOpen: () => Swal.showLoading() });
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'checkPass', pass: p }) }).then(r => r.json());
+                if(res.valid) {
+                    state.pass = p;
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('main-app').classList.remove('hidden');
+                    Swal.close();
+                    fetchData();
+                } else {
+                    Swal.fire('Lỗi', 'Mật khẩu không chính xác!', 'error');
+                }
+            } catch(e) { Swal.fire('Lỗi', 'Không thể kết nối GAS', 'error'); }
+        }
+
+        async function fetchData() {
+            const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getInitData' }) }).then(r => r.json());
+            state.data = res;
+            
+            // Map to UI
+            document.getElementById('org-logo').src = res.organizer.logo;
+            document.getElementById('nav-org-name').innerText = res.organizer.shortName;
+            document.getElementById('inp-event-title').value = res.organizer.title;
+            document.getElementById('inp-event-loc').value = res.organizer.location;
+            document.getElementById('inp-w').value = res.organizer.width;
+            document.getElementById('inp-h').value = res.organizer.height;
+            document.getElementById('inp-ratio').value = res.organizer.ratio;
+
+            renderSchedule();
+            renderBoothTable();
+            drawLive();
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            list.innerHTML = state.data.organizer.schedule.map((s, idx) => `
+                <div class="bg-slate-50 p-4 rounded-2xl relative group border border-transparent hover:border-blue-100 transition-all">
+                    <input type="text" value="${s.date}" class="sc-date bg-transparent font-black text-[10px] w-full outline-none mb-1" placeholder="Ngày (dd/mm)">
+                    <div class="flex gap-2 mb-1">
+                        <input type="text" value="${s.start}" class="sc-start bg-transparent text-[10px] w-1/2 outline-none" placeholder="Bắt đầu">
+                        <input type="text" value="${s.end}" class="sc-end bg-transparent text-[10px] w-1/2 outline-none" placeholder="Kết thúc">
+                    </div>
+                    <input type="text" value="${s.content}" class="sc-content bg-transparent text-[11px] font-medium text-slate-500 w-full outline-none" placeholder="Nội dung sự kiện">
+                    <button onclick="removeScheduleRow(${idx})" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition"><i class="fas fa-times-circle"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function renderBoothTable() {
+            const body = document.getElementById('booth-table-body');
+            body.innerHTML = state.data.booths.map((b, idx) => `
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="p-4"><input class="b-id w-16 font-black text-slate-800 outline-none" value="${b['Booth ID']}"></td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-1 text-[11px]">
+                            X:<input type="number" class="b-x w-12 bg-transparent outline-none border-b" value="${b.X}" oninput="drawLive()">
+                            Y:<input type="number" class="b-y w-12 bg-transparent outline-none border-b" value="${b.Y}" oninput="drawLive()">
+                        </div>
+                    </td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-1 text-[11px]">
+                            W:<input type="number" class="b-w w-12 bg-transparent outline-none border-b" value="${b.Width}" oninput="drawLive()">
+                            H:<input type="number" class="b-h w-12 bg-transparent outline-none border-b" value="${b.Height}" oninput="drawLive()">
+                        </div>
+                    </td>
+                    <td class="p-4">
+                        <select class="b-rank text-[10px] font-bold bg-transparent outline-none">
+                            <option ${b['Hạng']=='Diamond'?'selected':''}>Diamond</option>
+                            <option ${b['Hạng']=='Platinum'?'selected':''}>Platinum</option>
+                            <option ${b['Hạng']=='Gold'?'selected':''}>Gold</option>
+                            <option ${b['Hạng']=='Silver'?'selected':''}>Silver</option>
+                        </select>
+                    </td>
+                    <td class="p-4"><input type="number" class="b-price w-24 bg-transparent outline-none font-bold text-blue-600" value="${b['Giá (VND)']}"></td>
+                    <td class="p-4 text-center">
+                        <button onclick="removeBoothRow(${idx})" class="text-slate-300 hover:text-red-500 transition"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function drawLive() {
+            const canvas = document.getElementById('main-canvas');
+            const ctx = canvas.getContext('2d');
+            const w = Number(document.getElementById('inp-w').value);
+            const h = Number(document.getElementById('inp-h').value);
+            const r = Number(document.getElementById('inp-ratio').value);
+
+            canvas.width = w * r; canvas.height = h * r;
+            ctx.fillStyle = 'white'; ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            // Vẽ lưới
+            ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
+            for(let x=0; x<canvas.width; x+=50*r) { ctx.moveTo(x,0); ctx.lineTo(x, canvas.height); }
+            for(let y=0; y<canvas.height; y+=50*r) { ctx.moveTo(0,y); ctx.lineTo(canvas.width, y); }
+            ctx.stroke();
+
+            // Vẽ Booths lấy dữ liệu trực tiếp từ Table để phản hồi tức thì
+            document.querySelectorAll('#booth-table-body tr').forEach(tr => {
+                const bx = tr.querySelector('.b-x').value * r;
+                const by = tr.querySelector('.b-y').value * r;
+                const bw = tr.querySelector('.b-w').value * r;
+                const bh = tr.querySelector('.b-h').value * r;
+                const id = tr.querySelector('.b-id').value;
+
+                ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+                ctx.strokeRect(bx, by, bw, bh);
+                ctx.fillStyle = '#64748b'; ctx.font = `bold ${10*r/10}px Inter`;
+                ctx.fillText(id, bx + 5, by + 15);
+            });
+        }
+
+        function addScheduleRow() { state.data.organizer.schedule.push({date:'', start:'', end:'', content:''}); renderSchedule(); }
+        function removeScheduleRow(i) { state.data.organizer.schedule.splice(i,1); renderSchedule(); }
+        function addBoothRow() { state.data.booths.push({"Booth ID":"NEW", X:0, Y:0, Width:100, Height:100, "Hạng":"Gold", "Giá (VND)":0}); renderBoothTable(); drawLive(); }
+        function removeBoothRow(i) { state.data.booths.splice(i,1); renderBoothTable(); drawLive(); }
+
+        async function submitAllData() {
+            const booths = Array.from(document.querySelectorAll('#booth-table-body tr')).map(tr => ({
+                "Booth ID": tr.querySelector('.b-id').value,
+                "X": Number(tr.querySelector('.b-x').value),
+                "Y": Number(tr.querySelector('.b-y').value),
+                "Width": Number(tr.querySelector('.b-w').value),
+                "Height": Number(tr.querySelector('.b-h').value),
+                "Kích thước (cmxcm)": tr.querySelector('.b-w').value + "x" + tr.querySelector('.b-h').value,
+                "Hạng": tr.querySelector('.b-rank').value,
+                "Giá (VND)": Number(tr.querySelector('.b-price').value),
+                "Giá gồm thuế (VAT 10%)": Number(tr.querySelector('.b-price').value) * 1.1,
+                "Area ID": "A"
+            }));
+
+            const schedules = Array.from(document.querySelectorAll('#schedule-list > div')).map(div => ({
+                date: div.querySelector('.sc-date').value,
+                start: div.querySelector('.sc-start').value,
+                end: div.querySelector('.sc-end').value,
+                content: div.querySelector('.sc-content').value
+            }));
+
+            const payload = {
+                action: 'saveFullData',
+                pass: state.pass,
+                organizer: {
+                    title: document.getElementById('inp-event-title').value,
+                    location: document.getElementById('inp-event-loc').value,
+                    width: document.getElementById('inp-w').value,
+                    height: document.getElementById('inp-h').value,
+                    ratio: document.getElementById('inp-ratio').value
+                },
+                schedule: schedules,
+                booths: booths
+            };
+
+            Swal.fire({ title: 'Đang ghi đè dữ liệu...', didOpen: () => Swal.showLoading() });
+            const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) }).then(r => r.json());
+            if(res.success) Swal.fire('Thành công', 'Dữ liệu Sheet đã được cập nhật!', 'success');
+            else Swal.fire('Lỗi', res.message, 'error');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Về Omega - Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</title>
+  <meta name="description" content="Tìm hiểu về Omega — công ty ERP hàng đầu Việt Nam với 16+ năm kinh nghiệm, hơn 1000 khách hàng tin dùng trong 30+ ngành nghề.">
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ---- Page-specific extras ---- */
+    .mission-vision-section {
+      padding: 90px 0;
+      background: var(--dark-bg);
+      position: relative;
+      overflow: hidden;
+    }
+    .mission-vision-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0d1b2a 0%, #0d2e1e 100%);
+    }
+    .mission-vision-section .mv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .mv-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+    .mv-card-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-md);
+      background: var(--gradient-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+      margin-bottom: 24px;
+    }
+    .mv-card h3 {
+      font-size: 24px;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .mv-card p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .mv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mv-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+    }
+    .mv-list li i {
+      color: var(--green-light);
+      font-size: 14px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Team section */
+    .team-section {
+      padding: 90px 0;
+      background: var(--light-bg);
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .team-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: var(--transition);
+    }
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--green-dark);
+    }
+    .team-avatar {
+      height: 140px;
+      background: var(--gradient-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 800;
+      color: white;
+      position: relative;
+    }
+    .team-avatar-initials {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 3px solid rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+    }
+    .team-info {
+      padding: 20px;
+    }
+    .team-info h4 {
+      font-size: 16px;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .team-info .role {
+      font-size: 13px;
+      color: var(--green-dark);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .team-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* About visual decorative */
+    .about-visual-box {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: visible;
+    }
+    .about-visual-inner {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 100%);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-visual-inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2301a652' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .about-visual-logo {
+      position: relative;
+      z-index: 1;
+    }
+    .about-visual-logo .omega-big {
+      font-size: 80px;
+      font-weight: 800;
+      background: var(--gradient-green-lr);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    .about-visual-logo .omega-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .about-visual-stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .av-stat {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+    .av-stat .num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--red-stat);
+      line-height: 1;
+    }
+    .av-stat .lbl {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+    .about-badge-abs {
+      position: absolute;
+      bottom: -16px;
+      right: -16px;
+      background: var(--gradient-green);
+      color: white;
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      z-index: 2;
+    }
+    .about-badge-abs .num { font-size: 28px; font-weight: 800; line-height: 1; }
+    .about-badge-abs .lbl { font-size: 11px; opacity: 0.9; margin-top: 4px; }
+
+    /* Milestones */
+    .milestones-section { padding: 90px 0; background: var(--white); }
+    .timeline-centered {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 80px;
+    }
+    .timeline-centered::before {
+      content: '';
+      position: absolute;
+      left: 28px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--green-dark), var(--green-light));
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 36px;
+    }
+    .tl-dot {
+      position: absolute;
+      left: -64px;
+      top: 8px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gradient-green);
+      border: 3px solid white;
+      box-shadow: 0 0 0 3px rgba(1,166,82,0.25);
+    }
+    .tl-year {
+      position: absolute;
+      left: -134px;
+      top: 4px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--green-dark);
+      white-space: nowrap;
+    }
+    .tl-content {
+      background: var(--light-bg);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      border-left: 3px solid var(--green-dark);
+    }
+    .tl-content h4 { font-size: 16px; margin-bottom: 6px; color: var(--text-main); }
+    .tl-content p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+
+    /* CTA page section */
+    .page-cta-section {
+      padding: 80px 0;
+      background: var(--gradient-green);
+    }
+    .page-cta-inner {
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+    .page-cta-inner h2 {
+      font-size: clamp(26px, 4vw, 38px);
+      color: white;
+      margin-bottom: 16px;
+    }
+    .page-cta-inner p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+    .cta-btn-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: var(--green-dark);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: var(--transition);
+    }
+    .btn-white:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(0,0,0,0.2);
+    }
+    .btn-outline-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.6);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: var(--transition);
+    }
+    .btn-outline-white:hover {
+      border-color: white;
+      background: rgba(255,255,255,0.1);
+    }
+
+    @media (max-width: 900px) {
+      .mission-vision-section .mv-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-badge-abs { display: none; }
+    }
+    @media (max-width: 600px) {
+      .team-grid { grid-template-columns: 1fr; }
+      .timeline-centered { padding-left: 50px; }
+      .tl-year { left: -100px; font-size: 12px; }
+      .tl-dot { left: -42px; }
+      .timeline-centered::before { left: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+  <img src="assets/img/preloader.svg" alt="Loading OMEGA...">
+</div>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" title="Về đầu trang"><i class="fas fa-angle-up"></i></button>
+
+<!-- Mobile Nav Overlay -->
+<div class="overlay"></div>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <button class="close-nav"><i class="fas fa-times"></i></button>
+  <ul>
+    <li><a href="index.html">Trang Chủ</a></li>
+    <li><a href="ve-omega.html" class="active">Về Omega</a></li>
+    <li><a href="giai-phap.html">Giải Pháp</a></li>
+    <li><a href="khach-hang.html">Khách Hàng</a></li>
+    <li><a href="san-pham.html">Sản Phẩm</a></li>
+    <li><a href="dich-vu.html">Dịch Vụ</a></li>
+    <li><a href="tin-tuc.html">Tin Tức</a></li>
+    <li><a href="lien-he.html">Liên Hệ</a></li>
+  </ul>
+  <a href="lien-he.html" class="mobile-cta">Đăng Ký Demo</a>
+</nav>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fas fa-phone-alt"></i> <a href="tel:02835128448">028 3512 8448</a></span>
+        <span><i class="fas fa-envelope"></i> <a href="mailto:info@omega.com.vn">info@omega.com.vn</a></span>
+        <span><i class="fas fa-map-marker-alt"></i> 277A Nguyễn Văn Đậu, TP.HCM</span>
+      </div>
+      <div class="topbar-social">
+        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="logo-light">
+        <img src="assets/img/logo-dark.svg" alt="OMEGA ERP" class="logo-dark">
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="ve-omega.html" class="active">Về Omega</a></li>
+        <li>
+          <a href="giai-phap.html">Giải Pháp</a>
+          <ul class="dropdown">
+            <li><a href="giai-phap.html#san-xuat">Sản xuất</a></li>
+            <li><a href="giai-phap.html#thuong-mai">Thương mại</a></li>
+            <li><a href="giai-phap.html#bat-dong-san">Bất động sản</a></li>
+            <li><a href="giai-phap.html#fb">F&amp;B</a></li>
+            <li><a href="giai-phap.html#fmcg">FMCG</a></li>
+          </ul>
+        </li>
+        <li><a href="khach-hang.html">Khách Hàng</a></li>
+        <li>
+          <a href="san-pham.html">Sản Phẩm</a>
+          <ul class="dropdown">
+            <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+            <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+            <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+            <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          </ul>
+        </li>
+        <li><a href="dich-vu.html">Dịch Vụ</a></li>
+        <li><a href="tin-tuc.html">Tin Tức</a></li>
+        <li><a href="lien-he.html">Liên Hệ</a></li>
+        <li><a href="lien-he.html" class="nav-cta"><i class="fas fa-calendar-check"></i> Đăng Ký Demo</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     PAGE BANNER
+     ============================================================ -->
+<section class="page-banner">
+  <div class="container">
+    <div class="page-banner-content">
+      <h1 class="fade-up">Về Omega</h1>
+      <nav class="breadcrumb fade-up delay-1" aria-label="Breadcrumb">
+        <a href="index.html">Trang Chủ</a>
+        <span><i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
+        <span class="active">Về Omega</span>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT INTRO SECTION
+     ============================================================ -->
+<section class="about-intro">
+  <div class="container">
+    <!-- Left: Decorative Visual -->
+    <div class="about-visual-box fade-left">
+      <div class="about-visual-inner">
+        <div class="about-visual-logo">
+          <div class="omega-big">OMEGA</div>
+          <div class="omega-sub">Solutions &amp; Technologies</div>
+        </div>
+        <div style="position:relative;z-index:1;text-align:center;padding:20px 0;">
+          <i class="fas fa-circle-nodes" style="font-size:72px;color:rgba(1,166,82,0.25);"></i>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:16px;">
+            <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.25);border-radius:100px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,0.7);">ERP</span>
+            <span style="background:rgba(0,120,212,0.15);border:1px solid rgba(0,120,212,0.25);border-radius:100px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,0.7);">CRM</span>
+            <span style="background:rgba(126,217,87,0.15);border:1px solid rgba(126,217,87,0.25);border-radius:100px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,0.7);">HRM</span>
+          </div>
+        </div>
+        <div class="about-visual-stats">
+          <div class="av-stat">
+            <div class="num stat-num">16+</div>
+            <div class="lbl">Năm kinh nghiệm</div>
+          </div>
+          <div class="av-stat">
+            <div class="num stat-num">1000+</div>
+            <div class="lbl">Khách hàng</div>
+          </div>
+          <div class="av-stat">
+            <div class="num stat-num">30+</div>
+            <div class="lbl">Ngành nghề</div>
+          </div>
+          <div class="av-stat">
+            <div class="num stat-num">99%</div>
+            <div class="lbl">Hài lòng</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-badge-abs">
+        <div class="num">2008</div>
+        <div class="lbl">Thành lập</div>
+      </div>
+    </div>
+
+    <!-- Right: About Text -->
+    <div class="about-text fade-right">
+      <span class="tag-label" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,rgba(1,166,82,0.1),rgba(126,217,87,0.15));border:1px solid rgba(1,166,82,0.25);color:var(--green-dark);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:6px 18px;border-radius:100px;margin-bottom:20px;">Về Chúng Tôi</span>
+      <h2>Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</h2>
+      <p style="font-size:15px;color:var(--green-dark);font-weight:600;font-style:italic;margin-bottom:16px;">"Đồng hành cùng doanh nghiệp trên hành trình chuyển đổi số"</p>
+      <p>
+        Omega Solutions &amp; Technologies Co., Ltd. là công ty phần mềm ERP hàng đầu Việt Nam, thành lập năm 2008.
+        Với hơn 16 năm kinh nghiệm chuyên sâu trong lĩnh vực cung cấp giải pháp quản trị doanh nghiệp, chúng tôi
+        tự hào đã đồng hành và đóng góp vào sự phát triển của hơn 1.000 doanh nghiệp trên khắp Việt Nam.
+      </p>
+      <p>
+        Omega cung cấp hệ sinh thái phần mềm ERP toàn diện — từ kế toán, nhân sự, sản xuất, kho hàng, bán hàng
+        đến quản lý khách hàng CRM — phủ rộng hơn 30 ngành nghề khác nhau từ sản xuất công nghiệp, thương mại
+        phân phối, bất động sản, F&amp;B đến thủy hải sản và giáo dục.
+      </p>
+      <p>
+        Với phương châm "Linh hoạt — Khoa học — Tự động hóa", Omega không ngừng nghiên cứu và phát triển để
+        mang đến những giải pháp công nghệ phù hợp nhất với thực tế vận hành của từng doanh nghiệp Việt Nam.
+      </p>
+      <div class="about-highlights">
+        <div class="highlight-item">
+          <i class="fas fa-award"></i>
+          <div>
+            <h5>16+ Năm Kinh Nghiệm</h5>
+            <p>Dày dạn kinh nghiệm triển khai ERP thực tế</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <i class="fas fa-users"></i>
+          <div>
+            <h5>1.000+ Khách Hàng</h5>
+            <p>Doanh nghiệp tin dùng giải pháp của Omega</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <i class="fas fa-industry"></i>
+          <div>
+            <h5>30+ Ngành Nghề</h5>
+            <p>Giải pháp chuyên biệt cho từng lĩnh vực</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <i class="fas fa-headset"></i>
+          <div>
+            <h5>Hỗ Trợ 24/7</h5>
+            <p>Đội ngũ tư vấn kỹ thuật luôn sẵn sàng</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CORE VALUES SECTION
+     ============================================================ -->
+<section class="values-section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="tag-label">Giá Trị Cốt Lõi</span>
+      <h2>Những Giá Trị Định Hướng Omega</h2>
+      <p>Sáu giá trị cốt lõi tạo nên sức mạnh cạnh tranh và bản sắc riêng của hệ sinh thái giải pháp Omega</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card fade-up delay-1">
+        <div class="value-icon"><i class="fas fa-crown"></i></div>
+        <h3>Tính Quản Trị</h3>
+        <p>Đầy đủ chức năng đáp ứng mọi nghiệp vụ vận hành doanh nghiệp theo từng ngành đặc thù. Hệ thống phân quyền chặt chẽ, đảm bảo kiểm soát toàn diện từng quy trình.</p>
+      </div>
+      <div class="value-card fade-up delay-2">
+        <div class="value-icon"><i class="fas fa-hand-pointer"></i></div>
+        <h3>Dễ Sử Dụng</h3>
+        <p>Giao diện thân thiện, nhất quán, thiết kế đơn giản và dễ hiểu — người dùng có thể làm quen và vận hành thành thạo trong thời gian ngắn nhất.</p>
+      </div>
+      <div class="value-card fade-up delay-3">
+        <div class="value-icon"><i class="fas fa-sliders-h"></i></div>
+        <h3>Linh Hoạt &amp; Mở</h3>
+        <p>Chức năng có thể bật/tắt linh hoạt, giao diện tùy chỉnh theo nhu cầu người dùng. Mở rộng module khi doanh nghiệp phát triển mà không cần thay thế hệ thống.</p>
+      </div>
+      <div class="value-card fade-up delay-4">
+        <div class="value-icon"><i class="fas fa-microscope"></i></div>
+        <h3>Tính Khoa Học</h3>
+        <p>Nghiệp vụ được phân chia thành các phân hệ phù hợp, logic, có hệ thống. Toàn vẹn dữ liệu được đảm bảo, tránh sai sót và trùng lặp thông tin.</p>
+      </div>
+      <div class="value-card fade-up delay-5">
+        <div class="value-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <h3>Xử Lý Nhanh</h3>
+        <p>Nhập liệu theo quy trình kế thừa dữ liệu thông minh, tìm kiếm nhanh — giảm thời gian thao tác lên đến 50%, tối ưu năng suất làm việc của từng nhân viên.</p>
+      </div>
+      <div class="value-card fade-up delay-6">
+        <div class="value-icon"><i class="fas fa-robot"></i></div>
+        <h3>Tính Tự Động Hóa</h3>
+        <p>Tự động khấu hao tài sản, tính giá thành sản phẩm, phân bổ chi phí, xử lý chênh lệch tỷ giá — tiết kiệm đáng kể nguồn nhân lực và giảm thiểu lỗi con người.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MISSION & VISION SECTION
+     ============================================================ -->
+<section class="mission-vision-section">
+  <div class="container">
+    <div class="section-header light fade-up">
+      <span class="tag-label">Sứ Mệnh &amp; Tầm Nhìn</span>
+      <h2>Định Hướng Phát Triển Omega</h2>
+      <p>Cam kết và mục tiêu định hướng mọi hoạt động của Omega trong hành trình đồng hành cùng doanh nghiệp</p>
+    </div>
+    <div class="mv-grid">
+      <!-- Mission -->
+      <div class="mv-card fade-left">
+        <div class="mv-card-icon"><i class="fas fa-bullseye"></i></div>
+        <h3>Sứ Mệnh</h3>
+        <p>
+          Omega cam kết cung cấp hệ sinh thái phần mềm quản trị doanh nghiệp toàn diện, giúp các tổ chức
+          Việt Nam nâng cao năng lực cạnh tranh, tối ưu vận hành và thực hiện chuyển đổi số thành công.
+        </p>
+        <ul class="mv-list">
+          <li><i class="fas fa-check-circle"></i> Số hóa toàn bộ quy trình vận hành doanh nghiệp</li>
+          <li><i class="fas fa-check-circle"></i> Đưa công nghệ ERP tiên tiến đến mọi quy mô doanh nghiệp</li>
+          <li><i class="fas fa-check-circle"></i> Đồng hành và hỗ trợ khách hàng trong suốt hành trình</li>
+          <li><i class="fas fa-check-circle"></i> Giảm chi phí vận hành, tăng hiệu quả tối thiểu 30%</li>
+          <li><i class="fas fa-check-circle"></i> Xây dựng nền tảng dữ liệu đáng tin cậy cho ban lãnh đạo</li>
+        </ul>
+      </div>
+      <!-- Vision -->
+      <div class="mv-card fade-right">
+        <div class="mv-card-icon"><i class="fas fa-eye"></i></div>
+        <h3>Tầm Nhìn</h3>
+        <p>
+          Đến năm 2030, Omega trở thành công ty công nghệ ERP hàng đầu khu vực Đông Nam Á — được lựa chọn
+          bởi hơn 5.000 doanh nghiệp với hệ sinh thái giải pháp số toàn diện và dịch vụ hỗ trợ xuất sắc.
+        </p>
+        <ul class="mv-list">
+          <li><i class="fas fa-star"></i> Mở rộng hoạt động ra thị trường Đông Nam Á vào 2026</li>
+          <li><i class="fas fa-star"></i> Phát triển nền tảng AI tích hợp vào hệ thống ERP</li>
+          <li><i class="fas fa-star"></i> Xây dựng hệ sinh thái đối tác triển khai trên toàn quốc</li>
+          <li><i class="fas fa-star"></i> Ra mắt giải pháp Cloud ERP thế hệ mới vào 2025-2026</li>
+          <li><i class="fas fa-star"></i> Đạt chứng nhận quốc tế ISO 27001 về an toàn dữ liệu</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MILESTONES TIMELINE SECTION
+     ============================================================ -->
+<section class="milestones-section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="tag-label">Chặng Đường Phát Triển</span>
+      <h2>Hành Trình 16+ Năm Của Omega</h2>
+      <p>Những dấu mốc quan trọng ghi lại chặng đường phát triển không ngừng của Omega cùng hàng nghìn doanh nghiệp Việt Nam</p>
+    </div>
+    <div class="timeline-centered fade-up">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2008</div>
+        <div class="tl-content">
+          <h4>Thành lập Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</h4>
+          <p>Omega chính thức thành lập tại TP.HCM với đội ngũ sáng lập gồm các chuyên gia phần mềm quản trị doanh nghiệp nhiều năm kinh nghiệm. Ra mắt phiên bản đầu tiên của phần mềm kế toán OMEGA.GL.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2010</div>
+        <div class="tl-content">
+          <h4>Triển khai ERP cho 50 doanh nghiệp đầu tiên</h4>
+          <p>Hoàn thành triển khai thành công cho 50 doanh nghiệp trong ngành sản xuất và thương mại. Ra mắt các module OMEGA.WM (kho hàng), OMEGA.SO (bán hàng) và OMEGA.PO (mua hàng).</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2012</div>
+        <div class="tl-content">
+          <h4>Mở rộng sang ngành sản xuất nhựa và gỗ nội thất</h4>
+          <p>Phát triển giải pháp ERP chuyên biệt cho ngành sản xuất nhựa và gỗ nội thất — hai ngành có quy trình phức tạp nhất trong sản xuất Việt Nam. Vượt mốc 200 khách hàng.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2015</div>
+        <div class="tl-content">
+          <h4>Ra mắt OMEGA.HR và OMEGA.PR — giải pháp nhân sự toàn diện</h4>
+          <p>Bổ sung phân hệ Quản lý Nhân sự (HR) và Tiền lương (Payroll) vào hệ sinh thái, giúp doanh nghiệp quản lý tự động toàn bộ quy trình HR. Vượt mốc 500 khách hàng.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2017</div>
+        <div class="tl-content">
+          <h4>Mở văn phòng Hà Nội — phủ sóng toàn quốc</h4>
+          <p>Mở văn phòng đại diện tại Đống Đa, Hà Nội. Ra mắt giải pháp OMEGA.CRM và OMEGA.EDU. Lần đầu tiên triển khai dự án ERP cho khách hàng FDI (doanh nghiệp FDI Nhật Bản).</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2019</div>
+        <div class="tl-content">
+          <h4>Ra mắt OMEGA Mobile Apps — quản trị trên điện thoại</h4>
+          <p>Phát triển và ra mắt bộ ứng dụng mobile OMEGA.APV, OMEGA.SCR, OMEGA.STK — giúp lãnh đạo duyệt chứng từ và nhân viên kho thao tác ngay trên smartphone.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2021</div>
+        <div class="tl-content">
+          <h4>Vượt mốc 800 khách hàng — Đổi mới giao diện thế hệ mới</h4>
+          <p>Cập nhật toàn diện giao diện người dùng theo chuẩn UX/UI hiện đại. Ra mắt GAMA.SMB — giải pháp kế toán chuyên nghiệp cho doanh nghiệp vừa và nhỏ. Mở rộng sang ngành F&amp;B và FMCG.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2024</div>
+        <div class="tl-content">
+          <h4>Vượt mốc 1.000+ khách hàng — Tiên phong AI trong ERP</h4>
+          <p>Chính thức vượt mốc 1.000 khách hàng tin dùng trên 30+ ngành nghề. Bắt đầu tích hợp AI vào phân tích dữ liệu và dự báo kinh doanh. Chuẩn bị ra mắt nền tảng Cloud ERP thế hệ mới.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TEAM SECTION
+     ============================================================ -->
+<section class="team-section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="tag-label">Đội Ngũ</span>
+      <h2>Đội Ngũ Chuyên Gia Omega</h2>
+      <p>Đội ngũ hơn 100 chuyên gia giàu kinh nghiệm — gồm kỹ sư phần mềm, chuyên gia tư vấn ERP và kỹ thuật viên hỗ trợ — luôn sẵn sàng đồng hành cùng khách hàng</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card fade-up delay-1">
+        <div class="team-avatar">
+          <div class="team-avatar-initials">MH</div>
+        </div>
+        <div class="team-info">
+          <h4>Nguyễn Minh Hùng</h4>
+          <div class="role">Tổng Giám Đốc</div>
+          <p>Hơn 20 năm kinh nghiệm trong lĩnh vực công nghệ thông tin và quản trị doanh nghiệp. Cử nhân CNTT Đại học Bách Khoa TP.HCM.</p>
+        </div>
+      </div>
+      <div class="team-card fade-up delay-2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#0078d4,#60b8ff);">
+          <div class="team-avatar-initials">AT</div>
+        </div>
+        <div class="team-info">
+          <h4>Trần Bích Anh</h4>
+          <div class="role">Giám Đốc Kinh Doanh</div>
+          <p>Chuyên gia tư vấn ERP hàng đầu, đã tư vấn và triển khai thành công hơn 200 dự án ERP quy mô lớn trong và ngoài nước.</p>
+        </div>
+      </div>
+      <div class="team-card fade-up delay-3">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#7ed957,#01a652);">
+          <div class="team-avatar-initials">DL</div>
+        </div>
+        <div class="team-info">
+          <h4>Lê Quang Dũng</h4>
+          <div class="role">Giám Đốc Kỹ Thuật</div>
+          <p>Thạc sĩ Kỹ thuật phần mềm, 15+ năm phát triển hệ thống ERP quy mô enterprise. Dẫn dắt đội ngũ R&amp;D hơn 60 kỹ sư.</p>
+        </div>
+      </div>
+      <div class="team-card fade-up delay-4">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#e53935,#ff7043);">
+          <div class="team-avatar-initials">NP</div>
+        </div>
+        <div class="team-info">
+          <h4>Phạm Thị Ngọc</h4>
+          <div class="role">Giám Đốc Triển Khai</div>
+          <p>Chuyên gia tư vấn quy trình và triển khai ERP, CPA kế toán, am hiểu sâu nghiệp vụ tài chính — kế toán — sản xuất.</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center" style="margin-top:48px;">
+      <div style="background:var(--light-bg);border-radius:var(--radius-xl);padding:40px;display:inline-flex;gap:40px;align-items:center;border:1px solid var(--border);">
+        <div style="text-align:center;">
+          <div class="stat-num" style="font-size:36px;color:var(--red-stat);font-weight:800;line-height:1;">100+</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Chuyên gia</div>
+        </div>
+        <div style="width:1px;height:48px;background:var(--border);"></div>
+        <div style="text-align:center;">
+          <div class="stat-num" style="font-size:36px;color:var(--red-stat);font-weight:800;line-height:1;">60+</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Kỹ sư R&amp;D</div>
+        </div>
+        <div style="width:1px;height:48px;background:var(--border);"></div>
+        <div style="text-align:center;">
+          <div class="stat-num" style="font-size:36px;color:var(--red-stat);font-weight:800;line-height:1;">30+</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Chuyên viên tư vấn</div>
+        </div>
+        <div style="width:1px;height:48px;background:var(--border);"></div>
+        <div style="text-align:center;">
+          <div class="stat-num" style="font-size:36px;color:var(--red-stat);font-weight:800;line-height:1;">15+</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Kỹ thuật viên hỗ trợ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA SECTION
+     ============================================================ -->
+<section class="page-cta-section">
+  <div class="container">
+    <div class="page-cta-inner fade-up">
+      <h2>Sẵn Sàng Hợp Tác Cùng Omega?</h2>
+      <p>
+        Với hơn 16 năm kinh nghiệm và đội ngũ hơn 100 chuyên gia, Omega luôn sẵn sàng lắng nghe, phân tích
+        và đề xuất giải pháp ERP phù hợp nhất cho doanh nghiệp của bạn — hoàn toàn miễn phí.
+      </p>
+      <div class="cta-btn-group">
+        <a href="lien-he.html" class="btn-white">
+          <i class="fas fa-calendar-check"></i> Đăng Ký Tư Vấn Miễn Phí
+        </a>
+        <a href="giai-phap.html" class="btn-outline-white">
+          <i class="fas fa-arrow-right"></i> Xem Giải Pháp Của Chúng Tôi
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand fade-up">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="footer-logo">
+        <p>Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA — Đồng hành cùng doanh nghiệp Việt Nam trên hành trình chuyển đổi số.</p>
+        <div class="footer-social">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Zalo"><i class="fas fa-comment-dots"></i></a>
+        </div>
+      </div>
+      <!-- Quick Links -->
+      <div class="footer-col fade-up delay-1">
+        <h4>Sản Phẩm</h4>
+        <ul>
+          <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+          <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+          <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+          <li><a href="san-pham.html#edu">OMEGA.EDU</a></li>
+          <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          <li><a href="san-pham.html#gama">GAMA.SMB</a></li>
+        </ul>
+      </div>
+      <!-- Services -->
+      <div class="footer-col fade-up delay-2">
+        <h4>Dịch Vụ</h4>
+        <ul>
+          <li><a href="dich-vu.html">Tư vấn &amp; Triển khai</a></li>
+          <li><a href="dich-vu.html">Đào tạo &amp; Chuyển giao</a></li>
+          <li><a href="dich-vu.html">Bảo hành &amp; Bảo trì</a></li>
+          <li><a href="ve-omega.html">Về Omega</a></li>
+          <li><a href="khach-hang.html">Khách hàng</a></li>
+          <li><a href="tin-tuc.html">Tin tức</a></li>
+        </ul>
+      </div>
+      <!-- Contact -->
+      <div class="footer-col fade-up delay-3">
+        <h4>Liên Hệ</h4>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Lầu 6, Tòa nhà Hà Sơn, 277A Nguyễn Văn Đậu, P. Bình Lợi Trung, TP.HCM</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span><a href="tel:02835128448" style="color:inherit;">028 3512 8448</a><br>
+          <a href="tel:0708994462" style="color:inherit;">0708 994 462 (Ms. Nghi)</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span><a href="mailto:info@omega.com.vn" style="color:inherit;">info@omega.com.vn</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Phòng 507-B8, 8A Hoàng Ngọc Phách, Đống Đa, Hà Nội</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2026 <a href="index.html">Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</a>. Tất cả quyền được bảo lưu. | <a href="lien-he.html">Chính sách bảo mật</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

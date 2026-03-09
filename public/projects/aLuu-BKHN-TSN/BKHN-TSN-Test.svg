@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="2048px" height="2048px">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="2048" height="2048" fill="white"/>
+  
+  <!-- Hình vuông viền đen dày 10px, chính xác từ (0,0) đến (2048,2048) -->
+  <rect x="0" y="0" width="2048" height="2048" fill="none" stroke="#000000" stroke-width="10"/>
+</svg>

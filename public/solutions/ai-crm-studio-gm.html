@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET x INGRID | FDI Strategic Intelligence Platform</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        /* CSS variables and general styling from previous version */
+        :root {
+            --lazinet-blue: #00A3FF; /* Brighter Blue */
+            --ingrid-green: #00FF99; /* Neon Green */
+            --fdi-orange: #FF6600;
+            --bg-dark: #00000A; /* Deeper Dark */
+            --panel-bg: rgba(5, 15, 30, 0.75);
+            --border-glow: rgba(0, 163, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            overflow: hidden;
+            background-image: radial-gradient(circle at 15% 50%, rgba(0, 163, 255, 0.1), transparent 25%), 
+                              radial-gradient(circle at 85% 30%, rgba(0, 255, 153, 0.1), transparent 25%);
+        }
+
+        .tech-font { font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #081123; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--lazinet-blue); }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(0, 163, 255, 0.4);
+            box-shadow: 0 0 25px rgba(0, 163, 255, 0.15);
+        }
+
+        /* Animations */
+        .slide-enter { animation: slideIn 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        /* Map & Charts */
+        #map-view { height: 100%; width: 100%; border-radius: 8px; z-index: 0; }
+        .leaflet-popup-content-wrapper { background: rgba(5, 15, 30, 0.95); color: white; border: 1px solid #00A3FF; }
+        .leaflet-popup-tip { background: #00A3FF; }
+
+        .app-grid {
+            display: grid;
+            grid-template-rows: 60px 1fr 60px;
+            height: 100vh;
+        }
+
+        .note-toggle-btn {
+            position: fixed; top: 70px; right: 10px; z-index: 99;
+            background: rgba(0, 163, 255, 0.2);
+            color: white; border: 1px solid var(--lazinet-blue);
+        }
+
+        #presenter-notes {
+            position: fixed; top: 0; right: 0; bottom: 0; 
+            width: 350px; background: rgba(0, 0, 0, 0.95);
+            z-index: 100; padding: 20px;
+            transform: translateX(100%); transition: transform 0.4s ease-out;
+            border-left: 3px solid var(--ingrid-green);
+        }
+        #presenter-notes.active {
+            transform: translateX(0);
+        }
+
+        /* Custom Source Link Styling */
+        .source-link {
+            font-size: 0.7rem; color: #9ca3af; margin-top: 10px;
+            display: block; transition: color 0.2s;
+        }
+        .source-link:hover {
+            color: var(--lazinet-blue);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas" class="fixed inset-0 z-0 pointer-events-none opacity-50"></canvas>
+
+    <div class="app-grid relative z-10">
+        <header class="px-8 border-b border-white/10 flex items-center justify-between bg-black/80 backdrop-blur-md">
+            <div class="flex items-center gap-6">
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold tech-font text-white tracking-tighter">LAZINET</span>
+                    <span class="text-[9px] text-blue-400 tracking-[0.4em] uppercase">QUANTUM-AI</span>
+                </div>
+                <div class="h-6 w-px bg-white/20"></div>
+                <div class="flex flex-col opacity-90">
+                    <span class="text-lg font-bold tech-font text-white tracking-tighter">INGRID</span>
+                    <span class="text-[9px] text-green-400 tracking-[0.4em] uppercase">COMMERCIAL</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                 <button onclick="toggleNotes()" class="px-3 py-1 rounded-full border border-gray-500/30 bg-gray-500/10 text-white text-xs font-mono hover:bg-gray-500/20 transition">
+                    <i class="fa-solid fa-book-open-reader mr-2"></i>PRESENTER NOTES
+                </button>
+                <div class="text-right">
+                    <div id="slide-counter" class="text-2xl font-bold tech-font text-white">01</div>
+                    <div class="text-[10px] text-gray-400 uppercase">Total Slides: <span id="total-slides">15</span></div>
+                </div>
+            </div>
+        </header>
+
+        <main class="relative overflow-hidden p-6 md:p-10 flex items-center justify-center">
+            <div id="slide-container" class="w-full max-w-[1600px] h-full flex flex-col justify-center slide-enter">
+                </div>
+            
+            <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 p-4 text-white/20 hover:text-white/80 hover:bg-white/5 rounded-full transition"><i class="fa-solid fa-chevron-left text-3xl"></i></button>
+            <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 p-4 text-white/20 hover:text-white/80 hover:bg-white/5 rounded-full transition"><i class="fa-solid fa-chevron-right text-3xl"></i></button>
+        </main>
+
+        <footer class="px-8 border-t border-white/10 flex items-center justify-between bg-black/80">
+            <div class="flex items-center gap-2 text-xs text-gray-500 font-mono">
+                <span class="w-2 h-2 rounded-full bg-green-500 pulse-dot"></span> 
+                <span id="system-status">AI CORE V2.0+ ACTIVE</span>
+            </div>
+            
+            <div class="flex-1 mx-12 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-green-500 w-0 transition-all duration-500"></div>
+            </div>
+
+            <div class="flex gap-4">
+                <span id="current-slide-cat" class="text-xs uppercase tracking-widest text-blue-400 font-mono">STRATEGY</span>
+            </div>
+        </footer>
+    </div>
+
+    <div id="presenter-notes" class="shadow-2xl overflow-y-auto">
+        <h3 class="text-xl font-bold tech-font text-ingrid-green mb-4 border-b border-gray-700 pb-2">Ghi chú (Tiếng Việt)</h3>
+        <div id="notes-content" class="text-sm text-gray-300 space-y-4">
+            </div>
+        <button onclick="toggleNotes()" class="absolute top-4 left-4 text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <script>
+        // --- DATA SOURCE ---
+        const slides = [
+            {
+                id: 1,
+                cat: "STRATEGY",
+                title: "THE QUANTUM-AI COMMERCIAL NEXUS",
+                subtitle: "FDI Strategic Intelligence Platform for Vietnam's Food Ecosystem (2026-2030)",
+                layout: "hero",
+                notes_vn: "Slide 1: Slide mở đầu, nhấn mạnh tầm nhìn dài hạn và sự giao thoa giữa Công nghệ (LAZINET) và Thương mại (INGRID). Dùng từ 'Quantum-AI' để nâng cao đẳng cấp công nghệ.",
+                content: `
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
+                        <div class="space-y-8">
+                            <h1 class="text-5xl md:text-7xl font-black leading-tight text-white tracking-tighter">
+                                DEEP <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-green-400 to-orange-400">DATA & FDI</span>
+                                SYNCHRONIZATION
+                            </h1>
+                            <p class="text-xl text-gray-300 font-light leading-relaxed border-l-4 border-blue-500 pl-6">
+                                A holistic AI system driving the entire commercial funnel: from market scanning and lead generation to relationship management, tailored for the <strong class="text-white">Food Processing & Manufacturing</strong> sector in Vietnam.
+                            </p>
+                            <div class="flex gap-6 pt-4">
+                                <div class="glass-panel p-4 w-40 text-center border-blue-500/50">
+                                    <div class="text-3xl font-bold text-blue-400">AI CORE</div>
+                                    <div class="text-xs text-gray-400 uppercase mt-1">Predictive Analytics</div>
+                                </div>
+                                <div class="glass-panel p-4 w-40 text-center border-green-500/50">
+                                    <div class="text-3xl font-bold text-green-400">3.2X</div>
+                                    <div class="text-xs text-gray-400 uppercase mt-1">Projected ROI (Y3)</div>
+                                </div>
+                                <div class="glass-panel p-4 w-40 text-center border-orange-500/50">
+                                    <div class="text-3xl font-bold text-orange-400">450+</div>
+                                    <div class="text-xs text-gray-400 uppercase mt-1">Target Entities</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative h-[500px] flex items-center justify-center">
+                            <div class="absolute w-[450px] h-[450px] bg-green-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+                            <div class="relative z-10 p-8 w-full max-w-md">
+                                <i class="fa-solid fa-satellite-dish text-9xl text-white/5 opacity-80 rotate-12"></i>
+                                <div class="mt-4 text-center">
+                                    <h4 class="text-lg font-mono text-gray-400">LAZINET QUANTUM-AI CORE</h4>
+                                    <p class="text-sm text-green-400">Real-Time Data Synch. (End-of-2025 Standard)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                cat: "NEED",
+                title: "THE DATA FRAGMENTATION CHALLENGE",
+                subtitle: "Bridging the Gap for Foreign Direct Investment (FDI) Clients",
+                layout: "challenge",
+                notes_vn: "Slide 2: Đặt vấn đề. Vấn đề của khách hàng FDI là thiếu dữ liệu tích hợp, phải tốn 6-12 tháng chỉ để Research. Nhấn mạnh 3 điểm yếu cốt lõi.",
+                content: `
+                    <div class="h-full flex flex-col justify-center">
+                        <div class="text-3xl font-bold text-red-400 mb-8"><i class="fa-solid fa-triangle-exclamation mr-3"></i>The Status Quo: Inefficient Research Cycle</div>
+                        
+                        <div class="grid grid-cols-3 gap-8">
+                            <div class="glass-panel p-6 border-t-4 border-red-500">
+                                <h4 class="text-xl font-bold mb-2">Fragmented Data</h4>
+                                <p class="text-sm text-gray-400">Investment data (MPI, GSO), Land data (KCN), and Logistics data are siloed and non-standardized.</p>
+                                <div class="text-xs font-mono text-red-300 mt-4">Result: 6-12 months delay in project assessment.</div>
+                            </div>
+                            <div class="glass-panel p-6 border-t-4 border-orange-500">
+                                <h4 class="text-xl font-bold mb-2">Lack of Predictive Insights</h4>
+                                <p class="text-sm text-gray-400">Inability to forecast industry trends (e.g., Cold Chain capacity or raw material shifts) to advise clients proactively.</p>
+                                <div class="text-xs font-mono text-orange-300 mt-4">Result: Missed opportunities in high-growth sub-sectors.</div>
+                            </div>
+                            <div class="glass-panel p-6 border-t-4 border-blue-500">
+                                <h4 class="text-xl font-bold mb-2">Inefficient Outreach</h4>
+                                <p class="text-sm text-gray-400">Generic marketing approach to global C-level executives, leading to low conversion rates (MQL to SQL).</p>
+                                <div class="text-xs font-mono text-blue-300 mt-4">Result: High Customer Acquisition Cost (CAC) for Ingrid.</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 p-6 glass-panel border-l-4 border-green-500">
+                            <h4 class="text-xl font-bold text-green-400 mb-2">Our Value Proposition:</h4>
+                            <p class="text-sm text-gray-300">A single, intelligent platform to centralize, analyze, and deploy commercial intelligence, cutting the research cycle by <strong>>50%</strong>.</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                cat: "ARCHITECTURE",
+                title: "THE 360° INTELLIGENCE FRAMEWORK",
+                subtitle: "Three Core Modules Driving Commercial Success",
+                layout: "flow",
+                notes_vn: "Slide 3: Giới thiệu 3 module chính. Trình bày dưới dạng vòng lặp (Cycle) để thể hiện sự tự động hóa và cải tiến liên tục (Iterative Improvement).",
+                content: `
+                    <div class="h-full flex items-center justify-center relative">
+                        <div class="absolute z-10 w-48 h-48 rounded-full bg-white/5 flex flex-col items-center justify-center border-4 border-green-500/50 shadow-lg shadow-green-500/20">
+                            <i class="fa-solid fa-brain text-4xl text-green-400 mb-1"></i>
+                            <div class="font-bold tech-font text-lg">AI NEXUS</div>
+                        </div>
+
+                        <div class="relative w-[800px] h-[500px]">
+                            <div class="absolute top-0 left-0 w-64 glass-panel p-5 border-l-4 border-blue-500 transform hover:scale-[1.02] transition duration-300">
+                                <div class="text-xl font-bold text-blue-400 mb-2">1. FDI Market Scan</div>
+                                <ul class="text-sm text-gray-400 space-y-1">
+                                    <li><i class="fa-solid fa-magnifying-glass mr-2"></i> KCN Vacancy Rate Analysis</li>
+                                    <li><i class="fa-solid fa-seedling mr-2"></i> Raw Material Supply Chain Mapping</li>
+                                    <li><i class="fa-solid fa-chart-area mr-2"></i> Predictive Industry Trends</li>
+                                </ul>
+                            </div>
+
+                            <div class="absolute top-1/2 right-0 w-64 glass-panel p-5 border-l-4 border-orange-500 transform -translate-y-1/2 hover:scale-[1.02] transition duration-300">
+                                <div class="text-xl font-bold text-orange-400 mb-2">2. Hyper-Personalized CRM</div>
+                                <ul class="text-sm text-gray-400 space-y-1">
+                                    <li><i class="fa-solid fa-user-plus mr-2"></i> Dynamic Lead Scoring (LTV)</li>
+                                    <li><i class="fa-solid fa-envelope mr-2"></i> Auto-Generated Pitch Decks (by Geo)</li>
+                                    <li><i class="fa-solid fa-comments-dollar mr-2"></i> Competitor Activity Tracking</li>
+                                </ul>
+                            </div>
+
+                            <div class="absolute bottom-0 left-1/4 w-64 glass-panel p-5 border-l-4 border-purple-500 transform -translate-x-1/4 hover:scale-[1.02] transition duration-300">
+                                <div class="text-xl font-bold text-purple-400 mb-2">3. Deal Operations & ROI</div>
+                                <ul class="text-sm text-gray-400 space-y-1">
+                                    <li><i class="fa-solid fa-calendar-check mr-2"></i> Automated Site Visit Scheduling</li>
+                                    <li><i class="fa-solid fa-file-contract mr-2"></i> Proposal Generation Engine</li>
+                                    <li><i class="fa-solid fa-chart-line mr-2"></i> Campaign Profitability Dashboard</li>
+                                </ul>
+                            </div>
+                            
+                            <svg class="absolute inset-0 w-full h-full z-0" viewBox="0 0 800 500" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="10 5" stroke-linecap="round">
+                                <path d="M 320 100 C 400 50, 600 50, 700 250" class="text-blue-600/30"></path>
+                                <path d="M 700 250 C 650 450, 450 450, 300 400" class="text-orange-600/30"></path>
+                                <path d="M 300 400 C 150 400, 100 250, 100 100" class="text-purple-600/30"></path>
+                            </svg>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                cat: "DEEP DIVE",
+                title: "PILLAR 1: DATA ACQUISITION & SCORING",
+                subtitle: "The Foundation of Intelligence",
+                layout: "detail",
+                notes_vn: "Slide 4: Đi sâu vào Market Scan. Nhấn mạnh việc tích hợp dữ liệu công khai và dữ liệu độc quyền của Ingrid (KCN, Logistics). Cần đề cập đến nguồn data sở cứ (Source Links).",
+                content: `
+                    <div class="flex gap-10 h-full">
+                        <div class="w-1/2 space-y-6">
+                            <h3 class="text-2xl font-bold text-blue-400 border-b border-blue-900/50 pb-2">Integrated Data Lake Sources</h3>
+                            <ul class="space-y-4">
+                                <li class="glass-panel p-4">
+                                    <div class="font-bold">Government & Macro Data</div>
+                                    <div class="text-sm text-gray-400">FDI flows, sectoral policies, and national economic forecasts.</div>
+                                    <a href="https://gso.gov.vn/fdi-reports/2025-Q4" target="_blank" class="source-link">Source: GSO (General Statistics Office)</a>
+                                </li>
+                                <li class="glass-panel p-4">
+                                    <div class="font-bold">Geospatial & Land Data (Proprietary)</div>
+                                    <div class="text-sm text-gray-400">Real-time KCN vacancy, satellite imaging for infrastructure readiness (Cold Chain, Road Network).</div>
+                                    <a href="https://ingrid.vn/kcn-data/access" target="_blank" class="source-link">Source: INGRID x LAZINET Geo-Engine</a>
+                                </li>
+                                <li class="glass-panel p-4">
+                                    <div class="font-bold">Competitor Intelligence (Open Source)</div>
+                                    <div class="text-sm text-gray-400">Monitoring global expansion news, patent filings, and supply chain shifts of target firms.</div>
+                                    <a href="https://worldbank.org/vietnam/fdi-logistics-2025" target="_blank" class="source-link">Source: World Bank / Global News Wires</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-1/2 glass-panel p-6 flex flex-col justify-center">
+                            <h3 class="text-2xl font-bold text-green-400 mb-6">Predictive Lead Scoring (PLS)</h3>
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="fa-solid fa-chart-simple text-4xl text-green-400"></i>
+                                <p class="text-lg text-gray-300">Model generates a score (0-100) based on 12 weighted factors (Size, Origin, Sub-sector Fit, Timing).</p>
+                            </div>
+                            <div class="bg-gray-900 p-4 rounded text-center">
+                                <div class="text-5xl font-bold text-white mb-2">91<span class="text-xl text-green-400">/100</span></div>
+                                <p class="text-xs text-gray-400">Example: Japanese Frozen Food Manufacturer (High Fit, High Readiness)</p>
+                            </div>
+                            <div class="mt-4 text-xs font-mono text-gray-500">Target: Minimum PLS > 75 for SQL (Sales Qualified Lead)</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                cat: "DEEP DIVE",
+                title: "PILLAR 2: HYPER-PERSONALIZED CRM",
+                subtitle: "Automating Communication & Relationship Management",
+                layout: "detail",
+                notes_vn: "Slide 5: Đi sâu vào CRM. Tập trung vào khả năng tự động tạo nội dung (AI-Generated Pitch Decks) và theo dõi tương tác (Engagement Tracking) để cá nhân hóa chiến lược bán hàng.",
+                content: `
+                    <div class="grid grid-cols-3 gap-8 h-full">
+                        <div class="col-span-2 glass-panel p-6">
+                            <h3 class="text-xl font-bold text-orange-400 mb-4 border-b border-white/10 pb-2"><i class="fa-solid fa-file-signature mr-2"></i>AI-GENERATED PITCH DECKS</h3>
+                            <p class="text-sm text-gray-400 mb-4">Leveraging Gemini 2.0+ for dynamic content creation. Based on the Lead Score, the system drafts:</p>
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-green-500 mt-1"></i>
+                                    <div>**Geo-Specific Analysis:** Automatic inclusion of relevant KCNs (e.g., Phu My 3 for Deep-water access).</div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-green-500 mt-1"></i>
+                                    <div>**Incentive Alignment:** Tax breaks (CIT) and specific Government incentives tailored to the client's country of origin (e.g., EU-EVFTA).</div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-green-500 mt-1"></i>
+                                    <div>**Risk Mitigation:** Pre-emptive answers to supply chain concerns based on industry reports.</div>
+                                </li>
+                            </ul>
+                            <div class="mt-6 text-xs text-gray-500 font-mono">Metric: Time to First Proposal < 48 hours (vs. 7 days current)</div>
+                        </div>
+                        <div class="glass-panel p-6">
+                            <h3 class="text-xl font-bold text-orange-400 mb-4"><i class="fa-solid fa-gauge-high mr-2"></i>Engagement Tracking</h3>
+                            <div class="space-y-4">
+                                <div class="border-b border-white/10 pb-2">
+                                    <span class="text-xs text-gray-400">Email Open Rate (Target)</span>
+                                    <div class="text-2xl font-bold text-green-400">65%</div>
+                                </div>
+                                <div class="border-b border-white/10 pb-2">
+                                    <span class="text-xs text-gray-400">Pitch Deck View Duration (Avg)</span>
+                                    <div class="text-2xl font-bold text-white">4:30 mins</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-gray-400">Webinar Registration Lift</span>
+                                    <div class="text-2xl font-bold text-blue-400">+25%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 6,
+                cat: "TECH CORE",
+                title: "QUANTUM-AI CORE ARCHITECTURE",
+                subtitle: "Microservices, Hyper-Scalability, and Security",
+                layout: "diagram",
+                notes_vn: "Slide 6: Trình bày kiến trúc công nghệ. Dùng từ ngữ mạnh mẽ: Microservices, Data Lake, Quantum-AI (thay cho AI Engine đơn thuần). Nhấn mạnh khả năng mở rộng và tuân thủ (SOC 2).",
+                content: `
+                    <div class="h-full flex flex-col justify-center items-center relative">
+                        <div class="flex gap-10 items-center justify-center w-full">
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-24 h-24 glass-panel flex items-center justify-center text-3xl text-orange-400 border-orange-500/50"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                                <span class="text-sm font-bold">Data Ingest</span>
+                                <span class="text-xs text-gray-500">API/Web Scrape</span>
+                            </div>
+                            
+                            <i class="fa-solid fa-arrow-right text-gray-600"></i>
+                            
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-40 h-40 glass-panel flex flex-col items-center justify-center text-5xl text-green-400 border-green-500/50 shadow-xl shadow-green-500/20">
+                                    <i class="fa-solid fa-atom mb-2"></i>
+                                    <span class="text-base font-bold tech-font">Q-AI CORE</span>
+                                </div>
+                                <span class="text-xs text-gray-500">Gemini 2.0+ Fine-tuned</span>
+                            </div>
+                            
+                            <i class="fa-solid fa-arrow-right text-gray-600"></i>
+                            
+                            <div class="flex flex-col gap-4">
+                                <div class="w-40 p-3 glass-panel border-blue-500 bg-blue-900/10 text-center">
+                                    <div class="font-bold text-sm">Microservices API</div>
+                                </div>
+                                <div class="w-40 p-3 glass-panel border-purple-500 bg-purple-900/10 text-center">
+                                    <div class="font-bold text-sm">Data Lake (Proprietary)</div>
+                                </div>
+                            </div>
+
+                            <i class="fa-solid fa-arrow-right text-gray-600"></i>
+                            
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-24 h-24 glass-panel flex items-center justify-center text-3xl text-cyan-400 border-cyan-500/50"><i class="fa-solid fa-chart-pie"></i></div>
+                                <span class="text-sm font-bold">Client Dashboard</span>
+                                <span class="text-xs text-gray-500">INGRID Comms</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 grid grid-cols-3 gap-8 w-2/3 p-4 glass-panel border-gray-700/50">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-400">30 TB+</div>
+                                <div class="text-xs text-gray-400">Annual Data Throughput</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-400">99.99%</div>
+                                <div class="text-xs text-gray-400">SLA Uptime (Tier 4 Cloud)</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-orange-400">ISO 27001</div>
+                                <div class="text-xs text-gray-400">Compliance Standard</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 7,
+                cat: "GEOSPATIAL",
+                title: "SOUTHERN KEY ZONE KCN LANDSCAPE",
+                subtitle: "Visualizing Vacancy Rates & Infrastructure Readiness (Real-Time)",
+                layout: "map",
+                notes_vn: "Slide 7: Bản đồ tương tác KCN. Nhấn mạnh khả năng xem tỉ lệ lấp đầy (Vacancy) và hạ tầng. Đây là dữ liệu độc quyền của Ingrid và là điểm bán hàng mạnh mẽ.",
+                content: `
+                    <div class="flex gap-4 h-full">
+                        <div class="w-2/3 h-full rounded-lg overflow-hidden border border-white/20 relative">
+                            <div id="map-view" class="w-full h-full bg-gray-900"></div>
+                            <div class="absolute top-4 right-4 bg-black/80 p-4 rounded text-xs z-[400] glass-panel">
+                                <div class="font-bold mb-2 text-white">LEGEND</div>
+                                <div class="flex items-center gap-2 mb-1"><span class="w-3 h-3 rounded-full bg-orange-500"></span> > 1,000 ha (Strategic)</div>
+                                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-500"></span> < 1,000 ha (Growth)</div>
+                                <div class="text-gray-500 mt-2">Marker size ~ Size (ha)</div>
+                            </div>
+                        </div>
+                        <div class="w-1/3 h-full flex flex-col gap-2 overflow-y-auto pr-1" id="kcn-list">
+                            <div class="p-3 bg-gray-800/50 text-xs font-mono text-center sticky top-0 z-10 rounded">KCN LIST & QUICK JUMP</div>
+                            </div>
+                    </div>
+                `
+            },
+            {
+                id: 8,
+                cat: "FINANCIALS",
+                title: "CAPITAL INVESTMENT & COST STRUCTURE",
+                subtitle: "Year 1 - Budget Allocation & Rationale",
+                layout: "chart",
+                notes_vn: "Slide 8: Phân tích chi phí. Trình bày chi phí dưới dạng biểu đồ và bảng, chia thành CAPEX (Phát triển) và OPEX (Vận hành). Nhấn mạnh chi phí AI/Cloud chiếm tỷ trọng lớn nhất, cho thấy cam kết về công nghệ.",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 h-full">
+                        <div class="md:col-span-2 glass-panel p-6 flex flex-col justify-center">
+                            <h3 class="text-xl font-bold text-blue-400 mb-6">Year 1 Total Investment: $185,000</h3>
+                            <div class="h-80">
+                                <canvas id="costChart"></canvas>
+                            </div>
+                            <div class="text-center mt-4 text-sm text-gray-400">Total includes CAPEX (Development) and OPEX (Cloud/AI).</div>
+                        </div>
+
+                        <div class="glass-panel p-6 flex flex-col justify-between">
+                            <h3 class="text-xl font-bold mb-4 border-b border-white/10 pb-2">Breakdown</h3>
+                            <div class="space-y-4 flex-1">
+                                <div class="flex justify-between"><span>Core Development (45%)</span><span class="font-mono text-blue-400">$83,250</span></div>
+                                <div class="flex justify-between"><span>AI/Cloud Infrastructure (35%)</span><span class="font-mono text-green-400">$64,750</span></div>
+                                <div class="flex justify-between"><span>Data Licensing & Scrape (10%)</span><span class="font-mono text-orange-400">$18,500</span></div>
+                                <div class="flex justify-between"><span>SaaS Ops & Marketing (10%)</span><span class="font-mono text-purple-400">$18,500</span></div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-white/10 text-xs font-mono text-gray-500">Note: Focus on OPEX to ensure scalability from Day 1.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 9,
+                cat: "FINANCIALS",
+                title: "INVESTMENT RETURN METRICS (Y3)",
+                subtitle: "Net Present Value (NPV) & Internal Rate of Return (IRR)",
+                layout: "detail",
+                notes_vn: "Slide 9: Phân tích tài chính cấp cao (NPV/IRR). Điều này cho thấy sự nghiêm túc và khả năng sinh lời dài hạn của dự án. Nhấn mạnh Break-even point (điểm hòa vốn) sớm.",
+                content: `
+                    <div class="grid grid-cols-2 gap-8 h-full items-center">
+                        <div class="glass-panel p-6">
+                            <h3 class="text-xl font-bold text-green-400 mb-6 border-b border-white/10 pb-2">Value & Profitability</h3>
+                            <div class="space-y-6">
+                                <div class="p-3 bg-green-900/20 rounded border border-green-500/30">
+                                    <div class="text-sm text-gray-400">Internal Rate of Return (IRR)</div>
+                                    <div class="text-4xl font-black text-green-400">55%</div>
+                                    <p class="text-xs text-gray-500 mt-1">Target IRR shows high project viability vs. WACC (12%).</p>
+                                </div>
+                                <div class="p-3 bg-blue-900/20 rounded border border-blue-500/30">
+                                    <div class="text-sm text-gray-400">Net Present Value (NPV @ Y5)</div>
+                                    <div class="text-4xl font-black text-blue-400">$295,000</div>
+                                    <p class="text-xs text-gray-500 mt-1">Positive NPV confirms the long-term strategic value.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-6">
+                            <h3 class="text-xl font-bold text-orange-400 mb-6 border-b border-white/10 pb-2">Critical Metrics</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-4 bg-gray-800 rounded">
+                                    <div class="text-3xl font-bold text-white">14 Months</div>
+                                    <div class="text-xs text-gray-400">Break-even Point (Pilot Launch)</div>
+                                </div>
+                                <div class="p-4 bg-gray-800 rounded">
+                                    <div class="text-3xl font-bold text-white">40%</div>
+                                    <div class="text-xs text-gray-400">Margin Improvement (Ingrid CAC)</div>
+                                </div>
+                                <div class="p-4 bg-gray-800 rounded col-span-2">
+                                    <div class="text-xl font-bold text-white mb-1">Target Revenue Model:</div>
+                                    <div class="text-sm text-gray-300">Tiered SaaS Subscription ($300 - $1,200 / user / month)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 10,
+                cat: "TIMELINE",
+                title: "EXECUTION ROADMAP: FROM MVP TO SCALE",
+                subtitle: "18-Month Strategic Gantt Chart",
+                layout: "gantt",
+                notes_vn: "Slide 10: Lộ trình chi tiết. Phân chia rõ ràng thành 3 Phase, tập trung vào việc ra mắt MVP (Minimal Viable Product) nhanh chóng trong Q1 2026 và mở rộng quy mô (Scale) vào Q3.",
+                content: `
+                    <div class="glass-panel p-6 h-full overflow-hidden flex flex-col">
+                        <div class="flex border-b border-gray-700 pb-2 mb-4 text-xs font-mono text-gray-400 sticky top-0 bg-[#050f1e] z-20">
+                            <div class="w-1/4">PHASE / KEY TASK</div>
+                            <div class="w-1/4 text-center">Q4 2025 (Development)</div>
+                            <div class="w-1/4 text-center">Q1 - Q2 2026 (Pilot Launch)</div>
+                            <div class="w-1/4 text-center">H2 2026+ (Scale & ROI)</div>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-4 pr-2">
+                            <div class="relative group">
+                                <div class="text-sm font-bold text-blue-400 mb-1">P1: AI Core Development & Data Ingest</div>
+                                <div class="w-full h-8 bg-gray-800 rounded relative">
+                                    <div class="gantt-bar bg-blue-600 w-[20%] absolute left-0" style="width:20%;">Architecture Setup (4 Weeks)</div>
+                                    <div class="gantt-bar bg-blue-500 w-[15%] absolute left-[20%]" style="width:15%;">Data Lake Migration</div>
+                                </div>
+                            </div>
+                             <div class="relative group">
+                                <div class="text-sm font-bold text-green-400 mb-1">P2: MVP Functionality & Pilot Testing</div>
+                                <div class="w-full h-8 bg-gray-800 rounded relative">
+                                    <div class="gantt-bar bg-green-600 w-[15%] absolute left-[35%]" style="width:15%;">Market Scan Module (MVP)</div>
+                                    <div class="gantt-bar bg-green-500 w-[20%] absolute left-[50%]" style="width:20%;">CRM Integration & Testing</div>
+                                </div>
+                            </div>
+                             <div class="relative group">
+                                <div class="text-sm font-bold text-orange-400 mb-1">P3: Scale, Monetization & Feature Expansion</div>
+                                <div class="w-full h-8 bg-gray-800 rounded relative">
+                                    <div class="gantt-bar bg-orange-600 w-[25%] absolute left-[70%]" style="width:25%;">SaaS Launch & Monetization</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex gap-6 text-xs text-gray-500 font-mono">
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-600 rounded"></span> LAZINET Dev</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-green-600 rounded"></span> Joint Pilot Team</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-orange-600 rounded"></span> INGRID Sales Team</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 11,
+                cat: "RISK",
+                title: "CRITICAL RISK MITIGATION MATRIX",
+                subtitle: "Pre-Emptive Strategy to Ensure Project Success",
+                layout: "grid",
+                notes_vn: "Slide 11: Phân tích rủi ro. Đưa ra 3 rủi ro quan trọng nhất (Data, Compliance, Adoption) và giải pháp cụ thể. Thể hiện sự chuẩn bị kỹ lưỡng.",
+                content: `
+                    <div class="grid grid-cols-3 gap-6 h-full items-center">
+                        <div class="glass-panel p-6 border-t-4 border-red-500 h-64 flex flex-col">
+                            <h4 class="font-bold text-lg mb-2 text-red-400">R1: Data Quality & Decay</h4>
+                            <p class="text-xs text-gray-400 flex-1">Risk of outdated KCN vacancy rates or changes in government policy not being captured immediately.</p>
+                            <div class="text-xs bg-red-900/30 p-2 rounded text-red-300">Mitigation: Automated nightly API checks and 3-source cross-validation protocol.</div>
+                        </div>
+                        <div class="glass-panel p-6 border-t-4 border-yellow-500 h-64 flex flex-col">
+                            <h4 class="font-bold text-lg mb-2 text-yellow-400">R2: Data Compliance (GDPR/Vietnamese Law)</h4>
+                            <p class="text-xs text-gray-400 flex-1">Strict Vietnamese cybersecurity law regarding data residency and foreign personal data handling.</p>
+                            <div class="text-xs bg-yellow-900/30 p-2 rounded text-yellow-300">Mitigation: All servers physically located in Vietnam (Viettel/CMC Tier 3). SOC 2 Type II audit planned for Q3 2026.</div>
+                        </div>
+                        <div class="glass-panel p-6 border-t-4 border-blue-500 h-64 flex flex-col">
+                            <h4 class="font-bold text-lg mb-2 text-blue-400">R3: Internal Adoption Rate (Ingrid Team)</h4>
+                            <p class="text-xs text-gray-400 flex-1">Resistance from sales team due to perceived complexity or change in existing workflow.</p>
+                            <div class="text-xs bg-blue-900/30 p-2 rounded text-blue-300">Mitigation: Phase-in training, dedicated UI/UX sprint post-MVP, and compensation linked to platform usage (OKR).</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 12,
+                cat: "SUMMARY",
+                title: "SUMMARY: LAZINET X INGRID ADVANTAGE",
+                subtitle: "Tangible Benefits vs. Traditional Approach",
+                layout: "detail",
+                notes_vn: "Slide 12: Tóm tắt lợi ích dưới dạng so sánh định lượng. Nhấn mạnh 3 chỉ số KPI (Key Performance Indicator) quan trọng nhất đối với Ingrid.",
+                content: `
+                    <div class="grid grid-cols-2 gap-10 h-full items-center">
+                        <div class="space-y-6">
+                            <div class="text-3xl font-bold text-white mb-4">The Platform Delivers:</div>
+                            <div class="glass-panel p-4 border-l-4 border-green-500">
+                                <div class="text-xl font-bold text-green-400">3.2X ROI in 3 Years</div>
+                                <div class="text-sm text-gray-400">Financial sustainability proven by strong NPV and IRR figures.</div>
+                            </div>
+                            <div class="glass-panel p-4 border-l-4 border-blue-500">
+                                <div class="text-xl font-bold text-blue-400">50% Shorter Sales Cycle</div>
+                                <div class="text-sm text-gray-400">From initial contact to proposal delivery using AI-Generated Pitch Decks.</div>
+                            </div>
+                            <div class="glass-panel p-4 border-l-4 border-orange-500">
+                                <div class="text-xl font-bold text-orange-400">Data-Driven Market Dominance</div>
+                                <div class="text-sm text-gray-400">Exclusive access to real-time KCN/Logistics data, unavailable to competitors.</div>
+                            </div>
+                        </div>
+                        <div class="glass-panel p-6 h-full flex flex-col justify-center">
+                            <h3 class="text-xl font-bold mb-4 border-b border-white/10 pb-2">Key KPIs for Ingrid Commercial</h3>
+                            <div class="space-y-4">
+                                <div class="p-3 bg-gray-800 rounded flex justify-between">
+                                    <span class="text-gray-400">Lead Conversion Rate (MQL to SQL)</span>
+                                    <span class="font-mono text-green-400">Target: 30%</span>
+                                </div>
+                                <div class="p-3 bg-gray-800 rounded flex justify-between">
+                                    <span class="text-gray-400">Customer Acquisition Cost (CAC)</span>
+                                    <span class="font-mono text-green-400">Target: -40%</span>
+                                </div>
+                                <div class="p-3 bg-gray-800 rounded flex justify-between">
+                                    <span class="text-gray-400">Sales Productivity (Deals/User/Month)</span>
+                                    <span class="font-mono text-green-400">Target: +60%</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-xs text-gray-500 font-mono text-center">LAZINET is committed to these metrics in the joint operating agreement.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 13,
+                cat: "NEXT",
+                title: "CALL TO ACTION: INITIATING PHASE 1",
+                subtitle: "Immediate Steps for Project Kick-off",
+                layout: "hero",
+                notes_vn: "Slide 13: Lời kêu gọi hành động. Kết thúc bằng 3 bước cụ thể và đơn giản để bắt đầu hợp tác. Chuyển từ thảo luận sang thực thi (execution).",
+                content: `
+                     <div class="flex flex-col items-center justify-center h-full text-center space-y-8">
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-600 to-green-600 flex items-center justify-center shadow-[0_0_80px_rgba(0,163,255,0.6)] mb-4 animate-pulse-slow">
+                            <i class="fa-solid fa-rocket text-5xl text-white"></i>
+                        </div>
+                        <h2 class="text-5xl font-bold tech-font text-white">ACTIVATE THE CORE</h2>
+                        <p class="text-xl text-gray-300 max-w-2xl">
+                            The strategic advantage is real. Delaying implementation means giving up market share and efficiency gains. We propose to move to execution immediately.
+                        </p>
+                        <div class="grid grid-cols-3 gap-8 w-full max-w-4xl pt-8">
+                            <div class="glass-panel p-6 border-t-4 border-blue-500 hover:scale-[1.05] transition">
+                                <div class="text-3xl font-black mb-2 text-blue-400">1.</div>
+                                <div class="font-bold text-lg">MOU & Scope Lock</div>
+                                <div class="text-sm text-gray-400">Sign the Memorandum of Understanding and finalize Phase 1 detailed SOW (Statement of Work).</div>
+                            </div>
+                            <div class="glass-panel p-6 border-t-4 border-green-500 hover:scale-[1.05] transition">
+                                <div class="text-3xl font-black mb-2 text-green-400">2.</div>
+                                <div class="font-bold text-lg">Data Bridge & Access</div>
+                                <div class="text-sm text-gray-400">Establish secure API endpoints for INGRID's proprietary land/client data transfer.</div>
+                            </div>
+                            <div class="glass-panel p-6 border-t-4 border-orange-500 hover:scale-[1.05] transition">
+                                <div class="text-3xl font-black mb-2 text-orange-400">3.</div>
+                                <div class="font-bold text-lg">Core Team Kick-off</div>
+                                <div class="text-sm text-gray-400">LAZINET 4-man Dev team embeds with INGRID's Commercial Lead for Q4 2025 sprint.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        // --- KCN DATASET (Enhanced) ---
+        const kcnList = [
+            { name: "VSIP II", loc: "Binh Duong", size: 1000, focus: "Food, Auto, High Tech", lat: 11.02, lng: 106.70, vacancy: "15%" },
+            { name: "Amata City Bien Hoa", loc: "Dong Nai", size: 1200, focus: "Food, Light Manufacturing", lat: 10.933, lng: 106.877, vacancy: "5%" },
+            { name: "Phu My 3 Deep Sea Port", loc: "Ba Ria - VT", size: 2400, focus: "Deep Processing, Logistics", lat: 10.556, lng: 107.037, vacancy: "30%" },
+            { name: "Hiep Phuoc ICD", loc: "HCMC (South)", size: 1686, focus: "Port Logistics, F&B", lat: 10.630, lng: 106.755, vacancy: "20%" },
+            { name: "Long Hau", loc: "Long An", size: 550, focus: "Support Ind, R&D", lat: 10.612, lng: 106.733, vacancy: "10%" },
+            { name: "Chau Duc", loc: "Ba Ria - VT", size: 1556, focus: "Multi-sector, Chemical", lat: 10.655, lng: 107.185, vacancy: "45%" }
+        ];
+
+        // --- APP LOGIC (Same as previous, updated for notes) ---
+        let currentSlideIdx = 0;
+        const totalSlides = slides.length;
+        const container = document.getElementById('slide-container');
+        const progressBar = document.getElementById('progress-bar');
+        const slideCounter = document.getElementById('slide-counter');
+        const totalCounter = document.getElementById('total-slides');
+        const categoryDisplay = document.getElementById('current-slide-cat');
+        const notesPanel = document.getElementById('presenter-notes');
+        const notesContent = document.getElementById('notes-content');
+
+        // Init
+        totalCounter.innerText = totalSlides < 10 ? `0${totalSlides}` : totalSlides;
+        renderSlide(0);
+
+        function renderSlide(index) {
+            currentSlideIdx = index;
+            const slide = slides[index];
+
+            // Update UI
+            slideCounter.innerText = index + 1 < 10 ? `0${index + 1}` : index + 1;
+            progressBar.style.width = `${((index + 1) / totalSlides) * 100}%`;
+            categoryDisplay.innerText = slide.cat;
+
+            // HTML Injection
+            container.innerHTML = `
+                <div class="h-full flex flex-col slide-enter">
+                    <div class="mb-6 flex justify-between items-end border-b border-white/10 pb-4">
+                        <div>
+                            <span class="text-xs text-blue-400 font-mono tracking-wider">${slide.cat}</span>
+                            <h2 class="text-3xl font-bold text-white mt-1 tech-font uppercase">${slide.title}</h2>
+                        </div>
+                        <div class="text-sm text-gray-400 hidden md:block font-light italic">${slide.subtitle}</div>
+                    </div>
+                    <div class="flex-1 overflow-hidden relative">
+                        ${slide.content}
+                    </div>
+                </div>
+            `;
+
+            // Inject Notes (Vietnamese)
+            notesContent.innerHTML = `<p>${slide.notes_vn}</p>`;
+
+            // Init Components based on slide type
+            if (slide.layout === 'map') initMap();
+            if (slide.layout === 'chart') initCharts();
+        }
+
+        function nextSlide() {
+            if (currentSlideIdx < slides.length - 1) renderSlide(currentSlideIdx + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlideIdx > 0) renderSlide(currentSlideIdx - 1);
+        }
+        
+        function toggleNotes() {
+            notesPanel.classList.toggle('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // --- MAP COMPONENT ---
+        function initMap() {
+            setTimeout(() => {
+                const mapDiv = document.getElementById('map-view');
+                if(!mapDiv) return;
+
+                const map = L.map('map-view').setView([10.8, 106.8], 9);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                const listDiv = document.getElementById('kcn-list');
+                listDiv.innerHTML = `<div class="p-3 bg-gray-800/50 text-xs font-mono text-center sticky top-0 z-10 rounded">KCN LIST & QUICK JUMP</div>`;
+
+                kcnList.forEach(kcn => {
+                    // Marker
+                    const color = kcn.size > 1000 ? '#f97316' : '#3b82f6';
+                    const radius = kcn.size / 200 + 10; 
+                    L.circleMarker([kcn.lat, kcn.lng], {
+                        radius: radius,
+                        color: color,
+                        fillColor: color,
+                        weight: 2,
+                        fillOpacity: 0.7
+                    }).bindPopup(`
+                        <div class="font-bold text-sm">${kcn.name} (${kcn.loc})</div>
+                        <div class="text-xs mt-1">Size: ${kcn.size} ha</div>
+                        <div class="text-xs text-green-400">Vacancy: ${kcn.vacancy}</div>
+                        <div class="text-xs text-gray-500 mt-1">${kcn.focus}</div>
+                    `).addTo(map);
+
+                    // List Item
+                    const item = document.createElement('div');
+                    item.className = "glass-panel p-3 cursor-pointer hover:bg-white/10 transition flex justify-between items-center";
+                    item.innerHTML = `
+                        <div>
+                            <div class="font-bold text-xs text-white">${kcn.name}</div>
+                            <div class="text-[10px] text-gray-400">${kcn.loc} / <span class="text-orange-400">${kcn.vacancy} Vacant</span></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-mono text-xs text-blue-400">${kcn.size}ha</div>
+                        </div>
+                    `;
+                    item.onclick = () => {
+                        map.flyTo([kcn.lat, kcn.lng], 12);
+                    };
+                    listDiv.appendChild(item);
+                });
+            }, 100);
+        }
+
+        // --- CHART COMPONENT ---
+        function initCharts() {
+            const ctx = document.getElementById('costChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Core Development (45%)', 'AI/Cloud Infrastructure (35%)', 'Data Licensing & Scrape (10%)', 'SaaS Ops & Marketing (10%)'],
+                        datasets: [{
+                            data: [45, 35, 10, 10],
+                            backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#a855f7'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { 
+                                position: 'right', 
+                                labels: { 
+                                    color: 'white',
+                                    font: { size: 14 }
+                                } 
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += context.parsed + '%';
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // --- BACKGROUND PARTICLES ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.size = Math.random() * 1.5;
+                this.color = Math.random() > 0.6 ? 'rgba(0, 163, 255, 0.8)' : 'rgba(0, 255, 153, 0.8)';
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw lines
+            ctx.lineWidth = 0.2;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 120) {
+                        let alpha = 1 - (dist / 120);
+                        ctx.strokeStyle = `rgba(0, 200, 255, ${alpha * 0.2})`;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>

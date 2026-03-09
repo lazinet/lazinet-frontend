@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Birthday Card Playground</title>
+  <link rel="icon" id="favicon">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    #config {
+      width: 25%;
+      padding: 16px;
+      background: #f5f5f5;
+      overflow-y: auto;
+    }
+    #card {
+      width: 75%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+      padding: 40px;
+    }
+    .card-inner {
+      max-width: 700px;
+      background: rgba(255,255,255,0.9);
+      padding: 30px;
+      border-radius: 12px;
+    }
+    textarea { width: 100%; height: 120px; }
+    select, input { width: 100%; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<div id="config">
+  <h3>🎨 Background</h3>
+  <select id="bgSelect"></select>
+  <input type="text" placeholder="Paste image URL" id="bgUrl">
+
+  <h3>👤 Người nhận</h3>
+  <select id="recipientSelect"></select>
+
+  <h3>💬 Lời chúc</h3>
+  <select id="wishSelect"></select>
+  <textarea id="wishText"></textarea>
+
+  <button onclick="updateCard()">Cập nhật</button>
+</div>
+
+<div id="card">
+  <div class="card-inner">
+    <h2 id="wishPreview"></h2>
+    <p id="signature"></p>
+  </div>
+</div>
+
+<script>
+const API = "PASTE_YOUR_GAS_WEBAPP_URL";
+
+fetch(API, {
+  method: "POST",
+  headers: {"Content-Type":"application/json"},
+  body: JSON.stringify({action:"getPlaygroundInit"})
+})
+.then(r=>r.json())
+.then(init);
+
+function init(data){
+  document.body.style.fontFamily = data.settings.fontFamily;
+  document.getElementById("favicon").href = data.settings.favicon;
+
+  fillSelect("bgSelect", data.backgrounds);
+  fillSelect("wishSelect", data.wishes);
+  fillRecipients(data.demoRecipients);
+
+  document.getElementById("signature").innerText =
+    data.settings.signature.name + " – " + data.settings.signature.org;
+}
+
+function fillSelect(id, arr){
+  const s = document.getElementById(id);
+  arr.forEach(v=>{
+    const o=document.createElement("option");
+    o.value=v; o.text=v;
+    s.appendChild(o);
+  });
+}
+
+function fillRecipients(arr){
+  const s = document.getElementById("recipientSelect");
+  arr.forEach(r=>{
+    const o=document.createElement("option");
+    o.value=JSON.stringify(r);
+    o.text=`${r.title} ${r.name}`;
+    s.appendChild(o);
+  });
+}
+
+function updateCard(){
+  const bg = document.getElementById("bgUrl").value ||
+             document.getElementById("bgSelect").value;
+  document.getElementById("card").style.backgroundImage = `url(${bg})`;
+
+  document.getElementById("wishPreview").innerText =
+    document.getElementById("wishText").value ||
+    document.getElementById("wishSelect").value;
+}
+</script>
+</body>
+</html>

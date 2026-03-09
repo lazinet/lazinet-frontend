@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"> -->
+  <title>LAZINET - Effective Technologies with CEO PHUNG HOANG</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="apple-touch-icon">
+
+  <!-- Vendor Files -->
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.10/lib/umd.js"></script>
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: top;
+      min-height: 100vh;
+    }
+    .card {
+      width: 500px;
+      background: #fff;
+      /* background: linear-gradient(to bottom, white 50%,rgb(245, 200, 150) 100%); */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      /* border-radius: 10px; */
+      overflow: hidden;
+      margin-bottom: 20px;
+      background-image: url('../assets/img/background/LAZINET/LAZINET_BG_014.jpg');
+      background-size: cover;
+      background-position: center;         
+    }
+    .business-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo {
+      text-align: center;
+      margin: 0px;
+    }
+    .logo img {
+      height: 100px;
+    }
+    .services-list {
+      margin: 15px 0;
+    }
+    .services-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .services-list li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 4px 0;
+    }
+    .services-list i {
+      font-size: 12px;
+    }
+    .services-list strong {
+      color: blue; /* Màu xanh cho chữ */
+    }
+    .contact-info {
+      margin-top: 15px;
+      font-size: 11px;
+      text-align: center;
+    }
+    .contact-info p {
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .contact-info a {
+      color: blue; /* Màu xanh cho liên kết */
+      text-decoration: none;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    .icon-orange {
+      color: #ff6302; /* Màu cam cho icon */
+    }
+    .export-buttons {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .export-buttons button {
+      padding: 8px 16px;
+      background: #0000ff; /* Nút màu cam */
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 12px;
+    }
+    .export-buttons button:hover {
+      background: #e55600; /* Màu cam đậm khi hover */
+    }
+
+    @media (max-width: 550px) {
+      .card {
+        width: 300px;
+        height: 500px;
+      }
+      .services-list ul {
+        grid-template-columns: 1fr;
+      }
+      .logo img {
+        height: 50px;
+      }
+      .export-buttons {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Business Card Back -->
+  <div class="card business-card" id="business-card">
+    <div class="logo">
+      <a href="https://lazinet.com/" style=" text-decoration: none;">
+        <img src="https://qtbc.vn/assets/logos/logo_2026_W512.webp" alt="LAZINET Logo">
+        <p style="text-align: center;">
+          <strong style="color: #e55600; font-size: x-large;">CLB DOANH NHÂN QUẢNG TRỊ</strong>
+        </p>
+      </a>
+    </div>
+
+    <div class="services-list">
+      <ul>
+        <!-- Cột 1 -->
+        <!-- <li><i class="bi bi-code-square icon-orange"></i> <strong>Software Development</strong></li>
+        <li><i class="bi bi-arrows-move icon-orange"></i> <strong>Digital Transformation</strong></li>
+        <li><i class="bi bi-cart-check icon-orange"></i> <strong>E-Commerce Platform</strong></li>
+        <li><i class="bi bi-cpu icon-orange"></i> <strong>IoT & Smart Solutions</strong></li>
+        <li><i class="bi bi-boxes icon-orange"></i> <strong>ERP & Business Support</strong></li>
+        <li><i class="bi bi-bezier icon-orange"></i> <strong>RPA & Process Automation</strong></li>
+        <li><i class="bi bi-robot icon-orange"></i> <strong>AI & Data Analytics</strong></li>
+        <li><i class="bi bi-cloud icon-orange"></i> <strong>Cloud & Networking</strong></li> -->
+        <li style="display: flex; align-items: center">
+          <img src="https://qtbc.vn/assets/vs/CoreValues/corevalue2.svg" 
+            style="width: 16px; height: 16px; flex-shrink: 0;">
+          <strong>Đề cao giao thương đồng hương</strong></li>
+        <li style="display: flex; align-items: center">
+          <img src="https://qtbc.vn/assets/vs/CoreValues/corevalue1.svg" 
+            style="width: 16px; height: 16px; flex-shrink: 0;">
+          <strong>Đảm bảo uy tín, đảm bảo chất lượng</strong></li>
+        <li style="display: flex; align-items: center">
+          <img src="https://qtbc.vn/assets/vs/CoreValues/corevalue6.svg" 
+            style="width: 16px; height: 16px; flex-shrink: 0;">
+          <strong>Ưu ái nhưng nghiêm túc, rõ ràng</strong></li>
+        <li style="display: flex; align-items: center">
+          <img src="https://qtbc.vn/assets/vs/CoreValues/corevalue3.svg" 
+            style="width: 16px; height: 16px; flex-shrink: 0;">
+          <strong>Nỗ lực liên tục để duy trì động lực</strong></li>
+        <li style="display: flex; align-items: center">
+          <img src="https://qtbc.vn/assets/vs/CoreValues/corevalue8.svg" 
+            style="width: 16px; height: 16px; flex-shrink: 0;">
+          <strong>Nghĩa tình là sức mạnh đoàn kết</strong></li>
+        <li style="display: flex; align-items: center">
+          <img src="https://qtbc.vn/assets/vs/CoreValues/corevalue5.svg" 
+            style="width: 16px; height: 16px; flex-shrink: 0;">
+          <strong>Chung tay góp sức, vun đắp tương lai</strong></li>
+      </ul>
+    </div>
+
+    <div class="contact-info">
+      <p>
+        <i class="bi bi-geo-alt icon-orange"></i>
+        <a href="https://maps.app.goo.gl/1j896HeHPJwa3Fxi9">20 Đường số 1, Khu nhà ở Bình Chiểu, Khu phố 16, Phường Tam Bình, TP Hồ Chí Minh</a>
+      </p>
+      <p>
+        <i class="bi bi-envelope icon-orange"></i>
+        <a href="mailto:email@qtbc.vn">email@qtbc.vn</a>
+        <i class="bi bi-phone icon-orange"></i>
+        <a href="http://zalo.me/0908556220">(+84) 096 101 2945</a>
+        <i class="bi bi-globe icon-orange"></i>
+        <a href="https://lazinet.com/">qtbc.vn</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Export Buttons -->
+  <div class="export-buttons">
+    <button onclick="exportToPNG()"><i class="fas fa-download"></i> PNG</button>
+    <button onclick="exportToPDF()"><i class="fas fa-download"></i> PDF</button>
+    <button onclick="viewFront()">View Front</button>
+  </div>
+
+  <script>
+    function exportToPNG() {
+      html2canvas(document.getElementById("business-card"), { scale: 1, useCORS: true }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "LAZINET Phung-Hoang Back.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const cardElement = document.getElementById("business-card");
+      const isMobile = window.innerWidth <= 550;
+      const doc = new jsPDF({
+        orientation: isMobile ? "portrait" : "landscape",
+        unit: "px",
+        format: isMobile ? [300, 500] : [500, 300]
+      });
+      html2canvas(cardElement, { scale: 4, useCORS: true }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const width = isMobile ? 300 : 500;
+        const height = isMobile ? 500 : 300;
+        doc.addImage(imgData, "PNG", 0, 0, width, height);
+        doc.save("LAZINET Phung-Hoang Back.pdf");
+      });
+    }
+    function viewFront() {
+        window.location.href = "phung-hoang.html";
+    }    
+  </script>
+</body>
+</html>

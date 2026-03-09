@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+
+    <title>LAZINET Pro Image Tool - Âm Bản & Resize Đa Năng</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Global Variables & Theming */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --divider-color: #FFFFFF1A;
+            --error-color: #ff4d4f;
+            --success-color: #52c41a;
+            --tag-bg: #1f293a;
+            --default-font: "Instrument Sans", system-ui, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--default-font); }
+
+        body {
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--bg-color) 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            width: 100%;
+            max-width: 1200px;
+            border: 1px solid var(--divider-color);
+        }
+
+        /* Header */
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { height: 60px; margin-bottom: 10px; }
+        h1 { font-size: 2em; margin-bottom: 10px; background: linear-gradient(90deg, #fff, #3F82FB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { opacity: 0.7; font-size: 1.1em; }
+
+        /* Main Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 25px;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--divider-color);
+            height: fit-content;
+        }
+
+        .panel-section { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--divider-color); }
+        .panel-section:last-child { border-bottom: none; margin-bottom: 0; }
+        
+        .section-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-color);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--divider-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .upload-area:hover, .upload-area.dragover { border-color: var(--accent-color); background: rgba(63, 130, 251, 0.1); }
+        .upload-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.8; }
+
+        /* Configuration Tags (Colors & Sizes) */
+        .config-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background: var(--tag-bg);
+            border: 1px solid var(--divider-color);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        
+        .tag:hover { border-color: var(--accent-color); }
+        
+        .tag-color-preview {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            opacity: 0.5;
+            font-size: 1.1em;
+        }
+        .tag-remove:hover { opacity: 1; color: var(--error-color); }
+
+        /* Input Groups */
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .input-control {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--divider-color);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            flex: 1;
+            outline: none;
+        }
+        .input-control:focus { border-color: var(--accent-color); }
+        
+        .color-picker-wrapper {
+            position: relative;
+            width: 40px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--divider-color);
+            cursor: pointer;
+        }
+        
+        input[type="color"] {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        .btn-add {
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            width: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-add:hover { background: #5a95ff; }
+
+        /* Preview Section */
+        .preview-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--divider-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--divider-color);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-color), #2d5ec7);
+            color: white;
+            flex: 2;
+            justify-content: center;
+        }
+        .btn-primary:hover { box-shadow: 0 4px 15px rgba(63, 130, 251, 0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--divider-color);
+            color: #ccc;
+            flex: 1;
+            justify-content: center;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+        /* Grid & Cards */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .image-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--divider-color);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .img-wrap {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1f2e; /* Chessboard pattern placeholder */
+            background-image: linear-gradient(45deg, #23293b 25%, transparent 25%), linear-gradient(-45deg, #23293b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #23293b 75%), linear-gradient(-45deg, transparent 75%, #23293b 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .img-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .card-label { font-size: 0.8em; color: #aaa; margin-bottom: 4px; }
+        .card-sub { font-size: 0.7em; color: #666; }
+
+        /* Progress Bar */
+        .progress-container { margin-top: 15px; display: none; }
+        .progress-bar { height: 6px; background: #333; border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+        .progress-fill { height: 100%; width: 0%; background: var(--success-color); transition: width 0.3s; }
+        .progress-text { font-size: 0.85em; text-align: right; opacity: 0.7; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-content { grid-template-columns: 1fr; }
+            .control-panel { order: 1; }
+            .preview-section { order: 2; }
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>LAZINET Image Processor Pro</h1>
+        <p class="subtitle">Công cụ Âm bản Phối màu & Resize Đa Năng Tùy Chỉnh</p>
+    </div>
+
+    <div class="main-content">
+        <div class="control-panel">
+            
+            <div class="panel-section">
+                <div class="section-title"><i class="fas fa-cloud-upload-alt"></i> Ảnh Gốc (PNG)</div>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon"><i class="fas fa-file-image"></i></div>
+                    <div id="fileNameDisplay">Kéo thả hoặc chọn file</div>
+                    <input type="file" id="fileInput" accept=".png" style="display: none;">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fas fa-palette"></i> Cấu hình Màu Âm Bản
+                </div>
+                <div class="config-tags" id="colorTags">
+                    </div>
+                <div class="input-group">
+                    <div class="color-picker-wrapper">
+                        <input type="color" id="newColorPicker" value="#00ff00">
+                    </div>
+                    <input type="text" id="newColorText" class="input-control" placeholder="#HEX" value="#00ff00">
+                    <button class="btn-add" onclick="addColorConfig()"><i class="fas fa-plus"></i></button>
+                </div>
+                <div style="font-size: 0.8em; opacity: 0.5; margin-top: 5px;">* Mặc định: Trắng, Đen</div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fas fa-expand"></i> Cấu hình Kích Thước (px)
+                </div>
+                <div class="config-tags" id="sizeTags">
+                    </div>
+                <div class="input-group">
+                    <input type="number" id="newSizeInput" class="input-control" placeholder="Ví dụ: 800">
+                    <button class="btn-add" onclick="addSizeConfig()"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="preview-section">
+            <div class="controls">
+                <button class="btn btn-primary" id="processBtn" onclick="processAll()" disabled>
+                    <i class="fas fa-rocket"></i> Xử lý & Tải về ZIP
+                </button>
+                <button class="btn btn-secondary" onclick="resetAll()">
+                    <i class="fas fa-redo"></i> Làm mới
+                </button>
+            </div>
+
+            <div class="preview-header" style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                <span>Kết quả dự kiến: <b id="totalOutputs">0</b> file</span>
+            </div>
+
+            <div class="preview-grid" id="previewGrid">
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px; opacity: 0.5;">
+                    <i class="fas fa-image" style="font-size: 40px; margin-bottom: 10px;"></i>
+                    <p>Vui lòng chọn ảnh và cấu hình</p>
+                </div>
+            </div>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="progress-text">Đang xử lý: <span id="progressText">0%</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === STATE MANAGEMENT ===
+    let uploadedFile = null;
+    
+    // Default Configurations as requested
+    let configColors = ['#FFFFFF', '#000000']; 
+    let configSizes = [64, 128, 256, 512, 1024, 2048];
+    
+    let processedData = []; // Store blobs
+
+    // === INITIALIZATION ===
+    document.addEventListener('DOMContentLoaded', () => {
+        renderConfigs();
+        setupUploadEvents();
+        
+        // Sync color picker with text input
+        const picker = document.getElementById('newColorPicker');
+        const text = document.getElementById('newColorText');
+        
+        picker.addEventListener('input', (e) => text.value = e.target.value.toUpperCase());
+        text.addEventListener('input', (e) => picker.value = e.target.value);
+    });
+
+    // === CONFIGURATION LOGIC ===
+    function renderConfigs() {
+        // Render Colors
+        const colorContainer = document.getElementById('colorTags');
+        colorContainer.innerHTML = '';
+        configColors.forEach((color, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `
+                <div class="tag-color-preview" style="background-color: ${color};"></div>
+                ${color}
+                <i class="fas fa-times tag-remove" onclick="removeColor(${index})"></i>
+            `;
+            colorContainer.appendChild(tag);
+        });
+
+        // Render Sizes
+        const sizeContainer = document.getElementById('sizeTags');
+        sizeContainer.innerHTML = '';
+        configSizes.sort((a,b) => a-b).forEach((size, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `
+                <span>${size}px</span>
+                <i class="fas fa-times tag-remove" onclick="removeSize(${index})"></i>
+            `;
+            sizeContainer.appendChild(tag);
+        });
+
+        updatePreviewGridPlaceholder();
+    }
+
+    function addColorConfig() {
+        const input = document.getElementById('newColorText');
+        let color = input.value.trim().toUpperCase();
+        
+        // Basic Hex validation
+        if (!/^#[0-9A-F]{6}$/i.test(color)) {
+            Swal.fire('Lỗi màu', 'Vui lòng nhập mã màu Hex hợp lệ (VD: #FF0000)', 'error');
+            return;
+        }
+
+        if (!configColors.includes(color)) {
+            configColors.push(color);
+            renderConfigs();
+            input.value = '#';
+        } else {
+            Swal.fire('Thông báo', 'Màu này đã tồn tại!', 'warning');
+        }
+    }
+
+    function removeColor(index) {
+        configColors.splice(index, 1);
+        renderConfigs();
+    }
+
+    function addSizeConfig() {
+        const input = document.getElementById('newSizeInput');
+        const size = parseInt(input.value);
+
+        if (!size || size <= 0) {
+            Swal.fire('Lỗi kích thước', 'Vui lòng nhập số nguyên dương', 'error');
+            return;
+        }
+
+        if (!configSizes.includes(size)) {
+            configSizes.push(size);
+            renderConfigs();
+            input.value = '';
+        } else {
+            Swal.fire('Thông báo', 'Kích thước này đã tồn tại!', 'warning');
+        }
+    }
+
+    function removeSize(index) {
+        configSizes.splice(index, 1);
+        renderConfigs();
+    }
+
+    // === UPLOAD LOGIC ===
+    function setupUploadEvents() {
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+    }
+
+    function handleFile(file) {
+        if (!file || file.type !== 'image/png') {
+            Swal.fire('Sai định dạng', 'Vui lòng chỉ tải lên file PNG!', 'error');
+            return;
+        }
+        uploadedFile = file;
+        document.getElementById('fileNameDisplay').innerHTML = `<b>${file.name}</b>`;
+        document.getElementById('processBtn').disabled = false;
+        updatePreviewGridPlaceholder();
+    }
+
+    function updatePreviewGridPlaceholder() {
+        const grid = document.getElementById('previewGrid');
+        const total = configColors.length + configSizes.length + 1; // +1 for ICO
+        document.getElementById('totalOutputs').innerText = total;
+
+        if (!uploadedFile) return;
+
+        grid.innerHTML = '';
+        
+        // Placeholders for Colors
+        configColors.forEach(color => {
+            grid.innerHTML += createCardHTML('negative', color, 'Chờ xử lý...');
+        });
+
+        // Placeholders for Sizes
+        configSizes.forEach(size => {
+            grid.innerHTML += createCardHTML('square', size + 'px', 'Chờ xử lý...');
+        });
+        
+        // Placeholder for ICO
+        grid.innerHTML += createCardHTML('ico', 'Multi-size', 'Chờ xử lý...');
+    }
+
+    function createCardHTML(type, label, status) {
+        let icon = type === 'negative' ? 'fa-palette' : (type === 'ico' ? 'fa-icons' : 'fa-expand');
+        return `
+            <div class="image-card" data-id="${type}-${label}">
+                <div class="img-wrap">
+                    <span style="opacity:0.5; font-size: 0.8em;">${status}</span>
+                </div>
+                <div class="card-label"><i class="fas ${icon}"></i> ${label}</div>
+                <div class="card-sub">${type === 'negative' ? 'Âm bản' : 'Resize'}</div>
+            </div>
+        `;
+    }
+
+    // === PROCESSING LOGIC ===
+    async function processAll() {
+        if (!uploadedFile) return;
+
+        const btn = document.getElementById('processBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        btn.disabled = true;
+        processedData = [];
+        progressContainer.style.display = 'block';
+
+        const tasks = [];
+        
+        // Queue Color Tasks
+        configColors.forEach(color => {
+            tasks.push({ type: 'negative', val: color });
+        });
+        
+        // Queue Size Tasks
+        configSizes.forEach(size => {
+            tasks.push({ type: 'square', val: size });
+        });
+        
+        // Queue ICO Task
+        tasks.push({ type: 'ico', val: 'multi' });
+
+        const total = tasks.length;
+        let completed = 0;
+
+        for (const task of tasks) {
+            try {
+                let blob, fileName;
+                const baseName = uploadedFile.name.replace('.png', '');
+
+                if (task.type === 'negative') {
+                    blob = await createNegative(uploadedFile, task.val);
+                    // Safe filename from hex
+                    const safeColorName = task.val.replace('#', ''); 
+                    fileName = `${baseName}_negative_${safeColorName}.png`;
+                    updateCardImage(`negative-${task.val}`, blob);
+                } 
+                else if (task.type === 'square') {
+                    blob = await createSquare(uploadedFile, task.val);
+                    fileName = `${baseName}_${task.val}x${task.val}.png`;
+                    updateCardImage(`square-${task.val}px`, blob);
+                }
+                else if (task.type === 'ico') {
+                    blob = await createICO(uploadedFile);
+                    fileName = `${baseName}.ico`;
+                    // ICO preview fallback to smallest square
+                    updateCardImage(`ico-Multi-size`, null, true); 
+                }
+
+                if (blob) {
+                    processedData.push({ name: fileName, blob: blob });
+                }
+
+            } catch (err) {
+                console.error(err);
+            }
+
+            completed++;
+            const pct = Math.round((completed / total) * 100);
+            progressFill.style.width = pct + '%';
+            progressText.innerText = pct + '%';
+            
+            // Small delay to allow UI to update
+            await new Promise(r => setTimeout(r, 50));
+        }
+
+        // Generate Zip
+        await downloadZip();
+
+        btn.disabled = false;
+        Swal.fire('Hoàn tất!', 'Đã xử lý và tải xuống file ZIP.', 'success');
+    }
+
+    function updateCardImage(dataId, blob, isIco = false) {
+        const card = document.querySelector(`.image-card[data-id="${dataId}"] .img-wrap`);
+        if(card) {
+            if(isIco) {
+                card.innerHTML = '<i class="fas fa-check-circle" style="font-size: 40px; color: var(--success-color);"></i>';
+            } else {
+                const url = URL.createObjectURL(blob);
+                card.innerHTML = `<img src="${url}">`;
+            }
+        }
+    }
+
+    // --- CORE IMAGE PROCESSING FUNCTIONS ---
+
+    // 1. Negative & Colorize (Keep Original Size)
+    function createNegative(file, hexColor) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    ctx.drawImage(img, 0, 0);
+                    const idata = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = idata.data;
+                    
+                    const rgb = hexToRgb(hexColor);
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        // Invert
+                        data[i] = 255 - data[i];     // R
+                        data[i+1] = 255 - data[i+1]; // G
+                        data[i+2] = 255 - data[i+2]; // B
+                        
+                        // Colorize (Multiply blend)
+                        data[i] = Math.round(data[i] * (rgb.r / 255));
+                        data[i+1] = Math.round(data[i+1] * (rgb.g / 255));
+                        data[i+2] = Math.round(data[i+2] * (rgb.b / 255));
+                        
+                        // Alpha keeps original
+                    }
+                    
+                    ctx.putImageData(idata, 0, 0);
+                    // Enhance
+                    ctx.filter = 'contrast(1.05)';
+                    ctx.drawImage(canvas, 0, 0);
+                    
+                    canvas.toBlob(resolve, 'image/png');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // 2. Square Resize
+    function createSquare(file, size) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                // High quality stepping down
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                // Aspect Ratio Logic
+                const scale = Math.min(size / img.width, size / img.height);
+                const w = img.width * scale;
+                const h = img.height * scale;
+                const x = (size - w) / 2;
+                const y = (size - h) / 2;
+                
+                ctx.drawImage(img, x, y, w, h);
+                canvas.toBlob(resolve, 'image/png');
+            };
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
+    // 3. ICO (Simple 256px version for compatibility)
+    function createICO(file) {
+        return createSquare(file, 256).then(blob => {
+            // Just returning the blob with type ico, real multi-layer ICO needs binary manipulation
+            // but for web tools, saving a 256png as .ico works in most modern Windows/Web contexts
+            return blob; 
+        });
+    }
+
+    // Utility: Hex to RGB
+    function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 255, g: 255, b: 255 };
+    }
+
+    // Zip Download
+    async function downloadZip() {
+        const zip = new JSZip();
+        processedData.forEach(item => {
+            zip.file(item.name, item.blob);
+        });
+        const content = await zip.generateAsync({type:"blob"});
+        saveAs(content, `LAZINET_Pro_Assets_${Date.now()}.zip`);
+    }
+
+    function resetAll() {
+        uploadedFile = null;
+        processedData = [];
+        document.getElementById('fileInput').value = '';
+        document.getElementById('fileNameDisplay').innerText = 'Kéo thả hoặc chọn file';
+        document.getElementById('processBtn').disabled = true;
+        document.getElementById('progressContainer').style.display = 'none';
+        
+        // Reset configs to defaults? Or keep user settings? 
+        // Better UX: Keep user settings, just clear data.
+        updatePreviewGridPlaceholder();
+        Swal.fire('Đã làm mới', 'Sẵn sàng cho ảnh tiếp theo', 'info');
+    }
+
+</script>
+</body>
+</html>

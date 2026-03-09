@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Nhận Diện Thiết Bị & IP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.31/ua-parser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            background-color: #f8f9fa;
+        }
+        .section h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thông Tin Nhận Diện Thiết Bị & Địa Chỉ IP</h1>
+    <p style="text-align: center;">Đang thu thập thông tin chi tiết...</p>
+    <div id="info" class="loading">Đang tải...</div>
+
+    <script>
+        async function gatherInfo() {
+            const infoDiv = document.getElementById('info');
+            infoDiv.innerHTML = '<p class="loading">Đang thu thập thông tin...</p>';
+
+            // Lấy IP qua API
+            let ip = 'Không thể lấy IP';
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                ip = data.ip;
+            } catch (error) {
+                console.error('Lỗi lấy IP:', error);
+            }
+
+            // Chuyển đổi IP sang địa chỉ địa lý (sử dụng ipinfo.io để tránh CORS)
+            let geoInfo = { city: 'N/A', region: 'N/A', country: 'N/A', lat: 'N/A', lng: 'N/A', postal: 'N/A' };
+            try {
+                const geoResponse = await fetch(`https://ipinfo.io/${ip}/json`);
+                const geoData = await geoResponse.json();
+                geoInfo = {
+                    city: geoData.city || 'N/A',
+                    region: geoData.region || 'N/A',
+                    country: geoData.country || 'N/A',
+                    lat: (geoData.loc ? geoData.loc.split(',')[0] : 'N/A'),
+                    lng: (geoData.loc ? geoData.loc.split(',')[1] : 'N/A'),
+                    postal: geoData.postal || 'N/A'
+                };
+            } catch (error) {
+                console.error('Lỗi geolocation IP:', error);
+            }
+
+            // Parse User-Agent với UAParser để lấy chi tiết thiết bị
+            const parser = new UAParser();
+            const uaResult = parser.getResult();
+            const browserName = uaResult.browser.name || 'N/A';
+            const browserVersion = uaResult.browser.version || 'N/A';
+            const osName = uaResult.os.name || 'N/A';
+            const osVersion = uaResult.os.version || 'N/A';
+            const deviceType = uaResult.device.type || 'Desktop'; // mobile/tablet/desktop
+            const deviceModel = uaResult.device.model || 'N/A';
+            const deviceVendor = uaResult.device.vendor || 'N/A';
+            const cpuArchitecture = uaResult.cpu.architecture || (navigator.platform.includes('64') ? '64-bit' : '32-bit');
+
+            // Các thông tin khác
+            const userAgent = navigator.userAgent;
+            const language = navigator.language || navigator.languages[0];
+            const platform = navigator.platform;
+            const cookieEnabled = navigator.cookieEnabled;
+            const doNotTrack = navigator.doNotTrack;
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const screenResolution = `${screen.width}x${screen.height}`;
+            const colorDepth = screen.colorDepth;
+            const pixelDepth = screen.pixelDepth;
+            const windowSize = `${window.innerWidth}x${window.innerHeight}`;
+            const hardwareConcurrency = navigator.hardwareConcurrency || 'N/A';
+            const deviceMemory = navigator.deviceMemory || 'N/A';
+            const connectionType = navigator.connection ? navigator.connection.effectiveType : 'N/A';
+            const onlineStatus = navigator.onLine ? 'Online' : 'Offline';
+
+            // Canvas Fingerprint (cơ bản)
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillText('Fingerprint test', 2, 2);
+            const canvasData = canvas.toDataURL();
+
+            // WebGL Info (cơ bản)
+            let webglVendor = 'N/A';
+            let webglRenderer = 'N/A';
+            try {
+                const glCanvas = document.createElement('canvas');
+                const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
+                if (gl) {
+                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    webglVendor = debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : 'N/A';
+                    webglRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'N/A';
+                }
+            } catch (error) {
+                console.error('Lỗi WebGL:', error);
+            }
+
+            // Plugins (cũ, nhưng vẫn hữu ích)
+            const plugins = Array.from(navigator.plugins).map(p => p.name).join(', ');
+
+            // Fonts (cơ bản - kiểm tra một số font phổ biến)
+            const fonts = ['Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Comic Sans MS', 'Impact'];
+            const detectedFonts = fonts.filter(font => {
+                const test = new Option().style;
+                test.fontFamily = font;
+                return /monospace/.test(test.fontFamily) || /serif/.test(test.fontFamily) || /sans-serif/.test(test.fontFamily);
+            }).join(', '); // Giản lược
+
+            // Local Storage test
+            const localStorageEnabled = (() => {
+                try {
+                    localStorage.setItem('test', 'test');
+                    localStorage.removeItem('test');
+                    return 'Enabled';
+                } catch (e) {
+                    return 'Disabled';
+                }
+            })();
+
+            // Session Storage
+            const sessionStorageEnabled = (() => {
+                try {
+                    sessionStorage.setItem('test', 'test');
+                    sessionStorage.removeItem('test');
+                    return 'Enabled';
+                } catch (e) {
+                    return 'Disabled';
+                }
+            })();
+
+            // Touch support
+            const touchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0 ? 'Yes' : 'No';
+
+            // Geolocation (chỉ kiểm tra support, không request)
+            const geolocationEnabled = !!navigator.geolocation;
+
+            // Battery API (nếu có)
+            let batteryInfo = 'N/A';
+            if ('getBattery' in navigator) {
+                try {
+                    const battery = await navigator.getBattery();
+                    batteryInfo = `Level: ${Math.round(battery.level * 100)}%, Charging: ${battery.charging}`;
+                } catch (error) {
+                    console.error('Lỗi Battery API:', error);
+                }
+            }
+
+            // Hiển thị thông tin
+            infoDiv.innerHTML = `
+                <div class="section">
+                    <h3>📍 Thông Tin Mạng</h3>
+                    <strong>Địa chỉ IP:</strong> ${ip}<br>
+                    <strong>Thành phố:</strong> ${geoInfo.city}<br>
+                    <strong>Khu vực/Tỉnh:</strong> ${geoInfo.region}<br>
+                    <strong>Quốc gia:</strong> ${geoInfo.country}<br>
+                    <strong>Mã bưu điện:</strong> ${geoInfo.postal}<br>
+                    <strong>Tọa độ (Lat/Lng):</strong> ${geoInfo.lat}, ${geoInfo.lng}<br>
+                    <strong>Trạng thái kết nối:</strong> ${onlineStatus}<br>
+                    <strong>Loại kết nối:</strong> ${connectionType}
+                </div>
+
+                <div class="section">
+                    <h3>🌐 Thông Tin Trình Duyệt</h3>
+                    <strong>Tên trình duyệt:</strong> ${browserName}<br>
+                    <strong>Phiên bản trình duyệt:</strong> ${browserVersion}<br>
+                    <strong>User Agent đầy đủ:</strong> ${userAgent}<br>
+                    <strong>Ngôn ngữ:</strong> ${language}<br>
+                    <strong>Platform:</strong> ${platform}<br>
+                    <strong>Cookies Enabled:</strong> ${cookieEnabled}<br>
+                    <strong>Do Not Track:</strong> ${doNotTrack}<br>
+                    <strong>Local Storage:</strong> ${localStorageEnabled}<br>
+                    <strong>Session Storage:</strong> ${sessionStorageEnabled}
+                </div>
+
+                <div class="section">
+                    <h3>🖥️ Thông Tin Thiết Bị Chi Tiết</h3>
+                    <strong>Hệ điều hành:</strong> ${osName}<br>
+                    <strong>Phiên bản OS:</strong> ${osVersion}<br>
+                    <strong>Loại thiết bị:</strong> ${deviceType}<br>
+                    <strong>Nhà sản xuất thiết bị:</strong> ${deviceVendor}<br>
+                    <strong>Model thiết bị:</strong> ${deviceModel}<br>
+                    <strong>Kiến trúc CPU:</strong> ${cpuArchitecture}<br>
+                    <strong>Múi giờ:</strong> ${timezone}<br>
+                    <strong>Độ phân giải màn hình:</strong> ${screenResolution}<br>
+                    <strong>Độ sâu màu:</strong> ${colorDepth} bit<br>
+                    <strong>Kích thước cửa sổ:</strong> ${windowSize}<br>
+                    <strong>Hardware Concurrency (CPU cores):</strong> ${hardwareConcurrency}<br>
+                    <strong>Device Memory (GB):</strong> ${deviceMemory}<br>
+                    <strong>Touch Support:</strong> ${touchSupport}<br>
+                    <strong>Geolocation Support:</strong> ${geolocationEnabled ? 'Yes' : 'No'}<br>
+                    <strong>Battery Info:</strong> ${batteryInfo}
+                </div>
+
+                <div class="section">
+                    <h3>🎨 Fingerprint Cơ Bản</h3>
+                    <strong>Canvas Fingerprint:</strong> ${canvasData.substring(0, 50)}...<br>
+                    <strong>WebGL Vendor:</strong> ${webglVendor}<br>
+                    <strong>WebGL Renderer:</strong> ${webglRenderer}<br>
+                    <strong>Plugins:</strong> ${plugins || 'None'}<br>
+                    <strong>Detected Fonts:</strong> ${detectedFonts || 'Standard set'}
+                </div>
+
+                <p style="text-align: center; font-style: italic; color: #666;">
+                    Lưu ý: Một số thông tin có thể không chính xác 100% do hạn chế bảo mật của trình duyệt. Geolocation IP chỉ chính xác đến mức thành phố/khu vực.
+                </p>
+            `;
+        }
+
+        // Tự động chạy khi trang load
+        document.addEventListener('DOMContentLoaded', gatherInfo);
+    </script>
+</body>
+</html>

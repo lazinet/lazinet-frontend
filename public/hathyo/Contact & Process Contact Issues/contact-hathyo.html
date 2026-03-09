@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liên hệ HATHYO</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="contact-hathyo.css">
+  <link rel="icon" href="HathyoV1_Square_Full.png">
+</head>
+<body>
+  <div class="container">
+    <!-- <div class="logo">
+      <img src="HathyoV1_Square_Full.png" alt="HATHYO Logo">
+      <h1>HATHYO <span>Happy Healthy You!</span></h1>
+    </div> -->
+    
+    <div class="contact-section">
+      <h2><span style="color: #ff6300;">Hãy liên hệ với </span><span style="color: #0a703f;">HATHYO</span></h2>
+      
+      <div class="contact-info">
+        <div class="info-item">
+          <i class="bi bi-geo-alt"></i>
+          <div>
+            <h3>Địa chỉ</h3>
+            <p><a href="https://maps.app.goo.gl/9fsyrQdAEaw3Uot97" target="_blank">82 Phan Đăng Lưu, Phú Nhuận, TP.HCM</a></p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <i class="bi bi-telephone"></i>
+          <div>
+            <h3>Điện thoại</h3>
+            <p><a href="tel:+84827000248">+84-827000248</a> (Zalo/WhatsApp)</p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <i class="bi bi-envelope"></i>
+          <div>
+            <h3>Email</h3>
+            <p><a href="mailto:email@hathyo.com">email@hathyo.com</a></p>
+          </div>
+        </div>
+      </div>
+      
+      <form id="contactForm" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Quý danh:</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="userType">Mục đích:</label>
+            <select id="userType" name="userType" required>
+              <option value="" disabled selected>Chọn mục đích</option>
+              <option value="Bán hàng">Bán hàng</option>
+              <option value="Mua hàng">Mua hàng</option>
+              <option value="Đổi trả">Đổi trả</option>
+              <option value="Khiếu kiện">Khiếu kiện</option>
+              <option value="Góp ý">Góp ý</option>
+              <option value="Phản ánh TCXH">Phản ánh TCXH</option>
+              <option value="Hợp tác kinh doanh">Hợp tác kinh doanh</option>
+              <option value="Cộng tác nội dung">Cộng tác nội dung</option>
+              <option value="Cơ hội việc làm">Cơ hội việc làm</option>
+              <option value="Other">Khác</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group" id="otherTypeGroup" style="display: none;">
+          <label for="otherType">Chi tiết mục đích khác:</label>
+          <input type="text" id="otherType" name="otherType">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="subject">Tiêu đề:</label>
+          <input type="text" id="subject" name="subject" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="message">Nội dung:</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        
+        <button type="submit" id="submitBtn">
+          <span class="button-text">Gửi HATHYO</span>
+          <span class="spinner" style="display: none;"></span>
+        </button>
+        
+        <div id="messageBox" class="message-box"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contactForm');
+      const userTypeSelect = document.getElementById('userType');
+      const otherTypeGroup = document.getElementById('otherTypeGroup');
+      const submitBtn = document.getElementById('submitBtn');
+      const buttonText = submitBtn.querySelector('.button-text');
+      const spinner = submitBtn.querySelector('.spinner');
+      const messageBox = document.getElementById('messageBox');
+      
+      // Handle user type change
+      userTypeSelect.addEventListener('change', function() {
+        otherTypeGroup.style.display = this.value === 'Other' ? 'block' : 'none';
+        if (this.value === 'Other') {
+          document.getElementById('otherType').setAttribute('required', '');
+        } else {
+          document.getElementById('otherType').removeAttribute('required');
+        }
+      });
+      
+      // Handle form submission
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        buttonText.textContent = 'Đang gửi...';
+        spinner.style.display = 'inline-block';
+        submitBtn.disabled = true;
+        messageBox.textContent = '';
+        messageBox.className = 'message-box';
+        
+        try {
+          const formData = new FormData(contactForm);
+          formData.append('action', 'submitContactForm');
+          
+          const response = await fetch('https://script.google.com/macros/s/AKfycbzgcmQsADsqsQBuaov0OaFUG8VKQ8xG7Yi3z6HsM7VS-ZRWgsiEx4mCOeL96ZHJitx5/exec', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Origin': window.location.origin
+            }
+          });
+          
+          const result = await response.json();
+          
+          if (result.status === 'success') {
+            messageBox.textContent = result.message;
+            messageBox.className = 'message-box success';
+            contactForm.reset();
+          } else {
+            messageBox.textContent = result.message || 'Có lỗi xảy ra khi gửi mẫu tin';
+            messageBox.className = 'message-box error';
+          }
+        } catch (error) {
+          messageBox.textContent = 'Lỗi kết nối. Vui lòng thử lại sau.';
+          messageBox.className = 'message-box error';
+          console.error('Error:', error);
+        } finally {
+          buttonText.textContent = 'Gửi HATHYO';
+          spinner.style.display = 'none';
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

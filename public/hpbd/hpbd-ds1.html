@@ -1,0 +1,2841 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET Birthday Card Playground - Hệ thống tạo thiệp sinh nhật</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="" id="favicon">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- html2canvas for export -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Confetti effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /* === ROOT VARIABLES === */
+        :root {
+            --primary-color: #187752;
+            --secondary-color: #B91C1C;
+            --bg-color: #FAFAFA;
+            --text-color: #333333;
+            --font-family: 'Be Vietnam Pro', Tahoma, Arial, sans-serif;
+            --border-radius: 8px;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        /* === RESET & BASE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* === LAYOUT === */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Configuration Panel - 25% */
+        .config-panel {
+            width: 25%;
+            min-width: 300px;
+            max-width: 400px;
+            background: white;
+            border-right: 1px solid #e1e5e9;
+            overflow-y: auto;
+            padding: 25px 20px;
+            position: relative;
+            z-index: 100;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        /* Preview Panel - 75% */
+        .preview-panel {
+            flex: 1;
+            padding: 30px;
+            background: #f5f7fa;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* === HEADER === */
+        .header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* === TABS === */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition);
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* === FORM ELEMENTS === */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d9e6;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family);
+            font-size: 14px;
+            transition: var(--transition);
+            background: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(24, 119, 82, 0.1);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .input-group .form-control {
+            flex: 1;
+        }
+        
+        /* === BUTTONS === */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #146040;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(24, 119, 82, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #9c1717;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn-group .btn {
+            flex: 1;
+        }
+        
+        /* === CARD PREVIEW === */
+        .card-container {
+            width: 100%;
+            max-width: 800px;
+            min-height: 600px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .card-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 50px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+        
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        .card-title {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-subtitle {
+            font-size: 32px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .card-company {
+            font-size: 20px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .card-wish {
+            font-size: 20px;
+            line-height: 1.8;
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            border-left: 5px solid var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-events {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .card-events h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .signature {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .signature-logo {
+            max-width: 120px;
+            height: auto;
+            border-radius: var(--border-radius);
+        }
+        
+        .signature-text {
+            flex: 1;
+        }
+        
+        .signature-name {
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .signature-company {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .signature-contact {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .promotional-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .promo-image {
+            max-width: 250px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .promo-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* === EFFECTS PREVIEW === */
+        .effect-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        /* === ACTION BUTTONS === */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        /* === LOADING OVERLAY === */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* === TOAST NOTIFICATION === */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.error {
+            background: var(--secondary-color);
+        }
+        
+        .toast.success {
+            background: #28a745;
+        }
+        
+        .toast.warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        /* === STATUS INDICATOR === */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .status-online {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .status-offline {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-online .status-dot {
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-offline .status-dot {
+            background: #dc3545;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 1200px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .config-panel {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                max-height: 50vh;
+                border-right: none;
+                border-bottom: 1px solid #e1e5e9;
+            }
+            
+            .preview-panel {
+                height: auto;
+                min-height: 50vh;
+                padding: 20px;
+            }
+            
+            .card-container {
+                max-width: 100%;
+                min-height: 500px;
+            }
+            
+            .card-content {
+                padding: 30px;
+                min-height: 500px;
+            }
+            
+            .card-title {
+                font-size: 36px;
+            }
+            
+            .card-subtitle {
+                font-size: 24px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .config-panel {
+                padding: 15px;
+            }
+            
+            .preview-panel {
+                padding: 15px;
+            }
+            
+            .card-content {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 28px;
+            }
+            
+            .card-subtitle {
+                font-size: 20px;
+            }
+            
+            .card-wish {
+                font-size: 16px;
+                padding: 20px;
+            }
+            
+            .signature {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .signature-logo {
+                max-width: 80px;
+            }
+            
+            .promotional-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .promo-image {
+                max-width: 200px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+        
+        /* === CUSTOM SCROLLBAR === */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #146040;
+        }
+        
+        /* === COLOR PICKER === */
+        .color-picker-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .color-picker {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .color-picker label {
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .color-input {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            padding: 0;
+            background: transparent;
+        }
+        
+        .color-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        
+        .color-input::-webkit-color-swatch {
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        /* === BACKGROUND UPLOAD === */
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(24, 119, 82, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .upload-area p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        /* === EFFECTS OPTIONS === */
+        .effects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .effect-option {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .effect-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(24, 119, 82, 0.05);
+        }
+        
+        .effect-option.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* === URL INPUT === */
+        .url-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .url-input-group .form-control {
+            flex: 1;
+        }
+        
+        /* === BACKEND URL INPUT === */
+        .backend-url-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .backend-url-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .backend-url-input {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+        
+        /* === INFO BOX === */
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        .info-box.warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        
+        .info-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        
+        /* === SECTION DIVIDER === */
+        .section-divider {
+            height: 1px;
+            background: #e1e5e9;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .section-divider::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -5px;
+            width: 50px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+        
+        /* === CARD COUNTER === */
+        .card-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 10;
+        }
+        
+        /* === PRINT STYLES === */
+        @media print {
+            .config-panel,
+            .action-buttons,
+            .toast,
+            .loading-overlay {
+                display: none !important;
+            }
+            
+            .app-container {
+                display: block;
+            }
+            
+            .preview-panel {
+                padding: 0;
+                background: white;
+            }
+            
+            .card-container {
+                box-shadow: none;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .card-content {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Configuration Panel (25%) -->
+        <div class="config-panel">
+            <!-- Header -->
+            <div class="header">
+                <h1><i class="fas fa-birthday-cake"></i> Birthday Card Creator</h1>
+                <p>Tạo thiệp sinh nhật cá nhân hóa với AI</p>
+                
+                <!-- Status Indicator -->
+                <div class="status-indicator status-offline" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span id="statusText">Đang kết nối...</span>
+                </div>
+            </div>
+            
+            <!-- Backend URL Configuration -->
+            <div class="backend-url-container">
+                <label for="gasUrl"><i class="fas fa-link"></i> Backend URL (Google Apps Script)</label>
+                <input type="text" id="gasUrl" class="form-control backend-url-input" 
+                       placeholder="https://script.google.com/macros/s/AKfycbxcjIMTKEWKz4_ZRT-cdAz-j-xIkeK7aaOR52ple8GFyJNBkUQo9pSx2rG-Bb3T55luFg/exec">
+                <div class="btn-group" style="margin-top: 10px;">
+                    <button class="btn btn-primary btn-small" onclick="saveBackendUrl()">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button class="btn btn-outline btn-small" onclick="testConnection()">
+                        <i class="fas fa-plug"></i> Test
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="recipient"><i class="fas fa-user"></i> Người nhận</div>
+                <div class="tab" data-tab="wish"><i class="fas fa-gift"></i> Lời chúc</div>
+                <div class="tab" data-tab="design"><i class="fas fa-palette"></i> Thiết kế</div>
+                <div class="tab" data-tab="email"><i class="fas fa-envelope"></i> Email</div>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="tab-recipient">
+                <!-- Recipient Selection -->
+                <div class="form-group">
+                    <label><i class="fas fa-birthday-cake"></i> Người có sinh nhật hôm nay</label>
+                    <select class="form-control" id="recipientSelect" onchange="loadSelectedRecipient()">
+                        <option value="">-- Chọn người nhận --</option>
+                    </select>
+                    <div class="info-box" id="birthdayInfo" style="display: none;">
+                        <i class="fas fa-info-circle"></i> Có <span id="birthdayCount">0</span> người có sinh nhật hôm nay
+                    </div>
+                </div>
+                
+                <!-- Manual Input -->
+                <div class="form-group">
+                    <label><i class="fas fa-edit"></i> Hoặc nhập thủ công</label>
+                    <input type="text" class="form-control" id="personTitle" placeholder="Xưng hô (Anh/Chị/Bạn...)">
+                    <input type="text" class="form-control" id="personName" placeholder="Tên người nhận" style="margin-top: 8px;">
+                    <input type="text" class="form-control" id="personCompany" placeholder="Công ty" style="margin-top: 8px;">
+                </div>
+                
+                <!-- Date of Birth -->
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-alt"></i> Ngày sinh</label>
+                    <input type="date" class="form-control" id="dob" value="">
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-small" onclick="loadTodayBirthdays()">
+                            <i class="fas fa-sync-alt"></i> Tải danh sách
+                        </button>
+                        <button class="btn btn-primary btn-small" onclick="updateRecipientInfo()">
+                            <i class="fas fa-save"></i> Cập nhật
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Historical Events -->
+                <div class="form-group">
+                    <label><i class="fas fa-history"></i> Sự kiện lịch sử cùng ngày</label>
+                    <div class="btn-group">
+                        <button class="btn btn-outline" onclick="loadHistoricalEvents()" id="btnEvents">
+                            <i class="fas fa-clock"></i> Tải sự kiện
+                        </button>
+                        <button class="btn btn-primary" onclick="generateEventsSummary()">
+                            <i class="fas fa-robot"></i> AI Tóm tắt
+                        </button>
+                    </div>
+                    <div class="info-box warning" style="display: none;" id="eventsInfo">
+                        <i class="fas fa-spinner fa-spin"></i> Đang tải sự kiện...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wish Tab -->
+            <div class="tab-content" id="tab-wish">
+                <!-- Wish Selection -->
+                <div class="form-group">
+                    <label><i class="fas fa-quote-left"></i> Chọn mẫu lời chúc</label>
+                    <select class="form-control" id="wishSelect" onchange="applyWishTemplate()">
+                        <option value="">-- Chọn mẫu --</option>
+                    </select>
+                </div>
+                
+                <!-- AI Generated Wishes -->
+                <div class="form-group">
+                    <label><i class="fas fa-robot"></i> Lời chúc AI tạo</label>
+                    <select class="form-control" id="aiWishSelect" onchange="applyAIWish()">
+                        <option value="">-- Chọn lời chúc AI --</option>
+                    </select>
+                </div>
+                
+                <!-- Custom Wish -->
+                <div class="form-group">
+                    <label><i class="fas fa-edit"></i> Lời chúc tùy chỉnh</label>
+                    <textarea class="form-control" id="customWish" placeholder="Nhập lời chúc của bạn..." 
+                              maxlength="500" oninput="updateWishCounter()"></textarea>
+                    <div style="text-align: right; margin-top: 5px; font-size: 12px; color: #666;">
+                        <span id="wishCounter">0</span>/500 ký tự
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="generateAIWish()" id="btnGenerateWish">
+                            <i class="fas fa-magic"></i> AI Tạo mới
+                        </button>
+                        <button class="btn btn-secondary" onclick="updateCardWish()">
+                            <i class="fas fa-sync"></i> Áp dụng
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Preference -->
+                <div class="form-group">
+                    <label><i class="fas fa-heart"></i> Sở thích/Phong cách (cho AI)</label>
+                    <textarea class="form-control" id="preference" placeholder="Nhập sở thích, phong cách của người nhận..." 
+                              rows="3"></textarea>
+                </div>
+            </div>
+            
+            <!-- Design Tab -->
+            <div class="tab-content" id="tab-design">
+                <!-- Background Selection -->
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Hình nền</label>
+                    <select class="form-control" id="backgroundSelect" onchange="changeBackground()">
+                        <option value="">-- Chọn hình nền --</option>
+                    </select>
+                    
+                    <!-- URL Input -->
+                    <div class="url-input-group">
+                        <input type="text" class="form-control" id="backgroundUrl" placeholder="Hoặc dán URL ảnh">
+                        <button class="btn btn-outline" onclick="applyBackgroundUrl()">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- File Upload -->
+                    <div class="upload-area" onclick="triggerBackgroundUpload()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Kéo thả hoặc click để tải ảnh lên</p>
+                        <p style="font-size: 12px; color: #999;">JPG, PNG, GIF (tối đa 5MB)</p>
+                    </div>
+                    <input type="file" id="backgroundFile" accept="image/*" style="display: none;" onchange="handleBackgroundUpload()">
+                </div>
+                
+                <!-- Color Picker -->
+                <div class="form-group">
+                    <label><i class="fas fa-palette"></i> Màu sắc chủ đề</label>
+                    <div class="color-picker-group">
+                        <div class="color-picker">
+                            <label>Màu chính</label>
+                            <input type="color" class="color-input" id="primaryColor" value="#187752" onchange="updateColors()">
+                        </div>
+                        <div class="color-picker">
+                            <label>Màu phụ</label>
+                            <input type="color" class="color-input" id="secondaryColor" value="#B91C1C" onchange="updateColors()">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Background Effects -->
+                <div class="form-group">
+                    <label><i class="fas fa-star"></i> Hiệu ứng nền</label>
+                    <div class="effects-grid">
+                        <div class="effect-option" data-effect="none" onclick="selectEffect(this, 'bg')">
+                            Không hiệu ứng
+                        </div>
+                        <div class="effect-option" data-effect="tech-grid" onclick="selectEffect(this, 'bg')">
+                            Tech Grid
+                        </div>
+                        <div class="effect-option" data-effect="balloon" onclick="selectEffect(this, 'bg')">
+                            Balloon & Butterfly
+                        </div>
+                        <div class="effect-option" data-effect="stars" onclick="selectEffect(this, 'bg')">
+                            Raising Stars
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Moving Effects -->
+                <div class="form-group">
+                    <label><i class="fas fa-magic"></i> Hiệu ứng thao tác</label>
+                    <div class="effects-grid">
+                        <div class="effect-option" data-effect="none" onclick="selectEffect(this, 'move')">
+                            Không hiệu ứng
+                        </div>
+                        <div class="effect-option" data-effect="flower-name" onclick="selectEffect(this, 'move')">
+                            Flower Name
+                        </div>
+                        <div class="effect-option" data-effect="flower-drop" onclick="selectEffect(this, 'move')">
+                            Flower Drop
+                        </div>
+                        <div class="effect-option" data-effect="confetti" onclick="selectEffect(this, 'move')">
+                            Confetti
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Font Selection -->
+                <div class="form-group">
+                    <label><i class="fas fa-font"></i> Font chữ</label>
+                    <select class="form-control" id="fontFamily" onchange="updateFont()">
+                        <option value="'Be Vietnam Pro', Tahoma, Arial, sans-serif">Be Vietnam Pro</option>
+                        <option value="Tahoma, Arial, sans-serif">Tahoma</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Email Tab -->
+            <div class="tab-content" id="tab-email">
+                <!-- Sender Info -->
+                <div class="form-group">
+                    <label><i class="fas fa-user-edit"></i> Thông tin người gửi</label>
+                    <input type="text" class="form-control" id="senderName" placeholder="Tên người gửi">
+                    <input type="text" class="form-control" id="senderCompany" placeholder="Công ty" style="margin-top: 8px;">
+                    <input type="email" class="form-control" id="senderEmail" placeholder="Email" style="margin-top: 8px;">
+                </div>
+                
+                <!-- Promotional Images -->
+                <div class="form-group">
+                    <label><i class="fas fa-ad"></i> Hình ảnh quảng cáo</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="promoImage1Url" placeholder="URL hình ảnh 1">
+                        <input type="text" class="form-control" id="promoImage1Link" placeholder="Liên kết">
+                    </div>
+                    <div class="input-group" style="margin-top: 8px;">
+                        <input type="text" class="form-control" id="promoImage2Url" placeholder="URL hình ảnh 2">
+                        <input type="text" class="form-control" id="promoImage2Link" placeholder="Liên kết">
+                    </div>
+                    <button class="btn btn-outline btn-small" onclick="updatePromotionalImages()" style="margin-top: 8px;">
+                        <i class="fas fa-sync"></i> Cập nhật ảnh
+                    </button>
+                </div>
+                
+                <!-- Email Actions -->
+                <div class="form-group">
+                    <label><i class="fas fa-paper-plane"></i> Gửi email</label>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="sendTestEmail()">
+                            <i class="fas fa-envelope"></i> Gửi thử
+                        </button>
+                        <button class="btn btn-secondary" onclick="sendBatchEmails()">
+                            <i class="fas fa-mail-bulk"></i> Gửi hàng loạt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Export Actions -->
+                <div class="section-divider"></div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-download"></i> Xuất file</label>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="exportAsImage()">
+                            <i class="fas fa-image"></i> Xuất ảnh
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportAsPDF()">
+                            <i class="fas fa-file-pdf"></i> Xuất PDF
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline" onclick="printCard()">
+                            <i class="fas fa-print"></i> In thiệp
+                        </button>
+                        <button class="btn btn-outline" onclick="shareCard()">
+                            <i class="fas fa-share-alt"></i> Chia sẻ
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Contact -->
+                <div class="form-group">
+                    <label><i class="fas fa-headset"></i> Hỗ trợ & Liên hệ</label>
+                    <button class="btn btn-outline btn-full" onclick="openContactPage()">
+                        <i class="fas fa-question-circle"></i> Trợ giúp & Liên hệ
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Update All Button -->
+            <div class="section-divider"></div>
+            
+            <button class="btn btn-primary btn-full" onclick="updateAll()" id="btnUpdateAll">
+                <i class="fas fa-sync-alt"></i> Cập nhật toàn bộ
+            </button>
+        </div>
+        
+        <!-- Preview Panel (75%) -->
+        <div class="preview-panel">
+            <!-- Card Counter -->
+            <div class="card-counter" id="cardCounter">
+                <i class="fas fa-users"></i> <span id="birthdayCountPreview">0</span> sinh nhật hôm nay
+            </div>
+            
+            <!-- Birthday Card -->
+            <div class="card-container" id="cardContainer">
+                <!-- Background Layer -->
+                <div class="card-background" id="cardBackground"></div>
+                
+                <!-- Effect Layer -->
+                <canvas class="effect-layer" id="effectLayer"></canvas>
+                
+                <!-- Content Layer -->
+                <div class="card-content" id="cardContent">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h1 class="card-title" id="cardTitle">🎂 CHÚC MỪNG SINH NHẬT 🎉</h1>
+                        <h2 class="card-subtitle" id="cardSubtitle">Anh/Chị [Tên người nhận]</h2>
+                        <div class="card-company" id="cardCompany">[Công ty]</div>
+                    </div>
+                    
+                    <!-- Body -->
+                    <div class="card-body">
+                        <!-- Wish Content -->
+                        <div class="card-wish" id="cardWish">
+                            Chúc mừng sinh nhật! Chúc bạn một tuổi mới tràn đầy niềm vui, sức khỏe và thành công rực rỡ. LAZINET luôn sẵn sàng đồng hành cùng bạn trên con đường phát triển.
+                        </div>
+                        
+                        <!-- Historical Events -->
+                        <div class="card-events" id="cardEvents" style="display: none;">
+                            <h4><i class="fas fa-history"></i> CÙNG SINH NHẬT VÀ NHỮNG SỰ KIỆN LỚN</h4>
+                            <div id="eventsContent">
+                                <p><i class="fas fa-spinner fa-spin"></i> Đang tải sự kiện lịch sử...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="card-footer">
+                        <!-- Signature -->
+                        <div class="signature">
+                            <img src="" alt="Logo" class="signature-logo" id="signatureLogo">
+                            <div class="signature-text">
+                                <div class="signature-name" id="signatureName">Hoàng Minh Phụng</div>
+                                <div class="signature-company" id="signatureCompany">LAZINET Technologies</div>
+                                <div class="signature-contact" id="signatureContact">
+                                    ĐT: 0908556220 | Email: phung@lazinet.com
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Promotional Images -->
+                        <div class="promotional-section" id="promotionalSection">
+                            <!-- Promotional images will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="quickUpdate()">
+                    <i class="fas fa-bolt"></i> Cập nhật nhanh
+                </button>
+                <button class="btn btn-secondary" onclick="resetCard()">
+                    <i class="fas fa-redo"></i> Đặt lại
+                </button>
+                <button class="btn btn-outline" onclick="previewEmail()">
+                    <i class="fas fa-eye"></i> Xem trước email
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden Canvas for Effects -->
+    <canvas id="hiddenCanvas" style="display: none;"></canvas>
+    
+    <!-- JavaScript -->
+    <script>
+        // ========== GLOBAL VARIABLES ==========
+        let GAS_URL = '';
+        let configData = {};
+        let birthdayData = [];
+        let wishData = [];
+        let backgroundData = [];
+        let currentRecipient = null;
+        let currentBackgroundEffect = 'none';
+        let currentMovingEffect = 'none';
+        let effectInterval = null;
+        
+        // ========== INITIALIZATION ==========
+        $(document).ready(function() {
+            initializeApp();
+            setupEventListeners();
+            loadSavedSettings();
+        });
+        
+        function initializeApp() {
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            $('#dob').val(today);
+            
+            // Load saved backend URL
+            const savedUrl = localStorage.getItem('birthday_gas_url');
+            if (savedUrl) {
+                $('#gasUrl').val(savedUrl);
+                GAS_URL = savedUrl;
+                
+                // Test connection automatically
+                setTimeout(() => {
+                    testConnection();
+                }, 1000);
+            }
+            
+            // Initialize wish counter
+            updateWishCounter();
+            
+            // Set initial tab
+            showTab('recipient');
+        }
+        
+        function setupEventListeners() {
+            // Tab switching
+            $('.tab').click(function() {
+                const tabId = $(this).data('tab');
+                showTab(tabId);
+            });
+            
+            // Auto-update on input changes
+            $('#personTitle, #personName, #personCompany').on('input', debounce(updateCardInfo, 300));
+            $('#customWish').on('input', debounce(updateCardWish, 300));
+            $('#primaryColor, #secondaryColor').on('input', debounce(updateColors, 300));
+            
+            // Enter key to apply changes
+            $('#backgroundUrl').keypress(function(e) {
+                if (e.which === 13) applyBackgroundUrl();
+            });
+            
+            // Load config when backend URL changes
+            $('#gasUrl').change(function() {
+                GAS_URL = $(this).val().trim();
+                if (GAS_URL) {
+                    saveBackendUrl();
+                    loadConfigData();
+                }
+            });
+            
+            // Initialize effects
+            initEffects();
+        }
+        
+        function loadSavedSettings() {
+            // Load saved colors
+            const savedPrimary = localStorage.getItem('primary_color');
+            const savedSecondary = localStorage.getItem('secondary_color');
+            
+            if (savedPrimary) {
+                $('#primaryColor').val(savedPrimary);
+            }
+            if (savedSecondary) {
+                $('#secondaryColor').val(savedSecondary);
+            }
+            
+            // Load saved font
+            const savedFont = localStorage.getItem('selected_font');
+            if (savedFont) {
+                $('#fontFamily').val(savedFont);
+                updateFont();
+            }
+        }
+        
+        // ========== BACKEND COMMUNICATION ==========
+        function saveBackendUrl() {
+            GAS_URL = $('#gasUrl').val().trim();
+            if (GAS_URL) {
+                localStorage.setItem('birthday_gas_url', GAS_URL);
+                showToast('Đã lưu URL backend!', 'success');
+                loadConfigData();
+            }
+        }
+        
+        async function testConnection() {
+            if (!GAS_URL) {
+                showToast('Vui lòng nhập URL backend trước!', 'error');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                // Test with JSONP
+                const timestamp = Date.now();
+                const callbackName = `testCallback_${timestamp}`;
+                
+                window[callbackName] = function(response) {
+                    delete window[callbackName];
+                    
+                    if (response && response.success) {
+                        updateStatus('online', 'Kết nối thành công!');
+                        showToast('✅ Kết nối backend thành công!', 'success');
+                        loadAllData();
+                    } else {
+                        updateStatus('offline', 'Kết nối thất bại');
+                        showToast('❌ Không thể kết nối đến backend', 'error');
+                    }
+                    hideLoading();
+                };
+                
+                const script = document.createElement('script');
+                script.src = `${GAS_URL}?action=checkSystemStatus&callback=${callbackName}`;
+                script.onerror = function() {
+                    delete window[callbackName];
+                    updateStatus('offline', 'Lỗi kết nối');
+                    showToast('❌ Lỗi kết nối mạng', 'error');
+                    hideLoading();
+                };
+                
+                document.head.appendChild(script);
+                
+            } catch (error) {
+                console.error('Connection test error:', error);
+                updateStatus('offline', 'Lỗi kết nối');
+                showToast('Lỗi kết nối: ' + error.message, 'error');
+                hideLoading();
+            }
+        }
+        
+        async function loadAllData() {
+            showLoading();
+            
+            try {
+                await Promise.all([
+                    loadConfigData(),
+                    loadTodayBirthdays(),
+                    loadWishList(),
+                    loadBackgroundList()
+                ]);
+                
+                showToast('Đã tải tất cả dữ liệu!', 'success');
+                
+            } catch (error) {
+                console.error('Load all data error:', error);
+                showToast('Lỗi khi tải dữ liệu: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function loadConfigData() {
+            if (!GAS_URL) return;
+            
+            try {
+                const timestamp = Date.now();
+                const callbackName = `configCallback_${timestamp}`;
+                
+                window[callbackName] = function(response) {
+                    delete window[callbackName];
+                    
+                    if (response && response.success) {
+                        configData = response.data || {};
+                        applyConfigToUI();
+                        showToast('Đã tải cấu hình hệ thống', 'success');
+                    }
+                };
+                
+                const script = document.createElement('script');
+                script.src = `${GAS_URL}?action=getPublicConfig&callback=${callbackName}`;
+                script.onerror = function() {
+                    delete window[callbackName];
+                    console.error('Failed to load config');
+                };
+                
+                document.head.appendChild(script);
+                
+            } catch (error) {
+                console.error('Load config error:', error);
+            }
+        }
+        
+        async function loadTodayBirthdays() {
+            if (!GAS_URL) return;
+            
+            try {
+                const timestamp = Date.now();
+                const callbackName = `birthdayCallback_${timestamp}`;
+                
+                window[callbackName] = function(response) {
+                    delete window[callbackName];
+                    
+                    if (response && response.success) {
+                        birthdayData = response.data || [];
+                        updateRecipientDropdown();
+                        
+                        const count = birthdayData.length;
+                        $('#birthdayCount').text(count);
+                        $('#birthdayCountPreview').text(count);
+                        
+                        if (count > 0) {
+                            $('#birthdayInfo').show().html(`
+                                <i class="fas fa-info-circle"></i> Có <strong>${count}</strong> người có sinh nhật hôm nay
+                            `);
+                        } else {
+                            $('#birthdayInfo').show().html(`
+                                <i class="fas fa-info-circle"></i> Không có ai có sinh nhật hôm nay
+                            `);
+                        }
+                        
+                        // Auto-select first recipient
+                        if (count > 0 && !currentRecipient) {
+                            $('#recipientSelect').val(birthdayData[0].id).trigger('change');
+                        }
+                    }
+                };
+                
+                const script = document.createElement('script');
+                script.src = `${GAS_URL}?action=getTodayBirthdays&callback=${callbackName}`;
+                
+                document.head.appendChild(script);
+                
+            } catch (error) {
+                console.error('Load birthdays error:', error);
+            }
+        }
+        
+        async function loadWishList() {
+            if (!GAS_URL) return;
+            
+            try {
+                // Load from config data if available
+                if (configData.WishList && Array.isArray(configData.WishList)) {
+                    wishData = configData.WishList;
+                    updateWishDropdown();
+                } else {
+                    // Fallback to API
+                    const timestamp = Date.now();
+                    const callbackName = `wishCallback_${timestamp}`;
+                    
+                    window[callbackName] = function(response) {
+                        delete window[callbackName];
+                        
+                        if (response && response.success) {
+                            wishData = response.data || [];
+                            updateWishDropdown();
+                        }
+                    };
+                    
+                    const script = document.createElement('script');
+                    script.src = `${GAS_URL}?action=getWishList&callback=${callbackName}`;
+                    
+                    document.head.appendChild(script);
+                }
+                
+            } catch (error) {
+                console.error('Load wish list error:', error);
+            }
+        }
+        
+        async function loadBackgroundList() {
+            if (!GAS_URL) return;
+            
+            try {
+                // Load from config data if available
+                if (configData.BackgroundList && Array.isArray(configData.BackgroundList)) {
+                    backgroundData = configData.BackgroundList;
+                    updateBackgroundDropdown();
+                    
+                    // Set default background
+                    if (configData['Background-00']) {
+                        $('#cardBackground').css('background-image', `url('${configData['Background-00']}')`);
+                    }
+                } else {
+                    // Fallback to API
+                    const timestamp = Date.now();
+                    const callbackName = `bgCallback_${timestamp}`;
+                    
+                    window[callbackName] = function(response) {
+                        delete window[callbackName];
+                        
+                        if (response && response.success) {
+                            backgroundData = response.data || [];
+                            updateBackgroundDropdown();
+                        }
+                    };
+                    
+                    const script = document.createElement('script');
+                    script.src = `${GAS_URL}?action=getBackgroundList&callback=${callbackName}`;
+                    
+                    document.head.appendChild(script);
+                }
+                
+            } catch (error) {
+                console.error('Load background list error:', error);
+            }
+        }
+        
+        // ========== UI UPDATES ==========
+        function applyConfigToUI() {
+            if (!configData) return;
+            
+            // Apply colors
+            if (configData['Style-PrimaryColor']) {
+                $('#primaryColor').val(configData['Style-PrimaryColor']);
+            }
+            if (configData['Style-SecondaryColor']) {
+                $('#secondaryColor').val(configData['Style-SecondaryColor']);
+            }
+            updateColors();
+            
+            // Apply font
+            if (configData['Style-FontFamily']) {
+                $('#fontFamily').val(configData['Style-FontFamily']);
+                updateFont();
+            }
+            
+            // Apply favicon
+            if (configData['Style-Favicon-URL']) {
+                $('#favicon').attr('href', configData['Style-Favicon-URL']);
+            }
+            
+            // Apply signature
+            if (configData['Signature-Name']) {
+                $('#senderName').val(configData['Signature-Name']);
+                $('#signatureName').text(configData['Signature-Name']);
+            }
+            
+            if (configData['Signature-Organization-Full']) {
+                $('#senderCompany').val(configData['Signature-Organization-Full']);
+                $('#signatureCompany').text(configData['Signature-Organization-Full']);
+            }
+            
+            if (configData['Signature-Logo-URL']) {
+                $('#signatureLogo').attr('src', configData['Signature-Logo-URL']);
+            }
+            
+            if (configData['Signature-Mobile'] && configData['Sent-As-Email']) {
+                $('#signatureContact').html(`
+                    ĐT: ${configData['Signature-Mobile']} | 
+                    Email: ${configData['Sent-As-Email']}
+                `);
+            }
+            
+            // Load wish list from config
+            loadWishList();
+            
+            // Load background list from config
+            loadBackgroundList();
+        }
+        
+        function updateRecipientDropdown() {
+            const select = $('#recipientSelect');
+            select.empty();
+            select.append('<option value="">-- Chọn người nhận --</option>');
+            
+            birthdayData.forEach(person => {
+                const displayText = `${person.personTitle} ${person.personName}${person.company ? ` - ${person.company}` : ''}`;
+                select.append(`<option value="${person.id}">${displayText}</option>`);
+            });
+            
+            // Add AI generated wishes to dropdown
+            updateAIWishDropdown();
+        }
+        
+        function updateWishDropdown() {
+            const select = $('#wishSelect');
+            select.empty();
+            select.append('<option value="">-- Chọn mẫu --</option>');
+            
+            wishData.forEach(wish => {
+                const shortText = wish.text.length > 50 ? wish.text.substring(0, 50) + '...' : wish.text;
+                select.append(`<option value="${wish.text}">${wish.label}: ${shortText}</option>`);
+            });
+        }
+        
+        function updateAIWishDropdown() {
+            const select = $('#aiWishSelect');
+            select.empty();
+            select.append('<option value="">-- Chọn lời chúc AI --</option>');
+            
+            birthdayData.forEach(person => {
+                if (person.wish && person.wish.trim() !== '') {
+                    const shortText = person.wish.length > 50 ? person.wish.substring(0, 50) + '...' : person.wish;
+                    select.append(`<option value="${person.wish}">${person.personName}: ${shortText}</option>`);
+                }
+            });
+        }
+        
+        function updateBackgroundDropdown() {
+            const select = $('#backgroundSelect');
+            select.empty();
+            select.append('<option value="">-- Chọn hình nền --</option>');
+            
+            backgroundData.forEach(bg => {
+                select.append(`<option value="${bg.url}">${bg.label}</option>`);
+            });
+            
+            // Set default background if available
+            if (configData['Background-00']) {
+                select.val(configData['Background-00']);
+            }
+        }
+        
+        function updateStatus(status, message) {
+            const indicator = $('#statusIndicator');
+            const text = $('#statusText');
+            
+            indicator.removeClass('status-online status-offline');
+            indicator.addClass(`status-${status}`);
+            text.text(message);
+        }
+        
+        // ========== CARD UPDATES ==========
+        function loadSelectedRecipient() {
+            const selectedId = $('#recipientSelect').val();
+            if (!selectedId) return;
+            
+            const person = birthdayData.find(p => p.id == selectedId);
+            if (person) {
+                currentRecipient = person;
+                
+                $('#personTitle').val(person.personTitle);
+                $('#personName').val(person.personName);
+                $('#personCompany').val(person.company || '');
+                
+                // Update date if available
+                if (person.dob) {
+                    const dobDate = new Date(person.dob);
+                    if (!isNaN(dobDate.getTime())) {
+                        $('#dob').val(dobDate.toISOString().split('T')[0]);
+                    }
+                }
+                
+                // Update wish if available
+                if (person.wish && person.wish.trim() !== '') {
+                    $('#customWish').val(person.wish);
+                    updateWishCounter();
+                }
+                
+                updateCardInfo();
+                updateAIWishDropdown();
+            }
+        }
+        
+        function updateCardInfo() {
+            const title = $('#personTitle').val() || 'Anh/Chị';
+            const name = $('#personName').val() || '[Tên người nhận]';
+            const company = $('#personCompany').val() || '[Công ty]';
+            
+            $('#cardSubtitle').text(`${title} ${name}`);
+            $('#cardCompany').text(company);
+            
+            // Update title based on recipient
+            if (name !== '[Tên người nhận]') {
+                $('#cardTitle').html(`🎂 CHÚC MỪNG SINH NHẬT ${name.toUpperCase()}! 🎉`);
+            } else {
+                $('#cardTitle').html('🎂 CHÚC MỪNG SINH NHẬT! 🎉');
+            }
+        }
+        
+        function updateCardWish() {
+            const wish = $('#customWish').val();
+            $('#cardWish').text(wish);
+        }
+        
+        function updateWishCounter() {
+            const text = $('#customWish').val();
+            $('#wishCounter').text(text.length);
+        }
+        
+        function applyWishTemplate() {
+            const wish = $('#wishSelect').val();
+            if (wish) {
+                $('#customWish').val(wish);
+                updateWishCounter();
+                updateCardWish();
+            }
+        }
+        
+        function applyAIWish() {
+            const wish = $('#aiWishSelect').val();
+            if (wish) {
+                $('#customWish').val(wish);
+                updateWishCounter();
+                updateCardWish();
+            }
+        }
+        
+        function updateRecipientInfo() {
+            const title = $('#personTitle').val();
+            const name = $('#personName').val();
+            const company = $('#personCompany').val();
+            
+            if (!name || name.trim() === '') {
+                showToast('Vui lòng nhập tên người nhận', 'warning');
+                return;
+            }
+            
+            // In a real app, this would send to backend
+            showToast('Đã cập nhật thông tin người nhận', 'success');
+            updateCardInfo();
+        }
+        
+        // ========== BACKGROUND & EFFECTS ==========
+        function changeBackground() {
+            const bgUrl = $('#backgroundSelect').val();
+            if (bgUrl) {
+                $('#cardBackground').css('background-image', `url('${bgUrl}')`);
+            }
+        }
+        
+        function applyBackgroundUrl() {
+            const bgUrl = $('#backgroundUrl').val().trim();
+            if (bgUrl) {
+                $('#cardBackground').css('background-image', `url('${bgUrl}')`);
+                $('#backgroundUrl').val('');
+                showToast('Đã áp dụng hình nền từ URL', 'success');
+            }
+        }
+        
+        function triggerBackgroundUpload() {
+            $('#backgroundFile').click();
+        }
+        
+        function handleBackgroundUpload() {
+            const file = $('#backgroundFile')[0].files[0];
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('File quá lớn! Vui lòng chọn file nhỏ hơn 5MB', 'error');
+                return;
+            }
+            
+            // Check file type
+            if (!file.type.match('image.*')) {
+                showToast('Vui lòng chọn file ảnh (JPG, PNG, GIF)', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#cardBackground').css('background-image', `url('${e.target.result}')`);
+                showToast('Đã tải lên hình nền thành công', 'success');
+            };
+            reader.readAsDataURL(file);
+            
+            // Reset file input
+            $('#backgroundFile').val('');
+        }
+        
+        function updateColors() {
+            const primary = $('#primaryColor').val();
+            const secondary = $('#secondaryColor').val();
+            
+            // Save to localStorage
+            localStorage.setItem('primary_color', primary);
+            localStorage.setItem('secondary_color', secondary);
+            
+            // Update CSS variables
+            document.documentElement.style.setProperty('--primary-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+            
+            // Update card elements
+            $('.card-title').css('color', primary);
+            $('.card-subtitle').css('color', secondary);
+            $('.card-wish').css('border-left-color', secondary);
+            $('.signature-name').css('color', primary);
+        }
+        
+        function updateFont() {
+            const font = $('#fontFamily').val();
+            localStorage.setItem('selected_font', font);
+            $('body').css('font-family', font);
+        }
+        
+        function selectEffect(element, type) {
+            const effect = $(element).data('effect');
+            
+            // Remove active class from all effects of this type
+            $(`.effect-option[data-effect][onclick*="${type}"]`).removeClass('active');
+            
+            // Add active class to selected element
+            $(element).addClass('active');
+            
+            // Apply effect
+            if (type === 'bg') {
+                currentBackgroundEffect = effect;
+                applyBackgroundEffect(effect);
+            } else if (type === 'move') {
+                currentMovingEffect = effect;
+                applyMovingEffect(effect);
+            }
+        }
+        
+        function initEffects() {
+            // Initialize canvas for effects
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            
+            // Resize canvas to match card
+            const resizeCanvas = () => {
+                const card = document.getElementById('cardContainer');
+                canvas.width = card.offsetWidth;
+                canvas.height = card.offsetHeight;
+            };
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+        }
+        
+        function applyBackgroundEffect(effect) {
+            const card = $('#cardContainer');
+            
+            // Remove previous effect classes
+            card.removeClass('tech-grid balloon-bg stars-bg');
+            
+            // Clear canvas
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            switch(effect) {
+                case 'tech-grid':
+                    card.addClass('tech-grid');
+                    drawTechGrid();
+                    break;
+                    
+                case 'balloon':
+                    card.addClass('balloon-bg');
+                    startBalloonEffect();
+                    break;
+                    
+                case 'stars':
+                    card.addClass('stars-bg');
+                    startStarsEffect();
+                    break;
+                    
+                case 'none':
+                default:
+                    stopEffects();
+                    break;
+            }
+        }
+        
+        function applyMovingEffect(effect) {
+            switch(effect) {
+                case 'flower-name':
+                    startFlowerNameEffect();
+                    break;
+                    
+                case 'flower-drop':
+                    startFlowerDropEffect();
+                    break;
+                    
+                case 'confetti':
+                    startConfettiEffect();
+                    break;
+                    
+                case 'none':
+                default:
+                    stopMovingEffects();
+                    break;
+            }
+        }
+        
+        function drawTechGrid() {
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(24, 119, 82, 0.1)';
+            ctx.lineWidth = 1;
+            
+            // Vertical lines
+            for (let x = 0; x < canvas.width; x += 20) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            // Horizontal lines
+            for (let y = 0; y < canvas.height; y += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // Draw dots at intersections
+            ctx.fillStyle = 'rgba(24, 119, 82, 0.2)';
+            for (let x = 20; x < canvas.width; x += 20) {
+                for (let y = 20; y < canvas.height; y += 20) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+        
+        function startBalloonEffect() {
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            
+            const balloons = [];
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2', '#EF476F'];
+            
+            // Create balloons
+            for (let i = 0; i < 15; i++) {
+                balloons.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height + Math.random() * 100,
+                    radius: 20 + Math.random() * 15,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: 1 + Math.random() * 2,
+                    sway: Math.random() * 0.05,
+                    swayOffset: Math.random() * Math.PI * 2
+                });
+            }
+            
+            function drawBalloons() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const now = Date.now() / 1000;
+                
+                balloons.forEach(balloon => {
+                    // Update position
+                    balloon.y -= balloon.speed;
+                    balloon.x += Math.sin(now + balloon.swayOffset) * balloon.sway;
+                    
+                    // Reset if off screen
+                    if (balloon.y < -50) {
+                        balloon.y = canvas.height + 50;
+                        balloon.x = Math.random() * canvas.width;
+                    }
+                    
+                    // Draw balloon
+                    ctx.beginPath();
+                    ctx.arc(balloon.x, balloon.y, balloon.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = balloon.color;
+                    ctx.fill();
+                    
+                    // Draw string
+                    ctx.beginPath();
+                    ctx.moveTo(balloon.x, balloon.y + balloon.radius);
+                    ctx.lineTo(balloon.x, balloon.y + balloon.radius + 40);
+                    ctx.strokeStyle = '#999';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                });
+                
+                if (currentBackgroundEffect === 'balloon') {
+                    requestAnimationFrame(drawBalloons);
+                }
+            }
+            
+            drawBalloons();
+        }
+        
+        function startStarsEffect() {
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            
+            const stars = [];
+            
+            // Create stars
+            for (let i = 0; i < 50; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    brightness: Math.random() * 0.5 + 0.5,
+                    twinkleSpeed: Math.random() * 0.05 + 0.02
+                });
+            }
+            
+            function drawStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const now = Date.now() / 1000;
+                
+                stars.forEach(star => {
+                    const brightness = star.brightness + Math.sin(now * star.twinkleSpeed) * 0.3;
+                    
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
+                    ctx.fill();
+                    
+                    // Draw glow
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
+                    const gradient = ctx.createRadialGradient(
+                        star.x, star.y, 0,
+                        star.x, star.y, star.size * 2
+                    );
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${brightness * 0.3})`);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                });
+                
+                if (currentBackgroundEffect === 'stars') {
+                    requestAnimationFrame(drawStars);
+                }
+            }
+            
+            drawStars();
+        }
+        
+        function startFlowerNameEffect() {
+            const name = $('#personName').val() || 'Sinh nhật';
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            
+            const flowers = [];
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2'];
+            
+            // Create flower particles for each letter
+            for (let i = 0; i < name.length * 3; i++) {
+                flowers.push({
+                    char: name[Math.floor(Math.random() * name.length)],
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: 20 + Math.random() * 15,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: (Math.random() - 0.5) * 0.05
+                });
+            }
+            
+            function drawFlowers() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                flowers.forEach(flower => {
+                    // Update position
+                    flower.x += flower.speedX;
+                    flower.y += flower.speedY;
+                    flower.rotation += flower.rotationSpeed;
+                    
+                    // Bounce off walls
+                    if (flower.x < 0 || flower.x > canvas.width) flower.speedX *= -1;
+                    if (flower.y < 0 || flower.y > canvas.height) flower.speedY *= -1;
+                    
+                    // Draw flower
+                    ctx.save();
+                    ctx.translate(flower.x, flower.y);
+                    ctx.rotate(flower.rotation);
+                    
+                    // Draw petal-like shape
+                    ctx.beginPath();
+                    for (let i = 0; i < 5; i++) {
+                        const angle = (i * Math.PI * 2) / 5;
+                        const petalX = Math.cos(angle) * flower.size * 0.8;
+                        const petalY = Math.sin(angle) * flower.size * 0.8;
+                        
+                        if (i === 0) {
+                            ctx.moveTo(petalX, petalY);
+                        } else {
+                            ctx.lineTo(petalX, petalY);
+                        }
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = flower.color;
+                    ctx.fill();
+                    
+                    // Draw center
+                    ctx.beginPath();
+                    ctx.arc(0, 0, flower.size * 0.3, 0, Math.PI * 2);
+                    ctx.fillStyle = '#FFD166';
+                    ctx.fill();
+                    
+                    // Draw letter
+                    ctx.fillStyle = 'white';
+                    ctx.font = `${flower.size * 0.6}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(flower.char, 0, 0);
+                    
+                    ctx.restore();
+                });
+                
+                if (currentMovingEffect === 'flower-name') {
+                    requestAnimationFrame(drawFlowers);
+                }
+            }
+            
+            drawFlowers();
+        }
+        
+        function startFlowerDropEffect() {
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            
+            const flowers = [];
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2'];
+            
+            // Create falling flowers
+            for (let i = 0; i < 30; i++) {
+                flowers.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * -100,
+                    size: 10 + Math.random() * 15,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: 1 + Math.random() * 3,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: (Math.random() - 0.5) * 0.02,
+                    sway: Math.random() * 2,
+                    swayOffset: Math.random() * Math.PI * 2
+                });
+            }
+            
+            function drawFlowers() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const now = Date.now() / 1000;
+                
+                flowers.forEach(flower => {
+                    // Update position
+                    flower.y += flower.speed;
+                    flower.x += Math.sin(now + flower.swayOffset) * flower.sway;
+                    flower.rotation += flower.rotationSpeed;
+                    
+                    // Reset if off screen
+                    if (flower.y > canvas.height + 50) {
+                        flower.y = -50;
+                        flower.x = Math.random() * canvas.width;
+                    }
+                    
+                    // Draw flower
+                    ctx.save();
+                    ctx.translate(flower.x, flower.y);
+                    ctx.rotate(flower.rotation);
+                    
+                    // Simple flower shape
+                    ctx.beginPath();
+                    for (let i = 0; i < 8; i++) {
+                        const angle = (i * Math.PI * 2) / 8;
+                        const radius = i % 2 === 0 ? flower.size : flower.size * 0.6;
+                        const x = Math.cos(angle) * radius;
+                        const y = Math.sin(angle) * radius;
+                        
+                        if (i === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = flower.color;
+                    ctx.fill();
+                    
+                    ctx.restore();
+                });
+                
+                if (currentMovingEffect === 'flower-drop') {
+                    requestAnimationFrame(drawFlowers);
+                }
+            }
+            
+            drawFlowers();
+        }
+        
+        function startConfettiEffect() {
+            const canvas = document.getElementById('effectLayer');
+            
+            // Use canvas-confetti library
+            const myConfetti = confetti.create(canvas, {
+                resize: true,
+                useWorker: true
+            });
+            
+            // Configure confetti
+            const confettiConfig = {
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2', '#EF476F']
+            };
+            
+            // Fire confetti
+            myConfetti(confettiConfig);
+            
+            // Continue effect
+            if (currentMovingEffect === 'confetti') {
+                const interval = setInterval(() => {
+                    if (currentMovingEffect !== 'confetti') {
+                        clearInterval(interval);
+                        return;
+                    }
+                    
+                    // Smaller bursts
+                    myConfetti({
+                        ...confettiConfig,
+                        particleCount: 30,
+                        spread: 100,
+                        origin: { 
+                            x: Math.random(),
+                            y: Math.random() * 0.5 + 0.2 
+                        }
+                    });
+                }, 1000);
+            }
+        }
+        
+        function stopEffects() {
+            const canvas = document.getElementById('effectLayer');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function stopMovingEffects() {
+            stopEffects();
+        }
+        
+        // ========== HISTORICAL EVENTS ==========
+        async function loadHistoricalEvents() {
+            const dateInput = $('#dob').val();
+            if (!dateInput) {
+                showToast('Vui lòng chọn ngày', 'warning');
+                return;
+            }
+            
+            $('#eventsInfo').show().html('<i class="fas fa-spinner fa-spin"></i> Đang tải sự kiện...');
+            
+            try {
+                const dateStr = formatDateForAPI(dateInput);
+                const timestamp = Date.now();
+                const callbackName = `eventsCallback_${timestamp}`;
+                
+                window[callbackName] = function(response) {
+                    delete window[callbackName];
+                    
+                    $('#eventsInfo').hide();
+                    
+                    if (response && response.success) {
+                        const eventsHtml = `
+                            <p><strong>Ngày ${response.date}:</strong></p>
+                            <p>Xem sự kiện tại: <a href="${response.wikiUrl}" target="_blank">${response.wikiUrl}</a></p>
+                        `;
+                        
+                        $('#eventsContent').html(eventsHtml);
+                        $('#cardEvents').show();
+                        
+                        showToast('Đã tải thông tin sự kiện', 'success');
+                    } else {
+                        showToast('Không thể tải sự kiện: ' + (response.message || 'Lỗi không xác định'), 'error');
+                    }
+                };
+                
+                const script = document.createElement('script');
+                script.src = `${GAS_URL}?action=getHistoricalEvents&date=${encodeURIComponent(dateStr)}&callback=${callbackName}`;
+                
+                document.head.appendChild(script);
+                
+            } catch (error) {
+                console.error('Load events error:', error);
+                $('#eventsInfo').hide();
+                showToast('Lỗi khi tải sự kiện: ' + error.message, 'error');
+            }
+        }
+        
+        async function generateEventsSummary() {
+            const dateInput = $('#dob').val();
+            if (!dateInput) {
+                showToast('Vui lòng chọn ngày', 'warning');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const dateStr = formatDateForAPI(dateInput);
+                
+                // For demo, create mock summary
+                const mockSummary = `
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li><strong>1958:</strong> Sputnik 1, vệ tinh nhân tạo đầu tiên, rơi khỏi quỹ đạo</li>
+                        <li><strong>1975:</strong> Tổng thống Argentina Juan Perón từ trần</li>
+                        <li><strong>1993:</strong> Cộng đồng châu Âu thông qua hiệp ước Maastricht</li>
+                        <li><strong>2004:</strong> Tàu thăm dò Spirit của NASA hạ cánh thành công trên Sao Hỏa</li>
+                        <li><strong>2007:</strong> Nancy Pelosi trở thành nữ Chủ tịch Hạ viện Hoa Kỳ đầu tiên</li>
+                    </ul>
+                `;
+                
+                $('#eventsContent').html(`
+                    <p><strong>Ngày ${dateStr.split('/')[0]}/${dateStr.split('/')[1]}:</strong></p>
+                    ${mockSummary}
+                `);
+                $('#cardEvents').show();
+                
+                showToast('Đã tạo tóm tắt sự kiện bằng AI', 'success');
+                
+            } catch (error) {
+                console.error('Generate summary error:', error);
+                showToast('Lỗi khi tạo tóm tắt: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // ========== AI WISH GENERATION ==========
+        async function generateAIWish() {
+            const name = $('#personName').val();
+            const company = $('#personCompany').val();
+            const preference = $('#preference').val();
+            
+            if (!name || name.trim() === '') {
+                showToast('Vui lòng nhập tên người nhận trước', 'warning');
+                return;
+            }
+            
+            showLoading();
+            $('#btnGenerateWish').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Đang tạo...');
+            
+            try {
+                // For demo, generate mock AI wish
+                const wishes = [
+                    `Chúc mừng sinh nhật ${name}! 🎉 Chúc bạn tuổi mới tràn đầy năng lượng, sức khỏe dồi dào và gặt hái thật nhiều thành công trong công việc lẫn cuộc sống. ${company ? `LAZINET rất trân trọng mối quan hệ hợp tác với ${company} và mong rằng chúng ta sẽ tiếp tục đồng hành cùng nhau trên chặng đường sắp tới.` : ''} 🎂`,
+                    
+                    `Happy birthday ${name}! 🌟 Chúc mừng ngày đặc biệt của bạn! Mong rằng tuổi mới sẽ mang đến cho bạn thật nhiều niềm vui, may mắn và những cơ hội mới tuyệt vời. ${preference ? `Với sở thích ${preference.toLowerCase()}, chắc chắn bạn sẽ có một năm thật thú vị và ý nghĩa.` : ''} 🎁`,
+                    
+                    `🎂 Chúc mừng sinh nhật ${name} thân mến! Nhân dịp đặc biệt này, LAZINET xin gửi đến bạn những lời chúc tốt đẹp nhất. Chúc bạn luôn giữ được sự nhiệt huyết, đam mê và không ngừng phát triển bản thân. ${company ? `Cảm ơn bạn đã là đối tác tuyệt vời của ${company}!` : ''} 🥳`
+                ];
+                
+                const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+                
+                // Simulate AI processing delay
+                setTimeout(() => {
+                    $('#customWish').val(randomWish);
+                    updateWishCounter();
+                    updateCardWish();
+                    
+                    showToast('Đã tạo lời chúc bằng AI thành công!', 'success');
+                    $('#btnGenerateWish').prop('disabled', false).html('<i class="fas fa-magic"></i> AI Tạo mới');
+                    hideLoading();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Generate AI wish error:', error);
+                showToast('Lỗi khi tạo lời chúc AI: ' + error.message, 'error');
+                $('#btnGenerateWish').prop('disabled', false).html('<i class="fas fa-magic"></i> AI Tạo mới');
+                hideLoading();
+            }
+        }
+        
+        // ========== EMAIL FUNCTIONS ==========
+        function updatePromotionalImages() {
+            const url1 = $('#promoImage1Url').val().trim();
+            const link1 = $('#promoImage1Link').val().trim();
+            const url2 = $('#promoImage2Url').val().trim();
+            const link2 = $('#promoImage2Link').val().trim();
+            
+            const promoSection = $('#promotionalSection');
+            promoSection.empty();
+            
+            if (url1) {
+                const link = link1 || '#';
+                promoSection.append(`
+                    <a href="${link}" target="_blank">
+                        <img src="${url1}" alt="Promo 1" class="promo-image">
+                    </a>
+                `);
+            }
+            
+            if (url2) {
+                const link = link2 || '#';
+                promoSection.append(`
+                    <a href="${link}" target="_blank">
+                        <img src="${url2}" alt="Promo 2" class="promo-image">
+                    </a>
+                `);
+            }
+            
+            if (url1 || url2) {
+                showToast('Đã cập nhật hình ảnh quảng cáo', 'success');
+            }
+        }
+        
+        async function sendTestEmail() {
+            const recipient = $('#recipientSelect').val();
+            if (!recipient) {
+                showToast('Vui lòng chọn người nhận trước', 'warning');
+                return;
+            }
+            
+            if (!confirm('Gửi email thử nghiệm đến người này?')) {
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                // In a real app, this would call the backend
+                setTimeout(() => {
+                    showToast('✅ Đã gửi email thử nghiệm thành công!', 'success');
+                    hideLoading();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Send test email error:', error);
+                showToast('Lỗi khi gửi email: ' + error.message, 'error');
+                hideLoading();
+            }
+        }
+        
+        async function sendBatchEmails() {
+            if (birthdayData.length === 0) {
+                showToast('Không có ai có sinh nhật hôm nay', 'warning');
+                return;
+            }
+            
+            if (!confirm(`Gửi email cho tất cả ${birthdayData.length} người có sinh nhật hôm nay?`)) {
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                // In a real app, this would call the backend
+                setTimeout(() => {
+                    showToast(`✅ Đã gửi email cho ${birthdayData.length} người!`, 'success');
+                    hideLoading();
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Send batch emails error:', error);
+                showToast('Lỗi khi gửi email hàng loạt: ' + error.message, 'error');
+                hideLoading();
+            }
+        }
+        
+        function previewEmail() {
+            // Generate email HTML preview
+            const emailHtml = generateEmailHTML();
+            
+            // Open in new window for preview
+            const newWindow = window.open();
+            newWindow.document.write(emailHtml);
+            newWindow.document.close();
+            
+            showToast('Đang mở xem trước email...', 'success');
+        }
+        
+        function generateEmailHTML() {
+            const name = $('#personName').val() || 'Người nhận';
+            const title = $('#personTitle').val() || 'Anh/Chị';
+            const company = $('#personCompany').val() || '';
+            const wish = $('#customWish').val() || 'Chúc mừng sinh nhật!';
+            
+            return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .email-container { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .header { background: var(--primary-color); color: white; padding: 30px; text-align: center; }
+        .content { padding: 30px; }
+        .wish-box { background: #f9f9f9; padding: 20px; border-left: 4px solid var(--secondary-color); margin: 20px 0; }
+        .footer { background: #f5f5f5; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🎂 Chúc mừng sinh nhật!</h1>
+            <h2>${title} ${name}</h2>
+            ${company ? `<p>${company}</p>` : ''}
+        </div>
+        <div class="content">
+            <p>Kính gửi ${title} ${name},</p>
+            <div class="wish-box">
+                ${wish}
+            </div>
+            <p>Trân trọng,<br>LAZINET Technologies</p>
+        </div>
+        <div class="footer">
+            <p>Email được gửi từ hệ thống tự động LAZINET Birthday Care System</p>
+        </div>
+    </div>
+</body>
+</html>
+            `;
+        }
+        
+        // ========== EXPORT FUNCTIONS ==========
+        async function exportAsImage() {
+            showLoading();
+            
+            try {
+                // Temporarily hide effect layer for clean export
+                $('#effectLayer').hide();
+                
+                const card = document.getElementById('cardContainer');
+                
+                html2canvas(card, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: null,
+                    logging: false
+                }).then(canvas => {
+                    // Restore effect layer
+                    $('#effectLayer').show();
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.download = `birthday-card-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    showToast('Đã xuất ảnh thành công!', 'success');
+                    hideLoading();
+                });
+                
+            } catch (error) {
+                console.error('Export image error:', error);
+                $('#effectLayer').show();
+                showToast('Lỗi khi xuất ảnh: ' + error.message, 'error');
+                hideLoading();
+            }
+        }
+        
+        async function exportAsPDF() {
+            showLoading();
+            
+            try {
+                // Temporarily hide effect layer
+                $('#effectLayer').hide();
+                
+                const card = document.getElementById('cardContainer');
+                
+                html2canvas(card, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: null
+                }).then(canvas => {
+                    // Restore effect layer
+                    $('#effectLayer').show();
+                    
+                    // Create PDF
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save(`birthday-card-${Date.now()}.pdf`);
+                    
+                    showToast('Đã xuất PDF thành công!', 'success');
+                    hideLoading();
+                });
+                
+            } catch (error) {
+                console.error('Export PDF error:', error);
+                $('#effectLayer').show();
+                showToast('Lỗi khi xuất PDF: ' + error.message, 'error');
+                hideLoading();
+            }
+        }
+        
+        function printCard() {
+            // Temporarily hide effect layer for printing
+            $('#effectLayer').hide();
+            
+            // Trigger print
+            window.print();
+            
+            // Restore effect layer after a delay
+            setTimeout(() => {
+                $('#effectLayer').show();
+            }, 1000);
+        }
+        
+        function shareCard() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Thiệp sinh nhật LAZINET',
+                    text: 'Xem thiệp sinh nhật đẹp tôi vừa tạo!',
+                    url: window.location.href
+                }).then(() => {
+                    showToast('Đã chia sẻ thành công!', 'success');
+                }).catch(error => {
+                    console.error('Share error:', error);
+                });
+            } else {
+                // Fallback: copy URL to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showToast('Đã sao chép link vào clipboard!', 'success');
+                }).catch(err => {
+                    console.error('Copy error:', err);
+                    showToast('Lỗi khi sao chép link', 'error');
+                });
+            }
+        }
+        
+        // ========== UTILITY FUNCTIONS ==========
+        function showTab(tabId) {
+            // Update tabs
+            $('.tab').removeClass('active');
+            $(`.tab[data-tab="${tabId}"]`).addClass('active');
+            
+            // Update tab content
+            $('.tab-content').removeClass('active');
+            $(`#tab-${tabId}`).addClass('active');
+        }
+        
+        function updateAll() {
+            updateCardInfo();
+            updateCardWish();
+            updateColors();
+            updatePromotionalImages();
+            showToast('Đã cập nhật toàn bộ thiệp!', 'success');
+        }
+        
+        function quickUpdate() {
+            updateCardInfo();
+            updateCardWish();
+            showToast('Đã cập nhật nhanh!', 'success');
+        }
+        
+        function resetCard() {
+            if (confirm('Bạn có chắc muốn đặt lại tất cả cài đặt?')) {
+                // Reset form
+                $('#personTitle').val('Anh/Chị');
+                $('#personName').val('');
+                $('#personCompany').val('');
+                $('#customWish').val('');
+                $('#preference').val('');
+                
+                // Reset colors
+                $('#primaryColor').val('#187752');
+                $('#secondaryColor').val('#B91C1C');
+                
+                // Reset effects
+                $('.effect-option').removeClass('active');
+                $('.effect-option[data-effect="none"]').addClass('active');
+                currentBackgroundEffect = 'none';
+                currentMovingEffect = 'none';
+                stopEffects();
+                stopMovingEffects();
+                
+                // Reset background
+                if (configData['Background-00']) {
+                    $('#cardBackground').css('background-image', `url('${configData['Background-00']}')`);
+                    $('#backgroundSelect').val(configData['Background-00']);
+                }
+                
+                // Reset font
+                $('#fontFamily').val("'Be Vietnam Pro', Tahoma, Arial, sans-serif");
+                
+                // Update UI
+                updateAll();
+                showToast('Đã đặt lại tất cả cài đặt!', 'success');
+            }
+        }
+        
+        function openContactPage() {
+            window.open('https://lazinet.com/contact', '_blank');
+        }
+        
+        function showLoading() {
+            $('#loadingOverlay').addClass('active');
+        }
+        
+        function hideLoading() {
+            $('#loadingOverlay').removeClass('active');
+        }
+        
+        function showToast(message, type = 'info') {
+            const toast = $('#toast');
+            toast.text(message);
+            toast.removeClass('success error warning');
+            
+            if (type !== 'info') {
+                toast.addClass(type);
+            }
+            
+            toast.addClass('show');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                toast.removeClass('show');
+            }, 5000);
+        }
+        
+        function formatDateForAPI(dateStr) {
+            // Convert YYYY-MM-DD to DD/MM/YYYY
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return dateStr;
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // ========== PUBLIC FUNCTIONS (for onclick handlers) ==========
+        // These are already defined above as part of the main script
+    </script>
+</body>
+</html>

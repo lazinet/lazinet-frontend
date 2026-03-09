@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET Document Automation - Standalone Client</title>
+    
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --blue-main: #3F82FB;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --info-color: #2196F3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Geist', 'Open Sans', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--accent-secondary-color) 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--bg-color);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 1px solid var(--divider-color);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 28px;
+            left: 28px;
+            width: 200px;
+            height: 70px;
+            background-color: white;
+            border-radius: 10px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            max-width: 180px;
+            max-height: 60px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 15px 0;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--secondary-color);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .panel-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--divider-color);
+        }
+
+        /* Config Panel */
+        .config-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--divider-color);
+        }
+
+        .config-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--divider-color);
+            border-radius: 8px;
+            color: white;
+            padding: 12px 15px;
+            width: 100%;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(63, 130, 251, 0.2);
+        }
+
+        .config-label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(to bottom, #0052FF, #1976D2);
+            color: #fff;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(to bottom, #1976D2, #0052FF);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 82, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: linear-gradient(to bottom, #2E7D32, #4CAF50);
+        }
+
+        .btn-warning {
+            background: linear-gradient(to bottom, var(--warning-color), #F57C00);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 3px dashed var(--divider-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-color);
+            background: rgba(63, 130, 251, 0.1);
+        }
+
+        .upload-area.drag-over {
+            border-color: var(--success-color);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th {
+            background: linear-gradient(to bottom, #0052FF, #1976D2);
+            text-align: left;
+            padding: 12px;
+            border: 1px solid #BBDEFB;
+            color: #FFFFFF;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        tr:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid var(--divider-color);
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background-color: rgba(63, 130, 251, 0.1);
+        }
+
+        /* Status */
+        .status-ok { color: var(--success-color); font-weight: bold; }
+        .status-error { color: var(--error-color); font-weight: bold; }
+        .status-warning { color: var(--warning-color); font-weight: bold; }
+        .status-info { color: var(--info-color); }
+
+        /* Template Fields */
+        .template-field {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(63, 130, 251, 0.2);
+            border-radius: 4px;
+            margin: 2px;
+            font-size: 0.85em;
+            border: 1px solid rgba(63, 130, 251, 0.3);
+        }
+
+        .field-missing {
+            background: rgba(230, 87, 87, 0.2);
+            border-color: rgba(230, 87, 87, 0.3);
+        }
+
+        .field-present {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        /* Progress */
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--divider-color);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--orange-main), var(--blue-main));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--divider-color);
+            flex-wrap: wrap;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--divider-color);
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--accent-color);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Links */
+        .link {
+            color: var(--accent-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--divider-color);
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+        
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-connected {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+        
+        .status-disconnected {
+            background: rgba(230, 87, 87, 0.2);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+        
+        .status-connecting {
+            background: rgba(255, 152, 0, 0.2);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+    </style>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Connection Status Indicator -->
+    <div id="connectionStatus" class="connection-status status-connecting">
+        <span id="connectionIcon">⏳</span>
+        <span id="connectionText">Đang kết nối...</span>
+    </div>
+
+    <div class="logo-container">
+        <a href="../index.html">
+            <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo">
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>LAZINET Document Automation</h1>
+            <p class="subtitle">Tự động hóa tạo tài liệu từ template Google Docs</p>
+            <p class="subtitle">HTML Client - Google Sheets Backend</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Template List -->
+            <div class="panel">
+                <div class="panel-title">
+                    📋 Danh sách Template
+                    <button class="btn" onclick="loadTemplates()" style="float: right; padding: 8px 16px;">
+                        <span id="refreshIcon">🔄</span> Tải lại
+                    </button>
+                </div>
+                <div id="templateList">
+                    <div style="text-align: center; padding: 40px; opacity: 0.7;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📄</div>
+                        <div>Đang kết nối với backend...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Excel Upload -->
+            <div class="panel">
+                <div class="panel-title">📤 Upload Excel dữ liệu</div>
+                <div class="upload-area" id="uploadArea">
+                    <div style="font-size: 48px; margin-bottom: 20px;">📊</div>
+                    <div>Kéo & Thả file Excel vào đây</div>
+                    <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">
+                        Định dạng: .xlsx, .xls, .csv
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button class="btn" onclick="document.getElementById('fileInput').click()">
+                            📁 Chọn file
+                        </button>
+                        <button class="btn btn-success" onclick="downloadTemplate()" style="margin-left: 10px;">
+                            📥 Tải mẫu
+                        </button>
+                    </div>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                </div>
+                <div id="fileInfo" class="hidden">
+                    <div id="fileInfoContent" style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;"></div>
+                    <div style="margin-top: 20px;">
+                        <button class="btn" onclick="validateData()" id="validateBtn">
+                            ✅ Kiểm tra dữ liệu
+                        </button>
+                        <button class="btn" onclick="togglePreview()" id="previewBtn" style="margin-left: 10px;">
+                            👁️ Xem trước
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Preview -->
+        <div class="panel hidden" id="previewPanel">
+            <div class="panel-title">📊 Xem trước dữ liệu</div>
+            <div id="dataPreview" style="overflow-x: auto;"></div>
+            <div id="validationResults" class="mt-20"></div>
+        </div>
+
+        <!-- Processing -->
+        <div class="panel hidden" id="processingPanel">
+            <div class="panel-title">⚙️ Đang xử lý</div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9em;">
+                    <span>Tiến trình: <span id="currentProgress">0</span>/<span id="totalProgress">0</span></span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+            <div id="processingLogs" style="margin-top: 20px; max-height: 300px; overflow-y: auto;"></div>
+        </div>
+
+        <!-- Results -->
+        <div class="panel hidden" id="resultsPanel">
+            <div class="panel-title">📋 Kết quả xử lý</div>
+            <div id="resultsStats" class="stats-grid"></div>
+            <div id="resultsTable" style="overflow-x: auto; margin-top: 20px;"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="downloadResults()">
+                    💾 Tải báo cáo Excel
+                </button>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn" onclick="processData()" id="processBtn" disabled>
+                🚀 Bắt đầu xử lý
+            </button>
+            <button class="btn btn-warning" onclick="resetAll()">
+                🔄 Làm mới
+            </button>
+        </div>
+
+        <footer>
+            <p>LAZINET Document Automation © 2024</p>
+            <p>HTML Standalone Client - Auto Connected</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuration - ĐỔI THÀNH URL CỦA BẠN
+        const CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbyd462zshna-KdhU5XPiDlUBLk1ReE4vjaqQzYCfQJIQ-KxMnZ4ZC6bNlDXG_Fs9nOi/exec'
+        };
+
+        // Global state
+        let state = {
+            connected: false,
+            templates: [],
+            excelData: null,
+            headers: [],
+            validation: null,
+            results: null,
+            isPreviewVisible: false
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            testConnection();
+            setupDragAndDrop();
+        });
+
+        // Test connection automatically
+        async function testConnection() {
+            updateConnectionStatus('connecting', '⏳', 'Đang kết nối...');
+            
+            try {
+                const response = await fetch(`${CONFIG.API_URL}?action=getTemplates`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    state.connected = true;
+                    state.templates = result.data || [];
+                    updateConnectionStatus('connected', '✅', 'Đã kết nối');
+                    renderTemplates();
+                } else {
+                    throw new Error(result.error || 'Kết nối thất bại');
+                }
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                state.connected = false;
+                updateConnectionStatus('disconnected', '❌', 'Mất kết nối');
+                
+                // Try again after 5 seconds
+                setTimeout(testConnection, 5000);
+            }
+        }
+
+        // Update connection status display
+        function updateConnectionStatus(status, icon, text) {
+            const statusDiv = document.getElementById('connectionStatus');
+            const iconSpan = document.getElementById('connectionIcon');
+            const textSpan = document.getElementById('connectionText');
+            
+            statusDiv.className = `connection-status status-${status}`;
+            iconSpan.textContent = icon;
+            textSpan.textContent = text;
+        }
+
+        // Setup drag and drop
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+        }
+
+        // Handle file upload
+        function handleFile(file) {
+            if (!file.name.match(/\.(xlsx|xls|csv)$/i)) {
+                showMessage('Vui lòng chọn file Excel (.xlsx, .xls) hoặc CSV (.csv)', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    // Convert to array of arrays
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showMessage('File Excel không có dữ liệu', 'error');
+                        return;
+                    }
+
+                    state.headers = jsonData[0];
+                    state.excelData = jsonData.slice(1).map(row => {
+                        const obj = {};
+                        state.headers.forEach((header, index) => {
+                            obj[header] = row[index] || '';
+                        });
+                        return obj;
+                    });
+
+                    // Show file info
+                    document.getElementById('fileInfo').classList.remove('hidden');
+                    document.getElementById('fileInfoContent').innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${file.name}</strong>
+                                <div style="font-size: 0.9em; opacity: 0.8; margin-top: 5px;">
+                                    ${(file.size / 1024).toFixed(1)} KB • ${state.excelData.length} bản ghi • ${state.headers.length} cột
+                                </div>
+                            </div>
+                            <span style="color: var(--error-color); cursor: pointer;" onclick="clearFile()">×</span>
+                        </div>
+                    `;
+
+                    showMessage('✅ Đã tải file Excel thành công', 'success');
+                    
+                } catch (error) {
+                    showMessage(`Lỗi đọc file: ${error.message}`, 'error');
+                }
+            };
+
+            reader.onerror = () => {
+                showMessage('Lỗi đọc file', 'error');
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Load templates
+        async function loadTemplates() {
+            if (!state.connected) {
+                showMessage('Đang kết nối lại với backend...', 'error');
+                await testConnection();
+                return;
+            }
+
+            const refreshIcon = document.getElementById('refreshIcon');
+            const originalIcon = refreshIcon.textContent;
+            refreshIcon.textContent = '⏳';
+
+            try {
+                const response = await fetch(`${CONFIG.API_URL}?action=getTemplates`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    state.templates = result.data || [];
+                    renderTemplates();
+                    showMessage('✅ Đã tải lại danh sách template', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed to load templates');
+                }
+                
+            } catch (error) {
+                showMessage(`Lỗi tải template: ${error.message}`, 'error');
+            } finally {
+                refreshIcon.textContent = originalIcon;
+            }
+        }
+
+        // Render templates
+        function renderTemplates() {
+            const container = document.getElementById('templateList');
+            
+            if (!state.templates || state.templates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; opacity: 0.7;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📄</div>
+                        <div>Không có template nào</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<table>';
+            html += '<thead><tr><th>Tên Template</th><th>Số trường</th><th>Các trường</th></tr></thead>';
+            html += '<tbody>';
+
+            state.templates.forEach(template => {
+                html += `
+                    <tr>
+                        <td>
+                            <a href="${template.url}" target="_blank" class="link">${template.name}</a>
+                        </td>
+                        <td style="text-align: center;">${template.fields.length}</td>
+                        <td>
+                            ${template.fields.map(f => 
+                                `<span class="template-field">{{${f}}}</span>`
+                            ).join(' ')}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Validate data
+        async function validateData() {
+            if (!state.connected) {
+                showMessage('Mất kết nối với backend', 'error');
+                await testConnection();
+                return;
+            }
+
+            if (!state.excelData) {
+                showMessage('Vui lòng tải file Excel trước', 'error');
+                return;
+            }
+
+            const validateBtn = document.getElementById('validateBtn');
+            const originalText = validateBtn.textContent;
+            validateBtn.innerHTML = '<span class="spinner"></span>Đang kiểm tra...';
+            validateBtn.disabled = true;
+
+            try {
+                const payload = {
+                    action: 'validate',
+                    headers: state.headers,
+                    data: state.excelData
+                };
+
+                const response = await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    state.validation = result.data;
+                    showValidationResults();
+                    document.getElementById('processBtn').disabled = !state.validation.summary.isValid;
+                    
+                    if (state.validation.summary.isValid) {
+                        showMessage('✅ Tất cả dữ liệu hợp lệ!', 'success');
+                    } else {
+                        showMessage(`⚠️ Có ${state.validation.summary.error} lỗi, ${state.validation.summary.warning} cảnh báo`, 'warning');
+                    }
+                } else {
+                    throw new Error(result.error || 'Validation failed');
+                }
+                
+            } catch (error) {
+                showMessage(`Lỗi kiểm tra: ${error.message}`, 'error');
+            } finally {
+                validateBtn.textContent = originalText;
+                validateBtn.disabled = false;
+            }
+        }
+
+        // Show validation results
+        function showValidationResults() {
+            if (!state.validation) return;
+
+            const container = document.getElementById('validationResults');
+            const stats = state.validation.summary;
+
+            let html = '<div class="stats-grid">';
+            html += `<div class="stat-card">
+                <div class="stat-value">${stats.total}</div>
+                <div>Tổng số</div>
+            </div>`;
+            html += `<div class="stat-card" style="border-color: var(--success-color);">
+                <div class="stat-value" style="color: var(--success-color);">${stats.ok}</div>
+                <div>Hợp lệ</div>
+            </div>`;
+            html += `<div class="stat-card" style="border-color: var(--warning-color);">
+                <div class="stat-value" style="color: var(--warning-color);">${stats.warning}</div>
+                <div>Cảnh báo</div>
+            </div>`;
+            html += `<div class="stat-card" style="border-color: var(--error-color);">
+                <div class="stat-value" style="color: var(--error-color);">${stats.error}</div>
+                <div>Lỗi</div>
+            </div>`;
+            html += '</div>';
+
+            // Show errors if any
+            if (state.validation.errors.length > 0) {
+                html += `<div style="margin-top: 15px; padding: 15px; background: rgba(230, 87, 87, 0.1); border-radius: 10px; border: 1px solid var(--error-color);">
+                    <strong>⚠️ Lỗi:</strong><br>
+                    ${state.validation.errors.map(e => `• ${e}`).join('<br>')}
+                </div>`;
+            }
+
+            // Show warnings if any
+            if (state.validation.warnings.length > 0) {
+                html += `<div style="margin-top: 15px; padding: 15px; background: rgba(255, 152, 0, 0.1); border-radius: 10px; border: 1px solid var(--warning-color);">
+                    <strong>📝 Cảnh báo:</strong><br>
+                    ${state.validation.warnings.map(w => `• ${w}`).join('<br>')}
+                </div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Process data
+        async function processData() {
+            if (!state.connected || !state.validation || !state.validation.summary.isValid) {
+                showMessage('Dữ liệu chưa hợp lệ hoặc mất kết nối', 'error');
+                return;
+            }
+
+            const processBtn = document.getElementById('processBtn');
+            processBtn.innerHTML = '<span class="spinner"></span>Đang xử lý...';
+            processBtn.disabled = true;
+
+            // Show processing panel
+            document.getElementById('processingPanel').classList.remove('hidden');
+            document.getElementById('previewPanel').classList.add('hidden');
+
+            try {
+                const payload = {
+                    action: 'process',
+                    data: state.excelData
+                };
+
+                const response = await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    state.results = result.data;
+                    showResults();
+                    showMessage('✅ Xử lý hoàn thành!', 'success');
+                } else {
+                    throw new Error(result.error || 'Processing failed');
+                }
+            } catch (error) {
+                showMessage(`Lỗi xử lý: ${error.message}`, 'error');
+            } finally {
+                processBtn.textContent = '🚀 Bắt đầu xử lý';
+            }
+        }
+
+        // Show results
+        function showResults() {
+            if (!state.results) return;
+
+            // Update progress to 100%
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('currentProgress').textContent = state.results.summary.total;
+            document.getElementById('totalProgress').textContent = state.results.summary.total;
+            document.getElementById('progressPercent').textContent = '100%';
+
+            // Hide processing panel, show results
+            document.getElementById('processingPanel').classList.add('hidden');
+            document.getElementById('resultsPanel').classList.remove('hidden');
+
+            // Update stats
+            const statsContainer = document.getElementById('resultsStats');
+            const summary = state.results.summary;
+            
+            let statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-value">${summary.total}</div>
+                    <div>Tổng số</div>
+                </div>
+                <div class="stat-card" style="border-color: var(--success-color);">
+                    <div class="stat-value" style="color: var(--success-color);">${summary.success}</div>
+                    <div>Thành công</div>
+                </div>
+                <div class="stat-card" style="border-color: var(--error-color);">
+                    <div class="stat-value" style="color: var(--error-color);">${summary.error}</div>
+                    <div>Lỗi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${new Date().toLocaleTimeString('vi-VN')}</div>
+                    <div>Thời gian</div>
+                </div>
+            `;
+            statsContainer.innerHTML = statsHtml;
+
+            // Show results table
+            const tableContainer = document.getElementById('resultsTable');
+            let tableHtml = '<table>';
+            tableHtml += '<thead><tr><th>STT</th><th>File ID</th><th>Template</th><th>Trạng thái</th><th>Tải về</th></tr></thead>';
+            tableHtml += '<tbody>';
+
+            state.results.results.forEach((result, index) => {
+                const statusClass = result.status === 'OK' ? 'status-ok' : 'status-error';
+                const downloadLink = result.downloadUrl ? 
+                    `<a href="${result.downloadUrl}" target="_blank" class="link">📄 ${result.status === 'OK' ? 'PDF/Doc' : 'N/A'}</a>` :
+                    'N/A';
+
+                tableHtml += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${result.fileId}</td>
+                        <td>${result.template}</td>
+                        <td class="${statusClass}">${result.status}</td>
+                        <td>${downloadLink}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += '</tbody></table>';
+            tableContainer.innerHTML = tableHtml;
+        }
+
+        // Download template
+        async function downloadTemplate() {
+            if (!state.connected) {
+                showMessage('Mất kết nối với backend', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${CONFIG.API_URL}?action=getTemplateExcel`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.data.url) {
+                    window.open(result.data.url, '_blank');
+                } else {
+                    throw new Error(result.error || 'Không thể tải mẫu');
+                }
+            } catch (error) {
+                showMessage(`Lỗi tải mẫu: ${error.message}`, 'error');
+            }
+        }
+
+        // Download results
+        function downloadResults() {
+            if (!state.results) {
+                showMessage('Không có kết quả để tải', 'error');
+                return;
+            }
+
+            try {
+                const resultsData = [
+                    ['STT', 'File ID', 'Template', 'Trạng thái', 'Thông báo', 'URL Document', 'URL PDF']
+                ];
+
+                state.results.results.forEach((result, index) => {
+                    resultsData.push([
+                        index + 1,
+                        result.fileId,
+                        result.template,
+                        result.status,
+                        result.message,
+                        result.docUrl || '',
+                        result.pdfUrl || ''
+                    ]);
+                });
+
+                const ws = XLSX.utils.aoa_to_sheet(resultsData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Kết quả');
+
+                XLSX.writeFile(wb, `LAZINET_Results_${new Date().getTime()}.xlsx`);
+            } catch (error) {
+                showMessage(`Lỗi tải kết quả: ${error.message}`, 'error');
+            }
+        }
+
+        // Toggle preview
+        function togglePreview() {
+            if (!state.excelData) return;
+
+            const previewPanel = document.getElementById('previewPanel');
+            const previewBtn = document.getElementById('previewBtn');
+
+            if (state.isPreviewVisible) {
+                previewPanel.classList.add('hidden');
+                previewBtn.textContent = '👁️ Xem trước';
+            } else {
+                previewPanel.classList.remove('hidden');
+                previewBtn.textContent = '👁️ Ẩn trước';
+                
+                // Show data preview
+                const previewContainer = document.getElementById('dataPreview');
+                let html = '<table>';
+                html += '<thead><tr>';
+                state.headers.forEach(header => {
+                    html += `<th>${header}</th>`;
+                });
+                html += '</tr></thead>';
+                html += '<tbody>';
+
+                // Show first 5 rows
+                const previewRows = Math.min(5, state.excelData.length);
+                for (let i = 0; i < previewRows; i++) {
+                    html += '<tr>';
+                    state.headers.forEach(header => {
+                        html += `<td>${state.excelData[i][header] || ''}</td>`;
+                    });
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+
+                if (state.excelData.length > 5) {
+                    html += `<div style="text-align: center; padding: 10px; opacity: 0.7;">
+                        ... và ${state.excelData.length - 5} hàng khác
+                    </div>`;
+                }
+
+                previewContainer.innerHTML = html;
+            }
+
+            state.isPreviewVisible = !state.isPreviewVisible;
+        }
+
+        // Clear file
+        function clearFile() {
+            state.excelData = null;
+            state.validation = null;
+            document.getElementById('fileInfo').classList.add('hidden');
+            document.getElementById('previewPanel').classList.add('hidden');
+            document.getElementById('processBtn').disabled = true;
+            state.isPreviewVisible = false;
+        }
+
+        // Reset all
+        function resetAll() {
+            state.excelData = null;
+            state.validation = null;
+            state.results = null;
+            
+            document.getElementById('fileInfo').classList.add('hidden');
+            document.getElementById('previewPanel').classList.add('hidden');
+            document.getElementById('processingPanel').classList.add('hidden');
+            document.getElementById('resultsPanel').classList.add('hidden');
+            
+            document.getElementById('processBtn').disabled = true;
+            document.getElementById('fileInput').value = '';
+            
+            state.isPreviewVisible = false;
+            
+            showMessage('Đã làm mới', 'success');
+        }
+
+        // Helper: Show message
+        function showMessage(message, type = 'info') {
+            // Create a temporary message div
+            const messageDiv = document.createElement('div');
+            const color = type === 'success' ? 'var(--success-color)' : 
+                         type === 'error' ? 'var(--error-color)' : 
+                         type === 'warning' ? 'var(--warning-color)' : 'var(--info-color)';
+            
+            messageDiv.innerHTML = `<div style="position: fixed; bottom: 20px; right: 20px; color: ${color}; padding: 10px 20px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid ${color}; z-index: 1000;">${message}</div>`;
+            document.body.appendChild(messageDiv);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (document.body.contains(messageDiv)) {
+                    document.body.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

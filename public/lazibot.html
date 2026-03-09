@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Báo Cáo Client ID</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; background: #4285f4; color: white; border: none; cursor: pointer; }
+        button:hover { background: #3367d6; }
+        #status { margin-top: 10px; padding: 10px; background: #f1f3f4; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Báo Cáo Client ID</h1>
+    <p>Client ID hiện tại (dựa trên trình duyệt): <strong id="clientId"></strong></p>
+    <button onclick="reportClientId()">Báo Cáo Lên Backend (Google Sheets)</button>
+    <div id="status"></div>
+
+    <script>
+        // Generate hoặc lấy Client ID từ localStorage (duy nhất cho trình duyệt này)
+        function getClientId() {
+            let clientId = localStorage.getItem('clientId');
+            if (!clientId) {
+                clientId = crypto.randomUUID(); // Generate UUID v4 (hỗ trợ từ 2020+)
+                localStorage.setItem('clientId', clientId);
+            }
+            return clientId;
+        }
+
+        // Hiển thị Client ID ngay khi load trang
+        document.getElementById('clientId').textContent = getClientId();
+
+        // Function báo cáo đồng bộ (sử dụng async/await để chờ phản hồi)
+        async function reportClientId() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = 'Đang gửi...';
+            statusDiv.style.background = '#fff3cd'; // Màu vàng cảnh báo
+
+            try {
+                const clientId = getClientId();
+                const response = await fetch('https://script.google.com/macros/s/AKfycbyqyXYTxS6Zecffj4tym--9-V14OCiM_GsoDHluB7jIEG6LeDNSs0sfma5jbJTyQs2f/exec', {  // Thay bằng URL GAS của bạn
+                    method: 'POST',
+                    mode: 'no-cors',  // Nếu cần CORS, cấu hình GAS cho phép
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'reportClient',
+                        clientId: clientId,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                // Vì no-cors, không đọc được response đầy đủ, nhưng có thể check status
+                if (response.ok) {
+                    statusDiv.innerHTML = 'Báo cáo thành công! Client ID đã gửi lên Sheets.';
+                    statusDiv.style.background = '#d4edda'; // Màu xanh thành công
+                } else {
+                    throw new Error('Lỗi gửi dữ liệu');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `Lỗi: ${error.message}. Kiểm tra URL GAS.`;
+                statusDiv.style.background = '#f8d7da'; // Màu đỏ lỗi
+            }
+        }
+    </script>
+</body>
+</html>

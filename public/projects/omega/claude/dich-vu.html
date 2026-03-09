@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dịch Vụ - OMEGA ERP</title>
+  <meta name="description" content="Dịch vụ tư vấn, triển khai, đào tạo và bảo trì hệ thống ERP chuyên nghiệp từ OMEGA. Đồng hành cùng doanh nghiệp từ giai đoạn phân tích đến go-live.">
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ─── Page-specific overrides ─── */
+    .service-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 70px 0;
+      border-bottom: 1px solid rgba(1,166,82,0.12);
+    }
+    .service-item:last-child { border-bottom: none; }
+    .service-item.reverse .service-visual { order: 2; }
+    .service-item.reverse .service-content { order: 1; }
+    .service-visual {
+      background: linear-gradient(135deg, #0d1b2a 0%, #0f2a1e 100%);
+      border: 1px solid rgba(1,166,82,0.2);
+      border-radius: 20px;
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-visual::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(1,166,82,0.15) 0%, transparent 70%);
+    }
+    .service-visual-icon {
+      font-size: 72px;
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .service-visual-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .service-visual-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-top: 8px;
+      position: relative;
+    }
+    .service-content .tag-label { margin-bottom: 12px; display: inline-block; }
+    .service-content h2 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0d1b2a;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .service-content p {
+      color: #555;
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .service-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .service-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: #333;
+      font-weight: 500;
+    }
+    .service-feature-item i {
+      width: 24px; height: 24px;
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* Process steps */
+    .process-section {
+      background: #0d1b2a;
+      padding: 80px 0;
+    }
+    .process-section .section-header h2,
+    .process-section .section-header p { color: #fff; }
+    .process-section .section-header p { color: rgba(255,255,255,0.65); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 50px;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(12.5% + 20px);
+      right: calc(12.5% + 20px);
+      height: 2px;
+      background: linear-gradient(90deg, #01a652, #7ed957);
+    }
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+    }
+    .process-step-number {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, #01a652, #7ed957);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 0 6px rgba(1,166,82,0.2);
+    }
+    .process-step h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .process-step p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+    }
+
+    /* Why choose */
+    .why-services-section { padding: 80px 0; background: #f8fafb; }
+    .why-services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 50px;
+    }
+    .why-service-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 30px;
+      text-align: center;
+      border: 1px solid rgba(1,166,82,0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .why-service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #01a652, #7ed957);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .why-service-card:hover::before { transform: scaleX(1); }
+    .why-service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(1,166,82,0.12);
+    }
+    .why-service-icon {
+      width: 70px; height: 70px;
+      background: linear-gradient(135deg, rgba(1,166,82,0.12), rgba(126,217,87,0.12));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #01a652;
+      margin: 0 auto 20px;
+    }
+    .why-service-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0d1b2a;
+      margin-bottom: 12px;
+    }
+    .why-service-card p {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .service-item { grid-template-columns: 1fr; gap: 32px; }
+      .service-item.reverse .service-visual { order: 0; }
+      .service-item.reverse .service-content { order: 0; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .process-steps::before { display: none; }
+      .why-services-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .process-steps { grid-template-columns: 1fr; }
+      .service-content h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+  <img src="assets/img/preloader.svg" alt="Loading OMEGA...">
+</div>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" title="Về đầu trang"><i class="fas fa-angle-up"></i></button>
+
+<!-- Mobile Nav Overlay -->
+<div class="overlay"></div>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <button class="close-nav"><i class="fas fa-times"></i></button>
+  <ul>
+    <li><a href="index.html">Trang Chủ</a></li>
+    <li><a href="ve-omega.html">Về Omega</a></li>
+    <li><a href="giai-phap.html">Giải Pháp</a></li>
+    <li><a href="khach-hang.html">Khách Hàng</a></li>
+    <li><a href="san-pham.html">Sản Phẩm</a></li>
+    <li><a href="dich-vu.html" class="active">Dịch Vụ</a></li>
+    <li><a href="tin-tuc.html">Tin Tức</a></li>
+    <li><a href="lien-he.html">Liên Hệ</a></li>
+  </ul>
+  <a href="lien-he.html" class="mobile-cta">Đăng Ký Demo</a>
+</nav>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fas fa-phone-alt"></i> <a href="tel:02835128448">028 3512 8448</a></span>
+        <span><i class="fas fa-envelope"></i> <a href="mailto:info@omega.com.vn">info@omega.com.vn</a></span>
+        <span><i class="fas fa-map-marker-alt"></i> 277A Nguyễn Văn Đậu, TP.HCM</span>
+      </div>
+      <div class="topbar-social">
+        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="logo-light">
+        <img src="assets/img/logo-dark.svg" alt="OMEGA ERP" class="logo-dark">
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="ve-omega.html">Về Omega</a></li>
+        <li>
+          <a href="giai-phap.html">Giải Pháp</a>
+          <ul class="dropdown">
+            <li><a href="giai-phap.html#san-xuat">Sản xuất</a></li>
+            <li><a href="giai-phap.html#thuong-mai">Thương mại</a></li>
+            <li><a href="giai-phap.html#bat-dong-san">Bất động sản</a></li>
+            <li><a href="giai-phap.html#fb">F&amp;B</a></li>
+            <li><a href="giai-phap.html#fmcg">FMCG</a></li>
+          </ul>
+        </li>
+        <li><a href="khach-hang.html">Khách Hàng</a></li>
+        <li>
+          <a href="san-pham.html">Sản Phẩm</a>
+          <ul class="dropdown">
+            <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+            <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+            <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+            <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          </ul>
+        </li>
+        <li><a href="dich-vu.html" class="active">Dịch Vụ</a></li>
+        <li><a href="tin-tuc.html">Tin Tức</a></li>
+        <li><a href="lien-he.html">Liên Hệ</a></li>
+        <li><a href="lien-he.html" class="nav-cta"><i class="fas fa-calendar-check"></i> Đăng Ký Demo</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     PAGE BANNER
+     ============================================================ -->
+<section class="page-banner">
+  <div class="container">
+    <h1 class="fade-up">Dịch Vụ</h1>
+    <nav class="breadcrumb fade-up delay-1">
+      <a href="index.html">Trang Chủ</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Dịch Vụ</span>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================================================
+     SERVICES INTRO
+     ============================================================ -->
+<section class="section-padding">
+  <div class="container">
+    <div class="section-header fade-up" style="max-width:780px;margin:0 auto;text-align:center;">
+      <span class="tag-label">Dịch Vụ Chuyên Nghiệp</span>
+      <h2>Giải Pháp Toàn Diện — Đồng Hành Từ Đầu Đến Cuối</h2>
+      <p style="font-size:16px;line-height:1.8;color:#555;margin-top:16px;">
+        Với hơn 16 năm kinh nghiệm triển khai ERP cho hơn 1.000 doanh nghiệp Việt Nam, OMEGA cung cấp dịch vụ chuyên nghiệp, được chuẩn hóa theo phương pháp luận riêng. Chúng tôi không chỉ bán phần mềm — chúng tôi đồng hành cùng bạn trên toàn bộ hành trình chuyển đổi số.
+      </p>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="fade-up delay-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px;padding:36px 40px;background:linear-gradient(135deg,#0d1b2a,#0f2a1e);border-radius:20px;border:1px solid rgba(1,166,82,0.2);">
+      <div style="text-align:center;">
+        <div style="font-size:36px;font-weight:800;background:linear-gradient(135deg,#01a652,#7ed957);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">16+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:4px;">Năm kinh nghiệm</div>
+      </div>
+      <div style="text-align:center;border-left:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:36px;font-weight:800;background:linear-gradient(135deg,#01a652,#7ed957);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">1000+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:4px;">Dự án đã triển khai</div>
+      </div>
+      <div style="text-align:center;border-left:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:36px;font-weight:800;background:linear-gradient(135deg,#01a652,#7ed957);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">30+</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:4px;">Ngành nghề đặc thù</div>
+      </div>
+      <div style="text-align:center;border-left:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:36px;font-weight:800;background:linear-gradient(135deg,#01a652,#7ed957);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">99%</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:4px;">Khách hàng hài lòng</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THREE MAIN SERVICES
+     ============================================================ -->
+<section class="section-padding" style="padding-top:0;">
+  <div class="container">
+
+    <!-- Service 1: Tu Van & Trien Khai -->
+    <div class="service-item fade-up">
+      <div class="service-visual">
+        <div class="service-visual-icon"><i class="fas fa-bullseye"></i></div>
+        <div class="service-visual-title">Tư Vấn &amp; Triển Khai ERP</div>
+        <div class="service-visual-subtitle">Phương pháp luận được kiểm chứng qua 1000+ dự án</div>
+        <!-- mini feature pills -->
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;justify-content:center;position:relative;">
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Phân tích</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Thiết kế</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Cài đặt</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Go-live</span>
+        </div>
+      </div>
+      <div class="service-content">
+        <span class="tag-label">Dịch Vụ 01</span>
+        <h2>Tư Vấn &amp; Triển Khai ERP</h2>
+        <p>Chúng tôi đồng hành xuyên suốt từ giai đoạn phân tích nghiệp vụ, thiết kế quy trình, cài đặt hệ thống đến kiểm thử và go-live. Mỗi dự án đều được thực hiện bởi đội ngũ chuyên gia có kinh nghiệm thực tế sâu trong ngành.</p>
+        <div class="service-features">
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Phân tích nghiệp vụ chi tiết theo từng bộ phận
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Thiết kế quy trình phù hợp đặc thù doanh nghiệp
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Cài đặt và cấu hình hệ thống theo yêu cầu
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Kiểm thử toàn diện trước khi nghiệm thu
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Hỗ trợ go-live và theo dõi sau triển khai
+          </div>
+        </div>
+        <a href="lien-he.html" class="btn-primary"><i class="fas fa-calendar-check"></i> Đăng Ký Tư Vấn</a>
+      </div>
+    </div>
+
+    <!-- Service 2: Dao Tao & Chuyen Giao -->
+    <div class="service-item reverse fade-up">
+      <div class="service-visual">
+        <div class="service-visual-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="service-visual-title">Đào Tạo &amp; Chuyển Giao Công Nghệ</div>
+        <div class="service-visual-subtitle">Chương trình chuẩn hóa theo vị trí người dùng</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;justify-content:center;position:relative;">
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Vận hành</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Quản lý</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">IT Admin</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Nâng cao</span>
+        </div>
+      </div>
+      <div class="service-content">
+        <span class="tag-label">Dịch Vụ 02</span>
+        <h2>Đào Tạo &amp; Chuyển Giao Công Nghệ</h2>
+        <p>Chương trình đào tạo bài bản theo từng vị trí người dùng, từ cấp vận hành đến quản lý. Chúng tôi đảm bảo đội ngũ của bạn tự tin vận hành hệ thống ngay sau khi đào tạo.</p>
+        <div class="service-features">
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Đào tạo theo nhóm chức năng và vị trí công việc
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Tài liệu hướng dẫn đầy đủ, dễ tra cứu
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Đào tạo nâng cao theo yêu cầu đặc thù
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Chuyển giao kiến thức hoàn toàn cho IT nội bộ
+          </div>
+        </div>
+        <a href="lien-he.html" class="btn-primary"><i class="fas fa-graduation-cap"></i> Tìm Hiểu Chương Trình</a>
+      </div>
+    </div>
+
+    <!-- Service 3: Bao Hanh & Bao Tri -->
+    <div class="service-item fade-up">
+      <div class="service-visual">
+        <div class="service-visual-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="service-visual-title">Bảo Hành &amp; Bảo Trì Hệ Thống</div>
+        <div class="service-visual-subtitle">Cam kết SLA rõ ràng, hỗ trợ kỹ thuật chuyên nghiệp</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;justify-content:center;position:relative;">
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">8/5 Support</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Cập nhật</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Sao lưu</span>
+          <span style="background:rgba(1,166,82,0.15);border:1px solid rgba(1,166,82,0.3);color:#7ed957;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;">Monitor</span>
+        </div>
+      </div>
+      <div class="service-content">
+        <span class="tag-label">Dịch Vụ 03</span>
+        <h2>Bảo Hành &amp; Bảo Trì Hệ Thống</h2>
+        <p>Cam kết hỗ trợ kỹ thuật chuyên nghiệp, đảm bảo hệ thống vận hành ổn định và cập nhật liên tục theo quy định pháp luật. Đội ngũ kỹ thuật của chúng tôi sẵn sàng xử lý mọi sự cố trong thời gian ngắn nhất.</p>
+        <div class="service-features">
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Hỗ trợ kỹ thuật 8/5 qua hotline, email, remote
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Cập nhật phiên bản định kỳ theo pháp luật
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Sao lưu dữ liệu tự động và phục hồi khi cần
+          </div>
+          <div class="service-feature-item">
+            <i class="fas fa-check"></i>
+            Theo dõi hiệu năng hệ thống và cảnh báo sớm
+          </div>
+        </div>
+        <a href="lien-he.html" class="btn-primary"><i class="fas fa-headset"></i> Liên Hệ Hỗ Trợ</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     PROCESS STEPS
+     ============================================================ -->
+<section class="process-section">
+  <div class="container">
+    <div class="section-header fade-up" style="text-align:center;">
+      <span class="tag-label">Quy Trình</span>
+      <h2 style="color:#fff;">Quy Trình Triển Khai Chuẩn Của Omega</h2>
+      <p style="color:rgba(255,255,255,0.65);">Phương pháp luận được đúc kết từ hơn 1.000 dự án thực tế — minh bạch, kiểm soát được và hiệu quả</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step fade-up delay-1">
+        <div class="process-step-number">1</div>
+        <h4>Tiếp Nhận Yêu Cầu</h4>
+        <p>Lắng nghe bài toán, thu thập yêu cầu và xác định phạm vi dự án cùng doanh nghiệp</p>
+      </div>
+      <div class="process-step fade-up delay-2">
+        <div class="process-step-number">2</div>
+        <h4>Phân Tích &amp; Đề Xuất</h4>
+        <p>Phân tích nghiệp vụ chuyên sâu, thiết kế giải pháp và lập kế hoạch triển khai chi tiết</p>
+      </div>
+      <div class="process-step fade-up delay-3">
+        <div class="process-step-number">3</div>
+        <h4>Triển Khai</h4>
+        <p>Cài đặt, cấu hình, nhập liệu ban đầu, đào tạo người dùng và kiểm thử toàn diện</p>
+      </div>
+      <div class="process-step fade-up delay-4">
+        <div class="process-step-number">4</div>
+        <h4>Nghiệm Thu &amp; Bàn Giao</h4>
+        <p>Nghiệm thu chính thức, bàn giao hệ thống, hỗ trợ go-live và duy trì bảo hành dài hạn</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHY CHOOSE OMEGA SERVICES
+     ============================================================ -->
+<section class="why-services-section">
+  <div class="container">
+    <div class="section-header fade-up" style="text-align:center;">
+      <span class="tag-label">Vì Sao Chọn Chúng Tôi</span>
+      <h2>Lý Do Doanh Nghiệp Tin Tưởng Dịch Vụ Omega</h2>
+      <p style="color:#555;">Không chỉ là phần mềm — chúng tôi cung cấp trải nghiệm dịch vụ vượt trội ở mọi giai đoạn</p>
+    </div>
+    <div class="why-services-grid">
+      <div class="why-service-card fade-up delay-1">
+        <div class="why-service-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>Chuyên Gia Thực Chiến</h3>
+        <p>Đội ngũ tư vấn của chúng tôi không chỉ am hiểu phần mềm mà còn có kiến thức sâu về nghiệp vụ kế toán, sản xuất và nhân sự — đảm bảo giải pháp phù hợp thực tế.</p>
+      </div>
+      <div class="why-service-card fade-up delay-2">
+        <div class="why-service-icon"><i class="fas fa-clock"></i></div>
+        <h3>Cam Kết Tiến Độ</h3>
+        <p>Kế hoạch triển khai chi tiết với các mốc kiểm tra rõ ràng. Chúng tôi cam kết hoàn thành dự án đúng thời hạn đã thống nhất, không để phát sinh ngoài phạm vi.</p>
+      </div>
+      <div class="why-service-card fade-up delay-3">
+        <div class="why-service-icon"><i class="fas fa-headset"></i></div>
+        <h3>Hỗ Trợ Tận Tâm</h3>
+        <p>Sau go-live không có nghĩa là kết thúc. Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng tiếp nhận và xử lý yêu cầu trong thời gian phản hồi cam kết theo SLA.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA SECTION
+     ============================================================ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-text fade-left">
+      <h2>Sẵn Sàng Bắt Đầu Hành Trình Chuyển Đổi Số?</h2>
+      <p>Để lại thông tin — chuyên gia của chúng tôi sẽ liên hệ tư vấn miễn phí và đề xuất gói dịch vụ phù hợp nhất với quy mô và ngành nghề của doanh nghiệp bạn.</p>
+      <ul style="margin-top:24px;display:flex;flex-direction:column;gap:12px;">
+        <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.9);">
+          <i class="fas fa-check-circle" style="color:white;font-size:16px;"></i>
+          Tư vấn miễn phí, không cam kết
+        </li>
+        <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.9);">
+          <i class="fas fa-check-circle" style="color:white;font-size:16px;"></i>
+          Demo thực tế ngay tại doanh nghiệp bạn
+        </li>
+        <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.9);">
+          <i class="fas fa-check-circle" style="color:white;font-size:16px;"></i>
+          Báo giá chi tiết, minh bạch theo phạm vi
+        </li>
+      </ul>
+    </div>
+    <div class="cta-form-wrap fade-right">
+      <h3>Đăng Ký Tư Vấn Miễn Phí</h3>
+      <form class="cta-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Họ và tên *</label>
+            <input type="text" placeholder="Nguyễn Văn A" required>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại *</label>
+            <input type="tel" placeholder="0908 xxx xxx" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email công ty</label>
+          <input type="email" placeholder="name@company.com">
+        </div>
+        <div class="form-group">
+          <label>Tên doanh nghiệp *</label>
+          <input type="text" placeholder="Công ty TNHH..." required>
+        </div>
+        <div class="form-group">
+          <label>Dịch vụ quan tâm</label>
+          <select>
+            <option value="">-- Chọn dịch vụ --</option>
+            <option>Tư vấn &amp; Triển khai ERP</option>
+            <option>Đào tạo &amp; Chuyển giao</option>
+            <option>Bảo hành &amp; Bảo trì</option>
+            <option>Tất cả dịch vụ</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nhu cầu cụ thể</label>
+          <textarea placeholder="Mô tả ngắn về yêu cầu dịch vụ của bạn..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          <i class="fas fa-paper-plane"></i> Gửi Yêu Cầu Tư Vấn
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand fade-up">
+        <img src="assets/img/logo-white.svg" alt="OMEGA ERP" class="footer-logo">
+        <p>Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA — Đồng hành cùng doanh nghiệp Việt Nam trên hành trình chuyển đổi số.</p>
+        <div class="footer-social">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Zalo"><i class="fas fa-comment-dots"></i></a>
+        </div>
+      </div>
+      <div class="footer-col fade-up delay-1">
+        <h4>Sản Phẩm</h4>
+        <ul>
+          <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
+          <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
+          <li><a href="san-pham.html#hrm">OMEGA.HRM</a></li>
+          <li><a href="san-pham.html#edu">OMEGA.EDU</a></li>
+          <li><a href="san-pham.html#mobile">Mobile Apps</a></li>
+          <li><a href="san-pham.html#gama">GAMA.SMB</a></li>
+        </ul>
+      </div>
+      <div class="footer-col fade-up delay-2">
+        <h4>Dịch Vụ</h4>
+        <ul>
+          <li><a href="dich-vu.html">Tư vấn &amp; Triển khai</a></li>
+          <li><a href="dich-vu.html">Đào tạo &amp; Chuyển giao</a></li>
+          <li><a href="dich-vu.html">Bảo hành &amp; Bảo trì</a></li>
+          <li><a href="ve-omega.html">Về Omega</a></li>
+          <li><a href="khach-hang.html">Khách hàng</a></li>
+          <li><a href="tin-tuc.html">Tin tức</a></li>
+        </ul>
+      </div>
+      <div class="footer-col fade-up delay-3">
+        <h4>Liên Hệ</h4>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Lầu 6, Tòa nhà Hà Sơn, 277A Nguyễn Văn Đậu, P. Bình Lợi Trung, TP.HCM</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span><a href="tel:02835128448" style="color:inherit;">028 3512 8448</a><br>
+          <a href="tel:0708994462" style="color:inherit;">0708 994 462 (Ms. Nghi)</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span><a href="mailto:info@omega.com.vn" style="color:inherit;">info@omega.com.vn</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Phòng 507-B8, 8A Hoàng Ngọc Phách, Đống Đa, Hà Nội</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2026 <a href="index.html">Công ty TNHH Công Nghệ &amp; Giải Pháp OMEGA</a>. Tất cả quyền được bảo lưu. | <a href="lien-he.html">Chính sách bảo mật</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

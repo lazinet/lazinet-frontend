@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Nhận Diện Thiết Bị & IP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        /* Đã xóa CSS cho button */
+        #info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            background-color: #f8f9fa;
+        }
+        .section h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thông Tin Nhận Diện Thiết Bị & Địa Chỉ IP</h1>
+    <div id="info">
+        <p style="text-align: center;">Đang thu thập thông tin...</p>
+    </div>
+
+    <script>
+        /**
+         * Hàm phỏng đoán loại thiết bị dựa trên User Agent và các thuộc tính khác
+         */
+        function detectDeviceType() {
+            const ua = navigator.userAgent;
+            let deviceType = 'Máy Tính Bàn/Laptop (Desktop)';
+            
+            // 1. Kiểm tra các từ khóa mobile/tablet phổ biến
+            if (/Mobile|Android|iP(hone|od)|Windows Phone|BlackBerry/i.test(ua)) {
+                deviceType = 'Điện Thoại Di Động (Mobile)';
+            } else if (/iPad|Tablet|Nexus 7|Nexus 10|SM-T|KFAPWI/i.test(ua)) {
+                deviceType = 'Máy Tính Bảng (Tablet)';
+            }
+
+            // 2. Kiểm tra hỗ trợ cảm ứng
+            if (navigator.maxTouchPoints > 0 && ua.includes('Macintosh') && deviceType === 'Máy Tính Bàn/Laptop (Desktop)') {
+                 deviceType = 'Máy Tính (Mac/Desktop) có màn hình cảm ứng';
+            } else if (navigator.maxTouchPoints > 0 && deviceType === 'Máy Tính Bàn/Laptop (Desktop)') {
+                // Nếu hỗ trợ cảm ứng nhưng không phải mobile/tablet, có thể là 2-in-1 laptop/Surface
+                deviceType = 'Thiết Bị Lai/Laptop Cảm Ứng';
+            }
+            
+            return deviceType;
+        }
+
+        async function gatherInfo() {
+            const infoDiv = document.getElementById('info');
+            infoDiv.innerHTML = '<p style="text-align: center;">Đang thu thập thông tin...</p>';
+
+            // Lấy IP qua API
+            let ip = 'Không thể lấy IP';
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                ip = data.ip;
+            } catch (error) {
+                console.error('Lỗi lấy IP:', error);
+            }
+
+            // Thu thập thông tin trình duyệt và thiết bị
+            const userAgent = navigator.userAgent;
+            const language = navigator.language || (navigator.languages && navigator.languages[0]) || 'N/A';
+            const platform = navigator.platform;
+            const cookieEnabled = navigator.cookieEnabled;
+            const doNotTrack = navigator.doNotTrack === '1' ? 'Đang Bật' : (navigator.doNotTrack === '0' ? 'Đang Tắt' : 'Không hỗ trợ');
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const screenResolution = `${screen.width}x${screen.height}`;
+            const colorDepth = screen.colorDepth;
+            const pixelDepth = screen.pixelDepth;
+            const windowSize = `${window.innerWidth}x${window.innerHeight}`;
+            const hardwareConcurrency = navigator.hardwareConcurrency || 'N/A';
+            const deviceMemory = navigator.deviceMemory || 'N/A';
+            const connectionType = navigator.connection ? navigator.connection.effectiveType : 'N/A';
+            const onlineStatus = navigator.onLine ? 'Online' : 'Offline';
+            
+            // THÔNG TIN MỚI: Loại Thiết Bị
+            const deviceType = detectDeviceType();
+
+            // Canvas Fingerprint (cơ bản)
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillText('Fingerprint test', 2, 2);
+            const canvasData = canvas.toDataURL();
+
+            // WebGL Info (cơ bản)
+            let webglVendor = 'N/A';
+            let webglRenderer = 'N/A';
+            try {
+                const glCanvas = document.createElement('canvas');
+                const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
+                if (gl) {
+                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    webglVendor = debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : 'N/A';
+                    webglRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'N/A';
+                }
+            } catch (error) {
+                console.error('Lỗi WebGL:', error);
+            }
+
+            // Plugins (cũ, nhưng vẫn hữu ích)
+            const plugins = Array.from(navigator.plugins).map(p => p.name).join(', ');
+
+            // Fonts (cơ bản - kiểm tra một số font phổ biến)
+            const fonts = ['Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Comic Sans MS', 'Impact'];
+            const detectedFonts = fonts.filter(font => {
+                const test = document.createElement('span');
+                test.style.fontFamily = font;
+                test.textContent = 'M';
+                document.body.appendChild(test);
+                const widthBefore = test.offsetWidth;
+                test.style.fontFamily = font + ', monospace'; // Thử với font khác để so sánh
+                const widthAfter = test.offsetWidth;
+                document.body.removeChild(test);
+                return widthBefore !== widthAfter;
+            }).join(', '); // Giản lược
+
+            // Local Storage test
+            const localStorageEnabled = (() => {
+                try {
+                    localStorage.setItem('test', 'test');
+                    localStorage.removeItem('test');
+                    return 'Enabled';
+                } catch (e) {
+                    return 'Disabled';
+                }
+            })();
+
+            // Session Storage
+            const sessionStorageEnabled = (() => {
+                try {
+                    sessionStorage.setItem('test', 'test');
+                    sessionStorage.removeItem('test');
+                    return 'Enabled';
+                } catch (e) {
+                    return 'Disabled';
+                }
+            })();
+
+            // Touch support
+            const touchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0 ? 'Yes' : 'No';
+
+            // Geolocation (chỉ kiểm tra support, không request)
+            const geolocationEnabled = !!navigator.geolocation;
+
+            // Battery API (nếu có)
+            let batteryInfo = 'N/A';
+            if ('getBattery' in navigator) {
+                try {
+                    const battery = await navigator.getBattery();
+                    batteryInfo = `Mức: ${Math.round(battery.level * 100)}%, Sạc: ${battery.charging ? 'Đang Sạc' : 'Không Sạc'}`;
+                } catch (error) {
+                    // console.error('Lỗi Battery API:', error);
+                    batteryInfo = 'Hỗ trợ nhưng không thể truy cập (Lỗi quyền).';
+                }
+            }
+
+            // Hiển thị thông tin
+            infoDiv.innerHTML = `
+                <div class="section">
+                    <h3>📍 Thông Tin Mạng</h3>
+                    <strong>Địa chỉ IP:</strong> ${ip}<br>
+                    <strong>Trạng thái kết nối:</strong> ${onlineStatus}<br>
+                    <strong>Loại kết nối:</strong> ${connectionType}
+                </div>
+
+                <div class="section">
+                    <h3>🌐 Thông Tin Trình Duyệt</h3>
+                    <strong>User Agent:</strong> ${userAgent}<br>
+                    <strong>Ngôn ngữ:</strong> ${language}<br>
+                    <strong>Platform:</strong> ${platform}<br>
+                    <strong>Cookies Enabled:</strong> ${cookieEnabled}<br>
+                    <strong>Do Not Track:</strong> ${doNotTrack}<br>
+                    <strong>Local Storage:</strong> ${localStorageEnabled}<br>
+                    <strong>Session Storage:</strong> ${sessionStorageEnabled}
+                </div>
+
+                <div class="section">
+                    <h3>🕐 Thông Tin Hệ Thống & Thiết Bị</h3>
+                    <strong>Loại Thiết Bị (Phỏng đoán):</strong> ${deviceType}<br>
+                    <strong>Múi giờ:</strong> ${timezone}<br>
+                    <strong>Độ phân giải màn hình:</strong> ${screenResolution}<br>
+                    <strong>Độ sâu màu:</strong> ${colorDepth} bit<br>
+                    <strong>Kích thước cửa sổ:</strong> ${windowSize}<br>
+                    <strong>Hardware Concurrency (CPU cores):</strong> ${hardwareConcurrency}<br>
+                    <strong>Device Memory (GB):</strong> ${deviceMemory}<br>
+                    <strong>Touch Support:</strong> ${touchSupport}<br>
+                    <strong>Geolocation Support:</strong> ${geolocationEnabled ? 'Yes' : 'No'}<br>
+                    <strong>Battery Info:</strong> ${batteryInfo}
+                </div>
+
+                <div class="section">
+                    <h3>🎨 Fingerprint Cơ Bản</h3>
+                    <strong>Canvas Fingerprint:</strong> ${canvasData.substring(0, 50)}...<br>
+                    <strong>WebGL Vendor:</strong> ${webglVendor}<br>
+                    <strong>WebGL Renderer:</strong> ${webglRenderer}<br>
+                    <strong>Plugins:</strong> ${plugins || 'None'}<br>
+                    <strong>Detected Fonts (Cơ bản):</strong> ${detectedFonts || 'Standard set'}
+                </div>
+
+                <p style="text-align: center; font-style: italic; color: #666;">
+                    Lưu ý: Một số thông tin có thể không chính xác 100% do hạn chế bảo mật của trình duyệt.
+                </p>
+            `;
+        }
+
+        // Tự động chạy hàm khi trang đã tải xong
+        window.onload = gatherInfo;
+    </script>
+</body>
+</html>

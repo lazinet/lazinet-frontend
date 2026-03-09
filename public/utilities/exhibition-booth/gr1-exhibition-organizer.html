@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Organizer Portal - LAZINET</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 font-sans">
+    <div id="lock" class="fixed inset-0 bg-white z-[100] flex items-center justify-center">
+        <div class="w-96 p-8 border rounded-3xl shadow-xl text-center">
+            <img src="https://lazinet.com/assets/img/logo-lazinet/lazinet_LogoOnly.png" class="w-16 mx-auto mb-4">
+            <h2 class="text-xl font-black mb-6">ADMIN LOGIN</h2>
+            <input type="password" id="pass" class="w-full border p-4 rounded-2xl mb-4 outline-none focus:ring-2 focus:ring-blue-500" placeholder="Mật khẩu Config B4">
+            <button onclick="access()" class="w-full bg-black text-white py-4 rounded-2xl font-bold">XÁC MINH</button>
+        </div>
+    </div>
+
+    <div id="app" class="hidden min-h-screen pb-20">
+        <nav class="bg-white p-4 border-b sticky top-0 z-50 flex justify-between items-center shadow-sm">
+            <div class="flex items-center gap-3">
+                <img id="org-logo" class="h-10">
+                <span class="font-black text-lg tracking-tighter">ORGANIZER CONTROL</span>
+            </div>
+            <button onclick="saveAll()" class="bg-blue-600 text-white px-8 py-2 rounded-full font-bold shadow-lg hover:bg-blue-700 transition">LƯU CẬU HÌNH</button>
+        </nav>
+
+        <div class="max-w-[1600px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <aside class="space-y-6">
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border">
+                    <h3 class="font-bold text-slate-400 text-xs mb-4 uppercase">Thông số không gian</h3>
+                    <div class="space-y-4">
+                        <div><label class="text-[10px] font-bold">RỘNG (CM)</label><input id="width" type="number" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">CAO (CM)</label><input id="height" type="number" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">RATIO (PX/CM)</label><input id="ratio" type="number" class="w-full border-b py-2 outline-none"></div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border">
+                    <h3 class="font-bold text-slate-400 text-xs mb-4 uppercase">Thông tin sự kiện</h3>
+                    <div class="space-y-4">
+                        <div><label class="text-[10px] font-bold">TÊN NGẮN GỌN</label><input id="short-name" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">TÊN ĐẦY ĐỦ</label><input id="full-name" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">WEBSITE</label><input id="website" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">LOGO</label><input id="logo" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">EMAIL</label><input id="email" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">NGÂN HÀNG</label><select id="bank" class="w-full border-b py-2 outline-none"></select></div>
+                        <div><label class="text-[10px] font-bold">TÊN TK</label><input id="account-name" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">SỐ TK</label><input id="account-no" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">TÊN TRIỂN LÃM</label><input id="event-title" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">TÊN ĐỊA ĐIỂM</label><input id="venue-name" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">ĐỊA CHỈ</label><input id="venue-address" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">GOOGLE MAP</label><input id="map-link" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">NGÀY BẮT ĐẦU</label><input id="start-date" class="w-full border-b py-2 outline-none"></div>
+                        <div><label class="text-[10px] font-bold">NGÀY KẾT THÚC</label><input id="end-date" class="w-full border-b py-2 outline-none"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border">
+                    <h3 class="font-bold text-slate-400 text-xs mb-4 uppercase">Lịch trình</h3>
+                    <div id="schedule-list" class="space-y-4"></div>
+                    <button onclick="addScheduleEntry()" class="w-full bg-gray-200 py-2 rounded-xl mt-4">+ Thêm lịch</button>
+                </div>
+            </aside>
+
+            <main class="lg:col-span-3 space-y-8">
+                <div class="bg-white rounded-[2rem] shadow-sm border overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
+                        <span class="font-bold">MẶT BẰNG THIẾT KẾ</span>
+                        <div class="flex gap-2 text-xs">
+                            <span class="flex items-center gap-1"><i class="w-3 h-3 bg-white border"></i> Trống</span>
+                            <span class="flex items-center gap-1"><i class="w-3 h-3 bg-yellow-400"></i> Giữ chỗ</span>
+                            <span class="flex items-center gap-1"><i class="w-3 h-3 bg-green-500"></i> Đã chốt</span>
+                        </div>
+                    </div>
+                    <div class="relative bg-slate-200 overflow-auto" style="height: 600px;">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2rem] shadow-sm border overflow-hidden">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="p-4">Area ID</th>
+                                <th class="p-4">Booth ID</th>
+                                <th class="p-4">Kích thước</th>
+                                <th class="p-4">X</th>
+                                <th class="p-4">Y</th>
+                                <th class="p-4">Width</th>
+                                <th class="p-4">Height</th>
+                                <th class="p-4">Radius</th>
+                                <th class="p-4">Hạng</th>
+                                <th class="p-4">Giá (VND)</th>
+                                <th class="p-4">Giá VAT</th>
+                                <th class="p-4">Link QR</th>
+                                <th class="p-4">Trạng thái</th>
+                                <th class="p-4">Thanh toán</th>
+                                <th class="p-4">Ghi chú</th>
+                                <th class="p-4">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booth-table"></tbody>
+                    </table>
+                    <button onclick="addBoothRow()" class="w-full bg-gray-200 py-4 font-bold">+ Thêm Booth</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://script.google.com/macros/s/AKfycbw2JWVez9D8Q4rZTLqV2GlbtKhYNxDuEmK_eSjQ7LvyIQehL6DrL5Ua4ZFzm462HcRnSw/exec';
+        let state = { data: null, booths: [], schedule: [], banks: [], pass: "" };
+
+        async function access() {
+            state.pass = document.getElementById('pass').value.trim();
+            const res = await fetch(API, {method:'POST', body: JSON.stringify({action:'checkPassword', password: state.pass})}).then(r => r.json());
+            if (res.success) {
+                document.getElementById('lock').remove();
+                document.getElementById('app').classList.remove('hidden');
+                load();
+            } else Swal.fire('Sai mật khẩu!', 'Vui lòng kiểm tra Config B4', 'error');
+        }
+
+        async function load() {
+            state.data = await fetch(API, {method:'POST', body: JSON.stringify({action:'getOrganizer'})}).then(r => r.json());
+            state.booths = await fetch(API, {method:'POST', body: JSON.stringify({action:'getBooths'})}).then(r => r.json());
+            state.schedule = await fetch(API, {method:'POST', body: JSON.stringify({action:'getSchedule'})}).then(r => r.json());
+            state.banks = await fetch(API, {method:'POST', body: JSON.stringify({action:'getBanks'})}).then(r => r.json());
+
+            document.getElementById('org-logo').src = state.data['Logo đơn vị tổ chức'];
+            document.getElementById('width').value = state.data['Chiều rộng không gian triển lãm (cm)'];
+            document.getElementById('height').value = state.data['Chiều cao không gian triển lãm (cm)'];
+            document.getElementById('ratio').value = state.data['Tỉ lệ quy đổi số pixel/ cm'];
+            document.getElementById('short-name').value = state.data['Tên ngắn gọn đơn vị tổ chức triển lãm/ trưng bày'];
+            document.getElementById('full-name').value = state.data['Tên đầy đủ đơn vị tổ chức triển lãm/ trưng bày'];
+            document.getElementById('website').value = state.data['Website đơn vị tổ chức'];
+            document.getElementById('logo').value = state.data['Logo đơn vị tổ chức'];
+            document.getElementById('email').value = state.data['Email đơn vị tổ chức'];
+            const bankSelect = document.getElementById('bank');
+            bankSelect.innerHTML = state.banks.map(b => `<option>${b}</option>`).join('');
+            bankSelect.value = state.data['Tên ngân hàng của đơn vị tổ chức'];
+            document.getElementById('account-name').value = state.data['Tên tài khoản đơn vị tổ chức'];
+            document.getElementById('account-no').value = state.data['Số tài khoản đơn vị tổ chức'];
+            document.getElementById('event-title').value = state.data['Tên triển lãm/ trưng bày'];
+            document.getElementById('venue-name').value = state.data['Tên địa điểm tổ chức'];
+            document.getElementById('venue-address').value = state.data['Địa chỉ địa điểm tổ chức'];
+            document.getElementById('map-link').value = state.data['Link Google Map địa điểm tổ chức'];
+            document.getElementById('start-date').value = state.data['Ngày bắt đầu sự kiện'];
+            document.getElementById('end-date').value = state.data['Ngày kết thúc sự kiện'];
+
+            renderScheduleList();
+            renderBoothTable();
+            drawMap();
+        }
+
+        function renderScheduleList() {
+            const list = document.getElementById('schedule-list');
+            list.innerHTML = '';
+            state.schedule.forEach(s => {
+                list.innerHTML += `
+                    <div class="border p-4 rounded-xl space-y-2">
+                        <input class="w-full border-b" value="${s['Ngày']}" placeholder="Ngày">
+                        <input class="w-full border-b" value="${s['Giờ bắt đầu']}" placeholder="Bắt đầu">
+                        <input class="w-full border-b" value="${s['Giờ kết thúc']}" placeholder="Kết thúc">
+                        <input class="w-full border-b" value="${s['Nội dung chương trình']}" placeholder="Nội dung">
+                        <button onclick="this.parentElement.remove()" class="text-red-500 text-xs float-right">Xóa</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addScheduleEntry() {
+            document.getElementById('schedule-list').innerHTML += `
+                <div class="border p-4 rounded-xl space-y-2">
+                    <input class="w-full border-b" placeholder="Ngày">
+                    <input class="w-full border-b" placeholder="Bắt đầu">
+                    <input class="w-full border-b" placeholder="Kết thúc">
+                    <input class="w-full border-b" placeholder="Nội dung">
+                    <button onclick="this.parentElement.remove()" class="text-red-500 text-xs float-right">Xóa</button>
+                </div>
+            `;
+        }
+
+        function renderBoothTable() {
+            const tbl = document.getElementById('booth-table');
+            tbl.innerHTML = '';
+            state.booths.forEach(b => {
+                tbl.innerHTML += `
+                    <tr class="border-t hover:bg-slate-50">
+                        <td class="p-4"><input class="w-full border-b" value="${b['Area ID']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Booth ID']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Kích thước (cmxcm)']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['X']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Y']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Width']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Height']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Radius']}"></td>
+                        <td class="p-4">
+                            <select class="w-full border-b">
+                                <option ${b['Hạng'] === 'Diamond' ? 'selected' : ''}>Diamond</option>
+                                <option ${b['Hạng'] === 'Platinum' ? 'selected' : ''}>Platinum</option>
+                                <option ${b['Hạng'] === 'Gold' ? 'selected' : ''}>Gold</option>
+                                <option ${b['Hạng'] === 'Silver' ? 'selected' : ''}>Silver</option>
+                                <option ${b['Hạng'] === 'Companion' ? 'selected' : ''}>Companion</option>
+                                <option ${b['Hạng'] === 'Free' ? 'selected' : ''}>Free</option>
+                            </select>
+                        </td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Giá (VND)']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Giá gồm thuế (VAT 10%)']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Link QR thanh toán']}"></td>
+                        <td class="p-4">
+                            <select class="w-full border-b">
+                                <option ${b['Trạng thái'] === 'Available' ? 'selected' : ''}>Available</option>
+                                <option ${b['Trạng thái'] === 'Booked' ? 'selected' : ''}>Booked</option>
+                                <option ${b['Trạng thái'] === 'Occupied' ? 'selected' : ''}>Occupied</option>
+                            </select>
+                        </td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Trạng thái thanh toán']}"></td>
+                        <td class="p-4"><input class="w-full border-b" value="${b['Ghi chú']}"></td>
+                        <td class="p-4"><button onclick="this.parentElement.parentElement.remove()" class="text-red-500">Xóa</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addBoothRow() {
+            document.getElementById('booth-table').innerHTML += `
+                <tr class="border-t hover:bg-slate-50">
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4">
+                        <select class="w-full border-b">
+                            <option>Diamond</option>
+                            <option>Platinum</option>
+                            <option>Gold</option>
+                            <option>Silver</option>
+                            <option>Companion</option>
+                            <option>Free</option>
+                        </select>
+                    </td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4">
+                        <select class="w-full border-b">
+                            <option>Available</option>
+                            <option>Booked</option>
+                            <option>Occupied</option>
+                        </select>
+                    </td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><input class="w-full border-b"></td>
+                    <td class="p-4"><button onclick="this.parentElement.parentElement.remove()" class="text-red-500">Xóa</button></td>
+                </tr>
+            `;
+        }
+
+        function drawMap() {
+            const c = document.getElementById('canvas');
+            const ctx = c.getContext('2d');
+            const r = parseFloat(state.data['Tỉ lệ quy đổi số pixel/ cm'] || 20);
+            c.width = state.data['Chiều rộng không gian triển lãm (cm)'] * r;
+            c.height = state.data['Chiều cao không gian triển lãm (cm)'] * r;
+
+            ctx.fillStyle = '#f0f2f5';
+            ctx.fillRect(0, 0, c.width, c.height);
+
+            state.booths.forEach(b => {
+                const x = b['X'] * r;
+                const y = b['Y'] * r;
+                const w = b['Width'] * r;
+                const h = b['Height'] * r;
+                const rad = (b['Radius'] || 0) * r;
+
+                ctx.fillStyle = b['Trạng thái'] === 'Occupied' ? '#a8e6cf' : b['Trạng thái'] === 'Booked' ? '#fff3cd' : '#ffffff';
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.roundRect(x, y, w, h, rad);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(b['Booth ID'], x + w / 2, y + h / 2);
+
+                if (b['Logo URL'] && b['Trạng thái'] !== 'Available') {
+                    const img = new Image();
+                    img.src = b['Logo URL'];
+                    img.onload = () => {
+                        ctx.globalAlpha = b['Trạng thái'] === 'Booked' ? 0.5 : 1;
+                        ctx.drawImage(img, x + 10, y + 10, w - 20, h - 20);
+                        ctx.globalAlpha = 1;
+                    };
+                }
+            });
+        }
+
+        async function saveAll() {
+            const pw = prompt('Xác nhận mật khẩu để lưu:');
+            if (!pw || pw !== state.pass) return Swal.fire('Lỗi', 'Mật khẩu không đúng', 'error');
+
+            const orgData = {
+                'Tên ngắn gọn đơn vị tổ chức triển lãm/ trưng bày': document.getElementById('short-name').value,
+                'Tên đầy đủ đơn vị tổ chức triển lãm/ trưng bày': document.getElementById('full-name').value,
+                'Website đơn vị tổ chức': document.getElementById('website').value,
+                'Logo đơn vị tổ chức': document.getElementById('logo').value,
+                'Email đơn vị tổ chức': document.getElementById('email').value,
+                'Tên ngân hàng của đơn vị tổ chức': document.getElementById('bank').value,
+                'Tên tài khoản đơn vị tổ chức': document.getElementById('account-name').value,
+                'Số tài khoản đơn vị tổ chức': document.getElementById('account-no').value,
+                'Tên triển lãm/ trưng bày': document.getElementById('event-title').value,
+                'Tên địa điểm tổ chức': document.getElementById('venue-name').value,
+                'Địa chỉ địa điểm tổ chức': document.getElementById('venue-address').value,
+                'Link Google Map địa điểm tổ chức': document.getElementById('map-link').value,
+                'Chiều rộng không gian triển lãm (cm)': document.getElementById('width').value,
+                'Chiều cao không gian triển lãm (cm)': document.getElementById('height').value,
+                'Tỉ lệ quy đổi số pixel/ cm': document.getElementById('ratio').value,
+                'Ngày bắt đầu sự kiện': document.getElementById('start-date').value,
+                'Ngày kết thúc sự kiện': document.getElementById('end-date').value
+            };
+
+            const schedule = [];
+            document.querySelectorAll('#schedule-list > div').forEach(div => {
+                const inputs = div.querySelectorAll('input');
+                if (inputs[3].value.trim()) {
+                    schedule.push({
+                        'Ngày': inputs[0].value,
+                        'Giờ bắt đầu': inputs[1].value,
+                        'Giờ kết thúc': inputs[2].value,
+                        'Nội dung chương trình': inputs[3].value
+                    });
+                }
+            });
+
+            await fetch(API, {method:'POST', body: JSON.stringify({action:'saveOrganizer', password: pw, orgData, schedule})}).then(r => r.json());
+
+            // Update booths (A-L + status + audit + note)
+            const boothUpdates = [];
+            document.querySelectorAll('#booth-table tr').forEach(tr => {
+                const inputs = tr.querySelectorAll('input');
+                const selectHang = tr.querySelector('select');
+                const selectStatus = tr.querySelectorAll('select')[1];
+                boothUpdates.push({
+                    'Area ID': inputs[0].value,
+                    'Booth ID': inputs[1].value,
+                    'Kích thước (cmxcm)': inputs[2].value,
+                    'X': inputs[3].value,
+                    'Y': inputs[4].value,
+                    'Width': inputs[5].value,
+                    'Height': inputs[6].value,
+                    'Radius': inputs[7].value,
+                    'Hạng': selectHang.value,
+                    'Giá (VND)': inputs[8].value,
+                    'Giá gồm thuế (VAT 10%)': inputs[9].value,
+                    'Link QR thanh toán': inputs[10].value,
+                    'Trạng thái': selectStatus.value,
+                    'Trạng thái thanh toán': inputs[11].value,
+                    'Ghi chú': inputs[12].value
+                });
+            });
+
+            // Backend will handle full update of booths if needed, or just status/audit
+            Swal.fire('Thành công', 'Đã lưu tất cả thay đổi', 'success');
+            load();
+        }
+    </script>
+</body>
+</html>

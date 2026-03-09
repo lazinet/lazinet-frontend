@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Báo Cáo Client ID</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; background: #4285f4; color: white; border: none; cursor: pointer; }
+        button:hover { background: #3367d6; }
+        #status { margin-top: 10px; padding: 10px; background: #f1f3f4; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Báo Cáo Client ID</h1>
+    <p>Client ID hiện tại (dựa trên trình duyệt): <strong id="clientId"></strong></p>
+    <button onclick="reportClientId()">Báo Cáo Lên Backend (Google Sheets)</button>
+    <div id="status"></div>
+
+    <script>
+        // Generate hoặc lấy Client ID từ localStorage (duy nhất cho trình duyệt này)
+        function getClientId() {
+            let clientId = localStorage.getItem('clientId');
+            if (!clientId) {
+                clientId = crypto.randomUUID(); // Generate UUID v4 (hỗ trợ từ 2020+)
+                localStorage.setItem('clientId', clientId);
+            }
+            return clientId;
+        }
+
+        // Hiển thị Client ID ngay khi load trang
+        document.getElementById('clientId').textContent = getClientId();
+
+        // Function báo cáo đồng bộ (sử dụng GET để tránh CORS preflight)
+        async function reportClientId() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = 'Đang gửi...';
+            statusDiv.style.background = '#fff3cd'; // Màu vàng cảnh báo
+
+            try {
+                const clientId = getClientId();
+                const timestamp = new Date().toISOString();
+                const gasUrl = 'https://script.google.com/macros/s/AKfycbzqN5wUqcIthWMdYLeH-HmTm1gpLT8B0alFnGEg3PjfUFLBNSJf3vOFI0ctBC4dka5H/exec'; // URL GAS của bạn
+
+                // Xây dựng query string cho GET
+                const params = new URLSearchParams({
+                    action: 'reportClient',
+                    clientId: clientId,
+                    timestamp: timestamp
+                });
+                const fullUrl = `${gasUrl}?${params.toString()}`;
+
+                console.log('Gửi GET request đến:', fullUrl); // Debug log
+
+                const response = await fetch(fullUrl, {
+                    method: 'GET',  // Đổi sang GET, không cần body/headers phức tạp
+                    mode: 'cors',
+                    redirect: 'follow'
+                });
+
+                console.log('Response status:', response.status); // Debug log
+                console.log('Response ok:', response.ok); // Debug log
+
+                if (response.ok) {
+                    const responseText = await response.text(); // Đọc response body
+                    console.log('Response body:', responseText); // Debug log
+
+                    if (responseText.includes('Success')) {  // Kiểm tra nội dung từ GAS
+                        statusDiv.innerHTML = 'Báo cáo thành công! Client ID đã gửi lên Sheets.';
+                        statusDiv.style.background = '#d4edda'; // Màu xanh thành công
+                    } else {
+                        throw new Error(`Response không mong đợi: ${responseText}`);
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Lỗi chi tiết:', error); // Log đầy đủ vào console
+                statusDiv.innerHTML = `Lỗi: ${error.message}. Kiểm tra console để debug.`;
+                statusDiv.style.background = '#f8d7da'; // Màu đỏ lỗi
+            }
+        }
+    </script>
+</body>
+</html>

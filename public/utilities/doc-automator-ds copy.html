@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET Document Automation - Standalone Client</title>
+    <style>
+        /* [Toàn bộ CSS giữ nguyên - không thay đổi] */
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #FFFFFF0A;
+            --orange-main: #ff5000;
+            --blue-main: #3F82FB;
+            --text-color: #FFFFFF;
+            --accent-color: #3F82FB;
+            --accent-secondary-color: #0F2453;
+            --bg-color: #0F162C;
+            --white-color: #FFFFFF;
+            --divider-color: #FFFFFF1A;
+            --error-color: rgb(230, 87, 87);
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --info-color: #2196F3;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Geist', 'Open Sans', sans-serif;
+        }
+        /* ... [CSS còn lại giữ nguyên hoàn toàn] ... */
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- [Phần HTML cấu trúc giữ nguyên hoàn toàn] -->
+    <div id="connectionStatus" class="connection-status status-connecting">
+        <span id="connectionIcon">⏳</span>
+        <span id="connectionText">Đang kết nối...</span>
+    </div>
+    <div class="logo-container">
+        <a href="../index.html">
+            <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi.png" alt="LAZINET Logo">
+        </a>
+    </div>
+    <div class="container">
+        <!-- [Toàn bộ cấu trúc HTML khác giữ nguyên] -->
+    </div>
+
+    <script>
+        // Configuration - SỬA URL NÀY THÀNH CỦA BẠN
+        const CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbyd462zshna-KdhU5XPiDlUBLk1ReE4vjaqQzYCfQJIQ-KxMnZ4ZC6bNlDXG_Fs9nOi/exec'
+        };
+
+        // Global state
+        let state = {
+            connected: false,
+            templates: [],
+            excelData: null,
+            headers: [],
+            validation: null,
+            results: null,
+            isPreviewVisible: false
+        };
+
+        // ============================================
+        // HÀM QUAN TRỌNG: Gửi request dạng Form Data
+        // ============================================
+        async function sendRequest(action, data = {}) {
+            const formData = new URLSearchParams();
+            formData.append('action', action);
+            
+            // Thêm tất cả dữ liệu khác vào formData
+            Object.keys(data).forEach(key => {
+                if (typeof data[key] === 'object') {
+                    formData.append(key, JSON.stringify(data[key]));
+                } else {
+                    formData.append(key, data[key]);
+                }
+            });
+            
+            const response = await fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            });
+            
+            return await response.json();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            testConnection();
+            setupDragAndDrop();
+        });
+
+        // Test connection automatically - ĐÃ SỬA
+        async function testConnection() {
+            updateConnectionStatus('connecting', '⏳', 'Đang kết nối...');
+            
+            try {
+                // GET request đơn giản cho test
+                const response = await fetch(`${CONFIG.API_URL}?action=test&t=${Date.now()}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success || result.status === 'ok') {
+                    state.connected = true;
+                    updateConnectionStatus('connected', '✅', 'Đã kết nối');
+                    // Tải templates ngay sau khi kết nối
+                    loadTemplates();
+                } else {
+                    throw new Error(result.error || 'Kết nối thất bại');
+                }
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                state.connected = false;
+                updateConnectionStatus('disconnected', '❌', 'Mất kết nối');
+                setTimeout(testConnection, 5000);
+            }
+        }
+
+        // Update connection status display
+        function updateConnectionStatus(status, icon, text) {
+            const statusDiv = document.getElementById('connectionStatus');
+            const iconSpan = document.getElementById('connectionIcon');
+            const textSpan = document.getElementById('connectionText');
+            
+            statusDiv.className = `connection-status status-${status}`;
+            iconSpan.textContent = icon;
+            textSpan.textContent = text;
+        }
+
+        // Setup drag and drop (giữ nguyên)
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+        }
+
+        // Handle file upload (giữ nguyên)
+        function handleFile(file) {
+            if (!file.name.match(/\.(xlsx|xls|csv)$/i)) {
+                showMessage('Vui lòng chọn file Excel (.xlsx, .xls) hoặc CSV (.csv)', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showMessage('File Excel không có dữ liệu', 'error');
+                        return;
+                    }
+
+                    state.headers = jsonData[0];
+                    state.excelData = jsonData.slice(1).map(row => {
+                        const obj = {};
+                        state.headers.forEach((header, index) => {
+                            obj[header] = row[index] || '';
+                        });
+                        return obj;
+                    });
+
+                    document.getElementById('fileInfo').classList.remove('hidden');
+                    document.getElementById('fileInfoContent').innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${file.name}</strong>
+                                <div style="font-size: 0.9em; opacity: 0.8; margin-top: 5px;">
+                                    ${(file.size / 1024).toFixed(1)} KB • ${state.excelData.length} bản ghi • ${state.headers.length} cột
+                                </div>
+                            </div>
+                            <span style="color: var(--error-color); cursor: pointer;" onclick="clearFile()">×</span>
+                        </div>
+                    `;
+
+                    showMessage('✅ Đã tải file Excel thành công', 'success');
+                    
+                } catch (error) {
+                    showMessage(`Lỗi đọc file: ${error.message}`, 'error');
+                }
+            };
+
+            reader.onerror = () => {
+                showMessage('Lỗi đọc file', 'error');
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Load templates - ĐÃ SỬA: dùng sendRequest
+        async function loadTemplates() {
+            if (!state.connected) {
+                showMessage('Đang kết nối lại với backend...', 'error');
+                await testConnection();
+                return;
+            }
+
+            const refreshIcon = document.getElementById('refreshIcon');
+            const originalIcon = refreshIcon.textContent;
+            refreshIcon.textContent = '⏳';
+
+            try {
+                // Sử dụng hàm sendRequest mới
+                const result = await sendRequest('getTemplates');
+                
+                if (result.success) {
+                    state.templates = result.data || [];
+                    renderTemplates();
+                    showMessage('✅ Đã tải lại danh sách template', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed to load templates');
+                }
+                
+            } catch (error) {
+                showMessage(`Lỗi tải template: ${error.message}`, 'error');
+            } finally {
+                refreshIcon.textContent = originalIcon;
+            }
+        }
+
+        // Render templates (giữ nguyên)
+        function renderTemplates() {
+            const container = document.getElementById('templateList');
+            
+            if (!state.templates || state.templates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; opacity: 0.7;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📄</div>
+                        <div>Không có template nào</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<table>';
+            html += '<thead><tr><th>Tên Template</th><th>Số trường</th><th>Các trường</th></tr></thead>';
+            html += '<tbody>';
+
+            state.templates.forEach(template => {
+                html += `
+                    <tr>
+                        <td>
+                            <a href="${template.url}" target="_blank" class="link">${template.name}</a>
+                        </td>
+                        <td style="text-align: center;">${template.fields.length}</td>
+                        <td>
+                            ${template.fields.map(f => 
+                                `<span class="template-field">{{${f}}}</span>`
+                            ).join(' ')}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Validate data - ĐÃ SỬA: dùng sendRequest
+        async function validateData() {
+            if (!state.connected) {
+                showMessage('Mất kết nối với backend', 'error');
+                await testConnection();
+                return;
+            }
+
+            if (!state.excelData) {
+                showMessage('Vui lòng tải file Excel trước', 'error');
+                return;
+            }
+
+            const validateBtn = document.getElementById('validateBtn');
+            const originalText = validateBtn.textContent;
+            validateBtn.innerHTML = '<span class="spinner"></span>Đang kiểm tra...';
+            validateBtn.disabled = true;
+
+            try {
+                // Sử dụng hàm sendRequest mới
+                const result = await sendRequest('validate', {
+                    headers: state.headers,
+                    data: state.excelData
+                });
+                
+                if (result.success) {
+                    state.validation = result.data;
+                    showValidationResults();
+                    
+                    if (state.validation.summary.isValid) {
+                        showMessage('✅ Tất cả dữ liệu hợp lệ!', 'success');
+                    } else {
+                        showMessage(`⚠️ Có ${state.validation.summary.error} lỗi, ${state.validation.summary.warning} cảnh báo`, 'warning');
+                    }
+                } else {
+                    throw new Error(result.error || 'Validation failed');
+                }
+                
+            } catch (error) {
+                showMessage(`Lỗi kiểm tra: ${error.message}`, 'error');
+            } finally {
+                validateBtn.textContent = originalText;
+                validateBtn.disabled = false;
+            }
+        }
+
+        // Show validation results (giữ nguyên)
+        function showValidationResults() {
+            if (!state.validation) return;
+
+            const container = document.getElementById('validationResults');
+            const stats = state.validation.summary;
+
+            let html = '<div class="stats-grid">';
+            html += `<div class="stat-card">
+                <div class="stat-value">${stats.total}</div>
+                <div>Tổng số</div>
+            </div>`;
+            html += `<div class="stat-card" style="border-color: var(--success-color);">
+                <div class="stat-value" style="color: var(--success-color);">${stats.ok}</div>
+                <div>Hợp lệ</div>
+            </div>`;
+            html += `<div class="stat-card" style="border-color: var(--warning-color);">
+                <div class="stat-value" style="color: var(--warning-color);">${stats.warning}</div>
+                <div>Cảnh báo</div>
+            </div>`;
+            html += `<div class="stat-card" style="border-color: var(--error-color);">
+                <div class="stat-value" style="color: var(--error-color);">${stats.error}</div>
+                <div>Lỗi</div>
+            </div>`;
+            html += '</div>';
+
+            if (state.validation.errors.length > 0) {
+                html += `<div style="margin-top: 15px; padding: 15px; background: rgba(230, 87, 87, 0.1); border-radius: 10px; border: 1px solid var(--error-color);">
+                    <strong>⚠️ Lỗi:</strong><br>
+                    ${state.validation.errors.map(e => `• ${e}`).join('<br>')}
+                </div>`;
+            }
+
+            if (state.validation.warnings.length > 0) {
+                html += `<div style="margin-top: 15px; padding: 15px; background: rgba(255, 152, 0, 0.1); border-radius: 10px; border: 1px solid var(--warning-color);">
+                    <strong>📝 Cảnh báo:</strong><br>
+                    ${state.validation.warnings.map(w => `• ${w}`).join('<br>')}
+                </div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Process data - ĐÃ SỬA: dùng sendRequest
+        async function processData() {
+            if (!state.connected) {
+                showMessage('Mất kết nối với backend.', 'error');
+                return;
+            }
+            if (!state.excelData) {
+                showMessage('Vui lòng tải file Excel trước!', 'error');
+                return;
+            }
+            
+            if (state.validation && state.validation.summary.error > 0) {
+                const userConfirmed = confirm(`⚠️ Có ${state.validation.summary.error} lỗi trong dữ liệu. Những dòng lỗi sẽ được bỏ qua.\nBạn có muốn tiếp tục xử lý không?`);
+                if (!userConfirmed) {
+                    return;
+                }
+            }
+
+            const processBtn = document.getElementById('processBtn');
+            processBtn.innerHTML = '<span class="spinner"></span>Đang xử lý...';
+            processBtn.disabled = true;
+
+            document.getElementById('processingPanel').classList.remove('hidden');
+            document.getElementById('previewPanel').classList.add('hidden');
+
+            try {
+                // Sử dụng hàm sendRequest mới
+                const result = await sendRequest('process', {
+                    data: state.excelData
+                });
+                
+                if (result.success) {
+                    state.results = result.data;
+                    showResults();
+                    showMessage('✅ Xử lý hoàn thành!', 'success');
+                } else {
+                    throw new Error(result.error || 'Processing failed');
+                }
+            } catch (error) {
+                showMessage(`Lỗi xử lý: ${error.message}`, 'error');
+            } finally {
+                processBtn.textContent = '🚀 Bắt đầu xử lý';
+                processBtn.disabled = false;
+            }
+        }
+
+        // Show results (giữ nguyên)
+        function showResults() {
+            if (!state.results) return;
+
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('currentProgress').textContent = state.results.summary.total;
+            document.getElementById('totalProgress').textContent = state.results.summary.total;
+            document.getElementById('progressPercent').textContent = '100%';
+
+            document.getElementById('processingPanel').classList.add('hidden');
+            document.getElementById('resultsPanel').classList.remove('hidden');
+
+            const statsContainer = document.getElementById('resultsStats');
+            const summary = state.results.summary;
+            
+            let statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-value">${summary.total}</div>
+                    <div>Tổng số</div>
+                </div>
+                <div class="stat-card" style="border-color: var(--success-color);">
+                    <div class="stat-value" style="color: var(--success-color);">${summary.success}</div>
+                    <div>Thành công</div>
+                </div>
+                <div class="stat-card" style="border-color: var(--error-color);">
+                    <div class="stat-value" style="color: var(--error-color);">${summary.error}</div>
+                    <div>Lỗi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${new Date().toLocaleTimeString('vi-VN')}</div>
+                    <div>Thời gian</div>
+                </div>
+            `;
+            statsContainer.innerHTML = statsHtml;
+
+            const tableContainer = document.getElementById('resultsTable');
+            let tableHtml = '<table>';
+            tableHtml += '<thead><tr><th>STT</th><th>File ID</th><th>Template</th><th>Trạng thái</th><th>Tải về</th></tr></thead>';
+            tableHtml += '<tbody>';
+
+            state.results.results.forEach((result, index) => {
+                const statusClass = result.status === 'OK' ? 'status-ok' : 'status-error';
+                const downloadLink = result.downloadUrl ? 
+                    `<a href="${result.downloadUrl}" target="_blank" class="link">📄 ${result.status === 'OK' ? 'PDF/Doc' : 'N/A'}</a>` :
+                    'N/A';
+
+                tableHtml += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${result.fileId}</td>
+                        <td>${result.template}</td>
+                        <td class="${statusClass}">${result.status}</td>
+                        <td>${downloadLink}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += '</tbody></table>';
+            tableContainer.innerHTML = tableHtml;
+        }
+
+        // Download template - ĐÃ SỬA
+        async function downloadTemplate() {
+            if (!state.connected) {
+                showMessage('Mất kết nối với backend', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${CONFIG.API_URL}?action=getTemplateExcel&t=${Date.now()}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.data.url) {
+                    window.open(result.data.url, '_blank');
+                } else {
+                    throw new Error(result.error || 'Không thể tải mẫu');
+                }
+            } catch (error) {
+                showMessage(`Lỗi tải mẫu: ${error.message}`, 'error');
+            }
+        }
+
+        // Download results (giữ nguyên)
+        function downloadResults() {
+            if (!state.results) {
+                showMessage('Không có kết quả để tải', 'error');
+                return;
+            }
+
+            try {
+                const resultsData = [
+                    ['STT', 'File ID', 'Template', 'Trạng thái', 'Thông báo', 'URL Document', 'URL PDF']
+                ];
+
+                state.results.results.forEach((result, index) => {
+                    resultsData.push([
+                        index + 1,
+                        result.fileId,
+                        result.template,
+                        result.status,
+                        result.message,
+                        result.docUrl || '',
+                        result.pdfUrl || ''
+                    ]);
+                });
+
+                const ws = XLSX.utils.aoa_to_sheet(resultsData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Kết quả');
+
+                XLSX.writeFile(wb, `LAZINET_Results_${new Date().getTime()}.xlsx`);
+            } catch (error) {
+                showMessage(`Lỗi tải kết quả: ${error.message}`, 'error');
+            }
+        }
+
+        // Toggle preview (giữ nguyên)
+        function togglePreview() {
+            if (!state.excelData) return;
+
+            const previewPanel = document.getElementById('previewPanel');
+            const previewBtn = document.getElementById('previewBtn');
+
+            if (state.isPreviewVisible) {
+                previewPanel.classList.add('hidden');
+                previewBtn.textContent = '👁️ Xem trước';
+            } else {
+                previewPanel.classList.remove('hidden');
+                previewBtn.textContent = '👁️ Ẩn trước';
+                
+                const previewContainer = document.getElementById('dataPreview');
+                let html = '<table>';
+                html += '<thead><tr>';
+                state.headers.forEach(header => {
+                    html += `<th>${header}</th>`;
+                });
+                html += '</tr></thead>';
+                html += '<tbody>';
+
+                const previewRows = Math.min(5, state.excelData.length);
+                for (let i = 0; i < previewRows; i++) {
+                    html += '<tr>';
+                    state.headers.forEach(header => {
+                        html += `<td>${state.excelData[i][header] || ''}</td>`;
+                    });
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+
+                if (state.excelData.length > 5) {
+                    html += `<div style="text-align: center; padding: 10px; opacity: 0.7;">
+                        ... và ${state.excelData.length - 5} hàng khác
+                    </div>`;
+                }
+
+                previewContainer.innerHTML = html;
+            }
+
+            state.isPreviewVisible = !state.isPreviewVisible;
+        }
+
+        // Clear file (giữ nguyên)
+        function clearFile() {
+            state.excelData = null;
+            state.validation = null;
+            document.getElementById('fileInfo').classList.add('hidden');
+            document.getElementById('previewPanel').classList.add('hidden');
+            state.isPreviewVisible = false;
+        }
+
+        // Reset all (giữ nguyên)
+        function resetAll() {
+            state.excelData = null;
+            state.validation = null;
+            state.results = null;
+            
+            document.getElementById('fileInfo').classList.add('hidden');
+            document.getElementById('previewPanel').classList.add('hidden');
+            document.getElementById('processingPanel').classList.add('hidden');
+            document.getElementById('resultsPanel').classList.add('hidden');
+            
+            document.getElementById('fileInput').value = '';
+            
+            state.isPreviewVisible = false;
+            
+            showMessage('Đã làm mới', 'success');
+        }
+
+        // Helper: Show message (giữ nguyên)
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.createElement('div');
+            const color = type === 'success' ? 'var(--success-color)' : 
+                         type === 'error' ? 'var(--error-color)' : 
+                         type === 'warning' ? 'var(--warning-color)' : 'var(--info-color)';
+            
+            messageDiv.innerHTML = `<div style="position: fixed; bottom: 20px; right: 20px; color: ${color}; padding: 10px 20px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid ${color}; z-index: 1000;">${message}</div>`;
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                if (document.body.contains(messageDiv)) {
+                    document.body.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

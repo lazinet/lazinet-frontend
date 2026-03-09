@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>GAS Backend Demo</title>
+</head>
+<body>
+
+<h3>Configs Data</h3>
+
+<button onclick="loadData('A')">Load Column A</button>
+<button onclick="loadData('B')">Load Column B</button>
+
+<ul id="result"></ul>
+
+<hr>
+
+<h3>Append to Data Sheet</h3>
+<input id="valueC" placeholder="Value for column C" />
+<button onclick="appendRow()">Append</button>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyZhniKQt4SZb8lQ45VzIbn70tvG2rPOQCHv4AI11NHnpT91pCmOQkYUQmtWqtY-oBs/exec";
+
+function loadData(action) {
+  fetch(`${GAS_URL}?action=${action}`)
+    .then(res => res.json())
+    .then(data => {
+      const ul = document.getElementById("result");
+      ul.innerHTML = "";
+      data.forEach(v => {
+        const li = document.createElement("li");
+        li.textContent = v;
+        ul.appendChild(li);
+      });
+    })
+    .catch(err => console.error(err));
+}
+
+function appendRow() {
+  const value = document.getElementById("valueC").value;
+  fetch(`${GAS_URL}?action=APPEND&value=${encodeURIComponent(value)}`)
+    .then(res => res.json())
+    .then(data => alert("Appended OK"))
+    .catch(err => console.error(err));
+}
+</script>
+
+</body>
+</html>

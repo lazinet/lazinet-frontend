@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao tiếp External Frontend & GAS Backend</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .btn-group { margin-bottom: 20px; }
+        button { padding: 10px 15px; margin-right: 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; transition: 0.2s;}
+        button:hover { background-color: #f0f0f0; border-color: #999; }
+        .btn-log { background-color: #007bff; color: white; border: none; }
+        .btn-log:hover { background-color: #0056b3; }
+        
+        #output { 
+            background: #f4f4f4; padding: 15px; border-radius: 5px; 
+            border: 1px solid #ddd; min-height: 50px; white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+
+        /* Styling cho phần đo thời gian */
+        .metrics-container {
+            background: #fff;
+            border: 1px dashed #bbb;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .metrics-title { font-weight: bold; color: #555; margin-bottom: 8px; display: block; }
+        .metric-item { display: flex; justify-content: space-between; margin-bottom: 5px; color: #666; }
+        .metric-value { font-family: monospace; font-weight: bold; color: #2c3e50; }
+        
+        .loading { color: #888; font-style: italic; }
+        .error { color: red; }
+        .success-text { color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Hành trình dữ liệu (Frontend ↔ Backend)</h2>
+    <p>Hệ thống đo thời gian thực thi toàn trình (End-to-End Latency).</p>
+
+    <div class="btn-group">
+        <button onclick="sendRequest('A')">Lấy Config A</button>
+        <button onclick="sendRequest('B')">Lấy Config B</button>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-log" onclick="sendRequest('LOG')">Ghi Log (Cột C)</button>
+    </div>
+
+    <h3>Kết quả trả về:</h3>
+    <div id="output">Chưa có request nào...</div>
+
+    <div class="metrics-container">
+        <span class="metrics-title">⏱️ Chỉ số Latency (Toàn trình):</span>
+        <div class="metric-item">
+            <span>Thời gian xử lý lấy dữ liệu (Action A):</span>
+            <span id="time-A" class="metric-value">-- ms</span>
+        </div>
+        <div class="metric-item">
+            <span>Thời gian xác nhận ghi log (Action LOG):</span>
+            <span id="time-LOG" class="metric-value">-- ms</span>
+        </div>
+    </div>
+
+    <script>
+        // --- CẤU HÌNH ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybeeftbjSS9YYUQOBK2sn2Zoyzr8bV61jl2S_aA8JY2AQ-RPFz6NXTz5e-tmfekCIg/exec"; 
+
+        async function sendRequest(actionType) {
+            const outputDiv = document.getElementById('output');
+            const timeADisplay = document.getElementById('time-A');
+            const timeLogDisplay = document.getElementById('time-LOG');
+            
+            if(SCRIPT_URL.includes("DÁN_URL")) {
+                outputDiv.innerHTML = "<span class='error'>Lỗi: Bạn chưa dán Web App URL!</span>";
+                return;
+            }
+
+            // BẮT ĐẦU ĐO THỜI GIAN
+            const startTime = performance.now();
+            
+            outputDiv.innerHTML = "<span class='loading'>Đang gửi yêu cầu và đợi phản hồi...</span>";
+
+            try {
+                const targetUrl = `${SCRIPT_URL}?action=${actionType}`;
+
+                const response = await fetch(targetUrl, { method: 'GET' });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const jsonResponse = await response.json();
+
+                // KẾT THÚC ĐO THỜI GIAN
+                const endTime = performance.now();
+                const duration = (endTime - startTime).toFixed(0); // Làm tròn về ms
+
+                // Hiển thị dữ liệu
+                if (jsonResponse.status === 'success') {
+                    if (jsonResponse.type === 'READ') {
+                        const listHtml = jsonResponse.data.length 
+                            ? "<ul><li>" + jsonResponse.data.join("</li><li>") + "</li></ul>"
+                            : "Danh sách trống";
+                        outputDiv.innerHTML = `<b>${jsonResponse.message}</b><br/>${listHtml}`;
+                        
+                        // Cập nhật metric nếu là Action A
+                        if(actionType === 'A') {
+                            timeADisplay.innerHTML = `${duration} ms`;
+                            timeADisplay.style.color = "#007bff";
+                        }
+                    } else {
+                        outputDiv.innerHTML = `<span class="success-text">${jsonResponse.message}</span>`;
+                        
+                        // Cập nhật metric nếu là Action LOG
+                        if(actionType === 'LOG') {
+                            timeLogDisplay.innerHTML = `${duration} ms`;
+                            timeLogDisplay.style.color = "#28a745";
+                        }
+                    }
+                } else {
+                    outputDiv.innerHTML = `<span class='error'>Lỗi từ Server: ${jsonResponse.message}</span>`;
+                }
+
+            } catch (error) {
+                console.error("Lỗi:", error);
+                outputDiv.innerHTML = `<span class='error'>Lỗi kết nối: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

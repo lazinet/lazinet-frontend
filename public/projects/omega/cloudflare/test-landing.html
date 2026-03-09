@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh Sách Hồ Sơ</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7fa; }
+    h1 { text-align: center; color: #333; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+    .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+    img { width: 100%; height: 260px; object-fit: cover; }
+    .info { padding: 15px; }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <h1>Danh Sách Hồ Sơ Đã Approve</h1>
+  <div id="profiles" class="grid"></div>
+
+<script>
+  const workerUrl = 'https://api-proxy.contact-omegaerp.workers.dev/';
+
+  async function loadProfiles() {
+    const container = document.getElementById('profiles');
+    container.innerHTML = '<p style="text-align:center;">Đang tải...</p>'; // loading
+
+    try {
+      const res = await fetch(workerUrl, { cache: 'no-store' }); // bỏ cache browser để test
+      console.log('Status code:', res.status);
+      
+      const text = await res.text();           // lấy text trước để debug
+      console.log('Raw response từ Worker:', text);
+      
+      const data = JSON.parse(text);           // parse sau
+      
+      container.innerHTML = '';
+
+      if (data.length === 0) {
+        container.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Chưa có hồ sơ nào được approve.</p>';
+        return;
+      }
+
+      data.forEach(row => {
+        const [hoten, gioitinh, anhurl] = row;
+        container.innerHTML += `
+          <div class="card">
+            <img src="${anhurl}" alt="${hoten}" loading="lazy">
+            <div class="info">
+              <h3>${hoten}</h3>
+              <p>Giới tính: ${gioitinh}</p>
+            </div>
+          </div>
+        `;
+      });
+    } catch (e) {
+      console.error('Lỗi chi tiết:', e);
+      container.innerHTML = `<p style="color:red;text-align:center;">Lỗi tải dữ liệu: ${e.message}<br><small>Check console F12 để xem chi tiết</small></p>`;
+    }
+  }
+
+  loadProfiles();
+</script>
+</body>
+</html>

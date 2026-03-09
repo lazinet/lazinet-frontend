@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAZINET × INGRID: AI-Powered FDI Commercial Platform</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        :root {
+            --neon-orange: #FF6300;
+            --neon-blue: #0000FF; /* LAZINET Blue */
+            --ingrid-blue: #004A90;
+            --ingrid-green: #90CC64;
+            --deep-bg: #050505;
+            --panel-bg: rgba(20, 20, 25, 0.85);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-bg);
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #0a0a2e 0%, #050505 60%);
+        }
+        
+        h1, h2, h3, .tech-font {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        /* GLOW EFFECTS */
+        .text-glow-blue { text-shadow: 0 0 10px rgba(0, 0, 255, 0.6); }
+        .text-glow-orange { text-shadow: 0 0 10px rgba(255, 99, 0, 0.6); }
+        
+        .box-glow {
+            backdrop-filter: blur(12px);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+        }
+        .box-glow:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 0, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        /* CITATION BADGES */
+        .citation-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: #888;
+            border: 1px solid #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            text-decoration: none;
+            background: rgba(0,0,0,0.5);
+        }
+        .citation-link:hover {
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+            background: rgba(0, 0, 255, 0.05);
+        }
+        
+        /* INSIGHT BOX */
+        .insight-box {
+            border-left: 4px solid var(--neon-orange);
+            background: linear-gradient(90deg, rgba(255,99,0,0.05) 0%, transparent 100%);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* ANALYST NOTE */
+        .analyst-note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #ccc;
+            background: rgba(0, 74, 144, 0.2);
+            border: 1px dashed var(--ingrid-blue);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .analyst-note strong { color: var(--ingrid-green); }
+        
+        /* GANTT CHART STYLE */
+        .gantt-container {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .gantt-header {
+            background: #0f0f0f;
+            padding: 15px;
+            font-family: 'Orbitron';
+            color: #666;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr); /* 8 Quarters/Segments */
+            text-align: center;
+        }
+        
+        .gantt-row {
+            display: contents;
+        }
+        
+        .gantt-task {
+            padding: 15px;
+            background: #111;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #ccc;
+            border-right: 1px solid #222;
+        }
+        
+        .gantt-timeline {
+            position: relative;
+            background: #0d0d0d;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+        }
+        
+        .gantt-grid-lines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            pointer-events: none;
+        }
+        .gantt-line { border-right: 1px dashed rgba(255,255,255,0.05); }
+
+        .gantt-bar {
+            height: 24px;
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        .bar-lazinet { background: linear-gradient(90deg, var(--neon-blue), #4B0082); }
+        .bar-ingrid { background: linear-gradient(90deg, var(--ingrid-green), var(--ingrid-blue)); }
+
+        /* TABLE STYLE */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .cost-table th {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 2px solid #333;
+            color: var(--neon-orange);
+            font-family: 'Orbitron';
+        }
+        .cost-table td {
+            padding: 12px;
+            border-bottom: 1px solid #222;
+            color: #ddd;
+        }
+        .cost-table tr:hover td { background: rgba(255,255,255,0.05); }
+
+        /* MAP STYLING */
+        #industrial-map {
+            height: 500px;
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            filter: grayscale(10%) contrast(1.1);
+            z-index: 1;
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-orange); }
+        
+        /* PILLAR CARDS */
+        .pillar-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; w-1 h-full bg-gradient-to-b from-transparent via-white/10 to-transparent;
+        }
+        .pillar-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+        }
+        
+        /* Navigation Dots */
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            margin: 10px 0;
+            position: relative;
+        }
+        .nav-dot::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            color: #fff;
+            border: 1px solid #333;
+        }
+        .nav-dot:hover::after { opacity: 1; }
+        .nav-dot.active {
+            background: var(--neon-orange);
+            box-shadow: 0 0 10px var(--neon-orange);
+            transform: scale(1.3);
+        }
+
+        /* Speaker Notes Panel */
+        #speaker-notes {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid var(--neon-orange);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #ccc;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        #speaker-notes h4 { color: var(--neon-orange); margin-bottom: 5px; font-family: 'Orbitron'; }
+        
+        .logo-placeholder {
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-orange': '#FF6300',
+                        'neon-blue': '#0000FF',
+                        'ingrid-green': '#90CC64',
+                        'ingrid-blue': '#004A90'
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                        'jetbrains': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="antialiased selection:bg-neon-orange selection:text-white">
+
+    <!-- Animated Background Canvas -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-30"></canvas>
+
+    <!-- Navigation Dots -->
+    <div class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-end">
+        <div class="nav-dot active" data-slide="0" data-title="Intro"></div>
+        <div class="nav-dot" data-slide="1" data-title="Executive Summary"></div>
+        <div class="nav-dot" data-slide="2" data-title="Macro Analysis"></div>
+        <div class="nav-dot" data-slide="3" data-title="Market Sizing"></div>
+        <div class="nav-dot" data-slide="4" data-title="6 Pillars"></div>
+        <div class="nav-dot" data-slide="5" data-title="Food Industry"></div>
+        <div class="nav-dot" data-slide="6" data-title="Tech Arch"></div>
+        <div class="nav-dot" data-slide="7" data-title="Geospatial"></div>
+        <div class="nav-dot" data-slide="8" data-title="Cost Analysis"></div>
+        <div class="nav-dot" data-slide="9" data-title="ROI & Break-even"></div>
+    </div>
+
+    <!-- Toggle Notes Button -->
+    <button onclick="toggleNotes()" class="fixed bottom-6 left-6 z-50 bg-white/10 hover:bg-neon-orange/80 text-white px-3 py-2 rounded text-xs font-bold transition">
+        <i class="fa-solid fa-note-sticky mr-2"></i> NOTES
+    </button>
+
+    <!-- Speaker Notes Panel -->
+    <div id="speaker-notes">
+        <h4>SPEAKER NOTES</h4>
+        <div id="note-content">Welcome to the strategy session.</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-[1400px] mx-auto px-4 md:px-8 py-10 space-y-32">
+
+        <!-- SLIDE 0: TITLE -->
+        <section id="slide-0" class="min-h-screen flex flex-col justify-center items-center text-center relative" data-note="Chào mừng quý đối tác INGRID. Đây là bản trình bày chiến lược hợp tác phát triển hệ thống AI Sales & CRM. Chúng ta đang đứng trước cơ hội lớn vào cuối năm 2025.">
+            <div class="absolute top-10 left-0 w-full flex justify-between px-8 opacity-70">
+                <div class="flex items-center gap-2">
+                     <!-- LAZINET Logo Representation -->
+                     <div class="flex flex-col items-start">
+                        <span class="text-3xl font-black text-neon-blue tracking-tighter">LAZINET</span>
+                        <span class="text-xs tracking-widest text-neon-orange">APPLIED TECHNOLOGIES</span>
+                     </div>
+                </div>
+                <div class="flex items-center gap-2">
+                     <!-- INGRID Logo Representation -->
+                     <div class="flex flex-col items-end">
+                        <span class="text-3xl font-black text-ingrid-blue tracking-tighter">INGRID</span>
+                        <span class="text-xs tracking-widest text-ingrid-green">INTERNATIONAL</span>
+                     </div>
+                </div>
+            </div>
+
+            <div class="inline-block px-4 py-1 border border-neon-blue/30 rounded-full bg-neon-blue/10 text-neon-blue text-sm font-jetbrains mb-6 animate-pulse">
+                DECEMBER 16, 2025 // STRATEGIC PROPOSAL
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tighter" data-animate>
+                BRAND MARKETING<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-orange text-glow-blue">POWERED BY AI</span>
+            </h1>
+            <p class="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 max-w-4xl leading-relaxed mx-auto" data-animate>
+                Sales & CRM System for FDI Food Manufacturing
+            </p>
+            
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <div class="box-glow p-6 rounded-xl text-center border-t-4 border-neon-blue">
+                    <h3 class="text-lg font-bold mb-1 text-white">LAZINET</h3>
+                    <p class="text-xs text-neon-blue font-bold uppercase tracking-wider">Technology Partner</p>
+                    <p class="text-sm text-gray-400 mt-2">AI Core • IoT Infrastructure • SaaS Architecture</p>
+                </div>
+                <div class="box-glow p-6 rounded-xl text-center border-t-4 border-ingrid-green">
+                    <h3 class="text-lg font-bold mb-1 text-white">INGRID</h3>
+                    <p class="text-xs text-ingrid-green font-bold uppercase tracking-wider">Commercial Partner</p>
+                    <p class="text-sm text-gray-400 mt-2">Market Strategy • Brand Promotion • FDI Networking</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 1: EXECUTIVE SUMMARY -->
+        <section id="slide-1" class="min-h-screen flex flex-col justify-center" data-note="Tóm tắt điều hành: Sự kết hợp giữa công nghệ lõi của Lazinet và năng lực thị trường của Ingrid. Mục tiêu là thị trường FDI ngành thực phẩm.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-12 text-white border-l-8 border-neon-blue pl-6">
+                01. Strategic Partnership<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Synergy of Tech & Market</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <div class="box-glow p-8 rounded-xl h-full flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold text-white mb-4">The Vision</h3>
+                        <p class="text-gray-300 text-lg leading-relaxed mb-6">
+                            To create the <span class="text-neon-orange font-bold">#1 AI-Driven Commercial Platform</span> connecting global FDI enterprises with Vietnam's local resources, specifically optimizing for the High-Tech Food Processing sector.
+                        </p>
+                        <div class="insight-box">
+                            <h4 class="text-neon-orange font-bold text-sm uppercase mb-2">
+                                <i class="fa-solid fa-bolt"></i> Role Definition
+                            </h4>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <strong class="text-neon-blue block mb-1">LAZINET (Tech)</strong>
+                                    <ul class="list-disc list-inside text-gray-400">
+                                        <li>AI/ML Engine Development</li>
+                                        <li>System Architecture</li>
+                                        <li>Product Deployment</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <strong class="text-ingrid-green block mb-1">INGRID (Biz)</strong>
+                                    <ul class="list-disc list-inside text-gray-400">
+                                        <li>Market Framework</li>
+                                        <li>Client Acquisition</li>
+                                        <li>Domain Expertise</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="box-glow p-6 rounded-xl flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-users-viewfinder text-4xl text-neon-blue mb-4"></i>
+                        <h4 class="text-xl font-bold">Target Audience</h4>
+                        <p class="text-sm text-gray-400 mt-2">FDI Enterprises entering Vietnam (Food & Beverage Focus)</p>
+                    </div>
+                    <div class="box-glow p-6 rounded-xl flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-chart-line text-4xl text-neon-orange mb-4"></i>
+                        <h4 class="text-xl font-bold">Goal</h4>
+                        <p class="text-sm text-gray-400 mt-2">Capture 10% of new FDI Food projects by 2027</p>
+                    </div>
+                    <div class="box-glow p-6 rounded-xl flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-microchip text-4xl text-purple-500 mb-4"></i>
+                        <h4 class="text-xl font-bold">Core Tech</h4>
+                        <p class="text-sm text-gray-400 mt-2">LLM Agents, OCR, Big Data, Geospatial Mapping</p>
+                    </div>
+                    <div class="box-glow p-6 rounded-xl flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-money-bill-trend-up text-4xl text-green-500 mb-4"></i>
+                        <h4 class="text-xl font-bold">Revenue</h4>
+                        <p class="text-sm text-gray-400 mt-2">SaaS Subscription + Consulting High-Ticket</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: MACRO CONTEXT -->
+        <section id="slide-2" class="min-h-screen flex flex-col justify-center" data-note="Bối cảnh Vĩ mô: FDI vào Việt Nam vẫn tăng trưởng mạnh. Năm 2024 đạt khoảng 39 tỷ USD. Việt Nam là điểm đến an toàn nhờ chính trị ổn định.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-12 text-white border-l-8 border-neon-blue pl-6">
+                02. Macro Analysis (2025)<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Vietnam's FDI Landscape</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <div class="box-glow p-6 rounded-xl col-span-2">
+                    <h3 class="text-xl font-bold mb-4">FDI Inflow Trend (2021-2025)</h3>
+                    <div class="h-80 w-full relative">
+                         <canvas id="fdiChart"></canvas>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-4">
+                        <a href="https://fia.mpi.gov.vn" target="_blank" class="citation-link"><i class="fa-solid fa-link"></i> Source: Ministry of Planning & Investment</a>
+                        <a href="https://data.worldbank.org/country/vietnam" target="_blank" class="citation-link"><i class="fa-solid fa-link"></i> Source: World Bank Data</a>
+                        <a href="https://www.gso.gov.vn" target="_blank" class="citation-link"><i class="fa-solid fa-link"></i> Source: GSO Vietnam</a>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="box-glow p-5 rounded-xl border-l-4 border-green-500">
+                        <h4 class="text-sm text-gray-400 uppercase font-bold">Analyst Insight</h4>
+                        <p class="text-sm text-gray-300 mt-2">
+                            FDI disbursement reached a record high in 2024 (~$23.2B). The shift from pure assembly to <strong>High-Tech Processing</strong> is accelerating due to Global Minimum Tax regulations.
+                        </p>
+                        <div class="analyst-note">
+                            <strong>Key Stat:</strong> Manufacturing accounts for >60% of total registered FDI capital.
+                        </div>
+                    </div>
+                    <div class="box-glow p-5 rounded-xl border-l-4 border-purple-500">
+                        <h4 class="text-sm text-gray-400 uppercase font-bold">Drivers</h4>
+                        <ul class="text-sm list-disc list-inside mt-2 space-y-2 text-gray-300">
+                            <li><strong>China+1 Strategy:</strong> Diversifying supply chains.</li>
+                            <li><strong>16 FTAs:</strong> Including EVFTA, CPTPP (0% tariffs to EU/US).</li>
+                            <li><strong>Labor Cost:</strong> Competitive (~$300/mo) vs China (~$1000/mo).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: MARKET SIZING -->
+        <section id="slide-3" class="min-h-screen flex flex-col justify-center" data-note="Phân tích TAM/SAM/SOM cho thấy tiềm năng lớn. Ngành thực phẩm chế biến là mũi nhọn.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-12 text-white border-l-8 border-neon-orange pl-6">
+                03. Market Sizing<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">The Food Manufacturing Opportunity</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="box-glow p-8 rounded-xl flex flex-col items-center justify-center">
+                     <h3 class="text-xl font-bold mb-6 text-center text-neon-orange">Target Market Analysis (TAM/SAM/SOM)</h3>
+                     <div class="w-full h-80 relative">
+                        <canvas id="marketChart"></canvas>
+                     </div>
+                     <p class="text-center text-xs text-gray-500 mt-4 italic">Estimations based on 2024 GSO Industrial Reports</p>
+                </div>
+
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-6 text-neon-blue">Why Food Processing?</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="min-w-[40px] h-10 rounded bg-blue-900/30 flex items-center justify-center text-neon-blue font-bold">1</div>
+                            <div>
+                                <h4 class="font-bold text-white">Input Advantage</h4>
+                                <p class="text-sm text-gray-400">Vietnam is top exporter of Rice, Coffee, Cashew, Pepper. FDI firms want processing closer to source.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="min-w-[40px] h-10 rounded bg-blue-900/30 flex items-center justify-center text-neon-blue font-bold">2</div>
+                            <div>
+                                <h4 class="font-bold text-white">Domestic Consumption</h4>
+                                <p class="text-sm text-gray-400">100M population with rising middle class spending on convenience food.</p>
+                            </div>
+                        </div>
+                        <div class="analyst-note mt-6">
+                            <strong>Strategic Gap:</strong> Most FDI firms struggle to connect with local farmers/aggregators due to language & data fragmentation. <br>
+                            <span class="text-white">-> Our AI Sourcing Agent solves this.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: THE 6 PILLARS -->
+        <section id="slide-4" class="min-h-screen flex flex-col justify-center" data-note="6 trụ cột giải pháp: Market Scan, Strategy, Outreach, Campaign, Operations, CRM.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-8 text-white border-l-8 border-ingrid-green pl-6">
+                04. The 6 Pillars<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">AI-Powered Commercial Flow</span>
+            </h2>
+
+            <!-- Flow Diagram Implementation using Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+                <!-- Arrows for visuals (hidden on mobile) -->
+                <div class="hidden lg:block absolute top-1/2 left-1/3 transform -translate-y-1/2 -translate-x-1/2 z-0 text-neon-blue opacity-20 text-9xl"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="hidden lg:block absolute top-1/2 right-1/3 transform -translate-y-1/2 translate-x-1/2 z-0 text-neon-blue opacity-20 text-9xl"><i class="fa-solid fa-chevron-right"></i></div>
+
+                <!-- Pillar 1 -->
+                <div class="pillar-card p-6 rounded-xl border-t-4 border-neon-blue">
+                    <div class="text-4xl text-neon-blue mb-4"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h3 class="text-xl font-bold mb-2">1. Market Scan</h3>
+                    <ul class="text-sm text-gray-400 list-disc list-inside">
+                        <li>AI Data Screening</li>
+                        <li>Scope Offerings</li>
+                        <li>Market Needs Analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="pillar-card p-6 rounded-xl border-t-4 border-neon-blue">
+                    <div class="text-4xl text-neon-blue mb-4"><i class="fa-solid fa-chess-board"></i></div>
+                    <h3 class="text-xl font-bold mb-2">2. Landing Strategy</h3>
+                    <ul class="text-sm text-gray-400 list-disc list-inside">
+                        <li>Brand Messaging</li>
+                        <li>AI Chatbot Setup</li>
+                        <li>Sales Process Definition</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="pillar-card p-6 rounded-xl border-t-4 border-neon-blue">
+                    <div class="text-4xl text-neon-blue mb-4"><i class="fa-solid fa-bullhorn"></i></div>
+                    <h3 class="text-xl font-bold mb-2">3. Outreach</h3>
+                    <ul class="text-sm text-gray-400 list-disc list-inside">
+                        <li>Content Strategy</li>
+                        <li>Social Media & UGC</li>
+                        <li>Ad Buy Optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 6 (CRM) placed visually at end of cycle but grid order implies flow -->
+                <div class="pillar-card p-6 rounded-xl border-t-4 border-ingrid-green md:col-start-3">
+                    <div class="text-4xl text-ingrid-green mb-4"><i class="fa-solid fa-users-gear"></i></div>
+                    <h3 class="text-xl font-bold mb-2">6. CRM Analysis</h3>
+                    <ul class="text-sm text-gray-400 list-disc list-inside">
+                        <li>Customer Profiling</li>
+                        <li>Competitor Analysis</li>
+                        <li>AI Recommendations</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 5 -->
+                <div class="pillar-card p-6 rounded-xl border-t-4 border-ingrid-green md:col-start-2">
+                    <div class="text-4xl text-ingrid-green mb-4"><i class="fa-solid fa-cogs"></i></div>
+                    <h3 class="text-xl font-bold mb-2">5. Operations</h3>
+                    <ul class="text-sm text-gray-400 list-disc list-inside">
+                        <li>Enquiry Mgmt</li>
+                        <li>Auto Quotations</li>
+                        <li>Transaction Analysis</li>
+                    </ul>
+                </div>
+
+                 <!-- Pillar 4 -->
+                 <div class="pillar-card p-6 rounded-xl border-t-4 border-ingrid-green md:col-start-1">
+                    <div class="text-4xl text-ingrid-green mb-4"><i class="fa-solid fa-rocket"></i></div>
+                    <h3 class="text-xl font-bold mb-2">4. Campaign</h3>
+                    <ul class="text-sm text-gray-400 list-disc list-inside">
+                        <li>Calendar Planning</li>
+                        <li>Offline Execution</li>
+                        <li>Creative Design</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: FOOD INDUSTRY DEEP DIVE -->
+        <section id="slide-5" class="min-h-screen flex flex-col justify-center" data-note="Phân tích sâu ngành thực phẩm: Truy xuất nguồn gốc, Cold Chain, FDA/ISO. AI Agent của chúng ta giải quyết các bài toán này.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-12 text-white border-l-8 border-neon-orange pl-6">
+                05. Food Industry Specifics<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Addressing Unique Challenges</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-4">Pain Points</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded bg-red-900/50 flex items-center justify-center text-red-500 mt-1"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div>
+                                <h4 class="font-bold">Traceability & Compliance</h4>
+                                <p class="text-sm text-gray-400">Strict requirements from FDA, ISO 22000, HACCP for exports.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded bg-red-900/50 flex items-center justify-center text-red-500 mt-1"><i class="fa-solid fa-snowflake"></i></div>
+                            <div>
+                                <h4 class="font-bold">Cold Chain Breaks</h4>
+                                <p class="text-sm text-gray-400">High spoilage (20-25%) in Vietnam due to fragmented logistics.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded bg-red-900/50 flex items-center justify-center text-red-500 mt-1"><i class="fa-solid fa-file-contract"></i></div>
+                            <div>
+                                <h4 class="font-bold">Vendor Verification</h4>
+                                <p class="text-sm text-gray-400">Difficulty validating local supplier capacity and quality.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-glow p-8 rounded-xl bg-gradient-to-br from-gray-900 to-blue-900/20">
+                    <h3 class="text-2xl font-bold text-white mb-4">Our AI Advantage</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded bg-green-900/50 flex items-center justify-center text-green-500 mt-1"><i class="fa-solid fa-robot"></i></div>
+                            <div>
+                                <h4 class="font-bold">AI Compliance Agent</h4>
+                                <p class="text-sm text-gray-400">Auto-checks supplier docs against Law No. 55/2010/QH12 (Food Safety Law).</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded bg-green-900/50 flex items-center justify-center text-green-500 mt-1"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <div>
+                                <h4 class="font-bold">Smart Sourcing Map</h4>
+                                <p class="text-sm text-gray-400">Locates nearest qualified raw material suppliers to factory site.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 border border-neon-orange rounded-lg text-center">
+                        <span class="text-neon-orange font-bold">COMPETITIVE EDGE</span><br>
+                        <span class="text-xs text-gray-400">Generic CRMs (Salesforce/HubSpot) lack Vietnam Food Local Intelligence.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: TECH ARCHITECTURE -->
+        <section id="slide-6" class="min-h-screen flex flex-col justify-center" data-note="Kiến trúc công nghệ: Scalable, Microservices, tích hợp API Google Gemini, Maps.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-12 text-white border-l-8 border-neon-blue pl-6">
+                06. System Architecture<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Scalable • Secure • AI-First</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                <!-- Layer 1 -->
+                <div class="box-glow p-4 rounded-lg border-t-4 border-blue-400">
+                    <div class="text-2xl mb-2"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h4 class="font-bold">Frontend</h4>
+                    <p class="text-xs text-gray-400 mt-2">Next.js / React</p>
+                    <p class="text-xs text-gray-400">Responsive Dashboard</p>
+                </div>
+
+                <!-- Layer 2 -->
+                <div class="box-glow p-4 rounded-lg border-t-4 border-purple-500">
+                    <div class="text-2xl mb-2"><i class="fa-solid fa-brain"></i></div>
+                    <h4 class="font-bold">AI Core (Agents)</h4>
+                    <p class="text-xs text-gray-400 mt-2">LLM Integrations</p>
+                    <div class="flex justify-center gap-2 mt-2">
+                        <span class="px-2 py-1 bg-gray-700 rounded text-[10px]">Gemini</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-[10px]">Grok</span>
+                    </div>
+                </div>
+
+                <!-- Layer 3 -->
+                <div class="box-glow p-4 rounded-lg border-t-4 border-green-500">
+                    <div class="text-2xl mb-2"><i class="fa-solid fa-server"></i></div>
+                    <h4 class="font-bold">Backend Services</h4>
+                    <p class="text-xs text-gray-400 mt-2">Node.js / Python</p>
+                    <p class="text-xs text-gray-400">OCR & Automation</p>
+                </div>
+
+                <!-- Layer 4 -->
+                <div class="box-glow p-4 rounded-lg border-t-4 border-orange-500">
+                    <div class="text-2xl mb-2"><i class="fa-solid fa-database"></i></div>
+                    <h4 class="font-bold">Data Layer</h4>
+                    <p class="text-xs text-gray-400 mt-2">PostgreSQL / MongoDB</p>
+                    <p class="text-xs text-gray-400">GeoSpatial Data</p>
+                </div>
+            </div>
+
+            <div class="mt-12 box-glow p-6 rounded-xl">
+                <h3 class="text-xl font-bold mb-4">Integration Stack</h3>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="px-4 py-2 border border-gray-600 rounded-full text-sm hover:border-neon-blue transition">Google Maps API</span>
+                    <span class="px-4 py-2 border border-gray-600 rounded-full text-sm hover:border-neon-blue transition">Zalo/WhatsApp API</span>
+                    <span class="px-4 py-2 border border-gray-600 rounded-full text-sm hover:border-neon-blue transition">Payment Gateways (Momo/Stripe)</span>
+                    <span class="px-4 py-2 border border-gray-600 rounded-full text-sm hover:border-neon-blue transition">Email Marketing (SendGrid)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: GEOSPATIAL INTELLIGENCE -->
+        <section id="slide-7" class="min-h-screen flex flex-col justify-center" data-note="Bản đồ các khu công nghiệp trọng điểm phía Nam. Dữ liệu địa lý giúp FDI chọn địa điểm tối ưu.">
+             <h2 class="text-3xl md:text-5xl tech-font font-bold mb-8 text-white border-l-8 border-neon-orange pl-6">
+                07. Geospatial Intelligence<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Southern Vietnam Industrial Zones</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[600px]">
+                <div class="lg:col-span-2 h-full rounded-xl overflow-hidden border border-gray-700 relative">
+                    <div id="industrial-map"></div>
+                </div>
+                <div class="box-glow p-6 rounded-xl overflow-y-auto">
+                    <h3 class="text-xl font-bold mb-4 text-neon-orange">Key Food Hubs</h3>
+                    <ul class="space-y-4">
+                        <li class="p-3 bg-white/5 rounded hover:bg-white/10 transition cursor-pointer" onclick="mapFlyTo(11.05, 106.66)">
+                            <div class="font-bold text-white">VSIP I & II (Binh Duong)</div>
+                            <div class="text-xs text-gray-400">High readiness, good wastewater treatment.</div>
+                        </li>
+                        <li class="p-3 bg-white/5 rounded hover:bg-white/10 transition cursor-pointer" onclick="mapFlyTo(10.93, 106.88)">
+                            <div class="font-bold text-white">Amata City (Dong Nai)</div>
+                            <div class="text-xs text-gray-400">Proximity to Airport & Port.</div>
+                        </li>
+                        <li class="p-3 bg-white/5 rounded hover:bg-white/10 transition cursor-pointer" onclick="mapFlyTo(10.63, 106.45)">
+                            <div class="font-bold text-white">Long Hau (Long An)</div>
+                            <div class="text-xs text-gray-400">Gateway to Mekong Delta (Raw materials).</div>
+                        </li>
+                         <li class="p-3 bg-white/5 rounded hover:bg-white/10 transition cursor-pointer" onclick="mapFlyTo(10.75, 106.60)">
+                            <div class="font-bold text-white">Tan Tao (HCMC)</div>
+                            <div class="text-xs text-gray-400">Established food cluster.</div>
+                        </li>
+                    </ul>
+                    <div class="mt-6 text-xs text-gray-500 italic">
+                        *Data simulated. Live deployment connects to commercial GIS API.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: ROADMAP & COST -->
+        <section id="slide-8" class="min-h-screen flex flex-col justify-center" data-note="Phân tích chi phí chi tiết theo Man-Month (MM). Junior 20M, Mid 40M, Senior 60M. Giai đoạn 1 & 2 tập trung MVP.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-8 text-white border-l-8 border-ingrid-green pl-6">
+                08. Cost & Roadmap<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Investment Analysis (Man-Month)</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Roadmap -->
+                <div>
+                     <h3 class="text-xl font-bold mb-4 text-neon-blue">Timeline</h3>
+                     <div class="gantt-container">
+                        <!-- Header -->
+                        <div class="gantt-row">
+                            <div class="gantt-task text-neon-blue">PHASE</div>
+                            <div class="gantt-header">
+                                <div class="col-span-1 border-r border-gray-700">Q1</div>
+                                <div class="col-span-1 border-r border-gray-700">Q2</div>
+                                <div class="col-span-2 border-r border-gray-700">H2 '26</div>
+                                <div class="col-span-4">2027</div>
+                            </div>
+                        </div>
+                        <!-- Task 1 -->
+                        <div class="gantt-row">
+                            <div class="gantt-task">1. Prototype</div>
+                            <div class="gantt-timeline">
+                                <div class="gantt-bar bar-lazinet w-[15%]" style="margin-left: 0;">Jan-Feb</div>
+                            </div>
+                        </div>
+                        <!-- Task 2 -->
+                        <div class="gantt-row">
+                            <div class="gantt-task">2. MVP</div>
+                            <div class="gantt-timeline">
+                                <div class="gantt-bar bar-lazinet w-[25%]" style="margin-left: 15%;">Mar-Jun</div>
+                            </div>
+                        </div>
+                        <!-- Task 3 -->
+                        <div class="gantt-row">
+                            <div class="gantt-task">3. Package</div>
+                            <div class="gantt-timeline">
+                                <div class="gantt-bar bar-ingrid w-[35%]" style="margin-left: 40%;">Jul-Dec</div>
+                            </div>
+                        </div>
+                        <!-- Task 4 -->
+                        <div class="gantt-row">
+                            <div class="gantt-task">4. Mass SaaS</div>
+                            <div class="gantt-timeline">
+                                <div class="gantt-bar bg-gradient-to-r from-orange-500 to-red-500 w-[25%]" style="margin-left: 75%;">2027</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cost Table -->
+                <div class="box-glow p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4 text-neon-orange">Development Cost Breakdown</h3>
+                    <p class="text-xs text-gray-400 mb-2">Rates: Junior 20M, Mid 40M, Senior 60M (VND)</p>
+                    <table class="cost-table">
+                        <thead>
+                            <tr>
+                                <th>Phase</th>
+                                <th>Resource Allocation</th>
+                                <th>Duration</th>
+                                <th>Est. Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-white">1. Prototype</td>
+                                <td>1 Snr (Lead) + 1 Jnr (FE)</td>
+                                <td>2 Mos</td>
+                                <td class="text-neon-orange font-bold">160M VND</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-white">2. MVP</td>
+                                <td>1 Snr + 2 Mid</td>
+                                <td>4 Mos</td>
+                                <td class="text-neon-orange font-bold">560M VND</td>
+                            </tr>
+                             <tr>
+                                <td class="font-bold text-white">3. Package</td>
+                                <td>1 Snr + 1 Mid + 2 Jnr</td>
+                                <td>6 Mos</td>
+                                <td class="text-neon-orange font-bold">840M VND</td>
+                            </tr>
+                            <tr class="border-t-2 border-gray-600 bg-gray-800/30">
+                                <td class="font-bold text-white" colspan="3">TOTAL DEV COST (YEAR 1)</td>
+                                <td class="text-neon-blue font-bold text-lg">~1.56B VND</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-4 text-xs text-gray-500 flex justify-between">
+                         <span>*Excludes infra & marketing costs.</span>
+                         <span>*Infrastructure: ~$500-1000/mo via AWS/GCP.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: FINANCIALS & CONCLUSION -->
+        <section id="slide-9" class="min-h-screen flex flex-col justify-center" data-note="Kế hoạch tài chính: Điểm hòa vốn dự kiến vào Q1/2027. Mô hình doanh thu kết hợp phí setup cao và phí thuê bao SaaS.">
+            <h2 class="text-3xl md:text-5xl tech-font font-bold mb-12 text-white border-l-8 border-neon-blue pl-6">
+                09. Financial Strategy<br>
+                <span class="text-xl md:text-2xl font-light text-gray-400">Break-even Analysis</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                 <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-6 text-green-500">Revenue Model</h3>
+                    <div class="space-y-4">
+                         <div class="p-4 bg-gray-800 rounded flex justify-between items-center border-l-4 border-green-500">
+                            <div>
+                                <div class="font-bold text-white">Setup Fee (High Ticket)</div>
+                                <div class="text-xs text-gray-400">Customization, Data Import, Training</div>
+                            </div>
+                            <div class="text-green-400 font-bold">$5,000 / Client</div>
+                        </div>
+                         <div class="p-4 bg-gray-800 rounded flex justify-between items-center border-l-4 border-blue-500">
+                            <div>
+                                <div class="font-bold text-white">SaaS Subscription</div>
+                                <div class="text-xs text-gray-400">Monthly License & Support</div>
+                            </div>
+                            <div class="text-blue-400 font-bold">$500 / Month</div>
+                        </div>
+                        <div class="insight-box mt-4">
+                            <strong class="text-neon-orange">TARGET 2026:</strong> 10 Pilot Clients.<br>
+                            Revenue Est: 10 * ($5k + $500*6) = ~$80,000 (~2B VND).<br>
+                            <span class="text-green-400 font-bold">Result: Break-even achieved in Year 1.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-glow p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-6 text-white">Break-even Projection</h3>
+                    <div class="w-full h-64">
+                        <canvas id="financeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 text-center pb-10">
+                <h3 class="text-2xl font-bold mb-4">Ready to Transform FDI in Vietnam?</h3>
+                <div class="flex justify-center gap-8 text-sm md:text-base">
+                    <div class="flex flex-col items-center">
+                        <div class="text-neon-blue font-bold">Phung Hoang (CEO)</div>
+                        <div class="text-gray-400">LAZINET Applied Technologies</div>
+                        <a href="mailto:email@lazinet.com" class="text-white hover:text-neon-orange">email@lazinet.com</a>
+                        <div class="text-gray-500">+84-908556220</div>
+                    </div>
+                    <div class="w-px bg-gray-700 h-20"></div>
+                     <div class="flex flex-col items-center">
+                        <div class="text-ingrid-green font-bold">Tan CK (CEO)</div>
+                        <div class="text-gray-400">INGRID International</div>
+                        <a href="mailto:en@ingridintl.sg" class="text-white hover:text-neon-orange">en@ingridintl.sg</a>
+                         <div class="text-gray-500">+65 6226 2652</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. Animation Setup (GSAP) ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        const animatedElements = document.querySelectorAll('[data-animate], .box-glow, .pillar-card');
+        animatedElements.forEach(el => {
+            gsap.fromTo(el, 
+                { opacity: 0, y: 30 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.8, 
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // --- 2. Chart.js Initialization ---
+        
+        // A. FDI Trend Chart
+        const ctxFDI = document.getElementById('fdiChart').getContext('2d');
+        new Chart(ctxFDI, {
+            type: 'bar',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025 (Est)'],
+                datasets: [{
+                    label: 'Registered FDI (USD Billion)',
+                    data: [31.1, 27.7, 36.6, 39.0, 42.5],
+                    backgroundColor: [
+                        'rgba(255, 255, 255, 0.1)',
+                        'rgba(255, 255, 255, 0.1)',
+                        'rgba(255, 255, 255, 0.3)',
+                        'rgba(0, 0, 255, 0.6)',
+                        'rgba(255, 99, 0, 0.8)'
+                    ],
+                    borderColor: 'rgba(255, 99, 0, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: false, 
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: '#888' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#ccc' }
+                    }
+                }
+            }
+        });
+
+        // B. Market Sizing (Doughnut)
+        const ctxMarket = document.getElementById('marketChart').getContext('2d');
+        new Chart(ctxMarket, {
+            type: 'doughnut',
+            data: {
+                labels: ['Total FDI (TAM)', 'Manufacturing (SAM)', 'Food Processing (SOM)'],
+                datasets: [{
+                    data: [39, 23, 4], // Rough billions
+                    backgroundColor: [
+                        'rgba(50, 50, 50, 0.5)', 
+                        'rgba(0, 74, 144, 0.6)', 
+                        'rgba(255, 99, 0, 0.9)'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#fff' } },
+                    title: { display: true, text: 'Market Share Focus (USD Billion)', color: '#fff' }
+                }
+            }
+        });
+
+        // C. Financial Break-even (Line)
+        const ctxFinance = document.getElementById('financeChart').getContext('2d');
+        new Chart(ctxFinance, {
+            type: 'line',
+            data: {
+                labels: ['Q1 26', 'Q2 26', 'Q3 26', 'Q4 26', 'Q1 27'],
+                datasets: [
+                    {
+                        label: 'Cumulative Cost (VND Billion)',
+                        data: [0.2, 0.8, 1.2, 1.8, 2.2], // Accumulating dev costs
+                        borderColor: '#ff6384',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Cumulative Revenue (VND Billion)',
+                        data: [0, 0.2, 0.8, 2.0, 3.5], // Lagging then accelerating
+                        borderColor: '#4bc0c0',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#888' } },
+                    x: { ticks: { color: '#ccc' } }
+                },
+                plugins: { legend: { labels: { color: '#fff' } } }
+            }
+        });
+
+        // --- 3. Map Initialization (Leaflet) ---
+        const izData = [
+            { name: "VSIP I", lat: 10.92, lng: 106.70, desc: "Binh Duong - Food Processing Hub" },
+            { name: "VSIP II", lat: 11.05, lng: 106.66, desc: "Binh Duong - Large Scale Mfg" },
+            { name: "Amata City", lat: 10.93, lng: 106.88, desc: "Dong Nai - High Tech Park" },
+            { name: "Long Hau", lat: 10.63, lng: 106.75, desc: "Long An - Port Access" },
+            { name: "My Phuoc 3", lat: 11.10, lng: 106.60, desc: "Binh Duong - Industrial City" },
+            { name: "Hiep Phuoc", lat: 10.64, lng: 106.74, desc: "HCMC - Port Logistics" },
+            { name: "Tan Tao", lat: 10.75, lng: 106.60, desc: "HCMC - Established Hub" }
+        ];
+
+        let map;
+        const initMap = () => {
+            if(document.getElementById('industrial-map')) {
+                map = L.map('industrial-map').setView([10.85, 106.70], 9);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; OpenStreetMap &copy; CARTO',
+                    subdomains: 'abcd',
+                    maxZoom: 19
+                }).addTo(map);
+
+                izData.forEach(iz => {
+                    const circle = L.circleMarker([iz.lat, iz.lng], {
+                        color: '#FF6300',
+                        fillColor: '#FF6300',
+                        fillOpacity: 0.5,
+                        radius: 8
+                    }).addTo(map);
+                    circle.bindPopup(`<b>${iz.name}</b><br>${iz.desc}`);
+                });
+            }
+        };
+
+        const mapFlyTo = (lat, lng) => {
+            if(map) {
+                map.flyTo([lat, lng], 12, { duration: 1.5 });
+            }
+        };
+
+        initMap();
+
+        // --- 4. Navigation Logic ---
+        const dots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('section');
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideIndex = dot.getAttribute('data-slide');
+                const target = document.getElementById(`slide-${slideIndex}`);
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                if(`slide-${dot.getAttribute('data-slide')}` === current) {
+                    dot.classList.add('active');
+                    const noteContent = document.getElementById(`slide-${dot.getAttribute('data-slide')}`).getAttribute('data-note');
+                    if(noteContent) {
+                         document.getElementById('note-content').innerText = noteContent;
+                    }
+                }
+            });
+        });
+
+        // --- 5. Speaker Notes Toggle ---
+        const toggleNotes = () => {
+            const notes = document.getElementById('speaker-notes');
+            if (notes.style.display === 'none' || notes.style.display === '') {
+                notes.style.display = 'block';
+            } else {
+                notes.style.display = 'none';
+            }
+        };
+
+        // --- 6. Background Particle Animation ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        const resize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.color = Math.random() > 0.5 ? '#0000FF' : '#FF6300';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0 || this.x > width) this.vx *= -1;
+                if(this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const initParticles = () => {
+            for(let i=0; i<50; i++) particles.push(new Particle());
+        };
+        initParticles();
+
+        const animateParticles = () => {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+                particles.forEach(p2 => {
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 150) {
+                        ctx.strokeStyle = `rgba(100, 100, 255, ${1 - dist/150})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            requestAnimationFrame(animateParticles);
+        };
+        animateParticles();
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
