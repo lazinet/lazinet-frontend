@@ -672,7 +672,7 @@
         var alpha = 0.35 + n.depth * 0.65;
         ctx.save(); ctx.translate(n.wx, n.wy);
         ctx.beginPath(); ctx.roundRect(-bw/2, -bh/2, bw, bh, 3);
-        ctx.fillStyle = 'rgba(0,8,18,' + (0.65 + n.depth * 0.30) + ')'; ctx.fill();
+        ctx.fillStyle = 'rgba(1, 65, 32,' + (0.65 + n.depth * 0.30) + ')'; ctx.fill();
         var bAlpha = n.glow > 0.05 ? 0.4 + n.glow * 0.6 : 0.18 + n.depth * 0.45;
         ctx.strokeStyle = n.glow > 0.05
           ? 'rgba(255,26,34,' + bAlpha + ')' : 'rgba(255,255,255,' + bAlpha + ')';
