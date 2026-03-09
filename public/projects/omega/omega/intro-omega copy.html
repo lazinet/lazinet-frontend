@@ -74,16 +74,6 @@ const VNF="'Be Vietnam Pro',sans-serif";
 const G='#00A651',R='#ED1C24',BG='#000810';
 const BLUE='#2196F3',TEAL='#00BCD4',ORG='#FF9800',PURP='#9C27B0';
 
-/* ── Icon helper: draw emoji icon centered at (x,y) ── */
-function drawIcon(icon,x,y,size,alpha){
-  ctx.save();
-  ctx.globalAlpha=(ctx.globalAlpha||1)*alpha;
-  ctx.font=`${size}px sans-serif`;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(icon,x,y);
-  ctx.restore();
-}
-
 /* ── Timeline (ms) ── */
 const TL={
   s1s:0,    s1e:3000,
@@ -204,7 +194,7 @@ function drawS1(now){
     const subTxt='ERP Việt Nam – Giải pháp quản trị doanh nghiệp toàn diện';
     const subSz=fitFont('600',26,VNF,subTxt,W*.80);
     ctx.font=`600 ${subSz}px ${VNF}`; ctx.fillStyle=rgba(G,.9);
-    ctx.fillText('✦  ' + subTxt + '  ✦',W/2,H/2+72);
+    ctx.fillText(subTxt,W/2,H/2+72);
   }
   ctx.restore();
 }
@@ -222,11 +212,7 @@ function drawS2(now){
   const hp=eO(prog(now,TL.s2s,TL.s2s+800));
   ctx.globalAlpha=sa*hp;
   ctx.font='700 24px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(G,.95);
-  ctx.textAlign='center'; ctx.letterSpacing='0px';
-  ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
-  var _tw2=ctx.measureText('SỨC MẠNH OMEGA').width;
-  ctx.letterSpacing='0px'; ctx.font='26px sans-serif'; ctx.fillText('💪',W/2-_tw2/2-22,H/2-290);
-  ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
+  ctx.textAlign='center'; ctx.letterSpacing='7px';
   ctx.fillText('SỨC MẠNH OMEGA',W/2,H/2-290);
   ctx.letterSpacing='0px'; ctx.globalAlpha=sa;
   const bw=370,bh=210,gX=70,gY=58;
@@ -253,12 +239,12 @@ function drawS2(now){
 
 /* ── S3: Industries ── */
 const INDS=[
-  {name:'Nhựa & Hoá chất',         sub:'Sản xuất · Tồn kho · Giá thành',  col:TEAL, icon:'⚗️'},
-  {name:'Gỗ & Nội thất',            sub:'Định mức · Sản xuất · CL',        col:ORG,  icon:'🪵'},
-  {name:'F&B – Thực phẩm',          sub:'Sản xuất · Truy xuất · CRM',      col:G,    icon:'🍽️'},
-  {name:'FMCG – Hàng tiêu dùng',    sub:'Phân phối · Kênh bán · DMS',      col:BLUE, icon:'🛒'},
-  {name:'Thủy – Hải sản',            sub:'Nguyên liệu · Chế biến · XK',    col:TEAL, icon:'🐟'},
-  {name:'Thiết bị Y tế & Dược phẩm',sub:'Lô-date · Kiểm soát · Nhập khẩu',col:R,    icon:'💊'},
+  {name:'Nhựa & Hoá chất',         sub:'Sản xuất · Tồn kho · Giá thành',  col:TEAL},
+  {name:'Gỗ & Nội thất',            sub:'Định mức · Sản xuất · CL',        col:ORG},
+  {name:'F&B – Thực phẩm',          sub:'Sản xuất · Truy xuất · CRM',      col:G},
+  {name:'FMCG – Hàng tiêu dùng',    sub:'Phân phối · Kênh bán · DMS',      col:BLUE},
+  {name:'Thủy – Hải sản',            sub:'Nguyên liệu · Chế biến · XK',    col:TEAL},
+  {name:'Thiết bị Y tế & Dược phẩm',sub:'Lô-date · Kiểm soát · Nhập khẩu',col:R},
 ];
 function drawS3(now){
   const sa=sceneA(now,TL.s3s,TL.s3e,700,700); if(sa<=0)return;
@@ -266,11 +252,7 @@ function drawS3(now){
   const hp=eO(prog(now,TL.s3s,TL.s3s+800));
   ctx.save(); ctx.globalAlpha=sa*hp;
   ctx.font='700 24px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(G,.95);
-  ctx.textAlign='center'; ctx.letterSpacing='0px';
-  ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
-  var _tw3=ctx.measureText('GIẢI PHÁP THEO NGÀNH NGHỀ').width;
-  ctx.letterSpacing='0px'; ctx.font='26px sans-serif'; ctx.fillText('🏭',W/2-_tw3/2-22,H/2-304);
-  ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
+  ctx.textAlign='center'; ctx.letterSpacing='7px';
   ctx.fillText('GIẢI PHÁP THEO NGÀNH NGHỀ',W/2,H/2-304);
   ctx.letterSpacing='0px';
   ctx.font='26px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle='rgba(255,255,255,.82)';
@@ -293,15 +275,12 @@ function drawS3(now){
     ctx.fillStyle=rgba(ind.col,.18); ctx.fill();
     ctx.strokeStyle=rgba(ind.col,.80); ctx.lineWidth=1.5; ctx.stroke();
     rr(rx,py,5,ch,3); ctx.fillStyle=ind.col; ctx.shadowBlur=0; ctx.fill();
-    ctx.font='20px sans-serif'; ctx.fillStyle='#FFFFFF';
+    ctx.font='bold 22px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle='#FFFFFF';
     ctx.textAlign='left'; ctx.textBaseline='middle';
-    ctx.fillText(ind.icon,rx+16,py+42);
-    const nameSz=fitFont('bold',19,VNF,ind.name,cw-62);
-    ctx.font=`bold ${nameSz}px ${VNF}`;
     ctx.shadowColor=ind.col; ctx.shadowBlur=8;
-    ctx.fillText(ind.name,rx+50,py+42);
-    ctx.shadowBlur=0; ctx.font='14px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(ind.col,.95);
-    ctx.fillText(ind.sub,rx+50,py+82);
+    ctx.fillText(ind.name,rx+22,py+44);
+    ctx.shadowBlur=0; ctx.font='15px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(ind.col,.95);
+    ctx.fillText(ind.sub,rx+22,py+86);
     ctx.restore();
   });
   ctx.restore();
@@ -328,11 +307,7 @@ function drawS4(now){
   if(hp>0){
     ctx.save(); ctx.globalAlpha=sa*hp;
     ctx.font='700 24px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(G,.95);
-    ctx.textAlign='center'; ctx.letterSpacing='0px';
-    ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
-    var _tw4=ctx.measureText('HỆ SINH THÁI SẢN PHẨM').width;
-    ctx.letterSpacing='0px'; ctx.font='26px sans-serif'; ctx.fillText('🌐',W/2-_tw4/2-22,92);
-    ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
+    ctx.textAlign='center'; ctx.letterSpacing='7px';
     ctx.fillText('HỆ SINH THÁI SẢN PHẨM',W/2,92);
     ctx.letterSpacing='0px'; ctx.restore();
   }
@@ -425,11 +400,11 @@ function drawS4(now){
 
 /* ── S5: Services ── */
 const SVCS=[
-  {n:'01',icon:'⚙️',t:'Tư vấn & Triển khai ERP',col:G,
+  {n:'01',t:'Tư vấn & Triển khai ERP',col:G,
    pts:['Phân tích nghiệp vụ chuyên sâu','Thiết kế giải pháp ERP phù hợp','Triển khai phương pháp Agile','Kiểm thử UAT · Go-live']},
-  {n:'02',icon:'🎓',t:'Đào tạo & Chuyển giao',col:TEAL,
+  {n:'02',t:'Đào tạo & Chuyển giao',col:TEAL,
    pts:['Đào tạo người dùng thực tiễn','Tài liệu hướng dẫn đầy đủ','Chuyển giao công nghệ hoàn toàn','Workshop & e-learning']},
-  {n:'03',icon:'🛡️',t:'Bảo trì & Hỗ trợ dài hạn',col:R,
+  {n:'03',t:'Bảo trì & Hỗ trợ dài hạn',col:R,
    pts:['Hotline hỗ trợ kỹ thuật','Bảo trì & nâng cấp hệ thống','Giám sát hiệu năng liên tục','Đồng hành toàn bộ vòng đời']},
 ];
 function drawS5(now){
@@ -438,11 +413,7 @@ function drawS5(now){
   const hp=eO(prog(now,TL.s5s,TL.s5s+800));
   ctx.save(); ctx.globalAlpha=sa*hp;
   ctx.font='700 24px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(G,.95);
-  ctx.textAlign='center'; ctx.letterSpacing='0px';
-  ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
-  var _tw5=ctx.measureText('DỊCH VỤ TOÀN VÒNG ĐỜI').width;
-  ctx.letterSpacing='0px'; ctx.font='26px sans-serif'; ctx.fillText('🔄',W/2-_tw5/2-22,H/2-298);
-  ctx.letterSpacing='7px'; ctx.font='700 24px \'Be Vietnam Pro\',sans-serif';
+  ctx.textAlign='center'; ctx.letterSpacing='7px';
   ctx.fillText('DỊCH VỤ TOÀN VÒNG ĐỜI',W/2,H/2-298);
   ctx.letterSpacing='0px';
   ctx.font='24px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle='rgba(255,255,255,.82)';
@@ -460,12 +431,12 @@ function drawS5(now){
     rr(px,ry-bh/2,bw,bh,14); ctx.fillStyle=rgba(s.col,.18); ctx.fill();
     ctx.strokeStyle=rgba(s.col,.85); ctx.lineWidth=1.5; ctx.stroke();
     rr(px,ry-bh/2,bw,5,2); ctx.fillStyle=s.col; ctx.shadowBlur=0; ctx.fill();
-    /* large icon */
-    ctx.font='44px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(s.icon,px+bw/2,ry-bh/2+50);
+    ctx.font='bold 52px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(s.col,.18);
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillText(s.n,px+bw/2,ry-bh/2+14);
     ctx.shadowColor=s.col; ctx.shadowBlur=12;
-    ctx.font='bold 22px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle='#FFFFFF';
-    ctx.textBaseline='middle'; ctx.fillText(s.t,px+bw/2,ry-38);
+    ctx.font='bold 24px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle='#FFFFFF';
+    ctx.textBaseline='middle'; ctx.fillText(s.t,px+bw/2,ry-46);
     ctx.shadowBlur=0;
     ctx.strokeStyle=rgba(s.col,.32); ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(px+24,ry-12); ctx.lineTo(px+bw-24,ry-12); ctx.stroke();
@@ -510,11 +481,7 @@ function drawS6(now){
   if(hp>0){
     ctx.save(); ctx.globalAlpha=sa*hp*.55;
     ctx.font='700 22px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle=rgba(G,.90);
-    ctx.textAlign='center'; ctx.letterSpacing='0px';
-    ctx.letterSpacing='8px'; ctx.font='700 22px \'Be Vietnam Pro\',sans-serif';
-    var _tw6=ctx.measureText('THƯƠNG HIỆU OMEGA').width;
-    ctx.letterSpacing='0px'; ctx.font='24px sans-serif'; ctx.fillText('🏆',W/2-_tw6/2-22,88);
-    ctx.letterSpacing='8px'; ctx.font='700 22px \'Be Vietnam Pro\',sans-serif';
+    ctx.textAlign='center'; ctx.letterSpacing='8px';
     ctx.fillText('THƯƠNG HIỆU OMEGA',W/2,88);
     ctx.letterSpacing='0px'; ctx.restore();
   }
@@ -597,7 +564,7 @@ function drawS6(now){
     ctx.font='30px \'Be Vietnam Pro\',sans-serif'; ctx.fillStyle='#D0E8FF';
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.shadowColor=rgba(G,.35); ctx.shadowBlur=8;
-    ctx.fillText('✦  Đối tác chiến lược chuyển đổi số hàng đầu Việt Nam  ✦',W/2,ty);
+    ctx.fillText('Đối tác chiến lược chuyển đổi số hàng đầu Việt Nam',W/2,ty);
     ctx.restore();
   }
 

@@ -259,7 +259,7 @@
           vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5,
           angle: Math.random()*Math.PI*2,
           va: (Math.random()-0.5)*0.012,
-          size: 30, bold: true, isOmega: true
+          size: 24, bold: true, isOmega: true
         });
       }
       for (var i = 0; i < count; i++) {
@@ -269,7 +269,7 @@
           vx: (Math.random()-0.5)*0.55, vy: (Math.random()-0.5)*0.55,
           angle: Math.random()*Math.PI*2,
           va: (Math.random()-0.5)*0.015,
-          size: 16 + Math.random()*6, bold: false, isOmega: false
+          size: 12 + Math.random()*6, bold: false, isOmega: false
         });
       }
     }
@@ -288,7 +288,7 @@
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
       for (var p = 1; p < pts.length; p++) ctx.lineTo(pts[p].x, pts[p].y);
-      ctx.strokeStyle = 'rgba(255,26,34,'+Math.min(alpha*1.3,0.95)+')';
+      ctx.strokeStyle = 'rgba(255,26,34,'+Math.min(alpha*0.5,0.55)+')';
       ctx.lineWidth = 1.5;
       ctx.shadowColor = '#00FFFF';
       ctx.shadowBlur = 6;
@@ -324,7 +324,7 @@
         ctx.translate(l.x, l.y);
         ctx.rotate(l.angle);
         ctx.font = (l.bold ? 'bold ' : '') + l.size + 'px serif';
-        ctx.fillStyle = l.isOmega ? 'rgba(255,26,34,0.90)' : 'rgba(255,255,255,0.75)';
+        ctx.fillStyle = l.isOmega ? 'rgba(255,26,34,1)' : 'rgba(255,255,255,0.35)';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(l.ch, 0, 0);
         ctx.restore();
@@ -455,13 +455,17 @@
         flashAlpha = Math.min(1, phaseTimer / 20);
         var targets = getTargets();
         var fSize = Math.min(W * 0.07, 52) * (1 + flashAlpha * 0.35);
-        /* glow */
+        /* glow – 2 lớp đỏ: halo rộng + tight glow */
         ctx.save();
-        ctx.shadowColor = '#FF1A22';
-        ctx.shadowBlur  = 30 * flashAlpha;
         ctx.font = 'bold ' + fSize + 'px sans-serif';
-        ctx.fillStyle = 'rgba(255,26,34,' + flashAlpha + ')';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(255,26,34,' + flashAlpha + ')';
+        /* pass 1 – halo xanh lá neon rộng (tương phản bổ sung với đỏ) */
+        ctx.shadowColor = '#39FF6A';
+        ctx.shadowBlur  = 70 * flashAlpha;
+        ctx.fillText('OMEGA', convergeCx, convergeCy);
+        /* pass 2 – tight green glow sát chữ */
+        ctx.shadowBlur  = 22 * flashAlpha;
         ctx.fillText('OMEGA', convergeCx, convergeCy);
         ctx.restore();
         /* keep key letters at target */
@@ -536,6 +540,21 @@
     var nodes = [], beams = [], stars = [];
     var omegaPulse = 0, beamTimer = 0;
 
+    /* logo SVG thay cho Ω */
+    var logoImg = new Image(), logoReady = false;
+    logoImg.onload = function() { logoReady = true; };
+    logoImg.src = 'assets/images/omega-1A-white-buffer.svg';
+
+    /* mouse tracking — center dời theo chuột */
+    var mouseX = null, mouseY = null;
+    var smoothCx, smoothCy;
+    canvas.addEventListener('mousemove', function(e) {
+      var r = canvas.getBoundingClientRect();
+      mouseX = e.clientX - r.left;
+      mouseY = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave', function() { mouseX = null; mouseY = null; });
+
     function getRingDims() {
       var base = Math.min(W * 0.48, H * 0.90);
       return [
@@ -548,6 +567,7 @@
     function resize() {
       W = canvas.width  = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
+      smoothCx = W / 2; smoothCy = H * 0.42;
       stars = [];
       for (var i = 0; i < 55; i++) {
         stars.push({ x: Math.random()*W, y: Math.random()*H,
@@ -571,7 +591,12 @@
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      var cx = W/2, cy = H/2;
+      /* smooth center: drift toward mouse, return to W/2,H/2 when no mouse */
+      var targetCx = mouseX !== null ? mouseX : W / 2;
+      var targetCy = mouseY !== null ? mouseY : H * 0.42;
+      smoothCx += (targetCx - smoothCx) * 0.06;
+      smoothCy += (targetCy - smoothCy) * 0.06;
+      var cx = smoothCx, cy = smoothCy;
       var dims = getRingDims();
 
       /* star field */
@@ -659,17 +684,23 @@
         ctx.fillText(n.name, 0, 0); ctx.shadowBlur = 0; ctx.restore();
       });
 
-      /* center Ω — drawn last so it's always on top */
+      /* center logo — drawn last so it's always on top */
       omegaPulse += 0.038;
       var fCx = Math.min(W, H) * 0.078;
       var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, fCx * 1.6);
       grad.addColorStop(0, 'rgba(255,26,34,0.22)'); grad.addColorStop(1, 'rgba(255,26,34,0)');
       ctx.beginPath(); ctx.arc(cx, cy, fCx * 1.6, 0, Math.PI*2);
       ctx.fillStyle = grad; ctx.fill();
-      ctx.font = 'bold ' + fCx + 'px sans-serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 22 + Math.sin(omegaPulse) * 10;
-      ctx.fillStyle = '#FF1A22'; ctx.fillText('Ω', cx, cy); ctx.shadowBlur = 0;
+      var logoSize = fCx * 1.7;
+      ctx.shadowColor = '#52c27a'; ctx.shadowBlur = 22 + Math.sin(omegaPulse) * 10;
+      if (logoReady) {
+        ctx.drawImage(logoImg, cx - logoSize / 2, cy - logoSize / 2, logoSize, logoSize);
+      } else {
+        ctx.font = 'bold ' + fCx + 'px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#FF1A22'; ctx.fillText('Ω', cx, cy);
+      }
+      ctx.shadowBlur = 0;
 
       requestAnimationFrame(draw);
     }
@@ -776,6 +807,10 @@
     var ctx = canvas.getContext('2d');
     var W, H, nodes = [], pulses = [];
     var INDUSTRIES = ['Nhựa','Gỗ','F&B','FMCG','Thủy sản','Y tế','Thương mại','Dệt may','Xây dựng','Logistics'];
+    /* logo SVG thay cho Ω */
+    var logoImg = new Image(), logoReady = false;
+    logoImg.onload = function() { logoReady = true; };
+    logoImg.src = 'assets/images/omega-1A-white-buffer.svg';
 
     function resize() {
       W = canvas.width  = canvas.offsetWidth;
@@ -804,7 +839,7 @@
         nodes.push({
           x: Math.random()*W, y: Math.random()*H,
           vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
-          r: 2 + Math.random()*3, isHub: false,
+          r: 1.3 + Math.random()*2, isHub: false,
           label: INDUSTRIES[i % INDUSTRIES.length],
           showLabel: Math.random() < 0.35
         });
@@ -834,9 +869,9 @@
         var a = (1 - e.d / LINK_DIST) * (e.a.isHub || e.b.isHub ? 0.88 : 0.22);
         ctx.beginPath();
         ctx.strokeStyle = e.a.isHub || e.b.isHub
-          ? 'rgba(255,26,34,'+a+')'
+          ? 'rgba(82, 194, 122,'+a+')'
           : 'rgba(255,255,255,'+a*0.6+')';
-        ctx.lineWidth = e.a.isHub || e.b.isHub ? 1.2 : 0.6;
+        ctx.lineWidth = e.a.isHub || e.b.isHub ? 0.7 : 0.6;
         ctx.moveTo(e.a.x, e.a.y);
         ctx.lineTo(e.b.x, e.b.y);
         ctx.stroke();
@@ -873,22 +908,25 @@
           if (n.glow > 1 || n.glow < 0) n.glowDir *= -1;
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.r + 8 + n.glow*6, 0, Math.PI*2);
-          ctx.strokeStyle = 'rgba(255,26,34,'+(0.15+n.glow*0.25)+')';
+          ctx.strokeStyle = 'rgba(82,194,122,'+(0.20+n.glow*0.35)+')';
           ctx.lineWidth = 1.5; ctx.stroke();
           /* core */
           ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-          ctx.fillStyle = '#FF1A22';
-          ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 20;
+          ctx.fillStyle = '#52c27a';
+          ctx.shadowColor = '#52c27a'; ctx.shadowBlur = 20;
           ctx.fill(); ctx.shadowBlur = 0;
-          /* Ω label */
-          ctx.font = 'bold 12px serif';
-          ctx.fillStyle = '#fff';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText('Ω', n.x, n.y);
+          /* logo */
+          if (logoReady) {
+            ctx.drawImage(logoImg, n.x - 9, n.y - 9, 18, 18);
+          } else {
+            ctx.font = 'bold 12px serif'; ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('Ω', n.x, n.y);
+          }
         } else {
           ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-          ctx.fillStyle = 'rgba(126,217,87,0.90)';
-          ctx.shadowColor = '#7EE057'; ctx.shadowBlur = 5;
+          ctx.fillStyle = 'rgba(126,217,87,0.52)';
+          ctx.shadowColor = '#7EE057'; ctx.shadowBlur = 3;
           ctx.fill(); ctx.shadowBlur = 0;
           if (n.showLabel) {
             ctx.font = '10px sans-serif';
@@ -1039,6 +1077,118 @@
     draw();
   }
 
+  /* ==============================
+     09h. Contact Radar — lien-he.html
+     Vòng quét radar xanh lá. Blip bật sáng khi tia quét qua, gợi tín hiệu
+     liên hệ từ các tỉnh/thành. Hot-blip (đỏ) = doanh nghiệp đang kết nối.
+  ================================ */
+  function initContactRadar(canvas) {
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, blips = [], sweepAngle = -Math.PI / 2;
+    var LABELS = ['TP.HCM','Hà Nội','Đà Nẵng','Cần Thơ','Bình Dương','Đồng Nai',
+                  'Hải Phòng','Vũng Tàu','Long An','Tiền Giang','Bắc Ninh','Khánh Hòa'];
+    var logoImg = new Image(), logoReady = false;
+    logoImg.onload = function() { logoReady = true; };
+    logoImg.src = 'assets/images/omega-1A-white-buffer.svg';
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+      buildBlips();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function buildBlips() {
+      blips = [];
+      var cx = W / 2, cy = H / 2, maxR = Math.min(W, H) * 0.44;
+      for (var i = 0; i < 12; i++) {
+        var a = Math.random() * Math.PI * 2;
+        var d = (0.18 + Math.random() * 0.76) * maxR;
+        blips.push({ x: cx + Math.cos(a)*d, y: cy + Math.sin(a)*d,
+                     alpha: 0, hot: Math.random() < 0.28,
+                     label: LABELS[i % LABELS.length] });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var cx = W / 2, cy = H / 2, maxR = Math.min(W, H) * 0.44;
+      sweepAngle += 0.013;
+
+      /* radar rings */
+      for (var ri = 1; ri <= 4; ri++) {
+        ctx.beginPath(); ctx.arc(cx, cy, maxR * ri / 4, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(82,194,122,' + (0.07 + (4 - ri) * 0.025) + ')';
+        ctx.lineWidth = 0.6; ctx.stroke();
+      }
+      /* crosshair */
+      ctx.beginPath();
+      ctx.moveTo(cx - maxR, cy); ctx.lineTo(cx + maxR, cy);
+      ctx.moveTo(cx, cy - maxR); ctx.lineTo(cx, cy + maxR);
+      ctx.strokeStyle = 'rgba(82,194,122,0.07)';
+      ctx.lineWidth = 0.5; ctx.stroke();
+
+      /* sweep fan — conic gradient approximation via 32 thin arcs */
+      var fanSpan = Math.PI * 0.55;
+      for (var s = 0; s < 32; s++) {
+        var a0 = sweepAngle - fanSpan * (s / 32);
+        var a1 = sweepAngle - fanSpan * ((s + 1) / 32);
+        ctx.beginPath(); ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, maxR, a1, a0); ctx.closePath();
+        ctx.fillStyle = 'rgba(82,194,122,' + ((1 - s / 32) * 0.14) + ')';
+        ctx.fill();
+      }
+      /* sweep leading edge */
+      ctx.beginPath(); ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(sweepAngle) * maxR, cy + Math.sin(sweepAngle) * maxR);
+      ctx.strokeStyle = 'rgba(82,194,122,0.70)'; ctx.lineWidth = 1.0; ctx.stroke();
+
+      /* blips */
+      blips.forEach(function(b) {
+        var bA  = Math.atan2(b.y - cy, b.x - cx);
+        var diff = ((sweepAngle - bA) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+        if (diff < 0.12) b.alpha = 1.0;          /* ping! */
+        b.alpha = Math.max(0, b.alpha - 0.0028);
+        if (b.alpha <= 0) return;
+
+        var r = b.hot ? 4 : 2.5;
+        ctx.beginPath(); ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+        if (b.hot) {
+          ctx.fillStyle = 'rgba(255,26,34,' + b.alpha + ')';
+          ctx.shadowColor = '#FF1A22'; ctx.shadowBlur = 10;
+        } else {
+          ctx.fillStyle = 'rgba(82,194,122,' + b.alpha + ')';
+          ctx.shadowColor = '#52c27a'; ctx.shadowBlur = 6;
+        }
+        ctx.fill(); ctx.shadowBlur = 0;
+        if (b.alpha > 0.28) {
+          ctx.font = '9px "Be Vietnam Pro",sans-serif';
+          ctx.fillStyle = b.hot
+            ? 'rgba(255,140,140,' + b.alpha * 0.9 + ')'
+            : 'rgba(180,255,210,' + b.alpha * 0.85 + ')';
+          ctx.textAlign = 'left';
+          ctx.fillText(b.label, b.x + r + 4, b.y + 3);
+        }
+      });
+
+      /* center logo */
+      var logoSize = Math.min(W, H) * 0.09;
+      ctx.shadowColor = '#52c27a'; ctx.shadowBlur = 12;
+      if (logoReady) {
+        ctx.drawImage(logoImg, cx - logoSize / 2, cy - logoSize / 2, logoSize, logoSize);
+      } else {
+        ctx.beginPath(); ctx.arc(cx, cy, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#52c27a'; ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
   /* Page-header canvas — dispatch by data-canvas-type */
   document.querySelectorAll('.page-canvas').forEach(function (c) {
     var type = c.getAttribute('data-canvas-type');
@@ -1048,6 +1198,7 @@
     else if (type === 'circuit-flow')   initCircuitFlow(c);
     else if (type === 'star-network')   initStarNetwork(c);
     else if (type === 'keyword-bubbles') initKeywordBubbles(c);
+    else if (type === 'contact-radar')  initContactRadar(c);
     else                                initTechCanvas(c, 55);
   });
 
