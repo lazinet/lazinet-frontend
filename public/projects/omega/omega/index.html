@@ -1087,7 +1087,7 @@
   <script src="assets/js/jquery.magnific-popup.min.js"></script>
   <script src="assets/js/jquery.slicknav.js"></script>
   <script src="assets/js/omega.js"></script>
-  <!-- Hero Video Background – random pick -->
+  <!-- Hero Video Background – lazy load after page ready, skip on slow connection -->
   <script>
     (function () {
       const heroVideos = [
@@ -1111,15 +1111,33 @@
         "assets/videos/Anivid38.mp4",
         "assets/videos/Bg-Mes-Lady.mp4",
       ];
-      const src = heroVideos[Math.floor(Math.random() * heroVideos.length)];
-      const vid = document.getElementById('hero-video');
-      const overlay = document.querySelector('.hero-video-overlay');
-      vid.innerHTML = '<source src="' + src + '" type="video/mp4">';
-      vid.load();
-      vid.addEventListener('canplay', function () {
-        vid.classList.add('is-playing');
-        overlay.classList.add('is-visible');
-      }, { once: true });
+
+      function loadHeroVideo() {
+        /* Bỏ qua video nếu mạng yếu hoặc người dùng bật Data Saver */
+        var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (conn && (conn.saveData || conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g')) return;
+
+        var src = heroVideos[Math.floor(Math.random() * heroVideos.length)];
+        var vid = document.getElementById('hero-video');
+        var overlay = document.querySelector('.hero-video-overlay');
+        if (!vid) return;
+
+        vid.innerHTML = '<source src="' + src + '" type="video/mp4">';
+        vid.load();
+        vid.addEventListener('canplay', function () {
+          vid.classList.add('is-playing');
+          overlay.classList.add('is-visible');
+        }, { once: true });
+      }
+
+      /* Chờ page load xong (font, ảnh, JS...) rồi mới bắt đầu tải video */
+      if (document.readyState === 'complete') {
+        setTimeout(loadHeroVideo, 1200);
+      } else {
+        window.addEventListener('load', function () {
+          setTimeout(loadHeroVideo, 1200);
+        });
+      }
     })();
   </script>
   <!-- <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script> -->
