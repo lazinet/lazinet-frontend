@@ -45,7 +45,7 @@
   /* ── Gradients ── */
   --gradient-green:  linear-gradient(135deg, #00A651 0%, #52c27a 100%);
   --gradient-brand:  linear-gradient(90deg, #00A651 0%, #ED1C24 100%);
-  --gradient-dark:   linear-gradient(135deg, #00A651 0%, #074123 100%);
+  --gradient-dark:   linear-gradient(180deg, #15663c 0%, #074123 100%);
   --gradient-hero:   linear-gradient(180deg, #008a43 0%, #074123 100%);
 
   /* ── Typography & Shape ── */
@@ -125,7 +125,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex; flex-direction: column;
   align-items: center; gap: 16px;
 }
-.preloader-logo { width: 120px; animation: pulse-logo 2s ease-in-out infinite; }
+.preloader-logo { width: 120px; -webkit-animation: pulse-logo 2s ease-in-out infinite; animation: pulse-logo 2s ease-in-out infinite; }
 .preloader-bar {
   width: 200px; height: 3px;
   background: rgba(255,255,255,0.1);
@@ -138,12 +138,22 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   background: var(--gradient-green);
   border-radius: 2px;
+  -webkit-animation: preload-bar 1.8s ease-in-out infinite;
   animation: preload-bar 1.8s ease-in-out infinite;
 }
 
+@-webkit-keyframes pulse-logo {
+  0%, 100% { -webkit-transform: scale(1); transform: scale(1); opacity: 1; }
+  50% { -webkit-transform: scale(1.05); transform: scale(1.05); opacity: 0.85; }
+}
 @keyframes pulse-logo {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.05); opacity: 0.85; }
+}
+@-webkit-keyframes preload-bar {
+  0% { width: 0; margin-left: 0; }
+  50% { width: 100%; margin-left: 0; }
+  100% { width: 0; margin-left: 100%; }
 }
 @keyframes preload-bar {
   0% { width: 0; margin-left: 0; }
@@ -404,8 +414,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 .mega-code {
   font-size: 9.5px;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  font-family: ui-monospace, 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  letter-spacing: 0.03em;
   background: rgba(0,166,81,0.12);
   color: var(--green-primary);
   border-radius: 4px;
@@ -438,8 +449,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 .mega-link-card-code {
   font-size: 9px;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  font-family: ui-monospace, 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  letter-spacing: 0.03em;
   background: var(--gradient-green);
   color: #fff;
   border-radius: 5px;
@@ -481,8 +493,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 .mega-app-code {
   font-size: 8.5px;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  font-family: ui-monospace, 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  letter-spacing: 0.03em;
   color: var(--green-primary);
   background: rgba(0,166,81,0.08);
   border-radius: 3px;
@@ -1437,26 +1450,33 @@ body {
     position: fixed;
     right: 30px;
     top: 50%;
+    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     z-index: 10000;
     font-family: var(--default-font);
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Main Button Styles */
 .lazinet-contact-main-btn {
     width: 60px;
     height: 60px;
-    /* background: var(--accent-secondary-color); */
     border-radius: 50%;
+    display: -webkit-flex;
     display: flex;
+    -webkit-align-items: center;
     align-items: center;
+    -webkit-justify-content: center;
     justify-content: center;
     cursor: pointer;
-    /* box-shadow: 0 8px 30px rgba(15, 36, 83, 0.4); */
+    -webkit-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    /* border: 2px solid var(--primary-color); */
     position: relative;
     overflow: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .lazinet-contact-main-btn:hover {
@@ -1477,20 +1497,24 @@ body {
     position: absolute;
     right: 0;
     top: 50%;
+    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
+    display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: column;
     flex-direction: column;
     gap: 15px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -webkit-transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
+    transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
 }
 
 .lazinet-contact-buttons.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: all;
+    pointer-events: auto;
 }
 
 /* Main Button Ẩn khi active */
@@ -1506,16 +1530,24 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    display: -webkit-flex;
     display: flex;
+    -webkit-align-items: center;
     align-items: center;
+    -webkit-justify-content: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    -webkit-transition: -webkit-transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     border: 2px solid var(--divider-color);
-    /* background: var(--accent-secondary-color); */
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     box-shadow: 0 5px 15px rgba(75, 184, 129, 0.3);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .lazinet-contact-btn:hover {
@@ -1560,19 +1592,19 @@ body {
 }
 
 /* Pulse animation for main button */
+@-webkit-keyframes lazinetPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(0,255,0,0.7); }
+    90%  { box-shadow: 0 0 0 15px rgba(0,255,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,255,0,0); }
+}
 @keyframes lazinetPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
-    }
-    90% {
-        box-shadow: 0 0 0 15px rgba(0, 255, 0, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
-    }
+    0%   { box-shadow: 0 0 0 0 rgba(0,255,0,0.7); }
+    90%  { box-shadow: 0 0 0 15px rgba(0,255,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,255,0,0); }
 }
 
 .lazinet-contact-main-btn.pulse {
+    -webkit-animation: lazinetPulse 2s infinite;
     animation: lazinetPulse 2s infinite;
 }
 
@@ -1829,3 +1861,60 @@ body {
 }
 
 /* =========== Floating buttons ============= */
+
+/* ========================
+   99. Safari / iOS Compatibility Fixes
+   ======================== */
+
+/* Floating button: label hiện trên touch (iOS không có :hover) */
+@media (pointer: coarse) {
+  .lazinet-contact-btn .lazinet-contact-label {
+    opacity: 1;
+    visibility: visible;
+    right: 60px;
+  }
+  .lazinet-contact-btn:active {
+    -webkit-transform: scale(0.93);
+    transform: scale(0.93);
+  }
+  .lazinet-contact-main-btn:active {
+    -webkit-transform: scale(0.93);
+    transform: scale(0.93);
+  }
+}
+
+/* Fix preloader SVG trên Safari: explicit width/height */
+.preloader-logo { display: block; }
+
+/* Fix hero 100vh trên iOS Safari (address bar chiếm một phần) */
+@supports (-webkit-touch-callout: none) {
+  .hero-section { min-height: -webkit-fill-available; }
+  .preloader     { min-height: -webkit-fill-available; }
+}
+
+/* Fix position:fixed flicker khi scroll trên iOS */
+.lazinet-contact-floating {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Smooth scroll cho iOS */
+html { -webkit-overflow-scrolling: touch; }
+
+/* Fix backdrop-filter fallback cho Safari < 15 */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .lazinet-contact-btn {
+    background: rgba(10, 22, 40, 0.88);
+  }
+}
+
+/* Tắt callout menu khi giữ ảnh trên iOS */
+img { -webkit-touch-callout: none; }
+
+/* Fix transition 'all' gây lag trên Safari — đã sửa riêng từng property */
+/* Fix input autofill background trên Safari */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-white) inset;
+  -webkit-text-fill-color: var(--text-dark);
+}
