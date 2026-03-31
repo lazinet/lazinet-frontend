@@ -329,7 +329,6 @@
           <div class="collapse navbar-collapse main-menu" id="navbarNav">
             <div class="nav-menu-wrapper mx-auto">
               <ul class="navbar-nav" id="menu">
-                <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
                 <li class="nav-item submenu"><a class="nav-link" href="ve-omega.html">Về Omega</a>
                   <ul>
                     <li class="nav-item"><a class="nav-link" href="ve-omega.html#dinh-vi">Định vị & Năng lực</a></li>
@@ -479,11 +478,11 @@
                 <li class="nav-item"><a class="nav-link" href="khach-hang.html">Khách hàng</a></li>
                 <li class="nav-item submenu"><a class="nav-link active" href="tin-tuc.html">Tin tức</a>
                   <ul>
-                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html#chuyen-doi-so">Chuyển đổi số</a></li>
-                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html#erp">ERP – Quản trị</a></li>
-                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html#ke-toan">Kế toán – Tài chính</a></li>
-                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html#su-kien">Sự kiện</a></li>
-                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html#tuyen-dung">Tuyển dụng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html?cat=chuyen-doi-so">Chuyển đổi số</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html?cat=erp-quan-tri">ERP – Quản trị</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html?cat=ke-toan-tai-chinh">Kế toán – Tài chính</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html?cat=su-kien">Sự kiện</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tin-tuc.html?cat=tuyen-dung">Tuyển dụng</a></li>
                   </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="lien-he.html">Liên hệ</a></li>
@@ -532,284 +531,32 @@
       <div class="category-tabs wow fadeInUp">
         <button class="cat-btn active" data-cat="all">Tất cả</button>
         <button class="cat-btn" data-cat="chuyen-doi-so" id="chuyen-doi-so">Chuyển đổi số</button>
-        <button class="cat-btn" data-cat="erp" id="erp">ERP – Quản trị</button>
-        <button class="cat-btn" data-cat="ke-toan" id="ke-toan">Kế toán – Tài chính</button>
+        <button class="cat-btn" data-cat="erp-quan-tri" id="erp-quan-tri">ERP – Quản trị</button>
+        <button class="cat-btn" data-cat="ke-toan-tai-chinh" id="ke-toan-tai-chinh">Kế toán – Tài chính</button>
         <button class="cat-btn" data-cat="su-kien" id="su-kien">Sự kiện</button>
         <button class="cat-btn" data-cat="tuyen-dung" id="tuyen-dung">Tuyển dụng</button>
       </div>
 
-      <!-- Featured News -->
-      <div class="featured-news wow fadeInUp" data-cat="erp">
-        <div class="feat-img">
-          <img src="assets/images/netzon/gallery-2.jpg" alt="Xu hướng phát triển ERP 2025" onerror="this.style.display='none'">
-          <span class="feat-badge">Nổi bật</span>
-        </div>
-        <div class="feat-body">
-          <span class="feat-category">ERP – Quản trị</span>
-          <h2 class="feat-title">Xu hướng phát triển ERP 2025 – Những điểm doanh nghiệp cần nắm bắt</h2>
-          <p class="feat-excerpt">
-            Năm 2025 đánh dấu sự bùng nổ của AI tích hợp vào hệ thống ERP, cùng với xu hướng ERP đám mây, low-code platform và ERP theo ngành. Doanh nghiệp Việt cần chuẩn bị gì để không bị bỏ lại phía sau?
-          </p>
-          <div class="feat-meta">
-            <span><i class="fa-regular fa-calendar"></i> 15/01/2025</span>
-            <span><i class="fa-regular fa-clock"></i> 8 phút đọc</span>
-            <span><i class="fa-solid fa-user"></i> Omega Research Team</span>
-          </div>
-          <a href="#" class="btn-primary-omega" style="align-self:flex-start;">
-            <i class="fa-solid fa-arrow-right"></i> Đọc bài viết
-          </a>
-        </div>
-      </div>
+      <!-- Featured News – dynamic -->
+      <div id="featured-news-container"></div>
 
-      <!-- News Grid -->
+      <!-- News Grid – dynamic (populated by JS) -->
       <div class="row g-4" id="newsGrid">
-
-        <!-- Article A: Chuyển đổi số Mobile App -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.05s" data-cat="chuyen-doi-so">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/omega-media/Tin tức/Chuyển đổi số doanh nghiệp/Chuyển đổi số Mobile App/chuyen-doi-so-mobile-app.jpg" alt="Chuyển đổi số với Mobile App OMEGA">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">Chuyển đổi số</span>
-              <h4><a href="tin-tuc/chuyen-doi-so-mobile-app.html">Chuyển đổi số với Mobile App – Hệ sinh thái 6 ứng dụng OMEGA</a></h4>
-              <p class="excerpt">OMEGA cung cấp 6 ứng dụng mobile chuyên biệt tích hợp sâu với ERP: phê duyệt, quét mã kho, kiểm kê, đặt hàng, sản xuất, nhân sự – giúp điều hành doanh nghiệp mọi lúc mọi nơi.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 10/12/2024</span>
-                <span><i class="fa-regular fa-clock"></i> 7 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article B: ERP là gì -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.1s" data-cat="erp">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/omega-media/Tin tức/ERP - Quản trị doanh nghiệp/ERP là gì/phan-mem-erp-la-gi.jpg" alt="Phần mềm ERP là gì">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">ERP – Quản trị</span>
-              <h4><a href="tin-tuc/erp-la-gi.html">Phần mềm ERP là gì? Giải pháp bứt phá cho doanh nghiệp thời đại 4.0</a></h4>
-              <p class="excerpt">ERP (Enterprise Resource Planning) là hệ thống tích hợp toàn diện giúp doanh nghiệp kết nối mọi nghiệp vụ – sản xuất, kho, kế toán, nhân sự – trên một nền tảng dữ liệu thống nhất.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 15/01/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 8 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article C: Xu hướng ERP 2025 -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.15s" data-cat="erp">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-4.jpg" alt="Xu hướng ERP 2025">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">ERP – Quản trị</span>
-              <h4><a href="#">Xu hướng phát triển phần mềm ERP 2025</a></h4>
-              <p class="excerpt">Tổng hợp 7 xu hướng ERP nổi bật năm 2025: AI tích hợp, ERP đám mây, low-code customization, phân tích dữ liệu thời gian thực và ERP theo ngành chuyên biệt.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 15/01/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 8 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article D: Thông tư 99/2025 -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.05s" data-cat="ke-toan">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-5.jpg" alt="So sánh Thông tư 99 và TT200">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category" style="background:rgba(26,95,212,0.1);color:#1a5fd4;">Kế toán – Tài chính</span>
-              <h4><a href="#">So sánh Thông tư 99/2025/TT-BTC và TT 200/2014</a></h4>
-              <p class="excerpt">Phân tích chi tiết những điểm thay đổi quan trọng của Thông tư 99/2025/TT-BTC so với Thông tư 200/2014 về chế độ kế toán doanh nghiệp. Doanh nghiệp cần cập nhật phần mềm kế toán như thế nào?</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 20/01/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 10 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article E: Phần mềm kế toán tốt nhất -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.1s" data-cat="ke-toan">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-6.jpg" alt="Phần mềm kế toán tốt nhất 2025">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category" style="background:rgba(26,95,212,0.1);color:#1a5fd4;">Kế toán – Tài chính</span>
-              <h4><a href="#">Phần mềm kế toán tốt và dễ sử dụng nhất 2025</a></h4>
-              <p class="excerpt">Đánh giá và so sánh các phần mềm kế toán phổ biến tại Việt Nam năm 2025. Tiêu chí lựa chọn, ưu nhược điểm và khuyến nghị cho từng quy mô doanh nghiệp.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 10/02/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 9 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article F: Omega 16 năm -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.15s" data-cat="su-kien">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-1.jpg" alt="Omega 16 năm">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category" style="background:rgba(237,28,36,0.1);color:#ED1C24;">Sự kiện</span>
-              <h4><a href="#">Công ty Omega 16 năm đồng hành cùng doanh nghiệp</a></h4>
-              <p class="excerpt">Nhìn lại hành trình 16 năm hình thành và phát triển của Omega từ một startup công nghệ đến đối tác ERP hàng đầu tại Việt Nam với hơn 1000 khách hàng tin dùng.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 15/03/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 6 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article G: Thông báo nghỉ Tết -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.05s" data-cat="su-kien">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-2.jpg" alt="Thông báo nghỉ Tết 2026">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category" style="background:rgba(237,28,36,0.1);color:#ED1C24;">Thông báo</span>
-              <h4><a href="#">Omega thông báo lịch nghỉ Tết Nguyên Đán 2026</a></h4>
-              <p class="excerpt">Omega trân trọng thông báo lịch nghỉ Tết Nguyên Đán Bính Ngọ 2026. Trong thời gian nghỉ lễ, đội ngũ hỗ trợ kỹ thuật trực tuyến vẫn sẵn sàng phục vụ qua hotline và email.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 08/01/2026</span>
-                <span><i class="fa-regular fa-clock"></i> 2 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article H: Tuyển dụng -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.1s" data-cat="tuyen-dung">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-3.jpg" alt="Tuyển dụng chuyên viên ERP">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category" style="background:rgba(255,152,0,0.1);color:#e65100;">Tuyển dụng</span>
-              <h4><a href="#">Tuyển dụng: Chuyên viên tư vấn triển khai phần mềm ERP</a></h4>
-              <p class="excerpt">Omega tuyển dụng Chuyên viên Tư vấn Triển khai ERP. Ứng viên có kiến thức nghiệp vụ kế toán/sản xuất/kho, có kinh nghiệm triển khai phần mềm quản lý doanh nghiệp.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 01/03/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 3 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article I: Lợi ích phần mềm kế toán -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.15s" data-cat="ke-toan">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/images/netzon/gallery-4.jpg" alt="Lợi ích phần mềm kế toán SME">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category" style="background:rgba(26,95,212,0.1);color:#1a5fd4;">Kế toán – Tài chính</span>
-              <h4><a href="#">Lợi ích của phần mềm kế toán cho doanh nghiệp vừa và nhỏ</a></h4>
-              <p class="excerpt">Doanh nghiệp vừa và nhỏ (SME) thường gặp khó khăn trong quản lý kế toán thủ công. Bài viết phân tích 8 lợi ích cụ thể khi đầu tư phần mềm kế toán chuyên nghiệp.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 25/02/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 6 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article J: Dự án ERP -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.05s" data-cat="erp">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/omega-media/Tin tức/ERP - Quản trị doanh nghiệp/Dự án ERP/du-an-erp.jpg" alt="Dự án triển khai ERP">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">ERP – Quản trị</span>
-              <h4><a href="tin-tuc/du-an-erp.html">Dự án ERP – Quy trình triển khai chuẩn & Những bài học thực tiễn</a></h4>
-              <p class="excerpt">Triển khai ERP thành công đòi hỏi phương pháp chuẩn, đội ngũ chất lượng và cam kết từ lãnh đạo. Khám phá quy trình 7 bước và các yếu tố quyết định thành bại của một dự án ERP.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 20/02/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 9 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article K: Top 7 phần mềm tính lương -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.1s" data-cat="erp">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/omega-media/Tin tức/ERP - Quản trị doanh nghiệp/Phần mềm tính lương/top-7-phan-mem-tinh-luong-pho-bien-nhat-2025.jpg" alt="Top 7 phần mềm tính lương 2025">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">ERP – Quản trị</span>
-              <h4><a href="tin-tuc/phan-mem-tinh-luong.html">Top 7 phần mềm tính lương phổ biến nhất 2025 – So sánh chi tiết</a></h4>
-              <p class="excerpt">So sánh chi tiết 7 phần mềm tính lương hàng đầu Việt Nam 2025: OMEGA.HRM, MISA AMIS, 1Office, Tanca, Fastwork, eCount và CorePayroll – tính năng, chi phí, phù hợp quy mô nào?</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 05/03/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 10 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article L: Top phần mềm CRM -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.15s" data-cat="erp">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/omega-media/Tin tức/ERP - Quản trị doanh nghiệp/Top 4 phần mềm CRM/phan-mem-crm-la-gi.jpg" alt="Phần mềm CRM là gì">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">ERP – Quản trị</span>
-              <h4><a href="tin-tuc/phan-mem-crm.html">Top 4 phần mềm CRM tốt nhất 2025 – Tìm giải pháp phù hợp cho doanh nghiệp</a></h4>
-              <p class="excerpt">CRM là gì và tại sao mọi doanh nghiệp đều cần? Phân tích chuyên sâu 4 phần mềm CRM nổi bật: OMEGA.CRM, Getfly, Base CRM, MISA AMIS – để chọn đúng cho quy mô và ngành nghề của bạn.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 10/03/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 11 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Article M: Mobile App quản lý đặt hàng -->
-        <div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="0.05s" data-cat="chuyen-doi-so">
-          <div class="news-card">
-            <div class="news-card-img">
-              <img src="assets/omega-media/Tin tức/Chuyển đổi số doanh nghiệp/Chuyển đổi số Mobile App quản lý đặt hàng/Ảnh bìa OMEGA.jpg" alt="OMEGA.SOR – Mobile App quản lý đặt hàng">
-            </div>
-            <div class="news-card-body">
-              <span class="news-category">Chuyển đổi số</span>
-              <h4><a href="tin-tuc/mobile-app-quan-ly-dat-hang.html">OMEGA.SOR – Ứng dụng quản lý đặt hàng thông minh trên điện thoại</a></h4>
-              <p class="excerpt">OMEGA.SOR là mobile app chuyên biệt cho đội ngũ kinh doanh: đặt hàng, tra cứu tồn kho, theo dõi đơn hàng, chatbox với khách hàng – tất cả trong một ứng dụng tích hợp sâu với ERP.</p>
-              <div class="news-meta">
-                <span><i class="fa-regular fa-calendar"></i> 15/03/2025</span>
-                <span><i class="fa-regular fa-clock"></i> 6 phút</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <!-- Skeleton cards while loading -->
+        <div class="col-md-6 col-lg-4" id="skel-1"><div class="news-card" style="animation:skeletonPulse 1.4s ease-in-out infinite;"><div class="news-card-img" style="background:#e8eee8;"></div><div class="news-card-body"><div style="height:10px;background:#e8eee8;border-radius:6px;width:40%;margin-bottom:12px;"></div><div style="height:14px;background:#e8eee8;border-radius:6px;margin-bottom:8px;"></div><div style="height:14px;background:#e8eee8;border-radius:6px;width:80%;margin-bottom:8px;"></div><div style="height:10px;background:#e8eee8;border-radius:6px;width:60%;margin-top:auto;"></div></div></div></div>
+        <div class="col-md-6 col-lg-4" id="skel-2"><div class="news-card" style="animation:skeletonPulse 1.4s ease-in-out 0.1s infinite;"><div class="news-card-img" style="background:#e8eee8;"></div><div class="news-card-body"><div style="height:10px;background:#e8eee8;border-radius:6px;width:50%;margin-bottom:12px;"></div><div style="height:14px;background:#e8eee8;border-radius:6px;margin-bottom:8px;"></div><div style="height:14px;background:#e8eee8;border-radius:6px;width:75%;margin-bottom:8px;"></div><div style="height:10px;background:#e8eee8;border-radius:6px;width:55%;margin-top:auto;"></div></div></div></div>
+        <div class="col-md-6 col-lg-4" id="skel-3"><div class="news-card" style="animation:skeletonPulse 1.4s ease-in-out 0.2s infinite;"><div class="news-card-img" style="background:#e8eee8;"></div><div class="news-card-body"><div style="height:10px;background:#e8eee8;border-radius:6px;width:35%;margin-bottom:12px;"></div><div style="height:14px;background:#e8eee8;border-radius:6px;margin-bottom:8px;"></div><div style="height:14px;background:#e8eee8;border-radius:6px;width:85%;margin-bottom:8px;"></div><div style="height:10px;background:#e8eee8;border-radius:6px;width:50%;margin-top:auto;"></div></div></div></div>
       </div>
       <!-- /News Grid -->
 
-      <!-- Pagination -->
-      <nav class="omega-pagination wow fadeInUp" aria-label="Phân trang bài viết">
-        <a href="#" class="active" aria-current="page">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <span>...</span>
-        <a href="#">8</a>
-        <a href="#" class="next"><i class="fa-solid fa-chevron-right"></i> Tiếp theo</a>
-      </nav>
+      <!-- Pagination – dynamic -->
+      <nav class="omega-pagination wow fadeInUp" aria-label="Phan trang" id="newsPagination" style="display:none;"></nav>
+
+      <!-- No results -->
+      <div id="newsEmpty" style="display:none;text-align:center;padding:60px 20px;">
+        <i class="fa-solid fa-newspaper" style="font-size:48px;color:#ccc;margin-bottom:16px;"></i>
+        <p style="color:#999;font-size:16px;">Chua co bai viet nao trong danh muc nay.</p>
+      </div>
 
     </div>
   </section>
@@ -861,12 +608,12 @@
           <div class="col-6 col-lg-2">
             <h4 class="footer-heading">Sản phẩm</h4>
             <ul class="footer-links">
-              <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
-              <li><a href="san-pham.html#gl">OMEGA.GL</a></li>
-              <li><a href="san-pham.html#hr">OMEGA.HR</a></li>
-              <li><a href="san-pham.html#mm">OMEGA.MM</a></li>
-              <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
-              <li><a href="san-pham.html#mobile-app">Mobile Apps</a></li>
+              <li><a href="san-pham/software-omega-erp.html">OMEGA.ERP</a></li>
+              <li><a href="san-pham/software-omega-gl.html">OMEGA.GL – Kế toán</a></li>
+              <li><a href="san-pham/software-omega-hr.html">OMEGA.HR – Nhân sự</a></li>
+              <li><a href="san-pham/software-omega-mm.html">OMEGA.MM – Sản xuất</a></li>
+              <li><a href="san-pham/software-omega-crm.html">OMEGA.CRM</a></li>
+              <li><a href="san-pham/software-omega-smb.html">GAMA.SMB</a></li>
             </ul>
           </div>
 
@@ -874,9 +621,9 @@
           <div class="col-6 col-lg-2">
             <h4 class="footer-heading">Giải pháp</h4>
             <ul class="footer-links">
-              <li><a href="giai-phap/giai-phap-nganh-nhua.html">Ngành nhựa</a></li>
+              <li><a href="giai-phap/giai-phap-nganh-fb.html">Ngành F&amp;B</a></li>
+              <li><a href="giai-phap/giai-phap-nganh-nhua.html">Ngành Nhựa</a></li>
               <li><a href="giai-phap/giai-phap-nganh-go-noi-that.html">Gỗ – Nội thất</a></li>
-              <li><a href="giai-phap/giai-phap-nganh-fb.html">Ngành F&B</a></li>
               <li><a href="giai-phap/giai-phap-nganh-fmcg.html">Ngành FMCG</a></li>
               <li><a href="giai-phap/giai-phap-nganh-thuy-san.html">Thủy – Hải sản</a></li>
               <li><a href="giai-phap/giai-phap-nganh-y-te.html">Thiết bị y tế</a></li>
@@ -887,11 +634,11 @@
           <div class="col-6 col-lg-2">
             <h4 class="footer-heading">Dịch vụ</h4>
             <ul class="footer-links">
-              <li><a href="dich-vu.html#dich-vu-tong-quan">Dịch vụ</a></li>
-              <li><a href="dich-vu.html#quy-trinh">Quy trình</a></li>
-              <li><a href="khach-hang.html#khach-hang">Khách hàng</a></li>
-              <li><a href="khach-hang.html#case-study">Case Study</a></li>
-              <li><a href="khach-hang.html#danh-gia">Đánh giá</a></li>
+              <li><a href="dich-vu.html#dich-vu-tong-quan">Tổng quan dịch vụ</a></li>
+              <li><a href="dich-vu.html#tu-van">Tư vấn triển khai</a></li>
+              <li><a href="dich-vu.html#dao-tao">Đào tạo &amp; Hỗ trợ</a></li>
+              <li><a href="dich-vu.html#bao-tri">Bảo trì &amp; Nâng cấp</a></li>
+              <li><a href="dich-vu.html#quy-trinh">Quy trình triển khai</a></li>
               <li><a href="dich-vu.html#faq">Hỏi đáp</a></li>
             </ul>
           </div>
@@ -901,8 +648,8 @@
             <h4 class="footer-heading">Công ty</h4>
             <ul class="footer-links">
               <li><a href="ve-omega.html">Về Omega</a></li>
-              <li><a href="dich-vu.html">Dịch vụ</a></li>
               <li><a href="khach-hang.html">Khách hàng</a></li>
+              <li><a href="khach-hang.html#case-study">Case Study</a></li>
               <li><a href="tin-tuc.html">Tin tức</a></li>
               <li><a href="tin-tuc.html#tuyen-dung">Tuyển dụng</a></li>
               <li><a href="lien-he.html">Liên hệ</a></li>
@@ -960,38 +707,278 @@
   <script src="assets/js/jquery.slicknav.js"></script>
   <script src="assets/js/omega.js"></script>
 
+  <style>
+    @keyframes skeletonPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+  </style>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var catBtns = document.querySelectorAll('.cat-btn');
-      var newsItems = document.querySelectorAll('.news-item');
-      var featuredNews = document.querySelector('.featured-news');
+  // ============================================================
+  // OMEGA NEWS CMS – Listing Page
+  // ============================================================
+  var OMEGA_NEWS_GAS_URL = 'https://script.google.com/macros/s/AKfycbwGxSEXCiihCzYmQ2nf9mVEUG_1jgbOu49O-wlQc9w_ipQyAnAFNHYEEYk4oqdVWuuJMg/exec'; // << Dán URL GAS sau khi deploy tin-tuc.gs
+  var NEWS_PER_PAGE = 9;
+  var CACHE_TTL     = 10 * 60 * 1000; // 10 phút
 
-      catBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          catBtns.forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          var cat = btn.getAttribute('data-cat');
+  var CAT_LABELS = {
+    'chuyen-doi-so':     'Chuyển đổi số',
+    'erp-quan-tri':      'ERP – Quản trị',
+    'ke-toan-tai-chinh': 'Kế toán – Tài chính',
+    'su-kien':           'Sự kiện',
+    'tuyen-dung':        'Tuyển dụng'
+  };
+  var CAT_BADGE = {
+    'ke-toan-tai-chinh': 'background:rgba(26,95,212,0.1);color:#1a5fd4;',
+    'su-kien':           'background:rgba(237,28,36,0.1);color:#ED1C24;',
+    'tuyen-dung':        'background:rgba(230,81,0,0.1);color:#e65100;'
+  };
 
-          // Filter news items
-          newsItems.forEach(function(item) {
-            if (cat === 'all' || item.getAttribute('data-cat') === cat) {
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
-            }
-          });
+  var allArticles = [];
+  var currentCat  = 'all';
+  var currentPage = 1;
 
-          // Show/hide featured based on category
-          if (featuredNews) {
-            if (cat === 'all' || featuredNews.getAttribute('data-cat') === cat) {
-              featuredNews.style.display = '';
-            } else {
-              featuredNews.style.display = 'none';
-            }
-          }
-        });
+  // ── Cache helpers ──────────────────────────────────────────
+  function getCached(k) {
+    try {
+      var r = sessionStorage.getItem(k);
+      if (!r) return null;
+      var i = JSON.parse(r);
+      if (Date.now() - i.ts > CACHE_TTL) { sessionStorage.removeItem(k); return null; }
+      return i.data;
+    } catch(e) { return null; }
+  }
+  function setCache(k, d) {
+    try { sessionStorage.setItem(k, JSON.stringify({ ts: Date.now(), data: d })); } catch(e) {}
+  }
+
+  function getUrlCat() {
+    var q = new URLSearchParams(window.location.search).get('cat');
+    if (q) return q;
+    // Fallback: read hash (#chuyen-doi-so) if it matches a known category
+    var h = window.location.hash ? window.location.hash.slice(1) : '';
+    return (h && CAT_LABELS[h]) ? h : 'all';
+  }
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function cLabel(cat) { return CAT_LABELS[cat] || cat; }
+  function cStyle(cat) { return CAT_BADGE[cat]  || 'background:rgba(0,166,81,0.1);color:#00A651;'; }
+
+  // ── JSONP helper (tránh CORS với GAS) ─────────────────────
+  function fetchJSONP(url) {
+    return new Promise(function(resolve, reject) {
+      var cb = '_gascb' + Date.now() + Math.floor(Math.random() * 1e6);
+      var script = document.createElement('script');
+      var sep = url.indexOf('?') === -1 ? '?' : '&';
+      script.src = url + sep + 'callback=' + cb;
+      script.onerror = function() {
+        delete window[cb]; document.head.removeChild(script);
+        reject(new Error('JSONP load error'));
+      };
+      window[cb] = function(data) {
+        delete window[cb]; document.head.removeChild(script);
+        resolve(data);
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  // ── Fetch all articles from GAS ────────────────────────────
+                // [OMEGA-NEWS-STATIC-START]
+  function fetchAllArticles() {
+    var cached = getCached('news_static_v2');
+    if (cached) return Promise.resolve(cached);
+    return fetch('tin-tuc/_tools/news-data.json')
+      .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(d){
+        setCache('news_static_v2', d);
+        return d;
+      });
+  }
+  // [OMEGA-NEWS-STATIC-END]
+
+
+  // ── Render featured article ────────────────────────────────
+  function renderFeatured(articles) {
+    var c = document.getElementById('featured-news-container');
+    if (!c) return;
+    var feat = articles.find(function(a) { return a.is_featured; });
+    if (!feat) { c.innerHTML = ''; return; }
+
+    c.innerHTML = [
+      '<div class="featured-news wow fadeInUp">',
+        '<div class="feat-img">',
+          feat.cover_image ? '<img src="' + esc(feat.cover_image) + '" alt="' + esc(feat.title) + '">' : '',
+          '<span class="feat-badge">Nổi bật</span>',
+        '</div>',
+        '<div class="feat-body">',
+          '<span class="feat-category" style="' + cStyle(feat.category) + '">' + cLabel(feat.category) + '</span>',
+          '<h2 class="feat-title">' + esc(feat.title) + '</h2>',
+          '<p class="feat-excerpt">' + esc(feat.excerpt) + '</p>',
+          '<div class="feat-meta">',
+            '<span><i class="fa-regular fa-calendar"></i> ' + esc(feat.published_date) + '</span>',
+            '<span><i class="fa-regular fa-clock"></i> ' + esc(feat.read_time) + '</span>',
+            '<span><i class="fa-solid fa-user"></i> ' + esc(feat.author) + '</span>',
+          '</div>',
+          '<a href="tin-tuc/' + esc(feat.slug) + '.html" class="btn-primary-omega" style="align-self:flex-start;">',
+            '<i class="fa-solid fa-arrow-right"></i> Đọc bài viết',
+          '</a>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  // ── Render article cards ───────────────────────────────────
+  function renderCards(articles, page) {
+    var grid   = document.getElementById('newsGrid');
+    var empty  = document.getElementById('newsEmpty');
+    var pagNav = document.getElementById('newsPagination');
+    if (!grid) return;
+
+    var filtered = currentCat === 'all'
+      ? articles
+      : articles.filter(function(a) { return a.category === currentCat; });
+
+    if (!filtered.length) {
+      grid.innerHTML = '';
+      if (empty)  empty.style.display  = 'block';
+      if (pagNav) pagNav.style.display = 'none';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    var total = filtered.length;
+    var pages = Math.ceil(total / NEWS_PER_PAGE);
+    var start = (page - 1) * NEWS_PER_PAGE;
+    var paged = filtered.slice(start, start + NEWS_PER_PAGE);
+
+    var html = '';
+    paged.forEach(function(a, i) {
+      var delay = (i % 3) * 0.07;
+      html += [
+        '<div class="col-md-6 col-lg-4 wow fadeInUp news-item" data-wow-delay="' + delay + 's" data-cat="' + esc(a.category) + '">',
+          '<div class="news-card">',
+            '<div class="news-card-img">',
+              a.cover_image ? '<img src="' + esc(a.cover_image) + '" alt="' + esc(a.title) + '" loading="lazy">' : '',
+            '</div>',
+            '<div class="news-card-body">',
+              '<span class="news-category" style="' + cStyle(a.category) + '">' + cLabel(a.category) + '</span>',
+              '<h4><a href="tin-tuc/' + esc(a.slug) + '.html">' + esc(a.title) + '</a></h4>',
+              '<p class="excerpt">' + esc(a.excerpt) + '</p>',
+              '<div class="news-meta">',
+                '<span><i class="fa-regular fa-calendar"></i> ' + esc(a.published_date) + '</span>',
+                '<span><i class="fa-regular fa-clock"></i> ' + esc(a.read_time) + '</span>',
+              '</div>',
+            '</div>',
+          '</div>',
+        '</div>'
+      ].join('');
+    });
+    grid.innerHTML = html;
+    try { if (typeof WOW !== 'undefined') new WOW().init(); } catch(e) {}
+    if (pagNav) renderPagination(pagNav, page, pages);
+  }
+
+  // ── Pagination ─────────────────────────────────────────────
+  function renderPagination(nav, page, pages) {
+    if (pages <= 1) { nav.style.display = 'none'; return; }
+    nav.style.display = 'flex';
+    var h = '';
+    var s = Math.max(1, page - 2);
+    var e = Math.min(pages, page + 2);
+    if (s > 1) { h += '<a href="#" data-page="1">1</a>'; if (s > 2) h += '<span>...</span>'; }
+    for (var p = s; p <= e; p++) {
+      h += '<a href="#" data-page="' + p + '"' + (p === page ? ' class="active" aria-current="page"' : '') + '>' + p + '</a>';
+    }
+    if (e < pages) {
+      if (e < pages - 1) h += '<span>...</span>';
+      h += '<a href="#" data-page="' + pages + '">' + pages + '</a>';
+    }
+    if (page < pages) {
+      h += '<a href="#" data-page="' + (page + 1) + '" class="next"><i class="fa-solid fa-chevron-right"></i> Tiếp theo</a>';
+    }
+    nav.innerHTML = h;
+    nav.querySelectorAll('a[data-page]').forEach(function(lnk) {
+      lnk.addEventListener('click', function(ev) {
+        ev.preventDefault();
+        currentPage = parseInt(this.getAttribute('data-page'), 10);
+        renderCards(allArticles, currentPage);
+        window.scrollTo({ top: document.getElementById('newsGrid').offsetTop - 120, behavior: 'smooth' });
       });
     });
+  }
+
+  // ── Category filter tabs ───────────────────────────────────
+  function initCatFilter() {
+    document.querySelectorAll('.cat-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.cat-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentCat  = btn.getAttribute('data-cat');
+        currentPage = 1;
+        renderCards(allArticles, 1);
+        var fc = document.getElementById('featured-news-container');
+        if (fc) fc.style.display = (currentCat === 'all') ? '' : 'none';
+      });
+    });
+  }
+
+  // ── Demo mode (GAS chưa cấu hình) ────────────────────────
+  function showDemoMode() {
+    var g = document.getElementById('newsGrid');
+    if (g) g.innerHTML = [
+      '<div class="col-12">',
+        '<div style="background:#fff8e1;border:1.5px solid #ffe082;border-radius:12px;padding:24px 28px;">',
+          '<h5 style="color:#e65100;margin-bottom:8px;">',
+            '<i class="fa-solid fa-circle-info" style="margin-right:6px;"></i>',
+            'Chế độ Demo – GAS chưa kết nối',
+          '</h5>',
+          '<p style="color:#555;margin:0;">',
+            'Deploy <strong>tin-tuc.gs</strong> lên Google Apps Script, dán URL vào biến ',
+            '<code>OMEGA_NEWS_GAS_URL</code> trong file này để hiển thị tin tức từ Google Sheet.',
+          '</p>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  // ── Init ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+    initCatFilter();
+
+    // Kích hoạt tab từ URL query ?cat=...
+    var urlCat = getUrlCat();
+    if (urlCat !== 'all') {
+      var tb = document.querySelector('.cat-btn[data-cat="' + urlCat + '"]');
+      if (tb) {
+        document.querySelectorAll('.cat-btn').forEach(function(b) { b.classList.remove('active'); });
+        tb.classList.add('active');
+        currentCat = urlCat;
+        var fc = document.getElementById('featured-news-container');
+        if (fc) fc.style.display = 'none';
+      }
+    }
+
+    if (!OMEGA_NEWS_GAS_URL) { showDemoMode(); return; }
+
+    fetchAllArticles()
+      .then(function(data) {
+        allArticles = data;
+        renderFeatured(data);
+        renderCards(data, currentPage);
+      })
+      .catch(function() {
+        var g = document.getElementById('newsGrid');
+        if (g) g.innerHTML = '<div class="col-12" style="text-align:center;padding:60px 20px;"><i class="fa-solid fa-triangle-exclamation" style="font-size:48px;color:#ccc;margin-bottom:16px;"></i><p style="color:#999;">Không thể tải danh sách tin tức. Vui lòng thử lại sau.</p></div>';
+      });
+  });
+  
+  // [OMEGA-NEWS-STATIC-LINKS-PATCHED]
   </script>
 </body>
 </html>

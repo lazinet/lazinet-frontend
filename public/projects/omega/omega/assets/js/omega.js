@@ -1,3 +1,12 @@
+// ==============================
+// ANTI-SPAM GLOBAL COUNTERS
+// ==============================
+var omegaMouseMoves = 0, omegaKeysPressed = 0, omegaHasScrolled = false;
+var omegaIsTouched = ('ontouchstart' in window);
+document.addEventListener('mousemove', function () { omegaMouseMoves++; });
+document.addEventListener('keydown',   function () { omegaKeysPressed++; });
+window.addEventListener('scroll',      function () { omegaHasScrolled = true; }, { passive: true });
+
 (function ($) {
   "use strict";
 
@@ -1212,56 +1221,9 @@
   }
 
   /* ==============================
-     11. Contact Form Handler (Google App Script ready)
+     11. Contact Form Handler (Google App Script + Anti-spam)
   ================================ */
-  var $form = $('#omega-contact-form');
-  if ($form.length) {
-    $form.on('submit', function (e) {
-      e.preventDefault();
-
-      var $btn = $form.find('[type="submit"]');
-      var $msg = $form.find('.form-message');
-      $btn.prop('disabled', true).text('Đang gửi...');
-
-      var data = {
-        name:    $form.find('[name="name"]').val(),
-        phone:   $form.find('[name="phone"]').val(),
-        email:   $form.find('[name="email"]').val(),
-        company: $form.find('[name="company"]').val(),
-        message: $form.find('[name="message"]').val(),
-        timestamp: new Date().toISOString()
-      };
-
-      // TODO: Replace with Google App Script URL
-      var GAS_URL = '';
-
-      if (GAS_URL) {
-        $.ajax({
-          url: GAS_URL,
-          method: 'POST',
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          success: function () {
-            $msg.html('<div class="alert-success-omega">Cảm ơn! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</div>');
-            $form[0].reset();
-          },
-          error: function () {
-            $msg.html('<div class="alert-error-omega">Có lỗi xảy ra, vui lòng thử lại hoặc liên hệ qua điện thoại.</div>');
-          },
-          complete: function () {
-            $btn.prop('disabled', false).text('Gửi yêu cầu tư vấn');
-          }
-        });
-      } else {
-        // Demo mode: just show success
-        setTimeout(function () {
-          $msg.html('<div class="alert-success-omega">Cảm ơn! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</div>');
-          $form[0].reset();
-          $btn.prop('disabled', false).text('Gửi yêu cầu tư vấn');
-        }, 800);
-      }
-    });
-  }
+  initOmegaContactAntiSpam();
 
   /* ==============================
      12. Tab switching (Products page)
@@ -1293,6 +1255,140 @@
 
 })(jQuery);
 
+
+// ==============================
+// CONTACT FORM — ANTI-SPAM + GAS
+// ==============================
+var OMEGA_GAS_URL = 'https://script.google.com/macros/s/AKfycbyutSlIibAzDa-dQ3OIoRbPArTir29YH-kiqWjjoGnFXL22l5qkdFUeDRXamTg2jAty/exec'; // << Dán URL GAS sau khi deploy
+var OMEGA_SUBMIT_COOLDOWN = 60000; // 60 giây giữa các lần gửi
+
+function initOmegaContactAntiSpam() {
+  var form = document.getElementById('omega-contact-form');
+  if (!form) return;
+
+  // Khởi tạo hidden fields
+  var startTime = Date.now();
+  var token = btoa(Math.random() + Date.now() + navigator.userAgent).substring(0, 32);
+  var stField = document.getElementById('start-time-omega');
+  var tkField = document.getElementById('token-bot-omega');
+  if (stField) stField.value = startTime;
+  if (tkField) tkField.value = token;
+
+  // Đếm số field được focus (local)
+  var fieldsFocused = 0;
+  form.querySelectorAll('input, textarea, select').forEach(function (field) {
+    var n = field.name || '', id = field.id || '';
+    if (!n.includes('bot') && !n.includes('time') && !n.includes('score') && !id.includes('website')) {
+      field.addEventListener('focus', function () { fieldsFocused++; });
+    }
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('omega-submit-btn');
+    var msgDiv = document.getElementById('form-message');
+    var now = Date.now();
+
+    // Validation thủ công (form có novalidate)
+    var valName    = (form.querySelector('[name="name"]') || {}).value || '';
+    var valPhone   = (form.querySelector('[name="phone"]') || {}).value || '';
+    var valEmail   = (form.querySelector('[name="email"]') || {}).value || '';
+    var valMessage = (form.querySelector('[name="message"]') || {}).value || '';
+
+    if (!valName.trim() || !valPhone.trim() || !valEmail.trim()) {
+      if (msgDiv) { msgDiv.className = 'form-message error'; msgDiv.textContent = 'Vui lòng điền đầy đủ: Họ và tên, Số điện thoại, Email.'; }
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valEmail.trim())) {
+      if (msgDiv) { msgDiv.className = 'form-message error'; msgDiv.textContent = 'Địa chỉ email không hợp lệ.'; }
+      return;
+    }
+    if (valMessage.trim().length < 3) {
+      if (msgDiv) { msgDiv.className = 'form-message error'; msgDiv.textContent = 'Nội dung cần tư vấn phải có ít nhất 3 ký tự.'; }
+      form.querySelector('[name="message"]').focus();
+      return;
+    }
+
+    // Rate limiting
+    var lastSubmit = localStorage.getItem('lastOmegaContactSubmitTime');
+    if (lastSubmit && (now - parseInt(lastSubmit)) < OMEGA_SUBMIT_COOLDOWN) {
+      var wait = Math.ceil((OMEGA_SUBMIT_COOLDOWN - (now - parseInt(lastSubmit))) / 1000);
+      if (btn) { btn.innerHTML = 'Chờ ' + wait + 's rồi thử lại'; btn.disabled = true; }
+      setTimeout(function () {
+        if (btn) { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Gửi yêu cầu tư vấn'; btn.disabled = false; }
+      }, 2500);
+      return;
+    }
+
+    // Tính human score
+    var humanScore = 0;
+    if (omegaMouseMoves >= 5) humanScore += 2;
+    if (omegaKeysPressed >= 2) humanScore += 2;
+    if (fieldsFocused >= 2)    humanScore += 3;
+    if (omegaHasScrolled)      humanScore += 1;
+    if (omegaIsTouched)        humanScore += 2;
+    var hsField = document.getElementById('human-score-omega');
+    if (hsField) hsField.value = humanScore;
+
+    // Kiểm tra anti-spam
+    var timeSpent = (now - startTime) / 1000;
+    var tokenVal  = tkField ? tkField.value : '';
+    var honeypot  = document.getElementById('website-omega');
+    honeypot = honeypot ? honeypot.value.trim() : '';
+    var isBot = honeypot !== '' || tokenVal === '' ||
+                timeSpent < 3 || timeSpent > 600 || humanScore < 3;
+
+    if (isBot) {
+      if (msgDiv) { msgDiv.className = 'form-message error'; msgDiv.textContent = 'Có lỗi xảy ra, vui lòng thử lại sau ít phút.'; }
+      if (btn) btn.disabled = true;
+      setTimeout(function () { location.reload(); }, 2500);
+      return;
+    }
+
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...'; btn.disabled = true; }
+    if (msgDiv) { msgDiv.className = 'form-message'; msgDiv.textContent = ''; }
+
+    var formData = {
+      name:            (form.querySelector('[name="name"]') || {}).value || '',
+      phone:           (form.querySelector('[name="phone"]') || {}).value || '',
+      email:           (form.querySelector('[name="email"]') || {}).value || '',
+      company:         (form.querySelector('[name="company"]') || {}).value || '',
+      company_size:    (form.querySelector('[name="company_size"]') || {}).value || '',
+      industry:        (form.querySelector('[name="industry"]') || {}).value || '',
+      message:         (form.querySelector('[name="message"]') || {}).value || '',
+      website_omega:   honeypot,
+      token_bot:       tokenVal,
+      form_start_time: startTime,
+      human_score:     humanScore
+    };
+
+    if (!OMEGA_GAS_URL) {
+      // Demo mode — GAS URL chưa cấu hình
+      setTimeout(function () {
+        if (msgDiv) { msgDiv.className = 'form-message success'; msgDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> Cảm ơn bạn! Yêu cầu tư vấn đã được gửi thành công. Chúng tôi sẽ liên hệ lại trong vòng 2 giờ làm việc.'; }
+        form.reset();
+        if (btn) { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Gửi yêu cầu tư vấn'; btn.disabled = false; }
+      }, 1000);
+      return;
+    }
+
+    try {
+      await fetch(OMEGA_GAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      localStorage.setItem('lastOmegaContactSubmitTime', now.toString());
+      form.reset();
+      if (msgDiv) { msgDiv.className = 'form-message success'; msgDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> Cảm ơn bạn! Yêu cầu tư vấn đã được gửi thành công. Chúng tôi sẽ liên hệ lại trong vòng 2 giờ làm việc.'; }
+      if (btn) { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Gửi yêu cầu tư vấn'; btn.disabled = false; }
+    } catch (err) {
+      if (msgDiv) { msgDiv.className = 'form-message error'; msgDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Đã xảy ra lỗi khi gửi. Vui lòng thử lại hoặc liên hệ trực tiếp qua <a href="tel:0908303609">0908 303 609</a>.'; }
+      if (btn) { btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Gửi yêu cầu tư vấn'; btn.disabled = false; }
+    }
+  });
+}
 
 // GOOGLE TRANSLATION
 function googleTranslateElementInit() {
@@ -1394,7 +1490,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function openAIChat() {
     // Thay đường dẫn dưới đây bằng link thật của file bizcard của bạn
-    const bizcardUrl = "https://lazinet.com/bizcards/hoangminhphung-lazinet.html?chat=true";
+    const bizcardUrl = "bizcards/ceo-nguyen-van-nhan.html?chat=true";
     window.open(bizcardUrl, "_blank");
 }
 

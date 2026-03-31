@@ -379,7 +379,6 @@
           <div class="collapse navbar-collapse main-menu" id="navbarNav">
             <div class="nav-menu-wrapper mx-auto">
               <ul class="navbar-nav" id="menu">
-                <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
                 <li class="nav-item submenu"><a class="nav-link" href="ve-omega.html">Về Omega</a>
                   <ul>
                     <li class="nav-item"><a class="nav-link" href="ve-omega.html#dinh-vi">Định vị & Năng lực</a></li>
@@ -709,16 +708,14 @@
                     <label class="form-label" for="contact-industry">Ngành nghề</label>
                     <select id="contact-industry" name="industry" class="form-control-omega">
                       <option value="" disabled selected>-- Chọn ngành nghề --</option>
-                      <option value="san-xuat-nhua">Sản xuất nhựa</option>
-                      <option value="san-xuat-go">Sản xuất gỗ – Nội thất</option>
-                      <option value="fb">F&B – Thực phẩm & Đồ uống</option>
-                      <option value="fmcg">FMCG – Hàng tiêu dùng nhanh</option>
-                      <option value="thuy-san">Thủy – Hải sản</option>
-                      <option value="y-te">Thiết bị y tế – Dược phẩm</option>
-                      <option value="thuong-mai">Thương mại – Phân phối</option>
-                      <option value="dich-vu">Dịch vụ – Tài chính</option>
-                      <option value="bat-dong-san">Bất động sản – Xây dựng</option>
-                      <option value="logistics">Logistics – Vận tải</option>
+                      <option value="nganh-nhua">Ngành nhựa</option>
+                      <option value="nganh-go-noi-that">Ngành gỗ – Nội thất</option>
+                      <option value="nganh-fb">Ngành F&amp;B (Thực phẩm &amp; Đồ uống)</option>
+                      <option value="nganh-fmcg">Ngành FMCG (Hàng tiêu dùng nhanh)</option>
+                      <option value="nganh-thuy-san">Ngành thủy – hải sản</option>
+                      <option value="nganh-y-te">Thiết bị y tế</option>
+                      <option value="nganh-thoi-trang">Ngành thời trang</option>
+                      <option value="nganh-phan-phoi">Phân phối – Bán sỉ</option>
                       <option value="nganh-khac">Ngành khác</option>
                     </select>
                   </div>
@@ -727,14 +724,24 @@
                 <!-- Nội dung cần tư vấn -->
                 <div class="col-12">
                   <div class="form-group">
-                    <label class="form-label" for="contact-message">Nội dung cần tư vấn</label>
-                    <textarea id="contact-message" name="message" class="form-control-omega" rows="4" placeholder="Mô tả nhu cầu hoặc vấn đề bạn đang gặp phải. Ví dụ: cần quản lý kho, muốn tích hợp kế toán và sản xuất..."></textarea>
+                    <label class="form-label" for="contact-message">Nội dung cần tư vấn <span class="required">*</span></label>
+                    <textarea id="contact-message" name="message" class="form-control-omega" rows="4"
+                      placeholder="Mô tả nhu cầu hoặc vấn đề bạn đang gặp phải. Ví dụ: cần quản lý kho, muốn tích hợp kế toán và sản xuất..."
+                      required minlength="3"></textarea>
                   </div>
                 </div>
 
+                <!-- Anti-spam hidden fields -->
+                <div style="display:none;" aria-hidden="true">
+                  <input type="text" id="website-omega" name="website_omega" tabindex="-1" autocomplete="off">
+                </div>
+                <input type="hidden" id="start-time-omega" name="form_start_time" value="">
+                <input type="hidden" id="token-bot-omega"  name="token_bot"       value="">
+                <input type="hidden" id="human-score-omega" name="human_score"    value="0">
+
                 <!-- Submit -->
                 <div class="col-12">
-                  <button type="submit" class="btn-primary-omega">
+                  <button type="submit" id="omega-submit-btn" class="btn-primary-omega">
                     <i class="fa-solid fa-paper-plane"></i> Gửi yêu cầu tư vấn
                   </button>
                 </div>
@@ -948,12 +955,12 @@
           <div class="col-6 col-lg-2">
             <h4 class="footer-heading">Sản phẩm</h4>
             <ul class="footer-links">
-              <li><a href="san-pham.html#erp">OMEGA.ERP</a></li>
-              <li><a href="san-pham.html#gl">OMEGA.GL</a></li>
-              <li><a href="san-pham.html#hr">OMEGA.HR</a></li>
-              <li><a href="san-pham.html#mm">OMEGA.MM</a></li>
-              <li><a href="san-pham.html#crm">OMEGA.CRM</a></li>
-              <li><a href="san-pham.html#mobile-app">Mobile Apps</a></li>
+              <li><a href="san-pham/software-omega-erp.html">OMEGA.ERP</a></li>
+              <li><a href="san-pham/software-omega-gl.html">OMEGA.GL – Kế toán</a></li>
+              <li><a href="san-pham/software-omega-hr.html">OMEGA.HR – Nhân sự</a></li>
+              <li><a href="san-pham/software-omega-mm.html">OMEGA.MM – Sản xuất</a></li>
+              <li><a href="san-pham/software-omega-crm.html">OMEGA.CRM</a></li>
+              <li><a href="san-pham/software-omega-smb.html">GAMA.SMB</a></li>
             </ul>
           </div>
 
@@ -961,9 +968,9 @@
           <div class="col-6 col-lg-2">
             <h4 class="footer-heading">Giải pháp</h4>
             <ul class="footer-links">
-              <li><a href="giai-phap/giai-phap-nganh-nhua.html">Ngành nhựa</a></li>
+              <li><a href="giai-phap/giai-phap-nganh-fb.html">Ngành F&amp;B</a></li>
+              <li><a href="giai-phap/giai-phap-nganh-nhua.html">Ngành Nhựa</a></li>
               <li><a href="giai-phap/giai-phap-nganh-go-noi-that.html">Gỗ – Nội thất</a></li>
-              <li><a href="giai-phap/giai-phap-nganh-fb.html">Ngành F&B</a></li>
               <li><a href="giai-phap/giai-phap-nganh-fmcg.html">Ngành FMCG</a></li>
               <li><a href="giai-phap/giai-phap-nganh-thuy-san.html">Thủy – Hải sản</a></li>
               <li><a href="giai-phap/giai-phap-nganh-y-te.html">Thiết bị y tế</a></li>
@@ -974,11 +981,11 @@
           <div class="col-6 col-lg-2">
             <h4 class="footer-heading">Dịch vụ</h4>
             <ul class="footer-links">
-              <li><a href="dich-vu.html#dich-vu-tong-quan">Dịch vụ</a></li>
-              <li><a href="dich-vu.html#quy-trinh">Quy trình</a></li>
-              <li><a href="khach-hang.html#khach-hang">Khách hàng</a></li>
-              <li><a href="khach-hang.html#case-study">Case Study</a></li>
-              <li><a href="khach-hang.html#danh-gia">Đánh giá</a></li>
+              <li><a href="dich-vu.html#dich-vu-tong-quan">Tổng quan dịch vụ</a></li>
+              <li><a href="dich-vu.html#tu-van">Tư vấn triển khai</a></li>
+              <li><a href="dich-vu.html#dao-tao">Đào tạo &amp; Hỗ trợ</a></li>
+              <li><a href="dich-vu.html#bao-tri">Bảo trì &amp; Nâng cấp</a></li>
+              <li><a href="dich-vu.html#quy-trinh">Quy trình triển khai</a></li>
               <li><a href="dich-vu.html#faq">Hỏi đáp</a></li>
             </ul>
           </div>
@@ -988,8 +995,8 @@
             <h4 class="footer-heading">Công ty</h4>
             <ul class="footer-links">
               <li><a href="ve-omega.html">Về Omega</a></li>
-              <li><a href="dich-vu.html">Dịch vụ</a></li>
               <li><a href="khach-hang.html">Khách hàng</a></li>
+              <li><a href="khach-hang.html#case-study">Case Study</a></li>
               <li><a href="tin-tuc.html">Tin tức</a></li>
               <li><a href="tin-tuc.html#tuyen-dung">Tuyển dụng</a></li>
               <li><a href="lien-he.html">Liên hệ</a></li>
@@ -1046,88 +1053,5 @@
   <script src="assets/js/jquery.slicknav.js"></script>
   <script src="assets/js/omega.js"></script>
 
-  <script>
-    // Contact form submission via Google Apps Script
-    // Replace GAS_URL with the deployed Web App URL
-    var GAS_URL = '';
-
-    document.addEventListener('DOMContentLoaded', function () {
-      var form = document.getElementById('omega-contact-form');
-      var msgBox = document.getElementById('form-message');
-
-      if (!form) return;
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        // Basic validation
-        var name = form.querySelector('#contact-name').value.trim();
-        var phone = form.querySelector('#contact-phone').value.trim();
-        var email = form.querySelector('#contact-email').value.trim();
-
-        if (!name || !phone || !email) {
-          msgBox.className = 'form-message error';
-          msgBox.textContent = 'Vui lòng điền đầy đủ các trường bắt buộc: Họ và tên, Số điện thoại, Email.';
-          return;
-        }
-
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-          msgBox.className = 'form-message error';
-          msgBox.textContent = 'Địa chỉ email không hợp lệ. Vui lòng kiểm tra lại.';
-          return;
-        }
-
-        var submitBtn = form.querySelector('button[type="submit"]');
-        var originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
-        submitBtn.disabled = true;
-        msgBox.className = 'form-message';
-        msgBox.textContent = '';
-
-        var data = {
-          name: name,
-          phone: phone,
-          email: email,
-          company: form.querySelector('#contact-company').value.trim(),
-          company_size: form.querySelector('#contact-size').value,
-          industry: form.querySelector('#contact-industry').value,
-          message: form.querySelector('#contact-message').value.trim(),
-          source: 'omega-contact-form',
-          page: window.location.href,
-          timestamp: new Date().toISOString()
-        };
-
-        if (GAS_URL) {
-          fetch(GAS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          }).then(function () {
-            msgBox.className = 'form-message success';
-            msgBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Cảm ơn bạn! Yêu cầu tư vấn đã được gửi thành công. Chúng tôi sẽ liên hệ lại trong vòng 2 giờ làm việc.';
-            form.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-          }).catch(function () {
-            msgBox.className = 'form-message error';
-            msgBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Đã xảy ra lỗi khi gửi. Vui lòng thử lại hoặc liên hệ trực tiếp qua <a href="tel:0908303609">0908 303 609</a>.';
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-          });
-        } else {
-          // Demo mode – no GAS_URL configured yet
-          setTimeout(function () {
-            msgBox.className = 'form-message success';
-            msgBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Cảm ơn bạn! Yêu cầu tư vấn đã được gửi thành công. Chúng tôi sẽ liên hệ lại trong vòng 2 giờ làm việc.';
-            form.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-          }, 1200);
-        }
-      });
-    });
-  </script>
 </body>
 </html>
