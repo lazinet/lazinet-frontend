@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicons -->
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="apple-touch-icon">
+<title>Catalogue Sản Phẩm – Nón Sơn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --grey-light: #F5F5F5;
+  --grey-mid: #E0E0E0;
+  --grey-text: #666;
+  --pink: #E91E8C;
+  --font-head: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --sidebar-w: 220px;
+  --transition: 0.25s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 14px; }
+body { font-family: var(--font-body); background: var(--grey-light); color: var(--black); display: flex; min-height: 100vh; }
+
+/* ── PDF EXPORT BUTTON ── */
+#pdf-btn {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 1000;
+  background: var(--black);
+  color: #fff;
+  border: none; cursor: pointer;
+  padding: 14px 22px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: transform var(--transition), background var(--transition);
+}
+#pdf-btn:hover { background: var(--pink); transform: translateY(-2px); }
+#pdf-btn svg { width: 18px; height: 18px; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--black);
+  color: #fff;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+.sidebar-brand {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand-logo-wrap {
+  width: 60px; height: 60px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+.brand-logo-wrap img { width: 54px; height: 54px; object-fit: contain; border-radius: 8px; }
+.brand-name {
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+.brand-tag {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+}
+.sidebar-stats {
+  display: flex; gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.stat { flex: 1; padding: 14px 12px; text-align: center; }
+.stat-num { font-size: 1.3rem; font-weight: 800; color: #fff; }
+.stat-lbl { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+.stat:first-child { border-right: 1px solid rgba(255,255,255,0.08); }
+
+.nav-label-header {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.25);
+  padding: 18px 20px 8px;
+}
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition);
+  border-left: 3px solid transparent;
+  position: relative;
+}
+.nav-link:hover {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border-left-color: var(--accent);
+}
+.nav-icon { font-size: 1rem; flex-shrink: 0; }
+.nav-label { flex: 1; }
+.nav-count {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 2px 7px;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ── MAIN CONTENT ── */
+.main { flex: 1; min-width: 0; }
+
+/* ── HERO HEADER ── */
+.hero {
+  background: var(--black);
+  color: #fff;
+  padding: 60px 56px 50px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.015) 40px,
+    rgba(255,255,255,0.015) 80px
+  );
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--pink);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -1px;
+  color: #fff;
+  max-width: 700px;
+}
+.hero-title .accent { color: var(--pink); font-style: italic; }
+.hero-sub {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 480px;
+  line-height: 1.7;
+}
+.hero-meta {
+  display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap;
+}
+.hero-meta-item {
+  text-align: center;
+  padding: 0 20px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.hero-meta-item:last-child { border-right: none; }
+.hero-num {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  display: block;
+}
+.hero-lbl {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 2px;
+}
+.hero-divider {
+  height: 4px;
+  background: linear-gradient(90deg, var(--pink), #9B59B6, #3498DB, #1ABC9C, #F39C12);
+  background-size: 300% 100%;
+  animation: gradientShift 4s ease infinite;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── INFO BAR ── */
+.info-bar {
+  background: #fff;
+  border-bottom: 1px solid var(--grey-mid);
+  padding: 12px 56px;
+  display: flex; gap: 32px; flex-wrap: wrap; align-items: center;
+}
+.info-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--grey-text); }
+.info-item strong { color: var(--black); font-weight: 600; }
+
+/* ── CATEGORY SECTION ── */
+.cat-section { padding: 48px 56px; border-bottom: 1px solid var(--grey-mid); }
+.cat-section:last-child { border-bottom: none; }
+.cat-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px; gap: 20px;
+}
+.cat-header-left { display: flex; align-items: center; gap: 16px; }
+.cat-icon-lg { font-size: 2.2rem; }
+.cat-title {
+  font-family: var(--font-head);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.cat-sub {
+  font-size: 0.78rem;
+  color: var(--grey-text);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.cat-line {
+  flex: 1; height: 2px; opacity: 0.3; border-radius: 2px;
+  min-width: 40px;
+}
+
+/* ── PRODUCT GRID ── */
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+.prod-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow var(--transition), transform var(--transition);
+  cursor: pointer;
+}
+.prod-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+  transform-origin: left;
+}
+.prod-card:hover::before { transform: scaleX(1); }
+.prod-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+}
+
+.prod-img {
+  aspect-ratio: 1;
+  background: var(--grey-light);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.prod-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.prod-card:hover .prod-img img { transform: scale(1.08); }
+
+.prod-info {
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--grey-light);
+}
+.prod-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.code {
+  font-size: 0.68rem;
+  color: var(--grey-text);
+  font-family: monospace;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.price {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent, #C0392B);
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--black);
+  color: #fff;
+  padding: 40px 56px;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  max-width: 900px;
+}
+.footer h3 {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--pink);
+}
+.footer p, .footer a {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 2;
+  display: block;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 20px;
+  margin-top: 32px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+}
+
+/* ── PRINT ── */
+@media print {
+  #pdf-btn, .sidebar { display: none !important; }
+  body { display: block; background: #fff; }
+  .main { padding: 0; }
+  .hero { background: var(--black) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero-divider { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .prod-card { break-inside: avoid; box-shadow: none !important; transform: none !important; }
+  .prod-card::before { display: none; }
+  .cat-section { break-before: auto; padding: 28px 20px; }
+  .prod-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .hero { padding: 30px 20px; }
+  .info-bar { padding: 10px 20px; }
+  .footer { padding: 20px; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+@page { size: A4; margin: 8mm; }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ───────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo-wrap"><img src="nonson-selected-images/logo_Non_Son_doc.svg" alt="Nón Sơn Logo"></div>
+    <div class="brand-name">NÓN SƠN</div>
+    <div class="brand-tag">Thời Trang Mũ Nón</div>
+  </div>
+  <div class="sidebar-stats">
+    <div class="stat"><div class="stat-num">261</div><div class="stat-lbl">Sản phẩm</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-lbl">Danh mục</div></div>
+  </div>
+  <div class="nav-label-header">Danh mục</div>
+  <a href="#bao-hiem" class="nav-link" style="--accent:#C0392B"><span class="nav-icon">🪖</span><span class="nav-label">Mũ Bảo Hiểm</span><span class="nav-count">45</span></a>
+<a href="#vanh" class="nav-link" style="--accent:#8E44AD"><span class="nav-icon">👒</span><span class="nav-label">Nón Vành</span><span class="nav-count">20</span></a>
+<a href="#ket" class="nav-link" style="--accent:#2471A3"><span class="nav-icon">🧢</span><span class="nav-label">Mũ Kết Lưỡi Trai</span><span class="nav-count">25</span></a>
+<a href="#snapback" class="nav-link" style="--accent:#1E8449"><span class="nav-icon">🎵</span><span class="nav-label">Snapback &amp; Hiphop</span><span class="nav-count">24</span></a>
+<a href="#da" class="nav-link" style="--accent:#784212"><span class="nav-icon">✦</span><span class="nav-label">Mũ Da</span><span class="nav-count">24</span></a>
+<a href="#dan-tay" class="nav-link" style="--accent:#148F77"><span class="nav-icon">🌿</span><span class="nav-label">Mũ Đan Tay</span><span class="nav-count">24</span></a>
+<a href="#jacket" class="nav-link" style="--accent:#1A252F"><span class="nav-icon">⬡</span><span class="nav-label">Mũ Jacket</span><span class="nav-count">24</span></a>
+<a href="#phot" class="nav-link" style="--accent:#7F8C8D"><span class="nav-icon">🎩</span><span class="nav-label">Mũ Phớt / Fedora</span><span class="nav-count">27</span></a>
+<a href="#tre-em" class="nav-link" style="--accent:#E67E22"><span class="nav-icon">⭐</span><span class="nav-label">Mũ Trẻ Em</span><span class="nav-count">24</span></a>
+<a href="#phu-kien" class="nav-link" style="--accent:#566573"><span class="nav-icon">◈</span><span class="nav-label">Phụ Kiện</span><span class="nav-count">24</span></a>
+
+</aside>
+
+<!-- ── MAIN ──────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Danh Mục Sản Phẩm · 2024–2026</div>
+    <h1 class="hero-title">NÓN SƠN<br><span class="accent">Thỏa mãn khát<br>vọng tinh tế.</span></h1>
+    <p class="hero-sub">Thương hiệu mũ nón hàng đầu Việt Nam từ 1996. Mũ bảo hiểm đạt chuẩn, nón thời trang cao cấp – bền đẹp, phong cách, giá hợp lý.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="hero-num">175+</span><span class="hero-lbl">Cửa hàng</span></div>
+      <div class="hero-meta-item"><span class="hero-num">30+</span><span class="hero-lbl">Năm kinh nghiệm</span></div>
+      <div class="hero-meta-item"><span class="hero-num">261+</span><span class="hero-lbl">Sản phẩm</span></div>
+      <div class="hero-meta-item"><span class="hero-num">43</span><span class="hero-lbl">Tỉnh thành</span></div>
+    </div>
+  </div>
+  <div class="hero-divider"></div>
+
+  <!-- Info bar -->
+  <div class="info-bar">
+    <div class="info-item">📞 <strong>Hotline:</strong> 1800 9234</div>
+    <div class="info-item">🔧 <strong>Hỗ trợ KH:</strong> 1800 9345</div>
+    <div class="info-item">📍 <strong>Trụ sở:</strong> 199 Hai Bà Trưng, Q.3, TP.HCM</div>
+    <div class="info-item">🌐 <strong>Website:</strong> nonson.vn</div>
+    <div class="info-item">✦ <strong>YKK Japan · CR Certified · Đạt chuẩn QCVN</strong></div>
+  </div>
+
+  <!-- Product sections -->
+  
+<section class="cat-section" id="bao-hiem">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">🪖</span>
+      <div>
+        <h2 class="cat-title" style="color:#C0392B">Mũ Bảo Hiểm</h2>
+        <p class="cat-sub">45 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#C0392B"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_6.png" alt="Mũ bảo hiểm trẻ em APE-XH532 850.000 VNĐ Mũ bảo hiểm trẻ em APE-XH532 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm trẻ em APE-XH532 850.000 VNĐ Mũ bảo hiểm trẻ em APE-XH532 850.000 VNĐ</div>
+    <div class="code">5479</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_AMP_TR122_1.png" alt="-50% Mũ bảo hiểm AMP-TR122 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm AMP-TR122 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-50% Mũ bảo hiểm AMP-TR122 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm AMP-TR122 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5386</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -50% Mũ bảo hiểm SMP-TR066 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR066 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SMP-TR066 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR066 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5131</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_kp_tr066png.png" alt="Flashsale -50% Mũ bảo hiểm SKP-TR066 1.000.000 VNĐ 500.000 VNĐ Mũ bảo hiểm SKP-TR066 1.000.000 VNĐ 500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SKP-TR066 1.000.000 VNĐ 500.000 VNĐ Mũ bảo hiểm SKP-TR066 1.000.000 VNĐ 500.000 VNĐ</div>
+    <div class="code">3699</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_AMP_TR123_2.png" alt="-50% Mũ bảo hiểm SMP-TR123 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR123 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-50% Mũ bảo hiểm SMP-TR123 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR123 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5422</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="-50% Mũ bảo hiểm AMP-TR119 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm AMP-TR119 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-50% Mũ bảo hiểm AMP-TR119 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm AMP-TR119 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5315</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__7.png" alt="Flashsale -50% Mũ bảo hiểm SMP-TR102 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR102 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SMP-TR102 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR102 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5135</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Flashsale -50% Mũ bảo hiểm SMP-TR089 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR089 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SMP-TR089 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR089 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5133</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="-50% Mũ bảo hiểm AMP-TR083 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm AMP-TR083 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-50% Mũ bảo hiểm AMP-TR083 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm AMP-TR083 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5132</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -50% Mũ bảo hiểm SMP-TR121 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR121 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SMP-TR121 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR121 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5746</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__7.png" alt="Flashsale -50% Mũ bảo hiểm SMP-TR120 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR120 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SMP-TR120 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SMP-TR120 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5745</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_2.png" alt="Mũ bảo hiểm BKP-TR129 1.000.000 VNĐ Mũ bảo hiểm BKP-TR129 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-TR129 1.000.000 VNĐ Mũ bảo hiểm BKP-TR129 1.000.000 VNĐ</div>
+    <div class="code">5738</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Mũ bảo hiểm BKP-ĐN124 1.000.000 VNĐ Mũ bảo hiểm BKP-ĐN124 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-ĐN124 1.000.000 VNĐ Mũ bảo hiểm BKP-ĐN124 1.000.000 VNĐ</div>
+    <div class="code">5720</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_ATG_DN116.png" alt="Mũ bảo hiểm ATG-DN116 650.000 VNĐ Mũ bảo hiểm ATG-DN116 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-DN116 650.000 VNĐ Mũ bảo hiểm ATG-DN116 650.000 VNĐ</div>
+    <div class="code">4573</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -62% Mũ bảo hiểm ATG-XM187 650.000 VNĐ 250.000 VNĐ Mũ bảo hiểm ATG-XM187 650.000 VNĐ 250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -62% Mũ bảo hiểm ATG-XM187 650.000 VNĐ 250.000 VNĐ Mũ bảo hiểm ATG-XM187 650.000 VNĐ 250.000 VNĐ</div>
+    <div class="code">5431</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -62% Mũ bảo hiểm ATG-XR585 650.000 VNĐ 250.000 VNĐ Mũ bảo hiểm ATG-XR585 650.000 VNĐ 250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -62% Mũ bảo hiểm ATG-XR585 650.000 VNĐ 250.000 VNĐ Mũ bảo hiểm ATG-XR585 650.000 VNĐ 250.000 VNĐ</div>
+    <div class="code">4997</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_ATG_XM151.png" alt="Mũ bảo hiểm ATG-XM151 650.000 VNĐ Mũ bảo hiểm ATG-XM151 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-XM151 650.000 VNĐ Mũ bảo hiểm ATG-XM151 650.000 VNĐ</div>
+    <div class="code">4405</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -50% Mũ bảo hiểm ATG-HG392 650.000 VNĐ 325.000 VNĐ Mũ bảo hiểm ATG-HG392 650.000 VNĐ 325.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm ATG-HG392 650.000 VNĐ 325.000 VNĐ Mũ bảo hiểm ATG-HG392 650.000 VNĐ 325.000 VNĐ</div>
+    <div class="code">4994</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -50% Mũ bảo hiểm ATG-XH520 650.000 VNĐ 325.000 VNĐ Mũ bảo hiểm ATG-XH520 650.000 VNĐ 325.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm ATG-XH520 650.000 VNĐ 325.000 VNĐ Mũ bảo hiểm ATG-XH520 650.000 VNĐ 325.000 VNĐ</div>
+    <div class="code">4569</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_ATG_XH474.png" alt="Mũ bảo hiểm ATG-XH474 650.000 VNĐ Mũ bảo hiểm ATG-XH474 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-XH474 650.000 VNĐ Mũ bảo hiểm ATG-XH474 650.000 VNĐ</div>
+    <div class="code">3567</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_01.png" alt="Mũ bảo hiểm BKP-TR083 1.000.000 VNĐ Mũ bảo hiểm BKP-TR083 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-TR083 1.000.000 VNĐ Mũ bảo hiểm BKP-TR083 1.000.000 VNĐ</div>
+    <div class="code">3713</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_kt_xh520.png" alt="Mũ bảo hiểm kính CKT-XH520 850.000 VNĐ Mũ bảo hiểm kính CKT-XH520 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm kính CKT-XH520 850.000 VNĐ Mũ bảo hiểm kính CKT-XH520 850.000 VNĐ</div>
+    <div class="code">5284</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_kt_hg392.png" alt="Mũ bảo hiểm kính CKT-HG392 850.000 VNĐ Mũ bảo hiểm kính CKT-HG392 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm kính CKT-HG392 850.000 VNĐ Mũ bảo hiểm kính CKT-HG392 850.000 VNĐ</div>
+    <div class="code">5280</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_4_1.png" alt="Flashsale -50% Mũ bảo hiểm kính SKT-TR002 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm kính SKT-TR002 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm kính SKT-TR002 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm kính SKT-TR002 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5219</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_5.png" alt="-50% Mũ bảo hiểm kính SKT-HG359 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm kính SKT-HG359 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-50% Mũ bảo hiểm kính SKT-HG359 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm kính SKT-HG359 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5149</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_2.png" alt="Flashsale -50% Mũ bảo hiểm kính SKT-DN052 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm kính SKT-DN052 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm kính SKT-DN052 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm kính SKT-DN052 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">5144</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_5.png" alt="Flashsale -50% Mũ bảo hiểm SKP-TR102 1.000.000 VNĐ 500.000 VNĐ Mũ bảo hiểm SKP-TR102 1.000.000 VNĐ 500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SKP-TR102 1.000.000 VNĐ 500.000 VNĐ Mũ bảo hiểm SKP-TR102 1.000.000 VNĐ 500.000 VNĐ</div>
+    <div class="code">5142</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Flashsale -50% Mũ bảo hiểm SKP-TR115 1.000.000 VNĐ 500.000 VNĐ Mũ bảo hiểm SKP-TR115 1.000.000 VNĐ 500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SKP-TR115 1.000.000 VNĐ 500.000 VNĐ Mũ bảo hiểm SKP-TR115 1.000.000 VNĐ 500.000 VNĐ</div>
+    <div class="code">5748</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__6.png" alt="Mũ bảo hiểm BKP-XM192 1.000.000 VNĐ Mũ bảo hiểm BKP-XM192 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-XM192 1.000.000 VNĐ Mũ bảo hiểm BKP-XM192 1.000.000 VNĐ</div>
+    <div class="code">5713</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Mũ bảo hiểm BKP-HG400 1.000.000 VNĐ Mũ bảo hiểm BKP-HG400 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-HG400 1.000.000 VNĐ Mũ bảo hiểm BKP-HG400 1.000.000 VNĐ</div>
+    <div class="code">5691</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Mũ bảo hiểm BKP-TR131 1.000.000 VNĐ Mũ bảo hiểm BKP-TR131 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-TR131 1.000.000 VNĐ Mũ bảo hiểm BKP-TR131 1.000.000 VNĐ</div>
+    <div class="code">5676</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__4.png" alt="Mũ bảo hiểm BKP-TR128 1.000.000 VNĐ Mũ bảo hiểm BKP-TR128 1.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-TR128 1.000.000 VNĐ Mũ bảo hiểm BKP-TR128 1.000.000 VNĐ</div>
+    <div class="code">5636</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_1.png" alt="Flashsale -50% Mũ bảo hiểm SKT-XM156 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SKT-XM156 850.000 VNĐ 425.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Flashsale -50% Mũ bảo hiểm SKT-XM156 850.000 VNĐ 425.000 VNĐ Mũ bảo hiểm SKT-XM156 850.000 VNĐ 425.000 VNĐ</div>
+    <div class="code">3754</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_APE_TR126_2.png" alt="Mũ bảo hiểm trẻ em APE-TR126 850.000 VNĐ Mũ bảo hiểm trẻ em APE-TR126 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm trẻ em APE-TR126 850.000 VNĐ Mũ bảo hiểm trẻ em APE-TR126 850.000 VNĐ</div>
+    <div class="code">5467</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_2.png" alt="Mũ bảo hiểm trẻ em ADC-524.124 700.000 VNĐ Mũ bảo hiểm trẻ em ADC-524.124 700.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm trẻ em ADC-524.124 700.000 VNĐ Mũ bảo hiểm trẻ em ADC-524.124 700.000 VNĐ</div>
+    <div class="code">5415</div>
+    <div class="price">700.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_2_1.png" alt="Mũ bảo hiểm trẻ em ADC-358.125 700.000 VNĐ Mũ bảo hiểm trẻ em ADC-358.125 700.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm trẻ em ADC-358.125 700.000 VNĐ Mũ bảo hiểm trẻ em ADC-358.125 700.000 VNĐ</div>
+    <div class="code">5400</div>
+    <div class="price">700.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_SV_xr582.png" alt="-50% Mũ bảo hiểm SV-XR582 1.500.000 VNĐ 750.000 VNĐ Mũ bảo hiểm SV-XR582 1.500.000 VNĐ 750.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-50% Mũ bảo hiểm SV-XR582 1.500.000 VNĐ 750.000 VNĐ Mũ bảo hiểm SV-XR582 1.500.000 VNĐ 750.000 VNĐ</div>
+    <div class="code">5014</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_sm_dn117.png" alt="Mũ bảo hiểm ASM-DN117 8.000.000 VNĐ Mũ bảo hiểm ASM-DN117 8.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ASM-DN117 8.000.000 VNĐ Mũ bảo hiểm ASM-DN117 8.000.000 VNĐ</div>
+    <div class="code">4535</div>
+    <div class="price">8.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Mũ bảo hiểm ATG-DN052" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-DN052</div>
+    <div class="code">mu-bao-hiem-atg-dn052</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_ATG_XH474.png" alt="Mũ bảo hiểm ATG-HG392" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-HG392</div>
+    <div class="code">mu-bao-hiem-atg-hg392</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Mũ bảo hiểm ATG-TR002" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-TR002</div>
+    <div class="code">mu-bao-hiem-atg-tr002</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Mũ bảo hiểm ATG-XH498" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-XH498</div>
+    <div class="code">mu-bao-hiem-atg-xh498</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson_6.png" alt="Mũ bảo hiểm ATG-XH520" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-XH520</div>
+    <div class="code">mu-bao-hiem-atg-xh520</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_nonson__5.png" alt="Mũ bảo hiểm ATG-XM156" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm ATG-XM156</div>
+    <div class="code">mu-bao-hiem-atg-xm156</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#C0392B">
+  <div class="prod-img"><img src="nonson-selected-images/bao-hiem_600_crop_kp_tr066png.png" alt="Mũ bảo hiểm BKP-TR129" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Mũ bảo hiểm BKP-TR129</div>
+    <div class="code">mu-bao-hiem-bkp-tr129</div>
+    <div class="price">1.000.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="vanh">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">👒</span>
+      <div>
+        <h2 class="cat-title" style="color:#8E44AD">Nón Vành</h2>
+        <p class="cat-sub">20 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#8E44AD"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_MH194F_XR1_1.png" alt="Nón bucket MH194F-XR1 2.000.000 VNĐ Nón bucket MH194F-XR1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MH194F-XR1 2.000.000 VNĐ Nón bucket MH194F-XR1 2.000.000 VNĐ</div>
+    <div class="code">5375</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_1_1.png" alt="Nón bucket MH161C-XR1 1.500.000 VNĐ Nón bucket MH161C-XR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MH161C-XR1 1.500.000 VNĐ Nón bucket MH161C-XR1 1.500.000 VNĐ</div>
+    <div class="code">5231</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_2.png" alt="Nón bucket MH033-XM1HV 1.500.000 VNĐ Nón bucket MH033-XM1HV 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MH033-XM1HV 1.500.000 VNĐ Nón bucket MH033-XM1HV 1.500.000 VNĐ</div>
+    <div class="code">4495</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_4.png" alt="Nón bucket MH161C-XH1HV 1.500.000 VNĐ Nón bucket MH161C-XH1HV 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MH161C-XH1HV 1.500.000 VNĐ Nón bucket MH161C-XH1HV 1.500.000 VNĐ</div>
+    <div class="code">4400</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson__2.png" alt="Nón bucket MH194B-XH2 1.250.000 VNĐ Nón bucket MH194B-XH2 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MH194B-XH2 1.250.000 VNĐ Nón bucket MH194B-XH2 1.250.000 VNĐ</div>
+    <div class="code">5574</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson__3.png" alt="Nón bucket MH194B-HG1 1.250.000 VNĐ Nón bucket MH194B-HG1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MH194B-HG1 1.250.000 VNĐ Nón bucket MH194B-HG1 1.250.000 VNĐ</div>
+    <div class="code">5540</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_XH001_105_DN1_1_1.png" alt="Nón vành XH001-105-DN1 1.250.000 VNĐ Nón vành XH001-105-DN1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón vành XH001-105-DN1 1.250.000 VNĐ Nón vành XH001-105-DN1 1.250.000 VNĐ</div>
+    <div class="code">5367</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_XH001_105_KM1.jpg" alt="Nón vành XH001-105-KM1 1.250.000 VNĐ Nón vành XH001-105-KM1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón vành XH001-105-KM1 1.250.000 VNĐ Nón vành XH001-105-KM1 1.250.000 VNĐ</div>
+    <div class="code">5329</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_xh001_105_tr1.png" alt="Nón vành XH001-105-TR1 1.250.000 VNĐ Nón vành XH001-105-TR1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón vành XH001-105-TR1 1.250.000 VNĐ Nón vành XH001-105-TR1 1.250.000 VNĐ</div>
+    <div class="code">5360</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_XH001_72F_TR1_1.png" alt="Nón vành XH001-72F-TR1 950.000 VNĐ Nón vành XH001-72F-TR1 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón vành XH001-72F-TR1 950.000 VNĐ Nón vành XH001-72F-TR1 950.000 VNĐ</div>
+    <div class="code">5406</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_1.png" alt="Nón vành XH001-3D-XH3HV 1.250.000 VNĐ Nón vành XH001-3D-XH3HV 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón vành XH001-3D-XH3HV 1.250.000 VNĐ Nón vành XH001-3D-XH3HV 1.250.000 VNĐ</div>
+    <div class="code">5246</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_mc012b_xr1hv.png" alt="Nón beret MC012B-XR1HV 1.500.000 VNĐ Nón beret MC012B-XR1HV 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón beret MC012B-XR1HV 1.500.000 VNĐ Nón beret MC012B-XR1HV 1.500.000 VNĐ</div>
+    <div class="code">5242</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_MC012B_XM1HV.png" alt="Nón beret MC012B-XM1HV 1.500.000 VNĐ Nón beret MC012B-XM1HV 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón beret MC012B-XM1HV 1.500.000 VNĐ Nón beret MC012B-XM1HV 1.500.000 VNĐ</div>
+    <div class="code">5239</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_mc012b_dn1.png" alt="Nón beret MC012B-DN1 1.500.000 VNĐ Nón beret MC012B-DN1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón beret MC012B-DN1 1.500.000 VNĐ Nón beret MC012B-DN1 1.500.000 VNĐ</div>
+    <div class="code">5235</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_MH008ADA_DN1_0.png" alt="Nón da MH008ADA-DN1 10.000.000 VNĐ Nón da MH008ADA-DN1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH008ADA-DN1 10.000.000 VNĐ Nón da MH008ADA-DN1 10.000.000 VNĐ</div>
+    <div class="code">5416</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_3.png" alt="Nón da MH008ADA-NU1 10.000.000 VNĐ Nón da MH008ADA-NU1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH008ADA-NU1 10.000.000 VNĐ Nón da MH008ADA-NU1 10.000.000 VNĐ</div>
+    <div class="code">4557</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_2.png" alt="Nón đi nắng MH008B-XR1 1.500.000 VNĐ Nón đi nắng MH008B-XR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đi nắng MH008B-XR1 1.500.000 VNĐ Nón đi nắng MH008B-XR1 1.500.000 VNĐ</div>
+    <div class="code">5317</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_1.png" alt="Nón đi nắng MH008B-DN1 1.500.000 VNĐ Nón đi nắng MH008B-DN1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đi nắng MH008B-DN1 1.500.000 VNĐ Nón đi nắng MH008B-DN1 1.500.000 VNĐ</div>
+    <div class="code">5302</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_MH162A___NU1.png" alt="Nón đi nắng MH162A-NU1 1.500.000 VNĐ Nón đi nắng MH162A-NU1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đi nắng MH162A-NU1 1.500.000 VNĐ Nón đi nắng MH162A-NU1 1.500.000 VNĐ</div>
+    <div class="code">5215</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#8E44AD">
+  <div class="prod-img"><img src="nonson-selected-images/vanh_600_crop_nonson_4.png" alt="Nón đi nắng MH012A-XM2 1.250.000 VNĐ Nón đi nắng MH012A-XM2 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đi nắng MH012A-XM2 1.250.000 VNĐ Nón đi nắng MH012A-XM2 1.250.000 VNĐ</div>
+    <div class="code">4421</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="ket">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">🧢</span>
+      <div>
+        <h2 class="cat-title" style="color:#2471A3">Mũ Kết Lưỡi Trai</h2>
+        <p class="cat-sub">25 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#2471A3"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson__5.png" alt="-60% Nón kết MC187S-TR1 1.250.000 VNĐ 500.000 VNĐ Nón kết MC187S-TR1 1.250.000 VNĐ 500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-60% Nón kết MC187S-TR1 1.250.000 VNĐ 500.000 VNĐ Nón kết MC187S-TR1 1.250.000 VNĐ 500.000 VNĐ</div>
+    <div class="code">5743</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_MC001G_DN2.png" alt="Nón kết MC001G-DN2 650.000 VNĐ Nón kết MC001G-DN2 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC001G-DN2 650.000 VNĐ Nón kết MC001G-DN2 650.000 VNĐ</div>
+    <div class="code">4474</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC030-DN1 2.000.000 VNĐ Nón kết MC030-DN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC030-DN1 2.000.000 VNĐ Nón kết MC030-DN1 2.000.000 VNĐ</div>
+    <div class="code">4930</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC025B-XM1 1.500.000 VNĐ Nón kết MC025B-XM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025B-XM1 1.500.000 VNĐ Nón kết MC025B-XM1 1.500.000 VNĐ</div>
+    <div class="code">4571</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_MC024C_TR1_web.png" alt="Nón kết MC024C-TR1 2.000.000 VNĐ Nón kết MC024C-TR1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024C-TR1 2.000.000 VNĐ Nón kết MC024C-TR1 2.000.000 VNĐ</div>
+    <div class="code">5314</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_MC024A_XR1.png" alt="Nón kết MC024-XR1 1.500.000 VNĐ Nón kết MC024-XR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024-XR1 1.500.000 VNĐ Nón kết MC024-XR1 1.500.000 VNĐ</div>
+    <div class="code">5003</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_MC024A_dn1p.png" alt="Nón kết MC024A-DN1P 950.000 VNĐ Nón kết MC024A-DN1P 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024A-DN1P 950.000 VNĐ Nón kết MC024A-DN1P 950.000 VNĐ</div>
+    <div class="code">4803</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC024C-XM1 2.000.000 VNĐ Nón kết MC024C-XM1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024C-XM1 2.000.000 VNĐ Nón kết MC024C-XM1 2.000.000 VNĐ</div>
+    <div class="code">5450</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_1.png" alt="Nón kết MC025F-XM1 2.000.000 VNĐ Nón kết MC025F-XM1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025F-XM1 2.000.000 VNĐ Nón kết MC025F-XM1 2.000.000 VNĐ</div>
+    <div class="code">5705</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson__6.png" alt="SẢN PHẨM MỚI Nón kết MC026C-XH1 3.000.000 VNĐ Nón kết MC026C-XH1 3.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón kết MC026C-XH1 3.000.000 VNĐ Nón kết MC026C-XH1 3.000.000 VNĐ</div>
+    <div class="code">5679</div>
+    <div class="price">3.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson__6.png" alt="Nón kết MC024C-XR1 2.000.000 VNĐ Nón kết MC024C-XR1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024C-XR1 2.000.000 VNĐ Nón kết MC024C-XR1 2.000.000 VNĐ</div>
+    <div class="code">5539</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_MC024C_DN1.png" alt="Nón kết MC024C-DN1 2.000.000 VNĐ Nón kết MC024C-DN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024C-DN1 2.000.000 VNĐ Nón kết MC024C-DN1 2.000.000 VNĐ</div>
+    <div class="code">5485</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC030-TR1 2.000.000 VNĐ Nón kết MC030-TR1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC030-TR1 2.000.000 VNĐ Nón kết MC030-TR1 2.000.000 VNĐ</div>
+    <div class="code">4962</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_mc025c_nu1.png" alt="Nón kết MC025C-NU1 2.000.000 VNĐ Nón kết MC025C-NU1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025C-NU1 2.000.000 VNĐ Nón kết MC025C-NU1 2.000.000 VNĐ</div>
+    <div class="code">5380</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2_1.png" alt="Nón kết MC025-DN1 2.000.000 VNĐ Nón kết MC025-DN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025-DN1 2.000.000 VNĐ Nón kết MC025-DN1 2.000.000 VNĐ</div>
+    <div class="code">4435</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC025C-XM1 2.000.000 VNĐ Nón kết MC025C-XM1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025C-XM1 2.000.000 VNĐ Nón kết MC025C-XM1 2.000.000 VNĐ</div>
+    <div class="code">5357</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_MC025C_DN1.png" alt="Nón kết MC025C-DN1 2.000.000 VNĐ Nón kết MC025C-DN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025C-DN1 2.000.000 VNĐ Nón kết MC025C-DN1 2.000.000 VNĐ</div>
+    <div class="code">5324</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_MC228A_TR1_1.png" alt="Nón kết MC228A-TR1 1.250.000 VNĐ Nón kết MC228A-TR1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC228A-TR1 1.250.000 VNĐ Nón kết MC228A-TR1 1.250.000 VNĐ</div>
+    <div class="code">5362</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_MC024F_KM1_2.png" alt="Nón kết MC024F-KM1 1.500.000 VNĐ Nón kết MC024F-KM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC024F-KM1 1.500.000 VNĐ Nón kết MC024F-KM1 1.500.000 VNĐ</div>
+    <div class="code">5366</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC012C-DN1 1.250.000 VNĐ Nón kết MC012C-DN1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC012C-DN1 1.250.000 VNĐ Nón kết MC012C-DN1 1.250.000 VNĐ</div>
+    <div class="code">5392</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC025B-DO1 1.500.000 VNĐ Nón kết MC025B-DO1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025B-DO1 1.500.000 VNĐ Nón kết MC025B-DO1 1.500.000 VNĐ</div>
+    <div class="code">4804</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC025B-XR1 1.500.000 VNĐ Nón kết MC025B-XR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025B-XR1 1.500.000 VNĐ Nón kết MC025B-XR1 1.500.000 VNĐ</div>
+    <div class="code">4700</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC025B-XH1 1.500.000 VNĐ Nón kết MC025B-XH1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025B-XH1 1.500.000 VNĐ Nón kết MC025B-XH1 1.500.000 VNĐ</div>
+    <div class="code">4702</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC025B-TR1 1.500.000 VNĐ Nón kết MC025B-TR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC025B-TR1 1.500.000 VNĐ Nón kết MC025B-TR1 1.500.000 VNĐ</div>
+    <div class="code">4555</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#2471A3">
+  <div class="prod-img"><img src="nonson-selected-images/ket_600_crop_nonson_2.png" alt="Nón kết MC013A-DN1 1.500.000 VNĐ Nón kết MC013A-DN1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết MC013A-DN1 1.500.000 VNĐ Nón kết MC013A-DN1 1.500.000 VNĐ</div>
+    <div class="code">5417</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="snapback">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">🎵</span>
+      <div>
+        <h2 class="cat-title" style="color:#1E8449">Snapback &amp; Hiphop</h2>
+        <p class="cat-sub">24 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#1E8449"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="Nón Snapback MC210FK1-HV1 2.000.000 VNĐ Nón Snapback MC210FK1-HV1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Snapback MC210FK1-HV1 2.000.000 VNĐ Nón Snapback MC210FK1-HV1 2.000.000 VNĐ</div>
+    <div class="code">5484</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_01_1.png" alt="-60% Nón Snapback MC210K-DN9 1.250.000 VNĐ 500.000 VNĐ Nón Snapback MC210K-DN9 1.250.000 VNĐ 500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-60% Nón Snapback MC210K-DN9 1.250.000 VNĐ 500.000 VNĐ Nón Snapback MC210K-DN9 1.250.000 VNĐ 500.000 VNĐ</div>
+    <div class="code">5511</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="Snapback MC229AK-XH1 2.500.000 VNĐ Snapback MC229AK-XH1 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Snapback MC229AK-XH1 2.500.000 VNĐ Snapback MC229AK-XH1 2.500.000 VNĐ</div>
+    <div class="code">5478</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="Nón snapback MC210AK-DN3HV 2.000.000 VNĐ Nón snapback MC210AK-DN3HV 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón snapback MC210AK-DN3HV 2.000.000 VNĐ Nón snapback MC210AK-DN3HV 2.000.000 VNĐ</div>
+    <div class="code">5384</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="-63% Snapback MC210HK-XM1HV 950.000 VNĐ 350.000 VNĐ Snapback MC210HK-XM1HV 950.000 VNĐ 350.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-63% Snapback MC210HK-XM1HV 950.000 VNĐ 350.000 VNĐ Snapback MC210HK-XM1HV 950.000 VNĐ 350.000 VNĐ</div>
+    <div class="code">5244</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_MC229K_XM3_1.png" alt="Nón Snapback MC229K-XM3 2.500.000 VNĐ Nón Snapback MC229K-XM3 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Snapback MC229K-XM3 2.500.000 VNĐ Nón Snapback MC229K-XM3 2.500.000 VNĐ</div>
+    <div class="code">5332</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_MC210CK_XM2_2.png" alt="Snapback MC210CK-XM2 2.000.000 VNĐ Snapback MC210CK-XM2 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Snapback MC210CK-XM2 2.000.000 VNĐ Snapback MC210CK-XM2 2.000.000 VNĐ</div>
+    <div class="code">5374</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="-63% Snapback MC210HK-XM3HV 950.000 VNĐ 350.000 VNĐ Snapback MC210HK-XM3HV 950.000 VNĐ 350.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-63% Snapback MC210HK-XM3HV 950.000 VNĐ 350.000 VNĐ Snapback MC210HK-XM3HV 950.000 VNĐ 350.000 VNĐ</div>
+    <div class="code">5236</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_MC210AK_DN1.png" alt="Nón snapback MC210AK-DN1 2.000.000 VNĐ Nón snapback MC210AK-DN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón snapback MC210AK-DN1 2.000.000 VNĐ Nón snapback MC210AK-DN1 2.000.000 VNĐ</div>
+    <div class="code">5266</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_MC210CK_XM1_1.png" alt="Snapback MC210CK-XM1 2.000.000 VNĐ Snapback MC210CK-XM1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Snapback MC210CK-XM1 2.000.000 VNĐ Snapback MC210CK-XM1 2.000.000 VNĐ</div>
+    <div class="code">5370</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="Nón Snapback MC210K1-ĐN1 2.000.000 VNĐ Nón Snapback MC210K1-ĐN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Snapback MC210K1-ĐN1 2.000.000 VNĐ Nón Snapback MC210K1-ĐN1 2.000.000 VNĐ</div>
+    <div class="code">5637</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson__5.png" alt="SẢN PHẨM MỚI Snapback MC210CK-XM3 2.000.000 VNĐ Snapback MC210CK-XM3 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Snapback MC210CK-XM3 2.000.000 VNĐ Snapback MC210CK-XM3 2.000.000 VNĐ</div>
+    <div class="code">5553</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_8.png" alt="-60% Snapback MC210D-XH2-M 2.000.000 VNĐ 800.000 VNĐ Snapback MC210D-XH2-M 2.000.000 VNĐ 800.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-60% Snapback MC210D-XH2-M 2.000.000 VNĐ 800.000 VNĐ Snapback MC210D-XH2-M 2.000.000 VNĐ 800.000 VNĐ</div>
+    <div class="code">5490</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_1.png" alt="Nón snapback MC210AK-DN7HV 2.000.000 VNĐ Nón snapback MC210AK-DN7HV 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón snapback MC210AK-DN7HV 2.000.000 VNĐ Nón snapback MC210AK-DN7HV 2.000.000 VNĐ</div>
+    <div class="code">5441</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="Nón snapback MC210AK-DN6HV 2.000.000 VNĐ Nón snapback MC210AK-DN6HV 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón snapback MC210AK-DN6HV 2.000.000 VNĐ Nón snapback MC210AK-DN6HV 2.000.000 VNĐ</div>
+    <div class="code">5403</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_MC210AK_DN5HV_2.png" alt="Nón snapback MC210AK-DN5HV 2.000.000 VNĐ Nón snapback MC210AK-DN5HV 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón snapback MC210AK-DN5HV 2.000.000 VNĐ Nón snapback MC210AK-DN5HV 2.000.000 VNĐ</div>
+    <div class="code">5402</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="Nón snapback MC210AK-DN4HV 2.000.000 VNĐ Nón snapback MC210AK-DN4HV 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón snapback MC210AK-DN4HV 2.000.000 VNĐ Nón snapback MC210AK-DN4HV 2.000.000 VNĐ</div>
+    <div class="code">5385</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_1.png" alt="Nón Snapback MC229K-ĐN3 2.500.000 VNĐ Nón Snapback MC229K-ĐN3 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Snapback MC229K-ĐN3 2.500.000 VNĐ Nón Snapback MC229K-ĐN3 2.500.000 VNĐ</div>
+    <div class="code">5735</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson__6.png" alt="Snapback MC210CK1-XM1HV 2.500.000 VNĐ Snapback MC210CK1-XM1HV 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Snapback MC210CK1-XM1HV 2.500.000 VNĐ Snapback MC210CK1-XM1HV 2.500.000 VNĐ</div>
+    <div class="code">5685</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson__6.png" alt="SẢN PHẨM MỚI Nón Snapback MC210IK-XH2HV 2.500.000 VNĐ Nón Snapback MC210IK-XH2HV 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón Snapback MC210IK-XH2HV 2.500.000 VNĐ Nón Snapback MC210IK-XH2HV 2.500.000 VNĐ</div>
+    <div class="code">5592</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson_2.png" alt="SẢN PHẨM MỚI Nón Snapback MC210IK-ĐN1HV 2.500.000 VNĐ Nón Snapback MC210IK-ĐN1HV 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón Snapback MC210IK-ĐN1HV 2.500.000 VNĐ Nón Snapback MC210IK-ĐN1HV 2.500.000 VNĐ</div>
+    <div class="code">5591</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson__6.png" alt="SẢN PHẨM MỚI Nón Snapback MC210IK-XH1HV 2.500.000 VNĐ Nón Snapback MC210IK-XH1HV 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón Snapback MC210IK-XH1HV 2.500.000 VNĐ Nón Snapback MC210IK-XH1HV 2.500.000 VNĐ</div>
+    <div class="code">5563</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson__5.png" alt="SẢN PHẨM MỚI Nón Snapback MC210IK-XR1HV 2.500.000 VNĐ Nón Snapback MC210IK-XR1HV 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón Snapback MC210IK-XR1HV 2.500.000 VNĐ Nón Snapback MC210IK-XR1HV 2.500.000 VNĐ</div>
+    <div class="code">5562</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1E8449">
+  <div class="prod-img"><img src="nonson-selected-images/snapback_600_crop_nonson__2.png" alt="Nón Snapback MC229K-XM4 2.500.000 VNĐ Nón Snapback MC229K-XM4 2.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Snapback MC229K-XM4 2.500.000 VNĐ Nón Snapback MC229K-XM4 2.500.000 VNĐ</div>
+    <div class="code">5460</div>
+    <div class="price">2.500.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="da">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">✦</span>
+      <div>
+        <h2 class="cat-title" style="color:#784212">Mũ Da</h2>
+        <p class="cat-sub">24 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#784212"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_MH008ADA_DN1_0.png" alt="Nón da MH008ADA-DN1 10.000.000 VNĐ Nón da MH008ADA-DN1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH008ADA-DN1 10.000.000 VNĐ Nón da MH008ADA-DN1 10.000.000 VNĐ</div>
+    <div class="code">5416</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_3.png" alt="Nón da MH008ADA-NU1 10.000.000 VNĐ Nón da MH008ADA-NU1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH008ADA-NU1 10.000.000 VNĐ Nón da MH008ADA-NU1 10.000.000 VNĐ</div>
+    <div class="code">4557</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_2.png" alt="Nón phớt P2DA-DN1 10.000.000 VNĐ Nón phớt P2DA-DN1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P2DA-DN1 10.000.000 VNĐ Nón phớt P2DA-DN1 10.000.000 VNĐ</div>
+    <div class="code">5439</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_P2DA_NU2_2.png" alt="Nón phớt P2DA-NU2 10.000.000 VNĐ Nón phớt P2DA-NU2 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P2DA-NU2 10.000.000 VNĐ Nón phớt P2DA-NU2 10.000.000 VNĐ</div>
+    <div class="code">5369</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_p2da_nu1.png" alt="Nón phớt P2DA-NU1 10.000.000 VNĐ Nón phớt P2DA-NU1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P2DA-NU1 10.000.000 VNĐ Nón phớt P2DA-NU1 10.000.000 VNĐ</div>
+    <div class="code">5346</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_p5da_dn1.png" alt="Nón phớt P5DA-DN1 10.000.000 VNĐ Nón phớt P5DA-DN1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5DA-DN1 10.000.000 VNĐ Nón phớt P5DA-DN1 10.000.000 VNĐ</div>
+    <div class="code">5345</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_p5da_nu1.png" alt="Nón phớt P5DA-NU1 10.000.000 VNĐ Nón phớt P5DA-NU1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5DA-NU1 10.000.000 VNĐ Nón phớt P5DA-NU1 10.000.000 VNĐ</div>
+    <div class="code">5323</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson__3.png" alt="Nón da MH187ADA-NU1 6.000.000 VNĐ Nón da MH187ADA-NU1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH187ADA-NU1 6.000.000 VNĐ Nón da MH187ADA-NU1 6.000.000 VNĐ</div>
+    <div class="code">5726</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_2.png" alt="Nón da MH187ADA-ĐN1 6.000.000 VNĐ Nón da MH187ADA-ĐN1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH187ADA-ĐN1 6.000.000 VNĐ Nón da MH187ADA-ĐN1 6.000.000 VNĐ</div>
+    <div class="code">5711</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_mc003da_dn1.png" alt="Nón kết da MC003DA-DN1 7.000.000 VNĐ Nón kết da MC003DA-DN1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết da MC003DA-DN1 7.000.000 VNĐ Nón kết da MC003DA-DN1 7.000.000 VNĐ</div>
+    <div class="code">5596</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_3.png" alt="Nón phớt da MH172DA-NU1 7.000.000 VNĐ Nón phớt da MH172DA-NU1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt da MH172DA-NU1 7.000.000 VNĐ Nón phớt da MH172DA-NU1 7.000.000 VNĐ</div>
+    <div class="code">1911</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_mh172da_xh1_1.png" alt="Nón phớt da MH172DA-XH1 7.000.000 VNĐ Nón phớt da MH172DA-XH1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt da MH172DA-XH1 7.000.000 VNĐ Nón phớt da MH172DA-XH1 7.000.000 VNĐ</div>
+    <div class="code">2362</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_website1.png" alt="Nón phớt da MH163BDA-DN1 5.000.000 VNĐ Nón phớt da MH163BDA-DN1 5.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt da MH163BDA-DN1 5.000.000 VNĐ Nón phớt da MH163BDA-DN1 5.000.000 VNĐ</div>
+    <div class="code">699</div>
+    <div class="price">5.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_2.png" alt="Snapback Da MC229DA-DN1 6.000.000 VNĐ Snapback Da MC229DA-DN1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Snapback Da MC229DA-DN1 6.000.000 VNĐ Snapback Da MC229DA-DN1 6.000.000 VNĐ</div>
+    <div class="code">4820</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_2.png" alt="Nón kết da MC226DA-XR1 6.000.000 VNĐ Nón kết da MC226DA-XR1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết da MC226DA-XR1 6.000.000 VNĐ Nón kết da MC226DA-XR1 6.000.000 VNĐ</div>
+    <div class="code">4577</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_1.png" alt="Nón da MH187DA-DN1 6.000.000 VNĐ Nón da MH187DA-DN1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón da MH187DA-DN1 6.000.000 VNĐ Nón da MH187DA-DN1 6.000.000 VNĐ</div>
+    <div class="code">4578</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_1.png" alt="Nón bucket da MH025DA-XR1 7.000.000 VNĐ Nón bucket da MH025DA-XR1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket da MH025DA-XR1 7.000.000 VNĐ Nón bucket da MH025DA-XR1 7.000.000 VNĐ</div>
+    <div class="code">4371</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_mc226da_nu1.png" alt="Nón kết da MC226DA-NU1 6.000.000 VNĐ Nón kết da MC226DA-NU1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón kết da MC226DA-NU1 6.000.000 VNĐ Nón kết da MC226DA-NU1 6.000.000 VNĐ</div>
+    <div class="code">4338</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_3.png" alt="Nón bucket da MH025DA-XH1 7.000.000 VNĐ Nón bucket da MH025DA-XH1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket da MH025DA-XH1 7.000.000 VNĐ Nón bucket da MH025DA-XH1 7.000.000 VNĐ</div>
+    <div class="code">4319</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_4.png" alt="Nón bucket da MH023DA-DN1 7.000.000 VNĐ Nón bucket da MH023DA-DN1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket da MH023DA-DN1 7.000.000 VNĐ Nón bucket da MH023DA-DN1 7.000.000 VNĐ</div>
+    <div class="code">4142</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_1.png" alt="Nón bucket da MH015DA-NU1 7.000.000 VNĐ Nón bucket da MH015DA-NU1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket da MH015DA-NU1 7.000.000 VNĐ Nón bucket da MH015DA-NU1 7.000.000 VNĐ</div>
+    <div class="code">4132</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_1.png" alt="Nón bucket da MH194ADA-DN1 7.000.000 VNĐ Nón bucket da MH194ADA-DN1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket da MH194ADA-DN1 7.000.000 VNĐ Nón bucket da MH194ADA-DN1 7.000.000 VNĐ</div>
+    <div class="code">4121</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_4.png" alt="Snapback Da MC229DA-NU1 6.000.000 VNĐ Snapback Da MC229DA-NU1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Snapback Da MC229DA-NU1 6.000.000 VNĐ Snapback Da MC229DA-NU1 6.000.000 VNĐ</div>
+    <div class="code">4233</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#784212">
+  <div class="prod-img"><img src="nonson-selected-images/da_600_crop_nonson_6.png" alt="Nón Snapback MC224CDA-DN1 6.000.000 VNĐ Nón Snapback MC224CDA-DN1 6.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Snapback MC224CDA-DN1 6.000.000 VNĐ Nón Snapback MC224CDA-DN1 6.000.000 VNĐ</div>
+    <div class="code">1064</div>
+    <div class="price">6.000.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="dan-tay">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">🌿</span>
+      <div>
+        <h2 class="cat-title" style="color:#148F77">Mũ Đan Tay</h2>
+        <p class="cat-sub">24 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#148F77"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_DH114_KM2_1.png" alt="Nón đan tay DH114-KM2 10.000.000 VNĐ Nón đan tay DH114-KM2 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH114-KM2 10.000.000 VNĐ Nón đan tay DH114-KM2 10.000.000 VNĐ</div>
+    <div class="code">5349</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay ĐH142A-ĐO1 4.000.000 VNĐ Nón đan tay ĐH142A-ĐO1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay ĐH142A-ĐO1 4.000.000 VNĐ Nón đan tay ĐH142A-ĐO1 4.000.000 VNĐ</div>
+    <div class="code">5702</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson__3.png" alt="Nón đan tay ĐH120A-NM 4.000.000 VNĐ Nón đan tay ĐH120A-NM 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay ĐH120A-NM 4.000.000 VNĐ Nón đan tay ĐH120A-NM 4.000.000 VNĐ</div>
+    <div class="code">5675</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson__3.png" alt="Nón đan tay ĐH142A-KM1 4.000.000 VNĐ Nón đan tay ĐH142A-KM1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay ĐH142A-KM1 4.000.000 VNĐ Nón đan tay ĐH142A-KM1 4.000.000 VNĐ</div>
+    <div class="code">5601</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH147A-KM1 3.500.000 VNĐ Nón đan tay DH147A-KM1 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH147A-KM1 3.500.000 VNĐ Nón đan tay DH147A-KM1 3.500.000 VNĐ</div>
+    <div class="code">5463</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_4.png" alt="Nón đan tay DH142A-XH1 4.000.000 VNĐ Nón đan tay DH142A-XH1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH142A-XH1 4.000.000 VNĐ Nón đan tay DH142A-XH1 4.000.000 VNĐ</div>
+    <div class="code">5420</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_DH142_KM1_1.png" alt="Nón đan tay DH142-KM1 4.000.000 VNĐ Nón đan tay DH142-KM1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH142-KM1 4.000.000 VNĐ Nón đan tay DH142-KM1 4.000.000 VNĐ</div>
+    <div class="code">5395</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_dh157_km1.png" alt="Nón đan tay DH157-KM1 10.000.000 VNĐ Nón đan tay DH157-KM1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH157-KM1 10.000.000 VNĐ Nón đan tay DH157-KM1 10.000.000 VNĐ</div>
+    <div class="code">5289</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_2.png" alt="Nón đan tay DH156-KM1 10.000.000 VNĐ Nón đan tay DH156-KM1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH156-KM1 10.000.000 VNĐ Nón đan tay DH156-KM1 10.000.000 VNĐ</div>
+    <div class="code">5253</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH154-DO1 4.000.000 VNĐ Nón đan tay DH154-DO1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH154-DO1 4.000.000 VNĐ Nón đan tay DH154-DO1 4.000.000 VNĐ</div>
+    <div class="code">5060</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH116A-KM3 3.000.000 VNĐ Nón đan tay DH116A-KM3 3.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH116A-KM3 3.000.000 VNĐ Nón đan tay DH116A-KM3 3.000.000 VNĐ</div>
+    <div class="code">5013</div>
+    <div class="price">3.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH154-TR1 4.000.000 VNĐ Nón đan tay DH154-TR1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH154-TR1 4.000.000 VNĐ Nón đan tay DH154-TR1 4.000.000 VNĐ</div>
+    <div class="code">5011</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH147-KM2 3.500.000 VNĐ Nón đan tay DH147-KM2 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH147-KM2 3.500.000 VNĐ Nón đan tay DH147-KM2 3.500.000 VNĐ</div>
+    <div class="code">4936</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH153-KM1 12.000.000 VNĐ Nón đan tay DH153-KM1 12.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH153-KM1 12.000.000 VNĐ Nón đan tay DH153-KM1 12.000.000 VNĐ</div>
+    <div class="code">4592</div>
+    <div class="price">12.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_04.png" alt="Nón đan tay DH098A-KM1 10.000.000 VNĐ Nón đan tay DH098A-KM1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH098A-KM1 10.000.000 VNĐ Nón đan tay DH098A-KM1 10.000.000 VNĐ</div>
+    <div class="code">770</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_3.png" alt="Nón đan tay DH148-KM2 4.000.000 VNĐ Nón đan tay DH148-KM2 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH148-KM2 4.000.000 VNĐ Nón đan tay DH148-KM2 4.000.000 VNĐ</div>
+    <div class="code">4533</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH148-KM1 4.000.000 VNĐ Nón đan tay DH148-KM1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH148-KM1 4.000.000 VNĐ Nón đan tay DH148-KM1 4.000.000 VNĐ</div>
+    <div class="code">4532</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_2.png" alt="Nón đan tay DH150-TR1 10.000.000 VNĐ Nón đan tay DH150-TR1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH150-TR1 10.000.000 VNĐ Nón đan tay DH150-TR1 10.000.000 VNĐ</div>
+    <div class="code">4527</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1_1.png" alt="Nón đan tay DH084B-KM3 4.000.000 VNĐ Nón đan tay DH084B-KM3 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH084B-KM3 4.000.000 VNĐ Nón đan tay DH084B-KM3 4.000.000 VNĐ</div>
+    <div class="code">4563</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_2.png" alt="Nón đan tay DH146-KM2 4.000.000 VNĐ Nón đan tay DH146-KM2 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH146-KM2 4.000.000 VNĐ Nón đan tay DH146-KM2 4.000.000 VNĐ</div>
+    <div class="code">4440</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_3.png" alt="Nón đan tay DH147-KM1 3.500.000 VNĐ Nón đan tay DH147-KM1 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH147-KM1 3.500.000 VNĐ Nón đan tay DH147-KM1 3.500.000 VNĐ</div>
+    <div class="code">4340</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH125-DN1 15.000.000 VNĐ Nón đan tay DH125-DN1 15.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH125-DN1 15.000.000 VNĐ Nón đan tay DH125-DN1 15.000.000 VNĐ</div>
+    <div class="code">5241</div>
+    <div class="price">15.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_1.png" alt="Nón đan tay DH125-TR1 15.000.000 VNĐ Nón đan tay DH125-TR1 15.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH125-TR1 15.000.000 VNĐ Nón đan tay DH125-TR1 15.000.000 VNĐ</div>
+    <div class="code">2099</div>
+    <div class="price">15.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#148F77">
+  <div class="prod-img"><img src="nonson-selected-images/dan-tay_600_crop_nonson_3.png" alt="Nón đan tay DH146-KM1 4.000.000 VNĐ Nón đan tay DH146-KM1 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH146-KM1 4.000.000 VNĐ Nón đan tay DH146-KM1 4.000.000 VNĐ</div>
+    <div class="code">4207</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="jacket">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">⬡</span>
+      <div>
+        <h2 class="cat-title" style="color:#1A252F">Mũ Jacket</h2>
+        <p class="cat-sub">24 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#1A252F"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_MC023A_XH2HV.png" alt="-63% Nón Jacket MC023A-XH2HV 950.000 VNĐ 350.000 VNĐ Nón Jacket MC023A-XH2HV 950.000 VNĐ 350.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-63% Nón Jacket MC023A-XH2HV 950.000 VNĐ 350.000 VNĐ Nón Jacket MC023A-XH2HV 950.000 VNĐ 350.000 VNĐ</div>
+    <div class="code">5356</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="-63% Nón Jacket MC023A-XH1HV 950.000 VNĐ 350.000 VNĐ Nón Jacket MC023A-XH1HV 950.000 VNĐ 350.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-63% Nón Jacket MC023A-XH1HV 950.000 VNĐ 350.000 VNĐ Nón Jacket MC023A-XH1HV 950.000 VNĐ 350.000 VNĐ</div>
+    <div class="code">5321</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_mc029a_xR2.png" alt="Nón Jacket MC029A-XR2 1.250.000 VNĐ Nón Jacket MC029A-XR2 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC029A-XR2 1.250.000 VNĐ Nón Jacket MC029A-XR2 1.250.000 VNĐ</div>
+    <div class="code">5354</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_mc029a_xr1.png" alt="Nón Jacket MC029A-XR1 1.250.000 VNĐ Nón Jacket MC029A-XR1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC029A-XR1 1.250.000 VNĐ Nón Jacket MC029A-XR1 1.250.000 VNĐ</div>
+    <div class="code">5335</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC029A-NU1-M 1.250.000 VNĐ Nón Jacket MC029A-NU1-M 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC029A-NU1-M 1.250.000 VNĐ Nón Jacket MC029A-NU1-M 1.250.000 VNĐ</div>
+    <div class="code">5272</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón jacket MC260-DN1 1.250.000 VNĐ Nón jacket MC260-DN1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC260-DN1 1.250.000 VNĐ Nón jacket MC260-DN1 1.250.000 VNĐ</div>
+    <div class="code">3653</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_MC243B_XH1.jpg" alt="Nón jacket MC243B-XH2 1.500.000 VNĐ Nón jacket MC243B-XH2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC243B-XH2 1.500.000 VNĐ Nón jacket MC243B-XH2 1.500.000 VNĐ</div>
+    <div class="code">5398</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_mc257a_xm4.png" alt="Nón jacket MC257A-XM4 1.500.000 VNĐ Nón jacket MC257A-XM4 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC257A-XM4 1.500.000 VNĐ Nón jacket MC257A-XM4 1.500.000 VNĐ</div>
+    <div class="code">5669</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson__6.png" alt="SẢN PHẨM MỚI Nón jacket MC028C-ĐN1 1.500.000 VNĐ Nón jacket MC028C-ĐN1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón jacket MC028C-ĐN1 1.500.000 VNĐ Nón jacket MC028C-ĐN1 1.500.000 VNĐ</div>
+    <div class="code">5575</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_mc257a_xm3_1.png" alt="Nón jacket MC257A-XM3 1.500.000 VNĐ Nón jacket MC257A-XM3 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC257A-XM3 1.500.000 VNĐ Nón jacket MC257A-XM3 1.500.000 VNĐ</div>
+    <div class="code">5299</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_mc257a_xm2_1.png" alt="Nón jacket MC257A-XM2 1.500.000 VNĐ Nón jacket MC257A-XM2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC257A-XM2 1.500.000 VNĐ Nón jacket MC257A-XM2 1.500.000 VNĐ</div>
+    <div class="code">5300</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_mc257a_xm1_1.png" alt="Nón jacket MC257A-XM1 1.500.000 VNĐ Nón jacket MC257A-XM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC257A-XM1 1.500.000 VNĐ Nón jacket MC257A-XM1 1.500.000 VNĐ</div>
+    <div class="code">5297</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón jacket MC243B-NU2 1.500.000 VNĐ Nón jacket MC243B-NU2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC243B-NU2 1.500.000 VNĐ Nón jacket MC243B-NU2 1.500.000 VNĐ</div>
+    <div class="code">4998</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC029-DN1-L 1.500.000 VNĐ Nón Jacket MC029-DN1-L 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC029-DN1-L 1.500.000 VNĐ Nón Jacket MC029-DN1-L 1.500.000 VNĐ</div>
+    <div class="code">5230</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC029-DN1-M 1.500.000 VNĐ Nón Jacket MC029-DN1-M 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC029-DN1-M 1.500.000 VNĐ Nón Jacket MC029-DN1-M 1.500.000 VNĐ</div>
+    <div class="code">5229</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC023-KM1 1.500.000 VNĐ Nón Jacket MC023-KM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC023-KM1 1.500.000 VNĐ Nón Jacket MC023-KM1 1.500.000 VNĐ</div>
+    <div class="code">5223</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC023-KM2 1.500.000 VNĐ Nón Jacket MC023-KM2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC023-KM2 1.500.000 VNĐ Nón Jacket MC023-KM2 1.500.000 VNĐ</div>
+    <div class="code">5222</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_3.png" alt="Nón Jacket MC023-TR2 1.500.000 VNĐ Nón Jacket MC023-TR2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC023-TR2 1.500.000 VNĐ Nón Jacket MC023-TR2 1.500.000 VNĐ</div>
+    <div class="code">4978</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC023-TR1 1.500.000 VNĐ Nón Jacket MC023-TR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC023-TR1 1.500.000 VNĐ Nón Jacket MC023-TR1 1.500.000 VNĐ</div>
+    <div class="code">4961</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón Jacket MC023-XR1 1.500.000 VNĐ Nón Jacket MC023-XR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón Jacket MC023-XR1 1.500.000 VNĐ Nón Jacket MC023-XR1 1.500.000 VNĐ</div>
+    <div class="code">4929</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_4.png" alt="Nón jacket MC243B-DN2 1.500.000 VNĐ Nón jacket MC243B-DN2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC243B-DN2 1.500.000 VNĐ Nón jacket MC243B-DN2 1.500.000 VNĐ</div>
+    <div class="code">4851</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson__5.png" alt="Nón jacket MC257B-ĐN1 2.000.000 VNĐ Nón jacket MC257B-ĐN1 2.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC257B-ĐN1 2.000.000 VNĐ Nón jacket MC257B-ĐN1 2.000.000 VNĐ</div>
+    <div class="code">5325</div>
+    <div class="price">2.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_2.png" alt="Nón jacket MC243B-XR1 1.500.000 VNĐ Nón jacket MC243B-XR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC243B-XR1 1.500.000 VNĐ Nón jacket MC243B-XR1 1.500.000 VNĐ</div>
+    <div class="code">4838</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#1A252F">
+  <div class="prod-img"><img src="nonson-selected-images/jacket_600_crop_nonson_1.png" alt="Nón jacket MC243B-KM1 1.500.000 VNĐ Nón jacket MC243B-KM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón jacket MC243B-KM1 1.500.000 VNĐ Nón jacket MC243B-KM1 1.500.000 VNĐ</div>
+    <div class="code">4181</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="phot">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">🎩</span>
+      <div>
+        <h2 class="cat-title" style="color:#7F8C8D">Mũ Phớt / Fedora</h2>
+        <p class="cat-sub">27 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#7F8C8D"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__9.png" alt="Nón phớt P8-KM2-L 3.500.000 VNĐ Nón phớt P8-KM2-L 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P8-KM2-L 3.500.000 VNĐ Nón phớt P8-KM2-L 3.500.000 VNĐ</div>
+    <div class="code">5483</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__10.png" alt="Nón phớt P8-KM1-L 3.500.000 VNĐ Nón phớt P8-KM1-L 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P8-KM1-L 3.500.000 VNĐ Nón phớt P8-KM1-L 3.500.000 VNĐ</div>
+    <div class="code">5482</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__8_1.png" alt="Nón phớt P8-DN1-L 3.500.000 VNĐ Nón phớt P8-DN1-L 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P8-DN1-L 3.500.000 VNĐ Nón phớt P8-DN1-L 3.500.000 VNĐ</div>
+    <div class="code">5481</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__11.png" alt="Nón phớt P8-XM1-L 3.500.000 VNĐ Nón phớt P8-XM1-L 3.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P8-XM1-L 3.500.000 VNĐ Nón phớt P8-XM1-L 3.500.000 VNĐ</div>
+    <div class="code">5480</div>
+    <div class="price">3.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_2.png" alt="Nón phớt P2DA-DN1 10.000.000 VNĐ Nón phớt P2DA-DN1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P2DA-DN1 10.000.000 VNĐ Nón phớt P2DA-DN1 10.000.000 VNĐ</div>
+    <div class="code">5439</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_P2DA_NU2_2.png" alt="Nón phớt P2DA-NU2 10.000.000 VNĐ Nón phớt P2DA-NU2 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P2DA-NU2 10.000.000 VNĐ Nón phớt P2DA-NU2 10.000.000 VNĐ</div>
+    <div class="code">5369</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p2da_nu1.png" alt="Nón phớt P2DA-NU1 10.000.000 VNĐ Nón phớt P2DA-NU1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P2DA-NU1 10.000.000 VNĐ Nón phớt P2DA-NU1 10.000.000 VNĐ</div>
+    <div class="code">5346</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p5da_dn1.png" alt="Nón phớt P5DA-DN1 10.000.000 VNĐ Nón phớt P5DA-DN1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5DA-DN1 10.000.000 VNĐ Nón phớt P5DA-DN1 10.000.000 VNĐ</div>
+    <div class="code">5345</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p5da_nu1.png" alt="Nón phớt P5DA-NU1 10.000.000 VNĐ Nón phớt P5DA-NU1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5DA-NU1 10.000.000 VNĐ Nón phớt P5DA-NU1 10.000.000 VNĐ</div>
+    <div class="code">5323</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__6.png" alt="Nón phớt P8A-ĐN1-L 4.000.000 VNĐ Nón phớt P8A-ĐN1-L 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P8A-ĐN1-L 4.000.000 VNĐ Nón phớt P8A-ĐN1-L 4.000.000 VNĐ</div>
+    <div class="code">5584</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__6.png" alt="Nón phớt P8A-XR1-L 4.000.000 VNĐ Nón phớt P8A-XR1-L 4.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P8A-XR1-L 4.000.000 VNĐ Nón phớt P8A-XR1-L 4.000.000 VNĐ</div>
+    <div class="code">5572</div>
+    <div class="price">4.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__6.png" alt="SẢN PHẨM MỚI Nón phớt P8B-KM1-L 3.000.000 VNĐ Nón phớt P8B-KM1-L 3.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón phớt P8B-KM1-L 3.000.000 VNĐ Nón phớt P8B-KM1-L 3.000.000 VNĐ</div>
+    <div class="code">5559</div>
+    <div class="price">3.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson__10.png" alt="SẢN PHẨM MỚI Nón phớt P8B-ĐN1-L 3.000.000 VNĐ Nón phớt P8B-ĐN1-L 3.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón phớt P8B-ĐN1-L 3.000.000 VNĐ Nón phớt P8B-ĐN1-L 3.000.000 VNĐ</div>
+    <div class="code">5558</div>
+    <div class="price">3.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_dh157_km1.png" alt="Nón đan tay DH157-KM1 10.000.000 VNĐ Nón đan tay DH157-KM1 10.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón đan tay DH157-KM1 10.000.000 VNĐ Nón đan tay DH157-KM1 10.000.000 VNĐ</div>
+    <div class="code">5289</div>
+    <div class="price">10.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p3b_xm1.png" alt="Nón phớt P5-XM1 1.500.000 VNĐ Nón phớt P5-XM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5-XM1 1.500.000 VNĐ Nón phớt P5-XM1 1.500.000 VNĐ</div>
+    <div class="code">5312</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_2.png" alt="Nón phớt P5-TR1 1.500.000 VNĐ Nón phớt P5-TR1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5-TR1 1.500.000 VNĐ Nón phớt P5-TR1 1.500.000 VNĐ</div>
+    <div class="code">5313</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p3b_nu3.png" alt="Nón phớt P3B-NU3 1.500.000 VNĐ Nón phớt P3B-NU3 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P3B-NU3 1.500.000 VNĐ Nón phớt P3B-NU3 1.500.000 VNĐ</div>
+    <div class="code">5237</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p3b_txh1.png" alt="Nón phớt P3B-TXH1 1.500.000 VNĐ Nón phớt P3B-TXH1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P3B-TXH1 1.500.000 VNĐ Nón phớt P3B-TXH1 1.500.000 VNĐ</div>
+    <div class="code">4393</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_2.png" alt="Nón phớt MH011-KM4 1.500.000 VNĐ Nón phớt MH011-KM4 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt MH011-KM4 1.500.000 VNĐ Nón phớt MH011-KM4 1.500.000 VNĐ</div>
+    <div class="code">5261</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_2.png" alt="Nón phớt MH011-KM3 1.500.000 VNĐ Nón phớt MH011-KM3 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt MH011-KM3 1.500.000 VNĐ Nón phớt MH011-KM3 1.500.000 VNĐ</div>
+    <div class="code">5260</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_2.png" alt="Nón phớt MH011-KM2 1.500.000 VNĐ Nón phớt MH011-KM2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt MH011-KM2 1.500.000 VNĐ Nón phớt MH011-KM2 1.500.000 VNĐ</div>
+    <div class="code">5213</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_2.png" alt="Nón phớt MH011-KM1 1.500.000 VNĐ Nón phớt MH011-KM1 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt MH011-KM1 1.500.000 VNĐ Nón phớt MH011-KM1 1.500.000 VNĐ</div>
+    <div class="code">4634</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p5a_xm1.png" alt="Nón phớt P5A-XM1 1.250.000 VNĐ Nón phớt P5A-XM1 1.250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P5A-XM1 1.250.000 VNĐ Nón phớt P5A-XM1 1.250.000 VNĐ</div>
+    <div class="code">5293</div>
+    <div class="price">1.250.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_p3b_dn2.png" alt="Nón phớt P3B-DN2 1.500.000 VNĐ Nón phớt P3B-DN2 1.500.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt P3B-DN2 1.500.000 VNĐ Nón phớt P3B-DN2 1.500.000 VNĐ</div>
+    <div class="code">4947</div>
+    <div class="price">1.500.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_3.png" alt="Nón phớt da MH172DA-NU1 7.000.000 VNĐ Nón phớt da MH172DA-NU1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt da MH172DA-NU1 7.000.000 VNĐ Nón phớt da MH172DA-NU1 7.000.000 VNĐ</div>
+    <div class="code">1911</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_mh172da_xh1_1.png" alt="Nón phớt da MH172DA-XH1 7.000.000 VNĐ Nón phớt da MH172DA-XH1 7.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt da MH172DA-XH1 7.000.000 VNĐ Nón phớt da MH172DA-XH1 7.000.000 VNĐ</div>
+    <div class="code">2362</div>
+    <div class="price">7.000.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#7F8C8D">
+  <div class="prod-img"><img src="nonson-selected-images/phot_600_crop_nonson_website1.png" alt="Nón phớt da MH163BDA-DN1 5.000.000 VNĐ Nón phớt da MH163BDA-DN1 5.000.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón phớt da MH163BDA-DN1 5.000.000 VNĐ Nón phớt da MH163BDA-DN1 5.000.000 VNĐ</div>
+    <div class="code">699</div>
+    <div class="price">5.000.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="tre-em">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">⭐</span>
+      <div>
+        <h2 class="cat-title" style="color:#E67E22">Mũ Trẻ Em</h2>
+        <p class="cat-sub">24 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#E67E22"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_2.png" alt="-74% Nón bucket MHTE194-XH1P 950.000 VNĐ 250.000 VNĐ Nón bucket MHTE194-XH1P 950.000 VNĐ 250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-74% Nón bucket MHTE194-XH1P 950.000 VNĐ 250.000 VNĐ Nón bucket MHTE194-XH1P 950.000 VNĐ 250.000 VNĐ</div>
+    <div class="code">4272</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_5.png" alt="Nón trẻ em MCTE012-TR1HV 950.000 VNĐ Nón trẻ em MCTE012-TR1HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE012-TR1HV 950.000 VNĐ Nón trẻ em MCTE012-TR1HV 950.000 VNĐ</div>
+    <div class="code">4278</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_3.png" alt="Nón vành XH001-1TE-HG4HV 650.000 VNĐ Nón vành XH001-1TE-HG4HV 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón vành XH001-1TE-HG4HV 650.000 VNĐ Nón vành XH001-1TE-HG4HV 650.000 VNĐ</div>
+    <div class="code">5475</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_4.png" alt="Nón trẻ em MHTE007-XH1HV 850.000 VNĐ Nón trẻ em MHTE007-XH1HV 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE007-XH1HV 850.000 VNĐ Nón trẻ em MHTE007-XH1HV 850.000 VNĐ</div>
+    <div class="code">4341</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_6.png" alt="Nón trẻ em MCTE012-TR2HV 950.000 VNĐ Nón trẻ em MCTE012-TR2HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE012-TR2HV 950.000 VNĐ Nón trẻ em MCTE012-TR2HV 950.000 VNĐ</div>
+    <div class="code">4283</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_4.png" alt="Nón trẻ em MHTE003-KM1HV 850.000 VNĐ Nón trẻ em MHTE003-KM1HV 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE003-KM1HV 850.000 VNĐ Nón trẻ em MHTE003-KM1HV 850.000 VNĐ</div>
+    <div class="code">4219</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="Nón trẻ em MHTE007-XM1HV 850.000 VNĐ Nón trẻ em MHTE007-XM1HV 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE007-XM1HV 850.000 VNĐ Nón trẻ em MHTE007-XM1HV 850.000 VNĐ</div>
+    <div class="code">4347</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson__2.png" alt="SẢN PHẨM MỚI Nón vành XH001-1TE-HG5HV 650.000 VNĐ Nón vành XH001-1TE-HG5HV 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">SẢN PHẨM MỚI Nón vành XH001-1TE-HG5HV 650.000 VNĐ Nón vành XH001-1TE-HG5HV 650.000 VNĐ</div>
+    <div class="code">5552</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_2.png" alt="Nón trẻ em XH001-1TE-TR6HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR6HV 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em XH001-1TE-TR6HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR6HV 650.000 VNĐ</div>
+    <div class="code">5113</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="Nón trẻ em XH001-1TE-TR4HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR4HV 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em XH001-1TE-TR4HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR4HV 650.000 VNĐ</div>
+    <div class="code">4399</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_3.png" alt="Nón trẻ em XH001-1TE-TR3HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR3HV 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em XH001-1TE-TR3HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR3HV 650.000 VNĐ</div>
+    <div class="code">4381</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_XH001_1TE_TR1HV_1.png" alt="Nón trẻ em XH001-1TE-TR1HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR1HV 650.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em XH001-1TE-TR1HV 650.000 VNĐ Nón trẻ em XH001-1TE-TR1HV 650.000 VNĐ</div>
+    <div class="code">4282</div>
+    <div class="price">650.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_3.png" alt="Nón trẻ em MHTE003-XH1HV 850.000 VNĐ Nón trẻ em MHTE003-XH1HV 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE003-XH1HV 850.000 VNĐ Nón trẻ em MHTE003-XH1HV 850.000 VNĐ</div>
+    <div class="code">4841</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="-71% Nón trẻ em MHTE003A-TR2HV 850.000 VNĐ 250.000 VNĐ Nón trẻ em MHTE003A-TR2HV 850.000 VNĐ 250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-71% Nón trẻ em MHTE003A-TR2HV 850.000 VNĐ 250.000 VNĐ Nón trẻ em MHTE003A-TR2HV 850.000 VNĐ 250.000 VNĐ</div>
+    <div class="code">4392</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="Nón trẻ em MHTE003-XH2HV 850.000 VNĐ Nón trẻ em MHTE003-XH2HV 850.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE003-XH2HV 850.000 VNĐ Nón trẻ em MHTE003-XH2HV 850.000 VNĐ</div>
+    <div class="code">4378</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="-71% Nón trẻ em MHTE003A-TR1HV 850.000 VNĐ 250.000 VNĐ Nón trẻ em MHTE003A-TR1HV 850.000 VNĐ 250.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">-71% Nón trẻ em MHTE003A-TR1HV 850.000 VNĐ 250.000 VNĐ Nón trẻ em MHTE003A-TR1HV 850.000 VNĐ 250.000 VNĐ</div>
+    <div class="code">4334</div>
+    <div class="price">850.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_2.png" alt="Nón trẻ em MCTE008A-TR1HV 950.000 VNĐ Nón trẻ em MCTE008A-TR1HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE008A-TR1HV 950.000 VNĐ Nón trẻ em MCTE008A-TR1HV 950.000 VNĐ</div>
+    <div class="code">5286</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_2.png" alt="Nón bucket MHTE194A-TR1P 950.000 VNĐ Nón bucket MHTE194A-TR1P 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón bucket MHTE194A-TR1P 950.000 VNĐ Nón bucket MHTE194A-TR1P 950.000 VNĐ</div>
+    <div class="code">4698</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="Nón trẻ em MHTE020-DO1 950.000 VNĐ Nón trẻ em MHTE020-DO1 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE020-DO1 950.000 VNĐ Nón trẻ em MHTE020-DO1 950.000 VNĐ</div>
+    <div class="code">4943</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_1.png" alt="Nón trẻ em MHTE020-TR1 950.000 VNĐ Nón trẻ em MHTE020-TR1 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MHTE020-TR1 950.000 VNĐ Nón trẻ em MHTE020-TR1 950.000 VNĐ</div>
+    <div class="code">4933</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_5.png" alt="Nón trẻ em MCTE001A-XH1HV 950.000 VNĐ Nón trẻ em MCTE001A-XH1HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE001A-XH1HV 950.000 VNĐ Nón trẻ em MCTE001A-XH1HV 950.000 VNĐ</div>
+    <div class="code">4494</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_5.png" alt="Nón trẻ em MCTE001A-XH2HV 950.000 VNĐ Nón trẻ em MCTE001A-XH2HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE001A-XH2HV 950.000 VNĐ Nón trẻ em MCTE001A-XH2HV 950.000 VNĐ</div>
+    <div class="code">4493</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_7.png" alt="Nón trẻ em MCTE011A-DN1HV 950.000 VNĐ Nón trẻ em MCTE011A-DN1HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE011A-DN1HV 950.000 VNĐ Nón trẻ em MCTE011A-DN1HV 950.000 VNĐ</div>
+    <div class="code">4318</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#E67E22">
+  <div class="prod-img"><img src="nonson-selected-images/tre-em_600_crop_nonson_MCTE011A_DN1HV_2.png" alt="Nón trẻ em MCTE011A-DN2HV 950.000 VNĐ Nón trẻ em MCTE011A-DN2HV 950.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Nón trẻ em MCTE011A-DN2HV 950.000 VNĐ Nón trẻ em MCTE011A-DN2HV 950.000 VNĐ</div>
+    <div class="code">4310</div>
+    <div class="price">950.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+<section class="cat-section" id="phu-kien">
+  <div class="cat-header">
+    <div class="cat-header-left">
+      <span class="cat-icon-lg">◈</span>
+      <div>
+        <h2 class="cat-title" style="color:#566573">Phụ Kiện</h2>
+        <p class="cat-sub">24 sản phẩm</p>
+      </div>
+    </div>
+    <div class="cat-line" style="background:#566573"></div>
+  </div>
+  <div class="prod-grid"><div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN8 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN8 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN8 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN8 120.000 VNĐ</div>
+    <div class="code">5740</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-CM1 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-CM1 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-CM1 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-CM1 120.000 VNĐ</div>
+    <div class="code">5700</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM8 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM8 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM8 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM8 120.000 VNĐ</div>
+    <div class="code">5699</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM7 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM7 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM7 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM7 120.000 VNĐ</div>
+    <div class="code">5696</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR4A 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR4A 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR4A 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR4A 120.000 VNĐ</div>
+    <div class="code">5695</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN10 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN10 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN10 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN10 120.000 VNĐ</div>
+    <div class="code">5670</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM6 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM6 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM6 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM6 120.000 VNĐ</div>
+    <div class="code">5668</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-VG2 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-VG2 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-VG2 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-VG2 120.000 VNĐ</div>
+    <div class="code">5667</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU7 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU7 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU7 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU7 120.000 VNĐ</div>
+    <div class="code">5666</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU4 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU4 120.000 VNĐ</div>
+    <div class="code">5665</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN9 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN9 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN9 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN9 120.000 VNĐ</div>
+    <div class="code">5664</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU6 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU6 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU6 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU6 120.000 VNĐ</div>
+    <div class="code">5651</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN6 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN6 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN6 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN6 120.000 VNĐ</div>
+    <div class="code">5650</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG5 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG5 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG5 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG5 120.000 VNĐ</div>
+    <div class="code">5642</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-XL2 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XL2 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-XL2 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XL2 120.000 VNĐ</div>
+    <div class="code">5640</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU3 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU3 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU3 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-NU3 120.000 VNĐ</div>
+    <div class="code">5638</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN4 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN4 120.000 VNĐ</div>
+    <div class="code">5634</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN7 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN7 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN7 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN7 120.000 VNĐ</div>
+    <div class="code">5633</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR1 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR1 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR1 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-TR1 120.000 VNĐ</div>
+    <div class="code">5632</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN1 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN1 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN1 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN1 120.000 VNĐ</div>
+    <div class="code">5631</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__2.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM4 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-XM4 120.000 VNĐ</div>
+    <div class="code">5630</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG4 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG4 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-HG4 120.000 VNĐ</div>
+    <div class="code">5629</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson__1.png" alt="Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN3 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN3 120.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN3 120.000 VNĐ Phụ kiện lưỡi nón bảo hiểm - LUOI120-ĐN3 120.000 VNĐ</div>
+    <div class="code">5628</div>
+    <div class="price">120.000VNĐ</div>
+  </div>
+</div>
+<div class="prod-card" style="--accent:#566573">
+  <div class="prod-img"><img src="nonson-selected-images/phu-kien_600_crop_nonson_1.png" alt="Phụ kiện lưỡi nón bảo hiểm Nón Sơn - LUOI50 50.000 VNĐ Phụ kiện lưỡi nón bảo hiểm Nón Sơn - LUOI50 50.000 VNĐ" loading="lazy"></div>
+  <div class="prod-info">
+    <div class="prod-name">Phụ kiện lưỡi nón bảo hiểm Nón Sơn - LUOI50 50.000 VNĐ Phụ kiện lưỡi nón bảo hiểm Nón Sơn - LUOI50 50.000 VNĐ</div>
+    <div class="code">5627</div>
+    <div class="price">50.000VNĐ</div>
+  </div>
+</div></div>
+</section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h3>CÔNG TY TNHH THỜI TRANG NÓN SƠN</h3>
+        <p>Thương hiệu mũ nón hàng đầu Việt Nam, thành lập 1996. Hơn 175 cửa hàng toàn quốc. Sản phẩm đạt chứng nhận CR, QCVN, sử dụng khóa YKK Nhật Bản.</p>
+      </div>
+      <div>
+        <h3>Liên Hệ</h3>
+        <a>📞 1800 9234 (Bán hàng)</a>
+        <a>📞 1800 9345 (Hỗ trợ KH)</a>
+        <a>🌐 nonson.vn</a>
+      </div>
+      <div>
+        <h3>Địa Chỉ</h3>
+        <p>199 Hai Bà Trưng, P.5, Q.3, TP.HCM</p>
+        <p>Hệ thống cửa hàng tại 43 tỉnh thành</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 1996–2026 Nón Sơn · Thỏa mãn khát vọng tinh tế</div>
+  </footer>
+
+</div><!-- .main -->
+
+<!-- ── PDF BUTTON ─────────────────────────────────────────────── -->
+<button id="pdf-btn" onclick="window.print()">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+    <rect x="6" y="14" width="12" height="8"/>
+  </svg>
+  Xuất PDF
+</button>
+
+<script>
+// Highlight active nav on scroll
+const sections = document.querySelectorAll('.cat-section');
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (active) {
+        active.classList.add('active');
+        active.style.background = 'rgba(255,255,255,0.08)';
+        active.style.color = '#fff';
+        active.style.borderLeftColor = active.style.getPropertyValue('--accent') || '#fff';
+      }
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

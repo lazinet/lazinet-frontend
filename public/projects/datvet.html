@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicons -->
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="icon">
+  <link href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico" rel="apple-touch-icon">
+  <title>Catalogue Sản Phẩm – Công Ty TNHH Đại An Thái</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+  background: #F0F4F8;
+  color: #1a2533;
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── Cover / Hero ── */
+.cover {
+  background: linear-gradient(135deg, #0D2137 0%, #0A4D6E 55%, #0C7B93 100%);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+.cover-wave {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: #F0F4F8;
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.cover-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 60px 80px;
+  flex: 1;
+}
+.cover-logo img {
+  height: 100px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  background: white;
+  border-radius: 12px;
+  padding: 8px;
+}
+.cover-logo-placeholder {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem;
+  border: 3px solid rgba(255,255,255,0.4);
+}
+.cover-text h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.cover-text h1 span {
+  color: #52D3D8;
+}
+.cover-subtitle {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin-top: 8px;
+  font-style: italic;
+}
+.cover-slogan {
+  display: inline-block;
+  margin-top: 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 30px;
+  padding: 6px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #A8EDEA;
+}
+.cover-meta {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.cover-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+.cover-meta-item .ic { font-size: 1.1rem; }
+
+/* ── Company Info Strip ── */
+.info-strip {
+  background: #fff;
+  border-bottom: 3px solid #0A4D6E;
+  padding: 18px 60px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.info-item { display: flex; flex-direction: column; }
+.info-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6B7C93;
+  font-weight: 700;
+}
+.info-value {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0A4D6E;
+}
+
+/* ── TOC Nav ── */
+.toc {
+  background: #0A4D6E;
+  padding: 12px 60px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.toc-label {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 8px;
+}
+.toc a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.2s;
+}
+.toc a:hover { background: rgba(255,255,255,0.25); }
+
+/* ── Intro Section ── */
+.intro-section {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 40px;
+}
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.intro-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-top: 4px solid;
+}
+.intro-card.blue { border-color: #1565C0; }
+.intro-card.teal { border-color: #00695C; }
+.intro-card.orange { border-color: #E65100; }
+.intro-card h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6B7C93;
+  margin-bottom: 10px;
+}
+.intro-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* ── Category Section ── */
+.cat-section {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 40px;
+}
+.cat-header {
+  border-radius: 12px 12px 0 0;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cat-icon { font-size: 1.6rem; }
+.cat-header h2 {
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  flex: 1;
+  letter-spacing: 0.2px;
+}
+.cat-count {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ── Product Grid ── */
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0;
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+.prod-card {
+  border-right: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+  background: #fff;
+}
+.prod-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 2;
+  transform: translateY(-2px);
+}
+
+/* Product Image */
+.prod-img {
+  height: 180px;
+  overflow: hidden;
+  background: #F8FAFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #F1F5F9;
+}
+.prod-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+  transition: transform 0.3s;
+}
+.prod-card:hover .prod-img img { transform: scale(1.05); }
+.no-img {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+}
+.no-img span {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #94A3B8;
+}
+
+/* Product Body */
+.prod-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+.prod-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0D2137;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.prod-desc {
+  font-size: 0.78rem;
+  color: #334155;
+  line-height: 1.5;
+  font-style: italic;
+}
+.prod-body ul {
+  padding-left: 14px;
+  margin: 0;
+}
+.prod-body ul li {
+  font-size: 0.75rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 2px;
+}
+.quy-cach {
+  font-size: 0.75rem;
+  color: #64748B;
+  margin-top: 2px;
+}
+.quy-cach strong { color: #0A4D6E; }
+.contact-badge {
+  margin-top: auto;
+  display: inline-block;
+  padding: 5px 12px;
+  background: #0A4D6E;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* ── Footer ── */
+footer {
+  background: linear-gradient(135deg, #0D2137, #0A4D6E);
+  color: #fff;
+  padding: 48px 60px 32px;
+  margin-top: 60px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+}
+.footer-brand h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #52D3D8;
+  margin-bottom: 8px;
+}
+.footer-brand p {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  line-height: 1.7;
+}
+.footer-col h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #52D3D8;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+.footer-col p, .footer-col a {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  line-height: 1.9;
+  display: block;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 20px;
+  text-align: center;
+  font-size: 0.78rem;
+  opacity: 0.55;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Print Styles ── */
+@media print {
+  body { background: #fff; font-size: 11pt; }
+  .toc, footer { display: none; }
+  .cover { background: #0A4D6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cat-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .prod-grid { grid-template-columns: repeat(3, 1fr); }
+  .prod-card { break-inside: avoid; }
+  .cat-section { break-before: auto; }
+  .prod-card:hover { transform: none; box-shadow: none; }
+  .intro-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@page {
+  size: A4;
+  margin: 15mm 10mm;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-logo"><img src="datvet-selected-images/logo-1-2975.png" alt="Logo"></div>
+    <div class="cover-text">
+      <h1>CÔNG TY TNHH<br><span>ĐẠI AN THÁI</span></h1>
+      <p class="cover-subtitle">Chuyên sản xuất &amp; cung cấp thuốc thú y, thủy sản cao cấp</p>
+      <div class="cover-slogan">DATVET · Chung một niềm tin</div>
+      <div class="cover-meta">
+        <div class="cover-meta-item"><span class="ic">📅</span> Thành lập: 2003</div>
+        <div class="cover-meta-item"><span class="ic">📦</span> 119+ sản phẩm</div>
+        <div class="cover-meta-item"><span class="ic">🏭</span> Nhà máy Tây Ninh</div>
+        <div class="cover-meta-item"><span class="ic">📋</span> 7 danh mục</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-wave"></div>
+</div>
+
+<!-- ══ INFO STRIP ══════════════════════════════════════════════════════ -->
+<div class="info-strip">
+  <div class="info-item">
+    <span class="info-label">Hotline</span>
+    <span class="info-value">📞 0989.59.8887</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Email</span>
+    <span class="info-value">✉ datvetpharma@gmail.com</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Trụ sở</span>
+    <span class="info-value">17E4 Đường DD4, KP56, P. Đông Hưng Thuận, TP.HCM</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Nhà Máy</span>
+    <span class="info-value">Lô A1.2, KCN Đức Hòa 3, Tây Ninh</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Website</span>
+    <span class="info-value">🌐 datvetpharma.com</span>
+  </div>
+</div>
+
+<!-- ══ TABLE OF CONTENTS ═══════════════════════════════════════════════ -->
+<nav class="toc">
+  <span class="toc-label">Danh mục:</span>
+  <a href="#diet-khuan">🧪 Nhóm Hóa Chất Diệt Khuẩn</a>
+<a href="#khoang-chat">🌊 Nhóm Khoáng Chất &amp; Xử Lý Môi Trường</a>
+<a href="#che-pham-sinh-hoc">🦠 Nhóm Chế Phẩm Sinh Học &amp; Vi Sinh</a>
+<a href="#dinh-duong">💊 Nhóm Dinh Dưỡng &amp; Hỗ Trợ Tăng Trưởng</a>
+<a href="#phong-tri-benh">🩺 Nhóm Phòng Trị Bệnh</a>
+<a href="#kit-test">🔬 Thiết Bị &amp; Kit Test</a>
+<a href="#khac">📦 khac</a>
+
+</nav>
+
+<!-- ══ COMPANY INTRO ═══════════════════════════════════════════════════ -->
+<div class="intro-section">
+  <div class="intro-grid">
+    <div class="intro-card blue">
+      <h3>🏢 Giới Thiệu</h3>
+      <p>Công ty TNHH Đại An Thái thành lập năm 2003, chuyên sản xuất thuốc thú y, thuốc thú y thủy sản, chất xử lý môi trường nuôi trồng thủy sản và phân bón. Sản phẩm được nghiên cứu bài bản, đạt tiêu chuẩn chất lượng cao.</p>
+    </div>
+    <div class="intro-card teal">
+      <h3>🎯 Thế Mạnh</h3>
+      <p>Hơn 20 năm kinh nghiệm trong ngành thủy sản. Đội ngũ kỹ sư giàu chuyên môn. Nhà máy hiện đại tại KCN Đức Hòa 3, Tây Ninh. Hệ thống phân phối rộng khắp miền Nam.</p>
+    </div>
+    <div class="intro-card orange">
+      <h3>🌟 Cam Kết</h3>
+      <p>Cung cấp giải pháp nuôi trồng thủy sản toàn diện – từ xử lý môi trường, phòng trị bệnh đến bổ sung dinh dưỡng. Hỗ trợ kỹ thuật tận tình, tư vấn miễn phí cho khách hàng.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRODUCT SECTIONS ════════════════════════════════════════════════ -->
+
+  <section class="cat-section" id="diet-khuan">
+    <div class="cat-header" style="background:#1565C0">
+      <span class="cat-icon">🧪</span>
+      <h2>Nhóm Hóa Chất Diệt Khuẩn</h2>
+      <span class="cat-count">12 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/aquachlorine-6114.jpg" alt="AQUAFINE CHLORINE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUAFINE CHLORINE</h3>
+        <p class="prod-desc">SÁT TRÙNG, DIỆT KHUẨN NGUỒN NƯỚC AO NUÔI TÔM CÁ</p>
+        <ul><li>Sát trùng, diệt khuẩn nguồn nước trong ao nuôi tôm, cá. - Tiêu độc khử trùng chuồng trại. - Tẩy rửa bạt ao nuôi trước khi thả tôm. - Tiêu diệt các tác nhân gây bệnh cho vật nuôi như: vius, vi khuẩn, tảo... - Xử lý nước, oxy hóa các hợp chất hữu cơ, ion sắt, nitrite, sulfid.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Xô 25kg</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/bkc-1-5305.jpg" alt="BKC" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BKC</h3>
+        <p class="prod-desc">THẾ HỆ MỚI DIỆT KHUẨN CỰC MẠNH</p>
+        <ul><li>Xử lý nguồn nước trước khi thả, trong quá trình nuôi và trong ao lắng - Diệt khuẩn trong nguồn nước và thân tôm, giảm sự lan tràn của nấm bệnh, tảo độc, động vật nguyên sinh gây bệnh - Dùng để tẩy mang trong trường hợp mang đen và mang bị hoại tử - Ngăn ngừa hiệu quả: Đứt râu, rụng đuôi, gãy càng, đóng rong - Khống chế phiêu sinh vật, làm tăng độ trong của nước</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1LÍT, CAN 5 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/cleandaianthai-7198.png" alt="CLEAN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CLEAN</h3>
+        <p class="prod-desc">- ĐÁNH TAN BỌT, VÁNG NHỚT - LÀM SẠCH MANG, SẠCH NƯỚC - HẤP THU KIM LOẠI NẶNG</p>
+        <ul><li>Giảm độ nhớt, hạn chế sức căng bề mặt, các chất lơ lững trong ao nuôi. - Làm lắng các chất hữu cơ và kết tủa kim loại nặng. - Loại bỏ các hóa chất độc hại trong quá trình xử lý chlorine. - Giúp mang và thân tôm sạch, tránh hiện tượng bị đóng phèn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 4LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/cleandaianthai-8724.png" alt="CLEAN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CLEAN</h3>
+        <p class="prod-desc">- ĐÁNH TAN BỌT, VÁNG NHỚT - LÀM SẠCH MANG, SẠCH NƯỚC - HẤP THU KIM LOẠI NẶNG</p>
+        <ul><li>Giảm độ nhớt, hạn chế sức căng bề mặt, các chất lơ lững trong ao nuôi. - Làm lắng các chất hữu cơ và kết tủa kim loại nặng. - Loại bỏ các hóa chất độc hại trong quá trình xử lý chlorine. - Giúp mang và thân tôm sạch, tránh hiện tượng bị đóng phèn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 4 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5200493879773a8fc7001f9b17eb7f0c8bf48061b651e-4588.jpg" alt="COPPER" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">COPPER</h3>
+        <p class="prod-desc">CHUYÊN DÙNG DIỆT RONG , TẢO ĐỘC, LAPLAP TRONG AO NUÔI TÔM.</p>
+        <ul><li>Diệt sạch các loại tảo độc: tảo phát sáng, tảo lam, tảo giáp, tảo đỏ, tảo nâu, tảo sợi, tảo đáy và các loại rong đuôi chồn, rong nhớt, rong đá, lap lap trong ao nuôi - Ngăn ngừa các bệnh tôm đóng rong, ký sinh trùng trên mang và thân tôm</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 250G, LON 2KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/dmiss-241.jpg" alt="D MISS" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">D MISS</h3>
+        <p class="prod-desc">DIỆT KHUẨN CỰC MẠNH - DẬP DỊCH LÂY LAN TIÊU DIỆT TOÀN BỘ VI RÚT, VI KHUẨN GÂY BỆNH TRONG AO</p>
+        <ul><li>Diệt tận gốc các loại vi rút, vi khuẩn, nấm, ký sinh trùng gây bệnh trên tôm, cá. - Phòng và trị các bệnh: EMS, đốm đen, ăn mòn phụ bộ, đục cơ( do vi rút) - Diệt các loại vi rút đốm trắng, đầu vàng, phát sáng... ƯU ĐIỂM: - Sản phẩm tan hoàn toàn nên dễ khuếch tán đều trong ao nuôi - Không sốc tôm, không để lại dư lượng tồn lưu</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> HŨ 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/diodine-n-311.png" alt="DIODINE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DIODINE</h3>
+        <p class="prod-desc">SIÊU DIỆT KHUẨN, DIỆT NẤM, DIỆT VI RÚT, KÝ SINH TRÙNG</p>
+        <ul><li>Diệt khuẩn nguồn nước trước lúc thả tôm trong quá trình nuôi và diệt khuẩn trong ao lắng. - Tiêu diệt tận gốc vi khuẩn, vi rút, nấm, ký sinh trùng trong ao nuôi. - Ngăn ngừa các bệnh: Đứt râu, mòn đuôi, đen mang,... Làm sạch môi trường nước, không làm ảnh hưởng sự phát triển của tôm và tảo</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5210144865705307ac83cd6054700c85deffd382ea177-729.jpg" alt="E.M.C" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">E.M.C</h3>
+        <p class="prod-desc">MEN VI SINH CAO CẤP KÍCH THÍCH TRÙM CHỈ, ỐC GẠO PHÁT TRIỂN</p>
+        <ul><li>BỔ SUNG VI SINH CÓ LỢI VÀO THỨC ĂN CỦA TÔM, CÁ. GIÚP TÔM, CÁ TIÊU HÓA VÀ HẤP THỤ TỐT THỨC ĂN, TĂNG TRỌNG NHANH VÀ GIẢM HỆ SỐ TIÊU TỐN THỨC ĂN. - TĂNG KHẢ NĂNG MIỄN DỊCH CỦA TÔM, CÁ. - GIẢM HIỆN TƯỢNG PHÂN LỎNG DO VI KHUẨN CÓ HẠI XÂM NHẬP.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1LÍT, CAN 20 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/hi-plus-9910.jpg" alt="HI-PLUS" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">HI-PLUS</h3>
+        <p class="prod-desc">DIỆT KHUẨN, NẤM TRONG NƯỚC AO NUÔI TÔM, CÁ</p>
+        <ul><li>DIỆT KHUẨN NẤM, KÝ SINH TRÙNG, TẢO ĐỘC VÀ CÁC LOẠI RONG RÊU CÓ HẠI TRONG MÔI TRƯỜNG NƯỚC AO NUÔI TÔM, CÁ. - SÁT TRÙNG AO HỒ, BỂ ƯƠNG, DỤNG CỤ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 2 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/isodine-589.png" alt="ISODINE 9000" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ISODINE 9000</h3>
+        <p class="prod-desc">DIỆT KHUẨN, XỬ LÝ NƯỚC TRONG AO NUÔI TÔM, CÁ, ẾCH</p>
+        <ul><li>Diệt khuẩn nguyên sinh động vật trong nước ao nuôi tôm, cá, ếch - Sát trùng dụng cụ ao nuôi tôm, cá, ếch</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/tcca-nhan-xanh-moi-8392.png" alt="TCCA 99" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TCCA 99</h3>
+        <p class="prod-desc">SÁT TRÙNG - DIỆT KHUẨN DIỆN RỘNG. DIỆT HOÀN TOÀN MẦM BỆNH, SÁT TRÙNG, TẨY RỬA DỤNG CỤ NUÔI</p>
+        <ul><li>Diệt khuẩn cực mạnh, phổ kháng rộng, diệt hoàn toàn mầm bệnh gây hại cho tôm - Sát trùng, tẩy rửa dụng cụ nuôi</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> HŨ 1KG, XÔ 5KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/vikilldaianthai-7298.jpg" alt="VI KILL" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">VI KILL</h3>
+        <p class="prod-desc">DIỆT KHUẨN, KÝ SINH TRÙNG TRONG AO NUÔI ĐẶC BIỆT: DIỆT KHUẨN GÂY BỆNH GAN, TỤY, ĐỎ THÂN, ĐƯỜNG RUỘT TRÊN TÔM</p>
+        <ul><li>Diệt virut, vi khuẩn, nấm, ký sinh trùng...trong nước và trong quá trình nuôi tôm cá - Sát trùng dụng cụ, bể trại nuôi tôm cá</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> HŨ 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section class="cat-section" id="khoang-chat">
+    <div class="cat-header" style="background:#00695C">
+      <span class="cat-icon">🌊</span>
+      <h2>Nhóm Khoáng Chất &amp; Xử Lý Môi Trường</h2>
+      <span class="cat-count">32 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/aqua-bioking2-7924.png" alt="AQUA BIOKING" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUA BIOKING</h3>
+        <p class="prod-desc">XỬ LÝ KHÍ ĐỘC NH3, NO2, H2S</p>
+        <ul><li>Xử lý khí độc NH 3 , NO 2 , H 2 S, nhớt bạt. - Xử lý triệt để chất thải, thức ăn dư thừa là nguyên nhân sinh ra các khí độc. - Tạo môi trường đáy ao ổn định, ít biến động do biến động môi trường , thời tiết gây ra.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/biolux-963.jpg" alt="AQUA BIOLUX" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUA BIOLUX</h3>
+        <p class="prod-desc">XỬ LÝ KHÍ ĐỘC NH 3 , NO 2 , H 2 S</p>
+        <ul><li>Xử lý khí độc NH 3 , NO 2 , H 2 S, nhớt bạt. - Xử lý triệt để chất thải, thức ăn dư thừa là nguyên nhân sinh ra các khí độc. - Tạo môi trường đáy ao ổn định, ít biến động do biến động môi trường , thời tiết gây ra.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Gói 227g</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/bio-queen-1345.jpg" alt="AQUA BIOQUEEN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUA BIOQUEEN</h3>
+        <p class="prod-desc">XỬ LÝ NHỚT BẠT, DIỆT NẤM ĐỒNG TIỀN, KHỬ MÙI HÔI.</p>
+        <ul><li>Xử lý nhớt bạt, nhớt đáy ao. - Diệt nấm đồng tiền, nấm chân chó. - Xử lý mùi hôi của nước ao nuôi tôm, tạo môi trường nước ổn định khi thời tiết thay đổi. - Cắt tảo khi tảo quá dày.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Gói 227g</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/aquamin-2-6600.png" alt="AQUAMIN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUAMIN</h3>
+        <p class="prod-desc">AQUAMIN CUNG CẤP KHOÁNG CHẤT TỰ NHIÊN</p>
+        <ul><li>CÔNG DỤNG SẢN PHẨM: AQUAMIN là dòng khoáng chất cao cấp dạng lỏng, được chiết xuất từ nguồn khoáng tự nhiên kết hợp công nghệ ion hoá hiện đại, giúp tôm hấp thu nhanh qua mang, tăng hiệu quả sử dụng, cần thiết cho các giai đoạn sinh trưởng, lột xác và tăng trưởng cho tôm, cá. Cung cấp khoáng chất tự nhiên thiết yếu ở dạng i-on giúp tôm, cá hấp thu nhanh chóng. Ngăn ngừa các bệnh cong thân, đục cơ, đốm đen… do thiếu khoáng. Giúp tôm lột xác đồng loạt, cứng vỏ nhanh sau khi lột, chắc thịt, vỏ sáng bóng tự nhiên, nâng cao tỷ lệ sống và thích nghi nhanh với môi trường nuôi độ mặn thấp.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> - Dung tích thực: 5 Lít - HSD : 2 năm từ ngày sản xuất - Chứng nhận ISO 9001:2015 – Chất lượng đảm bảo</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/auapho-sp-8914.jpg" alt="AQUAPHO SP" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUAPHO SP</h3>
+        <p class="prod-desc">KHOÁNG TẠT ĐẶC BIỆT: SIÊU CỨNG VỎ HẠN CHẾ CONG THÂN CHO TÔM GÂY MÀU NƯỚC NHANH</p>
+        <ul><li>Bổ sung khoáng chất cần thiết cho tôm giúp tôm nhanh cứng vỏ, kích thích lột vỏ, giảm hiện tượng cong thân, đục cơ,mềm vỏ,ốp vỏ do thiếu khoáng. - Duy trì màu nước ao đẹp.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 4 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z577429214334329ed34bf5ea85d647be424aa4ad14aa7-155.jpg" alt="AZOMINE*" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AZOMINE*</h3>
+        <p class="prod-desc">VUA KHOÁNG KÍCH LỘT F1 KHOÁNG TĂNG KIỀM,HẠ PHÈN HIỆU QUẢ</p>
+        <ul><li>CUNG CẤP ĐẦY ĐỦ MUỐI KHOÁNG DƯỚI DẠNG DỄ DÀNG HẤP THU CHO TÔM,CÁ. GIÚP KÍCH THÍCH TÔM LỘT VỎ ĐỒNG LOẠT VÀ CỨNG VỎ NHANH SAU KHI LỘT. - CUNG CẤP KHOÁNG VI LƯỢNG  VÀ ĐA LƯỢNG LÀM TĂNG SỨC ĐỀ KHÁNG, NÂNG CAO TỈ LỆ VÀ GIẢM HIỆN TƯỢNG CONG THÂN ĐỤC CƠ  Ở TÔM VÀ VẸO XƯƠNG Ở CÁ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/bac-a-8614.jpg" alt="BAC A" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BAC A</h3>
+        <p class="prod-desc">XỬ LÝ MÔI TRƯỜNG NƯỚC AO NUÔI TÔM ĐẶC BIỆT XỬ LÝ NƯỚC ĐỎ ĐẬM DO PHÈN NƯỚC ĐỤC DO PHÙ SA, CHẤT THẢI</p>
+        <ul><li>PHÂN HỦY THỨC ĂN DƯ THỪA, MÙN BẢ HỮU CƠ, CHẤT THẢI CỦA TÔM,CÁ. - PHÂN GIẢI CÁC CHẤT ĐỘC NHƯ (NH 3 ,  H 2 S) TRONG NUÔI TÔM, CÁ. - BỔ SUNG VI KHUẨN CÓ LỰOI VÀO AO NUÔI TÔM,CÁ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G, GÓI 454G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/best-mineral-bao-10kg-9379.png" alt="BEST MINERAL" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BEST MINERAL</h3>
+        <p class="prod-desc">KHOÁNG ĐA VI LƯỢNG KÍCH THÍCH TÔM LỘT VỎ MAU CỨNG VỎ, NGĂN NGỪA HIỆN TƯỢNG CONG THÂN, ĐỤC CƠ</p>
+        <ul><li>CUNG CẤP KHOÁNG CHẤT DƯỚI DẠNG DỄ DÀNG HẤP THU CHO TÔM. - GIÚP KÍCH THÍCH TÔM LỘT VỎ ĐỒNG LOẠT VÀ CỨNG VỎ NHANH SAU KHI LỘT VỎ. - CUNG CẤP KHOÁNG VI LƯỢNG VÀ ĐA LƯỢNG LÀM TĂNG SỨC ĐỀ KHÁNG, NÂNG CAO TỈ LỆ SỐNG VÀ GIẢM HIỆN TƯỢNG CONG THÂN ĐỤC CƠ Ở TÔM.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/biomax-3625.png" alt="BIOMAX" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BIOMAX</h3>
+        <p class="prod-desc">HẤP THU KHÍ ĐỘC PHÂN HỦY MÙN BẢ HỮU CƠ, CHẤT THẢI</p>
+        <ul><li>HẤP THU KHÍ ĐỘC TRONG AO NUÔI SINH RA TỪ PHÂN TÔM, THỨC ĂN DƯ THỪA. - PHÂN GIẢI MÙN BÃ HỮU CƠ, CHẤT THẢI TÔM, CÁ. - CẤP CỨU KHI TÔM, CÁ NỔI ĐẦU DO ĐÁY AO BỊ Ô NHIỄM.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> XÔ 15KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/cal-35-10kg-3181.png" alt="CAL - 35" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CAL - 35</h3>
+        <p class="prod-desc">NGĂN CHẶN HIỆN TƯỢNG CONG THÂN, ĐỤC CƠ KÍCH LỘT, CỨNG VỎ, CHẮC THỊT SAU KHI LỘT</p>
+        <ul><li>CÔNG DỤNG Cung cấp khoáng chất dưới dạng dễ dàng hấp thu cho tôm. Giúp kích thích tôm lột vỏ đồng loạt và cứng vỏ nhanh sau khi lột. Cung cấp khoáng vi lượng và đa lượng làm tăng sức đề kháng, nâng cao tỉ lệ sống và giảm hiện tượng cong thân đục cơ ở tôm.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Bao 5kg - 10kg HSD: 24 tháng kể từ ngày sản xuất Bảo quản nơi khô ráo, thoáng mát. Tránh ánh nắng trực tiếp. Tránh xa tầm tay trẻ em. Tránh rây vào mắt, da. Nếu vào mắt và da dùng nước sạch rửa ngay. Không dùng cho người, chỉ dùng trong nuôi trồng thủy sản. Lưu ý: Màu sắc không ảnh hưởng đến chất lượng sản phẩm.</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5713829781008615c1cfa2f978a6787a52173d5e795a3-6949.jpg" alt="CALCI C" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CALCI C</h3>
+        <p class="prod-desc">GIÀU KHOÁNG- TẠT AO NUÔI. CHỐNG CONG THÂN, ĐỤC CƠ, ỐP VỎ...</p>
+        <ul><li>CUNG CẤP KHOÁNG CHẤT CẦN THIẾT CHO TÔM , GIÚP VỎ TÔM BÓNG ĐẸP VÀ NHANH CỨNG VỎ SAU KHI LỘT, DUY TRÌ ÁP SUẤT THẨM THẤU CỦA CƠ THỂ THỦY SẢN. - GIA TĂNG SỨC ĐỀ KHÁNG, NÂNG CAO TỈ LỆ SỐNG, GIẢM HIỆN TƯỢNG CONG THÂN ĐỤC CƠ Ở TÔM .</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG, XÔ 15KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/calci-pho-3957.jpg" alt="CALCIPHO*" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CALCIPHO*</h3>
+        <p class="prod-desc">KÍCH THÍCH LỘT VỎ, NHANH CỨNG VỎ, NGĂN NGỪA HIỆN TƯỢNG  CONG THÂN, ĐỤC CƠ, ỐP VỎ DO THIẾU KHOÁNG</p>
+        <ul><li>Bổ sung các khoáng chất cần thiết giúp tôm, cá phát triển tốt . - Giúp tôm giảm các hiện tượng do thiếu khoáng như: còi cọc, đục cơ, cong thân. Đặc biệt trong giai đoạn lột xác giúp tôm lột xác giúp tôm lột xác nhanh và hình thành vỏ tốt sau quá trình lột xác. - Giúp cá hình thành cấu trúc xương, giảm hiện tượng dị dạng xương, mòn vảy và da. - Cung cấp thêm khoáng cho ao nuôi giúp ổn định màu nước ao nuôi.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/calcium-d3-1083.jpg" alt="CALCIUM D3" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CALCIUM D3</h3>
+        <p class="prod-desc">CUNG CẤP CANXI VÀ VITAMIN D3, GIÚP TĂNG HẤP THU KHOÁNG CHẤT NGĂN NGỪA HIỆN TƯỢNG CONG THÂN, ĐỤC CƠ, CONG CƠ</p>
+        <ul><li>BỔ SUNG HỖN HỢP VITAMIN VÀ KHOÁNG CHẤT CẦN THIẾT CHO ĐỘNG VẬT THỦY SẢN GIÚP: - VỎ TÔM CỨNG, TẠO MÀU SẮC BÓNG ĐẸP CHO TÔM. - TÔM NHANH LỘT, NGĂN NGỪA HIỆN TƯỢNG CONG CƠ, ĐỤC CƠ. - BỔ SUNG D3, GIÚP TÔM CHUYỂN HÓA Ca VÀ P.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1 KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/dat-pac-2-2022.png" alt="DAT PAC" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DAT PAC</h3>
+        <p class="prod-desc">SIÊU LẮNG ĐỌNG - SẠCH NƯỚC</p>
+        <ul><li>Làm sạch nguồn nước, tăng độ hòa tan của oxy trong ao nuôi tôm, cá. - Lắng tụ các chất lơ lửng như ( phù sa, mùn bả hữu cơ) trong nước ao nuôi.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/dat-pac-6893.png" alt="DAT PAC" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DAT PAC</h3>
+        <p class="prod-desc">HẠ PHÈN NHANH, LÀM SẠCH NƯỚC AO NUÔI - HẠ KHÍ ĐỘC</p>
+        <ul><li>Làm sạch nguồn nước, tăng độ hòa tan của Oxy trong ao nuôi tôm. - Lắng tụ các chất lơ lững như phù sa, mùn bả hữu cơ trong ao nuôi tôm. - Hấp thụ khí độc, hạ phèn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/deo-yucca-9644.png" alt="DEO YUCCA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DEO YUCCA</h3>
+        <p class="prod-desc">YUCCA ZEO HẤP THỤ KHÍ ĐỘC</p>
+        <ul><li>HẤP THU KHÍ ĐỘC NHƯ (NH 3 , H 2 S) SINH RA Ở ĐÁY NUÔI TÔM ,CÁ. - DÙNG ĐỂ CẤP CỨU KHI TÔM, CÁ NỐI ĐẦU DO AO BỊ Ô NHIỄM BỞI KHÍ ĐỘC</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10 KG, BAO 15KG, BAO 20KG, XÔ 15KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5713829736937689534172f6cbbe16675b2ed33cb92da-4236.jpg" alt="DEO.YUCCA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DEO.YUCCA</h3>
+        <p class="prod-desc">YUCCA ZEO HẤP THỤ KHÍ ĐỘC</p>
+        <ul><li>Hấp thu khí độc như NH 3 , H 2 S sinh ra ở đáy ao nuôi tôm cá. Dùng để cấp cứu khi tôm, cá nổi đầu do đáy ao bị ô nhiễm bởi khí độc.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG, BAO 15KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z571382975820573482aa37a3b28a8fa18ef7f8662851f-5332.jpg" alt="EDTA ONE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">EDTA ONE</h3>
+        <p class="prod-desc">KHỬ PHÈN - KIM LOẠI NẶNG TRONG AO NUÔI</p>
+        <ul><li>KHỬ PHÈN, KHỬ KIM LOẠI NẶNG, GIẢM ĐỘ NHỚT VÀ VÁNG BỘT TRONG AO NUÔI. - PHÂN GIẢI ĐỘC TÔM DO SỬ DỤNG HÓA CHẤT VÀ GIẢM pH TRONG AO NUÔI.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 5KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/kalilag-d3-3196.jpg" alt="KALIMAG.D3" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">KALIMAG.D3</h3>
+        <p class="prod-desc">KÍCH THÍCH TRỨNG NƯỚC (BOBO) PHÁT TRIỂN LÀ NGUỒN THỨC ĂN TỰ NHIÊN CHO CÁ</p>
+        <ul><li>Cung cấ p khoáng vi l ượ ng và đa l ượ ng cao cấp, đậm đặc kích lột và cứng vỏ nhanh chóng . Ngă n ng ừ a hi ệ n t ượ ng cong thân, đ ụ c c ơ , ố p v ỏ , nh ạ t màu hi ệ u qu ả trong 24h Khoáng chuyên dùng cho ao bạ t d ễ tan, hấp thu nhanh, không cặn, dễ sử dụng. Cung cấ p khoáng cho sinh v ậ t phù du phát tri ể n, t ạ o màu n ướ c</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG, GÓI 2KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z57138297606057e0063923e18313139d1c062dc3c8b95-6962.jpg" alt="MINER" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">MINER</h3>
+        <p class="prod-desc">CUNG CẤP KHOÁNG CHẤT CHO TÔM. GIÀU KHOÁNG-TẠT AO NUÔI CHUYÊN DÙNG CHO TÔM THẺ</p>
+        <ul><li>BỔ SUNG KHOÁNG CẦN THIẾT CHO AO NUÔI TÔM, CÁ. GIÚP TÔM MAU LỘT XÁC, NAHNH CỨNG VỎ SAU KHI LỘT, PHÒNG THIẾU KHOÁNG ( CONG THÂN, ĐỤC CƠ CHO TÔM THẺ, CÁC BỆNH DA MÀU XANH DA TRỜI CỦA TÔM SÚ), GIÚP TÔM TĂNG TRƯỞNG NHANH, TĂNG TỈ LỆ SỐNG TRONG NHỮNG KỲ LỘT XÁC, RÚT NGẮN THỜI GIAN NUÔI. GIÚP TẢO VÀ CÁC DINH VẬT PHÙ DU PHÁT TRIỂN NHANH, ỔN ĐỊNH MÀU NƯỚC.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/mineral-max-1259.jpg" alt="MINERAL MAX" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">MINERAL MAX</h3>
+        <p class="prod-desc">SIÊU ỐC GẠO - TRÙN CHỈ TẠO MÀU NƯỚC-CUNG CẤP KHOÁNG CHẤT CHO TÔM, CUA</p>
+        <ul><li>Cung cấp đầy đủ muối khoáng dưới dạng dễ dàng hấp thu cho tôm, cá. Giúp kích thích tôm lột vỏ đồng loạt và cứng vỏ nhanh sau khi lột. Cung cấp khoáng vi lượng và đa lượng làm tăng sức đề kháng , nâng cao tỷ lệ sống và giảm hiện tượng cong thân, đục co ở tôm. Giúp gây màu nước, ổn định môi trường nuôi.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/omet-1309.png" alt="OMET" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">OMET</h3>
+        <p class="prod-desc">HIỆU QUẢ CAO BỆNH GAN, ĐƯỜNG RUỘT</p>
+        <ul><li>BỔ SUNG INOSITOL VÀ VITAMIN B12 VÀO THỨC ĂN THỦY SẢN ĐỂ TÁI TẠO TẾ BÀO MÁU VÀ TĂNG TRƯỞNG TẾ BÀO GAN. GIÚP TÔM CÁ SINH TRƯỞNG VÀ PHÁT TRIỂN TỐT.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 250G, GÓI 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/perfect-mt-3221.jpg" alt="PERFECT" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PERFECT</h3>
+        <p class="prod-desc">SẢN PHẨM 3 TRONG 1 KÍCH THÍCH BẮT MỒI- BAO BỌC THỨC ĂN- TĂNG TRỌNG NHANH</p>
+        <ul><li>Bổ sung đạm và khoáng chất giúp tôm tăng trọng nhanh - Kết dính, bao bọc thức ăn - Mùi hấp dẫn, kích thích bắt mồi cho tôm - Chống còi cọc, giúp tôm phát triển đồng đều</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 4KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z57138297563297a6e4f40e95a0ffbfc82f084ce8e1f01-5390.jpg" alt="YUCCA-C" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">YUCCA-C</h3>
+        <p class="prod-desc">HẤP THỤ KHÍ ĐỘC, CHỐNG SỐC, STRESS, TĂNG SỨC ĐỀ KHÁNG, LÀM SẠCH NGUỒN NƯỚC, SẠCH NHỚT VÀ VÁNG BỌT TRONG AO</p>
+        <ul><li>Cấp cứu tôm nổi đầu, chống sốc, giảm stress cho tôm - Tạt trước khi thả tôm giúp ổn định môi trường nước, chống stress cho tôm - Hấp thu nhanh khí độc NH 3 , H 2 S trong nước ao nuôi tôm - Ổn định chất lượng nước, giảm mùi hôi, tạo độ trong cho nước</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10 KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/yucca-6220.jpg" alt="YUCCA.V99" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">YUCCA.V99</h3>
+        <p class="prod-desc">HẤP THU KHÍ ĐỘC CẤP CỨU KHI TÔM, CÁ NỔI ĐẦU</p>
+        <ul><li>Làm giảm khí độc như (NH 3 , H 2 S), giảm mùi hôi thối sinh ra ở đáy ao. Nâng cao chất lượng nước, giảm stress cho tôm cá.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5774334118283ea568eed7fac647d875426edfc77db28-1719.jpg" alt="YUCCA.X9" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">YUCCA.X9</h3>
+        <p class="prod-desc">HẤP THU KHÍ ĐỘC H 2 S, NH 3 ... PHÂN HỦY NỀN ĐÁY CẤP CỨU TÔM NỐI ĐẦU</p>
+        <ul><li>LÀM GIẢM KHÍ ĐỘC NHƯ (NH 3 , H 2 S), GIẢM MÙI HÔI THỐI SINH RA TỪ ĐÁY AO. - NÂNG CAO CHẤT LƯỢNG NƯỚC, GIẢM STRESS CHO TÔM, CÁ</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, XÔ 15KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/yucca-9635.jpg" alt="YUCCA.X9" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">YUCCA.X9</h3>
+        <p class="prod-desc">YUCCA + THAN HẠT TÍNH HẤP THỤ KHÍ ĐỘC</p>
+        <ul><li>Làm giảm khí độc như (NH 3 , H 2 S), giảm mùi hôi thối sinh ra ở đáy ao. Nâng cao chất lượng nước, giảm stress cho tôm cá.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG, BAO 15KG,</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/zeo-khoang-3569.jpg" alt="ZEO KHOÁNG" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ZEO KHOÁNG</h3>
+        <p class="prod-desc">CUNG CẤP KHOÁNG CHẤT CẦN THIẾT CHO TÔM CỨNG VỎ, KÍCH THÍCH LỘT VỎ LÀM SẠCH MÔI TRƯỜNG NƯỚC CUNG CẤP OXY ĐÁY AO</p>
+        <ul><li>CUNG CẤP KHOÁNG CHẤT CẦN THIẾT CHO TÔM, CÁ. GIÚP CHO QUÁ TRÌNH HÌNH THÀNH XƯƠNG CÁ VÀ VỎ CỦA TÔM NHANH HƠN. - GIA TĂNG SỨC ĐỀ KHÁNG, NÂNG CAO TỈ LỆ SỐNG VÀ GIẢM HIỆN TƯỢNG CON THÂN, ĐỤC CƠ Ở TÔM, VẸO XƯƠNG Ở CÁ. - HẤP THU NH 3 TRONG NƯỚC VÀ ĐÁY AO NUÔI TÔM, CÁ. GIÚP CẢI THIỆN VÀ ỔN ĐỊNH MÔI TRƯỜNG NƯỚC NUÔI. - CẢI THIỆN MÀU NƯỚC</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z6379661407804855ad490d41f3bffe571b9828f8d6d28-3627.jpg" alt="ZEOLITE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ZEOLITE</h3>
+        <p class="prod-desc">HẤP THU KHÍ ĐỘC TRONG AO NUÔI CÁ</p>
+        <ul><li>Hấp thụ mạnh các loại khí độc, độc tố từ thức ăn thừa, phân tôm như: NH 3 , NO - 3 , H 2 S... - Làm phân hủy các chất bẩn, thối ở đáy ao - Ổn định pH, màu nước đẹp lên - Giảm chất độc trong ao sau khi dùng các loại hóa chất</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 20KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z6379661411322f7be06e5bc7d18aa1de97c1e7e1b60ef-1013.jpg" alt="ZEOLITE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ZEOLITE</h3>
+        <p class="prod-desc">HẤP THU KHÍ ĐỘC, TẠO MÀU NƯỚC ĐẸP</p>
+        <ul><li>Hấp thụ mạnh các loại khí độc, độc tố từ thức ăn thừa, phân tôm, cá như: NH 3 , NO - 3 , H 2 S, NH + 4 ... - Làm phân hủy các chất bẩn, thối ở đáy ao - Ổn định pH, màu nước đẹp lên - Giảm chất độc trong ao sau khi dùng các loại hóa chất - Tăng hàm lượng oxy, giảm độ đục</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 20KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z63796613862349ec02c4544a9216f1a06fe6317062237-8552.jpg" alt="ZEOLITE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ZEOLITE</h3>
+        <p class="prod-desc">HẤP THU KHÍ ĐỘC, TẠO MÀU NƯỚC ĐẸP</p>
+        <ul><li>Hấp thụ mạnh các loại khí độc, độc tố từ thức ăn thừa, phân tôm, cá như: NH 3 , NO - 3 , H 2 S, NH + 4 ... - Làm phân hủy các chất bẩn, thối ở đáy ao - Ổn định pH, màu nước đẹp lên - Giảm chất độc trong ao sau khi dùng các loại hóa chất - Tăng hàm lượng oxy, giảm độ đục</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 20KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/zeta-7782.jpg" alt="Z-ETA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Z-ETA</h3>
+        <p class="prod-desc">KHỬ PHÈN, KIM LOẠI NẶNG, ĐỘC TỐ LÀM SẠCH NƯỚC TRONG AO NUÔI</p>
+        <ul><li>HẤP THU KIM LOẠI NẶNG TRONG AO NUÔI TÔM, CÁ. - LẮNG TỤ CÁC CHẤT DƠ BẨN TRONG AO NUÔI TÔM, CÁ. - PHÂN GIẢI HÓA CHẤT, THUỐC BẢO VỆ THỰC VẬT.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5 KG, GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section class="cat-section" id="che-pham-sinh-hoc">
+    <div class="cat-header" style="background:#4527A0">
+      <span class="cat-icon">🦠</span>
+      <h2>Nhóm Chế Phẩm Sinh Học &amp; Vi Sinh</h2>
+      <span class="cat-count">22 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/502d739ba51743fcb179b55973a1a800-2276.png" alt="AMENTHO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AMENTHO</h3>
+        <p class="prod-desc">VI SINH YẾM KHÍ (MEN THỐI) XỬ LÝ ĐÁY AO</p>
+        <ul><li>XỬ LÝ KHÍ ĐỘC NHƯ: NH 3 , H 2 S... TRONG AO NUÔI TÔM, CÁ. - XỬ LÝ MÙI HÔI, NHỚT HÌNH THÀNH Ở ĐÁY AO. - PHÂN HỦY THỨC ĂN DƯ THỪA, PHÂN TÔM, VỎ TÔM LÀ NGUYÊN NHÂN GÂY Ô NHIỄM ĐÁY AO. - KHỐNG CHẾ VI SINH VẬT CÓ HẠI TRONG AO NUÔI TÔM.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 20 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/aqua-pro-2687.png" alt="AQUA PRO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUA PRO</h3>
+        <p class="prod-desc">VI SINH XỬ LÝ ĐÁY, NƯỚC TRONG AO NUÔI</p>
+        <ul><li>LÀM SẠCH NƯỚC, GIẢM ĐỘ ĐỤC, MÙI HÔI NƯỚC AO NUÔI, ỔN ĐỊNH MÀU NƯỚC. - PHÂN HỦY THỨC ĂN DƯ THỪA DƯỚI ĐÁY AO. - GIẢM SỰ HÌNH THÀNH CÁC LOẠI KHÍ ĐỘC(NH 3 , NO 2 ...) VÀ CÁC LOẠI TÁC NHÂN CÓ HẠI TRONG NGUỒN NƯỚC AO NUÔI.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/aqua-pro-tui-luoi-1-3265.png" alt="AQUA PRO (Nhập khẩu Japan)" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUA PRO (Nhập khẩu Japan)</h3>
+        <p class="prod-desc">CHUYÊN GIA XỬ LÝ KHÍ ĐỘC, LÀM SẠCH ĐÁY AO</p>
+        <ul><li>Xử lý mùi hôi, khí độc ao nuôi tôm. - Làm sạch nguồn nước bị ô nhiễm, bị đục do chất lơ lửng</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 350G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/aquazyme-9933.png" alt="AQUAZYME" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">AQUAZYME</h3>
+        <p class="prod-desc">CHUYÊN XỬ LÝ NHỚT BẠT LÀM  SẠCH NƯỚC, ĐÁY AO NUÔI</p>
+        <ul><li>XỬ LÝ NHỚT BẠT, LÀM SẠCH NƯỚC, ĐÁY AO NUÔI. - PHÂN HỦY MÙN BÃ HỮU CƠ, CHẤT THẢI, THỨC ĂN DƯ THỪA CỦA TÔM CÁ. - GIẢM KHÍ ĐỘC NHƯ (NH 3 , H 2 S..) SINH RA Ở ĐÁY AO NUÔI TÔM, CÁ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z521013703436636f08c3dcd56da1a4194973bc39ed18b-5611.jpg" alt="BACILLUS" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BACILLUS</h3>
+        <p class="prod-desc">MEN VI SINH CAO CẤP</p>
+        <ul><li>Bổ sung vi khuẩn có lợi vào thức ăn của tôm, cá. Giúp tôm cá tiêu hóa hấp thụ tốt thức ăn, giảm hệ số FCR. - Giúp tôm cá khỏe mạnh, nhanh lớn và tăng khả năng miễn dịch của vật nuôi. - Giảm các hiện tượng phân lỏng do vi khuẩn có hại gây ra. - Xử lý mùn bả, chất thải hữu cơ ở đáy ao.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/bio-green-5239.png" alt="BIO GREEN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BIO GREEN</h3>
+        <p class="prod-desc">VI SINH NHẬT BẢN CAO CẤP CHUYÊN GIA XỬ LÝ KHÍ ĐỘC NH 3 , NO 2 , H 2 S... LÀM SẠCH ĐÁY AO</p>
+        <ul><li>Là sản phẩm vi sinh cao cấp của Nhật Bản - Chuyên gia xử lý khí độc NO 2 , H 2 S, NH 3 ,... - Làm sạch các chất dư thừa ở đáy ao - Giảm độ đục của nước, ổn định pH và môi trường nuôi - Cung cấp hệ vi sinh có lợi trong ao nuôi</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> HŨ 100G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/1600-5873.png" alt="Bio Green" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Bio Green</h3>
+        <p class="prod-desc">XỬ LÝ NƯỚC AO NUÔI CÁ KOI</p>
+        <ul><li>Xử lý khí độc NH 3 , H 2 S, NO 2 - Hạn chế tảo phát triển qua mức - Làm trong nước, đặc biệt dùng cho ao nuôi cá Koi - Xử lý mùi hôi thối ở đáy ao</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Hũ 1kg</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/promax-3421.jpg" alt="BIO PROMAX" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BIO PROMAX</h3>
+        <p class="prod-desc">VI SINH ĐƯỜNG RUỘT HỖ TRỢ TIÊU HÓA</p>
+        <ul><li>Giúp cân bằng hệ vi sinh đường ruột, hỗ trợ tiêu hóa tốt hơn. - Tăng cường khả năng hấp thu dinh dưỡng từ thức ăn. - Giảm thiểu các vấn đề tiêu hóa như tiêu chảy, khó tiêu. - Tăng cường hệ miễn dịch. - Kích thích hệ thống miễn dịch tự nhiên, giúp cơ thể đề kháng tốt hơn với các mầm bệnh. - Bảo vệ đường ruột khỏi sự xâm nhập của vi khuẩn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Gói 500g</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/winmax-4052.jpg" alt="BIO WINMAX" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BIO WINMAX</h3>
+        <p class="prod-desc">MEN VI SINH ỨC CHẾ EHP</p>
+        <ul><li>Sản phẩm vi sinh đường ruột kết hợp ức chế bệnh EHP là giải pháp toàn diện để bảo vệ sức khỏe đường ruột, ngăn ngừa bệnh tật và tăng sức đề kháng cho vật nuôi. Cải thiện hệ tiêu hóa: - Giúp cân bằng hệ vi sinh đường ruột, hỗ trợ tiêu hóa tốt hơn. - Tăng cường khả năng hấp thu dinh dưỡng từ thức ăn. - Giảm thiểu các vấn đề về tiêu hóa như tiêu chảy, khó tiêu. Tăng cường hệ miễn dịch: - Kích thích hệ thống miễn dịch tự nhiên, giúp cơ thể đề kháng tốt hơn với các mầm bệnh. - Bảo vệ đường ruột khỏi sự xâm nhập của vi khuẩn và vi rút có hại. Ức chế bệnh EHP: - Hỗ trợ ngăn chặn sự phát triển của vi rút EHP gây bệnh trong hệ tiêu hóa. - Giảm nguy cơ mắc bệnh tôm chết sớm, bảo vệ sức khỏe vật nuôi.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Gói 100g</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/fastbio-2-1532.png" alt="FASTBIO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">FASTBIO</h3>
+        <p class="prod-desc">TĂNG TRỌNG NHANH GIÚP TÔM TĂNG TRỌNG NHANH, RÚT NGẮN THỜI GIAN NUÔI. ĐẶC BIỆT LÀ GIAI ĐOẠN SẮP THU HOẠCH</p>
+        <ul><li>Giúp tôm siêu trọng, chống còi - Cải thiện sức khỏe, giúp tôm vượt qua các bệnh như: đốm trắng, đầu vàng, gan tụy, phân trắng,... - Nâng cao hệ miễn dịch, rút ngắn thời gian nuôi, tăng tỉ lệ sống, chống sốc. - Điều hòa rối loạn tiêu hóa, hấp thu thức ăn nhanh</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/oc-gao-8745.jpg" alt="HẠT SINH HỌC - SIÊU ỐC GẠO, TRÙN CHỈ GÂY MÀU" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">HẠT SINH HỌC - SIÊU ỐC GẠO, TRÙN CHỈ GÂY MÀU</h3>
+        <p class="prod-desc">Tạo màu nước Cung cấp dinh dưỡng cho ốc gạo, trùn chỉ phát triển siêu nhanh Bổ sung khoáng chất, dinh dưỡng trong ao nuô...</p>
+        <ul><li>Công dụng: Tạo nguồn thức ăn tự nhiên nhanh cho tôm, cá. Tạo màu nước, kích thích tảo phát triển ổn định. Cung cấp dinh dưỡng cho sinh vật có lợi. Tạo thức ăn bổ sung dinh dưỡng cho ốc gạo, trùn chỉ. Bổ sung khoáng chất dinh dưỡng cho ao tôm, cá.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Bao 10kg</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/minbiosea-1328.jpg" alt="MINBIOSEA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">MINBIOSEA</h3>
+        <p class="prod-desc">- GIÀU KHOÁNG, TẠT AO NUÔI - BỔ SUNG KHOÁNG. - NGĂN NGỪA HIỆN TƯỢNG CONG THÂN, TRẮNG LƯNG.</p>
+        <ul><li>Bổ sung khoáng cần thiết cho ao nuôi tôm, cá. Giúp tôm mau lột xác, nhanh cứng vỏ sau khi lột, phòng thiếu khoáng ( cong thân, đục cơ cho tôm thẻ, các bênh da màu xanh da trời của tôm sú giúp tôm tăng trưởng nhanh, tăng tỉ lệ sống trong những kỳ lột xác, rút ngắn thời gian nuôi. Giúp tảo và các sinh vật phù du phát triển nhanh, ổn định màu nước.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG, BAO 20KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/organic-n01-6007.jpg" alt="ORGANIC N01" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ORGANIC N01</h3>
+        <p class="prod-desc">ACID HỮU CƠ CÂN BẰNG pH ĐƯỜNG RUỘT</p>
+        <ul><li>Tiêu diệt vi khuẩn gây bệnh đường ruột, bổ sung các acid hữu cơ vào thức ăn giúp cân bằng pH đường ruột của tôm, giúp tôm phát triển tốt - Thay thế kháng sinh trong điều trị phân trắng. Dùng ngừa bệnh phân trắng, đường ruột. - Kích thích tiêu hóa.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/pro-bio-498.png" alt="PRO BIO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PRO BIO</h3>
+        <p class="prod-desc">XỬ LÝ KHÍ ĐỘC H 2 S, NO 2 , NH 3 LÀM SẠCH NƯỚC, SẠCH NHỚT BẠT TRONG AO NUÔI</p>
+        <ul><li>PHÂN HỦY THỨC ĂN THỪA, MÙN BẢ HỮU CƠ, CHẤT THẢI CỦA TÔM, CÁ. - PHÂN GIẢI CÁC KHÍ ĐỘC NHƯ: NH 3 , H 2 S, NO 2 ...TRONG AO NUÔI TÔ, CÁ. - LÀM SẠCH NƯỚC, SẠCH NHỚT BẠT TRONG AO NUÔI.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G, GÓI 454G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/pro-bio-mt-2092.jpg" alt="PRO - BIO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PRO - BIO</h3>
+        <p class="prod-desc">XỬ LÝ KHÍ ĐỘC H 2 S, NO 2 , NH 3 LÀM SẠCH NƯỚC, SẠCH NHỚT BẠT TRONG AO NUÔI</p>
+        <ul><li>Phân hủy thức ăn dư thừa, mùn bã hữu cơ, chất thải của tôm cá. Phân giải các khí độc như: NH 3 , H 2 S, NO 2 ,… trong ao nuôi tôm cá. Làm sạch nước, sạch nhớt bạt trong ao nuôi.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G, GÓI 454G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/pro-biolac-4727.jpg" alt="PRO BIOLAC" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PRO BIOLAC</h3>
+        <p class="prod-desc">TIÊU HÓA THỨC ĂN NGĂN NGỪA BỆNH ĐƯỜNG RUỘT, PHÂN LỎNG, PHÂN TRẮNG NGĂN NGỪA HIỆN TƯỢNG TÔM BỊ TRỐNG RUỘT</p>
+        <ul><li>BỔ SUNG MEN VI SINH VÀO ĐƯỜNG RUỘT GIÚP TÔM,CÁ TIÊU HÓA VÀ HẤP THU TỐT THỨC ĂN. - NGĂN NGỪA BỆNH ĐƯỜNG RUỘT NHƯ PHÂN LỎNG, PHÂN TRẮNG. - NGĂN NGỪA HIỆN TƯỢNG TÔM BỊ TRỐNG RUỘT DO KÝ SINH.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/pro-biozyme-1444.jpg" alt="PRO BIOZYM" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PRO BIOZYM</h3>
+        <p class="prod-desc">TIÊU HÓA THỨC ĂN NGĂN NGỪA BỆNH ĐƯỜNG RUỘT NONG TO ĐƯỜNG RUỘT, TĂNG TRỌNG NHANH</p>
+        <ul><li>GIÚP TÔM NHANH CHÓNG TIÊU HÓA VÀ HẤP THU THỨC ĂN TỐI ĐA, TRÁNH TIÊU TỐN THỨC ĂN. - NGĂN NGỪA HIỆN TƯỢNG PHÂN LỎNG, PHÂN TRẮNG, PHÂN ĐỨT ĐOẠN, RỔNG RUỘT. - BỔ SUNG PROTEIN GIÚP TÔM TĂNG TRỌNG NHANH Ở MỌI GIAI ĐOẠN. Chú ý : Sản phẩm phải được bảo quản ở nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. Kho phải có biện pháp chống chuột và côn trùng phá hoại. Chỉ dùng trong nuôi trồng thủy sản. '' Sản phẩm không chứa các chất cấm sử dụng trong sản xuất kinh doanh thủy sản theo quy định hiện hành của Bộ NN &amp; PTNT</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/promennew-6538.png" alt="PRO MEN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PRO MEN</h3>
+        <p class="prod-desc">MEN ĐƯỜNG RUỘT</p>
+        <ul><li>Bổ sung vi sinh vật, đạm và enzyme giúp tôm tiêu hóa và hấp thu tốt thức ăn - Bổ sung vi sinh vật có lợi và enzyme vào thành đường ruột cho tôm. - Ngăn ngừa hiệu quả bệnh phân trắng, đường ruột, phân đứt đoạn,...Giúp đường ruột nở to, tiêu hóa tốt, tăng trọng nhanh, tăng tỉ lệ sống cao.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 500ML</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/prozyme-2424.jpg" alt="PROZYME*" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PROZYME*</h3>
+        <p class="prod-desc">CUNG CẤP ENZYME CHO HỆ TIÊU HÓA, GIÚP TIÊU HÓA HOÀN TOÀN THỨC ĂN NGĂN NGỪA BỆNH ĐƯỜNG RUỘT, PHÂN TRẮNG</p>
+        <ul><li>Bổ sung enzyme cho hệ tiêu hóa của tôm, cá, ếch. Giúp vật nuôi tiêu hóa và hấp thu tốt thức ăn. - Cải thiện hệ số chuyển đổi thức ăn ( FCR ) . - Giúp vật nuôi nâng cao khả năng chống chịu với mầm bệnh. - Ngăn ngừa các bệnh về đường ruột.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 500G, GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/prozyme-goi-1kg-1349.png" alt="PROZYME*" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PROZYME*</h3>
+        <p class="prod-desc">ENZYME VÀ SINH TỐ TỎI CAO CẤP CHO HỆ TIÊU HÓA</p>
+        <ul><li>CÔNG DỤNG Bổ sung enzy me cho hệ tiêu hóa của tôm, cá, ếch. Giúp vật nuôi tiêu hóa và hấp thu tốt thức ăn. Cải thiện hệ số chuyển đổi thức ăn FCR. Giúp vật nuôi nâng cao khả năng chống chịu với mầm bệnh. Ngăn ngừa các bệnh về đường ruột.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Gói 1kg HSD: 2 năm kể từ ngày sản xuất</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/betaglucan-7296.png" alt="S-BETAGLUCAN" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">S-BETAGLUCAN</h3>
+        <p class="prod-desc">TĂNG CƯỜNG HỆ MIỀN DỊCH, TĂNG SỨC ĐỀ KHÁNG, NGĂN NGỪA VIRUS GÂY BỆNH</p>
+        <ul><li>Cung cấp dinh dưỡng cho tôm, giúp cá tăng cường sức đề kháng -Chế phẩm là dạng bột mịn thành phần bao gồm Beta Glucan kết hợp đặc biệt với các vi sinh vật có lợi nhằm tăng cường hệ miễn dịch, tăng sức đề kháng cho cá, chống lại các bệnh truyền nhiễm. Ức chế các vi sinh vật có hại như các vi khuẩn nhóm Vibrio, ngăn ngừa các bệnh đường ruột, kích thích tiêu hóa giúp cá tăng trọng nhanh</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/super-brf-02-2704.jpg" alt="SUPER BRF 02" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">SUPER BRF 02</h3>
+        <p class="prod-desc">MEN VI SINH CHUYÊN DÙNG CẮT TẢO XỬ LÝ KHÍ ĐỘC</p>
+        <ul><li>Giảm khí độc như (NH 2 ,H 2 S, NO 2 ) sinh ra ở đáy ao nuôi tôm, cá. - Phân hủy mùn bả hữu cơ, chất thải, thức ăn dư thừa của tôm ,cá. - Cắt tất cả các tảo sau 24h, hiệu quả trong tất cả các ao bạt và ao đất.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section class="cat-section" id="dinh-duong">
+    <div class="cat-header" style="background:#E65100">
+      <span class="cat-icon">💊</span>
+      <h2>Nhóm Dinh Dưỡng &amp; Hỗ Trợ Tăng Trưởng</h2>
+      <span class="cat-count">21 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/bcomlex-c-3933.png" alt="B.COMLEX C" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">B.COMLEX C</h3>
+        <p class="prod-desc">VITAMIN TỔNG HỢP - TĂNG SỨC ĐỀ KHÁNG, GIÚP TÔM PHỤC HỒI NHANH CHÓNG SAU KHI BỆNH</p>
+        <ul><li>Bổ sung các vitamin cần thiết vào thức ăn tôm, cá, ếch. - Giúp tôm, cá, ếch tăng trưởng và phát triển tốt. - Nâng cao năng suất và tăng tỉ lệ sống cho tôm, cá, ếch.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5713829728355f03e9ce04146c0c7654a549682d2b097-6380.jpg" alt="BIO STAY.C 25%" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BIO STAY.C 25%</h3>
+        <p class="prod-desc">Vitamin C tạt chống sốc cho tôm</p>
+        <ul><li>Chống sốc, stress cho tôm cá khi môi trường thay đổi hoặc nắng nóng - Giúp tôm cá khỏe mạnh, chống chịu được dịch bệnh.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/c-fresh-5098.jpg" alt="C FRESH" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">C FRESH</h3>
+        <p class="prod-desc">BỔ SUNG VITAMIN C GIÚP CÁ, ẾCH KHỎE MẠNH,NĂNG SUẤT CAO</p>
+        <ul><li>Bổ sung Vitamin C vào khẩu phần thức ăn giúp cá tăng trưởng tốt</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/carnal-1284.png" alt="CARNAL.F" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">CARNAL.F</h3>
+        <p class="prod-desc">CHẾ PHẨM GIÚP TĂNG TRỌNG, CHỐNG MẤT NƯỚC</p>
+        <ul><li>Chế phẩm có tác dụng giúp tăng trọng, chống mất nước và làm giảm quá trình oxy hóa của tôm, cá... khi cấp đông</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 25KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5713764270687cb157f9fe2ed4b07cfe08a2f4923e665-8478.jpg" alt="DRT" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DRT</h3>
+        <p class="prod-desc">DIỆT RONG ĐUÔI CHỒN,DIỆT TẢO ĐỘC - TẢO PHÁT SÁNG TRONG AO NUÔI TÔM, CÁ</p>
+        <ul><li>DIỆT CÁC LOẠI TẢO ĐỘC, RONG, RÊU CÓ HẠI TRONG AO NUÔI TÔM ,CÁ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 500ML</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/drt-dat-3561.png" alt="DRT" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">DRT</h3>
+        <p class="prod-desc">DIỆT RONG, TẢO ĐỘC TRONG AO NUỐI TÔM CÁ</p>
+        <ul><li>DIỆT CÁC LOÀI TẢO ĐỘC, RONG, RÊU CÓ HẠI TRONG AO NUÔI TÔM, CÁ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 500ML</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/gludine-7643.png" alt="GLUDINE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">GLUDINE</h3>
+        <p class="prod-desc">DIỆT KHUẨN CỰC MẠNH DIỆT NẤM, KÝ SINH TRÊN TÔM,CÁ</p>
+        <ul><li>DIỆT KHUẨN, NẤM, KÝ SINH TRÙNG TRONG AO NUÔI. SÁT TRÙNG BỂ ƯƠNG, DỤNG CỤ NUÔI CÁ. - KIỂM SOÁT MẬT ĐỘ TẢO TRONG AO NUÔI, KHỐNG CHẾ TẢO BẤT LỢI PHÁT TRIỂN.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 L</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/glutadine-1611.jpg" alt="GLUTADINE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">GLUTADINE</h3>
+        <p class="prod-desc">NGĂN NGỪA DIỆT KHUẨN, NẤM, NGUYÊN SINH ĐỘNG VẬT, MẦM BỆNH CHO CÁ, TÔM</p>
+        <ul><li>Diệt các loài vi khuẩn, nấm ký sinh trên thân cá. - Diệt nguyên sinh động vật trong nước ao nuôi cá trước khi thả giống - Ngăn ngừa mầm bệnh từ môi trường xâm nhập vào cơ thể cá - Sát trùng dụng cụ nuôi cá Ưu điểm: Không ảnh hưởng tảo</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z5200493419564b55e45a8690ad958c988b26cfaec4304-4470.jpg" alt="GLUTADINE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">GLUTADINE</h3>
+        <p class="prod-desc">- SIÊU DIỆT CÁC LOẠI SÁN LÁ MANG, TRÙNG MỎ NEO. - ĐẶC TRỊ CÁC LOẠI KÝ SINH TRÙNG, NẤM NHỚT. - ĐẶC BIỆT TRỊ ĐỈA BÁM CÁ.</p>
+        <ul><li>Diệt sán lá mang, các lạo ký sinh trùng sống trên mang, vòm miệng, vây, mang, đuôi, các loại rận cá, trùng mỏ neo, trùng bánh xe, trùng quả dưa, các lạo giun móc gây cá nổi đầu và bỏ ăn. - Trị nấm thủy mi (nấm nhớt), trị đỉa bám cá.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 100ML</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/grow-up-2812.png" alt="GROW UP" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">GROW UP</h3>
+        <p class="prod-desc">SIÊU TĂNG TRỌNG CHO TÔM, CÁ, ẾCH.</p>
+        <ul><li>Bổ sung các loại acid amin, khoáng chất, vitamin cần thiết vào thức ăn tôm, cá, ếch giúp cân bằng nhu cầu dinh dưỡng hàng ngày thúc đẩy tăng trọng, giảm thời gian nuôi và ít tiêu tốn thức ăn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/hepasol-4642.png" alt="HEPASOL" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">HEPASOL</h3>
+        <p class="prod-desc">GIẢI ĐỘC VÀ PHỤC HỒI CHỨC NĂNG GAN, TỤY PHÒNG NGỪA BỆNH EHP</p>
+        <ul><li>Phòng bệnh gan – tụy trên tôm. Phòng bệnh hoại tử gan, tụy cấp tính, teo gan, sưng gan. Giải độc và phục hồi chức năng gan, tụy. Tăng cường chức năng gan và tái tạo tế bào gan, ngăn ngừa tôm thương gan giúp gan chắc khỏe, màu sắc đẹp. Đào thải độc tố tích tụ trong cơ thể tôm. Phòng ngừa bệnh E.H.P trên tôm.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT Hạn sử dụng: 24 tháng kể từ ngày sản xuất sản phẩm . Cảnh báo an toàn: Sản phẩm an toàn với con người và môi trường .</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/6e74d3c8c5967cc82587-94.jpg" alt="HEPATOL + B12" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">HEPATOL + B12</h3>
+        <p class="prod-desc">GIẢI ĐỘC GAN, BỔ GAN GIÚP CÁ, ẾCH NGĂN NGỪA CÁC BỆNH VỀ GAN, TĂNG CƯỜNG CHỨC NĂNG GAN</p>
+        <ul><li>Cung cấp dinh dưỡng cho tôm, cá, ếch. Giúp bổ gan tôm, cá, ếch phát triển tốt</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> HŨ 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/heposol-2949.jpg" alt="HEPOSOL" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">HEPOSOL</h3>
+        <p class="prod-desc">GIẢI ĐỘC VÀ PHỤC HỒI CHỨC NĂNG GAN, TỤY TĂNG CƯỜNG CHỨC NĂNG GAN</p>
+        <ul><li>Phòng trị bệnh trên gan – tụy. Phòng bệnh hoại tử gan tụy cấp tính, teo gan, sưng gan . Giải độc và phục hồi chức năng gan tụy. Tăng cường chức năng gan và tái tạo tế bào gan, ngăn ngừa tổn thương gan giúp gan chắc khỏe, màu sắc đẹp. Đào thải kháng sinh tích tụ trong cơ thể tôm.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/mazar-n-3807.png" alt="MAZAR" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">MAZAR</h3>
+        <p class="prod-desc">CUNG CẤP VI SINH VẬT CÓ LỢI TRONG AO, PHỤC HỒI MÔI TRƯỜNG NƯỚC</p>
+        <ul><li>Phân hủy mùn bã hữu cơ, chất thải tôm</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/premix-d80-dat-7831.jpg" alt="PREMIX D80" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PREMIX D80</h3>
+        <p class="prod-desc">KHOÁNG ĐA VI LƯỢNG KÍCH THÍCH TÔM LỘT VỎ - MAU CỨNG VỎ CUNG CẤP KHOÁNG CHẤT, VITAMIN TỔNG HỢP CHO TÔM, CÁ TĂNG TRỌNG</p>
+        <ul><li>Bổ sung hỗn hợp vitamin và chất khoáng cần thiết cho động vật thủy sản: Giúp: + Giảm stress, tạo màu sắc bóng đẹp. + Hỗ trợ phát triển xương ở cá, tái tạo vỏ ở tôm. + Duy trì sức khỏe của da và màng. + Giúp quá trình chuyển hóa năng lượng nhanh hơn và hình thành mô. + Giúp tôm, cá khỏe mạnh, tăng trưởng tốt.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/premix-5762.jpg" alt="PREMIX N01" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PREMIX N01</h3>
+        <p class="prod-desc">KHOÁNG ĐA VI LƯỢNG KÍCH THÍCH TÔM LỘT VỎ - MAU CỨNG VỎ NGĂN NGỪA HIỆN TƯỢNG CONG THÂN, ĐỤC CƠ</p>
+        <ul><li>Cung cấp khoáng chất dưới dạng dễ dàng hấp thụ cho tôm. - Giúp kích thích lột vỏ đồng loạt và cứng vỏ nhanh sau khi lột. - Cung cấp khoáng vi lượng và đa lượng làm tăng sức đề kháng, nâng cao tỉ lệ sống và giảm hiện tượng cong thân đục cơ ở tôm.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/premix-8429.jpg" alt="PREMIX.9999" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PREMIX.9999</h3>
+        <p class="prod-desc">CUNG CẤP KHOÁNG ĐA VI LƯỢNG CHO TÔM NGĂN NGỪA CONG THÂN, ĐỤC CƠ TẠO NƯỚC MÀU, SẢN SINH ỐC GẠO, TRÙN CHỈ</p>
+        <ul><li>Cung cấp khoáng chất dưới dạng dễ dàng hấp thu cho tôm. Giúp kích thích tôm lột vỏ đồng loạt và cứng vỏ nhanh sau khi lột. Cung cấp khoáng vi lượng và đa lượng làm tăng sức đề kháng, nâng cao tỷ lệ sống và giảm hiện tượng cong thân, đục cơ ở tôm. Gây tảo , tạo thức ăn cho ốc gạo trùn chỉ phát triển .</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 10KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/robi-9008.jpg" alt="ROBI" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ROBI</h3>
+        <p class="prod-desc">GÂY TẢO, GÂY MÀU NƯỚC NHANH. KÍCH THÍCH PHÁT TRIỂN ỐC GẠO, TRÙN CHỈ.</p>
+        <ul><li>Bổ sung khoáng chất cần thiết vào thức ăn cho tôm, giúp cho tôm phát triển tốt. - Gây tảo, gây màu nước trong giai đoạn chuẩn bị ao và điều tiết màu nước, cung cấp đầy đủ khoáng chất giúp tảo phát triển, tạo nguồn thức ăn thiên nhiên. - Ổn định màu nước trong quá trình nuôi</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/tdrt-532.jpg" alt="T-DRT" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">T-DRT</h3>
+        <p class="prod-desc">DIỆT TẤT CẢ CÁC LOẠI RONG TRONG AO NUÔI TÔM</p>
+        <ul><li>DIỆT TẢO ĐỘC, CÁC LOẠI RONG TRONG AO NUÔI TÔM.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> HŨ 1,5KG, XÔ 3KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/uno-3088.png" alt="U-NO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">U-NO</h3>
+        <p class="prod-desc">CHẤT BAO BỌC THỨC ĂN DẠNG KEM CÓ MÙI TANH HẤP DẪN, KÍCH THÍCH TĂNG TRỌNG NHANH</p>
+        <ul><li>Bổ sung các chất dinh dưỡng cần thiết vào thức ăn cho cá và giúp cân bằng nhu cầu dinh dưỡng hàng ngày cho cá - Giúp bao bọc viên thức ăn. Tăng khả năng tiêu hóa thức ăn. Có mùi tanh đặc biệt hấp dẫn, kích thích tôm lột vỏ, tăng trọng nhanh</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> XÔ 2.5KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/z52004797173024082f12985f78e7638625c1e47d365a5-8962.jpg" alt="VIP-HUFA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">VIP-HUFA</h3>
+        <p class="prod-desc">KÍCH THÍCH TÔM TĂNG TRỌNG, CHỐNG CÒI ĐỒNG ĐỀU PHÁT TRIỂN</p>
+        <ul><li>Bổ sung chất dinh dưỡng, cung cấp các loại vitamin, acid amin thiết yếu giúp tôm, cá sinh trưởng tốt - VIP-HUFA là sản phẩm đặc biệt có chứa đầy đủ Acid béo Vitamin thiết yếu tăng cường sinh lực cho tôm - VIP-HUFA cung cấp nguồn dinh dưỡng cao cấp, giúp tôm vượt qua các bệnh như: virus đốm trắng, đầu vàng, đỏ thân, bệnh đường ruột, gan, phân trắng,... - VIP-HUFA giảm stress, tăng trọng nhanh, tăng tỷ lệ sống, tôm thu hoạch có phẩm chất tốt, đạt giá trị xuất khẩu - Đặc biệt VIP-HUFA không cần sử dụng thêm sản phẩm dinh dưỡng nào khác</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section class="cat-section" id="phong-tri-benh">
+    <div class="cat-header" style="background:#B71C1C">
+      <span class="cat-icon">🩺</span>
+      <h2>Nhóm Phòng Trị Bệnh</h2>
+      <span class="cat-count">11 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/antiems-1-3037.jpg" alt="ANTI EMS" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ANTI EMS</h3>
+        <p class="prod-desc">CÁC LOẠI THẢO DƯỢC ĐẶC BIỆT HỔ TRỢ ĐIỀU TRỊ VÀ NGĂN NGỪA CÁC BỆNH VỀ GAN, VÀNG DA, SƯNG GAN, TEO GAN, HOẠI TỬ GAN TỤY CẤ...</p>
+        <ul><li>HỔ TRỢ ĐIỀU TRỊ VÀ NGĂN NGỪA CÁC BỆNH VỀ GAN: SƯNG GAN, TEO GAN, VÀNG GAN, HOẠI TỬ GAN ,TỤY Ở TÔM. - GIẢI ĐỘC GAN DO HÓA CHẤT, SỬ DỤNG KHÁNG SINH LÂU NGÀY VÀ CÁC ĐỘC TỐ KHÁC. - KHÁNG VIÊM, KHÁNG KHUẨN, BẢO VỆ TẾ BÀO GAN. - GIÚP TÁI TẠO GAN, TĂNG CƯỜNG CHỨC NĂNG GAN. - GIÚP GAN CHUYỂN HÓA DINH DƯỠNG TỐT, PHỤC HỒI NHANH SAU KHI BỆNH.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CAN 4 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/bromax-1-3712.jpg" alt="BROMAX" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BROMAX</h3>
+        <p class="prod-desc">- XỬ LÝ NẤM ĐỒNG TIỀN (CHÂN CHÓ), NHỚT BẠT. - DIỆT KHUẨN GÂY BỆNH ĐỎ THÂN , ĐÓM ĐEN , GAN TỤY TRONG AO NUÔI TÔM.</p>
+        <ul><li>DIỆT KHUẨN GÂY BỆNH ĐỎ THÂN , ĐÓM ĐEN , BỆNH GAN , TỤY CÓ TRONG AO NUÔI TÔM. -  TRỊ ĐÓNG RONG TRÊN THÂN TÔM.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/dhepatic-4216.png" alt="D- HEPATIC FORT" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">D- HEPATIC FORT</h3>
+        <p class="prod-desc">NGĂN NGỪA BỆNH GAN, TỤY TRÊN TÔM</p>
+        <ul><li>BỔ SUNG CÁC CHẤT DINH DƯỠNG CẦN THIẾT CHO QUA TRÌNH SINH TRƯỞNG VÀ PHÁT TRIỂN CỦA TÔM. - GIÚP  TĂNG TRƯỞNG CHỨC NĂNG GAN, TỤY CỦA TÔM ĐỂ ĐÀO THẢI CÁC ĐỘC TỐ TRONG CƠ THỂ ĐỘNG VẬT THỦY SẢN. - GIÚP GIẢM CÁC HIỆN TƯỢNG TÔM KÉO ĐÀN NHIỀU NGÀY, TẤP MÉ</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> CHAI 1 LÍT, CAN 2 LÍT</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/enza-2049.jpg" alt="ENZA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ENZA</h3>
+        <p class="prod-desc">GIÚP ĐƯỜNG RUỘT NỞ TO, PHÒNG CHỐNG BỆNH ĐƯỜNG RUỘT</p>
+        <ul><li>Bổ sung vi khuẩn có lợi vào thức ăn cá, ếch. - Giúp tôm, cá hấp thu và tiêu hóa tốt thức ăn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/33b2bc283c914bd49e87048dae35daaa-8170.png" alt="ENZA" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ENZA</h3>
+        <p class="prod-desc">MEN TIÊU HÓA CAO CẤP</p>
+        <ul><li>Bổ sung vi khuẩn có lợi vào thức ăn cho cá, lươn, ếch Giúp cá, lươn, ếch hấp thu và tiêu hóa tốt thức ăn</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/kblue-mt-5000.jpg" alt="K-BLUE" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">K-BLUE</h3>
+        <p class="prod-desc">GÂY MÀU NƯỚC NHANH</p>
+        <ul><li>TẠO NHANH MÀU XANH NƯỚC KHI AO KHÔNG LÊN MÀU, MÀU NƯỚC TRONG, ÍT TẢO, KHÓ GÂY MÀU. - HẠN CHẾ ÁNH SÁNG CHIẾU XUỐNG ĐÁY AO VÀ NHIỆT ĐỘ NƯỚC TRONG AO NUÔI. - KIỂM SOÁT SỰ PHÁT TRIỂN CỦA TẢO CÓ HẠI, KHÔNG GÂY SỤP TẢO ĐỘT NGỘT. - GIÚP ỔN ĐỊNH MÔI TRƯỜNG NUÔI VÀ ÍT BIẾN ĐỘNG.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 200G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/marine-pro-2965.png" alt="MARINE PRO" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">MARINE PRO</h3>
+        <p class="prod-desc">MEN ĐƯỜNG RUỘT CAO CẤP. PHÒNG&amp; ĐIỀU TRỊ CÁC BỆNH ĐƯỜNG RUỘT: PHÂN TRẮNG, PHÂN ĐỨT ĐOẠN...GIÚP TIÊU HÓA TỐT.</p>
+        <ul><li>Bổ sung các vi sinh vật có lợi và các enzyme vào thành đường ruột, tiêu hóa tốt - Ngăn ngừa và điều trị bệnh đường ruột: phân trắng, phân lỏng, phân đứt đoạn... - Giúp đường ruột nở to, tiêu hóa tốt, tăng tỷ lệ sống và phát triển nhanh - Hỗ trợ tiêu hóa, tăng khả năng hấp thu các chất dinh dưỡng từ thức ăn giúp tôm, cá tăng trưởng nhanh</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> LON 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/img20230224165103-3838.jpg" alt="OC - KILL" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">OC - KILL</h3>
+        <p class="prod-desc"></p>
+        <ul><li>DIỆT ỐC VÀ ĐỘNG VẬT THÂN MỀM NHƯ SÒ , VẸM, CHEM CHÉP... TRONG AO NUÔI TRỒNG THỦY SẢN. Lưu ý: Chỉ dùng trong quá trình cải tạo ao. Nên dùng sản phẩm lúc chiều mát.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 200G, 250G, 500G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/oxy-genic-bao-5kg-6350.jpg" alt="OXYGENIC" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">OXYGENIC</h3>
+        <p class="prod-desc">CẤP CỨU KHI TÔM, CÁ NỐI ĐẦU</p>
+        <ul><li>CUNG CẤP OXY TRONG NƯỚC AO NUÔI TÔM,CÁ. DÙNG CẤP CỨU KHI TÔM, CÁ NỐI ĐẦU DO THIẾU OXY VÀO LÚC NỮA ĐÊM HOẶC RẠNG SÁNG. - CUNG CẤP OXY KHI MẤT TẢO ĐỘT NGỘT HOẶC SAU KHI DÙNG HÓA CHẤT XỬ LÝ.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> BAO 5KG, GÓI 2KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/pro-bzt-4903.png" alt="PRO BZT" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">PRO BZT</h3>
+        <p class="prod-desc">VI SINH XỬ LÝ ĐÁY AO</p>
+        <ul><li>Phân hủy thức ăn dư thừa, mùn bả hữu cơ, chất thải của tôm, cá. - Phân giải các khí độc như (NH 3 , H 2 S) trong ao nuôi tôm,cá. - Bổ sung vi khuẩn có lợi vào ao nuôi tôm, cá.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 227G, GÓI 454G</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/zymtin-plus-c-5889.png" alt="ZYMTIN PLUS C" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">ZYMTIN PLUS C</h3>
+        <p class="prod-desc">MEN TIÊU HÓA CAO CẤP</p>
+        <ul><li>Bổ sung enzyme, vi khuẩn có lợi vào thức ăn của tôm, cá, ếch. giúp tôm, cá, ếch tiêu hóa và hấp thu tốt thức ăn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section class="cat-section" id="kit-test">
+    <div class="cat-header" style="background:#37474F">
+      <span class="cat-icon">🔬</span>
+      <h2>Thiết Bị &amp; Kit Test</h2>
+      <span class="cat-count">20 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/but-do-ph-7369.png" alt="BÚT ĐO PH.Nhiệt Độ - EcoTestr pH2" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BÚT ĐO PH.Nhiệt Độ - EcoTestr pH2</h3>
+        <p class="prod-desc"></p>
+        <ul><li>Ngăn chứa pin khóa bấm không yêu cầu dụng cụ thay thế pin. − Giữ chức năng đóng băng đọc tạm thời để dễ ghi. − Nắp bảo vệ cảm biến đóng vai trò như vật chứa mẫu hoặc dung dịch hiệu chuẩn.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> THÔNG TIN KỸ THUẬT - Thang pH0 đến 14 pH: − Độ phân giải 0.1 pH − Độ chính xác ±0.1 pH − Số điểm hiệu chuẩn lên tới 3 điểm - Thang đo Nhiệt độ 0 to 50 °C − Độ phân giải 0.1 °C − Độ chính xác 0.5 °C − Màn hình LCD Màn hình tùy LCD 3 ½. − Thông tin khác Tự động tắt nguồn sau 8,5 phút − Nguồn 4 pin 1,5V − Kích thước; − Cân nặng − Đóng hộp: 24,5 cm x 13,5 cm x 4,5 cm; 137 gam</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/but-do-ph-9970.jpg" alt="BÚT ĐO pH.Nhiệt độ - pHTestr 30" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">BÚT ĐO pH.Nhiệt độ - pHTestr 30</h3>
+        <p class="prod-desc"></p>
+        <ul><li>Màn hình hiển thị lớn – màn hình LCD hiển thị kép để tăng khả năng đọc, cung cấp thông tin toàn diện về đồng hồ đo. − Vỏ chống nước, chống bụi – Xếp hạng IP67, duy trì tính toàn vẹn của thiết bị thử nghiệm của bạn ngay cả trong điều kiện khắc nghiệt − Auto-Power Off giúp tiết kiệm pin sau khi không sử sụng. − Bù nhiệt độ tự động (ATC) – đảm bảo độ chính xác tối ưu dưới nhiệt độ dao động.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> THÔNG TIN KỸ THUẬT: - Thang pH-1 đến 15pH − Độ phân giải 0.01 pH − Độ chính xác ±0.01 pH − Số điểm hiệu chuẩn lên tới 3 điểm − Dung dịch chuẩnTheo USA – pH 4.01, 7.00, 10.01; Theo NIST – pH 4.01, 6.86, 9.18 − Thang đo Nhiệt độ 0 to 50 °C − Độ phân giải 0.1 °C − Độ chính xác 0.5 °C − Màn hình LCD Màn hình kép với chỉ báo pin, thông báo lỗi/mã − Thông tin khác Màn hình tùy chỉnh kép lớn, tự chẩn đoán; Giữ chức năng; Tự động tắt nguồn sau 8,5 phút − Nguồn 4 pin 1,5V; &gt;500 giờ</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/may-do-do-duc-tn100ir-2976.png" alt="Máy đo độ đục TN100IR" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Máy đo độ đục TN100IR</h3>
+        <p class="prod-desc"></p>
+        <ul><li>− Hiệu chỉnh nút nhấn tự động (4 điểm) cho độ chính xác toàn dải chưa từng có − Bộ dụng cụ mang theo chắc chắn hoàn chỉnh với 4 chuẩn hiệu chuẩn, 3 cuvet rỗng, pin và hướng dẫn sử dụng toàn diện Tính năng tiết kiệm năng lượng cho phép thực hiện hơn 1200 phép đo với một bộ pin kiềm AAA − Màn hình lớn dễ đọc để xem tối ưu các phép đo với mã thông báo thân thiện với người dùng để khắc phục sự cố dễ dàng − Đáp ứng Tiêu chí Hiệu suất theo quy định của phương pháp ISO 7027 (DIN EN 27027)</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> - THÔNG TIN KỸ THUẬT: + Thang đo: 0 to 2000 NTU + Lựa chọn phạm vi tự động: 0,01 đến 19,99 NTU; 20,0 đến 99,9 NTU; 100 đến 2000 NTU + Độ phân giải:                        0,01 NTU (0 đến 19,99 NTU); 0,1 NTU (20,0 đến 99,9 NTU); 1 NTU (100 đến 2000 NTU) + Độ chính xác: &lt; 0,1 NTU đối với tiêu chuẩn 0,02 NTU; ±2 % giá trị đọc ±1 chữ số cho 0-500 NTU;±3 % giá trị đọc ±1chữ số cho 501-2000NTU + Độ lặp lại: &lt; hoặc = ±1 % giá trị đọc + Hiệu chuẩn: Lên đến 4 điểm + Dung dịch hiệu chuẩn: 0,02 NTU, 20,0 NTU, 100 NTU, 800 NTU -THÔNG SỐ KHÁC: + Thời gian đáp ứng: &lt; 6 giây để thay đổi toàn bộ bước + Thể tích mẫu: 10 mL + Nguồn sáng: Đi-ốt phát hồng ngoại (bước sóng 850 nm) + Phạm vi nhiệt độ hoạt động: 0 đến 50 ºC + Phạm vi nhiệt độ mẫu: 0 đến 50 ºC + Loại &amp; Xếp hạng vỏ bọc: Nhựa ABS &amp; xếp hạng IP67 + Nguồn: Pin kiềm 4 x 1,5 V ‘AAA’ (&gt; 1200 lần đọc) + Chứng nhận/Tuân thủ: FCC phần 15 loại A, TUV 3 trong 1, CE, RoHS + Kích thước máy (LxWxH): 15,5 x 6,8 x 4,6 cm + Trọng lượng máy đo: 200 g + Kích thước đóng (LxWxH): 35.5 x 16.5 x 10.5 cm + Trọng lượng vận chuyển: 1.160 g Cung cấp gồm : máy đo, bộ cốc đo mẫu, phụ kiện đi kèm, vali chứa máy</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/may-do-do-man-salt6-815.jpg" alt="Máy đo độ mặn Salt6+" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Máy đo độ mặn Salt6+</h3>
+        <p class="prod-desc"></p>
+        <ul><li>− Dễ sử dụng − Lên đến ±1 % độ chính xác toàn thang đo − Có thể lựa chọn bù nhiệt độ thủ công hoặc tự động − Chỉ số nhiệt độ chính xác đến 0,1°C − Salt6+ có hệ số độ mặn có thể điều chỉnh cho các dẫn xuất trực tiếp − Hiệu chỉnh nút nhấn nhanh chóng và dễ dàng</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Thông số kỹ thuật : - SAL + Thang đo: 1.0 to 50.0 ppt / 0.1 to 5.00 % + Độ phân giải: 0.1 ppt / 0.01 % + Độ chính xác: 1% toàn thang đo -Nhiệt độ +Thang đo: 0 đến 80°C + Độ phân giải: 0.1°C/ 0.1°F +Độ chính xác: ±0.5°C /0.5°F -Thông số khác + Cân bằng nhiệt độ: ATC/MTC (0 °C đến 50 °C) + IP: IP54 + Giữ chức năng: Có + Tự động tắt: 17 phút sau lần nhấn phím cuối cùng + Trung bình/ổn định: Có + Đầu vào: 1 đến 168 giờ hoặc tắt + Đầu kết nối: BNC, ổ cắm phono 2,5 mm + Nguồn điện: 4 pin kiềm AAA (1,5 V) + Kích thước máy (LxWxH): 15,7 x 8,5 x 4,2 cm + Trọng lượng máy đo: 255 g + Kích thước đóng (LxWxH): 24 x 17 x 8 cm +Trọng lượng vận chuyển: 555 g Cung cấp gồm : máy đo, đầu dò đo độ mặn, dây nguồn, vali chứa máy.</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/may-do-oxy-hoa-tan-9855.png" alt="Máy đo Oxy hòa tan . Nhiệt độ -DO6+" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Máy đo Oxy hòa tan . Nhiệt độ -DO6+</h3>
+        <p class="prod-desc"></p>
+        <ul><li>− Hiệu chỉnh bằng nút nhấn với nhận dạng bộ đệm tự động. − Thực hiện hiệu chuẩn ở 100 % hoặc 0 % so với dung dịch đã biết. − Tự động bù độ mặn và áp suất khí quyển với đầu vào thủ công. − Đầu dò Galvanic loại bỏ độ trễ phân cực và mang lại phản hồi ổn định mà không cần khởi động.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> - DO: + Thang đo: 0.00 to 19.99 mg/L or ppm + Độ phân giải: 0.01 mg/L or ppm + Độ chính xác: 1.5% toàn thang đo -% Độ bảo hòa Oxy: +Thang đo: 0.0 to 199.9 % + Độ phân giải: 0.10% + Độ chính xác: 1.5% toàn thang đo - Nhiệt độ: + Thang đo: 0 đến 50°C + Độ phân giải: 0.1°C + Độ chính xác: ±0.5°C -Thông số khác: + Cân bằng nhiệt độ: ATC/MTC (0 °C đến 50°C) + IP: IP54 + Giữ chức năng: Có + Tự động tắt: 17 phút sau lần nhấn phím cuối cùng + Loại đầu dò: Galvanic + Đầu kết nối: BNC, ổ cắm phono 2,5 mm + Nguồn điện: 4 pin kiềm AAA (1,5V) + Kích thước máy (LxWxH): 15,7 x 8,5 x 4,2 cm + Trọng lượng máy đo: 255 g + Kích thước đóng (LxWxH): 24 x 17 x 8 cm + Trọng lượng vận chuyển: 555 g Cung cấp gồm : máy đo, đầu dò đo DO, dây nguồn,vali chứa máy.</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/may-do-ph-7026.png" alt="Máy đo pH.Nhiệt độ - pH5+" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Máy đo pH.Nhiệt độ - pH5+</h3>
+        <p class="prod-desc"></p>
+        <ul><li>Kiểm tra chất lượng nước: Để phân tích nước trong bể bơi , quy trình in thạch bản, phân tích nước lò hơi và tháp giải nhiệt và tất cả các loại đảm bảo chất lượng và kiểm tra chất lượng nước. – Môi trường / Nông nghiệp: Sử dụng trong nghiên cứu sinh thái, hồ cá, nuôi trồng thủy sản và mức độ dinh dưỡng trong thủy canh. – Giáo dục: Lý tưởng để kiểm tra nhanh chóng, chính xác trong phòng thí nghiệm và trường học.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Thông số kỹ thuật: + Phạm vi đo: 0,00 đến 14,00 pH + Độ phân giải: 0.01 pH + Độ chính xác: ±0.01 pH + Nhiệt độ: 0 to 100 °C + Độ phân giải: 0.1 °C + Độ chính xác: ± 0.5 °C + Thang mV: 0 + Số điểm chuẩn: 2 lên tới 5 điểm + Dung dịch chuẩn: USA - pH 4.01, 7.00, 10.01; NIST - pH 4.01, 6.86, 9.18 + Màn hình: LCD hiển thị tốt + Tự động bù nhiệt (ATC): Có + Đặc tính: Hiển thị tùy chỉnh kép lớn, tự chẩn đoán; Giữ chức năng; Tự động tắt nguồn sau 17 phút. + Nguồn: 4'AAA'*1,4 V Cung cấp: máy chính, đầu dò pH, đầu dò nhiệt độ, phụ kiện đi kèm, vali chứa máy/</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/nhiet-am-ke-boe327-3600.jpg" alt="Nhiệt ẩm kế BOE327" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">Nhiệt ẩm kế BOE327</h3>
+        <p class="prod-desc"></p>
+        <ul><li>Hiển thị nhiệt độ và độ ẩm trong nhà − Nhiệt độ ngoài trời ghi lại nhiệt độ và độ ẩm tối đa và tối thiểu Công tắc °C và °F</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> Cảnh báo đóng băng từ -1°C đến +4°C − 1 x pin (AAA) bao gồm. − Phạm vi đo nhiệt độ: Trong nhà: -10 đến + 50°C − Ngoài trời: -5 đến + 70°C − Dải đo độ ẩm: 20 – 99 %RH − Độ chính xác: ± 1°C, ± 5% RH Cung cấp : nhiệt ẩm kế</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/test-kit-ca-9035.png" alt="TEST Ca" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST Ca</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Canxi trong môi trường nước.</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/cl-5624.jpg" alt="TEST Cl" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST Cl</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Clorine trong môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/cu-9664.jpg" alt="TEST  Cu" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST  Cu</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Cu trong môi trường nước.</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/fe-4779.jpg" alt="TEST Fe" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST Fe</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Fe trong môi trường nước.</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/gh-67.jpg" alt="TEST gH" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST gH</h3>
+        <p class="prod-desc">Kiểm tra tổng độ cứng (total hardness) của môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/kh-1543.jpg" alt="TEST kH" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST kH</h3>
+        <p class="prod-desc">Kiểm tra độ kiềm (carbonate hardness) trong môi trường nước mặn và ngọt .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/test-kit-mg-3383.png" alt="TEST Mg" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST Mg</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Magnesium trong môi trường nước.</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/nh4-nh3-3804.jpg" alt="TEST NH3 NH4" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST NH3 NH4</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Amonium/Amonia trong môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/no2-9635.jpg" alt="TEST NO2" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST NO2</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Nitrite ( NO2 ) trong môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/no3-5674.jpg" alt="TEST NO3" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST NO3</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Nitrate ( NO3 ) trong môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/02-538.jpg" alt="TEST  O2" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST  O2</h3>
+        <p class="prod-desc">Kiểm tra nồng độ Oxy trong môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/ph-9305.jpg" alt="TEST  pH" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST  pH</h3>
+        <p class="prod-desc">Kiểm tra độ pH trong môi trường nước mặn và ngọt .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/po4-5492.jpg" alt="TEST PO4" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">TEST PO4</h3>
+        <p class="prod-desc">Kiểm tra hàm lượng Phosphate trong môi trường nước .</p>
+        <ul><li>Đang cập nhật ...</li></ul>
+        
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section class="cat-section" id="khac">
+    <div class="cat-header" style="background:#546E7A">
+      <span class="cat-icon">📦</span>
+      <h2>Sản Phẩm Khác</h2>
+      <span class="cat-count">1 sản phẩm</span>
+    </div>
+    <div class="prod-grid">
+      
+    <div class="prod-card">
+      <div class="prod-img"><img src="datvet-selected-images/supper-brf-7319.jpg" alt="SUPPER BRF.02" loading="lazy"></div>
+      <div class="prod-body">
+        <h3 class="prod-name">SUPPER BRF.02</h3>
+        <p class="prod-desc">SẠCH ĐÁY, SẠCH NHỚT XỬ LÝ KHÍ ĐỘC NO 2 , NH 3 - TẠO MÀU NƯỚC ĐẸP ỔN ĐỊNH PH - MÔI TRƯỜNG NƯỚC</p>
+        <ul><li>BỔ SUNG CÁC ENZYME VÀO XỬ LÝ MỐI TRƯỜNG NUÔI TRỒNG THỦY SẢN, CÓ TÁC DỤNG: + PHÂN HỦY MÙN BẢ HỮU CƠ, CHẤT THẢI CỦA TÔM, XÁC TẢO CHẾT TRONG NƯỚC. + XỬ LÝ CÁC NGUYÊN TẠO RA KHÍ ĐỘC NHƯ NH 3 , H 2 S GÂY HẠI CHO TÔM. + LÀM GIẢM SỰ GIA TĂNG CỦA LỚP BÙN ĐÁY, GIẢM MÙI HÔI TRONG NƯỚC. + TĂNG TỶ LỆ SỐNG VÀ TĂNG NĂNG SUẤT CHO TÔM CÁ NUÔI ÍT BỊ HAO HỤT. TÔM CÁ SẼ KHỎE MẠNH, ĂN NHIỀU, MAU LỚN, RÚT NGẮN THỜI GIAN NUÔI. + GIẢM CHI PHÍ THAY NƯỚC.</li></ul>
+        <div class="quy-cach"><strong>Quy cách:</strong> GÓI 1KG</div>
+        <div class="contact-badge">Liên hệ báo giá</div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h2>CÔNG TY TNHH ĐẠI AN THÁI</h2>
+      <p>Chuyên sản xuất và cung cấp thuốc thú y, thuốc thủy sản, chất xử lý môi trường nuôi trồng thủy sản và phân bón chất lượng cao. Hơn 20 năm đồng hành cùng người nuôi trồng thủy sản Việt Nam.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Liên Hệ</h3>
+      <p>📞 0989.59.8887</p>
+      <p>✉ datvetpharma@gmail.com</p>
+      <p>🌐 datvetpharma.com</p>
+    </div>
+    <div class="footer-col">
+      <h3>Địa Chỉ</h3>
+      <p>Trụ sở: 17E4 Đường DD4, KP56, P. Đông Hưng Thuận, TP.HCM</p>
+      <p>Văn phòng: Số 20, Đường số 1, KP2, P. Tam Bình, TP.HCM</p>
+      <p>Nhà máy: Lô A1.2, KCN Đức Hòa 3, Tây Ninh</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2003 – 2024 Công ty TNHH Đại An Thái · DATVET · Chung một niềm tin
+  </div>
+</footer>
+
+</body>
+</html>
