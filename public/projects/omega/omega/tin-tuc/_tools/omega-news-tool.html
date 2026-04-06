@@ -512,11 +512,11 @@
     <!-- ======== PANEL 6: INDEX ======== -->
     <div id="panel-index" class="panel">
       <div class="panel-title">&#128218; Cập nhật chỉ mục</div>
-      <div class="panel-desc">Tạo <code>_tools/news-data.json</code>, <code>_tools/authors.json</code> và cập nhật <code>tin-tuc.html</code>.</div>
+      <div class="panel-desc">Tạo <code>_tools/news-data.json</code>, <code>_tools/authors.json</code>, cập nhật <code>tin-tuc.html</code> và tự động inject bài nổi bật vào <code>index.html</code>.</div>
 
       <div class="card">
         <div class="card-title"><span>A</span> Tạo news-data.json + authors.json</div>
-        <p class="fs-12 text-muted mb-2">Xuất bài viết đã xuất bản ra JSON và cập nhật dữ liệu tác giả — lưu vào <code>tin-tuc/_tools/</code>.</p>
+        <p class="fs-12 text-muted mb-2">Xuất bài viết đã xuất bản ra JSON và cập nhật dữ liệu tác giả — lưu vào <code>tin-tuc/_tools/</code>. Khi mở thư mục Omega, tự động inject 3 bài nổi bật (<code>is_featured=true</code>) vào section <code>#tin-tuc</code> của <code>index.html</code>.</p>
         <div class="btn-group">
           <button class="btn btn-primary" onclick="generateNewsDataJson()">&#128190; Tạo &amp; Lưu JSON</button>
           <button class="btn btn-secondary" onclick="previewNewsDataJson()">&#128065; Xem trước</button>
@@ -1490,14 +1490,17 @@ async function buildNewsDataJson() {
 
 async function generateNewsDataJson(silent) {
   var json = await buildNewsDataJson();
+  var articles = JSON.parse(json);
   if (omegaDir) {
     try {
       var toolsDir = await getNestedDir(omegaDir, ['tin-tuc', '_tools'], true);
       await writeFile(toolsDir, 'news-data.json', json);
-      if (!silent) toast('Đã lưu _tools/news-data.json (' + JSON.parse(json).length + ' bài).');
+      if (!silent) toast('Đã lưu _tools/news-data.json (' + articles.length + ' bài).');
     } catch(e) {
       if (!silent) toast('Lỗi lưu JSON: ' + e.message, 'error');
     }
+    // Tự động cập nhật section tin tức trên index.html
+    await updateIndexHtml(articles, silent);
   } else {
     var blob = new Blob([json], { type: 'application/json' });
     saveAs(blob, 'news-data.json');
@@ -1533,6 +1536,66 @@ async function generateAuthorsJson(silent) {
     var blob = new Blob([json], { type: 'application/json' });
     saveAs(blob, 'authors.json');
     if (!silent) toast('Đã tải về authors.json.');
+  }
+}
+
+// ── Index.html News Section ──────────────────────────────────
+function buildIndexNewsHtml(articles) {
+  var N = 3;
+  // Ưu tiên is_featured, sau đó lấy từ đầu mảng (đã theo thứ tự XLSX)
+  var featured = articles.filter(function(a) { return a.is_featured; });
+  var rest = articles.filter(function(a) { return !a.is_featured; });
+  var picks = featured.concat(rest).slice(0, N);
+
+  var catLabels = {
+    'chuyen-doi-so': 'Chuyển đổi số', 'erp-quan-tri': 'ERP – Quản trị',
+    'ke-toan-tai-chinh': 'Kế toán – Tài chính', 'su-kien': 'Sự kiện', 'tuyen-dung': 'Tuyển dụng'
+  };
+  var catClass = { 'ke-toan-tai-chinh': ' blue', 'su-kien': ' red', 'tuyen-dung': ' orange' };
+  var delays = ['0.1s', '0.2s', '0.3s'];
+
+  var cards = picks.map(function(a, i) {
+    var label = catLabels[a.category] || a.category;
+    var cls   = catClass[a.category] || '';
+    var exc   = (a.excerpt || '').slice(0, 120);
+    if (a.excerpt && a.excerpt.length > 120) exc += '...';
+    return [
+      '        <div class="col-md-4 wow fadeInUp" data-wow-delay="' + delays[i] + '">',
+      '          <div class="news-card">',
+      '            <div class="news-card-img">',
+      '              <img src="' + escHtml(a.cover_image) + '" alt="' + escHtml(a.title) + '" loading="lazy">',
+      '            </div>',
+      '            <div class="news-card-body">',
+      '              <span class="news-category' + cls + '">' + label + '</span>',
+      '              <h4><a href="tin-tuc/' + escHtml(a.slug) + '.html" style="color:var(--text-dark);">' + escHtml(a.title) + '</a></h4>',
+      '              <p class="excerpt" style="font-size:13px;color:#777;line-height:1.6;margin-bottom:10px;">' + escHtml(exc) + '</p>',
+      '              <div class="news-meta"><i class="fa-regular fa-calendar"></i> ' + escHtml(a.published_date) + '</div>',
+      '            </div>',
+      '          </div>',
+      '        </div>'
+    ].join('\n');
+  }).join('\n');
+
+  return '        <!-- [OMEGA-INDEX-NEWS-START] -->\n' + cards + '\n        <!-- [OMEGA-INDEX-NEWS-END] -->';
+}
+
+async function updateIndexHtml(articles, silent) {
+  if (!omegaDir) return;
+  var startM = '<!-- [OMEGA-INDEX-NEWS-START] -->';
+  var endM   = '<!-- [OMEGA-INDEX-NEWS-END] -->';
+  try {
+    var text = await readFileText(omegaDir, 'index.html');
+    var s = text.indexOf(startM);
+    var e = text.indexOf(endM);
+    if (s === -1 || e === -1) {
+      if (!silent) toast('index.html: Không tìm thấy markers OMEGA-INDEX-NEWS. Bỏ qua.', 'warn');
+      return;
+    }
+    var newText = text.slice(0, s) + buildIndexNewsHtml(articles) + text.slice(e + endM.length);
+    await writeFile(omegaDir, 'index.html', newText);
+    if (!silent) toast('Đã cập nhật index.html – ' + Math.min(articles.length, 3) + ' bài nổi bật.');
+  } catch(ex) {
+    if (!silent) toast('Lỗi cập nhật index.html: ' + ex.message, 'error');
   }
 }
 
@@ -2294,8 +2357,12 @@ function buildArticleHtml(a, thumb, gallery, videos, allArticles, knownSlugs) {
           <div class="col-12">
             <div class="footer-contact-item"><h3 style="color:#00A651;">CÔNG TY TNHH CÔNG NGHỆ &amp; GIẢI PHÁP OMEGA</h3></div>
             <div class="footer-contact-item"><i class="fa-solid fa-city"></i><span style="color:rgba(255,255,255,0.6);">Lầu 6 - Tòa nhà Hà Sơn, số 277A Nguyễn Văn Đậu, TP.HCM</span></div>
-            <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><a href="tel:+84835128448" style="color:rgba(255,255,255,0.6);">(+84-8) 3512 8448</a></div>
-            <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><a href="mailto:info@omega.com.vn" style="color:rgba(255,255,255,0.6);">info@omega.com.vn</a></div>
+            <div class="footer-contact-row">
+              <a href="tel:02835128448" class="fcr-item"><i class="fa-solid fa-phone"></i>028 3512 8448</a>
+              <span class="fcr-item"><i class="fa-solid fa-fax"></i>Fax: 028 3514 7280</span>
+              <a href="mailto:info@omega.com.vn" class="fcr-item"><i class="fa-solid fa-envelope"></i>info@omega.com.vn</a>
+              <a href="https://zalo.me/0908303609" class="fcr-item"><i class="fa-solid fa-mobile"></i>0908 303 609 (Mr. Nhân)</a>
+            </div>
           </div>
         </div>
       </div>
@@ -2303,7 +2370,11 @@ function buildArticleHtml(a, thumb, gallery, videos, allArticles, knownSlugs) {
     <div class="footer-bottom">
       <div class="container">
         <div class="footer-bottom-inner">
-          <p class="footer-copy">© 2025 <a href="../index.html">Công ty TNHH Công nghệ và Giải pháp Omega</a>. All rights reserved.</p>
+          <p class="footer-copy footer-copy-legal">
+              <span class="footer-copy-lname">Công ty TNHH Công nghệ và Giải pháp Omega</span>
+              <span class="footer-copy-lyr">© 2009–<script>document.write(new Date().getFullYear())<\/script>. All rights reserved.</span>
+            </p>
+          <p class="footer-copy"><a href="../chinh-sach-bao-mat.html">Chính sách bảo mật</a></p>
         </div>
       </div>
     </div>

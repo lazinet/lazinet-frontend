@@ -1121,12 +1121,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 .footer-contact-item i { color: var(--green-primary); font-size: 16px; margin-top: 2px; flex-shrink: 0; }
 
+.footer-contact-row {
+  display: flex; flex-wrap: wrap; gap: 10px 32px; margin-bottom: 0;
+}
+.fcr-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 14px; color: rgba(255,255,255,0.6);
+  text-decoration: none; white-space: nowrap;
+  width: calc(50% - 16px);
+}
+@media (min-width: 768px) { .fcr-item { width: auto; } }
+.fcr-item i { color: var(--green-primary); font-size: 15px; flex-shrink: 0; }
+.fcr-item:hover { color: var(--green-light); }
+
 .footer-bottom-inner {
   display: flex; align-items: center;
   justify-content: space-between; flex-wrap: wrap; gap: 12px;
 }
 .footer-copy { font-size: 13px; color: rgba(255,255,255,0.45); }
 .footer-copy a { color: var(--green-light) !important; }
+.footer-copy-legal { display: flex; flex-wrap: wrap; gap: 0 6px; }
+.footer-copy-lname { white-space: nowrap; }
+.footer-copy-lyr { white-space: nowrap; }
 
 /* ========================
    21. Page Header Banner

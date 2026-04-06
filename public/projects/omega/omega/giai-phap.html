@@ -51,6 +51,11 @@
   <link rel="stylesheet" href="assets/css/magnific-popup.css">
   <link rel="stylesheet" href="assets/css/omega.css">
 
+  <style>
+    .banner-img-responsive { width: 100%; max-width: 80%; height: auto; display: inline-block; }
+    @media (max-width: 767px) { .banner-img-responsive { max-width: 100%; } }
+  </style>
+
   <!-- Schema.org structured data -->
   <script type="application/ld+json">
   {
@@ -337,10 +342,10 @@
   <!-- ============ /INTRO SECTION ============ -->
 
   <!-- ============ BANNER IMAGE ============ -->
-  <div style="width:100%;overflow:hidden;line-height:0;">
-    <img src="assets/omega-media/Giải pháp/Asset-5@2x-2048x738.png"
+  <div style="text-align:center;padding:0 16px;">
+    <img src="assets/banners/omega-banner01.webp"
          alt="Giải pháp ERP chuyên biệt theo ngành – OMEGA"
-         style="width:100%;height:auto;display:block;">
+         class="banner-img-responsive">
   </div>
 
 
@@ -1392,13 +1397,11 @@
             <div class="footer-contact-item">
               <i class="fa-solid fa-building me-2"></i>
               <span style="color:rgba(255,255,255,0.6);"><u>Văn phòng Miền Bắc</u>: <a href="https://maps.app.goo.gl/Ehcb8NsZNC64B8w37" target="_blank" style="color: inherit;">Phòng 507 – B8, số 8A Hoàng Ngọc Phách, Phường Đống Đa, Hà Nội</a>. Liên hệ: <a href="https://zalo.me/0972735899">0972 735 899 (Mr. Tuấn Anh)</a></span></div>
-            <div class="footer-contact-item">
-              <i class="fa-solid fa-phone"></i> <a href="tel:+84835128448" style="color:rgba(255,255,255,0.6);">(+84-8) 3512 8448</a>
-              <i class="fa-solid fa-fax"></i> Fax: (+84-8) 3514 7280
-            </div>
-            <div class="footer-contact-item">
-              <i class="fa-solid fa-envelope"></i><a href="mailto:info@omega.com.vn" style="color:rgba(255,255,255,0.6);">info@omega.com.vn</a>
-              <i class="fa-solid fa-mobile"></i><a href="https://zalo.me/0908303609">0908 303 609 (Mr. Nhân)</a>
+            <div class="footer-contact-row">
+              <a href="tel:02835128448" class="fcr-item"><i class="fa-solid fa-phone"></i>028 3512 8448</a>
+              <span class="fcr-item"><i class="fa-solid fa-fax"></i>Fax: 028 3514 7280</span>
+              <a href="mailto:info@omega.com.vn" class="fcr-item"><i class="fa-solid fa-envelope"></i>info@omega.com.vn</a>
+              <a href="https://zalo.me/0908303609" class="fcr-item"><i class="fa-solid fa-mobile"></i>0908 303 609 (Mr. Nhân)</a>
             </div>
           </div>
         </div>
@@ -1407,7 +1410,10 @@
     <div class="footer-bottom">
       <div class="container">
         <div class="footer-bottom-inner">
-          <p class="footer-copy">© 2025 <a href="index.html">Công ty TNHH Công nghệ và Giải pháp Omega</a>. All rights reserved.</p>
+          <p class="footer-copy footer-copy-legal">
+              <span class="footer-copy-lname">Công ty TNHH Công nghệ và Giải pháp Omega</span>
+              <span class="footer-copy-lyr">© 2009–<script>document.write(new Date().getFullYear())</script>. All rights reserved.</span>
+            </p>
           <p class="footer-copy"><a href="chinh-sach-bao-mat.html">Chính sách bảo mật</a></p>
         </div>
       </div>

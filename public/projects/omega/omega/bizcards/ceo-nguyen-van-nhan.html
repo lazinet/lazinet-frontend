@@ -485,12 +485,48 @@
 
     <script>
         // CONFIG
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyHjEDp1PH7GkVa1tP497QILJh14XGb0i71TRAJesGZQ6phyPC_yX6fUq54zSQqZ-BCdg/exec'; 
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwWWm3BEKlHLmtRyeQhk9SDkfcEKs_OuurbcUJdRC7PD3Vli1NNscP8BpAghx32RwJ1Kw/exec'; 
 
         let configData = null;
         let bizData = null;
         let chatHistory = [];
         let currentQRLink = "";
+
+        // --- SESSION & CHAT HISTORY PERSISTENCE ---
+        const CARD_SLUG = 'ceo-nguyen-van-nhan';
+        const LS_SESSION_KEY = 'omega_sess_' + CARD_SLUG;
+        const LS_HIST_KEY    = 'omega_hist_' + CARD_SLUG;
+        const LS_USER_KEY    = 'omega_user_' + CARD_SLUG;
+
+        function getOrCreateSessionId() {
+            let sid = localStorage.getItem(LS_SESSION_KEY);
+            if (!sid) {
+                sid = 'sess_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+                localStorage.setItem(LS_SESSION_KEY, sid);
+            }
+            return sid;
+        }
+        function saveChatLocal() {
+            try { localStorage.setItem(LS_HIST_KEY, JSON.stringify(chatHistory)); } catch(e) {}
+        }
+        function loadChatLocal() {
+            try { return JSON.parse(localStorage.getItem(LS_HIST_KEY)); } catch(e) { return null; }
+        }
+        function saveUserLocal(name, email) {
+            try { localStorage.setItem(LS_USER_KEY, JSON.stringify({ name, email })); } catch(e) {}
+        }
+        function loadUserLocal() {
+            try { return JSON.parse(localStorage.getItem(LS_USER_KEY)); } catch(e) { return null; }
+        }
+        function clearChatHistory() {
+            localStorage.removeItem(LS_HIST_KEY);
+            localStorage.removeItem(LS_USER_KEY);
+            chatHistory = [];
+            document.getElementById('chat-history').innerHTML = '';
+            document.getElementById('chat-window').classList.add('hidden');
+            document.getElementById('chat-window').classList.remove('flex');
+            document.getElementById('form-container').classList.remove('hidden');
+        }
 
         // --- 1. SUPER SCALE MOBILE (Fix: 100% Width) ---
         function resizeCards() {
@@ -717,10 +753,34 @@
             const p = document.getElementById('interaction-panel');
             const b = document.getElementById('chat-button');
             p.classList.toggle('hidden');
-            if(!p.classList.contains('hidden')) {
-                p.scrollIntoView({behavior:'smooth'});
+            if (!p.classList.contains('hidden')) {
+                p.scrollIntoView({ behavior: 'smooth' });
                 b.innerText = 'ẨN TƯ VẤN';
-            } else {b.innerText = 'TƯ VẤN NGAY';};
+                // Khôi phục lịch sử chat từ localStorage nếu có
+                const savedHist = loadChatLocal();
+                if (savedHist && savedHist.length > 0 && chatHistory.length === 0) {
+                    chatHistory = savedHist;
+                    const box = document.getElementById('chat-history');
+                    box.innerHTML = '';
+                    // Nút xóa lịch sử ở đầu
+                    const clearWrap = document.createElement('div');
+                    clearWrap.className = 'text-center py-1';
+                    clearWrap.innerHTML = '<button onclick="clearChatHistory()" class="text-xs text-gray-400 underline">Xóa lịch sử &amp; bắt đầu lại</button>';
+                    box.appendChild(clearWrap);
+                    // Render lại các tin nhắn
+                    savedHist.forEach(msg => {
+                        const div = document.createElement('div');
+                        const r = msg.role === 'user' ? 'user' : 'bot';
+                        div.className = `chat-bubble ${r==='user'?'chat-bubble-user':'chat-bubble-bot'}`;
+                        div.innerHTML = r==='bot' ? (typeof marked!=='undefined' ? marked.parse(msg.content) : msg.content) : msg.content;
+                        box.appendChild(div);
+                    });
+                    box.scrollTop = box.scrollHeight;
+                    document.getElementById('form-container').classList.add('hidden');
+                    document.getElementById('chat-window').classList.remove('hidden');
+                    document.getElementById('chat-window').classList.add('flex');
+                }
+            } else { b.innerText = 'TƯ VẤN NGAY'; }
         }
 
         function shareLink() {
@@ -762,6 +822,8 @@ END:VCARD`;
             const fd = new FormData(e.target);
             const payload = {
                 action: 'submitForm',
+                sessionId: getOrCreateSessionId(),
+                cardSlug: CARD_SLUG,
                 name: fd.get('name'), company: fd.get('company'),
                 phone: fd.get('phone'), email: fd.get('email'),
                 message: fd.get('message'), chat: document.getElementById('wantChat').checked
@@ -772,6 +834,7 @@ END:VCARD`;
                 const res = await fetch(GAS_WEB_APP_URL, {method:'POST', body: JSON.stringify(payload)});
                 const data = await res.json();
                 
+                saveUserLocal(payload.name, payload.email);
                 if(payload.chat) {
                     document.getElementById('form-container').classList.add('hidden');
                     document.getElementById('chat-window').classList.remove('hidden');
@@ -799,6 +862,7 @@ END:VCARD`;
             div.innerHTML = role==='bot' ? marked.parse(text) : text;
             box.appendChild(div); box.scrollTop = box.scrollHeight;
             chatHistory.push({role: role==='user'?'user':'assistant', content: text});
+            saveChatLocal();
         }
 
         async function sendChatMessage() {
@@ -815,7 +879,15 @@ END:VCARD`;
             box.appendChild(loader); box.scrollTop = box.scrollHeight;
 
             try {
-                const res = await fetch(GAS_WEB_APP_URL, {method:'POST', body: JSON.stringify({action:'chat', messages: chatHistory})});
+                const u = loadUserLocal() || {};
+                const res = await fetch(GAS_WEB_APP_URL, {method:'POST', body: JSON.stringify({
+                    action: 'chat',
+                    messages: chatHistory,
+                    sessionId: getOrCreateSessionId(),
+                    cardSlug: CARD_SLUG,
+                    userEmail: u.email || '',
+                    userName:  u.name  || ''
+                })});
                 const data = await res.json();
                 document.getElementById('chat-loader').remove();
                 appendMsg('bot', data.response || "Lỗi phản hồi.");
