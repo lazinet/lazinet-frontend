@@ -529,6 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Tech Grid Animation =================================================================================================================================================================
 const canvas = document.getElementById("tech-grid");
+if (canvas) {
 const ctx = canvas.getContext("2d");
 const card = document.getElementById("tech-grid-boundary");
 canvas.width = canvas.offsetWidth;
@@ -725,3 +726,4 @@ window.addEventListener("resize", () => {
   initializeNodes();
   mouseNode = null;
 });
+} // end if (canvas)

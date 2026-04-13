@@ -102,14 +102,10 @@
     }
     </script>
     
-    <!-- === PRELOAD CRITICAL RESOURCES === -->
-    <link rel="preload" href="assets/img/logo-lazinet/lazinet_LogoFullv2.png" as="image">
-    
     <!-- === CSS FILES from OLD LAZINET === -->
     <link rel="stylesheet" href="assets/vendor/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/vendor/aos/aos.css">
     <link rel="stylesheet" href="assets/vendor/glightbox/css/glightbox.min.css">
-    <link rel="stylesheet" href="assets/vendor/swiper/swiper-bundle.min.css">
 
 	<!-- === CSS FILES from NEW LAZINET === -->
     <!-- Google Fonts Css-->
@@ -285,7 +281,7 @@
             <!-- <video autoplay muted loop id="myvideo"><source src="assets/videos/main-video.mp4" type="video/mp4"></video> -->
             
             <!-- Đoạn dưới dùng để random 1 video load từ list -->
-            <video autoplay muted loop id="myvideo"></video>
+            <video autoplay muted loop playsinline id="myvideo" poster="assets/images/hero-bg-image_Original.webp"></video>
                 <script>
                 const videos = [
                     "assets/videos/main-video.mp4",
@@ -1821,19 +1817,23 @@
         let categories = [];
         let originalText = ''; // Thêm biến originalText
 
-        // DOM Elements
-        const categoryTabs = document.getElementById('categoryTabs');
-        const productsGrid = document.getElementById('productsGrid');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const errorMessage = document.getElementById('errorMessage');
-        const orderModal = document.getElementById('orderModal');
-        const closeModal = document.getElementById('closeModal');
-        const orderForm = document.getElementById('orderForm');
-        const modalProductName = document.getElementById('modalProductName');
-        const modalItemCode = document.getElementById('modalItemCode');
+        // DOM Elements (initialized inside DOMContentLoaded)
+        let categoryTabs, productsGrid, loadingMessage, errorMessage;
+        let orderModal, closeModal, orderForm, modalProductName, modalItemCode;
 
-        // Initialize application
+        // Initialize application — only runs when required elements exist on page
         document.addEventListener('DOMContentLoaded', function() {
+            categoryTabs = document.getElementById('categoryTabs');
+            productsGrid = document.getElementById('productsGrid');
+            loadingMessage = document.getElementById('loadingMessage');
+            errorMessage = document.getElementById('errorMessage');
+            orderModal = document.getElementById('orderModal');
+            closeModal = document.getElementById('closeModal');
+            orderForm = document.getElementById('orderForm');
+            modalProductName = document.getElementById('modalProductName');
+            modalItemCode = document.getElementById('modalItemCode');
+
+            if (!categoryTabs || !closeModal) return; // not on this page
             loadProducts();
             setupEventListeners();
         });
@@ -2126,7 +2126,7 @@
                 
                 if (result.success && result.data.length > 0) {
                     renderTestimonials(result.data);
-                    initializeSwiper();
+                    initializeSwiper(result.data.length);
                 } else {
                     throw new Error(result.error || 'No testimonials data');
                 }
@@ -2170,13 +2170,13 @@
             `).join('');
         }
 
-        function initializeSwiper() {
+        function initializeSwiper(slideCount) {
             // Initialize Swiper if it exists
             if (typeof Swiper !== 'undefined') {
                 new Swiper('.testimonial-slider .swiper', {
                     slidesPerView: 1,
                     spaceBetween: 30,
-                    loop: true,
+                    loop: slideCount >= 3,
                     autoplay: {
                         delay: 5000,
                         disableOnInteraction: false,
@@ -2265,8 +2265,7 @@
         } catch (error) {
             console.warn('Không thể truy cập nội dung iframe (có thể do CORS). Hãy đảm bảo file cùng domain hoặc local.', error);
         }
-    };
-    defer</script>
+    };</script>
     
     <script src="assets/js/jquery-3.7.1.min.js" defer></script>
     <script src="assets/js/circle-progress.min.js" defer></script>
