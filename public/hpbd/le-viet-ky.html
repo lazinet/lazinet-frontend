@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 Happy Birthday ThS LS Lê Viết Kỳ – 18/04</title>
+<meta name="description" content="Chúc mừng sinh nhật ThS LS Lê Viết Kỳ – CEO Minh Kỳ Lawfirm! Từ HATHYO với yêu thương.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/img/logo-lazinet/lazinet_LogoOnly.ico">
+<meta property="og:title" content="🎂 Chúc Mừng Sinh Nhật ThS LS Lê Viết Kỳ – 18/04!">
+<meta property="og:description" content="Chúc Anh một ngày thật hạnh phúc, tràn đầy niềm vui và yêu thương! Từ HATHYO với tất cả tấm lòng.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../../../../projects/minhkylawfirm/lazinet/happy-customer-connect.png">
+<meta property="og:locale" content="vi_VN">
+<meta name="theme-color" content="#fff0f5">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --pink:#ff6b8a;
+  --pink2:#ff8fa8;
+  --pink3:#ffe0e8;
+  --purple:#a855f7;
+  --purple2:#ddd6fe;
+  --blue:#38bdf8;
+  --blue2:#e0f2fe;
+  --yellow:#fbbf24;
+  --yellow2:#fef9c3;
+  --orange:#f97316;
+  --gold:#c8a84b;
+  --gold2:#fde68a;
+  --green:#34d399;
+  --white:#ffffff;
+  --bg:#fffbff;
+  --text:#1a0a1e;
+  --text2:#6b3a7a;
+}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── CANVAS (confetti) ── */
+#cnv{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;}
+
+/* ══════════════════════════════
+   BALLOONS (CSS only)
+══════════════════════════════ */
+.balloons{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;overflow:hidden;
+}
+.balloon{
+  position:absolute;bottom:-120px;
+  border-radius:50% 50% 45% 45%;
+  animation:floatUp linear infinite;
+  opacity:.75;
+}
+.balloon::after{
+  content:'';
+  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+  width:1px;height:20px;
+  background:rgba(0,0,0,.2);
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) rotate(-3deg);}
+  25%{transform:translateY(-25vh) rotate(3deg);}
+  50%{transform:translateY(-50vh) rotate(-3deg);}
+  75%{transform:translateY(-75vh) rotate(3deg);}
+  100%{transform:translateY(-110vh) rotate(-2deg);opacity:0;}
+}
+
+/* ══════════════════════════════
+   STARS / SPARKLES
+══════════════════════════════ */
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.star{
+  position:absolute;
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  animation:twinkle ease-in-out infinite;
+}
+@keyframes twinkle{
+  0%,100%{transform:scale(1) rotate(0deg);opacity:.7;}
+  50%{transform:scale(1.3) rotate(20deg);opacity:1;}
+}
+
+/* ══════════════════════════════
+   HERO SECTION
+══════════════════════════════ */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:60px 20px 70px;
+  background:
+    radial-gradient(ellipse at 20% 20%,rgba(168,85,247,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 10%,rgba(255,107,138,.14) 0%,transparent 45%),
+    radial-gradient(ellipse at 50% 90%,rgba(56,189,248,.1) 0%,transparent 50%),
+    linear-gradient(160deg,#fff0f5 0%,#fdf4ff 40%,#f0f9ff 80%,#fffbff 100%);
+  text-align:center;
+  overflow:hidden;
+}
+
+/* wavy top decoration */
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:8px;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--pink) 0px,var(--pink) 20px,
+    var(--yellow) 20px,var(--yellow) 40px,
+    var(--purple) 40px,var(--purple) 60px,
+    var(--blue) 60px,var(--blue) 80px,
+    var(--green) 80px,var(--green) 100px
+  );
+}
+
+/* ── FROM badge ── */
+.from-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(168,85,247,.1);
+  border:1.5px solid rgba(168,85,247,.25);
+  border-radius:100px;
+  padding:6px 18px;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--purple);
+  margin-bottom:32px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+/* ── PHOTO RING ── */
+.photo-wrap{
+  position:relative;
+  margin-bottom:24px;
+  animation:popIn .6s cubic-bezier(.34,1.56,.64,1) .1s both;
+}
+.photo-ring{
+  width:170px;height:170px;border-radius:50%;
+  padding:5px;
+  background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue),var(--yellow),var(--pink));
+  background-size:300% 300%;
+  animation:ringGrad 3s linear infinite;
+  box-shadow:
+    0 0 0 8px rgba(255,107,138,.15),
+    0 0 40px rgba(168,85,247,.25),
+    0 8px 32px rgba(0,0,0,.12);
+}
+@keyframes ringGrad{to{background-position:300% 300%;}}
+.photo-ring img{
+  width:100%;height:100%;border-radius:50%;
+  object-fit:cover;object-position:top center;
+  border:5px solid var(--white);display:block;
+}
+/* floating stars around photo */
+.photo-star{
+  position:absolute;
+  font-size:1.4rem;
+  animation:starFloat ease-in-out infinite;
+}
+.photo-star:nth-child(2){top:-8px;right:8px;animation-duration:2.2s;animation-delay:.3s;}
+.photo-star:nth-child(3){top:50%;left:-18px;animation-duration:2.8s;animation-delay:.7s;}
+.photo-star:nth-child(4){bottom:8px;right:-10px;animation-duration:2.4s;animation-delay:1s;}
+.photo-star:nth-child(5){bottom:-10px;left:20px;animation-duration:3s;animation-delay:.1s;}
+@keyframes starFloat{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-8px) scale(1.2);}
+}
+
+/* ── HAPPY BIRTHDAY text ── */
+.hb-label{
+  font-size:.78rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--purple);margin-bottom:4px;
+  animation:fadeSlide .5s ease .2s both;
+}
+.hb-big{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(3rem,13vw,6.5rem);
+  line-height:1;
+  background:linear-gradient(135deg,
+    var(--pink) 0%,var(--purple) 30%,var(--blue) 55%,var(--yellow) 75%,var(--orange) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;
+  animation:popIn .65s cubic-bezier(.34,1.56,.64,1) .25s both;
+  filter:drop-shadow(0 4px 8px rgba(168,85,247,.25));
+}
+.hb-big2{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(2.2rem,9vw,4.8rem);
+  line-height:1;
+  background:linear-gradient(135deg,
+    var(--yellow) 0%,var(--orange) 40%,var(--pink) 70%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:popIn .65s cubic-bezier(.34,1.56,.64,1) .35s both;
+  filter:drop-shadow(0 4px 8px rgba(255,107,138,.25));
+}
+
+/* ── DATE BUBBLE ── */
+.date-bubble{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--yellow2),#fef3c7);
+  border:2px solid var(--yellow);
+  border-radius:100px;padding:8px 24px;
+  font-size:1.05rem;font-weight:800;color:#92400e;
+  margin:18px 0;
+  animation:popIn .55s cubic-bezier(.34,1.56,.64,1) .4s both;
+  box-shadow:0 4px 16px rgba(251,191,36,.3);
+}
+.date-bubble .cake-icon{font-size:1.3rem;}
+
+/* ── NAME BLOCK ── */
+.name-block{
+  animation:fadeSlide .5s ease .5s both;
+  margin-bottom:20px;
+}
+.name-main{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(1.8rem,6vw,2.8rem);
+  font-weight:900;
+  color:var(--text);
+  line-height:1.1;
+}
+.name-main span{
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.name-role{
+  font-size:.88rem;font-weight:600;color:var(--text2);margin-top:6px;
+  letter-spacing:.04em;
+}
+
+/* ── BIRTHDAY CAKE CSS ── */
+.cake-section{
+  margin:20px 0;
+  animation:popIn .7s cubic-bezier(.34,1.56,.64,1) .55s both;
+}
+.cake{display:inline-block;position:relative;}
+/* layers */
+.cake-top{
+  width:100px;height:32px;
+  background:linear-gradient(180deg,#fde68a,#fbbf24);
+  border-radius:10px 10px 0 0;
+  border:2px solid #f59e0b;
+  position:relative;margin:0 auto;
+}
+.cake-middle{
+  width:130px;height:38px;
+  background:linear-gradient(180deg,#fbcfe8,#f9a8d4);
+  border-radius:6px 6px 0 0;
+  border:2px solid #ec4899;
+  margin:0 auto;
+  position:relative;
+}
+.cake-bottom{
+  width:160px;height:44px;
+  background:linear-gradient(180deg,#ddd6fe,#c4b5fd);
+  border-radius:6px 6px 10px 10px;
+  border:2px solid #8b5cf6;
+  margin:0 auto;
+}
+/* frosting drips */
+.cake-top::after{
+  content:'';
+  position:absolute;top:-8px;left:0;right:0;height:14px;
+  background:radial-gradient(ellipse 10px 14px at 10px 0,#fff 100%,transparent 100%) 0 0,
+             radial-gradient(ellipse 10px 14px at 10px 0,#fff 100%,transparent 100%) 20px 0,
+             radial-gradient(ellipse 10px 14px at 10px 0,#fff 100%,transparent 100%) 40px 0,
+             radial-gradient(ellipse 10px 14px at 10px 0,#fff 100%,transparent 100%) 60px 0,
+             radial-gradient(ellipse 10px 14px at 10px 0,#fff 100%,transparent 100%) 80px 0;
+  background-size:20px 14px;
+  background-repeat:no-repeat;
+  opacity:.8;
+}
+/* candles on top layer */
+.candles{
+  position:absolute;top:0;left:50%;transform:translate(-50%,-100%);
+  display:flex;gap:10px;align-items:flex-end;
+}
+.cnl{display:flex;flex-direction:column;align-items:center;}
+.cnl-flame{
+  width:7px;height:11px;border-radius:50% 50% 30% 30%;
+  animation:flicker 1.3s ease-in-out infinite alternate;
+}
+.cnl-body{width:7px;height:22px;border-radius:3px 3px 1px 1px;}
+@keyframes flicker{
+  0%{transform:scaleX(1);opacity:1;}
+  50%{transform:scaleX(.85) scaleY(1.1);}
+  100%{transform:scaleX(1.1) scaleY(.92);opacity:.85;}
+}
+.cnl:nth-child(1) .cnl-flame{background:radial-gradient(#fff,#ffd700,#ff8c00);animation-delay:.1s;}
+.cnl:nth-child(1) .cnl-body{background:linear-gradient(#ff6b8a,#cc3355);}
+.cnl:nth-child(2) .cnl-flame{background:radial-gradient(#fff,#a78bfa,#7c3aed);animation-delay:.4s;}
+.cnl:nth-child(2) .cnl-body{background:linear-gradient(#38bdf8,#0369a1);}
+.cnl:nth-child(3) .cnl-flame{background:radial-gradient(#fff,#fde68a,#f59e0b);animation-delay:.2s;}
+.cnl:nth-child(3) .cnl-body{background:linear-gradient(#fde68a,#d97706);}
+.cnl:nth-child(4) .cnl-flame{background:radial-gradient(#fff,#6ee7b7,#059669);animation-delay:.6s;}
+.cnl:nth-child(4) .cnl-body{background:linear-gradient(#a855f7,#7e22ce);}
+.cnl:nth-child(5) .cnl-flame{background:radial-gradient(#fff,#fca5a5,#dc2626);animation-delay:.35s;}
+.cnl:nth-child(5) .cnl-body{background:linear-gradient(#f97316,#c2410c);}
+/* dots on cake layers */
+.cake-middle::before,.cake-bottom::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle,rgba(255,255,255,.4) 2px,transparent 2px);
+  background-size:12px 12px;
+  background-position:4px 8px;
+}
+
+/* ── WISH CARD ── */
+.wish-card{
+  max-width:580px;width:100%;
+  background:var(--white);
+  border-radius:24px;
+  padding:clamp(22px,5vw,40px) clamp(20px,5vw,44px);
+  box-shadow:0 10px 50px rgba(168,85,247,.12),0 2px 12px rgba(0,0,0,.06);
+  border:1.5px solid rgba(168,85,247,.12);
+  position:relative;overflow:hidden;
+  animation:fadeSlide .6s ease .65s both;
+  margin-top:8px;
+}
+.wish-card::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,107,138,.06) 0%,transparent 50%),
+    radial-gradient(circle at 0% 100%,rgba(56,189,248,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+.wish-emojis{font-size:1.8rem;letter-spacing:6px;margin-bottom:14px;}
+.wish-text{
+  font-family:'Caveat',cursive;
+  font-size:clamp(1.1rem,3.5vw,1.4rem);
+  line-height:1.8;
+  color:#3b0764;
+}
+.wish-text strong{color:var(--pink);font-weight:700;}
+.wish-from{
+  display:flex;align-items:center;gap:10px;
+  margin-top:18px;padding-top:16px;
+  border-top:1.5px dashed rgba(168,85,247,.18);
+  font-size:.78rem;font-weight:700;
+  color:var(--text2);letter-spacing:.05em;
+}
+.wish-from img{height:24px;width:auto;border-radius:6px;opacity:.85;}
+
+/* ── ACTION BUTTONS ── */
+.btn-row{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin-top:28px;
+  animation:fadeSlide .5s ease .75s both;
+}
+.btn-party{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:var(--white);font-weight:800;font-size:.85rem;
+  padding:14px 28px;border-radius:100px;
+  text-decoration:none;letter-spacing:.04em;
+  box-shadow:0 6px 24px rgba(168,85,247,.35);
+  transition:all .25s;border:none;cursor:pointer;
+}
+.btn-party:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 32px rgba(168,85,247,.45);}
+.btn-call{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--white);
+  color:var(--purple);font-weight:700;font-size:.85rem;
+  padding:13px 24px;border-radius:100px;
+  text-decoration:none;
+  border:2px solid rgba(168,85,247,.3);
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  transition:all .25s;
+}
+.btn-call:hover{background:var(--purple2);transform:translateY(-2px);}
+
+/* ══════════════════════════════
+   FUN FACTS SECTION
+══════════════════════════════ */
+.facts-sec{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg,#fdf4ff 0%,#f0f9ff 50%,#fff7ed 100%);
+  padding:70px 20px;text-align:center;
+}
+.section-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--white);
+  border:1.5px solid rgba(168,85,247,.2);
+  border-radius:100px;padding:6px 18px;
+  font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--purple);margin-bottom:14px;
+  box-shadow:0 2px 12px rgba(168,85,247,.1);
+}
+.section-h{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(1.6rem,5vw,2.4rem);font-weight:900;
+  color:var(--text);margin-bottom:8px;
+}
+.section-h span{
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-sub{font-size:.88rem;color:#6b7280;margin-bottom:44px;font-weight:600;}
+
+/* fact cards */
+.facts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;max-width:900px;margin:0 auto;
+}
+.fact-card{
+  background:var(--white);
+  border-radius:20px;
+  padding:28px 24px;
+  box-shadow:0 4px 24px rgba(0,0,0,.07);
+  border:1.5px solid transparent;
+  transition:all .3s;
+  text-align:left;
+  position:relative;overflow:hidden;
+}
+.fact-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  opacity:0;transition:.3s;
+}
+.fact-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.12);}
+.fact-card.pink{border-color:rgba(255,107,138,.2);}
+.fact-card.pink::before{background:linear-gradient(135deg,rgba(255,107,138,.04),transparent);}
+.fact-card.pink:hover{border-color:var(--pink);}
+.fact-card.purple{border-color:rgba(168,85,247,.2);}
+.fact-card.purple:hover{border-color:var(--purple);}
+.fact-card.blue{border-color:rgba(56,189,248,.2);}
+.fact-card.blue:hover{border-color:var(--blue);}
+.fact-card.yellow{border-color:rgba(251,191,36,.2);}
+.fact-card.yellow:hover{border-color:var(--yellow);}
+.fact-emoji{font-size:2rem;margin-bottom:12px;display:block;}
+.fact-year{
+  font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.pink .fact-year{color:var(--pink);}
+.purple .fact-year{color:var(--purple);}
+.blue .fact-year{color:var(--blue);}
+.yellow .fact-year{color:#d97706;}
+.fact-title{font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.4;}
+.fact-desc{font-size:.8rem;line-height:1.65;color:#6b7280;font-weight:600;}
+.fact-fun{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:12px;padding:5px 10px;
+  border-radius:8px;
+  font-size:.74rem;font-weight:700;
+  font-style:italic;
+}
+.pink .fact-fun{background:rgba(255,107,138,.08);color:var(--pink);}
+.purple .fact-fun{background:rgba(168,85,247,.08);color:var(--purple);}
+.blue .fact-fun{background:rgba(56,189,248,.08);color:#0284c7;}
+.yellow .fact-fun{background:rgba(251,191,36,.08);color:#d97706;}
+
+/* ══════════════════════════════
+   BIG WISH BANNER
+══════════════════════════════ */
+.wish-banner{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg,#7c3aed 0%,#a855f7 30%,#ec4899 65%,#f97316 100%);
+  padding:70px 20px;text-align:center;overflow:hidden;
+}
+.wish-banner::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.banner-pre{
+  font-size:.8rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);margin-bottom:12px;
+  position:relative;z-index:1;
+}
+.banner-h{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.8rem,7vw,3.5rem);
+  color:var(--white);line-height:1.2;
+  text-shadow:0 4px 20px rgba(0,0,0,.2);
+  margin-bottom:18px;
+  position:relative;z-index:1;
+}
+.banner-wish{
+  font-family:'Caveat',cursive;
+  font-size:clamp(1.1rem,3vw,1.5rem);
+  color:rgba(255,255,255,.92);
+  max-width:640px;margin:0 auto 28px;
+  line-height:1.75;
+  position:relative;z-index:1;
+}
+.banner-wish strong{color:var(--yellow2);}
+.banner-emoji-row{
+  font-size:2.2rem;letter-spacing:12px;
+  position:relative;z-index:1;
+  animation:bouncePop 1.5s ease infinite alternate;
+}
+@keyframes bouncePop{
+  0%{transform:scale(1);}
+  100%{transform:scale(1.08);}
+}
+
+/* ══════════════════════════════
+   HATHYO FOOTER SECTION
+══════════════════════════════ */
+.hathyo-sec{
+  position:relative;z-index:1;
+  background:linear-gradient(180deg,#f9fafb 0%,#f3f4f6 100%);
+  padding:52px 20px 44px;
+  text-align:center;
+}
+.hathyo-note{
+  font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#9ca3af;margin-bottom:18px;display:block;
+}
+.hathyo-logo-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;flex-wrap:wrap;margin-bottom:14px;
+}
+.hathyo-logo-row img{height:38px;width:auto;border-radius:8px;opacity:.85;}
+.hathyo-divider{width:1px;height:34px;background:#e5e7eb;}
+.hathyo-tagline{
+  font-size:.88rem;font-weight:700;color:#4b5563;
+  margin-bottom:22px;font-style:italic;
+}
+.mini-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px;margin:0 auto 26px;}
+.mini-pill{
+  background:var(--white);border:1.5px solid #e5e7eb;
+  border-radius:100px;padding:5px 14px;
+  font-size:.73rem;font-weight:700;color:#6b7280;
+}
+.hathyo-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.hathyo-btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:var(--white);font-weight:800;font-size:.83rem;
+  padding:12px 26px;border-radius:100px;text-decoration:none;
+  box-shadow:0 4px 18px rgba(168,85,247,.3);transition:all .25s;
+}
+.hathyo-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(168,85,247,.4);}
+.hathyo-btn-sec{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--white);color:var(--purple);font-weight:700;font-size:.82rem;
+  padding:11px 22px;border-radius:100px;text-decoration:none;
+  border:2px solid rgba(168,85,247,.2);transition:all .25s;
+}
+.hathyo-btn-sec:hover{background:#fdf4ff;transform:translateY(-2px);}
+
+/* ── FOOTER ── */
+.foot{
+  background:#1e1b4b;padding:22px 20px;text-align:center;
+}
+.foot p{font-size:.72rem;color:rgba(255,255,255,.35);line-height:1.8;}
+.foot a{color:rgba(167,139,250,.65);text-decoration:none;}
+
+/* ══════════════════════════════
+   ANIMATIONS
+══════════════════════════════ */
+@keyframes popIn{
+  from{opacity:0;transform:scale(.7);}
+  to{opacity:1;transform:scale(1);}
+}
+@keyframes fadeSlide{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:none;}
+}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.revealed{opacity:1;transform:none;}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media(max-width:480px){
+  .hero{padding:52px 16px 64px;}
+  .photo-ring{width:140px;height:140px;}
+  .hb-big{font-size:clamp(2.6rem,11vw,5rem);}
+  .facts-sec,.wish-banner,.hathyo-sec{padding:52px 16px;}
+  .cake-top{width:80px;} .cake-middle{width:105px;} .cake-bottom{width:130px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="cnv"></canvas>
+<div class="balloons" id="balloons"></div>
+<div class="stars" id="stars"></div>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+
+  <div class="from-tag">
+    🎉 Từ HATHYO · Happy Customer Connect CRM 🎉
+  </div>
+
+  <!-- PHOTO -->
+  <div class="photo-wrap">
+    <div class="photo-ring">
+      <img src="../../../../projects/minhkylawfirm/assets/lawyers/01-ths-ls-levietky.png"
+           alt="ThS LS Lê Viết Kỳ" loading="eager">
+    </div>
+    <span class="photo-star">⭐</span>
+    <span class="photo-star">✨</span>
+    <span class="photo-star">🌟</span>
+    <span class="photo-star">💫</span>
+  </div>
+
+  <!-- HB TEXT -->
+  <div class="hb-label">🎊 Chúc Mừng Sinh Nhật 🎊</div>
+  <div class="hb-big">Happy</div>
+  <div class="hb-big2">Birthday!</div>
+
+  <!-- DATE -->
+  <div class="date-bubble">
+    <span class="cake-icon">🎂</span>
+    18 tháng 4 năm 2026
+    <span class="cake-icon">🎂</span>
+  </div>
+
+  <!-- NAME -->
+  <div class="name-block">
+    <div class="name-main"><span>ThS LS Lê Viết Kỳ</span></div>
+    <div class="name-role">Luật sư Điều hành · Công ty Luật TNHH Minh Kỳ</div>
+  </div>
+
+  <!-- CAKE -->
+  <div class="cake-section">
+    <div class="cake">
+      <div class="cake-top">
+        <div class="candles">
+          <div class="cnl"><div class="cnl-flame"></div><div class="cnl-body"></div></div>
+          <div class="cnl"><div class="cnl-flame"></div><div class="cnl-body"></div></div>
+          <div class="cnl"><div class="cnl-flame"></div><div class="cnl-body"></div></div>
+          <div class="cnl"><div class="cnl-flame"></div><div class="cnl-body"></div></div>
+          <div class="cnl"><div class="cnl-flame"></div><div class="cnl-body"></div></div>
+        </div>
+      </div>
+      <div class="cake-middle"></div>
+      <div class="cake-bottom"></div>
+    </div>
+  </div>
+
+  <!-- WISH CARD -->
+  <div class="wish-card">
+    <div class="wish-emojis">🌸 🎈 🥳 🎁 🌟</div>
+    <p class="wish-text">
+      Hôm nay là một ngày thật đặc biệt — ngày sinh nhật của <strong>Anh Lê Viết Kỳ</strong>!
+      Chúng tôi xin gửi đến Anh những lời chúc ấm áp và chân thành nhất.
+      <br><br>
+      Chúc Anh một ngày sinh nhật <strong>tràn đầy niềm vui</strong> bên gia đình và những người thân yêu.
+      Mong Anh luôn <strong>dồi dào sức khỏe</strong>, mọi điều ước đều thành hiện thực,
+      hạnh phúc ngập tràn và <strong>thành công rực rỡ</strong> trong năm mới!
+      <br><br>
+      Tuổi mới — niềm vui mới — thành tựu mới. 🎉✨
+    </p>
+    <div class="wish-from">
+      <img src="../../../../projects/minhkylawfirm/lazinet/happy-customer-connect.png" alt="HATHYO">
+      <span>Gửi từ đội ngũ HATHYO – Happy Customer Connect CRM 💜</span>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <a href="https://zalo.me/0964037746" class="btn-party" target="_blank" rel="noopener">
+      <img src="../../../../projects/minhkylawfirm/assets/logos/zalo.png" width="16" height="16" alt="" style="border-radius:3px;filter:brightness(10);">
+      Gửi lời chúc qua Zalo 🎊
+    </a>
+    <a href="tel:0964037746" class="btn-call">
+      📞 Gọi chúc mừng
+    </a>
+  </div>
+
+</section>
+
+<!-- ═══════ FUN FACTS ═══════ -->
+<section class="facts-sec">
+  <div class="reveal">
+    <div class="section-badge">🌍 Ngày 18 tháng 4</div>
+    <h2 class="section-h">Ngày này trong <span>lịch sử thế giới</span></h2>
+    <p class="section-sub">Những điều thú vị xảy ra đúng vào ngày sinh của Anh ✨</p>
+  </div>
+
+  <div class="facts-grid">
+    <div class="fact-card pink reveal">
+      <span class="fact-emoji">⚖️</span>
+      <div class="fact-year">1946 · La Haye</div>
+      <div class="fact-title">Tòa án Công lý Quốc tế khai mạc lần đầu</div>
+      <div class="fact-desc">ICJ — cơ quan tư pháp tối cao của Liên Hợp Quốc — họp phiên đầu tiên, mang lại niềm tin vào công lý cho nhân loại.</div>
+      <div class="fact-fun">🎂 Anh Kỳ sinh ra cùng ngày với nền công lý quốc tế!</div>
+    </div>
+
+    <div class="fact-card purple reveal">
+      <span class="fact-emoji">🦸</span>
+      <div class="fact-year">1938 · New York</div>
+      <div class="fact-title">Superman ra mắt lần đầu tiên</div>
+      <div class="fact-desc">Nhân vật siêu anh hùng bảo vệ người yếu thế, biểu tượng của công lý và lòng dũng cảm — Action Comics #1 xuất hiện ngày 18/4/1938.</div>
+      <div class="fact-fun">🎂 Siêu anh hùng ra đời đúng ngày sinh nhật!</div>
+    </div>
+
+    <div class="fact-card blue reveal">
+      <span class="fact-emoji">💡</span>
+      <div class="fact-year">18/04 · Nhật Bản</div>
+      <div class="fact-title">Ngày Phát minh Quốc gia Nhật Bản</div>
+      <div class="fact-desc">Nhật Bản chọn 18/4 để tôn vinh sáng tạo và đổi mới — tinh thần không ngừng cải tiến, mang lại giá trị tốt nhất cho xã hội.</div>
+      <div class="fact-fun">🎂 Sinh ra để sáng tạo và đổi mới!</div>
+    </div>
+
+    <div class="fact-card yellow reveal">
+      <span class="fact-emoji">🤝</span>
+      <div class="fact-year">1951 · Paris</div>
+      <div class="fact-title">Ký kết Cộng đồng Than Thép châu Âu</div>
+      <div class="fact-desc">Nền tảng của Liên minh châu Âu được đặt ngày 18/4 — chứng minh hợp tác và hội nhập tạo ra hòa bình và thịnh vượng bền vững.</div>
+      <div class="fact-fun">🎂 Ngày sinh ra để kết nối và hội nhập!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BIG WISH ═══════ -->
+<section class="wish-banner">
+  <p class="banner-pre reveal">🎊 Lời chúc đặc biệt nhất 🎊</p>
+  <h2 class="banner-h reveal">Chúc Anh Sinh Nhật Vui Vẻ!</h2>
+  <p class="banner-wish reveal">
+    Mong Anh luôn <strong>khỏe mạnh</strong>, <strong>hạnh phúc</strong> và <strong>thành công</strong><br>
+    trong mọi bước đường phía trước.<br>
+    Gia đình êm ấm, sự nghiệp rực rỡ — tuổi mới thật nhiều niềm vui! 🌟
+  </p>
+  <div class="banner-emoji-row reveal">🎂 🎈 🥂 🎁 🎊 🌸 🎉</div>
+</section>
+
+<!-- ═══════ HATHYO ═══════ -->
+<section class="hathyo-sec">
+  <span class="hathyo-note reveal">Thiệp này được tạo tự động bởi</span>
+  <div class="hathyo-logo-row reveal">
+    <img src="../../../../projects/minhkylawfirm/lazinet/happy-customer-connect.png" alt="HATHYO">
+    <div class="hathyo-divider"></div>
+    <img src="../../../../projects/minhkylawfirm/assets/logos/logo-enhanced_W512.webp" alt="Minh Kỳ Lawfirm">
+  </div>
+  <p class="hathyo-tagline reveal">HATHYO – Tự động gửi thiệp sinh nhật, quà tặng <em>đúng người · đúng lúc</em></p>
+
+  <div class="mini-pills reveal">
+    <div class="mini-pill">🎂 Thiệp sinh nhật tự động</div>
+    <div class="mini-pill">💬 Zalo · Email · SMS</div>
+    <div class="mini-pill">🎁 Loyalty Program</div>
+    <div class="mini-pill">📊 Analytics & Insights</div>
+    <div class="mini-pill">🤖 Chatbot 24/7</div>
+    <div class="mini-pill">⚡ Automated Workflow</div>
+  </div>
+
+  <div class="hathyo-btns reveal">
+    <a href="https://hathyo.com" class="hathyo-btn-main" target="_blank" rel="noopener">
+      ✨ Dùng thử HATHYO miễn phí
+    </a>
+    <a href="https://zalo.me/0964037746" class="hathyo-btn-sec" target="_blank" rel="noopener">
+      <img src="../../../../projects/minhkylawfirm/assets/logos/zalo.png" width="14" height="14" alt="" style="border-radius:3px;">
+      Tư vấn qua Zalo
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <p>
+    © 2026 <a href="https://hathyo.com" target="_blank" rel="noopener">HATHYO – Happy Customer Connect CRM</a>
+    · <a href="https://www.minhkylawfirm.vn" target="_blank" rel="noopener">Minh Kỳ Lawfirm</a>
+    · Công ty TNHH Cuộc Sống Vui Khỏe<br>
+    Thiệp sinh nhật được tạo tự động bởi hệ thống Event Reminder &amp; Wishes của HATHYO
+  </p>
+</footer>
+
+<script>
+// ── CONFETTI burst — colorful party palette
+const PARTY=['#ff6b8a','#a855f7','#38bdf8','#fbbf24','#f97316','#34d399','#ec4899','#ffffff','#fde68a'];
+
+function burst(x,y,n,spread){
+  confetti({
+    particleCount:n,spread:spread||90,origin:{x,y},
+    colors:PARTY,shapes:['circle','square'],
+    scalar:1.2,ticks:220,drift:.6,gravity:1.1
+  });
+}
+// launch fireworks
+setTimeout(()=>{burst(.5,.25,90);},300);
+setTimeout(()=>{burst(.15,.35,60);},600);
+setTimeout(()=>{burst(.85,.35,60);},800);
+setTimeout(()=>{burst(.3,.2,50);},1100);
+setTimeout(()=>{burst(.7,.2,50);},1300);
+setTimeout(()=>{burst(.5,.3,70,120);},1700);
+
+// slow rainbow rain
+let rain=setInterval(()=>{
+  confetti({
+    particleCount:4,spread:110,
+    origin:{x:Math.random(),y:0},
+    colors:PARTY,scalar:.75,ticks:320,gravity:.55,drift:1.2
+  });
+},250);
+setTimeout(()=>clearInterval(rain),10000);
+
+// click = party burst
+document.addEventListener('click',function(e){
+  burst(e.clientX/window.innerWidth,e.clientY/window.innerHeight,40,100);
+});
+
+// ── BALLOONS (CSS generated)
+const BCOLORS=['#ff6b8a','#a855f7','#38bdf8','#fbbf24','#f97316','#34d399','#ec4899','#ff8fa8','#c4b5fd','#7dd3fc'];
+const bl=document.getElementById('balloons');
+for(let i=0;i<18;i++){
+  const b=document.createElement('div');
+  b.className='balloon';
+  const size=50+Math.random()*36;
+  const dur=18+Math.random()*20;
+  const col=BCOLORS[i%BCOLORS.length];
+  b.style.cssText=`
+    width:${size}px;height:${size*1.2}px;
+    background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.5),${col} 50%,${col}cc);
+    left:${Math.random()*98}%;
+    animation-duration:${dur}s;
+    animation-delay:${Math.random()*dur*-1}s;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.12));
+  `;
+  bl.appendChild(b);
+}
+
+// ── STARS
+const st=document.getElementById('stars');
+const SCOLS=['#fbbf24','#a855f7','#ff6b8a','#38bdf8','#f97316','#34d399'];
+for(let i=0;i<20;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=8+Math.random()*14;
+  s.style.cssText=`
+    width:${sz}px;height:${sz}px;
+    background:${SCOLS[i%SCOLS.length]};
+    top:${Math.random()*80}%;
+    left:${Math.random()*100}%;
+    animation-duration:${2+Math.random()*3}s;
+    animation-delay:${Math.random()*3}s;
+    opacity:.65;
+  `;
+  st.appendChild(s);
+}
+
+// ── SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('revealed');obs.unobserve(e.target);}
+  });
+},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
