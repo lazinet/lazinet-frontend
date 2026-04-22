@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tiến Độ Triển Khai — Song Ngọc × HATHYO</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sn-green:    #00854A;
+            --sn-green-dk: #005C34;
+            --sn-orange:   #F38022;
+            --bg:          #F5F7F5;
+            --surface:     #FFFFFF;
+            --border:      #D8E8DC;
+            --text:        #1A2A1E;
+            --text-2:      #4A6350;
+            --shadow:      0 2px 12px rgba(0,0,0,0.07);
+
+            --col-tre:   #EF4444;
+            --col-muon:  #3B82F6;
+            --col-kip:   #16A34A;
+            --col-som:   #7C3AED;
+            --col-dang:  #D97706;
+            --col-chua:  #64748B;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+            flex-shrink: 0;
+            box-shadow: var(--shadow);
+        }
+        .app-title {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 14px; font-weight: 700; color: var(--text);
+        }
+        .header-logo { height: 28px; width: auto; object-fit: contain; }
+        .header-sep {
+            font-size: 1.1rem; color: var(--border);
+            line-height: 1;
+        }
+        .title-text { color: var(--sn-green); }
+        .title-desktop { display: inline; }
+        .title-mobile  { display: none; }
+
+        @media (max-width: 768px) {
+            .title-desktop { display: none; }
+            .title-mobile  { display: inline; }
+            .btn span { display: none; }
+            .btn { padding: 0 10px; }
+        }
+
+        .controls { display: flex; gap: 6px; align-items: center; }
+        .btn, .form-select {
+            height: 34px; padding: 0 14px; border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text); font-size: 13px; font-weight: 600;
+            cursor: pointer; outline: none;
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.18s;
+        }
+        .btn:hover {
+            background: var(--sn-green); color: #fff;
+            border-color: var(--sn-green);
+        }
+        .form-select:focus { border-color: var(--sn-green); }
+
+        /* ── DASHBOARD ── */
+        .dashboard {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 14px;
+            display: grid;
+            grid-template-columns: repeat(6,1fr);
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .stat-card {
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 4px;
+            text-align: center;
+            background: var(--bg);
+            border-top: 3px solid transparent;
+        }
+        .stat-num   { font-size: 20px; font-weight: 800; line-height: 1; }
+        .stat-label { font-size: 10px; text-transform: uppercase; color: var(--text-2); margin-top: 3px; font-weight: 600; }
+        .lbl-mobile  { display: none; }
+        .lbl-desktop { display: inline; }
+        @media (max-width: 640px) {
+            .dashboard { grid-template-columns: repeat(3,1fr); }
+            .lbl-mobile  { display: inline; }
+            .lbl-desktop { display: none; }
+        }
+
+        /* ── GANTT ── */
+        .gantt-wrapper { flex: 1; overflow: hidden; position: relative; }
+        #gantt_here { width: 100%; height: 100%; }
+
+        /* dhtmlx overrides */
+        .gantt_task_line   { border-radius: 4px !important; }
+        .gantt_task_progress { border-radius: 4px 0 0 4px !important; }
+
+        .task-tre-lich  .gantt_task_line { background: #FEE2E2 !important; border-color: var(--col-tre) !important; }
+        .task-xong-muon .gantt_task_line { background: #DBEAFE !important; border-color: var(--col-muon) !important; }
+        .task-xong-kip  .gantt_task_line { background: #DCFCE7 !important; border-color: var(--col-kip)  !important; }
+        .task-xong-som  .gantt_task_line { background: #EDE9FE !important; border-color: var(--col-som)  !important; }
+        .task-dang-lam  .gantt_task_line { background: #FEF3C7 !important; border-color: var(--col-dang) !important; }
+        .task-chua-lam  .gantt_task_line { background: #F1F5F9 !important; border-color: var(--col-chua) !important; }
+
+        .task-tre-lich  .gantt_task_progress { background: var(--col-tre)  !important; }
+        .task-xong-muon .gantt_task_progress { background: var(--col-muon) !important; }
+        .task-xong-kip  .gantt_task_progress { background: var(--col-kip)  !important; }
+        .task-xong-som  .gantt_task_progress { background: var(--col-som)  !important; }
+        .task-dang-lam  .gantt_task_progress { background: var(--col-dang) !important; }
+        .task-chua-lam  .gantt_task_progress { background: var(--col-chua) !important; }
+
+        .today_marker { background: rgba(243,128,34,0.8) !important; }
+        .today_marker::before {
+            content: 'Hôm nay';
+            position: absolute; top: -18px; left: 2px;
+            font-size: 10px; font-weight: 700;
+            color: var(--sn-orange); white-space: nowrap;
+        }
+
+        /* ── LOADING / NOTIFY ── */
+        .loading-overlay {
+            position: absolute; inset: 0;
+            background: rgba(245,247,245,0.85);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 100; backdrop-filter: blur(4px);
+        }
+        .loading-overlay.hidden { display: none; }
+        .spinner {
+            width: 38px; height: 38px;
+            border: 4px solid var(--border);
+            border-top-color: var(--sn-green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .notification {
+            position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%) translateY(60px);
+            background: var(--sn-green); color: #fff;
+            padding: 10px 24px; border-radius: 8px;
+            font-size: 14px; font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0,133,74,0.3);
+            transition: transform 0.3s ease; z-index: 999;
+        }
+        .notification.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div style="margin-top:12px; font-weight:600; color:var(--sn-green); font-size:14px;">Đang tải tiến độ dự án...</div>
+    </div>
+    <div class="notification" id="notification"></div>
+
+    <header class="header">
+        <h1 class="app-title">
+            <img src="../assets/logos/logo-sn.png"     alt="Song Ngọc" class="header-logo">
+            <span class="header-sep">—</span>
+            <img src="../assets/logos/logo-hathyo.png" alt="HATHYO"    class="header-logo">
+            <span class="title-text">
+                <span class="title-desktop">Tiến Độ Triển Khai Dự Án</span>
+                <span class="title-mobile">Tiến Độ</span>
+            </span>
+        </h1>
+        <div class="controls">
+            <select id="scaleSelect" class="form-select" onchange="updateScale(this.value)">
+                <option value="day">Ngày</option>
+                <option value="week" selected>Tuần</option>
+                <option value="month">Tháng</option>
+                <option value="year">Năm</option>
+            </select>
+            <button class="btn" onclick="loadData()">
+                <i class="fas fa-rotate-right"></i> <span>Làm mới</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <div class="stat-card" style="border-top-color:var(--col-som);  color:var(--col-som)">
+            <div class="stat-num" id="st-xong-som">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Xong sớm</span><span class="lbl-mobile">Sớm</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--col-kip);  color:var(--col-kip)">
+            <div class="stat-num" id="st-xong-kip">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Xong kịp</span><span class="lbl-mobile">Kịp</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--col-muon); color:var(--col-muon)">
+            <div class="stat-num" id="st-xong-muon">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Xong muộn</span><span class="lbl-mobile">Muộn</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--col-dang); color:var(--col-dang)">
+            <div class="stat-num" id="st-dang-lam">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Đang làm</span><span class="lbl-mobile">Đang</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--col-tre);  color:var(--col-tre)">
+            <div class="stat-num" id="st-tre-lich">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Trễ lịch</span><span class="lbl-mobile">Trễ</span></div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--col-chua); color:var(--col-chua)">
+            <div class="stat-num" id="st-chua-lam">0</div>
+            <div class="stat-label"><span class="lbl-desktop">Chưa làm</span><span class="lbl-mobile">Chưa</span></div>
+        </div>
+    </div>
+
+    <div class="gantt-wrapper">
+        <div id="gantt_here"></div>
+    </div>
+
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbys_59lKkr9-xixJdnQvJYpKQ4oQwWhC5JKOSVLkF1e5IwfkJ70Fbq0z_2iE2Its9vybQ/exec";
+
+        function getProgressColor(p) {
+            p = Math.min(1, Math.max(0, p));
+            const stops = [
+                { pct: 0.00, c: {r:100,g:116,b:139} },
+                { pct: 0.25, c: {r:239,g:68, b:68 } },
+                { pct: 0.50, c: {r:217,g:119,b:6  } },
+                { pct: 0.75, c: {r:59, g:130,b:246} },
+                { pct: 1.00, c: {r:22, g:163,b:74 } }
+            ];
+            let s = stops[0], e = stops[stops.length-1];
+            for (let i = 0; i < stops.length-1; i++) {
+                if (p >= stops[i].pct && p <= stops[i+1].pct) { s = stops[i]; e = stops[i+1]; break; }
+            }
+            const r = (e.pct - s.pct) ? (p - s.pct) / (e.pct - s.pct) : 0;
+            return `rgb(${Math.round(s.c.r+(e.c.r-s.c.r)*r)},${Math.round(s.c.g+(e.c.g-s.c.g)*r)},${Math.round(s.c.b+(e.c.b-s.c.b)*r)})`;
+        }
+
+        function getTaskStatus(task) {
+            const today = new Date(); today.setHours(0,0,0,0);
+            const s = task.start_date, e = task.end_date, p = task.progress || 0;
+            if (!s || !e) return 'chua-lam';
+            if (s <= today) {
+                if (e < today)  return p < 1 ? 'tre-lich'  : 'xong-muon';
+                if (e > today)  return p < 1 ? 'dang-lam'  : 'xong-som';
+                return p < 1 ? 'tre-lich' : 'xong-kip';
+            }
+            return p === 0 ? 'chua-lam' : 'dang-lam';
+        }
+
+        function normalizeDate(val) {
+            if (!val) return null;
+            const d = new Date(val);
+            if (isNaN(d.getTime())) return null;
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        function initGantt() {
+            gantt.plugins({ marker: true, quick_info: true, tooltip: true });
+
+            const isMobile = window.innerWidth <= 768;
+
+            gantt.config.date_format   = "%Y-%m-%d";
+            gantt.config.readonly      = true;
+            gantt.config.row_height    = 36;
+            gantt.config.bar_height    = 20;
+            gantt.config.scale_height  = 50;
+            gantt.config.grid_resize   = true;
+            gantt.config.select_task   = true;
+            gantt.config.touch         = "force";
+
+            gantt.templates.quick_info_content = function(start, end, task) {
+                const map = {'tre-lich':'Trễ lịch','xong-muon':'Xong muộn','xong-kip':'Xong kịp','xong-som':'Xong sớm','dang-lam':'Đang làm','chua-lam':'Chưa làm'};
+                const fmt = gantt.date.date_to_str("%d/%m/%Y");
+                return `<b>Trạng thái:</b> ${map[getTaskStatus(task)] || '–'}<br>
+                        <b>Tiến độ:</b> ${Math.round((task.progress||0)*100)}%<br>
+                        <b>Phụ trách:</b> ${task.owner || 'Chưa gán'}<br>
+                        <b>Thời gian:</b> ${fmt(start)} – ${fmt(end)}`;
+            };
+
+            gantt.config.layout = isMobile ? {
+                css: "gantt_container",
+                rows: [
+                    { cols: [
+                        { view: "grid", scrollX: "gScroll", scrollY: "vScroll" },
+                        { view: "scrollbar", id: "vScroll" }
+                    ]},
+                    { view: "scrollbar", id: "gScroll", group: "h" },
+                    { resizer: true, width: 1 },
+                    { view: "timeline", scrollX: "hScroll", scrollY: "vScroll" },
+                    { view: "scrollbar", id: "hScroll", group: "h" }
+                ]
+            } : {
+                css: "gantt_container",
+                cols: [
+                    { width: 380, min_width: 240, rows: [
+                        { view: "grid",      scrollX: "gScroll", scrollY: "vScroll" },
+                        { view: "scrollbar", id: "gScroll" }
+                    ]},
+                    { resizer: true, width: 1 },
+                    { rows: [
+                        { view: "timeline",  scrollX: "hScroll", scrollY: "vScroll" },
+                        { view: "scrollbar", id: "hScroll" }
+                    ]},
+                    { view: "scrollbar", id: "vScroll" }
+                ]
+            };
+
+            gantt.config.columns = [
+                { name:"text",       label:"Công việc",  tree:true, width: isMobile ? '*' : 220, resize:true },
+                { name:"start_date", label:"Bắt đầu",   align:"center", width:66, resize:true,
+                  template: o => { const d = o.start_date; return d ? `${d.getDate()}/${d.getMonth()+1}` : ''; } },
+                { name:"progress",   label:"%",          align:"center", width:50, resize:true,
+                  template: o => { const p = o.progress||0; return `<span style="color:${getProgressColor(p)};font-weight:700">${Math.round(p*100)}%</span>`; } }
+            ];
+            if (!isMobile) {
+                gantt.config.columns.push({ name:"owner", label:"PIC", align:"center", width:80, resize:true });
+            }
+
+            gantt.templates.task_class   = (s,e,t) => "task-" + getTaskStatus(t);
+            gantt.templates.tooltip_text = (s,e,t) => {
+                const fmt = gantt.date.date_to_str("%d/%m/%Y");
+                return `<b>${t.text}</b><br>${fmt(s)} – ${fmt(e)}<br>Tiến độ: ${Math.round((t.progress||0)*100)}%`;
+            };
+
+            gantt.init("gantt_here");
+
+            gantt.addMarker({ start_date: new Date(), css: "today_marker", text: "" });
+        }
+
+        function updateScale(level) {
+            const cfg = {
+                day:   { unit:"day",   step:1, date:"%d/%m",       sub:[],                                      min:30 },
+                week:  { unit:"week",  step:1, date:"Tuần %W",     sub:[{unit:"day",  step:1, date:"%d/%m"}],  min:50 },
+                month: { unit:"month", step:1, date:"Tháng %m/%Y", sub:[{unit:"week", step:1, date:"T%W"}],    min:60 },
+                year:  { unit:"year",  step:1, date:"Năm %Y",      sub:[{unit:"month",step:1, date:"T%m"}],    min:50 }
+            };
+            const c = cfg[level] || cfg.week;
+            gantt.config.scale_unit       = c.unit;
+            gantt.config.step             = c.step;
+            gantt.config.date_scale       = c.date;
+            gantt.config.subscales        = c.sub;
+            gantt.config.min_column_width = c.min;
+            gantt.render();
+        }
+
+        function autoFit() {
+            const tasks = gantt.getTaskByTime();
+            if (!tasks.length) return;
+            let min = tasks[0].start_date, max = tasks[0].end_date;
+            tasks.forEach(t => { if(t.start_date<min) min=t.start_date; if(t.end_date>max) max=t.end_date; });
+            gantt.config.start_date = gantt.date.add(min, -3, "day");
+            gantt.config.end_date   = gantt.date.add(max,  7, "day");
+            gantt.render();
+        }
+
+        async function loadData() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            try {
+                const res  = await fetch(API_URL);
+                const json = await res.json();
+                if (json.error) throw new Error(json.error);
+
+                const links = []; let lid = 1;
+                const tasks = json.data.map(t => {
+                    if (t.dependencies) {
+                        String(t.dependencies).split(',').forEach(d => {
+                            if (d.trim()) links.push({ id:lid++, source:d.trim(), target:t.id, type:"0" });
+                        });
+                    }
+                    return { ...t,
+                        start_date: normalizeDate(t.start_date) || t.start_date,
+                        end_date:   normalizeDate(t.end_date)   || t.end_date,
+                        open: true
+                    };
+                });
+
+                gantt.clearAll();
+                gantt.parse({ data: tasks, links });
+                calcDashboard(tasks);
+                autoFit();
+                showNotify("Cập nhật tiến độ thành công!");
+            } catch(err) {
+                console.error(err);
+                showNotify("Không tải được dữ liệu!", true);
+            } finally {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }
+        }
+
+        function calcDashboard(tasks) {
+            const c = {'xong-som':0,'xong-kip':0,'xong-muon':0,'dang-lam':0,'tre-lich':0,'chua-lam':0};
+            tasks.forEach(t => { const gt = gantt.getTask(t.id); if(gt){const s=getTaskStatus(gt);if(c[s]!==undefined)c[s]++;} });
+            Object.keys(c).forEach(k => { const el = document.getElementById('st-'+k); if(el) el.innerText = c[k]; });
+        }
+
+        function showNotify(msg, isError) {
+            const el = document.getElementById('notification');
+            el.innerText = msg;
+            el.style.background = isError ? '#EF4444' : 'var(--sn-green)';
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3200);
+        }
+
+        let rTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(rTimer);
+            rTimer = setTimeout(() => { try{gantt.destructor();}catch(e){} initGantt(); updateScale('week'); loadData(); }, 300);
+        });
+
+        window.addEventListener('DOMContentLoaded', () => { initGantt(); updateScale('week'); loadData(); });
+    </script>
+</body>
+</html>

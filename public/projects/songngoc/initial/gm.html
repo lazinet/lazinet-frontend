@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Song Ngoc Mechanical Banner</title>
+    <style>
+        body { margin: 0; background: #0b0f12; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .container { position: relative; width: 100%; max-width: 800px; text-align: center; }
+
+        /* SVG Logo Styling */
+        #sn-logo {
+            width: 300px;
+            filter: drop-shadow(0 0 15px rgba(0, 133, 74, 0.3));
+        }
+
+        .path-green { fill: none; stroke: #00854A; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+        .path-orange { fill: none; stroke: #F38022; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+
+        /* Animation vẽ nét */
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        /* Tia lửa hàn (Spark) */
+        .welding-spark {
+            position: absolute;
+            width: 15px; height: 15px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #fff, 0 0 40px #F38022, 0 0 60px #00854A;
+            offset-path: none; /* Sẽ điều khiển bằng JS để chạy theo đường vẽ */
+            display: none;
+        }
+
+        /* Chữ hiện lên sau cùng */
+        .brand-text {
+            margin-top: 30px;
+            font-family: 'Segoe UI', sans-serif;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.5s ease;
+        }
+        .brand-text h1 { color: #fff; font-size: 28px; letter-spacing: 5px; margin: 0; font-weight: 300; }
+        .brand-text span.orange { color: #F38022; font-weight: 900; }
+        .brand-text span.green { color: #00854A; font-weight: 900; }
+
+        .active .brand-text { opacity: 1; transform: translateY(0); }
+        .active .path-green, .active .path-orange { animation: draw 3s ease-in-out forwards; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="banner">
+    <svg id="sn-logo" viewBox="0 0 200 120">
+        <path class="path-green" d="M20,20 L80,20 L40,100 L100,100" />
+        <path class="path-orange" d="M10,30 L70,30 L30,110 L90,110" />
+        
+        <path class="path-green" d="M120,110 L120,20" />
+        <path class="path-orange" d="M120,20 L170,110" />
+        <path class="path-green" d="M170,110 L170,20" />
+    </svg>
+
+    <div class="brand-text">
+        <h1>CƠ KHÍ XÂY DỰNG <span class="orange">SONG</span> <span class="green">NGỌC</span></h1>
+    </div>
+</div>
+
+<script>
+    window.onload = () => {
+        // Kích hoạt animation sau 0.5s
+        setTimeout(() => {
+            document.getElementById('banner').classList.add('active');
+        }, 500);
+
+        // Sau khi vẽ xong thì hiện logo thật để đảm bảo 100% nhận diện
+        setTimeout(() => {
+            const svg = document.getElementById('sn-logo');
+            svg.style.transition = "opacity 1s";
+            svg.style.opacity = "0";
+            
+            // Thay thế bằng ảnh logo thật của bạn sau khi hiệu ứng vẽ kết thúc
+            setTimeout(() => {
+                svg.outerHTML = '<img src="https://songngoc.com.vn/thumbs/202x116x2/upload/photo/lg-1763624100.png.webp" style="height:120px; animation: fadeIn 1s ease;">';
+            }, 1000);
+        }, 3500);
+    };
+</script>
+
+<style>
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+</style>
+
+</body>
+</html>
