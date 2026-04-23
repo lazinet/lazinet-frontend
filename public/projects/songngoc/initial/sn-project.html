@@ -308,6 +308,109 @@
         .commit-grid { display:grid; grid-template-columns:1fr; gap:14px; }
         @media(min-width:900px){ .commit-grid { grid-template-columns:repeat(3,1fr); } }
 
+        /* ══ CONTRACT BUTTON ══ */
+        .btn-contract {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 22px; border-radius: 24px;
+            background: var(--surface); color: var(--sn-green);
+            border: 2px solid var(--sn-green);
+            font-size: 0.82rem; font-weight: 800; letter-spacing: 0.4px;
+            cursor: pointer; text-decoration: none;
+            transition: all 0.22s;
+        }
+        .btn-contract:hover {
+            background: var(--sn-green); color: #fff;
+            box-shadow: 0 6px 20px rgba(0,133,74,0.22);
+            transform: translateY(-2px);
+        }
+
+        /* ══ PDF MODAL ══ */
+        .pdf-backdrop {
+            display: none; position: fixed; inset: 0; z-index: 8000;
+            background: rgba(0,0,0,0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center; justify-content: center;
+            padding: 16px;
+        }
+        .pdf-backdrop.open { display: flex; }
+
+        .pdf-modal {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+            /* Portrait A4: tối đa 620px rộng, cao tới 96vh */
+            width: min(620px, calc(100vw - 32px));
+            height: min(calc(620px * 1.414), calc(96vh - 32px));
+            max-height: calc(96vh - 32px);
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn {
+            from { opacity:0; transform:scale(0.95) translateY(12px); }
+            to   { opacity:1; transform:scale(1)    translateY(0);     }
+        }
+        /* Mobile: chiếm full màn hình */
+        @media (max-width: 639px) {
+            .pdf-backdrop { padding: 0; }
+            .pdf-modal {
+                width: 100vw; height: 100dvh;
+                border-radius: 0;
+                max-height: 100dvh;
+            }
+        }
+
+        .pdf-modal-header {
+            background: var(--sn-green);
+            color: #fff;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 18px; flex-shrink: 0; gap: 12px;
+        }
+        .pdf-modal-title {
+            display: flex; align-items: center; gap: 9px;
+            font-size: 0.82rem; font-weight: 800; letter-spacing: 0.3px;
+        }
+        .pdf-modal-title i { font-size: 1rem; }
+        .pdf-modal-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+        .pdf-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 5px 13px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700;
+            cursor: pointer; border: none; text-decoration: none;
+            transition: all 0.18s;
+        }
+        .pdf-btn-dl  { background: rgba(255,255,255,0.18); color: #fff; }
+        .pdf-btn-dl:hover  { background: rgba(255,255,255,0.32); }
+        .pdf-btn-close { background: rgba(255,255,255,0.12); color: #fff; font-size: 1.05rem; padding: 5px 10px; }
+        .pdf-btn-close:hover { background: rgba(255,0,0,0.3); }
+
+        .pdf-modal-body {
+            flex: 1; overflow: hidden; background: #525659;
+            position: relative;
+        }
+        .pdf-modal-body iframe,
+        .pdf-modal-body object {
+            width: 100%; height: 100%;
+            border: none; display: block;
+        }
+        /* Fallback cho thiết bị không nhúng được PDF inline (iOS Safari) */
+        .pdf-ios-fallback {
+            display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; gap: 16px; padding: 24px; text-align: center;
+            color: #fff;
+        }
+        .pdf-ios-fallback i { font-size: 3rem; opacity: 0.7; }
+        .pdf-ios-fallback p { font-size: 0.88rem; opacity: 0.85; line-height: 1.6; }
+        .pdf-ios-fallback a {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 11px 24px; border-radius: 24px;
+            background: var(--sn-green); color: #fff;
+            font-weight: 800; font-size: 0.85rem; text-decoration: none;
+        }
+        .pdf-ios-fallback a:hover { background: var(--sn-green-dk); }
+
         /* ══ GANTT IFRAME ══ */
         .gantt-section { padding-bottom:56px; }
         .gantt-frame-outer { width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; border-top:2px solid var(--border); border-bottom:2px solid var(--border); }
@@ -670,6 +773,11 @@
         <div class="sec-title reveal">
             <div class="sec-eyebrow"><i class="fas fa-chart-gantt"></i> Phần 4</div>
             <h2>Tiến Độ <em>Triển Khai</em></h2>
+            <div style="margin:14px 0 6px;">
+                <button class="btn-contract" onclick="openPdfModal()">
+                    <i class="fas fa-file-contract"></i> Xem Hợp Đồng Dịch Vụ
+                </button>
+            </div>
             <p class="sec-desc">Lộ trình cập nhật liên tục từ hệ thống quản lý dự án — tiến độ từng giai đoạn, % hoàn thành và người phụ trách.</p>
             <div class="sec-line"></div>
         </div>
@@ -691,6 +799,37 @@
     Dành cho <strong>Công ty TNHH Cơ Khí Xây Dựng Song Ngọc</strong> &nbsp;|&nbsp; Tháng 4 / 2026</p>
     <p style="margin-top:8px;font-size:0.7rem;color:var(--text-3);">Tài liệu mang tính bảo mật — không phân phối ngoài phạm vi nội bộ hai bên.</p>
 </footer>
+
+<!-- ══ PDF CONTRACT MODAL ══ -->
+<div class="pdf-backdrop" id="pdfBackdrop" onclick="handleBackdropClick(event)">
+    <div class="pdf-modal" role="dialog" aria-modal="true" aria-label="Hợp đồng dịch vụ">
+        <div class="pdf-modal-header">
+            <div class="pdf-modal-title">
+                <i class="fas fa-file-contract"></i>
+                Hợp Đồng Dịch Vụ — D241/2026/HĐDV/SONGNGOC-HATHYO
+            </div>
+            <div class="pdf-modal-actions">
+                <a class="pdf-btn pdf-btn-dl"
+                   href="D241-2026-HDDV-SONGNGOC-HATHYO-HD.pdf"
+                   download title="Tải xuống">
+                    <i class="fas fa-download"></i> Tải xuống
+                </a>
+                <a class="pdf-btn pdf-btn-dl"
+                   href="D241-2026-HDDV-SONGNGOC-HATHYO-HD.pdf"
+                   target="_blank" rel="noopener" title="Mở tab mới">
+                    <i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
+                <button class="pdf-btn pdf-btn-close" onclick="closePdfModal()" title="Đóng">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="pdf-modal-body" id="pdfBody">
+            <!-- Được điền bởi JS theo loại thiết bị -->
+        </div>
+    </div>
+</div>
 
 <script>
 /* ══ SCROLL REVEAL ══ */
@@ -939,6 +1078,69 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); }
 
     requestAnimationFrame(frame);
 })();
+
+/* ══ PDF MODAL ══ */
+const PDF_PATH = 'D241-2026-HDDV-SONGNGOC-HATHYO-HD.pdf';
+
+/* Phát hiện iOS/iPadOS — PDF không nhúng inline trên Safari */
+function isIOSDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function openPdfModal() {
+    const body = document.getElementById('pdfBody');
+
+    if (isIOSDevice()) {
+        /* iOS Safari: không render PDF trong iframe → hiện fallback thân thiện */
+        body.innerHTML = `
+            <div class="pdf-ios-fallback" style="display:flex;">
+                <i class="fas fa-file-pdf"></i>
+                <p>Safari trên iOS không hiển thị PDF trực tiếp trong trang.<br>
+                   Nhấn nút bên dưới để xem hoặc tải hợp đồng.</p>
+                <a href="${PDF_PATH}" target="_blank" rel="noopener">
+                    <i class="fas fa-arrow-up-right-from-square"></i> Mở hợp đồng
+                </a>
+            </div>`;
+    } else {
+        /* Desktop + Android: dùng object với iframe fallback */
+        body.innerHTML = `
+            <object data="${PDF_PATH}#toolbar=1&view=FitH&scrollbar=1"
+                    type="application/pdf"
+                    style="width:100%;height:100%;border:none;display:block;">
+                <iframe src="${PDF_PATH}#toolbar=1"
+                        style="width:100%;height:100%;border:none;display:block;"
+                        title="Hợp đồng dịch vụ Song Ngọc × HATHYO">
+                    <div class="pdf-ios-fallback" style="display:flex;background:#525659;">
+                        <i class="fas fa-file-pdf"></i>
+                        <p>Trình duyệt không hỗ trợ xem PDF inline.</p>
+                        <a href="${PDF_PATH}" target="_blank" rel="noopener">
+                            <i class="fas fa-arrow-up-right-from-square"></i> Mở hợp đồng
+                        </a>
+                    </div>
+                </iframe>
+            </object>`;
+    }
+
+    const backdrop = document.getElementById('pdfBackdrop');
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePdfModal() {
+    document.getElementById('pdfBackdrop').classList.remove('open');
+    document.body.style.overflow = '';
+    /* Xóa nội dung để giải phóng memory */
+    setTimeout(() => { document.getElementById('pdfBody').innerHTML = ''; }, 300);
+}
+
+function handleBackdropClick(e) {
+    if (e.target === document.getElementById('pdfBackdrop')) closePdfModal();
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePdfModal();
+});
 </script>
 </body>
 </html>

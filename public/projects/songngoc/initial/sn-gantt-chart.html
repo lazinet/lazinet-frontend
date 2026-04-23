@@ -175,6 +175,109 @@
             transition: transform 0.3s ease; z-index: 999;
         }
         .notification.show { transform: translateX(-50%) translateY(0); }
+
+        /* ── MILESTONE TRACK ── */
+        .milestone-track {
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+            padding: 7px 14px 9px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        /* Segment (mỗi giai đoạn) */
+        .ms-seg {
+            flex: 1;
+            position: relative;
+            border-radius: 7px;
+            border: 1.5px solid #CBD5E1;
+            overflow: hidden;
+            min-height: 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5px 8px;
+            transition: border-color 0.5s;
+        }
+        /* Fill tiến độ chạy từ trái */
+        .ms-fill {
+            position: absolute; left: 0; top: 0; bottom: 0;
+            width: 0%;
+            transition: width 1s ease, background 0.5s;
+            z-index: 0;
+            opacity: 0.18;
+        }
+        .ms-seg-content {
+            position: relative; z-index: 1;
+            display: flex; justify-content: space-between; align-items: center; gap: 4px;
+        }
+        .ms-seg-head { display: flex; align-items: center; gap: 6px; }
+        .ms-badge {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #94A3B8; color: #fff;
+            font-size: 9px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: background 0.5s;
+        }
+        .ms-phase-name {
+            font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase; color: #94A3B8; line-height: 1.2;
+            transition: color 0.5s;
+        }
+        .ms-pct {
+            font-size: 16px; font-weight: 900; color: #94A3B8;
+            flex-shrink: 0; transition: color 0.5s;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Node mốc (diamond) giữa các giai đoạn */
+        .ms-node {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; flex-shrink: 0;
+            padding: 0 6px; gap: 4px;
+        }
+        .ms-diamond {
+            width: 15px; height: 15px;
+            border: 2.5px solid #CBD5E1;
+            background: var(--surface);
+            transform: rotate(45deg);
+            transition: border-color 0.5s, background 0.5s, box-shadow 0.5s;
+            flex-shrink: 0;
+        }
+        .ms-diamond.active-orange {
+            border-color: var(--sn-orange); background: var(--sn-orange);
+            box-shadow: 0 0 8px rgba(243,128,34,0.4);
+        }
+        .ms-diamond.active-green {
+            border-color: var(--sn-green); background: var(--sn-green);
+            box-shadow: 0 0 8px rgba(0,133,74,0.4);
+        }
+        .ms-event-label {
+            font-size: 8px; font-weight: 700; color: #94A3B8;
+            text-transform: uppercase; letter-spacing: 0.3px;
+            white-space: nowrap; transition: color 0.5s;
+            text-align: center;
+        }
+        .ms-event-label.active-orange { color: var(--sn-orange); }
+        .ms-event-label.active-green  { color: var(--sn-green);  }
+
+        /* Mũi tên cuối */
+        .ms-arrow-end {
+            display: flex; align-items: center; padding-left: 4px;
+            font-size: 16px; color: #CBD5E1;
+            transition: color 0.5s; flex-shrink: 0;
+        }
+        .ms-arrow-end.done { color: var(--sn-green); }
+
+        @media (max-width: 640px) {
+            .ms-phase-name { display: none; }
+            .ms-pct { font-size: 14px; }
+            .ms-node { padding: 0 4px; }
+            .ms-event-label { font-size: 7px; letter-spacing: 0; }
+            .milestone-track { padding: 5px 8px 7px; }
+        }
     </style>
 </head>
 <body>
@@ -233,6 +336,66 @@
             <div class="stat-num" id="st-chua-lam">0</div>
             <div class="stat-label"><span class="lbl-desktop">Chưa làm</span><span class="lbl-mobile">Chưa</span></div>
         </div>
+    </div>
+
+    <!-- ── MILESTONE TRACK: 3 giai đoạn + 3 cột mốc ── -->
+    <div class="milestone-track" id="milestoneTrack">
+
+        <!-- A. KHỞI ĐỘNG DỰ ÁN -->
+        <div class="ms-seg" id="ms-seg-A">
+            <div class="ms-fill" id="ms-fill-A"></div>
+            <div class="ms-seg-content">
+                <div class="ms-seg-head">
+                    <span class="ms-badge" id="ms-badge-A">A</span>
+                    <span class="ms-phase-name">KHỞI ĐỘNG DỰ ÁN</span>
+                </div>
+                <span class="ms-pct" id="ms-pct-A">–</span>
+            </div>
+        </div>
+
+        <!-- Mốc 1: Tạm ứng (kích hoạt khi A bắt đầu) -->
+        <div class="ms-node" id="ms-node-1">
+            <div class="ms-diamond" id="ms-diamond-1"></div>
+            <div class="ms-event-label" id="ms-label-1">Tạm ứng</div>
+        </div>
+
+        <!-- B. THỰC HIỆN DỰ ÁN -->
+        <div class="ms-seg" id="ms-seg-B" style="flex:1.8">
+            <div class="ms-fill" id="ms-fill-B"></div>
+            <div class="ms-seg-content">
+                <div class="ms-seg-head">
+                    <span class="ms-badge" id="ms-badge-B">B</span>
+                    <span class="ms-phase-name">THỰC HIỆN DỰ ÁN</span>
+                </div>
+                <span class="ms-pct" id="ms-pct-B">–</span>
+            </div>
+        </div>
+
+        <!-- Mốc 2: Nghiệm thu (kích hoạt khi B hoàn thành) -->
+        <div class="ms-node" id="ms-node-2">
+            <div class="ms-diamond" id="ms-diamond-2"></div>
+            <div class="ms-event-label" id="ms-label-2">Nghiệm thu</div>
+        </div>
+
+        <!-- C. BẢO HÀNH -->
+        <div class="ms-seg" id="ms-seg-C" style="flex:1.4">
+            <div class="ms-fill" id="ms-fill-C"></div>
+            <div class="ms-seg-content">
+                <div class="ms-seg-head">
+                    <span class="ms-badge" id="ms-badge-C">C</span>
+                    <span class="ms-phase-name">BẢO HÀNH</span>
+                </div>
+                <span class="ms-pct" id="ms-pct-C">–</span>
+            </div>
+        </div>
+
+        <!-- Mốc 3: Hoàn tất bảo hành (kích hoạt khi C hoàn thành) -->
+        <div class="ms-node" id="ms-node-3">
+            <div class="ms-diamond" id="ms-diamond-3"></div>
+            <div class="ms-event-label" id="ms-label-3">Hoàn tất<br>bảo hành</div>
+        </div>
+
+        <div class="ms-arrow-end" id="ms-arrow">▶</div>
     </div>
 
     <div class="gantt-wrapper">
@@ -402,6 +565,7 @@
                 gantt.clearAll();
                 gantt.parse({ data: tasks, links });
                 calcDashboard(tasks);
+                updateMilestoneBar(tasks);
                 autoFit();
                 showNotify("Cập nhật tiến độ thành công!");
             } catch(err) {
@@ -416,6 +580,101 @@
             const c = {'xong-som':0,'xong-kip':0,'xong-muon':0,'dang-lam':0,'tre-lich':0,'chua-lam':0};
             tasks.forEach(t => { const gt = gantt.getTask(t.id); if(gt){const s=getTaskStatus(gt);if(c[s]!==undefined)c[s]++;} });
             Object.keys(c).forEach(k => { const el = document.getElementById('st-'+k); if(el) el.innerText = c[k]; });
+        }
+
+        /* ── MILESTONE TRACK ── */
+        function updateMilestoneBar(tasks) {
+            /* Tìm task cha của mỗi giai đoạn: text bắt đầu bằng "A.", "B.", "C." */
+            const phaseId   = { A: null, B: null, C: null };
+            const phaseTask = { A: null, B: null, C: null };
+            tasks.forEach(t => {
+                const m = t.text && t.text.match(/^([ABC])\./);
+                if (m && (!t.parent || t.parent == 0)) {
+                    phaseId[m[1]]   = t.id;
+                    phaseTask[m[1]] = t;
+                }
+            });
+
+            /* Tổng hợp progress con nếu cha không có progress */
+            const childProg = { A: [], B: [], C: [] };
+            tasks.forEach(t => {
+                if (!t.parent) return;
+                const key = Object.keys(phaseId).find(k => phaseId[k] == t.parent);
+                if (key) childProg[key].push(parseFloat(t.progress) || 0);
+            });
+
+            function getProgress(key) {
+                const pt = phaseTask[key];
+                if (pt) {
+                    const p = parseFloat(pt.progress) || 0;
+                    /* Dùng progress của cha nếu khác 0, hoặc tính từ con */
+                    if (p > 0 || !childProg[key].length) return p;
+                }
+                const arr = childProg[key];
+                return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+            }
+
+            function phaseColorClass(p) {
+                if (p <= 0)  return { border:'#CBD5E1', fill:'#94A3B8', badge:'#94A3B8', pct:'#94A3B8', name:'#94A3B8' };
+                if (p >= 1)  return { border:'#00854A', fill:'#00854A', badge:'#00854A', pct:'#00854A', name:'#00854A' };
+                return         { border:'#F38022', fill:'#F38022', badge:'#F38022', pct:'#F38022', name:'#F38022' };
+            }
+
+            ['A','B','C'].forEach(key => {
+                const p   = getProgress(key);
+                const pct = Math.round(p * 100);
+                const col = phaseColorClass(p);
+
+                const seg   = document.getElementById('ms-seg-'  + key);
+                const fill  = document.getElementById('ms-fill-' + key);
+                const badge = document.getElementById('ms-badge-'+ key);
+                const pctEl = document.getElementById('ms-pct-'  + key);
+                const nameEl= seg && seg.querySelector('.ms-phase-name');
+
+                if (seg)    seg.style.borderColor       = col.border;
+                if (fill) { fill.style.width            = pct + '%';
+                            fill.style.background       = col.fill; }
+                if (badge)  badge.style.background      = col.badge;
+                if (pctEl) { pctEl.textContent          = pct + '%';
+                             pctEl.style.color          = col.pct; }
+                if (nameEl) nameEl.style.color          = col.name;
+            });
+
+            /* Nodes / diamonds:
+               Mốc 1 (Tạm ứng)        → sáng khi A > 0   (đã tạm ứng = đã khởi động)
+               Mốc 2 (Nghiệm thu)     → sáng khi B >= 1  (đã hoàn thành triển khai)
+               Mốc 3 (Hoàn tất BH)   → sáng khi C >= 1  (đã hết bảo hành)        */
+            const nodes = [
+                { idx:1, key:'A', trigger: p => p > 0  },
+                { idx:2, key:'B', trigger: p => p >= 1 },
+                { idx:3, key:'C', trigger: p => p >= 1 }
+            ];
+            nodes.forEach(({idx, key, trigger}) => {
+                const p       = getProgress(key);
+                const active  = trigger(p);
+                const diamond = document.getElementById('ms-diamond-'+idx);
+                const label   = document.getElementById('ms-label-'+idx);
+
+                if (diamond) {
+                    diamond.classList.remove('active-orange','active-green');
+                    if (active) {
+                        diamond.classList.add(p >= 1 ? 'active-green' : 'active-orange');
+                    }
+                }
+                if (label) {
+                    label.classList.remove('active-orange','active-green');
+                    if (active) {
+                        label.classList.add(p >= 1 ? 'active-green' : 'active-orange');
+                    }
+                }
+            });
+
+            /* Arrow sáng xanh khi cả 3 xong */
+            const allDone = ['A','B','C'].every(k => getProgress(k) >= 1);
+            const arrow   = document.getElementById('ms-arrow');
+            if (arrow) {
+                arrow.classList.toggle('done', allDone);
+            }
         }
 
         function showNotify(msg, isError) {
