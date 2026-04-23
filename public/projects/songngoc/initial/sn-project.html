@@ -305,6 +305,8 @@
         .maintain-per .val { font-size:1.1rem; font-weight:900; color:var(--sn-green); }
         .note-box { margin-top:16px; padding:14px 18px; background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; font-size:0.78rem; color:#78350F; line-height:1.65; }
         .note-box i { color:#D97706; margin-right:6px; }
+        .commit-grid { display:grid; grid-template-columns:1fr; gap:14px; }
+        @media(min-width:900px){ .commit-grid { grid-template-columns:repeat(3,1fr); } }
 
         /* ══ GANTT IFRAME ══ */
         .gantt-section { padding-bottom:56px; }
@@ -540,8 +542,8 @@
     <div class="wrap">
         <div class="sec-title reveal">
             <div class="sec-eyebrow"><i class="fas fa-file-invoice-dollar"></i> Phần 3</div>
-            <h2>Báo Giá <em>Sơ Bộ</em></h2>
-            <p class="sec-desc">Chi phí minh bạch, thanh toán theo tiến độ nghiệm thu. Bảo hành 3 tháng và hỗ trợ vận hành dài hạn.</p>
+            <h2>Báo Giá <em>Trọn Gói</em></h2>
+            <p class="sec-desc">Chi phí minh bạch, đã bao gồm VAT. Thanh toán theo tiến độ nghiệm thu. Bảo hành kỹ thuật 12 tháng.</p>
             <div class="sec-line"></div>
         </div>
         <div class="pricing-wrap">
@@ -551,22 +553,28 @@
                     <tbody>
                         <tr>
                             <td><span class="item-no no-g">1</span></td>
-                            <td><div class="item-name">Tân trang website với CMS hiện đại</div><div class="item-desc">Thiết kế lại toàn bộ, CMS, SEO, form, bản đồ, mạng xã hội đầy đủ</div></td>
-                            <td><span class="price-val">28.000.000 đ</span></td>
+                            <td><div class="item-name">Tân trang Website với CMS hiện đại</div><div class="item-desc">Thiết kế lại toàn bộ giao diện, CMS tự quản trị, SEO, form liên hệ, bản đồ, mạng xã hội đầy đủ, responsive</div></td>
+                            <td><span class="price-val">25.000.000 đ</span></td>
                         </tr>
                         <tr>
                             <td><span class="item-no no-o">2</span></td>
-                            <td><div class="item-name">Hồ sơ năng lực tương tác trên web</div><div class="item-desc">Profile web tương tác, admin cập nhật online, xuất PDF/PNG, gallery dự án</div></td>
-                            <td><span class="price-val">20.000.000 đ</span></td>
+                            <td><div class="item-name">Hồ sơ năng lực tương tác trên web</div><div class="item-desc">Profile web tương tác, admin cập nhật online, gallery dự án, xuất PDF/PNG</div></td>
+                            <td><span class="price-val">15.000.000 đ</span></td>
                         </tr>
                         <tr>
                             <td><span class="item-no no-b">3</span></td>
-                            <td><div class="item-name">Video giới thiệu & kênh media</div><div class="item-desc">Thiết lập YouTube, album video trên web, hỗ trợ script & chỉnh sửa video ~5 phút</div></td>
-                            <td><span class="price-val">7.000.000 đ</span></td>
+                            <td>
+                                <div class="item-name">Video giới thiệu & kênh media</div>
+                                <div class="item-desc">Thiết lập YouTube, album video trên web, hỗ trợ script & chỉnh sửa video ~5 phút</div>
+                            </td>
+                            <td>
+                                <span class="price-val" style="color:var(--sn-green);font-size:0.82rem;">TẶNG KÈM</span>
+                                <div style="font-size:0.68rem;color:var(--text-3);text-decoration:line-through;text-align:right;">7.000.000 đ</div>
+                            </td>
                         </tr>
                         <tr class="total-row">
-                            <td colspan="2"><i class="fas fa-calculator me-2" style="color:var(--sn-green);"></i><strong>TỔNG GIÁ TRỊ HỢP ĐỒNG</strong></td>
-                            <td><span class="price-total-val">55.000.000 đ</span></td>
+                            <td colspan="2"><i class="fas fa-calculator me-2" style="color:var(--sn-green);"></i><strong>TỔNG GIÁ TRỊ HỢP ĐỒNG</strong> <span style="font-size:0.72rem;font-weight:400;color:var(--text-2);">(đã bao gồm VAT)</span></td>
+                            <td><span class="price-total-val">40.000.000 đ</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -576,25 +584,80 @@
                 <i class="fas fa-calendar-check me-1" style="color:var(--sn-green);"></i> Lịch Thanh Toán Theo Tiến Độ
             </h5>
             <div class="payment-grid reveal">
-                <div class="pay-card c1"><div class="pay-pct c1">40%</div><div class="pay-label">Tạm ứng</div><div class="pay-amt">22.000.000 đ</div><div class="pay-note">Khởi động dự án, ký hợp đồng</div></div>
-                <div class="pay-card c2"><div class="pay-pct c2">50%</div><div class="pay-label">Nghiệm thu</div><div class="pay-amt">27.500.000 đ</div><div class="pay-note">Bàn giao, go-live website</div></div>
-                <div class="pay-card c3"><div class="pay-pct c3">10%</div><div class="pay-label">Bảo hành</div><div class="pay-amt">5.500.000 đ</div><div class="pay-note">Sau 3 tháng bảo hành</div></div>
-                <div class="pay-card c4"><div class="pay-pct c4"><i class="fas fa-infinity" style="font-size:1.4rem;"></i></div><div class="pay-label">Bảo trì / năm</div><div class="pay-amt">6.000.000 đ</div><div class="pay-note">Vận hành liên tục hàng năm</div></div>
+                <div class="pay-card c1"><div class="pay-pct c1">40%</div><div class="pay-label">Tạm ứng</div><div class="pay-amt">16.000.000 đ</div><div class="pay-note">Ngay sau khi ký hợp đồng</div></div>
+                <div class="pay-card c2"><div class="pay-pct c2">50%</div><div class="pay-label">Nghiệm thu</div><div class="pay-amt">20.000.000 đ</div><div class="pay-note">Sau khi ký biên bản bàn giao</div></div>
+                <div class="pay-card c3"><div class="pay-pct c3">10%</div><div class="pay-label">Hoàn tất bảo hành</div><div class="pay-amt">4.000.000 đ</div><div class="pay-note">Sau 12 tháng bảo hành kỹ thuật</div></div>
+                <div class="pay-card c4"><div class="pay-pct c4"><i class="fas fa-infinity" style="font-size:1.4rem;"></i></div><div class="pay-label">Bảo trì / năm</div><div class="pay-amt">6.000.000 đ</div><div class="pay-note">Cân nhắc sau hết bảo hành, phụ lục riêng</div></div>
             </div>
 
             <div class="maintain-card reveal">
                 <div class="maintain-icon">🛡️</div>
                 <div class="maintain-body">
-                    <div class="maintain-label">Gói Bảo Trì Vận Hành Hàng Năm</div>
+                    <div class="maintain-label">Gói Bảo Trì Vận Hành Hàng Năm (Tùy chọn)</div>
                     <div class="maintain-val">6.000.000 đ / năm</div>
-                    <div class="maintain-desc">Theo dõi uptime, cập nhật bảo mật, backup định kỳ, hỗ trợ sự cố kỹ thuật, gia hạn SSL. Không bao gồm phát triển tính năng mới.</div>
+                    <div class="maintain-desc">Theo dõi uptime, cập nhật bảo mật, backup định kỳ, hỗ trợ sự cố kỹ thuật, gia hạn SSL. Có thể đăng ký sau khi hết bảo hành và ký phụ lục bổ sung. Không bao gồm phát triển tính năng mới.</div>
                 </div>
                 <div class="maintain-per"><div class="lbl">Quy đổi</div><div class="val">500.000 đ<span style="font-size:0.72rem;font-weight:400;color:var(--text-3);">/tháng</span></div></div>
             </div>
 
             <div class="note-box reveal">
                 <i class="fas fa-info-circle"></i>
-                <strong>Lưu ý:</strong> Báo giá sơ bộ, giá chính thức xác nhận sau khảo sát chi tiết. Chưa bao gồm VAT. Chi phí domain (~300.000đ/năm) do khách hàng tự quản lý.
+                <strong>Lưu ý:</strong> Giá trọn gói đã bao gồm VAT. Chi phí domain (~300.000đ/năm) do Bên A tự quản lý. Gói bảo trì hàng năm là tùy chọn, ký phụ lục riêng sau khi hết bảo hành.
+            </div>
+
+            <!-- ── CAM KẾT DỊCH VỤ (Điều 4 · 5 · 6) ── -->
+            <div style="margin-top:36px;">
+                <h5 class="reveal" style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin:0 0 16px;text-align:center;">
+                    <i class="fas fa-handshake me-1" style="color:var(--sn-green);"></i> Cam Kết Dịch Vụ
+                </h5>
+
+                <div class="reveal">
+                    <div class="commit-grid">
+
+                    <!-- Điều 4: Quyền & Nghĩa vụ -->
+                    <div class="card-base" style="padding:20px 22px;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                            <div class="sol-icon ic-green" style="width:38px;height:38px;font-size:1.1rem;flex-shrink:0;"><i class="fas fa-users"></i></div>
+                            <div style="font-size:0.82rem;font-weight:800;color:var(--text);">Quyền &amp; Nghĩa Vụ Các Bên</div>
+                        </div>
+                        <ul class="sol-list">
+                            <li><strong>Bên A:</strong> cung cấp nội dung, hình ảnh, logo theo tiến độ; thanh toán đúng hạn; phối hợp nghiệm thu</li>
+                            <li><strong>Bên B:</strong> tư vấn, thiết kế, lập trình đúng yêu cầu đã chốt</li>
+                            <li><strong>Bên B:</strong> hướng dẫn nhân sự Bên A quản trị website sau bàn giao</li>
+                            <li><strong>Bên B:</strong> bảo hành kỹ thuật (khắc phục lỗi lập trình) <strong>12 tháng</strong> kể từ ngày nghiệm thu</li>
+                            <li>Nếu Bên A chậm cung cấp nội dung, tiến độ được điều chỉnh tương ứng</li>
+                        </ul>
+                    </div>
+
+                    <!-- Điều 5: Bảo mật & Bản quyền -->
+                    <div class="card-base" style="padding:20px 22px;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                            <div class="sol-icon ic-orange" style="width:38px;height:38px;font-size:1.1rem;flex-shrink:0;"><i class="fas fa-shield-halved"></i></div>
+                            <div style="font-size:0.82rem;font-weight:800;color:var(--text);">Bảo Mật &amp; Bản Quyền</div>
+                        </div>
+                        <ul class="sol-list">
+                            <li>Bên B cam kết bảo mật tuyệt đối thông tin dữ liệu, chiến lược kinh doanh của Bên A trong suốt quá trình thực hiện</li>
+                            <li>Tuân thủ Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân</li>
+                            <li><strong>Bản quyền</strong> toàn bộ giao diện và mã nguồn website thuộc về <strong>Bên A</strong> ngay sau khi hoàn tất nghĩa vụ thanh toán</li>
+                        </ul>
+                    </div>
+
+                    <!-- Điều 6: Điều khoản chung -->
+                    <div class="card-base" style="padding:20px 22px;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                            <div class="sol-icon" style="width:38px;height:38px;font-size:1.1rem;flex-shrink:0;background:#EFF6FF;color:#2563EB;"><i class="fas fa-file-contract"></i></div>
+                            <div style="font-size:0.82rem;font-weight:800;color:var(--text);">Điều Khoản Chung</div>
+                        </div>
+                        <ul class="sol-list">
+                            <li>Hợp đồng có hiệu lực kể từ ngày ký (24/04/2026)</li>
+                            <li>Mọi tranh chấp được giải quyết trước hết qua <strong>thương lượng, hòa giải</strong></li>
+                            <li>Hợp đồng lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ 01 bản</li>
+                            <li>Căn cứ: Bộ luật Dân sự 91/2015, Luật Thương mại 36/2005, Luật SHTT, NĐ 147/2024, NĐ 13/2023</li>
+                        </ul>
+                    </div>
+
+                    </div><!-- .commit-grid -->
+                </div>
             </div>
         </div>
     </div>
@@ -625,7 +688,7 @@
         <img src="../assets/logos/logo-sn.png" alt="Song Ngọc">
     </div>
     <p>Tài liệu đề xuất bởi <strong>HATHYO — Công ty TNHH Cuộc Sống Vui Khỏe</strong><br>
-    Dành cho <strong>Công ty TNHH Cơ Khí Xây Dựng Song Ngọc</strong> &nbsp;|&nbsp; Tháng 4 / 2025</p>
+    Dành cho <strong>Công ty TNHH Cơ Khí Xây Dựng Song Ngọc</strong> &nbsp;|&nbsp; Tháng 4 / 2026</p>
     <p style="margin-top:8px;font-size:0.7rem;color:var(--text-3);">Tài liệu mang tính bảo mật — không phân phối ngoài phạm vi nội bộ hai bên.</p>
 </footer>
 
