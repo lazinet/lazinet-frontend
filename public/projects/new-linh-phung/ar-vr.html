@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VR/AR Du lịch – Demo Trải nghiệm Ảo</title>
+<style>
+:root { --primary:#1a3a5c; --accent:#8b5cf6; --accent2:#0ea5e9; --bg:#0d0d1a; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI',sans-serif; background:var(--bg); color:#e2e8f0; }
+.hero { background:linear-gradient(135deg,#1a0a3c,#2d0f6b,#0e4f6e); padding:40px 32px 32px; }
+.hero h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; }
+.hero p { opacity:0.75; font-size:0.9rem; line-height:1.6; max-width:600px; }
+nav { background:rgba(0,0,0,0.5); padding:10px 24px; display:flex; gap:10px; flex-wrap:wrap; backdrop-filter:blur(8px); border-bottom:1px solid rgba(255,255,255,0.1); }
+nav a { color:#94a3b8; text-decoration:none; font-size:0.82rem; padding:5px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.15); }
+nav a:hover,nav a.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+main { max-width:1280px; margin:0 auto; padding:40px 24px; }
+
+/* VR VIEWER SIMULATION */
+.vr-container { background: radial-gradient(ellipse at center, #1e1040 0%, #0d0d1a 100%); border-radius:20px; padding:0; overflow:hidden; margin-bottom:40px; position:relative; border:1px solid rgba(139,92,246,0.3); }
+.vr-header { background:rgba(139,92,246,0.15); border-bottom:1px solid rgba(139,92,246,0.2); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+.vr-title { font-size:1rem; font-weight:700; color:#c4b5fd; }
+.vr-controls { display:flex; gap:8px; }
+.vr-btn { background:rgba(139,92,246,0.3); color:#c4b5fd; border:1px solid rgba(139,92,246,0.5); border-radius:8px; padding:6px 14px; cursor:pointer; font-size:0.78rem; transition:all .2s; }
+.vr-btn:hover { background:#8b5cf6; color:#fff; }
+.vr-btn.active { background:#8b5cf6; color:#fff; }
+
+/* 360° scene simulation with CSS */
+.vr-scene {
+  height:460px; position:relative; overflow:hidden; cursor:grab;
+  background: conic-gradient(from 0deg at 50% 60%,
+    #87CEEB 0%, #98D8F0 15%, #B0E0E8 25%, #c8e6c9 30%, #a5d6a7 35%,
+    #8d6e63 38%, #795548 42%, #6d4c41 45%, #5d4037 48%,
+    #4e342e 50%, #6d4c41 55%, #795548 60%, #8d6e63 65%,
+    #a5d6a7 70%, #c8e6c9 75%, #B0E0E8 80%, #98D8F0 90%, #87CEEB 100%
+  );
+}
+.vr-scene::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 80% 40% at 50% 100%, rgba(90,60,30,0.9) 0%, transparent 70%);
+}
+.vr-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.vr-label { text-align:center; }
+.vr-place-icon { font-size:4rem; margin-bottom:12px; filter:drop-shadow(0 4px 16px rgba(0,0,0,0.8)); animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.vr-place-name { font-size:2rem; font-weight:800; text-shadow:0 2px 20px rgba(0,0,0,0.9); margin-bottom:8px; }
+.vr-place-sub { font-size:0.9rem; opacity:0.8; text-shadow:0 1px 4px rgba(0,0,0,0.8); }
+
+/* Hotspots */
+.hotspot { position:absolute; cursor:pointer; transform:translate(-50%,-50%); }
+.hotspot-ring { width:36px; height:36px; border-radius:50%; border:3px solid rgba(255,255,255,0.8); display:flex; align-items:center; justify-content:center; font-size:1rem; background:rgba(139,92,246,0.7); animation:pulse-ring 2s infinite; box-shadow:0 0 0 0 rgba(139,92,246,0.7); }
+@keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(139,92,246,0.7)} 70%{box-shadow:0 0 0 12px transparent} 100%{box-shadow:0 0 0 0 transparent} }
+.hotspot-label { position:absolute; top:42px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:#fff; font-size:0.72rem; padding:4px 10px; border-radius:8px; white-space:nowrap; backdrop-filter:blur(4px); }
+
+.vr-compass { position:absolute; top:16px; right:16px; background:rgba(0,0,0,0.6); border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,0.2); }
+
+/* INFO CARD when hotspot clicked */
+.poi-info { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.0) 100%); padding:20px 24px 16px; transform:translateY(100%); transition:transform .3s; }
+.poi-info.show { transform:translateY(0); }
+.poi-info h3 { font-size:1.1rem; font-weight:700; margin-bottom:4px; }
+.poi-info p { font-size:0.82rem; opacity:0.8; line-height:1.5; margin-bottom:10px; }
+.poi-info-btns { display:flex; gap:8px; }
+.poi-btn { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:0.78rem; cursor:pointer; font-weight:600; }
+.poi-btn.sec { background:rgba(255,255,255,0.15); }
+
+/* DESTINATIONS */
+.destinations { margin-bottom:40px; }
+.dest-title { font-size:1.2rem; font-weight:700; color:#c4b5fd; margin-bottom:16px; }
+.dest-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.dest-card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:14px; overflow:hidden; cursor:pointer; transition:all .2s; }
+.dest-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(139,92,246,0.2); }
+.dest-card.active { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+.dest-thumb { height:120px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; }
+.dest-info { padding:12px; }
+.dest-name { font-size:0.88rem; font-weight:700; color:#e2e8f0; margin-bottom:4px; }
+.dest-cat { font-size:0.72rem; color:#94a3b8; }
+.dest-badge { display:inline-block; font-size:0.68rem; background:rgba(139,92,246,0.3); color:#c4b5fd; padding:2px 8px; border-radius:10px; margin-top:4px; }
+
+/* AR SECTION */
+.ar-section { background:rgba(14,165,233,0.08); border:1px solid rgba(14,165,233,0.2); border-radius:16px; padding:28px; margin-bottom:40px; }
+.ar-section h2 { font-size:1.2rem; font-weight:700; color:#7dd3fc; margin-bottom:6px; }
+.ar-section p { color:#94a3b8; font-size:0.88rem; margin-bottom:20px; line-height:1.6; }
+.ar-steps { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
+.ar-step { text-align:center; padding:16px; }
+.ar-step .step-num { width:36px; height:36px; background:var(--accent2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem; margin:0 auto 10px; }
+.ar-step h4 { font-size:0.85rem; font-weight:700; color:#e2e8f0; margin-bottom:6px; }
+.ar-step p { font-size:0.78rem; color:#64748b; }
+
+/* TECH SPECS */
+.specs { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+.spec-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px; }
+.spec-card h4 { font-size:0.82rem; font-weight:700; color:#c4b5fd; margin-bottom:10px; }
+.spec-item { display:flex; justify-content:space-between; font-size:0.78rem; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.spec-item span:last-child { color:#94a3b8; }
+
+footer { background:#050510; color:rgba(255,255,255,0.4); text-align:center; padding:20px; font-size:0.82rem; border-top:1px solid rgba(255,255,255,0.08); }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🥽 VR/AR Du lịch – Trải nghiệm Nhập vai</h1>
+  <p>Công nghệ Thực tế Ảo (VR) và Thực tế Tăng cường (AR) biến điểm đến thành trải nghiệm số sống động, vượt qua giới hạn vật lý.</p>
+</div>
+<nav>
+  <a href="index.html">🏠 Tổng quan</a>
+  <a href="architecture.html">🏗 Kiến trúc</a>
+  <a href="webgis.html">🗺 WebGIS</a>
+  <a href="ar-vr.html" class="active">🥽 VR/AR</a>
+  <a href="heritage.html">🏛 Di sản</a>
+  <a href="ecommerce.html">🛍 TMĐT</a>
+</nav>
+<main>
+
+<!-- VR VIEWER -->
+<div class="vr-container" id="vr-container">
+  <div class="vr-header">
+    <span class="vr-title">🥽 VR Tour – <span id="current-place">Phố cổ Hội An</span></span>
+    <div class="vr-controls">
+      <button class="vr-btn active" onclick="setMode('vr')">🥽 VR 360°</button>
+      <button class="vr-btn" onclick="setMode('ar')">📱 AR Mode</button>
+      <button class="vr-btn" onclick="toggleFullscreen()">⛶ Toàn màn hình</button>
+    </div>
+  </div>
+
+  <div class="vr-scene" id="vr-scene" onclick="closePoi()">
+    <div class="vr-compass">🧭</div>
+    <div class="vr-overlay">
+      <div class="vr-label" id="vr-label">
+        <div class="vr-place-icon" id="vr-icon">🏛</div>
+        <div class="vr-place-name" id="vr-name">Phố cổ Hội An</div>
+        <div class="vr-place-sub" id="vr-sub">Di sản Văn hóa Thế giới UNESCO · 1999</div>
+      </div>
+    </div>
+
+    <!-- Hotspots -->
+    <div class="hotspot" style="top:45%;left:30%" onclick="openPoi(event,'Chùa Cầu','Biểu tượng của Hội An, xây dựng thế kỷ 17 bởi thương nhân Nhật Bản. Kiến trúc độc đáo kết hợp Việt-Nhật-Hoa.')">
+      <div class="hotspot-ring">🛕</div>
+      <div class="hotspot-label">Chùa Cầu</div>
+    </div>
+    <div class="hotspot" style="top:50%;left:60%" onclick="openPoi(event,'Hội quán Phúc Kiến','Công trình thờ phụng của người Hoa Phúc Kiến, xây dựng năm 1697. Lưu giữ nhiều đồ tế khí, sắc phong quý.')">
+      <div class="hotspot-ring">🏮</div>
+      <div class="hotspot-label">Hội quán Phúc Kiến</div>
+    </div>
+    <div class="hotspot" style="top:38%;left:50%" onclick="openPoi(event,'Nhà Cổ Tấn Ký','Nhà cổ 200 năm tuổi, xây dựng khoảng 1741, là một trong những ngôi nhà cổ đẹp nhất tại Hội An.')">
+      <div class="hotspot-ring">🏠</div>
+      <div class="hotspot-label">Nhà Cổ Tấn Ký</div>
+    </div>
+    <div class="hotspot" style="top:42%;left:72%" onclick="openPoi(event,'Bảo tàng Lịch sử','Lưu giữ hơn 212 hiện vật từ thời kỳ Tiền sử đến thời kỳ cận đại về lịch sử thương cảng.')">
+      <div class="hotspot-ring">🏺</div>
+      <div class="hotspot-label">Bảo tàng</div>
+    </div>
+
+    <div class="poi-info" id="poi-info">
+      <h3 id="poi-name">—</h3>
+      <p id="poi-desc">—</p>
+      <div class="poi-info-btns">
+        <button class="poi-btn" onclick="window.location='heritage.html'">🏛 Xem 3D Model</button>
+        <button class="poi-btn sec" onclick="closePoi()">✕ Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DESTINATIONS -->
+<div class="destinations">
+  <div class="dest-title">📍 Chọn Điểm VR Tour</div>
+  <div class="dest-grid">
+    <div class="dest-card active" onclick="selectDest(this,'Phố cổ Hội An','Di sản Văn hóa Thế giới UNESCO · 1999','🏛','#8b5cf6 0%, #2d0f6b 100%')">
+      <div class="dest-thumb" style="background:linear-gradient(135deg,#1a0a3c,#2d0f6b)">🏛</div>
+      <div class="dest-info">
+        <div class="dest-name">Phố cổ Hội An</div>
+        <div class="dest-cat">Di tích Quốc gia Đặc biệt</div>
+        <div class="dest-badge">VR 360° · AR</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="selectDest(this,'Thánh địa Mỹ Sơn','Quần thể Chăm Pa – Thế kỷ 4–14 · UNESCO','🛕','#0c2a0c 0%, #1a5e1a 100%')">
+      <div class="dest-thumb" style="background:linear-gradient(135deg,#0c2a0c,#1a5e1a)">🛕</div>
+      <div class="dest-info">
+        <div class="dest-name">Thánh địa Mỹ Sơn</div>
+        <div class="dest-cat">Di sản Thế giới Chăm Pa</div>
+        <div class="dest-badge">VR 360° · 3D Scan</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="selectDest(this,'Cù Lao Chàm','Khu Dự trữ Sinh quyển Thế giới · 2009','🏝','#0c2a40 0%, #1a5e8a 100%')">
+      <div class="dest-thumb" style="background:linear-gradient(135deg,#0c2a40,#0e4f6e)">🏝</div>
+      <div class="dest-info">
+        <div class="dest-name">Cù Lao Chàm</div>
+        <div class="dest-cat">Dự trữ Sinh quyển UNESCO</div>
+        <div class="dest-badge">VR 360° · Underwater</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="selectDest(this,'Làng gốm Thanh Hà','Trải nghiệm thủ công 500 năm · Tự làm gốm','🏺','#3c1a0a 0%, #6b3a1a 100%')">
+      <div class="dest-thumb" style="background:linear-gradient(135deg,#3c1a0a,#6b3a1a)">🏺</div>
+      <div class="dest-info">
+        <div class="dest-name">Làng gốm Thanh Hà</div>
+        <div class="dest-cat">Làng nghề truyền thống</div>
+        <div class="dest-badge">AR tương tác · 3D gốm</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="selectDest(this,'Biển Cửa Đại','Nghỉ dưỡng biển – Cát trắng – Nước trong','🏖','#0a1e3c 0%, #1a4a7a 100%')">
+      <div class="dest-thumb" style="background:linear-gradient(135deg,#0a1e3c,#0e6e8a)">🏖</div>
+      <div class="dest-info">
+        <div class="dest-name">Biển Cửa Đại</div>
+        <div class="dest-cat">Bãi biển Nghỉ dưỡng</div>
+        <div class="dest-badge">VR 360° · Drone view</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="selectDest(this,'Bảo tàng Chăm','Bộ sưu tập điêu khắc Chăm Pa lớn nhất Đông Nam Á','🗿','#1a0a2e 0%, #4a1a6a 100%')">
+      <div class="dest-thumb" style="background:linear-gradient(135deg,#1a0a2e,#4a1a6a)">🗿</div>
+      <div class="dest-info">
+        <div class="dest-name">Bảo tàng Điêu khắc Chăm</div>
+        <div class="dest-cat">Bảo tàng Quốc gia</div>
+        <div class="dest-badge">VR Museum · 3D Artifacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AR SECTION -->
+<div class="ar-section">
+  <h2>📱 Trải nghiệm AR tại Thực địa</h2>
+  <p>Quét mã QR tại điểm tham quan → Smartphone hiển thị thông tin nổi AR chồng lên thực tế → Du khách tương tác với lịch sử và văn hóa ngay tại chỗ.</p>
+  <div class="ar-steps">
+    <div class="ar-step">
+      <div class="step-num">1</div>
+      <h4>Quét mã QR</h4>
+      <p>Tại mỗi điểm tham quan có biển QR Code hoặc NFC tag</p>
+    </div>
+    <div class="ar-step">
+      <div class="step-num">2</div>
+      <h4>Mở AR Viewer</h4>
+      <p>App tự động kích hoạt camera + ARCore/ARKit</p>
+    </div>
+    <div class="ar-step">
+      <div class="step-num">3</div>
+      <h4>Khám phá thông tin nổi</h4>
+      <p>Thông tin lịch sử, 3D model, audio guide hiện ra qua camera</p>
+    </div>
+    <div class="ar-step">
+      <div class="step-num">4</div>
+      <h4>Tương tác & Gamify</h4>
+      <p>Trả lời câu hỏi về di sản, thu thập "stamp" kỹ thuật số</p>
+    </div>
+    <div class="ar-step">
+      <div class="step-num">5</div>
+      <h4>Chia sẻ & Review</h4>
+      <p>Chụp ảnh với filter AR đặc trưng, chia sẻ mạng xã hội</p>
+    </div>
+  </div>
+</div>
+
+<!-- TECH SPECS -->
+<h2 style="font-size:1.1rem;font-weight:700;color:#c4b5fd;margin-bottom:14px">⚙ Thông số Kỹ thuật VR/AR</h2>
+<div class="specs">
+  <div class="spec-card">
+    <h4>📱 VR Web (WebXR)</h4>
+    <div class="spec-item"><span>Framework</span><span>Three.js + A-Frame 1.5</span></div>
+    <div class="spec-item"><span>Standard</span><span>WebXR Device API</span></div>
+    <div class="spec-item"><span>Headset</span><span>Meta Quest 2/3, HTC Vive</span></div>
+    <div class="spec-item"><span>Mobile VR</span><span>Google Cardboard</span></div>
+    <div class="spec-item"><span>Độ phân giải</span><span>4K equirectangular 360°</span></div>
+    <div class="spec-item"><span>Format</span><span>EAC / Equi-angular cubemap</span></div>
+  </div>
+  <div class="spec-card">
+    <h4>🤳 AR Mobile</h4>
+    <div class="spec-item"><span>Android</span><span>ARCore 1.40+</span></div>
+    <div class="spec-item"><span>iOS</span><span>ARKit 6 (LiDAR support)</span></div>
+    <div class="spec-item"><span>Marker</span><span>QR code + Image tracking</span></div>
+    <div class="spec-item"><span>3D Format</span><span>glTF 2.0 / USDZ</span></div>
+    <div class="spec-item"><span>Occlusion</span><span>Depth occlusion API</span></div>
+    <div class="spec-item"><span>Min OS</span><span>Android 10 / iOS 14</span></div>
+  </div>
+  <div class="spec-card">
+    <h4>🏛 3D Số hóa Di sản</h4>
+    <div class="spec-item"><span>Scanner</span><span>Artec Leo / Spider</span></div>
+    <div class="spec-item"><span>Độ chính xác</span><span>0.05mm (hiện vật nhỏ)</span></div>
+    <div class="spec-item"><span>Camera 360°</span><span>Insta360 Pro 2 (8K)</span></div>
+    <div class="spec-item"><span>Drone</span><span>DJI Mavic 3 Pro (4/3" sensor)</span></div>
+    <div class="spec-item"><span>Processing</span><span>RealityCapture / Metashape</span></div>
+    <div class="spec-item"><span>Output</span><span>Mesh + Texture + Point Cloud</span></div>
+  </div>
+  <div class="spec-card">
+    <h4>📦 Phân phối Nội dung</h4>
+    <div class="spec-item"><span>CDN</span><span>CloudFront multi-region</span></div>
+    <div class="spec-item"><span>Streaming</span><span>Adaptive bitrate (HLS)</span></div>
+    <div class="spec-item"><span>Cache</span><span>Service Worker (offline)</span></div>
+    <div class="spec-item"><span>Compression</span><span>Draco 3D + Basis Universal</span></div>
+    <div class="spec-item"><span>Max file size</span><span>3D model < 5MB (web)</span></div>
+    <div class="spec-item"><span>Audio guide</span><span>MP3 + WebSpeech API</span></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function selectDest(card, name, sub, icon, gradient) {
+  document.querySelectorAll('.dest-card').forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  document.getElementById('current-place').textContent = name;
+  document.getElementById('vr-name').textContent = name;
+  document.getElementById('vr-sub').textContent = sub;
+  document.getElementById('vr-icon').textContent = icon;
+  document.getElementById('vr-scene').style.background = `conic-gradient(from 0deg at 50% 60%, #87CEEB 0%, #B0E0E8 20%, ${gradient.includes('#') ? '#c8e6c9' : '#c8e6c9'} 30%, #8d6e63 38%, #4e342e 50%, #6d4c41 60%, #B0E0E8 80%, #87CEEB 100%)`;
+  closePoi();
+}
+
+function openPoi(e, name, desc) {
+  e.stopPropagation();
+  document.getElementById('poi-name').textContent = name;
+  document.getElementById('poi-desc').textContent = desc;
+  document.getElementById('poi-info').classList.add('show');
+}
+
+function closePoi() {
+  document.getElementById('poi-info').classList.remove('show');
+}
+
+function setMode(mode) {
+  document.querySelectorAll('.vr-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (mode === 'ar') {
+    alert('AR Mode: Trên thiết bị thực tế, camera sẽ kích hoạt và hiển thị thông tin nổi AR chồng lên cảnh vật thực.\n\nDemo này mô phỏng trên Desktop. Vui lòng mở trên smartphone để trải nghiệm AR đầy đủ.');
+  }
+}
+
+function toggleFullscreen() {
+  const el = document.getElementById('vr-container');
+  if (document.fullscreenElement) document.exitFullscreen();
+  else el.requestFullscreen().catch(()=>{});
+}
+
+// Simulate VR rotation on mouse move
+let isGrabbing = false, startX = 0;
+const scene = document.getElementById('vr-scene');
+scene.addEventListener('mousedown', e=>{isGrabbing=true; startX=e.clientX; scene.style.cursor='grabbing';});
+document.addEventListener('mouseup', ()=>{isGrabbing=false; scene.style.cursor='grab';});
+document.addEventListener('mousemove', e=>{
+  if (!isGrabbing) return;
+  const dx = (e.clientX - startX) * 0.3;
+  scene.style.backgroundPositionX = (dx % 360) + 'px';
+});
+</script>
+<footer>© 2026 – Demo VR/AR Du lịch Tỉnh | Hệ sinh thái Du lịch Số</footer>
+</body>
+</html>

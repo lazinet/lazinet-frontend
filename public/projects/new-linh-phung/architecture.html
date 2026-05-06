@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiến trúc Hệ thống – Du lịch Số Tỉnh</title>
+<style>
+:root {
+  --primary: #1a3a5c; --accent: #0ea5e9; --accent2: #10b981;
+  --accent3: #f59e0b; --accent4: #8b5cf6; --bg: #f0f4f8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #1e293b; }
+.hero { background: linear-gradient(135deg, #0c1e35, #1a3a5c); color: #fff; padding: 48px 40px 36px; }
+.hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+.hero p { opacity: 0.8; font-size: 1rem; }
+nav { background: #0f2840; padding: 12px 40px; display: flex; gap: 12px; flex-wrap: wrap; }
+nav a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; padding: 6px 14px; border-radius: 6px; border: 1px solid #334155; }
+nav a:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+main { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+
+/* ARCH DIAGRAM */
+.arch-wrapper { background: #fff; border-radius: 20px; padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); margin-bottom: 40px; overflow-x: auto; }
+.arch-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 24px; text-align: center; }
+
+.arch { display: flex; flex-direction: column; gap: 0; min-width: 900px; }
+.layer { border-radius: 12px; padding: 16px 20px; margin-bottom: 4px; position: relative; }
+.layer-label {
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  writing-mode: horizontal-tb; color: #fff; background: rgba(0,0,0,0.25);
+  padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 12px;
+}
+.boxes { display: flex; gap: 10px; flex-wrap: wrap; }
+.box {
+  border-radius: 10px; padding: 10px 14px; background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.4); flex: 1; min-width: 130px;
+  text-align: center; font-size: 0.8rem; font-weight: 600; color: #fff;
+  backdrop-filter: blur(4px);
+}
+.box .sub { font-size: 0.68rem; font-weight: 400; opacity: 0.85; margin-top: 3px; }
+.box .icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+/* Layer colors */
+.l-user    { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+.l-gateway { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+.l-app     { background: linear-gradient(135deg, #7e22ce, #a855f7); }
+.l-data    { background: linear-gradient(135deg, #b45309, #f59e0b); }
+.l-gis     { background: linear-gradient(135deg, #065f46, #10b981); }
+.l-infra   { background: linear-gradient(135deg, #991b1b, #ef4444); }
+
+/* ARROW */
+.arrow { text-align: center; color: #94a3b8; font-size: 1.4rem; line-height: 1; margin: 2px 0; }
+
+/* TECH TABLE */
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.tech-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-left: 5px solid; }
+.tc1 { border-color: #3b82f6; } .tc2 { border-color: #a855f7; } .tc3 { border-color: #f59e0b; }
+.tc4 { border-color: #10b981; } .tc5 { border-color: #ef4444; } .tc6 { border-color: #06b6d4; }
+.tech-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+.tech-chip { display: inline-block; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 8px; font-size: 0.75rem; margin: 3px; color: #475569; font-family: monospace; }
+
+/* DATA FLOW */
+.flow-section { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 40px; }
+.flow-section h2 { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
+.flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+.flow-step {
+  background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px;
+  padding: 14px 18px; text-align: center; min-width: 140px; flex: 1;
+}
+.flow-step .fs-icon { font-size: 1.8rem; } .flow-step .fs-name { font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-top: 4px; }
+.flow-arrow { color: #94a3b8; font-size: 1.8rem; padding: 0 4px; }
+
+footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 20px; font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🏗 Kiến trúc Hệ thống</h1>
+  <p>Cloud-Native Microservices Architecture – API-First Design – Zero Trust Security</p>
+</div>
+<nav>
+  <a href="index.html">🏠 Tổng quan</a>
+  <a href="architecture.html">🏗 Kiến trúc</a>
+  <a href="webgis.html">🗺 WebGIS</a>
+  <a href="ar-vr.html">🥽 VR/AR</a>
+  <a href="heritage.html">🏛 Di sản</a>
+  <a href="ecommerce.html">🛍 TMĐT</a>
+</nav>
+<main>
+
+<div class="arch-wrapper">
+  <div class="arch-title">📐 Sơ đồ Kiến trúc Phân tầng (Layered Architecture)</div>
+  <div class="arch">
+
+    <div class="layer l-user">
+      <div class="layer-label">Tầng Người dùng (Client Layer)</div>
+      <div class="boxes">
+        <div class="box"><span class="icon">🌐</span>Web Portal<div class="sub">Next.js 14 (SSR)</div></div>
+        <div class="box"><span class="icon">📱</span>Mobile App<div class="sub">React Native / Expo</div></div>
+        <div class="box"><span class="icon">🥽</span>VR/AR Client<div class="sub">WebXR / ARCore</div></div>
+        <div class="box"><span class="icon">🗺</span>WebGIS Client<div class="sub">OpenLayers 9</div></div>
+        <div class="box"><span class="icon">🖥</span>Admin Dashboard<div class="sub">Vue 3 + Element Plus</div></div>
+        <div class="box"><span class="icon">📺</span>Kiosk Display<div class="sub">Màn hình điểm DL</div></div>
+      </div>
+    </div>
+
+    <div class="arrow">▼ HTTPS / TLS 1.3</div>
+
+    <div class="layer l-gateway">
+      <div class="layer-label">Tầng API Gateway & Bảo mật</div>
+      <div class="boxes">
+        <div class="box"><span class="icon">🔀</span>API Gateway<div class="sub">Kong Gateway</div></div>
+        <div class="box"><span class="icon">🔐</span>Auth Server<div class="sub">Keycloak (OAuth2/OIDC)</div></div>
+        <div class="box"><span class="icon">🛡</span>WAF / DDoS<div class="sub">Cloudflare / VNG Shield</div></div>
+        <div class="box"><span class="icon">⚖</span>Load Balancer<div class="sub">Nginx / Traefik</div></div>
+        <div class="box"><span class="icon">🌐</span>CDN<div class="sub">VNG CloudFront</div></div>
+      </div>
+    </div>
+
+    <div class="arrow">▼ Internal gRPC / REST</div>
+
+    <div class="layer l-app">
+      <div class="layer-label">Tầng Ứng dụng – Microservices</div>
+      <div class="boxes">
+        <div class="box"><span class="icon">🏖</span>Tourism Service<div class="sub">FastAPI (Python)</div></div>
+        <div class="box"><span class="icon">🥽</span>VR/AR Service<div class="sub">Node.js + WebXR</div></div>
+        <div class="box"><span class="icon">🏛</span>Heritage Service<div class="sub">FastAPI + IIIF</div></div>
+        <div class="box"><span class="icon">🛍</span>Commerce Service<div class="sub">Django REST</div></div>
+        <div class="box"><span class="icon">👥</span>Dân cư Service<div class="sub">FastAPI + PKI</div></div>
+        <div class="box"><span class="icon">🗺</span>GIS Service<div class="sub">GeoServer 2.x</div></div>
+        <div class="box"><span class="icon">🔔</span>Notification<div class="sub">Node.js + FCM</div></div>
+        <div class="box"><span class="icon">🤖</span>AI Guide<div class="sub">LLM API (tiếng Việt)</div></div>
+      </div>
+    </div>
+
+    <div class="arrow">▼ Event Bus (Kafka) / Direct Query</div>
+
+    <div class="layer l-data">
+      <div class="layer-label">Tầng Dữ liệu (Data Layer)</div>
+      <div class="boxes">
+        <div class="box"><span class="icon">🐘</span>PostgreSQL 16<div class="sub">CSDL quan hệ chính</div></div>
+        <div class="box"><span class="icon">🍃</span>MongoDB 7<div class="sub">Nội dung số, metadata</div></div>
+        <div class="box"><span class="icon">🔍</span>Elasticsearch 8<div class="sub">Full-text search</div></div>
+        <div class="box"><span class="icon">⚡</span>Redis 7<div class="sub">Cache, session</div></div>
+        <div class="box"><span class="icon">📦</span>MinIO<div class="sub">Object storage (media)</div></div>
+        <div class="box"><span class="icon">📨</span>Apache Kafka<div class="sub">Event streaming</div></div>
+      </div>
+    </div>
+
+    <div class="arrow">▼ PostGIS Extension</div>
+
+    <div class="layer l-gis">
+      <div class="layer-label">Tầng GIS (Geospatial Layer)</div>
+      <div class="boxes">
+        <div class="box"><span class="icon">🗺</span>PostGIS 3.4<div class="sub">Spatial database</div></div>
+        <div class="box"><span class="icon">🌍</span>GeoServer<div class="sub">WMS/WFS/WCS</div></div>
+        <div class="box"><span class="icon">🔧</span>GDAL/OGR<div class="sub">Data conversion</div></div>
+        <div class="box"><span class="icon">🛰</span>Tile Server<div class="sub">VietMap API / OSM</div></div>
+      </div>
+    </div>
+
+    <div class="arrow">▼ Kubernetes Orchestration</div>
+
+    <div class="layer l-infra">
+      <div class="layer-label">Tầng Hạ tầng (Infrastructure Layer – VNG Cloud)</div>
+      <div class="boxes">
+        <div class="box"><span class="icon">☸</span>Kubernetes 1.29<div class="sub">Container orchestration</div></div>
+        <div class="box"><span class="icon">🐳</span>Docker Registry<div class="sub">Harbor / GitLab Registry</div></div>
+        <div class="box"><span class="icon">🔄</span>GitLab CI/CD<div class="sub">ArgoCD (GitOps)</div></div>
+        <div class="box"><span class="icon">📈</span>Prometheus + Grafana<div class="sub">Metrics & dashboards</div></div>
+        <div class="box"><span class="icon">📋</span>ELK Stack<div class="sub">Logging & analysis</div></div>
+        <div class="box"><span class="icon">💾</span>Backup & DR<div class="sub">Velero + DR Site</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<h2 style="font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:8px">Technology Stack Chi tiết</h2>
+<p style="color:#64748b;margin-bottom:20px;font-size:.9rem">Công nghệ được chọn dựa trên tiêu chí: Open source, cộng đồng lớn, phù hợp hệ sinh thái Việt Nam</p>
+<div class="tech-grid">
+  <div class="tech-card tc1">
+    <h3>🌐 Frontend</h3>
+    <span class="tech-chip">Next.js 14</span><span class="tech-chip">TypeScript</span><span class="tech-chip">Tailwind CSS</span>
+    <span class="tech-chip">React Query</span><span class="tech-chip">Zustand</span><span class="tech-chip">i18next</span>
+    <span class="tech-chip">React Native 0.73</span><span class="tech-chip">Expo SDK 50</span>
+    <span class="tech-chip">Vue 3 + Vite</span><span class="tech-chip">Element Plus</span>
+  </div>
+  <div class="tech-card tc2">
+    <h3>⚙ Backend Microservices</h3>
+    <span class="tech-chip">FastAPI (Python)</span><span class="tech-chip">Node.js 20 LTS</span>
+    <span class="tech-chip">Django REST</span><span class="tech-chip">gRPC</span>
+    <span class="tech-chip">Pydantic v2</span><span class="tech-chip">SQLAlchemy 2</span>
+    <span class="tech-chip">Celery</span><span class="tech-chip">Apache Kafka</span>
+  </div>
+  <div class="tech-card tc3">
+    <h3>🗄 Data & Storage</h3>
+    <span class="tech-chip">PostgreSQL 16</span><span class="tech-chip">PostGIS 3.4</span>
+    <span class="tech-chip">MongoDB 7</span><span class="tech-chip">Elasticsearch 8</span>
+    <span class="tech-chip">Redis 7</span><span class="tech-chip">MinIO</span>
+    <span class="tech-chip">Alembic</span><span class="tech-chip">DBT</span>
+  </div>
+  <div class="tech-card tc4">
+    <h3>🗺 GIS & Mapping</h3>
+    <span class="tech-chip">GeoServer 2.25</span><span class="tech-chip">PostGIS</span>
+    <span class="tech-chip">OpenLayers 9</span><span class="tech-chip">Leaflet.js</span>
+    <span class="tech-chip">GDAL 3.8</span><span class="tech-chip">VietMap API</span>
+    <span class="tech-chip">OpenStreetMap</span><span class="tech-chip">Turf.js</span>
+  </div>
+  <div class="tech-card tc5">
+    <h3>🥽 VR/AR & 3D</h3>
+    <span class="tech-chip">Three.js / WebGL</span><span class="tech-chip">A-Frame</span>
+    <span class="tech-chip">WebXR Device API</span><span class="tech-chip">ARCore (Android)</span>
+    <span class="tech-chip">ARKit (iOS)</span><span class="tech-chip">8th Wall WebAR</span>
+    <span class="tech-chip">Blender (3D)</span><span class="tech-chip">Matterport SDK</span>
+  </div>
+  <div class="tech-card tc6">
+    <h3>☁ DevOps & Security</h3>
+    <span class="tech-chip">Kubernetes 1.29</span><span class="tech-chip">Docker 25</span>
+    <span class="tech-chip">GitLab CI/CD</span><span class="tech-chip">ArgoCD</span>
+    <span class="tech-chip">Keycloak</span><span class="tech-chip">Vault (secrets)</span>
+    <span class="tech-chip">Prometheus</span><span class="tech-chip">Grafana</span>
+    <span class="tech-chip">ELK Stack</span><span class="tech-chip">Trivy (scan)</span>
+  </div>
+</div>
+
+<!-- USER FLOW -->
+<div class="flow-section">
+  <h2>🔄 Luồng Dữ liệu Du khách Tiêu biểu</h2>
+  <div class="flow">
+    <div class="flow-step"><div class="fs-icon">📱</div><div class="fs-name">Du khách mở App / Web</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">🔍</div><div class="fs-name">Tìm kiếm điểm DL (Elasticsearch)</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">🗺</div><div class="fs-name">Xem bản đồ WebGIS (GeoServer)</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">🥽</div><div class="fs-name">Trải nghiệm VR tour (WebXR)</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">📅</div><div class="fs-name">Đặt tour / vé (Commerce Service)</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">💳</div><div class="fs-name">Thanh toán (VNPay / Momo)</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">🛍</div><div class="fs-name">Mua sản phẩm văn hóa (TMĐT)</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="fs-icon">⭐</div><div class="fs-name">Đánh giá & Review</div></div>
+  </div>
+</div>
+
+</main>
+<footer>© 2026 – Tài liệu Kiến trúc Kỹ thuật – Hệ sinh thái Du lịch Số Tỉnh</footer>
+</body>
+</html>
