@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hathyo – Trung tâm Tiếp Thị Liên Kết</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+*{font-family:'Be Vietnam Pro',sans-serif;box-sizing:border-box}
+.sidebar{width:240px;min-height:100vh;background:linear-gradient(180deg,#1e3a8f,#1d4ed8);position:fixed;left:0;top:0}
+.main{margin-left:240px;min-height:100vh;background:#f0f4ff}
+.card{background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:.2s;color:#bfdbfe;width:100%}
+.nav-btn:hover,.nav-btn.active{background:rgba(255,255,255,.15);color:#fff}
+.nav-btn.active{background:rgba(255,255,255,.2)}
+.hh-rate{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+.tree-node{position:relative;margin-left:20px}
+.tree-node::before{content:'';position:absolute;left:-14px;top:0;bottom:50%;border-left:2px dashed #93c5fd;border-bottom:2px dashed #93c5fd;width:14px;border-radius:0 0 0 6px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#93c5fd;border-radius:4px}
+.slide{animation:slide .25s ease}
+@keyframes slide{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+.pulse-dot{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+</style>
+</head>
+<body class="bg-blue-50">
+
+<!-- SIDEBAR -->
+<aside class="sidebar flex flex-col text-white">
+  <div class="p-5 border-b border-blue-800">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center font-bold text-sm">H</div>
+      <div><div class="font-bold text-sm">Hathyo</div><div class="text-blue-300 text-xs">Tiếp Thị Liên Kết</div></div>
+    </div>
+  </div>
+
+  <!-- User card -->
+  <div class="p-4 border-b border-blue-800">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center font-bold text-sm text-gray-800">NA</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-sm">Nguyễn Văn A</div>
+        <div id="userLevelBadge" class="text-xs text-blue-300 mt-0.5">Cấp 3 · Mạng lưới: 24 người</div>
+      </div>
+    </div>
+    <div class="mt-3 bg-white/10 rounded-xl p-2.5">
+      <div class="text-xs text-blue-200 mb-1">Mã của bạn</div>
+      <div class="flex items-center justify-between">
+        <code class="font-mono font-bold text-yellow-300 text-sm" id="myCode">HAT-3-00042</code>
+        <button onclick="copyCode()" class="text-blue-300 hover:text-white text-xs transition-colors">📋</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="flex-1 p-3 space-y-0.5">
+    <button onclick="switchTab('overview')" id="navOverview" class="nav-btn active">📊 Tổng quan</button>
+    <button onclick="switchTab('referral')" id="navReferral" class="nav-btn">🔗 Giới thiệu & Mã QR</button>
+    <button onclick="switchTab('network')" id="navNetwork" class="nav-btn">🌐 Mạng lưới của tôi</button>
+    <button onclick="switchTab('upline')" id="navUpline" class="nav-btn">📍 Đường đến Founder</button>
+    <button onclick="switchTab('commissions')" id="navCommissions" class="nav-btn">💰 Hoa hồng</button>
+    <button onclick="switchTab('selfpurchase')" id="navSelfpurchase" class="nav-btn">🛒 Tự mua & Lợi ích</button>
+    <button onclick="switchTab('wallet')" id="navWallet" class="nav-btn">👛 Ví & Rút tiền</button>
+    <button onclick="switchTab('tax')" id="navTax" class="nav-btn">📋 Thuế TNCN</button>
+  </nav>
+  <div class="p-3"><a href="affiliate-admin.html" target="_blank" class="text-xs text-blue-400 hover:text-blue-200">→ Admin Panel (demo)</a></div>
+</aside>
+
+<main class="main">
+  <!-- Topbar -->
+  <div class="bg-white border-b border-blue-100 px-6 py-3 flex justify-between items-center sticky top-0 z-20">
+    <h1 class="font-bold text-slate-800" id="pageTitle">Tổng quan</h1>
+    <div class="flex items-center gap-3 text-xs">
+      <div class="pulse-dot w-2 h-2 bg-green-500 rounded-full"></div>
+      <span class="text-slate-400">Cập nhật realtime</span>
+    </div>
+  </div>
+
+  <div class="p-6">
+
+  <!-- ══ OVERVIEW ══════════════════════════════════════════════════════════ -->
+  <div id="tabOverview" class="slide">
+    <!-- Level progress -->
+    <div class="bg-gradient-to-r from-blue-700 to-blue-900 rounded-2xl p-5 mb-5 text-white">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <div class="text-blue-200 text-xs font-medium mb-1">Cấp của bạn trong mạng lưới</div>
+          <div class="text-2xl font-bold">🌳 Cấp 3</div>
+          <div class="text-blue-200 text-xs mt-1">hh3 = 2% | Tự mua: nhận hh3+hh4+hh5 = 9%</div>
+        </div>
+        <div class="text-right">
+          <div class="text-blue-200 text-xs mb-1">Founder của bạn</div>
+          <div class="text-sm font-bold">Nguyễn Minh Tuấn</div>
+          <div class="text-blue-300 text-xs">HAT-F0001 · qua 3 cấp</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mt-2">
+        <div class="bg-white/15 rounded-xl p-3 text-center">
+          <div class="text-xl font-bold">24</div><div class="text-xs text-blue-200">Tổng mạng lưới</div>
+        </div>
+        <div class="bg-white/15 rounded-xl p-3 text-center">
+          <div class="text-xl font-bold text-yellow-300">892,400đ</div><div class="text-xs text-blue-200">HH tháng này</div>
+        </div>
+        <div class="bg-white/15 rounded-xl p-3 text-center">
+          <div class="text-xl font-bold text-green-300">1,450,000đ</div><div class="text-xs text-blue-200">Ví khả dụng</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Network by level -->
+    <div class="card p-5 mb-5">
+      <h3 class="font-semibold text-slate-700 text-sm mb-3">Mạng lưới theo cấp (dưới bạn)</h3>
+      <div class="grid grid-cols-5 gap-3">
+        <div class="text-center p-3 bg-green-50 border border-green-200 rounded-xl">
+          <div class="text-2xl font-bold text-green-700">8</div>
+          <div class="text-xs font-semibold text-green-600">Cấp 4</div>
+          <div class="text-xs text-slate-400">hh4=3%</div>
+          <div class="text-xs text-green-500 mt-1">↑ +2</div>
+        </div>
+        <div class="text-center p-3 bg-blue-50 border border-blue-200 rounded-xl">
+          <div class="text-2xl font-bold text-blue-700">12</div>
+          <div class="text-xs font-semibold text-blue-600">Cấp 5</div>
+          <div class="text-xs text-slate-400">hh5=4%</div>
+          <div class="text-xs text-blue-500 mt-1">↑ +5</div>
+        </div>
+        <div class="text-center p-3 bg-slate-50 border border-slate-200 rounded-xl col-span-3">
+          <div class="text-xl font-bold text-slate-600">24</div>
+          <div class="text-xs font-semibold text-slate-500">Tổng mạng lưới</div>
+          <div class="text-xs text-slate-400">Người mua cuối: nhiều hơn</div>
+        </div>
+      </div>
+      <div class="mt-3 text-xs text-slate-400 bg-blue-50 rounded-xl p-3">
+        💡 <strong>Đây là mạng lưới CỦA BẠN (bên dưới)</strong>. Khi người trong mạng mua hàng, bạn nhận hoa hồng hh3=2% (vì bạn ở cấp 3). Khi bạn tự mua, bạn nhận hh3+hh4+hh5=9% (gộp phần cấp dưới).
+      </div>
+    </div>
+
+    <!-- Daily chart + recent -->
+    <div class="grid lg:grid-cols-3 gap-5">
+      <div class="lg:col-span-2 card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-4">Hoa hồng nhận được (14 ngày)</h3>
+        <canvas id="earningsChart" height="160"></canvas>
+      </div>
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">Đơn hàng hôm nay</h3>
+        <div class="space-y-2 text-xs" id="todayOrders"></div>
+        <div class="mt-3 pt-3 border-t border-slate-100">
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Tổng HH hôm nay:</span>
+            <span class="font-bold text-green-600">48,200đ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ REFERRAL ══════════════════════════════════════════════════════════ -->
+  <div id="tabReferral" class="slide hidden">
+    <div class="max-w-2xl mx-auto">
+      <div class="card p-6 mb-5">
+        <h3 class="font-bold text-slate-800 mb-4">🔗 Công cụ giới thiệu của bạn</h3>
+
+        <!-- Code display -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-5 mb-4 text-white">
+          <div class="text-blue-200 text-xs mb-1">Mã giới thiệu cấp 3 của bạn</div>
+          <div class="text-3xl font-bold font-mono mb-2" id="bigCode">HAT-3-00042</div>
+          <div class="text-blue-200 text-xs">Người đăng ký qua mã này sẽ ở Cấp 4 của bạn (nhận hh4=3%)</div>
+        </div>
+
+        <!-- Link + copy -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+          <div class="text-xs text-slate-500 mb-1">Link giới thiệu</div>
+          <div class="flex items-center gap-2">
+            <code class="text-sm text-blue-700 flex-1 truncate" id="shareLink">https://hathyo.com/ref/HAT-3-00042</code>
+            <button onclick="copyLink()" class="shrink-0 bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-blue-700">Copy</button>
+          </div>
+        </div>
+
+        <!-- QR placeholder -->
+        <div class="flex justify-center mb-4">
+          <div class="w-44 h-44 bg-slate-100 rounded-2xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center">
+            <div class="text-5xl mb-2">📱</div>
+            <div class="text-xs text-slate-400 text-center">QR Code<br>HAT-3-00042</div>
+          </div>
+        </div>
+
+        <!-- Share buttons -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <button onclick="shareZalo()" class="flex items-center justify-center gap-2 bg-blue-500 text-white py-3 rounded-xl font-medium text-sm hover:bg-blue-600">💬 Chia sẻ Zalo</button>
+          <button onclick="copyMsg()" class="flex items-center justify-center gap-2 bg-slate-100 text-slate-700 py-3 rounded-xl font-medium text-sm hover:bg-slate-200">📋 Copy tin nhắn mẫu</button>
+        </div>
+
+        <!-- Sample message -->
+        <div class="bg-slate-50 rounded-xl p-4 text-sm text-slate-600 leading-relaxed border border-slate-100">
+          <div class="text-xs font-semibold text-slate-400 mb-2">Tin nhắn mẫu</div>
+          🛒 Bạn ơi, mình đang dùng <strong>Hathyo</strong> mua sắm rất tiện, hàng tốt và có nhiều ưu đãi!<br><br>
+          Quan trọng hơn, khi bạn đăng ký qua link của mình và bắt đầu giới thiệu người khác, bạn có thể nhận hoa hồng thụ động từ mạng lưới của bạn. Không cần bỏ vốn gì cả!<br><br>
+          👉 Đăng ký ngay: https://hathyo.com/ref/HAT-3-00042<br>
+          Mã của mình: <strong>HAT-3-00042</strong><br><br>
+          #Hathyo #ThiTruongHoaHong #KiemTienThụDong
+        </div>
+      </div>
+
+      <!-- Explain levels -->
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">📊 Người đăng ký qua mã của bạn sẽ ở đâu?</h3>
+        <div class="space-y-2 text-xs text-slate-600">
+          <div class="flex items-start gap-2 p-2 bg-green-50 rounded-xl">
+            <span>✅</span><span><strong>Người đăng ký qua mã của bạn</strong> sẽ ở <strong>Cấp 4</strong> trong mạng lưới Hathyo. Khi họ mua hàng, bạn nhận <strong>hh3=2%</strong> vì bạn ở Cấp 3. Khi họ giới thiệu người khác mua hàng, bạn nhận <strong>hh3=2%</strong> từ tất cả đơn hàng đó.</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 bg-blue-50 rounded-xl">
+            <span>💡</span><span>Nếu họ tiếp tục giới thiệu người mới (Cấp 5), và Cấp 5 mua hàng, bạn vẫn nhận <strong>hh3=2%</strong> từ các đơn của Cấp 5 (vì bạn là upline Cấp 3 trong chuỗi).</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NETWORK ══════════════════════════════════════════════════════════ -->
+  <div id="tabNetwork" class="slide hidden">
+    <div class="grid lg:grid-cols-2 gap-5">
+      <!-- Tree -->
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-4">🌳 Cây mạng lưới của tôi</h3>
+        <div id="myNetworkTree" class="text-sm overflow-auto max-h-[500px]"></div>
+      </div>
+      <!-- Stats by level -->
+      <div>
+        <div class="card p-5 mb-4">
+          <h3 class="font-semibold text-slate-700 text-sm mb-3">Thống kê theo cấp dưới bạn</h3>
+          <div id="networkStats" class="space-y-3"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="font-semibold text-slate-700 text-sm mb-3">Đơn hàng phát sinh tháng này</h3>
+          <table class="w-full text-xs">
+            <thead><tr class="text-slate-400 border-b"><th class="text-left pb-2">Cấp</th><th class="text-right pb-2">Số đơn</th><th class="text-right pb-2">GMV</th><th class="text-right pb-2">HH của bạn</th></tr></thead>
+            <tbody id="ordersByLevel"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ UPLINE ════════════════════════════════════════════════════════════ -->
+  <div id="tabUpline" class="slide hidden">
+    <div class="max-w-xl">
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-1">📍 Đường từ bạn đến Founder</h3>
+        <p class="text-xs text-slate-400 mb-5">Chuỗi upline từ bạn ngược lên đến nút gốc (Founder). Đây là những người nhận hoa hồng từ đơn hàng của bạn.</p>
+        <div id="uplineChain" class="space-y-3"></div>
+        <div class="mt-5 bg-slate-50 rounded-xl p-4 text-xs text-slate-600">
+          💡 <strong>Khi bạn mua hàng</strong>, mỗi người trong chuỗi trên nhận hoa hồng tương ứng với cấp của họ so với bạn. Cụ thể:<br>
+          • Cấp 2 (A2) ở trên bạn → nhận hh2=1.5% từ đơn của bạn<br>
+          • Cấp 1 (A1) ở trên → nhận hh1=1% từ đơn của bạn<br>
+          • Founder ở trên → nhận hh0=0.5% từ đơn của bạn<br>
+          • Bạn (Cấp 3) tự mua → nhận hh3+hh4+hh5=9% (phần dưới của bạn)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COMMISSIONS ════════════════════════════════════════════════════════ -->
+  <div id="tabCommissions" class="slide hidden">
+    <div class="flex gap-3 mb-4 flex-wrap items-center">
+      <select id="commFilter" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" onchange="filterComm()">
+        <option value="">Tất cả</option><option>Cấp 4</option><option>Cấp 5</option>
+      </select>
+      <select id="commStatus" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" onchange="filterComm()">
+        <option value="">Tất cả</option><option>PENDING</option><option>APPROVED</option><option>PAID</option>
+      </select>
+      <input type="month" id="commMonth" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" value="2026-05" onchange="filterComm()">
+      <div class="ml-auto flex gap-4 text-sm">
+        <span class="text-slate-500">Tổng HH: <strong class="text-green-600" id="commTotalGross">0đ</strong></span>
+        <span class="text-slate-500">Thuế TNCN: <strong class="text-orange-500" id="commTotalTax">0đ</strong></span>
+        <span class="text-slate-500">Thực nhận: <strong class="text-blue-600" id="commTotalNet">0đ</strong></span>
+      </div>
+    </div>
+    <div class="card overflow-hidden">
+      <table class="w-full text-xs">
+        <thead class="bg-slate-50 border-b text-slate-500"><tr>
+          <th class="p-3 text-left">Ngày</th><th class="p-3 text-left">Người mua</th>
+          <th class="p-3 text-center">Cấp</th><th class="p-3 text-center">Tự mua?</th>
+          <th class="p-3 text-right">Giá trị đơn</th><th class="p-3 text-right">Tỷ lệ</th>
+          <th class="p-3 text-right">HH gộp</th><th class="p-3 text-right">Thuế 10%</th>
+          <th class="p-3 text-right">Thực nhận</th><th class="p-3 text-center">TT</th>
+        </tr></thead>
+        <tbody id="commTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SELF PURCHASE ══════════════════════════════════════════════════════ -->
+  <div id="tabSelfpurchase" class="slide hidden">
+    <div class="max-w-2xl">
+      <div class="card p-6 mb-5">
+        <h3 class="font-bold text-slate-800 mb-1">🛒 Lợi ích khi tự mua hàng</h3>
+        <p class="text-xs text-slate-400 mb-4">Khi bạn (Cấp 3) tự mua hàng, bạn nhận gộp hoa hồng hh3+hh4+hh5. Upline vẫn nhận bình thường.</p>
+
+        <div class="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-5 text-white mb-5">
+          <div class="text-xs text-green-200 mb-1">Khi bạn (Cấp 3) tự mua đơn 1,000,000đ</div>
+          <div class="grid grid-cols-2 gap-4 mt-3">
+            <div>
+              <div class="text-xs text-green-200 mb-2">Upline nhận (bình thường):</div>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between"><span>Founder (hh0=0.5%):</span><span class="font-bold">5,000đ</span></div>
+                <div class="flex justify-between"><span>Cấp 1 (hh1=1%):</span><span class="font-bold">10,000đ</span></div>
+                <div class="flex justify-between"><span>Cấp 2 (hh2=1.5%):</span><span class="font-bold">15,000đ</span></div>
+              </div>
+            </div>
+            <div class="border-l border-green-500 pl-4">
+              <div class="text-xs text-green-200 mb-2">Bạn nhận (gộp hh3+hh4+hh5):</div>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between"><span>hh3 (2%):</span><span>20,000đ</span></div>
+                <div class="flex justify-between"><span>hh4 (3%):</span><span>30,000đ</span></div>
+                <div class="flex justify-between"><span>hh5 (4%):</span><span>40,000đ</span></div>
+                <div class="flex justify-between border-t border-green-500 pt-1 mt-1"><span class="font-bold">Tổng bạn nhận:</span><span class="font-bold text-yellow-300">90,000đ (9%!)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-green-500 text-xs flex justify-between">
+            <span>Tổng 12% pool:</span><span class="font-bold">120,000đ</span>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-xs text-blue-700">
+          <strong>💡 Tại sao nên tự mua qua link của mình?</strong><br>
+          Khi bạn ở Cấp 3 và tự mua, bạn nhận 9% cashback thực tế (sau thuế TNCN 10% → còn 8.1%). So sánh: nếu người khác trong mạng mua, bạn chỉ nhận 2% (hh3). Vậy tự mua lợi hơn 4.5x về mặt hoa hồng cá nhân.
+        </div>
+      </div>
+
+      <!-- Self-purchase history -->
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">Lịch sử tự mua của bạn</h3>
+        <div id="selfHistory" class="space-y-2 text-xs"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ WALLET ════════════════════════════════════════════════════════════ -->
+  <div id="tabWallet" class="slide hidden">
+    <div class="grid md:grid-cols-3 gap-5 mb-5">
+      <div class="bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl p-5 text-white col-span-2">
+        <div class="text-blue-200 text-xs mb-1">Ví hoa hồng – Số dư khả dụng</div>
+        <div class="text-4xl font-bold mb-1">1,450,000đ</div>
+        <div class="text-blue-200 text-sm">Đang chờ: <span class="text-white font-medium">234,000đ</span> | Tổng HH đã nhận: <span class="text-white">8,240,000đ</span></div>
+        <button onclick="openPayoutModal()" class="mt-4 bg-white text-blue-800 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-50">💸 Rút tiền ngay</button>
+      </div>
+      <div class="space-y-3">
+        <div class="card p-4"><div class="text-xs text-slate-400">Thuế TNCN đã khấu trừ</div><div class="text-xl font-bold text-orange-500 mt-1">824,000đ</div><div class="text-xs text-slate-400">Năm 2026</div></div>
+        <div class="card p-4"><div class="text-xs text-slate-400">Tháng này (sau thuế)</div><div class="text-xl font-bold text-green-600 mt-1">803,160đ</div><div class="text-xs text-slate-400">↑ +18% vs tháng trước</div></div>
+      </div>
+    </div>
+    <!-- Payout history -->
+    <div class="card p-5">
+      <h3 class="font-semibold text-slate-700 text-sm mb-3">Lịch sử rút tiền</h3>
+      <div class="space-y-2" id="payoutList"></div>
+    </div>
+  </div>
+
+  <!-- ══ TAX ════════════════════════════════════════════════════════════════ -->
+  <div id="tabTax" class="slide hidden">
+    <div class="max-w-2xl">
+      <div class="card p-6 mb-5">
+        <h3 class="font-bold text-slate-800 mb-1">📋 Thông tin Thuế TNCN của bạn</h3>
+        <p class="text-xs text-slate-400 mb-4">Sàn Hathyo thay mặt bạn khấu trừ và nộp thuế TNCN 10% trên mỗi khoản hoa hồng ≥ 2,000,000đ. Bạn có thể tải chứng từ để hoàn thiện hồ sơ thuế cá nhân.</p>
+
+        <div class="grid grid-cols-3 gap-4 mb-5">
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+            <div class="text-xs text-blue-500 font-medium">Tổng HH nhận (2026)</div>
+            <div class="text-xl font-bold text-blue-800 mt-1">8,240,000đ</div>
+          </div>
+          <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 text-center">
+            <div class="text-xs text-orange-500 font-medium">Thuế TNCN đã KT</div>
+            <div class="text-xl font-bold text-orange-800 mt-1">824,000đ</div>
+          </div>
+          <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+            <div class="text-xs text-green-500 font-medium">Thực nhận (net)</div>
+            <div class="text-xl font-bold text-green-800 mt-1">7,416,000đ</div>
+          </div>
+        </div>
+
+        <button onclick="downloadTaxCert()" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700">📄 Tải chứng từ khấu trừ TNCN 2026</button>
+      </div>
+
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">Lịch sử thuế theo tháng</h3>
+        <table class="w-full text-xs">
+          <thead class="bg-slate-50 border-b text-slate-500"><tr>
+            <th class="p-3 text-left">Kỳ</th><th class="p-3 text-right">HH nhận</th>
+            <th class="p-3 text-right">Thuế 10%</th><th class="p-3 text-right">Thực nhận</th><th class="p-3 text-center">Chứng từ</th>
+          </tr></thead>
+          <tbody id="taxTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /p-6 -->
+</main>
+
+<!-- Payout Modal -->
+<div id="payoutModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-slate-800">💸 Rút hoa hồng</h3>
+      <button onclick="closePayout()" class="text-slate-400 hover:text-slate-600 text-xl">×</button>
+    </div>
+    <div class="bg-blue-50 rounded-xl p-3 mb-4 text-sm text-blue-700">Số dư: <strong>1,450,000đ</strong> | Tối thiểu: 200,000đ | Thuế TNCN 10% sẽ được khấu trừ</div>
+    <div class="space-y-3">
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Số tiền rút *</label>
+        <input type="number" id="payoutAmt" placeholder="VD: 500000" min="200000" step="100000" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm" oninput="calcPayout()">
+        <div class="text-xs text-slate-400 mt-1" id="payoutCalc"></div>
+      </div>
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Phương thức *</label>
+        <select id="payoutMethod" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm">
+          <option value="momo">MoMo</option><option value="zalopay">ZaloPay</option><option value="vietinbank">VietinBank</option>
+        </select>
+      </div>
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Số tài khoản / SĐT *</label>
+        <input type="text" id="payoutAccount" placeholder="0901 234 567" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm">
+      </div>
+      <button onclick="submitPayout()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-blue-700">Gửi yêu cầu rút tiền</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+const RATES=[0.5,1.0,1.5,2.0,3.0,4.0]; // hh0..hh5
+const LEVEL_COLORS=['#f59e0b','#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
+const LEVEL_NAMES=['Founder','Cấp 1','Cấp 2','Cấp 3','Cấp 4','Cấp 5'];
+const MY_LEVEL=3; // Cấp 3
+const PIT=0.10;
+
+function fmt(n){return new Intl.NumberFormat('vi-VN').format(Math.round(n))+'đ';}
+function fmtDate(s){return new Date(s).toLocaleDateString('vi-VN');}
+
+const comms=[
+  {date:'2026-05-10',buyer:'Trần Thị X (Cấp 4)',level:4,order:850000,selfPurchase:false,status:'PENDING'},
+  {date:'2026-05-10',buyer:'Bản thân (Tự mua)',level:3,order:1200000,selfPurchase:true,status:'APPROVED'},
+  {date:'2026-05-09',buyer:'Lê Văn Y (Cấp 5)',level:5,order:650000,selfPurchase:false,status:'APPROVED'},
+  {date:'2026-05-09',buyer:'Phạm Thị Z (Cấp 4)',level:4,order:320000,selfPurchase:false,status:'PENDING'},
+  {date:'2026-05-08',buyer:'Bản thân (Tự mua)',level:3,order:980000,selfPurchase:true,status:'PAID'},
+  {date:'2026-05-07',buyer:'Hoàng Văn W (Cấp 5)',level:5,order:450000,selfPurchase:false,status:'PAID'},
+];
+
+const networkData={
+  l4:[{name:'Trần Thị X',code:'HAT-4-00128',orders:3,gmv:1850000},{name:'Lê Minh Q',code:'HAT-4-00129',orders:1,gmv:650000},{name:'Nguyễn Thành R',code:'HAT-4-00130',orders:2,gmv:980000},{name:'Phạm Thị S',code:'HAT-4-00131',orders:0,gmv:0},{name:'Hoàng V. T',code:'HAT-4-00132',orders:4,gmv:2100000},{name:'Mai Ngọc U',code:'HAT-4-00133',orders:1,gmv:380000},{name:'Đỗ Văn V',code:'HAT-4-00134',orders:2,gmv:720000},{name:'Bùi Thị W',code:'HAT-4-00135',orders:0,gmv:0}],
+  l5:[{name:'Lê Văn Y',code:'HAT-5-00480',orders:2,gmv:1200000},{name:'Vũ Thị Z',code:'HAT-5-00481',orders:1,gmv:450000},{name:'Trần V. A1',code:'HAT-5-00482',orders:3,gmv:890000},{name:'Ngô Thị B1',code:'HAT-5-00483',orders:0,gmv:0},{name:'Đinh V. C1',code:'HAT-5-00484',orders:1,gmv:320000},{name:'Lương Thị D1',code:'HAT-5-00485',orders:2,gmv:760000},{name:'Hà Văn E1',code:'HAT-5-00486',orders:4,gmv:2400000},{name:'Chu Thị F1',code:'HAT-5-00487',orders:1,gmv:550000},{name:'Lý V. G1',code:'HAT-5-00488',orders:0,gmv:0},{name:'Dương Thị H1',code:'HAT-5-00489',orders:2,gmv:680000},{name:'Kiều V. I1',code:'HAT-5-00490',orders:3,gmv:1100000},{name:'Cù Thị K1',code:'HAT-5-00491',orders:1,gmv:290000}],
+};
+
+// ── TABS ──────────────────────────────────────────────────────────────────
+const tabNames={overview:'Tổng quan',referral:'Giới thiệu & Mã QR',network:'Mạng lưới của tôi',upline:'Đường đến Founder',commissions:'Hoa hồng',selfpurchase:'Tự mua & Lợi ích',wallet:'Ví & Rút tiền',tax:'Thuế TNCN'};
+function switchTab(name){
+  Object.keys(tabNames).forEach(t=>{
+    const el=document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el)el.classList.toggle('hidden',t!==name);
+    const btn=document.getElementById('nav'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(btn)btn.classList.toggle('active',t===name);
+  });
+  document.getElementById('pageTitle').textContent=tabNames[name];
+  if(name==='network')renderNetwork();
+  if(name==='upline')renderUpline();
+  if(name==='commissions')filterComm();
+  if(name==='selfpurchase')renderSelfPurchase();
+  if(name==='wallet')renderWallet();
+  if(name==='tax')renderTax();
+}
+
+// ── OVERVIEW ──────────────────────────────────────────────────────────────
+function initOverview(){
+  const days=Array.from({length:14},(_,i)=>{const d=new Date('2026-05-10');d.setDate(d.getDate()-13+i);return`${d.getDate()}/${d.getMonth()+1}`;});
+  const vals=days.map((_,i)=>20000+i*5000+Math.random()*15000);
+  new Chart(document.getElementById('earningsChart'),{type:'bar',
+    data:{labels:days,datasets:[{label:'HH nhận (đ)',data:vals.map(v=>Math.round(v)),backgroundColor:days.map((_,i)=>i===13?'#2563eb':'#93c5fd'),borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v>=1000?v/1000+'K':v}}}}});
+  document.getElementById('todayOrders').innerHTML=[
+    {buyer:'Trần X mua',cấp:4,order:850000,hh:850000*RATES[3]/100,self:false},
+    {buyer:'Bản thân tự mua',cấp:3,order:1200000,hh:1200000*(RATES[3]+RATES[4]+RATES[5])/100,self:true},
+    {buyer:'Lê Y mua',cấp:5,order:450000,hh:450000*RATES[3]/100,self:false},
+  ].map(o=>`<div class="flex items-center justify-between py-1.5 border-b border-slate-50">
+    <div><div class="font-medium">${o.buyer}</div><div class="text-slate-400">Cấp ${o.cấp} · ${fmt(o.order)}</div></div>
+    <div class="text-right"><div class="font-bold text-green-600">${fmt(o.hh)}</div>${o.self?'<div class="text-xs text-orange-500">Tự mua</div>':''}</div>
+  </div>`).join('');
+}
+
+// ── NETWORK ───────────────────────────────────────────────────────────────
+function renderNetwork(){
+  // Tree
+  const l4html=networkData.l4.slice(0,4).map(n=>`
+    <div class="tree-node">
+      <div class="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-blue-50 transition-colors">
+        <span class="w-2 h-2 rounded-full ${n.orders>0?'bg-green-500':'bg-slate-300'}"></span>
+        <div class="flex-1 min-w-0"><span class="text-sm font-medium truncate">${n.name}</span><span class="text-xs text-slate-400 ml-1">${n.code}</span></div>
+        <span class="text-xs text-slate-400">${n.orders} đơn</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('myNetworkTree').innerHTML=`
+    <div class="font-medium text-blue-700 mb-2 flex items-center gap-2">
+      <span class="w-3 h-3 rounded-full bg-blue-600"></span> Bạn (Cấp 3) – HAT-3-00042
+    </div>
+    <div class="ml-4">
+      <div class="text-xs text-slate-400 mb-1">▼ Cấp 4 (8 người trực tiếp)</div>
+      ${l4html}
+      <div class="text-xs text-blue-600 ml-6 mt-1 cursor-pointer hover:underline">+ 4 người nữa...</div>
+    </div>`;
+
+  // Stats
+  const statsL4={count:8,orders:networkData.l4.reduce((s,n)=>s+n.orders,0),gmv:networkData.l4.reduce((s,n)=>s+n.gmv,0)};
+  const statsL5={count:12,orders:networkData.l5.reduce((s,n)=>s+n.orders,0),gmv:networkData.l5.reduce((s,n)=>s+n.gmv,0)};
+  document.getElementById('networkStats').innerHTML=[
+    {level:4,color:LEVEL_COLORS[4],stats:statsL4},
+    {level:5,color:LEVEL_COLORS[5],stats:statsL5},
+  ].map(d=>`
+    <div class="flex items-center gap-3 p-3 border border-slate-100 rounded-xl">
+      <div class="w-3 h-3 rounded-full" style="background:${d.color}"></div>
+      <div class="flex-1">
+        <div class="text-sm font-medium">Cấp ${d.level} – ${d.stats.count} thành viên</div>
+        <div class="text-xs text-slate-400">${d.stats.orders} đơn tháng này · GMV ${fmt(d.stats.gmv)}</div>
+      </div>
+      <div class="text-right text-sm font-bold text-green-600">${fmt(d.stats.gmv*RATES[MY_LEVEL]/100)}</div>
+    </div>`).join('');
+
+  document.getElementById('ordersByLevel').innerHTML=[
+    {level:4,r:RATES[3],orders:statsL4.orders,gmv:statsL4.gmv},
+    {level:5,r:RATES[3],orders:statsL5.orders,gmv:statsL5.gmv},
+  ].map(d=>`<tr class="border-b border-slate-50"><td class="py-2"><span class="font-medium" style="color:${LEVEL_COLORS[d.level]}">Cấp ${d.level}</span></td><td class="py-2 text-right">${d.orders}</td><td class="py-2 text-right">${fmt(d.gmv)}</td><td class="py-2 text-right font-bold text-green-600">${fmt(d.gmv*d.r/100)}</td></tr>`).join('');
+}
+
+// ── UPLINE ────────────────────────────────────────────────────────────────
+function renderUpline(){
+  const chain=[
+    {name:'Nguyễn Minh Tuấn',code:'HAT-F0001',level:'Founder',hh:0.5,relation:'Founder (hh0=0.5%)'},
+    {name:'Trần Thu A1',code:'HAT-1-00003',level:'Cấp 1',hh:1.0,relation:'Cấp 1 từ Founder (hh1=1%)'},
+    {name:'Lê Thanh A2',code:'HAT-2-00018',level:'Cấp 2',hh:1.5,relation:'Cấp 2 từ Founder (hh2=1.5%)'},
+    {name:'BẠN (Nguyễn Văn A)',code:'HAT-3-00042',level:'Cấp 3',hh:0,relation:'Bạn (Cấp 3)'},
+  ];
+  document.getElementById('uplineChain').innerHTML=chain.map((c,i)=>`
+    <div class="flex items-center gap-3 p-3 rounded-xl border ${c.name.includes('BẠN')?'border-blue-400 bg-blue-50':'border-slate-100 bg-slate-50'}">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style="background:${LEVEL_COLORS[Math.min(i,5)]}">
+        ${i===3?'👤':i+1}
+      </div>
+      <div class="flex-1">
+        <div class="font-medium text-sm ${c.name.includes('BẠN')?'text-blue-700':''}">${c.name}</div>
+        <div class="text-xs text-slate-400">${c.code} · ${c.level}</div>
+      </div>
+      ${c.hh>0?`<div class="text-right"><div class="text-xs text-slate-400">Nhận từ đơn của bạn</div><div class="font-bold text-orange-500">${c.hh}% mỗi đơn</div></div>`:'<div class="text-xs text-blue-600 font-medium">← Bạn đang ở đây</div>'}
+    </div>
+    ${i<chain.length-1?'<div class="ml-4 text-slate-300 text-xs">│</div>':''}`).join('');
+}
+
+// ── COMMISSIONS ─────────────────────────────────────────────────────────
+function filterComm(){
+  const f=document.getElementById('commFilter')?.value||'';
+  const st=document.getElementById('commStatus')?.value||'';
+  const filtered=comms.filter(c=>(!f||`Cấp ${c.level}`===f)&&(!st||c.status===st));
+  let gross=0,tax=0,net=0;
+  document.getElementById('commTable').innerHTML=filtered.map(c=>{
+    const rate=c.selfPurchase?RATES.slice(c.level).reduce((a,b)=>a+b,0):RATES[MY_LEVEL];
+    const hh=c.order*rate/100;
+    const t=hh*PIT;const n=hh-t;gross+=hh;tax+=t;net+=n;
+    const statusCls={PENDING:'bg-yellow-100 text-yellow-700',APPROVED:'bg-green-100 text-green-700',PAID:'bg-blue-100 text-blue-700'};
+    return`<tr>
+      <td class="p-3 text-slate-400">${fmtDate(c.date)}</td>
+      <td class="p-3">${c.buyer}</td>
+      <td class="p-3 text-center"><span class="level-tag text-xs px-2 py-0.5 rounded font-bold" style="background:${LEVEL_COLORS[c.level]}22;color:${LEVEL_COLORS[c.level]}">Cấp ${c.level}</span></td>
+      <td class="p-3 text-center">${c.selfPurchase?'<span class="badge bg-orange-100 text-orange-700">✓ Tự mua</span>':'—'}</td>
+      <td class="p-3 text-right">${fmt(c.order)}</td>
+      <td class="p-3 text-right text-slate-500">${rate.toFixed(1)}%</td>
+      <td class="p-3 text-right font-bold text-blue-600">${fmt(hh)}</td>
+      <td class="p-3 text-right text-orange-500">${fmt(t)}</td>
+      <td class="p-3 text-right font-bold text-green-600">${fmt(n)}</td>
+      <td class="p-3 text-center"><span class="badge ${statusCls[c.status]||'bg-slate-100 text-slate-600'}">${c.status}</span></td>
+    </tr>`;}).join('');
+  document.getElementById('commTotalGross').textContent=fmt(gross);
+  document.getElementById('commTotalTax').textContent=fmt(tax);
+  document.getElementById('commTotalNet').textContent=fmt(net);
+}
+
+// ── SELF PURCHASE ──────────────────────────────────────────────────────
+function renderSelfPurchase(){
+  const selfComms=comms.filter(c=>c.selfPurchase);
+  document.getElementById('selfHistory').innerHTML=selfComms.map(c=>{
+    const rate=RATES.slice(c.level).reduce((a,b)=>a+b,0);
+    const hh=c.order*rate/100;
+    return`<div class="flex items-center justify-between p-3 border border-orange-100 bg-orange-50 rounded-xl">
+      <div><div class="font-medium text-sm">${fmtDate(c.date)}</div><div class="text-xs text-slate-400">Đơn ${fmt(c.order)} · hh${c.level}+hh${c.level+1}+hh5 = ${rate}%</div></div>
+      <div class="text-right"><div class="font-bold text-green-600">${fmt(hh)}</div><div class="text-xs text-orange-500">Thuế: ${fmt(hh*PIT)}</div></div>
+    </div>`;}).join('');
+}
+
+// ── WALLET ─────────────────────────────────────────────────────────────
+function renderWallet(){
+  document.getElementById('payoutList').innerHTML=[
+    {date:'2026-04-30',amount:800000,method:'MoMo',net:720000,status:'PAID'},
+    {date:'2026-03-31',amount:500000,method:'VietinBank',net:450000,status:'PAID'},
+    {date:'2026-02-28',amount:350000,method:'ZaloPay',net:315000,status:'PAID'},
+  ].map(p=>`<div class="flex items-center justify-between border-b border-slate-100 pb-3">
+    <div><div class="font-medium text-sm">${fmt(p.amount)}</div><div class="text-xs text-slate-400">${fmtDate(p.date)} · ${p.method} · Thuế: ${fmt(p.amount-p.net)}</div></div>
+    <span class="badge bg-green-100 text-green-700">✓ ${p.status}</span>
+  </div>`).join('');
+}
+
+// ── TAX ────────────────────────────────────────────────────────────────
+function renderTax(){
+  document.getElementById('taxTable').innerHTML=[
+    {period:'05/2026',hh:892400,tax:89240,net:803160},
+    {period:'04/2026',hh:756200,tax:75620,net:680580},
+    {period:'03/2026',hh:624800,tax:62480,net:562320},
+    {period:'02/2026',hh:498600,tax:49860,net:448740},
+    {period:'01/2026',hh:312400,tax:31240,net:281160},
+  ].map(t=>`<tr class="border-b border-slate-50">
+    <td class="p-3">${t.period}</td>
+    <td class="p-3 text-right">${fmt(t.hh)}</td>
+    <td class="p-3 text-right text-orange-500">${fmt(t.tax)}</td>
+    <td class="p-3 text-right font-bold text-green-600">${fmt(t.net)}</td>
+    <td class="p-3 text-center"><button class="text-xs text-blue-600 hover:underline">📄 Tải</button></td>
+  </tr>`).join('');
+}
+
+// ── ACTIONS ─────────────────────────────────────────────────────────────
+function copyCode(){navigator.clipboard.writeText('HAT-3-00042');alert('Đã copy mã HAT-3-00042');}
+function copyLink(){navigator.clipboard.writeText('https://hathyo.com/ref/HAT-3-00042');alert('Đã copy link!');}
+function shareZalo(){alert('Mở Zalo để chia sẻ link: https://hathyo.com/ref/HAT-3-00042');}
+function copyMsg(){alert('Đã copy tin nhắn mẫu!');}
+function openPayoutModal(){document.getElementById('payoutModal').classList.remove('hidden');document.getElementById('payoutModal').classList.add('flex');}
+function closePayout(){document.getElementById('payoutModal').classList.add('hidden');document.getElementById('payoutModal').classList.remove('flex');}
+function calcPayout(){
+  const amt=+document.getElementById('payoutAmt').value||0;
+  if(amt>0)document.getElementById('payoutCalc').textContent=`Thuế TNCN 10%: ${fmt(amt*0.1)} → Thực nhận: ${fmt(amt*0.9)}`;
+}
+function submitPayout(){
+  const amt=+document.getElementById('payoutAmt').value||0;
+  if(!amt||amt<200000){alert('Tối thiểu 200,000đ');return;}
+  alert(`✅ Yêu cầu rút ${fmt(amt)} đã gửi!\nSau thuế TNCN: ${fmt(amt*0.9)}\nThời gian xử lý: 1-3 ngày làm việc.`);
+  closePayout();
+}
+function downloadTaxCert(){alert('Đang tải Biên lai Khấu trừ TNCN 2026...\n(File PDF sẽ được tải về)');}
+
+initOverview();
+</script>
+</body>
+</html>

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hathyo – Mạng Lưới Tiếp Thị Liên Kết</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --g-dark:#1B5E20; --g-mid:#2E7D32; --g-bright:#43A047;
+  --g-light:#A5D6A7; --g-pale:#E8F5E9; --g-pale2:#F1FAF2;
+  --orange:#F57F17; --orange-l:#FFF8E1; --gold:#FFD700;
+  --red:#C62828; --blue:#1565C0; --teal:#00695C;
+  --dark:#1a1a2e; --white:#fff; --gray:#78909C;
+  --l0-c:#FFD700; --l1-c:#43A047; --l2-c:#1565C0;
+  --l3-c:#00695C; --l4-c:#F57F17; --l5-c:#C62828; --lb-c:#6A1B9A;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Be Vietnam Pro',sans-serif}
+body{background:#f0f4f0;min-height:100vh;overflow-x:hidden}
+
+/* ── TOP PLATFORM BAR ──────────────────────────────────────────── */
+.top-bar{display:flex;align-items:stretch;height:110px;gap:0;position:relative;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.seller-box{width:20%;background:var(--g-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.seller-box:hover{background:#0A3D0A}
+.seller-box .icon{font-size:28px;margin-bottom:4px}
+.seller-box .label{font-size:12px;font-weight:600;opacity:.85;letter-spacing:.5px}
+.seller-box .name{font-size:15px;font-weight:700}
+.arrow-zone{width:20%;background:var(--g-mid);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.arrow-zone.left{flex-direction:row-reverse}
+.arrow-zone.right{flex-direction:row}
+.flow-track{display:flex;flex-direction:column;gap:10px;width:100%;align-items:center}
+.flow-row{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:11px;font-weight:600}
+.flow-row.goods{color:var(--gold)}
+.flow-row.money{color:#A5D6A7}
+.arrow-anim{animation:arrowSlide 2s linear infinite}
+.arrow-anim.rev{animation:arrowSlideRev 2s linear infinite}
+@keyframes arrowSlide{0%{opacity:0;transform:translateX(-20px)}50%{opacity:1}100%{opacity:0;transform:translateX(20px)}}
+@keyframes arrowSlideRev{0%{opacity:0;transform:translateX(20px)}50%{opacity:1}100%{opacity:0;transform:translateX(-20px)}}
+.platform-box{width:40%;background:linear-gradient(135deg,var(--g-mid),#1B5E20);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;position:relative}
+.platform-box .p-logo{font-size:32px;font-weight:800;letter-spacing:2px;color:#fff}
+.platform-box .p-sub{font-size:11px;opacity:.75;margin-top:2px;letter-spacing:1px}
+.platform-box .p-fee{font-size:12px;font-weight:600;background:rgba(255,255,255,.15);padding:3px 12px;border-radius:20px;margin-top:8px}
+.platform-glow{position:absolute;width:80px;height:80px;background:radial-gradient(circle,rgba(255,255,255,.12),transparent);border-radius:50%;pointer-events:none;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
+
+/* ── NETWORK SECTION ───────────────────────────────────────────── */
+.network{padding:12px 8px;position:relative}
+.level-row{display:flex;flex-direction:column;align-items:center;margin-bottom:4px;position:relative}
+.level-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 12px;border-radius:20px;margin-bottom:6px;position:relative;z-index:2}
+.nodes-wrap{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;max-height:none;position:relative;z-index:2;padding:0 8px}
+.node{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;cursor:pointer;transition:all .2s;user-select:none;position:relative;border:2px solid transparent;font-weight:700}
+.node:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.node.active{box-shadow:0 0 0 3px var(--gold),0 6px 24px rgba(0,0,0,.3);transform:scale(1.08)}
+.node.dim{opacity:.35}
+.node.highlight{animation:nodeFlash .4s ease-out}
+@keyframes nodeFlash{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* node sizes per level */
+.node-L0{width:54px;height:54px;font-size:10px}
+.node-L1{width:50px;height:50px;font-size:10px}
+.node-L2{width:46px;height:46px;font-size:9px}
+.node-L3{width:42px;height:42px;font-size:9px}
+.node-L4{width:38px;height:38px;font-size:9px}
+.node-L5{width:34px;height:34px;font-size:8px}
+.node-LB{width:30px;height:30px;font-size:8px}
+
+.node-icon{font-size:16px;line-height:1;margin-bottom:1px}
+.node-id{line-height:1;text-align:center}
+
+/* level colors */
+.lv0{background:linear-gradient(135deg,#FFD700,#FFA000);color:#1a1a2e;border-color:#FFA000}
+.lv1{background:linear-gradient(135deg,#43A047,#2E7D32);color:#fff;border-color:#1B5E20}
+.lv2{background:linear-gradient(135deg,#1976D2,#1565C0);color:#fff;border-color:#0D47A1}
+.lv3{background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border-color:#004D40}
+.lv4{background:linear-gradient(135deg,#FB8C00,#F57F17);color:#fff;border-color:#E65100}
+.lv5{background:linear-gradient(135deg,#E53935,#C62828);color:#fff;border-color:#B71C1C}
+.lvB{background:linear-gradient(135deg,#8E24AA,#6A1B9A);color:#fff;border-color:#4A148C}
+
+/* more chip */
+.more-chip{font-size:9px;font-weight:600;padding:4px 8px;border-radius:20px;background:rgba(0,0,0,.1);color:var(--gray);cursor:pointer;align-self:center;border:1px dashed var(--gray);transition:.2s}
+.more-chip:hover{background:rgba(0,0,0,.2);color:var(--dark)}
+
+/* vertical connector line */
+.v-connector{width:2px;height:18px;background:linear-gradient(to bottom,var(--g-light),var(--g-pale));margin:0 auto;position:relative;z-index:1}
+
+/* selected path highlight */
+.path-line{stroke-dasharray:6 4;stroke-dashoffset:0;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-20}}
+
+/* ── ORDER PANEL ──────────────────────────────────────────────── */
+.order-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.order-overlay.show{opacity:1;pointer-events:all}
+.order-panel{background:#fff;border-radius:20px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;transform:translateY(30px);transition:transform .3s}
+.order-overlay.show .order-panel{transform:translateY(0)}
+.op-header{background:linear-gradient(135deg,var(--g-mid),var(--g-dark));padding:20px 24px;border-radius:20px 20px 0 0;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.op-header h2{font-size:18px;font-weight:700}
+.op-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.op-close:hover{background:rgba(255,255,255,.4)}
+.op-body{padding:20px 24px}
+.op-order-val{text-align:center;margin-bottom:18px}
+.op-order-val .val{font-size:36px;font-weight:800;color:var(--g-mid)}
+.op-order-val .lbl{font-size:13px;color:var(--gray)}
+.op-flow{display:flex;align-items:center;gap:8px;background:var(--g-pale2);border-radius:14px;padding:12px 16px;margin-bottom:16px;overflow-x:auto}
+.flow-node{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.flow-node .fn-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff}
+.flow-node .fn-label{font-size:9px;font-weight:600;text-align:center;max-width:52px;line-height:1.2}
+.flow-node .fn-amount{font-size:11px;font-weight:700;color:var(--g-mid);white-space:nowrap}
+.flow-arrow{font-size:18px;color:var(--g-bright);flex-shrink:0;animation:pulse 1.2s ease infinite}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+.flow-goods-arrow{font-size:18px;color:var(--orange);flex-shrink:0}
+.op-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.op-table th{background:var(--g-dark);color:#fff;padding:9px 12px;font-size:12px;text-align:left}
+.op-table th:last-child{text-align:right}
+.op-table td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--g-pale)}
+.op-table td:last-child{text-align:right;font-weight:700}
+.op-table tr:hover td{background:var(--g-pale2)}
+.op-table tr.self-row td{background:#FFF3E0;font-weight:700}
+.op-table tr.total-row td{background:var(--g-pale);font-weight:800;font-size:14px}
+.op-note{background:var(--orange-l);border-left:4px solid var(--orange);border-radius:0 10px 10px 0;padding:10px 14px;font-size:12px;color:#5D4037;line-height:1.6}
+.chip-good{display:inline-block;background:var(--g-pale);color:var(--g-dark);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600}
+.chip-self{display:inline-block;background:#FFF3E0;color:var(--orange);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600}
+
+/* ── SVG OVERLAY ─────────────────────────────────────────────── */
+#svg-overlay{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+/* ── LEGEND ──────────────────────────────────────────────────── */
+.legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px 12px;background:#fff;border-top:1px solid var(--g-pale)}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--dark)}
+.legend-dot{width:14px;height:14px;border-radius:4px;flex-shrink:0}
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--g-light);border-radius:4px}
+
+/* ── TOOLTIP ─────────────────────────────────────────────────── */
+.tooltip{position:fixed;background:var(--dark);color:#fff;padding:6px 12px;border-radius:8px;font-size:11px;pointer-events:none;z-index:200;transform:translateX(-50%);white-space:nowrap;opacity:0;transition:opacity .15s}
+.tooltip.show{opacity:1}
+
+/* ── ANIMATED COMMISSION BUBBLES ─────────────────────────────── */
+.comm-bubble{position:fixed;pointer-events:none;z-index:60;background:var(--gold);color:var(--dark);font-size:11px;font-weight:800;padding:4px 8px;border-radius:20px;white-space:nowrap;opacity:0;animation:bubbleFloat 2s ease-out forwards}
+@keyframes bubbleFloat{0%{opacity:0;transform:translateY(0) scale(.5)}20%{opacity:1;transform:translateY(-10px) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(.8)}}
+
+</style>
+</head>
+<body>
+
+<!-- ── TOP PLATFORM BAR ───────────────────────────────────────── -->
+<div class="top-bar">
+  <!-- Seller Left -->
+  <div class="seller-box" id="sellerA" onclick="pingPlatform('A')">
+    <div class="icon">🏪</div>
+    <div class="name">Nhà Bán A</div>
+    <div class="label">Cửa hàng Xanh</div>
+  </div>
+
+  <!-- Arrow Left Zone -->
+  <div class="arrow-zone left" id="arrowLeft">
+    <div class="flow-track">
+      <div class="flow-row goods">
+        <span>📦 Hàng hóa</span>
+        <span class="arrow-anim rev">⟸⟸</span>
+      </div>
+      <div class="flow-row money">
+        <span class="arrow-anim">⟹⟹</span>
+        <span>💵 Thanh toán</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform Center -->
+  <div class="platform-box">
+    <div class="platform-glow"></div>
+    <div class="p-logo">HATHYO</div>
+    <div class="p-sub">NỀN TẢNG THƯƠNG MẠI ĐIỆN TỬ</div>
+    <div class="p-fee">Platform fee ≤ 30% | Affiliate pool 12%</div>
+  </div>
+
+  <!-- Arrow Right Zone -->
+  <div class="arrow-zone right" id="arrowRight">
+    <div class="flow-track">
+      <div class="flow-row goods">
+        <span class="arrow-anim">⟹⟹</span>
+        <span>📦 Hàng hóa</span>
+      </div>
+      <div class="flow-row money">
+        <span>💵 Thanh toán</span>
+        <span class="arrow-anim rev">⟸⟸</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seller Right -->
+  <div class="seller-box" id="sellerB" onclick="pingPlatform('B')">
+    <div class="icon">🛍️</div>
+    <div class="name">Nhà Bán B</div>
+    <div class="label">Cửa hàng Sức Khỏe</div>
+  </div>
+</div>
+
+<!-- ── NETWORK ─────────────────────────────────────────────────── -->
+<div class="network" id="network">
+  <!-- Rendered by JS -->
+</div>
+
+<!-- ── LEGEND ─────────────────────────────────────────────────── -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#FFD700"></div>Founder (hh0=0.5%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#43A047"></div>Cấp 1 (hh1=1%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1565C0"></div>Cấp 2 (hh2=1.5%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#00695C"></div>Cấp 3 (hh3=2%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F57F17"></div>Cấp 4 (hh4=3%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#C62828"></div>Cấp 5 (hh5=4%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6A1B9A"></div>Người mua</div>
+  <div class="legend-item" style="color:#888">💡 Click vào nút bất kỳ để mô phỏng đơn hàng</div>
+</div>
+
+<!-- ── ORDER PANEL ────────────────────────────────────────────── -->
+<div class="order-overlay" id="orderOverlay" onclick="closeOrder(event)">
+  <div class="order-panel" id="orderPanel">
+    <div class="op-header">
+      <h2 id="opTitle">Mô phỏng đơn hàng</h2>
+      <button class="op-close" onclick="closeOrder()">×</button>
+    </div>
+    <div class="op-body" id="opBody"></div>
+  </div>
+</div>
+
+<!-- ── SVG OVERLAY ────────────────────────────────────────────── -->
+<svg id="svg-overlay" style="position:fixed;inset:0;pointer-events:none;z-index:50"></svg>
+
+<!-- ── TOOLTIP ───────────────────────────────────────────────── -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════════
+const RATES = [0.5, 1.0, 1.5, 2.0, 3.0, 4.0]; // hh0..hh5 (%)
+const LEVEL_NAMES  = ['Founder','Cấp 1','Cấp 2','Cấp 3','Cấp 4','Cấp 5','Người mua'];
+const LEVEL_COLORS = ['#FFD700','#43A047','#1565C0','#00695C','#F57F17','#C62828','#6A1B9A'];
+const LEVEL_CSS    = ['lv0','lv1','lv2','lv3','lv4','lv5','lvB'];
+const LEVEL_SIZES  = ['L0','L1','L2','L3','L4','L5','LB'];
+const LEVEL_ICONS  = ['🏆','👤','👤','👤','👤','👤','🛒'];
+const TOTAL_FOUNDERS = 1000;
+const PLATFORM_FEE = 0.30;   // 30%
+const PIT = 0.10;
+
+// ── Seeded RNG ──────────────────────────────────────────────────
+function rng(seed){
+  let s=seed>>>0;
+  return()=>{s=Math.imul(48271,s)|0;return(s>>>0)/2**32};
+}
+
+// ── State ───────────────────────────────────────────────────────
+let selectedPath = [];   // [{level, idx}]  selected drill-down path
+let founderOffset = 0;   // which founder page we're on
+const FOUNDERS_PER_PAGE = 20;
+let trees = {};          // cache: founderId -> tree node data
+
+// ── Tree generation ─────────────────────────────────────────────
+function genChildren(level, parentId, rand) {
+  if (level >= 5) return [];
+  const total = Math.floor(rand() * 21) + 6; // 6-26
+  const show  = Math.min(total, 7);
+  const children = [];
+  for (let i = 0; i < show; i++) {
+    children.push({ id: `${parentId}_${i}`, level: level+1, shown: show, total,
+                    childSeed: Math.floor(rand()*99999) });
+  }
+  return children;
+}
+
+function getOrGenFounder(fid) {
+  if (trees[fid]) return trees[fid];
+  const rand = rng(fid * 31337 + 7);
+  const total = Math.floor(rand()*21)+6;
+  const show  = Math.min(total,8);
+  const node = { id:`F${fid}`, level:0, shown:show, total,
+                 children: Array.from({length:show},(_,i)=>({
+                   id:`F${fid}_${i}`, level:1,
+                   shown: Math.min(Math.floor(rand()*21)+6, 7),
+                   total: Math.floor(rand()*21)+6,
+                   childSeed: Math.floor(rand()*99999)
+                 }))};
+  trees[fid] = node;
+  return node;
+}
+
+function getNodeChildren(node) {
+  if (!node.children) {
+    const rand = rng((node.childSeed||0)+13);
+    const total = Math.floor(rand()*21)+6;
+    const show  = Math.min(total, node.level>=4?4:6);
+    node.total  = total;
+    node.shown  = show;
+    node.children = Array.from({length:show},(_,i)=>({
+      id:`${node.id}_${i}`, level:node.level+1,
+      shown:0, total:0,
+      childSeed: Math.floor(rand()*99999)
+    }));
+  }
+  return node.children;
+}
+
+// ── Format ──────────────────────────────────────────────────────
+function fmt(n){return new Intl.NumberFormat('vi-VN').format(Math.round(n))+'đ'}
+function pct(v){return (v%1===0?v:v.toFixed(1))+'%'}
+function randOrderValue(){
+  const steps=[100,200,300,400,500,600,700,800,900,1000,1200,1500,1800,2000];
+  return steps[Math.floor(Math.random()*steps.length)]*1000;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════
+function render(){
+  const net = document.getElementById('network');
+  net.innerHTML = '';
+
+  // ── Level 0: Founders ──────────────────────────────────────────
+  const l0row = makeRow(0);
+  const nodesWrap = l0row.querySelector('.nodes-wrap');
+
+  // Page buttons
+  if(founderOffset > 0){
+    const prev = mkChip(`◀ F${founderOffset}`,'prev');
+    prev.onclick=()=>{founderOffset=Math.max(0,founderOffset-FOUNDERS_PER_PAGE);selectedPath=[];render()};
+    nodesWrap.appendChild(prev);
+  }
+
+  // Show founders in current window
+  const start = founderOffset+1, end = Math.min(founderOffset+FOUNDERS_PER_PAGE, TOTAL_FOUNDERS);
+  for(let f=start;f<=end;f++){
+    const selF = selectedPath[0];
+    const isActive = selF && selF.id === `F${f}`;
+    const nd = mkNode(0,`F${f}`,f<=20?`F${f}`:`F${f}`,isActive);
+    nd.dataset.fid = f;
+    nd.onclick=e=>{ e.stopPropagation(); onNodeClick({id:`F${f}`,level:0,fid:f}); };
+    nd.oncontextmenu=e=>{ e.preventDefault(); simulateOrder({id:`F${f}`,level:0,fid:f}); };
+    nodesWrap.appendChild(nd);
+  }
+
+  if(end<TOTAL_FOUNDERS){
+    const more = mkChip(`… F${end+1}–F${TOTAL_FOUNDERS} ▶`,'next');
+    more.onclick=()=>{founderOffset+=FOUNDERS_PER_PAGE;selectedPath=[];render()};
+    nodesWrap.appendChild(more);
+  }
+  net.appendChild(l0row);
+
+  // ── Drill-down levels ──────────────────────────────────────────
+  if(selectedPath.length===0) return;
+
+  let currentNode = null;
+  for(let depth=0;depth<selectedPath.length;depth++){
+    const sel = selectedPath[depth];
+    const level = depth+1; // L1..L5
+
+    if(depth===0){
+      // Children of selected Founder
+      const fNode = getOrGenFounder(sel.fid||1);
+      currentNode = fNode;
+    }
+    const children = getNodeChildren(currentNode);
+
+    // connector
+    net.appendChild(mkConnector());
+
+    // Build level row
+    const row = makeRow(level);
+    const wrap = row.querySelector('.nodes-wrap');
+
+    children.forEach((child,ci)=>{
+      const isActive = selectedPath[depth+1] && selectedPath[depth+1].id===child.id;
+      const nd = mkNode(level, child.id, shortId(child.id,level), isActive);
+      nd.onclick=e=>{ e.stopPropagation(); onNodeClick(child,depth+1); };
+      nd.oncontextmenu=e=>{ e.preventDefault(); simulateOrder(child,selectedPath.slice(0,depth+1)); };
+      wrap.appendChild(nd);
+    });
+
+    if(currentNode.total > currentNode.shown){
+      wrap.appendChild(mkChip(`+${currentNode.total-currentNode.shown} nút khác`));
+    }
+    net.appendChild(row);
+
+    // Advance into the selected child
+    const nextSel = selectedPath[depth+1];
+    if(nextSel){
+      const found = children.find(c=>c.id===nextSel.id);
+      if(found){ currentNode = found; } else break;
+    } else {
+      currentNode = children[0]; // default expand first child
+      break;
+    }
+  }
+
+  // ── If depth < 5, show buyer level ─────────────────────────────
+  const depth = selectedPath.length;
+  if(depth>0 && depth<=5){
+    const lastSel = selectedPath[depth-1];
+    let lastNode = getLastNode();
+    if(lastNode){
+      const bchildren = getNodeChildren(lastNode);
+      if(lastNode.level<5){
+        // Show next affiliate level with hint
+        net.appendChild(mkConnector());
+        const row = makeRow(lastNode.level+1);
+        row.querySelector('.nodes-wrap').appendChild(mkChip(`↓ Cấp ${lastNode.level+1}: click để mở rộng`));
+        net.appendChild(row);
+      }
+    }
+  }
+
+  // ── Always show Buyer level at bottom ──────────────────────────
+  net.appendChild(mkConnector());
+  const buyerRow = makeRow(6);
+  const bwrap = buyerRow.querySelector('.nodes-wrap');
+  for(let b=0;b<8;b++){
+    const bid = `buyer_${b}`;
+    const nd = mkNode(6,bid,'🛒',false);
+    nd.title='Click để mô phỏng đơn hàng từ người mua';
+    nd.onclick=e=>{ e.stopPropagation(); simulateOrder({id:bid,level:6}); };
+    bwrap.appendChild(nd);
+  }
+  bwrap.appendChild(mkChip('… nhiều người mua khác'));
+  net.appendChild(buyerRow);
+}
+
+function getLastNode(){
+  if(selectedPath.length===0) return null;
+  let node = getOrGenFounder(selectedPath[0].fid||1);
+  for(let i=1;i<selectedPath.length;i++){
+    const ch = getNodeChildren(node);
+    const found = ch.find(c=>c.id===selectedPath[i].id);
+    if(!found) break;
+    node = found;
+  }
+  return node;
+}
+
+function makeRow(level){
+  const div = document.createElement('div');
+  div.className='level-row';
+  div.dataset.level=level;
+
+  const lbl = document.createElement('div');
+  lbl.className='level-label';
+  lbl.style.background=LEVEL_COLORS[Math.min(level,6)];
+  lbl.style.color= level===0?'#1a1a2e':'#fff';
+  lbl.textContent = level===6
+    ? `👥 NGƯỜI MUA TRỰC TIẾP`
+    : level===0
+    ? `🏆 CẤP 0 – FOUNDER (${TOTAL_FOUNDERS} nút gốc) | hh0 = ${RATES[0]}%`
+    : `⬡ CẤP ${level} | hh${level} = ${RATES[level]}% | avg ${level<5?'16':'16'} nút/node`;
+  div.appendChild(lbl);
+
+  const wrap = document.createElement('div');
+  wrap.className='nodes-wrap';
+  div.appendChild(wrap);
+  return div;
+}
+
+function mkNode(level,id,label,isActive){
+  const div = document.createElement('div');
+  div.className=`node node-${LEVEL_SIZES[Math.min(level,6)]} ${LEVEL_CSS[Math.min(level,6)]} ${isActive?'active':''}`;
+  div.id='nd_'+id;
+  div.dataset.nodeid=id;
+  div.dataset.level=level;
+  div.innerHTML=`<div class="node-icon">${level===6?'🛒':level===0?'🏆':'👤'}</div><div class="node-id">${label}</div>`;
+  div.addEventListener('mouseenter',e=>showTooltip(e,`${LEVEL_NAMES[Math.min(level,6)]}: ${id}\n${level<6?'HH rate: '+pct(RATES[level]):'Click = mua hàng'}`));
+  div.addEventListener('mouseleave',()=>hideTooltip());
+  return div;
+}
+
+function mkChip(txt,cls=''){
+  const s = document.createElement('span');
+  s.className='more-chip';
+  s.textContent=txt;
+  return s;
+}
+
+function mkConnector(){
+  const d=document.createElement('div'); d.className='v-connector'; return d;
+}
+
+function shortId(id,level){
+  // Make a short display label
+  const parts = id.split('_');
+  if(level<=1) return `${level>0?'L':'F'}${parts[parts.length-1]}`;
+  return parts.slice(-2).join('-');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INTERACTION
+// ═══════════════════════════════════════════════════════════════
+function onNodeClick(node, depth){
+  if(node.level===0){
+    // Select founder, clear rest
+    selectedPath = [node];
+  } else if(node.level===6){
+    simulateOrder(node);
+    return;
+  } else {
+    // Drill down
+    selectedPath = selectedPath.slice(0, depth);
+    selectedPath.push(node);
+  }
+  render();
+  // Also simulate order from this node
+  setTimeout(()=>simulateOrder(node, selectedPath.slice(0,-1)), 400);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ORDER SIMULATION
+// ═══════════════════════════════════════════════════════════════
+function simulateOrder(node, uplinePath){
+  const orderVal = randOrderValue();
+  const level    = node.level;
+  const isBuyer  = level === 6;
+  const isSelf   = !isBuyer && level >= 0;
+
+  // Build commission chain
+  const chain = buildChain(node, uplinePath||selectedPath);
+
+  // Determine seller (random A or B)
+  const seller = Math.random()>.5 ? 'A':'B';
+
+  // Build HTML
+  const overlay = document.getElementById('orderOverlay');
+  document.getElementById('opTitle').textContent =
+    isBuyer ? '🛒 Đơn hàng từ Người Mua Trực Tiếp'
+             : `🛍️ Đơn hàng tự mua – ${LEVEL_NAMES[level]}: ${node.id}`;
+
+  document.getElementById('opBody').innerHTML = renderOrderBody(orderVal, level, chain, seller, isBuyer);
+  overlay.classList.add('show');
+
+  // Animate bubbles on nodes
+  animateCommBubbles(chain, orderVal);
+}
+
+function buildChain(node, uplinePath){
+  // Returns list of { role, levelIdx, id, rate, amount(computed later) }
+  const chain = [];
+  const level = node.level;
+
+  // Founders and uplines
+  if(uplinePath && uplinePath.length>0){
+    uplinePath.forEach((up,i)=>{
+      chain.push({ role: i===0?'Founder':'Upline', levelIdx: up.level, id: up.id });
+    });
+  }
+
+  // Self node (if affiliate member buying)
+  if(level < 6){
+    chain.push({ role:'self', levelIdx: level, id: node.id });
+  }
+
+  return chain;
+}
+
+function renderOrderBody(orderVal, buyerLevel, chain, seller, isBuyer){
+  const base        = orderVal;
+  const poolTotal   = base * 0.12;
+  const platFee     = base * 0.30;
+  const platProfit  = base * 0.03;
+  const sellerGet   = base * 0.70;
+
+  // Commission by level in chain
+  // Resolve who gets what
+  const commissions = [];
+
+  if(isBuyer){
+    // Regular buyer: all 6 levels above get their hh
+    // We show based on who's in the chain
+    const chainLevels = chain.map(c=>c.levelIdx);
+    for(let lvl=0;lvl<=5;lvl++){
+      const inChain = chain.find(c=>c.levelIdx===lvl);
+      commissions.push({
+        levelIdx: lvl,
+        id: inChain ? inChain.id : `(không có Cấp ${lvl})`,
+        rate: RATES[lvl],
+        amount: inChain ? base * RATES[lvl]/100 : 0,
+        isMissing: !inChain
+      });
+    }
+  } else {
+    // Self-purchase by level buyerLevel
+    // Uplines (levels 0..buyerLevel-1) get their normal rate
+    for(let lvl=0;lvl<buyerLevel;lvl++){
+      const inChain = chain.find(c=>c.levelIdx===lvl);
+      commissions.push({
+        levelIdx: lvl,
+        id: inChain ? inChain.id : `Cấp ${lvl}`,
+        rate: RATES[lvl],
+        amount: inChain ? base * RATES[lvl]/100 : 0,
+        isMissing: !inChain
+      });
+    }
+    // Self gets collapsed hh_buyerLevel + ... + hh5
+    const selfRate = RATES.slice(buyerLevel).reduce((a,b)=>a+b,0);
+    commissions.push({
+      levelIdx: buyerLevel,
+      id: `${chain.find(c=>c.role==='self')?.id||'Bạn'} (TỰ MUA)`,
+      rate: selfRate,
+      amount: base * selfRate/100,
+      isSelf: true
+    });
+  }
+
+  const totalComm = commissions.reduce((s,c)=>s+c.amount,0);
+  const pit = (amt)=> amt >= 2000000 ? amt*0.10 : 0;
+
+  // Flow visualization
+  let flowHTML = `<div class="op-flow">`;
+  // Seller
+  flowHTML += `<div class="flow-node"><div class="fn-icon" style="background:var(--g-dark)">🏪</div><div class="fn-label">Nhà Bán ${seller}</div><div class="fn-amount">${fmt(sellerGet)}</div></div>`;
+  flowHTML += `<div class="flow-goods-arrow">→</div>`;
+  // Platform
+  flowHTML += `<div class="flow-node"><div class="fn-icon" style="background:var(--g-mid)">H</div><div class="fn-label">HATHYO</div><div class="fn-amount">${fmt(platFee)} fee</div></div>`;
+  flowHTML += `<div class="flow-goods-arrow">→</div>`;
+  // Levels
+  commissions.filter(c=>!c.isMissing && c.amount>0).slice(0,4).forEach(c=>{
+    flowHTML += `<div class="flow-arrow">💰</div>`;
+    flowHTML += `<div class="flow-node"><div class="fn-icon" style="background:${LEVEL_COLORS[c.levelIdx]}">${c.levelIdx===0?'🏆':'👤'}</div><div class="fn-label">${LEVEL_NAMES[c.levelIdx]}</div><div class="fn-amount">+${fmt(c.amount)}</div></div>`;
+  });
+  if(commissions.filter(c=>!c.isMissing).length>4){
+    flowHTML += `<div class="flow-arrow">...</div>`;
+  }
+  // Buyer
+  flowHTML += `<div class="flow-arrow">→</div>`;
+  flowHTML += `<div class="flow-node"><div class="fn-icon" style="background:var(--lb-c)">🛒</div><div class="fn-label">${isBuyer?'Người mua':'Tự mua'}</div><div class="fn-amount">nhận hàng</div></div>`;
+  flowHTML += `</div>`;
+
+  // Order value display
+  let html = `
+    <div class="op-order-val">
+      <div class="lbl">${isBuyer?'Đơn hàng từ người mua trực tiếp':'Đơn hàng tự mua – '+LEVEL_NAMES[buyerLevel]}</div>
+      <div class="val">${fmt(base)}</div>
+      <div style="margin-top:6px;font-size:12px;color:var(--gray)">
+        Nhà Bán ${seller} nhận: <strong>${fmt(sellerGet)}</strong>
+        &nbsp;|&nbsp; Pool affiliate 12%: <strong style="color:var(--g-mid)">${fmt(poolTotal)}</strong>
+        &nbsp;|&nbsp; Sàn giữ: <strong>${fmt(platProfit)}</strong>
+      </div>
+    </div>
+    ${flowHTML}
+    <table class="op-table">
+      <thead><tr>
+        <th>Người nhận</th><th>Cấp</th><th>Tỷ lệ</th>
+        <th>HH gộp</th><th>Thuế TNCN</th><th>Thực nhận</th>
+      </tr></thead>
+      <tbody>`;
+
+  commissions.forEach(c=>{
+    if(c.isMissing){ return; }
+    const p = pit(c.amount);
+    const net = c.amount - p;
+    html += `<tr class="${c.isSelf?'self-row':''}">
+      <td>${c.id} ${c.isSelf?'<span class="chip-self">Tự mua</span>':''}</td>
+      <td><span style="color:${LEVEL_COLORS[c.levelIdx]};font-weight:700">${LEVEL_NAMES[c.levelIdx]}</span></td>
+      <td style="color:${LEVEL_COLORS[c.levelIdx]};font-weight:700">${pct(c.rate)}</td>
+      <td>${fmt(c.amount)}</td>
+      <td style="color:var(--orange)">${p>0?fmt(p):'—'}</td>
+      <td style="color:var(--g-mid)">${fmt(net)}</td>
+    </tr>`;
+  });
+
+  const totalNet = totalComm * (1-0); // simplified
+  html += `
+      <tr class="total-row">
+        <td colspan="3">TỔNG HOA HỒNG PHÂN BỔ</td>
+        <td>${fmt(totalComm)}</td>
+        <td style="color:var(--orange)">${fmt(totalComm*0.10)}</td>
+        <td style="color:var(--g-mid)">${fmt(totalComm*0.90)}</td>
+      </tr>
+      </tbody></table>
+    <div class="op-note">
+      💡 <strong>Ghi chú:</strong>
+      ${isBuyer
+        ? 'Người mua trực tiếp không thuộc mạng lưới affiliate → toàn bộ 12% phân bổ cho các cấp Founder→Cấp 5 phía trên.'
+        : `Đây là giao dịch TỰ MUA của <strong>${LEVEL_NAMES[buyerLevel]}</strong>. Họ nhận gộp hh${buyerLevel}${buyerLevel<5?'→hh5':''} = <strong>${pct(RATES.slice(buyerLevel).reduce((a,b)=>a+b,0))}</strong>. Upline vẫn nhận bình thường.`}
+      <br>Thuế TNCN 10% chỉ khấu trừ khi HH ≥ 2,000,000đ/lần chi trả.
+      <br>Hoa hồng sàn (${fmt(platProfit)}) được hạch toán vào doanh thu và phát hành HĐDT qua MatBao.
+    </div>`;
+
+  return html;
+}
+
+function animateCommBubbles(chain, orderVal){
+  chain.forEach((c,i)=>{
+    const el = document.getElementById('nd_'+c.id);
+    if(!el) return;
+    setTimeout(()=>{
+      el.classList.add('highlight');
+      const rect = el.getBoundingClientRect();
+      const bubble = document.createElement('div');
+      bubble.className='comm-bubble';
+      const rate = RATES[c.levelIdx]||0;
+      bubble.textContent = `+${fmt(orderVal*rate/100)}`;
+      bubble.style.left = (rect.left+rect.width/2)+'px';
+      bubble.style.top  = rect.top+'px';
+      document.body.appendChild(bubble);
+      setTimeout(()=>{ el.classList.remove('highlight'); bubble.remove(); }, 2200);
+    }, i*300);
+  });
+}
+
+function closeOrder(e){
+  if(e && e.target!==document.getElementById('orderOverlay')) return;
+  document.getElementById('orderOverlay').classList.remove('show');
+}
+
+function pingPlatform(side){
+  const box = document.getElementById('seller'+side);
+  box.style.background='#0A5C14';
+  setTimeout(()=>box.style.background='',400);
+}
+
+// ── Tooltip ──────────────────────────────────────────────────────
+function showTooltip(e, text){
+  const t = document.getElementById('tooltip');
+  t.textContent = text;
+  t.style.left  = e.clientX+'px';
+  t.style.top   = (e.clientY-38)+'px';
+  t.classList.add('show');
+}
+function hideTooltip(){ document.getElementById('tooltip').classList.remove('show'); }
+
+// ── Keyboard shortcut ────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeOrder();
+});
+
+// ── INIT ─────────────────────────────────────────────────────────
+render();
+
+// Auto-select F1 on load to show the tree
+setTimeout(()=>{
+  const f1 = {id:'F1',level:0,fid:1};
+  selectedPath=[f1];
+  render();
+}, 300);
+</script>
+</body>
+</html>
