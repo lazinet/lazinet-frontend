@@ -298,7 +298,7 @@ function addL(s,t,type='aff'){ if(links.find(l=>l.sid===s&&l.tid===t))return; li
 function calcCommission(buyerNode, orderVal) {
   const n = buyerNode.level;
   const alfc = Math.min(n, 5);
-  const result = { recipients:[], alfco:0, alfc };
+  const result = { recipients:[], alfco:0, alfc, buyerLevel: n };
 
   // Walk up the ancestor chain
   let cur = buyerNode;
@@ -728,7 +728,7 @@ function buildTable(comm,ov){
   if(comm.alfco>0){
     h+=`<tr class="alfco-row">
       <td style="color:#ffd700">🎁 Ví ảo người mua</td>
-      <td style="color:#ffd700">L${comm.recipients.length>0?comm.recipients[0].node.level+comm.recipients.length:'?'}+</td>
+      <td style="color:#ffd700">L${comm.buyerLevel}</td>
       <td style="color:#ffd700">alfco</td>
       <td style="color:#ffd700">${(SUM_AC-AC_RATES.slice(0,comm.alfc).reduce((a,b)=>a+b,0)).toFixed(1)}%</td>
       <td style="color:#ffd700">${f(comm.alfco)}</td>
