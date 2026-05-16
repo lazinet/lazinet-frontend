@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hathyo – Admin Tiếp Thị Liên Kết (MLAM)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+*{font-family:'Be Vietnam Pro',sans-serif;box-sizing:border-box}
+.sidebar{width:250px;min-height:100vh;background:#0f172a;position:fixed;left:0;top:0;z-index:40}
+.main{margin-left:250px;min-height:100vh;background:#f1f5f9}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s;color:#94a3b8}
+.nav-item:hover,.nav-item.active{background:#1e3a5f;color:#60a5fa}
+.nav-item.active{background:#1d4ed8;color:#fff}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.ac-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;display:inline-block}
+tr:hover td{background:#f8faff}
+input:focus,select:focus{outline:2px solid #3b82f6;outline-offset:0}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+.slide{animation:slide .2s ease}
+@keyframes slide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body class="bg-slate-100">
+
+<!-- SIDEBAR -->
+<aside class="sidebar flex flex-col">
+  <div class="p-5 border-b border-slate-800">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">H</div>
+      <div><div class="text-white font-bold text-sm">Hathyo Admin</div><div class="text-slate-500 text-xs">MLAM – Vô hạn cấp</div></div>
+    </div>
+  </div>
+  <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto mt-2">
+    <div class="text-slate-600 text-xs px-3 py-1 uppercase tracking-wider font-semibold mb-1">Tổng quan</div>
+    <div class="nav-item active" onclick="goto('dashboard')">📊 Dashboard</div>
+    <div class="nav-item" onclick="goto('founders')">🏆 Quản lý Founders <span class="ml-auto bg-yellow-500 text-black text-xs px-1.5 py-0.5 rounded-full">1000</span></div>
+    <div class="nav-item" onclick="goto('network')">🌐 Mạng lưới & Cây</div>
+    <div class="text-slate-600 text-xs px-3 py-2 uppercase tracking-wider font-semibold mt-3">Hoa hồng</div>
+    <div class="nav-item" onclick="goto('config')">⚙️ Cấu hình AC (5 cấp)</div>
+    <div class="nav-item" onclick="goto('transactions')">💰 Giao dịch HH <span class="ml-auto bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded-full" id="pendingCount">48</span></div>
+    <div class="nav-item" onclick="goto('alfco')">🎁 Ví ảo & alfco</div>
+    <div class="text-slate-600 text-xs px-3 py-2 uppercase tracking-wider font-semibold mt-3">Tài chính</div>
+    <div class="nav-item" onclick="goto('payout')">💸 Duyệt rút tiền <span class="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">12</span></div>
+    <div class="nav-item" onclick="goto('tax')">📋 Thuế TNCN</div>
+    <div class="text-slate-600 text-xs px-3 py-2 uppercase tracking-wider font-semibold mt-3">Phân tích</div>
+    <div class="nav-item" onclick="goto('reports')">📈 Báo cáo</div>
+    <div class="nav-item" onclick="goto('audit')">🔍 Audit Log</div>
+  </nav>
+  <div class="p-4 border-t border-slate-800 text-xs text-slate-500">Admin | Tháng 5/2026 | Pool: 10%</div>
+</aside>
+
+<main class="main">
+  <div class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+    <h1 class="font-bold text-slate-800 text-base" id="pageTitle">Dashboard Tổng Quan</h1>
+    <div class="flex items-center gap-3 text-sm">
+      <span class="text-slate-400 text-xs" id="clock"></span>
+      <div class="flex items-center gap-1 bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+        <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Hệ thống hoạt động
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6">
+
+  <!-- ══ DASHBOARD ══════════════════════════════════════════════════════════ -->
+  <div id="tabDashboard" class="slide">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+      <div class="card p-4">
+        <div class="text-xs text-slate-400 font-medium mb-1">Tổng thành viên</div>
+        <div class="text-3xl font-bold text-slate-800">128,450</div>
+        <div class="text-xs text-green-500 mt-1">↑ +3,240 tuần này</div>
+        <div class="text-xs text-slate-400 mt-0.5">Founders: 1,000 | L1+: không giới hạn</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-xs text-slate-400 font-medium mb-1">HH phân bổ tháng này</div>
+        <div class="text-2xl font-bold text-blue-600">2.37 tỷ đ</div>
+        <div class="text-xs text-green-500 mt-1">↑ +15% so tháng trước</div>
+        <div class="text-xs text-slate-400 mt-0.5">Pool 10% × GMV affiliate</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-xs text-slate-400 font-medium mb-1">alfco hoàn về ví ảo</div>
+        <div class="text-2xl font-bold text-teal-500">142 triệu đ</div>
+        <div class="text-xs text-slate-400 mt-1">Người mua cấp &lt;5 được nhận</div>
+        <div class="text-xs text-teal-400 mt-0.5">≈ 6% tổng HH pool</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-xs text-slate-400 font-medium mb-1">Chờ duyệt rút tiền</div>
+        <div class="text-2xl font-bold text-red-500">12 yêu cầu</div>
+        <div class="text-xs text-slate-400 mt-1">Tổng: 184,500,000đ</div>
+        <button onclick="goto('payout')" class="text-xs text-blue-600 hover:underline mt-1 block">Xử lý ngay →</button>
+      </div>
+    </div>
+
+    <!-- Level distribution – unlimited depth -->
+    <div class="card p-4 mb-5">
+      <h3 class="font-semibold text-slate-700 text-sm mb-1">Phân bổ thành viên theo cấp (hệ thống vô hạn cấp)</h3>
+      <p class="text-xs text-slate-400 mb-3">Hoa hồng chỉ 5 cấp tính từ người mua (ac1→ac5). Cấp càng sâu, mạng lưới càng lớn theo dạng hàm mũ.</p>
+      <div class="grid grid-cols-5 gap-2 mb-3" id="levelDistGrid"></div>
+      <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700">
+        <strong>Quy tắc 5 cấp hoa hồng:</strong> Khi người mua ở cấp n, chỉ 5 cấp trên nhận hoa hồng: L(n-1) nhận ac1=5%, L(n-2) nhận ac2=2%, L(n-3) nhận ac3=1.5%, L(n-4) nhận ac4=1%, L(n-5) nhận ac5=0.5%. Tổng = 10%. Khi n&lt;5, phần dư alfco hoàn về ví ảo người mua.
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-5 mb-5">
+      <div class="lg:col-span-2 card p-5">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-slate-700 text-sm">HH phân bổ 30 ngày (triệu đ)</h3>
+        </div>
+        <canvas id="commChart" height="160"></canvas>
+      </div>
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-4">HH theo ac slot (tháng 5)</h3>
+        <canvas id="acPie" height="180"></canvas>
+        <div class="mt-3 space-y-1" id="acLegend"></div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-5">
+      <div class="card p-5">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-semibold text-slate-700 text-sm">Giao dịch HH gần đây</h3>
+          <button onclick="goto('transactions')" class="text-xs text-blue-600 hover:underline">Xem tất cả →</button>
+        </div>
+        <table class="w-full text-xs">
+          <thead><tr class="text-slate-400 border-b"><th class="text-left pb-2">Người mua</th><th class="text-center pb-2">Cấp</th><th class="text-right pb-2">Đơn</th><th class="text-right pb-2">Pool</th><th class="text-center pb-2">TT</th></tr></thead>
+          <tbody id="recentTxTable"></tbody>
+        </table>
+      </div>
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">Top 5 Founder theo HH tháng này</h3>
+        <div class="space-y-2" id="topFounders"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOUNDERS ═══════════════════════════════════════════════════════════ -->
+  <div id="tabFounders" class="slide hidden">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h2 class="font-semibold text-slate-800">1000 Founders – Nút Gốc Hệ Thống (Cấp 0)</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Không có parent | Nhận ac5=0.5% khi cháu-5 mua hàng | Tạo bởi Admin</p>
+      </div>
+      <button onclick="openFounderModal()" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700">+ Tạo Founder</button>
+    </div>
+    <div class="grid grid-cols-3 gap-4 mb-5">
+      <div class="card p-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-xl">🏢</div><div><div class="font-bold text-blue-700 text-xl">20</div><div class="text-xs text-slate-500">Nhóm nội bộ</div></div></div></div>
+      <div class="card p-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-xl">🗺️</div><div><div class="font-bold text-green-700 text-xl">50</div><div class="text-xs text-slate-500">Tỉnh thành</div></div></div></div>
+      <div class="card p-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center text-xl">🌟</div><div><div class="font-bold text-purple-700 text-xl">930</div><div class="text-xs text-slate-500">KOL/Đầu tư/Quốc tế</div></div></div></div>
+    </div>
+    <div class="flex gap-3 mb-4">
+      <input type="text" id="founderSearch" placeholder="Tìm tên, SĐT, mã..." class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-sm" oninput="filterFounders()">
+      <select id="founderCat" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" onchange="filterFounders()">
+        <option value="">Tất cả nhóm</option><option value="INTERNAL">Nội bộ</option><option value="PROVINCE">Tỉnh thành</option><option value="PARTNER">KOL/Đối tác</option>
+      </select>
+      <select id="founderStatus" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" onchange="filterFounders()">
+        <option value="">Tất cả</option><option value="ACTIVE">Active</option><option value="SUSPENDED">Suspended</option>
+      </select>
+      <span class="text-sm text-slate-500 self-center">Hiển thị: <strong id="founderCnt">0</strong></span>
+    </div>
+    <div class="card overflow-hidden">
+      <table class="w-full text-xs">
+        <thead class="bg-slate-50 border-b">
+          <tr class="text-slate-500 text-left">
+            <th class="p-3">#</th><th class="p-3">Founder</th><th class="p-3">Mã</th><th class="p-3">Nhóm</th>
+            <th class="p-3">Tỉnh</th><th class="p-3 text-right">Mạng lưới</th>
+            <th class="p-3 text-right">HH/tháng</th><th class="p-3 text-center">TT</th><th class="p-3">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="founderTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ COMMISSION CONFIG ══════════════════════════════════════════════════ -->
+  <div id="tabConfig" class="slide hidden">
+    <div class="max-w-3xl">
+      <div class="card p-6 mb-5">
+        <h3 class="font-bold text-slate-800 mb-1">Cấu hình 5 Cấp Hoa Hồng (ac1–ac5)</h3>
+        <p class="text-xs text-slate-400 mb-4">Tổng pool = 10% giá trị đơn hàng. ac1 là hoa hồng cho upline gần nhất với người mua, ac5 là xa nhất. Điều kiện: ac1 &gt; ac2 &gt; ac3 &gt; ac4 &gt; ac5.</p>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-sm">
+          <div class="font-semibold text-amber-800 mb-1">📊 So sánh thị trường</div>
+          <div class="grid grid-cols-3 gap-4 text-xs text-amber-700">
+            <div>Shopee phí Seller: <strong>40%</strong></div>
+            <div>TikTok Shop: <strong>46%</strong></div>
+            <div>Hathyo (≤30%): Pool affiliate <strong id="totalFee">10%</strong> + phí ops</div>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-5 text-xs text-blue-700">
+          <strong>Hệ thống vô hạn cấp:</strong> Mạng lưới phát triển đến L1, L2, ..., L∞. Khi người mua ở cấp n:
+          <ul class="mt-1 space-y-0.5 ml-3 list-disc">
+            <li>n ≥ 5: L(n-1)→ac1=5%, L(n-2)→ac2=2%, L(n-3)→ac3=1.5%, L(n-4)→ac4=1%, L(n-5)→ac5=0.5%. Không có alfco.</li>
+            <li>n &lt; 5: Chỉ n upline nhận, phần dư alfco = sum_ac − Σaci (i=1..n) hoàn về ví ảo người mua.</li>
+          </ul>
+        </div>
+
+        <div class="space-y-3" id="rateInputs"></div>
+
+        <div class="flex items-center gap-3 mt-5">
+          <div class="text-sm text-slate-600">Tổng pool: <strong id="totalPool" class="text-blue-600">10.00%</strong> / Mục tiêu: 10%</div>
+          <div id="poolWarning" class="text-xs text-red-500 hidden">⚠ Tổng ≠ 10%!</div>
+          <div class="ml-auto flex gap-2">
+            <button onclick="resetRates()" class="px-4 py-2 border border-slate-200 rounded-xl text-sm text-slate-600 hover:bg-slate-50">↺ Mặc định</button>
+            <button onclick="saveRates()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700">💾 Lưu cấu hình</button>
+          </div>
+        </div>
+        <div id="saveRateMsg" class="hidden mt-2 text-sm text-green-600">✅ Đã lưu! Áp dụng cho đơn từ thời điểm này trở đi.</div>
+      </div>
+
+      <!-- alfco simulation table -->
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-1">Bảng alfco – Ví ảo theo cấp người mua (đơn 1,000,000đ)</h3>
+        <p class="text-xs text-slate-400 mb-4">alfco chỉ xuất hiện khi người mua ở cấp &lt;5. Khi cấp người mua ≥5, alfc=5, không có alfco (toàn bộ pool phân bổ hết cho 5 upline).</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs border border-slate-100 rounded-xl overflow-hidden">
+            <thead class="bg-slate-800 text-white">
+              <tr>
+                <th class="p-3 text-left">Người mua</th>
+                <th class="p-3 text-center">alfc</th>
+                <th class="p-3 text-right">L(n-1) ac1=5%</th>
+                <th class="p-3 text-right">L(n-2) ac2=2%</th>
+                <th class="p-3 text-right">L(n-3) ac3=1.5%</th>
+                <th class="p-3 text-right">L(n-4) ac4=1%</th>
+                <th class="p-3 text-right">L(n-5) ac5=0.5%</th>
+                <th class="p-3 text-right font-bold bg-teal-700">alfco → Ví ảo</th>
+              </tr>
+            </thead>
+            <tbody id="alfcoSimTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TRANSACTIONS ═══════════════════════════════════════════════════════ -->
+  <div id="tabTransactions" class="slide hidden">
+    <div class="flex gap-3 mb-4 flex-wrap items-center">
+      <input type="text" id="txLevelInput" placeholder="Cấp người mua (VD: 5)" class="border border-slate-200 rounded-xl px-3 py-2 text-sm w-40" oninput="filterTx()">
+      <select id="txStatus" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" onchange="filterTx()">
+        <option value="">Tất cả</option><option>PENDING</option><option>APPROVED</option><option>PAID</option><option>REVERSED</option>
+      </select>
+      <input type="month" id="txMonth" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" value="2026-05" onchange="filterTx()">
+      <button onclick="approveAll()" class="bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-green-700">✓ Duyệt tất cả PENDING</button>
+      <div class="ml-auto text-sm text-slate-600">Tổng HH: <strong class="text-green-600" id="txTotal">0đ</strong></div>
+    </div>
+    <div class="card overflow-hidden">
+      <table class="w-full text-xs">
+        <thead class="bg-slate-50 border-b text-slate-500">
+          <tr>
+            <th class="p-3 text-left">Ngày</th><th class="p-3 text-left">Người mua</th><th class="p-3 text-left">Người nhận HH</th>
+            <th class="p-3 text-center">Cấp mua</th><th class="p-3 text-center">AC slot</th>
+            <th class="p-3 text-right">Giá trị đơn</th><th class="p-3 text-right">Tỷ lệ</th>
+            <th class="p-3 text-right">HH gộp</th><th class="p-3 text-right">Thuế 10%</th>
+            <th class="p-3 text-right">Thực nhận</th><th class="p-3 text-center">TT</th><th class="p-3">Action</th>
+          </tr>
+        </thead>
+        <tbody id="txTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ ALFCO ════════════════════════════════════════════════════════════ -->
+  <div id="tabAlfco" class="slide hidden">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+      <div class="card p-4"><div class="text-xs text-slate-400 mb-1">Tổng alfco tháng này</div><div class="text-2xl font-bold text-teal-500">142 triệu đ</div><div class="text-xs text-slate-400">Hoàn về ví ảo người mua</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-400 mb-1">Người nhận alfco</div><div class="text-2xl font-bold text-blue-600">8,240</div><div class="text-xs text-slate-400">Người mua cấp 1–4</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-400 mb-1">alfco đã dùng</div><div class="text-2xl font-bold text-green-600">98 triệu đ</div><div class="text-xs text-slate-400">Áp vào đơn hàng kế tiếp</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-400 mb-1">alfco chờ dùng</div><div class="text-2xl font-bold text-orange-500">44 triệu đ</div><div class="text-xs text-slate-400">Chờ đơn hiện tại giao</div></div>
+    </div>
+    <div class="card p-5 mb-5">
+      <h3 class="font-semibold text-slate-700 text-sm mb-3">Thống kê alfco theo cấp người mua</h3>
+      <table class="w-full text-xs">
+        <thead class="bg-slate-50 border-b text-slate-500">
+          <tr><th class="p-3 text-left">Cấp người mua</th><th class="p-3 text-center">alfc</th><th class="p-3 text-right">alfco %</th><th class="p-3 text-right">alfco/đơn 1tr</th><th class="p-3 text-right">Tổng alfco tháng</th><th class="p-3 text-right">Số đơn</th></tr>
+        </thead>
+        <tbody id="alfcoByLevel"></tbody>
+      </table>
+    </div>
+    <div class="card p-5">
+      <h3 class="font-semibold text-slate-700 text-sm mb-3">Giao dịch alfco gần đây</h3>
+      <div class="space-y-2" id="alfcoTxList"></div>
+    </div>
+  </div>
+
+  <!-- ══ PAYOUT ════════════════════════════════════════════════════════════ -->
+  <div id="tabPayout" class="slide hidden">
+    <div class="grid grid-cols-3 gap-4 mb-5">
+      <div class="card p-4"><div class="text-xs text-slate-400">Đang chờ duyệt</div><div class="text-2xl font-bold text-orange-500 mt-1">12</div><div class="text-xs text-slate-400">Tổng: 184,500,000đ</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-400">Đã duyệt tháng này</div><div class="text-2xl font-bold text-green-600 mt-1">87</div><div class="text-xs text-slate-400">Tổng: 1,780,000,000đ</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-400">Tổng đã chi từ đầu</div><div class="text-2xl font-bold text-blue-600 mt-1">7.1 tỷ đ</div></div>
+    </div>
+    <div class="card overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h3 class="font-semibold text-slate-700">Yêu cầu rút tiền</h3>
+        <div class="flex gap-2">
+          <button onclick="approveAllPayouts()" class="bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs">✓ Duyệt tất cả</button>
+          <button class="bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg text-xs">📥 Export CSV</button>
+        </div>
+      </div>
+      <table class="w-full text-xs">
+        <thead class="bg-slate-50 border-b text-slate-500"><tr>
+          <th class="p-3 text-left">Ngày YC</th><th class="p-3 text-left">Thành viên</th><th class="p-3 text-left">Cấp</th>
+          <th class="p-3 text-right">Số tiền</th><th class="p-3 text-right">Thuế</th><th class="p-3 text-right">Thực nhận</th>
+          <th class="p-3 text-left">Phương thức</th><th class="p-3 text-center">TT</th><th class="p-3">Action</th>
+        </tr></thead>
+        <tbody id="payoutTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ TAX ═══════════════════════════════════════════════════════════════ -->
+  <div id="tabTax" class="slide hidden">
+    <div class="grid lg:grid-cols-3 gap-5">
+      <div class="lg:col-span-2">
+        <div class="card p-6 mb-5">
+          <h3 class="font-bold text-slate-800 mb-1">Tờ khai Thuế TNCN – Tháng 5/2026</h3>
+          <p class="text-xs text-slate-400 mb-4">TT 111/2013/TT-BTC: Khấu trừ 10% TNCN khi HH ≥ 2,000,000đ/lần. Ví ảo (alfco) miễn thuế (là khoản tặng người mua). Hạn nộp: 20/06/2026.</p>
+          <div class="grid grid-cols-3 gap-4 mb-5">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div class="text-xs text-blue-600 font-medium">Tổng HH chi trả</div>
+              <div class="text-xl font-bold text-blue-800 mt-1">2,370,000,000đ</div>
+            </div>
+            <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+              <div class="text-xs text-orange-600 font-medium">Thuế TNCN (10%)</div>
+              <div class="text-xl font-bold text-orange-800 mt-1">237,000,000đ</div>
+            </div>
+            <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+              <div class="text-xs text-green-600 font-medium">HH thực trả (net)</div>
+              <div class="text-xl font-bold text-green-800 mt-1">2,133,000,000đ</div>
+            </div>
+          </div>
+          <div class="space-y-2" id="taxByLevel"></div>
+          <div class="mt-5 flex gap-3">
+            <button onclick="exportTaxReport()" class="px-4 py-2 border border-slate-200 rounded-xl text-sm text-slate-600 hover:bg-slate-50">📥 Xuất XML (GDT)</button>
+            <button onclick="submitTax()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700">📤 Nộp cổng thuế</button>
+          </div>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-bold text-slate-800 mb-3">Lịch sử nộp thuế</h3>
+          <table class="w-full text-xs">
+            <thead class="bg-slate-50 border-b text-slate-500"><tr>
+              <th class="p-2 text-left">Kỳ</th><th class="p-2 text-right">HH chi trả</th>
+              <th class="p-2 text-right">Thuế KT</th><th class="p-2 text-center">TT</th><th class="p-2">MST</th>
+            </tr></thead>
+            <tbody id="taxHistory"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="card p-5 mb-4">
+          <h3 class="font-semibold text-slate-700 text-sm mb-3">Quy trình thuế TNCN</h3>
+          <div class="space-y-3 text-xs">
+            <div class="flex gap-2"><div class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center shrink-0 font-bold">1</div><div><strong>Tính thuế</strong><br>Khi chi HH ≥ 2tr: tạm giữ 10% TNCN</div></div>
+            <div class="flex gap-2"><div class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center shrink-0 font-bold">2</div><div><strong>Trả net</strong><br>Chuyển HH sau thuế vào ví thành viên</div></div>
+            <div class="flex gap-2"><div class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center shrink-0 font-bold">3</div><div><strong>Kê khai</strong><br>Tờ khai 05/KK-TNCN trước ngày 20</div></div>
+            <div class="flex gap-2"><div class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center shrink-0 font-bold">4</div><div><strong>Nộp tiền</strong><br>Chuyển thuế vào KBNN cùng kỳ</div></div>
+            <div class="flex gap-2"><div class="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center shrink-0 font-bold">5</div><div><strong>alfco miễn thuế</strong><br>Ví ảo là khoản tặng người mua, không chịu TNCN</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ REPORTS ════════════════════════════════════════════════════════════ -->
+  <div id="tabReports" class="slide hidden">
+    <div class="grid lg:grid-cols-2 gap-5 mb-5">
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">GMV & HH theo tháng (tỷ đ)</h3>
+        <canvas id="annualChart" height="200"></canvas>
+      </div>
+      <div class="card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">HH theo AC slot tháng 5 (triệu đ)</h3>
+        <canvas id="levelBar" height="200"></canvas>
+      </div>
+    </div>
+    <div class="card p-5">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-semibold text-slate-700 text-sm">Top 10 thành viên nhận HH cao nhất</h3>
+        <button onclick="exportCSV()" class="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700">📥 Export CSV</button>
+      </div>
+      <table class="w-full text-xs">
+        <thead class="bg-slate-50 border-b text-slate-500"><tr>
+          <th class="p-3 text-center">#</th><th class="p-3 text-left">Thành viên</th><th class="p-3 text-center">Cấp</th>
+          <th class="p-3 text-right">Mạng lưới</th><th class="p-3 text-right">HH tổng</th><th class="p-3 text-right">Thuế</th><th class="p-3 text-right">Thực nhận</th>
+        </tr></thead>
+        <tbody id="topTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ NETWORK ════════════════════════════════════════════════════════════ -->
+  <div id="tabNetwork" class="slide hidden">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+      <div class="card p-4 text-center"><div class="text-2xl font-bold text-yellow-600">1,000</div><div class="text-xs text-slate-400 mt-1">Founders (Cấp 0)</div><div class="text-xs text-yellow-500 mt-1">Nhận ac5=0.5% tối đa</div></div>
+      <div class="card p-4 text-center"><div class="text-2xl font-bold text-blue-600">127,450</div><div class="text-xs text-slate-400 mt-1">Cấp 1–∞</div><div class="text-xs text-green-500 mt-1">↑ +3,240 tuần này</div></div>
+      <div class="card p-4 text-center"><div class="text-2xl font-bold text-slate-700">128,450</div><div class="text-xs text-slate-400 mt-1">Tổng thành viên</div></div>
+      <div class="card p-4 text-center"><div class="text-2xl font-bold text-green-600">74.3%</div><div class="text-xs text-slate-400 mt-1">Active 30 ngày</div></div>
+    </div>
+    <div class="grid lg:grid-cols-5 gap-5 mb-5">
+      <div class="lg:col-span-3 card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-4">Phân bổ thành viên theo cấp</h3>
+        <canvas id="networkDepthChart" height="200"></canvas>
+      </div>
+      <div class="lg:col-span-2 card p-5">
+        <h3 class="font-semibold text-slate-700 text-sm mb-3">Thống kê chi tiết theo cấp</h3>
+        <table class="w-full text-xs">
+          <thead class="bg-slate-50 border-b text-slate-500">
+            <tr><th class="p-2 text-left">Cấp</th><th class="p-2 text-right">Nodes</th><th class="p-2 text-right">Active</th><th class="p-2 text-right">GMV/tháng</th><th class="p-2 text-center">AC nhận</th></tr>
+          </thead>
+          <tbody id="networkDepthTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card p-5">
+      <h3 class="font-semibold text-slate-700 text-sm mb-3">🔍 Tra cứu node</h3>
+      <div class="flex gap-3 mb-4">
+        <input type="text" id="nodeSearch" placeholder="Mã giới thiệu hoặc SĐT..." class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-sm">
+        <button onclick="searchNode()" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700">Tìm kiếm</button>
+      </div>
+      <div id="nodeSearchResult" class="hidden">
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div class="font-bold text-blue-800" id="nodeResultName">—</div>
+          <div class="text-xs text-blue-600 mt-1" id="nodeResultSub">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ AUDIT LOG ══════════════════════════════════════════════════════════ -->
+  <div id="tabAudit" class="slide hidden">
+    <div class="flex gap-3 mb-4 flex-wrap items-center">
+      <select id="auditAction" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" onchange="filterAudit()">
+        <option value="">Tất cả hành động</option>
+        <option>FOUNDER_CREATED</option><option>COMMISSION_CONFIG_UPDATED</option>
+        <option>PAYOUT_APPROVED</option><option>TAX_SUBMITTED</option><option>ALFCO_ISSUED</option>
+      </select>
+      <input type="date" id="auditFrom" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" value="2026-05-01">
+      <input type="date" id="auditTo" class="border border-slate-200 rounded-xl px-3 py-2 text-sm" value="2026-05-17">
+      <input type="text" id="auditSearch" placeholder="Tìm tên, mã..." class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-sm">
+      <button onclick="exportAudit()" class="bg-slate-700 text-white px-4 py-2 rounded-xl text-sm font-medium">📥 Export Log</button>
+    </div>
+    <div class="card overflow-hidden">
+      <table class="w-full text-xs">
+        <thead class="bg-slate-800 text-white">
+          <tr><th class="p-3 text-left">Thời gian</th><th class="p-3 text-left">Hành động</th><th class="p-3 text-left">Actor</th><th class="p-3 text-left">Đối tượng</th><th class="p-3 text-left">Chi tiết</th><th class="p-3 text-center">Kết quả</th></tr>
+        </thead>
+        <tbody id="auditTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  </div><!-- /p-6 -->
+</main>
+
+<!-- Founder Modal -->
+<div id="founderModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-slate-800">🏆 Tạo Founder Mới</h3>
+      <button onclick="closeFounderModal()" class="text-slate-400 hover:text-slate-600 text-xl">×</button>
+    </div>
+    <div class="space-y-3">
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Họ và tên *</label>
+        <input type="text" id="fName" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" placeholder="Nguyễn Văn A"></div>
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Số điện thoại *</label>
+        <input type="tel" id="fPhone" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" placeholder="0901 234 567"></div>
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Nhóm *</label>
+        <select id="fCat" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+          <option value="INTERNAL">Nội bộ</option><option value="PROVINCE">Tỉnh thành</option><option value="PARTNER">KOL/Đối tác</option>
+        </select></div>
+      <div><label class="text-xs font-semibold text-slate-600 block mb-1">Tỉnh/Khu vực</label>
+        <input type="text" id="fProvince" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" placeholder="TP. Hồ Chí Minh"></div>
+      <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-xs text-yellow-700">
+        ⚠ Founder là L0 (Cấp 0), không có parent. Nhận ac5=0.5% khi cháu ở L5 trở xuống mua hàng, và các ac3/ac4/ac5 từ những người mua ở vị trí phù hợp. Mã: HAT-F####.
+      </div>
+      <button onclick="createFounder()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2.5 rounded-xl font-bold text-sm">🏆 Tạo Founder</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ─────────────────────────────────────────────────────────────
+// ac1 = closest to buyer (highest rate), ac5 = furthest (lowest rate)
+const AC_RATES = [5.0, 2.0, 1.5, 1.0, 0.5]; // ac1..ac5
+const AC_NAMES = ['ac1','ac2','ac3','ac4','ac5'];
+const SUM_AC = 10.0;
+const PIT_RATE = 0.10;
+
+const LEVEL_COLORS = ['#f59e0b','#3b82f6','#22c55e','#f97316','#a855f7','#ef4444','#0ea5e9','#14b8a6','#f43f5e','#84cc16'];
+function levelColor(l){ return LEVEL_COLORS[Math.min(l, LEVEL_COLORS.length-1)]; }
+function levelName(l){ return l===0?'Founder (L0)':`Cấp ${l} (L${l})`; }
+
+function fmt(n){return new Intl.NumberFormat('vi-VN').format(Math.round(n))+'đ';}
+function fmtDate(s){return new Date(s).toLocaleDateString('vi-VN');}
+function statusBadge(s){
+  const m={ACTIVE:'bg-green-100 text-green-700',SUSPENDED:'bg-red-100 text-red-700',
+    PENDING:'bg-yellow-100 text-yellow-700',APPROVED:'bg-green-100 text-green-700',
+    PAID:'bg-blue-100 text-blue-700',REVERSED:'bg-red-100 text-red-700'};
+  return`<span class="badge ${m[s]||'bg-slate-100 text-slate-600'}">${s}</span>`;
+}
+
+// Calculate alfco for buyer at level n
+function getAlfco(n) {
+  const alfc = Math.min(n, 5);
+  if(alfc >= 5) return 0;
+  const distributed = AC_RATES.slice(0, alfc).reduce((a,b)=>a+b, 0);
+  return SUM_AC - distributed;
+}
+
+// ── DATA ─────────────────────────────────────────────────────────────────
+// Transactions: for each order, we record who receives which AC slot
+// buyer is at buyerLevel, recipient is at buyerLevel - acIndex
+const transactions=[
+  {date:'2026-05-10',buyer:'Trần Thị B (L6)',buyerLevel:6,recipient:'Nguyễn Văn A (L5)',recipientLevel:5,acIndex:1,order:850000,status:'PENDING'},
+  {date:'2026-05-10',buyer:'Lê Văn C (L3)',buyerLevel:3,recipient:'Trần Thu A1 (L2)',recipientLevel:2,acIndex:1,order:1200000,status:'APPROVED'},
+  {date:'2026-05-10',buyer:'Lê Văn C (L3)',buyerLevel:3,recipient:'Nguyễn M. Tuấn L1',recipientLevel:1,acIndex:2,order:1200000,status:'APPROVED'},
+  {date:'2026-05-09',buyer:'Phạm Thị D (L7)',buyerLevel:7,recipient:'Founder Nguyễn M.T',recipientLevel:2,acIndex:5,order:650000,status:'APPROVED'},
+  {date:'2026-05-09',buyer:'Hoàng E (L4)',buyerLevel:4,recipient:'Trần Thu Hằng (L3)',recipientLevel:3,acIndex:1,order:320000,status:'PENDING'},
+  {date:'2026-05-08',buyer:'Mai Thị K (L2)',buyerLevel:2,recipient:'Founder Lê T.B (L0)',recipientLevel:0,acIndex:2,order:900000,status:'PAID'},
+  {date:'2026-05-07',buyer:'Vũ Văn L (L8)',buyerLevel:8,recipient:'Ngô Thị F (L4)',recipientLevel:4,acIndex:4,order:1500000,status:'PAID'},
+];
+
+const payouts=[
+  {date:'2026-05-09',name:'Nguyễn Văn A',level:5,amount:1200000,method:'MoMo',status:'PENDING'},
+  {date:'2026-05-08',name:'Founder Nguyễn M.T',level:0,amount:5000000,method:'VietinBank',status:'PENDING'},
+  {date:'2026-05-07',name:'Mai Thị K',level:2,amount:450000,method:'MoMo',status:'APPROVED'},
+];
+
+let founders=[
+  {id:1,name:'Nguyễn Minh Tuấn',phone:'0901111111',code:'HAT-F0001',cat:'INTERNAL',province:'TP.HCM',network:1240,hh:6200000,status:'ACTIVE',note:'CTO'},
+  {id:2,name:'Trần Thu Hằng',phone:'0902222222',code:'HAT-F0002',cat:'INTERNAL',province:'Hà Nội',network:980,hh:5100000,status:'ACTIVE',note:'CMO'},
+  {id:3,name:'Lê Thanh Bình',phone:'0903333333',code:'HAT-F0003',cat:'PROVINCE',province:'Đà Nẵng',network:820,hh:4300000,status:'ACTIVE',note:''},
+  {id:4,name:'Phạm Ngọc Lan',phone:'0904444444',code:'HAT-F0004',cat:'PROVINCE',province:'Cần Thơ',network:650,hh:3500000,status:'ACTIVE',note:''},
+  {id:5,name:'Hoàng Văn Dũng',phone:'0905555555',code:'HAT-F0005',cat:'PARTNER',province:'TP.HCM',network:540,hh:2800000,status:'ACTIVE',note:'KOL'},
+  {id:6,name:'Ngô Thị Mai',phone:'0906666666',code:'HAT-F0006',cat:'PARTNER',province:'Hà Nội',network:480,hh:2500000,status:'SUSPENDED',note:''},
+  {id:7,name:'Bùi Văn Lộc',phone:'0907777777',code:'HAT-F0007',cat:'PROVINCE',province:'Bình Dương',network:420,hh:2100000,status:'ACTIVE',note:''},
+  {id:8,name:'Đinh Kim Chi',phone:'0908888888',code:'HAT-F0008',cat:'INTERNAL',province:'TP.HCM',network:380,hh:1900000,status:'ACTIVE',note:''},
+];
+
+// Level distribution data
+const levelDist = [
+  {level:0,count:1000,active:1000,gmv:1200000000},
+  {level:1,count:14200,active:11000,gmv:8400000000},
+  {level:2,count:38400,active:28000,gmv:18200000000},
+  {level:3,count:52100,active:36000,gmv:24100000000},
+  {level:4,count:18900,active:12000,gmv:9800000000},
+  {level:5,count:3850,active:2200,gmv:2100000000},
+  {level:'6+',count:'∞',active:'—',gmv:'∞'},
+];
+
+// ── TABS ─────────────────────────────────────────────────────────────────
+const TABS={dashboard:'Dashboard Tổng Quan',founders:'Quản lý Founders',config:'Cấu hình AC (5 Cấp HH)',transactions:'Giao dịch Hoa Hồng',alfco:'Ví ảo & alfco',payout:'Duyệt Rút Tiền',tax:'Thuế TNCN',reports:'Báo cáo & Thống kê',audit:'Audit Log',network:'Mạng lưới & Cây'};
+function goto(name){
+  Object.keys(TABS).forEach(t=>{
+    const el=document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el)el.classList.toggle('hidden',t!==name);
+    const nav=document.querySelector(`[onclick="goto('${t}')"]`);
+    if(nav)nav.classList.toggle('active',t===name);
+  });
+  document.getElementById('pageTitle').textContent=TABS[name]||name;
+  if(name==='reports')initReports();
+  if(name==='config')renderConfig();
+  if(name==='transactions')filterTx();
+  if(name==='payout')renderPayouts();
+  if(name==='tax')renderTax();
+  if(name==='founders')filterFounders();
+  if(name==='alfco')renderAlfco();
+  if(name==='network')renderNetworkTab();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
+function initDashboard(){
+  // Level distribution grid
+  const gridHTML = [0,1,2,3,4,5].map(lv=>{
+    const d=levelDist.find(x=>x.level===lv)||{};
+    const color=['#f59e0b','#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'][lv];
+    const label=['Founder','Cấp 1','Cấp 2','Cấp 3','Cấp 4','Cấp 5'][lv];
+    return `<div class="text-center p-3 rounded-xl border" style="background:${color}11;border-color:${color}44">
+      <div class="text-lg font-bold" style="color:${color}">${d.count?.toLocaleString()}</div>
+      <div class="text-xs font-semibold" style="color:${color}">${label}</div>
+    </div>`;
+  }).join('')+'<div class="text-center p-3 rounded-xl border border-slate-200 bg-slate-50"><div class="text-lg font-bold text-slate-600">∞</div><div class="text-xs font-semibold text-slate-500">L6, L7, ...</div></div>';
+  document.getElementById('levelDistGrid').innerHTML = gridHTML;
+
+  // Commission chart
+  const days=Array.from({length:30},(_,i)=>{const d=new Date('2026-05-16');d.setDate(d.getDate()-29+i);return`${d.getDate()}/${d.getMonth()+1}`;});
+  new Chart(document.getElementById('commChart'),{type:'line',
+    data:{labels:days,datasets:[{label:'HH (triệu đ)',data:days.map((_,i)=>33+i*2.5+Math.random()*15),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',tension:.4,fill:true,pointRadius:2}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:8},grid:{display:false}},y:{grid:{color:'#f1f5f9'}}}}});
+
+  // AC pie chart
+  const acPool=[
+    SUM_AC==10 ? 1200000000*5/100 : 0, // ac1 portion from all orders
+    1200000000*2/100,
+    1200000000*1.5/100,
+    1200000000*1/100,
+    1200000000*0.5/100,
+  ];
+  const acColors=['#ef4444','#f97316','#f59e0b','#22c55e','#3b82f6'];
+  new Chart(document.getElementById('acPie'),{type:'doughnut',
+    data:{labels:AC_NAMES,datasets:[{data:acPool,backgroundColor:acColors,borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,cutout:'65%',plugins:{legend:{display:false}}}});
+  document.getElementById('acLegend').innerHTML=AC_NAMES.map((n,i)=>`
+    <div class="flex justify-between text-xs"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full" style="background:${acColors[i]}"></span>${n}=${AC_RATES[i]}% (upline ở khoảng cách ${i+1})</span></div>`).join('');
+
+  // Recent tx
+  document.getElementById('recentTxTable').innerHTML=transactions.slice(0,5).map(t=>{
+    const hh=t.order*AC_RATES[t.acIndex-1]/100;
+    return`<tr><td class="py-2 text-slate-400 text-xs">${fmtDate(t.date)}</td>
+      <td class="py-2 text-xs">${t.buyer.substring(0,14)}</td>
+      <td class="py-2 text-center"><span class="ac-chip" style="background:${levelColor(t.buyerLevel)}22;color:${levelColor(t.buyerLevel)}">L${t.buyerLevel}</span></td>
+      <td class="py-2 text-right text-xs">${fmt(t.order)}</td>
+      <td class="py-2 text-right text-green-600 font-medium text-xs">${fmt(hh)}</td>
+      <td class="py-2 text-center">${statusBadge(t.status)}</td></tr>`;
+  }).join('');
+
+  // Top founders
+  document.getElementById('topFounders').innerHTML=[...founders].sort((a,b)=>b.hh-a.hh).slice(0,5).map((f,i)=>`
+    <div class="flex items-center gap-3 py-1.5 border-b border-slate-50">
+      <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${i<3?'bg-yellow-400 text-white':'bg-slate-100 text-slate-600'}">${i+1}</div>
+      <div class="flex-1"><div class="text-sm font-medium">${f.name}</div><div class="text-xs text-slate-400">${f.code} · ${f.province}</div></div>
+      <div class="text-right"><div class="text-sm font-bold text-green-600">${fmt(f.hh)}</div><div class="text-xs text-slate-400">${f.network} nodes</div></div>
+    </div>`).join('');
+
+  setInterval(()=>{document.getElementById('clock').textContent=new Date().toLocaleString('vi-VN');},1000);
+}
+
+// ── FOUNDERS ──────────────────────────────────────────────────────────────
+function filterFounders(){
+  const q=(document.getElementById('founderSearch')?.value||'').toLowerCase();
+  const cat=document.getElementById('founderCat')?.value||'';
+  const st=document.getElementById('founderStatus')?.value||'';
+  const f=founders.filter(x=>(!q||(x.name+x.phone+x.code+x.province).toLowerCase().includes(q))&&(!cat||x.cat===cat)&&(!st||x.status===st));
+  document.getElementById('founderCnt').textContent=f.length;
+  const catBadge={INTERNAL:'bg-blue-100 text-blue-700',PROVINCE:'bg-green-100 text-green-700',PARTNER:'bg-purple-100 text-purple-700'};
+  document.getElementById('founderTable').innerHTML=f.map(x=>`
+    <tr><td class="p-3 text-slate-400">${x.id}</td>
+    <td class="p-3"><div class="font-medium text-sm">${x.name}</div><div class="text-xs text-slate-400">${x.phone}${x.note?` · ${x.note}`:''}</div></td>
+    <td class="p-3 font-mono text-xs text-yellow-700 font-bold">${x.code}</td>
+    <td class="p-3"><span class="badge ${catBadge[x.cat]||'bg-slate-100 text-slate-600'}">${x.cat}</span></td>
+    <td class="p-3 text-sm">${x.province}</td>
+    <td class="p-3 text-right font-medium">${x.network.toLocaleString()}</td>
+    <td class="p-3 text-right text-green-600 font-bold">${fmt(x.hh)}</td>
+    <td class="p-3 text-center">${statusBadge(x.status)}</td>
+    <td class="p-3"><button onclick="toggleFounder(${x.id})" class="text-xs text-blue-600 hover:underline">${x.status==='ACTIVE'?'Khóa':'Mở'}</button></td></tr>`).join('');
+}
+function toggleFounder(id){const f=founders.find(x=>x.id===id);if(f)f.status=f.status==='ACTIVE'?'SUSPENDED':'ACTIVE';filterFounders();}
+function openFounderModal(){document.getElementById('founderModal').classList.remove('hidden');document.getElementById('founderModal').classList.add('flex');}
+function closeFounderModal(){document.getElementById('founderModal').classList.add('hidden');document.getElementById('founderModal').classList.remove('flex');}
+function createFounder(){
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  if(!name||!phone){alert('Nhập đầy đủ thông tin');return;}
+  const id=founders.length+1;
+  founders.push({id,name,phone,code:`HAT-F${String(id).padStart(4,'0')}`,cat:document.getElementById('fCat').value,province:document.getElementById('fProvince').value||'',network:0,hh:0,status:'ACTIVE',note:''});
+  filterFounders();closeFounderModal();
+  alert(`✅ Founder tạo thành công:\nMã: HAT-F${String(id).padStart(4,'0')}`);
+}
+
+// ── CONFIG ────────────────────────────────────────────────────────────────
+let currentRates=[...AC_RATES];
+function renderConfig(){
+  const descs=[
+    'ac1 – Upline TRỰC TIẾP của người mua (khoảng cách 1). Tỷ lệ cao nhất vì có công giới thiệu người mua.',
+    'ac2 – Upline cách người mua 2 bậc. Tỷ lệ thứ 2, khuyến khích giữ network hoạt động.',
+    'ac3 – Upline cách người mua 3 bậc.',
+    'ac4 – Upline cách người mua 4 bậc.',
+    'ac5 – Upline cách người mua 5 bậc (xa nhất trong 5 cấp hoa hồng). Tỷ lệ thấp nhất.',
+  ];
+  const acColors=['#ef4444','#f97316','#f59e0b','#22c55e','#3b82f6'];
+  document.getElementById('rateInputs').innerHTML=currentRates.map((r,i)=>`
+    <div class="flex items-center gap-4 p-3 rounded-xl border border-slate-100 bg-slate-50">
+      <div class="w-3 h-3 rounded-full" style="background:${acColors[i]}"></div>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-medium text-slate-700">${AC_NAMES[i]}</div>
+        <div class="text-xs text-slate-400 truncate">${descs[i]}</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="number" id="rate${i}" value="${r}" step="0.1" min="0" max="20" class="w-20 border border-slate-200 rounded-lg px-2 py-1.5 text-sm text-center" oninput="recalcTotal()">
+        <span class="text-sm text-slate-500">%</span>
+        <span class="text-xs text-slate-400 w-28">${fmt(1000000*r/100)}/1tr đơn</span>
+      </div>
+    </div>`).join('');
+  recalcTotal();
+
+  // alfco simulation table
+  const rows = [];
+  for(let n=1; n<=7; n++){
+    const alfc = Math.min(n,5);
+    const cellVals = [];
+    for(let i=0;i<5;i++){
+      if(i<alfc) cellVals.push(fmt(1000000*currentRates[i]/100));
+      else if(n<=0) cellVals.push('—');
+      else cellVals.push('<span class="text-slate-300">—</span>');
+    }
+    const alfco=getAlfco(n);
+    const alfcoAmt=alfco>0?fmt(1000000*alfco/100):'<span class="text-slate-300">—</span>';
+    rows.push({n,alfc,cellVals,alfco,alfcoAmt});
+  }
+  document.getElementById('alfcoSimTable').innerHTML=rows.map(r=>`
+    <tr class="${r.alfco>0?'bg-teal-50':''}">
+      <td class="p-3 font-medium">Cấp ${r.n} (L${r.n})</td>
+      <td class="p-3 text-center font-bold ${r.alfc<5?'text-teal-600':'text-slate-600'}">${r.alfc}</td>
+      ${r.cellVals.map(v=>`<td class="p-3 text-right">${v}</td>`).join('')}
+      <td class="p-3 text-right font-bold text-teal-700">${r.alfcoAmt}</td>
+    </tr>`).join('');
+}
+function recalcTotal(){
+  const total=Array.from({length:5},(_,i)=>+(document.getElementById(`rate${i}`)?.value||currentRates[i])).reduce((a,b)=>a+b,0);
+  const el=document.getElementById('totalPool');
+  if(el)el.textContent=total.toFixed(2)+'%';
+  const w=document.getElementById('poolWarning');
+  if(w)w.classList.toggle('hidden',Math.abs(total-10)<0.01);
+}
+function resetRates(){currentRates=[...AC_RATES];renderConfig();}
+function saveRates(){
+  currentRates=Array.from({length:5},(_,i)=>+(document.getElementById(`rate${i}`)?.value||currentRates[i]));
+  document.getElementById('saveRateMsg').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('saveRateMsg').classList.add('hidden'),3000);
+}
+
+// ── TRANSACTIONS ────────────────────────────────────────────────────────────
+function filterTx(){
+  const levelFilter=document.getElementById('txLevelInput')?.value||'';
+  const st=document.getElementById('txStatus')?.value||'';
+  const filtered=transactions.filter(t=>{
+    if(levelFilter && t.buyerLevel!==+levelFilter) return false;
+    if(st && t.status!==st) return false;
+    return true;
+  });
+  let total=0;
+  const statusCls={PENDING:'bg-yellow-100 text-yellow-700',APPROVED:'bg-green-100 text-green-700',PAID:'bg-blue-100 text-blue-700',REVERSED:'bg-red-100 text-red-700'};
+  document.getElementById('txTable').innerHTML=filtered.map(t=>{
+    const rate=AC_RATES[t.acIndex-1];
+    const hh=t.order*rate/100;
+    const tax=hh*PIT_RATE; const net=hh-tax;
+    total+=hh;
+    return`<tr>
+      <td class="p-3 text-slate-400">${fmtDate(t.date)}</td>
+      <td class="p-3">${t.buyer}</td>
+      <td class="p-3">${t.recipient}</td>
+      <td class="p-3 text-center"><span class="ac-chip" style="background:${levelColor(t.buyerLevel)}22;color:${levelColor(t.buyerLevel)}">L${t.buyerLevel}</span></td>
+      <td class="p-3 text-center"><span class="ac-chip bg-slate-100 text-slate-700">${AC_NAMES[t.acIndex-1]}</span></td>
+      <td class="p-3 text-right">${fmt(t.order)}</td>
+      <td class="p-3 text-right text-slate-500">${rate}%</td>
+      <td class="p-3 text-right font-bold text-blue-600">${fmt(hh)}</td>
+      <td class="p-3 text-right text-orange-500">${fmt(tax)}</td>
+      <td class="p-3 text-right font-bold text-green-600">${fmt(net)}</td>
+      <td class="p-3 text-center">${statusBadge(t.status)}</td>
+      <td class="p-3"><button class="text-xs text-blue-600 hover:underline">Duyệt</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('txTotal').textContent=fmt(total);
+}
+function approveAll(){alert('✅ Đã duyệt tất cả giao dịch PENDING!');}
+
+// ── ALFCO ─────────────────────────────────────────────────────────────────
+function renderAlfco(){
+  const levels=[1,2,3,4];
+  document.getElementById('alfcoByLevel').innerHTML=levels.map(n=>{
+    const alfc=Math.min(n,5);
+    const alfco=getAlfco(n);
+    const demoOrders=Math.floor(Math.random()*500)+100;
+    const demoGMV=demoOrders*750000;
+    return`<tr class="border-b border-slate-50 bg-teal-50/30">
+      <td class="p-3 font-medium">Cấp ${n} (L${n})</td>
+      <td class="p-3 text-center font-bold text-teal-600">${alfc}</td>
+      <td class="p-3 text-right font-bold text-teal-700">${alfco}%</td>
+      <td class="p-3 text-right text-teal-700">${fmt(1000000*alfco/100)}</td>
+      <td class="p-3 text-right text-green-600 font-bold">${fmt(demoGMV*alfco/100)}</td>
+      <td class="p-3 text-right text-slate-500">${demoOrders}</td>
+    </tr>`;
+  }).join('')+`<tr class="border-b border-slate-50 bg-slate-50">
+    <td class="p-3 font-medium text-slate-500">Cấp 5+ (L5+)</td>
+    <td class="p-3 text-center text-slate-400">5</td>
+    <td class="p-3 text-right text-slate-400">0% (không alfco)</td>
+    <td class="p-3 text-right text-slate-400">—</td><td class="p-3 text-right text-slate-400">—</td><td class="p-3 text-right text-slate-400">—</td>
+  </tr>`;
+
+  document.getElementById('alfcoTxList').innerHTML=[
+    {date:'2026-05-16',buyer:'Nguyễn T.M (L1)',order:500000,alfcoPct:5},
+    {date:'2026-05-16',buyer:'Trần V.H (L2)',order:800000,alfcoPct:3},
+    {date:'2026-05-15',buyer:'Lê Thị K (L3)',order:1200000,alfcoPct:1.5},
+    {date:'2026-05-15',buyer:'Phạm V.A (L4)',order:650000,alfcoPct:0.5},
+  ].map(x=>`<div class="flex items-center justify-between p-3 bg-teal-50 border border-teal-100 rounded-xl">
+    <div><div class="font-medium text-sm">${x.buyer}</div><div class="text-xs text-slate-400">${fmtDate(x.date)} · Đơn ${fmt(x.order)}</div></div>
+    <div class="text-right"><div class="font-bold text-teal-700">+${fmt(x.order*x.alfcoPct/100)} ví ảo</div><div class="text-xs text-slate-400">alfco=${x.alfcoPct}%</div></div>
+  </div>`).join('');
+}
+
+// ── PAYOUT ────────────────────────────────────────────────────────────────
+function renderPayouts(){
+  document.getElementById('payoutTable').innerHTML=payouts.map(p=>`
+    <tr><td class="p-3">${fmtDate(p.date)}</td>
+    <td class="p-3 font-medium">${p.name}</td>
+    <td class="p-3"><span class="ac-chip" style="background:${levelColor(p.level)}22;color:${levelColor(p.level)}">L${p.level}</span></td>
+    <td class="p-3 text-right font-bold">${fmt(p.amount)}</td>
+    <td class="p-3 text-right text-orange-500">${fmt(p.amount*PIT_RATE)}</td>
+    <td class="p-3 text-right text-green-600 font-bold">${fmt(p.amount*(1-PIT_RATE))}</td>
+    <td class="p-3">${p.method}</td>
+    <td class="p-3 text-center">${statusBadge(p.status)}</td>
+    <td class="p-3"><button class="text-xs text-green-600 hover:underline mr-2">Duyệt</button><button class="text-xs text-red-500 hover:underline">Từ chối</button></td></tr>`).join('');
+}
+function approveAllPayouts(){alert('✅ Đã duyệt tất cả yêu cầu rút tiền PENDING!');}
+
+// ── TAX ───────────────────────────────────────────────────────────────────
+function renderTax(){
+  const acTax=[
+    {slot:'ac1 (5%)',hh:1200000000*5/100,label:'Upline gần nhất'},
+    {slot:'ac2 (2%)',hh:1200000000*2/100,label:'Khoảng cách 2'},
+    {slot:'ac3 (1.5%)',hh:1200000000*1.5/100,label:'Khoảng cách 3'},
+    {slot:'ac4 (1%)',hh:1200000000*1/100,label:'Khoảng cách 4'},
+    {slot:'ac5 (0.5%)',hh:1200000000*0.5/100,label:'Khoảng cách 5'},
+  ];
+  document.getElementById('taxByLevel').innerHTML=acTax.map(t=>`
+    <div class="flex justify-between items-center p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+      <span class="font-medium text-slate-700">${t.slot} – ${t.label}</span>
+      <span>HH: <strong>${fmt(t.hh)}</strong> · Thuế 10%: <strong class="text-orange-500">${fmt(t.hh*0.1)}</strong></span>
+    </div>`).join('');
+  document.getElementById('taxHistory').innerHTML=[
+    {period:'04/2026',hh:2100000000,tax:210000000,status:'PAID'},
+    {period:'03/2026',hh:1840000000,tax:184000000,status:'PAID'},
+    {period:'02/2026',hh:1560000000,tax:156000000,status:'PAID'},
+  ].map(t=>`<tr class="border-b border-slate-50">
+    <td class="p-2">${t.period}</td>
+    <td class="p-2 text-right">${fmt(t.hh)}</td>
+    <td class="p-2 text-right text-orange-500">${fmt(t.tax)}</td>
+    <td class="p-2 text-center">${statusBadge(t.status)}</td>
+    <td class="p-2 text-slate-400">TAX-2026-${t.period.replace('/','')}</td>
+  </tr>`).join('');
+}
+
+// ── NETWORK TAB ────────────────────────────────────────────────────────────
+function renderNetworkTab(){
+  const colors=['#f59e0b','#3b82f6','#22c55e','#f97316','#a855f7','#ef4444'];
+  const labels=levelDist.map(d=>d.level===6?'L6+':(`L${d.level}`));
+  const counts=levelDist.map(d=>typeof d.count==='number'?d.count:0);
+  new Chart(document.getElementById('networkDepthChart'),{type:'bar',
+    data:{labels,datasets:[{label:'Thành viên',data:counts,backgroundColor:colors.concat('#94a3b8'),borderRadius:6,borderSkipped:false}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v>=1000?v/1000+'K':v}}}}});
+
+  document.getElementById('networkDepthTable').innerHTML=levelDist.slice(0,6).map(d=>{
+    const acSlots = d.level===0 ? 'ac3,ac4,ac5' : d.level===1?'ac2,ac3,ac4,ac5':d.level===2?'ac1,ac2,ac3,ac4,ac5':d.level>=3?'ac1–ac5':'';
+    return `<tr class="border-b border-slate-50">
+      <td class="p-2 font-medium" style="color:${levelColor(d.level)}">${d.level===0?'Founder':('L'+d.level)}</td>
+      <td class="p-2 text-right">${typeof d.count==='number'?d.count.toLocaleString():d.count}</td>
+      <td class="p-2 text-right">${typeof d.active==='number'?d.active.toLocaleString():d.active}</td>
+      <td class="p-2 text-right">${typeof d.gmv==='number'?fmt(d.gmv):'∞'}</td>
+      <td class="p-2 text-center text-xs text-slate-500">${acSlots}</td>
+    </tr>`;
+  }).join('');
+}
+function searchNode(){
+  const q=document.getElementById('nodeSearch').value;
+  const el=document.getElementById('nodeSearchResult');
+  if(q){
+    document.getElementById('nodeResultName').textContent='Nguyễn Minh Tuấn (HAT-F0001)';
+    document.getElementById('nodeResultSub').textContent='Founder L0 · 1,240 nodes dưới · HH/tháng: 6,200,000đ';
+    el.classList.remove('hidden');
+  }
+}
+
+// ── REPORTS ────────────────────────────────────────────────────────────────
+function initReports(){
+  const months=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'];
+  new Chart(document.getElementById('annualChart'),{type:'bar',
+    data:{labels:months,datasets:[
+      {label:'GMV (tỷ)',data:months.map((_,i)=>15+i*3+Math.random()*5),backgroundColor:'#dbeafe',borderRadius:4},
+      {label:'HH 10% (tỷ)',data:months.map((_,i)=>1.5+i*0.3+Math.random()*0.5),backgroundColor:'#3b82f6',borderRadius:4},
+    ]},options:{responsive:true,plugins:{legend:{position:'top'}},scales:{x:{grid:{display:false}}}}});
+  const acColors=['#ef4444','#f97316','#f59e0b','#22c55e','#3b82f6'];
+  new Chart(document.getElementById('levelBar'),{type:'bar',
+    data:{labels:AC_NAMES.map((n,i)=>n+` (${AC_RATES[i]}%)`),
+      datasets:[{label:'HH (triệu đ)',data:AC_RATES.map(r=>r*24),backgroundColor:acColors,borderRadius:6,borderSkipped:false}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});
+
+  document.getElementById('topTable').innerHTML=[...founders].sort((a,b)=>b.hh-a.hh).slice(0,10).map((f,i)=>`
+    <tr><td class="p-3 text-center font-bold ${i<3?'text-yellow-500':''}">${i+1}</td>
+    <td class="p-3"><div class="font-medium">${f.name}</div><div class="text-xs text-slate-400">${f.code}</div></td>
+    <td class="p-3 text-center"><span class="badge bg-yellow-100 text-yellow-700">Founder</span></td>
+    <td class="p-3 text-right">${f.network.toLocaleString()}</td>
+    <td class="p-3 text-right font-bold text-green-600">${fmt(f.hh)}</td>
+    <td class="p-3 text-right text-orange-500">${fmt(f.hh*PIT_RATE)}</td>
+    <td class="p-3 text-right font-bold">${fmt(f.hh*(1-PIT_RATE))}</td></tr>`).join('');
+}
+
+// ── AUDIT ─────────────────────────────────────────────────────────────────
+function filterAudit(){
+  document.getElementById('auditTable').innerHTML=[
+    {time:'2026-05-17 08:32',action:'COMMISSION_CONFIG_UPDATED',actor:'Admin Hệ thống',target:'AC rates',detail:'ac1=5%, ac2=2%, ac3=1.5%, ac4=1%, ac5=0.5%. Pool=10%',result:'SUCCESS'},
+    {time:'2026-05-16 14:20',action:'ALFCO_ISSUED',actor:'System (auto)',target:'Buyer L3 – Lê T.K',detail:'alfco=1.5% · Đơn 800,000đ → ví ảo 12,000đ',result:'SUCCESS'},
+    {time:'2026-05-16 11:05',action:'PAYOUT_APPROVED',actor:'Admin Hệ thống',target:'Nguyễn M.T (Founder)',detail:'Rút 5,000,000đ · Thuế 500,000đ · Net 4,500,000đ',result:'SUCCESS'},
+    {time:'2026-05-15 09:18',action:'FOUNDER_CREATED',actor:'Admin Hệ thống',target:'HAT-F0009',detail:'Founder mới: Trần Văn X · PARTNER · TP.HCM',result:'SUCCESS'},
+    {time:'2026-05-14 16:44',action:'TAX_SUBMITTED',actor:'Admin Hệ thống',target:'Tờ khai 04/2026',detail:'HH=2.1tỷ · Thuế=210tr · Nộp KBNN 14/05/2026',result:'SUCCESS'},
+  ].map(a=>`<tr class="border-b border-slate-50">
+    <td class="p-3 text-slate-400">${a.time}</td>
+    <td class="p-3"><span class="badge bg-blue-50 text-blue-700 text-xs">${a.action}</span></td>
+    <td class="p-3 text-sm">${a.actor}</td>
+    <td class="p-3 text-sm">${a.target}</td>
+    <td class="p-3 text-xs text-slate-500">${a.detail}</td>
+    <td class="p-3 text-center"><span class="badge bg-green-100 text-green-700">${a.result}</span></td>
+  </tr>`).join('');
+}
+
+// ── UTILS ──────────────────────────────────────────────────────────────────
+function exportCSV(){alert('Đang tải file CSV...');}
+function exportTaxReport(){alert('Đang xuất tờ khai XML cho Tổng cục Thuế...');}
+function submitTax(){alert('✅ Đã nộp tờ khai thuế TNCN tháng 5/2026 lên cổng GDT!');}
+function exportAudit(){alert('Đang tải Audit Log CSV...');}
+
+initDashboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hathyo MLAM – Tài liệu Nghiệp vụ & Kỹ thuật (Claude3)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Be Vietnam Pro',sans-serif}
+
+/* ── HERO (dark green) ── */
+.hero{
+  background:linear-gradient(135deg,#050905 0%,#0a1a0a 50%,#060d06 100%);
+  color:#c8e6c9;display:flex;flex-direction:column;align-items:center;
+  padding:48px 20px 40px;
+}
+.logo-bar{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.logo-h{width:56px;height:56px;background:linear-gradient(135deg,#2E7D32,#43A047);border-radius:16px;
+  display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;
+  box-shadow:0 0 30px rgba(67,160,71,.4)}
+.logo-text .brand{font-size:28px;font-weight:800;color:#fff;letter-spacing:3px}
+.logo-text .sub{font-size:11px;color:#4a8a4a;letter-spacing:1.5px;margin-top:1px}
+.tagline{font-size:13px;color:#4a8a4a;margin-bottom:6px;letter-spacing:.5px;text-align:center}
+.desc{font-size:12px;color:#2e5e2e;max-width:620px;text-align:center;line-height:1.8;margin-bottom:40px}
+.desc b{color:#81c784}
+.divider{width:100%;max-width:900px;height:1px;
+  background:linear-gradient(to right,transparent,#1a3a1a,transparent);margin-bottom:36px}
+
+/* ── 4 CARDS ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px;
+  width:100%;max-width:900px;margin-bottom:40px}
+.card{background:rgba(13,26,13,.85);border:1px solid #1a3a1a;border-radius:18px;
+  padding:24px 26px;display:flex;flex-direction:column;gap:12px;transition:all .25s;
+  cursor:pointer;position:relative;overflow:hidden;text-decoration:none;color:inherit}
+.card::before{content:'';position:absolute;inset:0;border-radius:18px;
+  background:linear-gradient(135deg,rgba(67,160,71,.05),transparent);opacity:0;transition:opacity .25s}
+.card:hover{border-color:#2e7d32;transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px #2e7d32}
+.card:hover::before{opacity:1}
+.card-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;width:fit-content}
+.card-icon{font-size:36px;line-height:1;margin-bottom:2px}
+.card-title{font-size:17px;font-weight:700;color:#fff;line-height:1.3}
+.card-desc{font-size:12px;color:#4a8a4a;line-height:1.7}
+.card-features{display:flex;flex-direction:column;gap:4px}
+.cf{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:#3a6a3a}
+.cf .dot{width:5px;height:5px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.card-link{display:flex;align-items:center;justify-content:space-between;
+  margin-top:4px;padding-top:12px;border-top:1px solid #1a3a1a;
+  font-size:11px;font-weight:700;color:#43A047}
+.card-link .arr{transition:transform .2s}
+.card:hover .arr{transform:translateX(5px)}
+.tags-strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tag{background:rgba(67,160,71,.08);border:1px solid rgba(67,160,71,.2);
+  color:#4a8a4a;font-size:9px;font-weight:700;padding:2px 8px;border-radius:8px;letter-spacing:.5px}
+
+/* ── AC QUICK REF ── */
+.ac-ref{max-width:900px;width:100%;background:rgba(13,26,13,.7);
+  border:1px solid #1a3a1a;border-radius:14px;padding:20px 24px;margin-bottom:36px}
+.ac-ref-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:#2e5e2e;margin-bottom:12px}
+.ac-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ac-chip-item{display:flex;align-items:center;gap:6px;background:#062a06;
+  border-radius:8px;padding:6px 12px;font-size:11px}
+.hero-footer{font-size:10px;color:#1a3a1a;text-align:center;padding:12px 0 24px;line-height:1.8}
+.hero-footer b{color:#2e5e2e}
+
+/* ── DOC BODY ── */
+.doc-body{background:#f8fafc;padding:0}
+.page{max-width:960px;margin:0 auto;padding:48px 24px 80px}
+h2.sec{font-size:20px;font-weight:800;color:#1e3a8f;margin:48px 0 14px;
+  padding-bottom:8px;border-bottom:3px solid #dbeafe;display:flex;align-items:center;gap:8px}
+h2.sec .sec-num{background:#1d4ed8;color:#fff;font-size:11px;font-weight:800;
+  padding:2px 8px;border-radius:8px;letter-spacing:.5px}
+h3.sub{font-size:14px;font-weight:700;color:#334155;margin:24px 0 10px}
+p{font-size:13.5px;color:#475569;line-height:1.8;margin-bottom:12px}
+ul,ol{margin-left:22px;margin-bottom:14px}
+li{font-size:13.5px;color:#475569;margin-bottom:5px;line-height:1.7}
+strong{color:#1e293b}
+.note{background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 10px 10px 0;
+  padding:12px 16px;margin:14px 0;font-size:13px;color:#1e40af}
+.warn{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0;
+  padding:12px 16px;margin:14px 0;font-size:13px;color:#9a3412}
+.success{background:#f0fdf4;border-left:4px solid #22c55e;border-radius:0 10px 10px 0;
+  padding:12px 16px;margin:14px 0;font-size:13px;color:#166534}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+th{background:#1e3a8f;color:#fff;padding:10px 12px;text-align:left;font-weight:700}
+th.r,td.r{text-align:right}
+th.c,td.c{text-align:center}
+td{padding:9px 12px;border-bottom:1px solid #f1f5f9;vertical-align:top;color:#374151}
+tr:hover td{background:#f8faff}
+tr.head2 td{background:#f1f5f9;font-weight:700;color:#1e3a8f}
+.code-block{background:#0f172a;color:#7dd3fc;padding:16px 20px;border-radius:10px;
+  font-family:'Courier New',monospace;font-size:12px;margin:14px 0;line-height:1.8;
+  overflow-x:auto;white-space:pre}
+code{background:#f1f5f9;color:#0f172a;padding:1px 6px;border-radius:4px;
+  font-family:'Courier New',monospace;font-size:12px}
+.toc-box{background:#fff;border:1px solid #e2e8f0;border-radius:12px;
+  padding:20px 24px;margin-bottom:40px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.toc-box h3{font-size:13px;color:#334155;margin-bottom:12px}
+.toc-box ol{margin-left:18px}
+.toc-box li{margin-bottom:4px}
+.toc-box a{color:#1d4ed8;text-decoration:none;font-size:13px}
+.toc-box a:hover{text-decoration:underline}
+.badge-new{background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;
+  padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:5px}
+.badge-v2{background:#fef9c3;color:#854d0e;font-size:10px;font-weight:700;
+  padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:5px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+@media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+.info-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+.info-card h4{font-size:13px;font-weight:700;color:#1e3a8f;margin-bottom:8px}
+.ex-row{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;
+  border-bottom:1px solid #f1f5f9;color:#374151}
+.ex-row:last-child{border-bottom:none;font-weight:700;color:#15803d}
+.ex-alfco{color:#d97706;font-weight:700}
+.doc-footer{text-align:center;color:#94a3b8;font-size:12px;padding:40px 0 20px;
+  border-top:1px solid #e2e8f0;margin-top:48px;line-height:2}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO – SUMMARY + 4 CARDS
+═══════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="logo-bar">
+    <div class="logo-h">H</div>
+    <div class="logo-text">
+      <div class="brand">HATHYO</div>
+      <div class="sub">TIẾP THỊ LIÊN KẾT ĐA TẦNG – CLAUDE3</div>
+    </div>
+  </div>
+  <div class="tagline">MLAM – Multi-Level Affiliate Marketing · Vô hạn cấp · Pool 10% · 5 Cấp AC · 1.000 Founders</div>
+  <div class="desc">
+    Bộ tài liệu phân tích và minh họa <b>Hệ thống Tiếp Thị Liên Kết Đa Tầng (MLAM)</b> của sàn Hathyo – phiên bản Claude3.<br>
+    Mạng lưới <b>vô hạn cấp</b>, hoa hồng 5 slot (ac1=5%→ac5=0.5%), tổng pool <b>10%</b>, cơ chế <b>alfco – ví ảo</b> cho người mua cấp thấp.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 4 CARDS -->
+  <div class="grid">
+    <a class="card" href="affiliate-admin.html" target="_blank">
+      <span class="card-badge" style="background:rgba(27,94,32,.3);color:#81c784;border:1px solid #1a4a1a">🔐 Quản trị viên</span>
+      <div class="card-icon">🖥️</div>
+      <div class="card-title">Affiliate Admin Dashboard</div>
+      <div class="card-desc">Giao diện admin toàn bộ hệ thống MLAM: Founders, cấu hình AC 5 cấp, giao dịch HH, ví ảo alfco, duyệt rút tiền, thuế TNCN.</div>
+      <div class="card-features">
+        <div class="cf"><div class="dot" style="background:#43A047"></div><span>Dashboard KPI: thành viên, HH pool 10%, alfco, thuế TNCN</span></div>
+        <div class="cf"><div class="dot" style="background:#43A047"></div><span>Quản lý 1.000 Founders (tạo, khóa, phân loại tỉnh thành)</span></div>
+        <div class="cf"><div class="dot" style="background:#43A047"></div><span>Cấu hình 5 AC slot linh hoạt, bảng alfco theo cấp</span></div>
+        <div class="cf"><div class="dot" style="background:#43A047"></div><span>Duyệt payout, kê khai thuế, nộp GDT</span></div>
+      </div>
+      <div class="tags-strip">
+        <span class="tag">Founders</span><span class="tag">AC Config</span>
+        <span class="tag">alfco</span><span class="tag">Payout</span><span class="tag">Thuế TNCN</span>
+      </div>
+      <div class="card-link">Mở Admin Dashboard <span class="arr">→</span></div>
+    </a>
+
+    <a class="card" href="affiliate-landing.html" target="_blank">
+      <span class="card-badge" style="background:rgba(25,118,210,.2);color:#90caf9;border:1px solid #1a3a6a">👤 Người dùng</span>
+      <div class="card-icon">📱</div>
+      <div class="card-title">Affiliate User Dashboard</div>
+      <div class="card-desc">Giao diện thành viên: bảng AC theo cấp mạng lưới, hoa hồng nhận được, ví ảo alfco, rút tiền, thuế TNCN, mã giới thiệu QR.</div>
+      <div class="card-features">
+        <div class="cf"><div class="dot" style="background:#1976D2"></div><span>Mã giới thiệu cá nhân, QR code, link chia sẻ Zalo</span></div>
+        <div class="cf"><div class="dot" style="background:#1976D2"></div><span>Bảng AC nhận theo cấp: ac1=5% từ L(n+1), ac2=2% từ L(n+2)...</span></div>
+        <div class="cf"><div class="dot" style="background:#1976D2"></div><span>Ví ảo alfco: nhận khi mua hàng ở cấp &lt;5</span></div>
+        <div class="cf"><div class="dot" style="background:#1976D2"></div><span>Ví HH, lịch sử giao dịch, thuế TNCN, chứng từ</span></div>
+      </div>
+      <div class="tags-strip">
+        <span class="tag">Referral Code</span><span class="tag">AC Rates</span>
+        <span class="tag">alfco</span><span class="tag">Wallet</span>
+      </div>
+      <div class="card-link">Mở User Dashboard <span class="arr">→</span></div>
+    </a>
+
+    <a class="card" href="affiliate-network.html" target="_blank">
+      <span class="card-badge" style="background:rgba(255,215,0,.1);color:#FFD700;border:1px solid #3a3a00">🌐 Trực quan mạng lưới</span>
+      <div class="card-icon">🕸️</div>
+      <div class="card-title">Minh Họa Mạng Lưới MLAM</div>
+      <div class="card-desc">D3.js force-directed: mạng lưới vô hạn cấp tự phát triển, click node bất kỳ để mô phỏng phân bổ hoa hồng AC + alfco.</div>
+      <div class="card-features">
+        <div class="cf"><div class="dot" style="background:#FFD700"></div><span>Vô hạn cấp (cfgMaxDepth tùy chỉnh, mặc định 10)</span></div>
+        <div class="cf"><div class="dot" style="background:#FFD700"></div><span>Click node → bảng phân bổ ac1-ac5 + alfco ví ảo</span></div>
+        <div class="cf"><div class="dot" style="background:#FFD700"></div><span>Particle animation luồng tiền chảy từ buyer lên upline</span></div>
+        <div class="cf"><div class="dot" style="background:#FFD700"></div><span>Tự động hiện alfco khi node ở cấp &lt;5</span></div>
+      </div>
+      <div class="tags-strip">
+        <span class="tag">D3.js</span><span class="tag">Vô hạn cấp</span>
+        <span class="tag">AC Simulation</span><span class="tag">alfco</span>
+      </div>
+      <div class="card-link">Mở Network Visualization <span class="arr">→</span></div>
+    </a>
+
+    <a class="card" href="ClaudeSolution.pdf" target="_blank">
+      <span class="card-badge" style="background:rgba(229,57,53,.15);color:#ef9a9a;border:1px solid #4a1a1a">📄 Tài liệu đầy đủ</span>
+      <div class="card-icon">📑</div>
+      <div class="card-title">ClaudeSolution.pdf</div>
+      <div class="card-desc">Tài liệu nghiệp vụ & kỹ thuật đầy đủ: DB schema, API, Commission Engine, Sprint Plan, bảo mật, tích hợp hệ thống hiện hữu.</div>
+      <div class="card-features">
+        <div class="cf"><div class="dot" style="background:#E53935"></div><span>10 chương chi tiết – xem nội dung bên dưới trang này</span></div>
+        <div class="cf"><div class="dot" style="background:#E53935"></div><span>DB schema PostgreSQL: 8 bảng mới + ALTER users/orders</span></div>
+        <div class="cf"><div class="dot" style="background:#E53935"></div><span>Commission Engine Java Spring Boot + alfco wallet</span></div>
+        <div class="cf"><div class="dot" style="background:#E53935"></div><span>Sprint Plan 8 tuần, checklist frontend, bảo mật</span></div>
+      </div>
+      <div class="tags-strip">
+        <span class="tag">DB Schema</span><span class="tag">API Design</span>
+        <span class="tag">Sprint Plan</span><span class="tag">Security</span>
+      </div>
+      <div class="card-link">Mở PDF (sẽ có sau) <span class="arr">→</span></div>
+    </a>
+  </div>
+
+  <!-- AC Quick Reference -->
+  <div class="ac-ref">
+    <div class="ac-ref-title">📊 Tham chiếu nhanh – 5 Cấp Hoa Hồng MLAM (Pool = 10%)</div>
+    <div class="ac-chips">
+      <div class="ac-chip-item"><span style="color:#ef4444;font-size:14px">●</span><span style="color:#4a8a4a">ac1 – Upline gần nhất</span><span style="color:#ef4444;font-weight:800">5%</span></div>
+      <div class="ac-chip-item"><span style="color:#f97316;font-size:14px">●</span><span style="color:#4a8a4a">ac2 – Cách 2 bậc</span><span style="color:#f97316;font-weight:800">2%</span></div>
+      <div class="ac-chip-item"><span style="color:#f59e0b;font-size:14px">●</span><span style="color:#4a8a4a">ac3 – Cách 3 bậc</span><span style="color:#f59e0b;font-weight:800">1.5%</span></div>
+      <div class="ac-chip-item"><span style="color:#22c55e;font-size:14px">●</span><span style="color:#4a8a4a">ac4 – Cách 4 bậc</span><span style="color:#22c55e;font-weight:800">1%</span></div>
+      <div class="ac-chip-item"><span style="color:#3b82f6;font-size:14px">●</span><span style="color:#4a8a4a">ac5 – Cách 5 bậc</span><span style="color:#3b82f6;font-weight:800">0.5%</span></div>
+      <div class="ac-chip-item" style="background:rgba(255,215,0,.08);border:1px solid #3a3a00"><span style="color:#FFD700">∑</span><span style="color:#4a8a4a">Tổng Pool</span><span style="color:#FFD700;font-weight:800">10% GMV</span></div>
+      <div class="ac-chip-item" style="background:rgba(20,184,166,.08);border:1px solid #134e4a"><span style="color:#14b8a6">🎁</span><span style="color:#4a8a4a">alfco (ví ảo, n&lt;5)</span><span style="color:#14b8a6;font-weight:800">biến động</span></div>
+    </div>
+    <div style="margin-top:10px;font-size:10px;color:#2e5e2e;line-height:1.7">
+      alfc = min(n, 5) · alfco = 10% − Σ(aci, i=1..alfc) khi n&lt;5 → hoàn vào ví ảo người mua sau khi đơn giao thành công
+      &nbsp;·&nbsp; Thuế TNCN 10% khấu trừ tại nguồn khi HH ≥ 2.000.000đ · alfco miễn thuế (khoản tặng)
+      &nbsp;·&nbsp; Fee sàn ≤ 30% = 10% MLAM + ~8% VAT/Thuế + ~7% vận hành + ~5% lợi nhuận
+    </div>
+  </div>
+
+  <div class="hero-footer">
+    <b>Hathyo MLAM – Claude3</b> · Phân tích bởi Claude (Anthropic) · Tháng 5/2026<br>
+    Công ty TNHH Cuộc Sống Vui Khỏe · 82 Phan Đăng Lưu, TP.HCM · hathyo.com
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     DOCUMENT BODY – CHI TIẾT 10 CHƯƠNG
+═══════════════════════════════════════════════════════════════ -->
+<div class="doc-body">
+<div class="page">
+
+  <div style="text-align:center;margin-bottom:40px">
+    <div style="font-size:22px;font-weight:800;color:#1e3a8f;margin-bottom:4px">
+      HATHYO – HỆ THỐNG TIẾP THỊ LIÊN KẾT ĐA TẦNG (MLAM)
+    </div>
+    <div style="font-size:14px;color:#64748b">Tài liệu Nghiệp vụ &amp; Kỹ thuật – Claude3 | Tháng 5/2026</div>
+    <div style="font-size:12px;color:#94a3b8;margin-top:4px">Stack: Java Spring Boot + PostgreSQL + ReactJS + React Native + AWS</div>
+    <div style="font-size:12px;color:#94a3b8">Thực hiện: Nguyễn Quốc Trọng + Nguyễn Minh Duy</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc-box">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Tổng Quan Hệ Thống Hathyo Hiện Hữu</a></li>
+      <li><a href="#s2">Mô Hình MLAM – Vô Hạn Cấp, 5 Slot AC <span class="badge-new">MỚI</span></a></li>
+      <li><a href="#s3">Hệ Thống 1.000 Founders (Nút Gốc)</a></li>
+      <li><a href="#s4">Quy Tắc Nghiệp Vụ Chi Tiết <span class="badge-new">MỚI</span></a></li>
+      <li><a href="#s5">Thuế TNCN &amp; Khung Tuân Thủ Pháp Lý</a></li>
+      <li><a href="#s6">Thiết Kế Cơ Sở Dữ Liệu PostgreSQL <span class="badge-new">MỚI</span></a></li>
+      <li><a href="#s7">API Design – Java Spring Boot <span class="badge-new">MỚI</span></a></li>
+      <li><a href="#s8">Commission Engine – Thuật Toán &amp; Triển Khai <span class="badge-new">MỚI</span></a></li>
+      <li><a href="#s9">Hướng Dẫn Triển Khai – Sprint Plan</a></li>
+      <li><a href="#s10">Phụ Lục – Từ Điển Nghiệp Vụ</a></li>
+    </ol>
+  </div>
+
+  <!-- ══ 1. TỔNG QUAN ══ -->
+  <h2 class="sec" id="s1"><span class="sec-num">1</span> Tổng Quan Hệ Thống Hathyo Hiện Hữu</h2>
+  <p>Sàn thương mại điện tử Hathyo (hathyo.com) được vận hành bởi Công ty TNHH Cuộc Sống Vui Khỏe, địa chỉ 82 Phan Đăng Lưu, TP.HCM. Hệ thống hiện chạy trên AWS với chi phí ~$224/tháng.</p>
+
+  <h3 class="sub">1.1 Hạ tầng AWS (Bill tháng 3/2026)</h3>
+  <table>
+    <thead><tr><th>Dịch vụ</th><th class="r">Chi phí (USD)</th><th>Mô tả</th><th>Ghi chú</th></tr></thead>
+    <tbody>
+      <tr><td>Amazon EC2</td><td class="r">$93.34</td><td>Backend Java Spring Boot containers</td><td>Review instance khi scale</td></tr>
+      <tr><td>Elastic Load Balancing</td><td class="r">$40.23</td><td>SSL termination, health check, load balancing</td><td></td></tr>
+      <tr><td>ECR (Container Registry)</td><td class="r">$31.70</td><td>Docker images: backend + worker</td><td></td></tr>
+      <tr><td>Amazon VPC</td><td class="r">$28.15</td><td>Network isolation, NAT Gateway</td><td>Private subnet RDS</td></tr>
+      <tr><td>Amazon RDS (PostgreSQL)</td><td class="r">$23.19</td><td>Database chính toàn hệ thống</td><td>Multi-AZ khi scale</td></tr>
+      <tr><td>AWS WAF + API GW + R53</td><td class="r">$7.42</td><td>WAF, API management, DNS</td><td></td></tr>
+      <tr><td>S3 + CloudWatch + KMS</td><td class="r">$0.16</td><td>Storage, monitoring, encryption</td><td></td></tr>
+      <tr class="head2"><td>TỔNG</td><td class="r">$224.19</td><td colspan="2">≈ 5,9 triệu VND/tháng · Account: 600627353258</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">1.2 Kiến trúc ứng dụng</h3>
+  <table>
+    <thead><tr><th>Thành phần</th><th>Công nghệ</th><th>URL</th><th>Chức năng</th><th class="c">Trạng thái</th></tr></thead>
+    <tbody>
+      <tr><td>Backend API</td><td>Java Spring Boot + PostgreSQL</td><td>api.hathyo.com</td><td>REST API toàn bộ nghiệp vụ</td><td class="c">✅ Production</td></tr>
+      <tr><td>Web Landing (Buyer)</td><td>ReactJS</td><td>hathyo.com</td><td>Visitor → User, mua hàng</td><td class="c">✅ Production</td></tr>
+      <tr><td>Web Admin</td><td>ReactJS</td><td>admin.hathyo.com</td><td>Admin, nhân viên, Seller</td><td class="c">✅ Production</td></tr>
+      <tr><td>App Android (Buyer)</td><td>React Native</td><td>Google Play</td><td>Tương đương web landing</td><td class="c">✅ Released</td></tr>
+      <tr><td>App iOS (Buyer)</td><td>React Native</td><td>App Store</td><td>Đang hoàn thiện</td><td class="c">🔄 In Progress</td></tr>
+      <tr><td>App Seller</td><td>React Native</td><td>Internal</td><td>Quản lý gian hàng, đơn hàng</td><td class="c">🔄 In Progress</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">1.3 Dịch vụ tích hợp</h3>
+  <table>
+    <thead><tr><th>Dịch vụ</th><th>Nhà cung cấp</th><th>Mục đích</th><th class="c">Trạng thái</th></tr></thead>
+    <tbody>
+      <tr><td>Xác minh địa chỉ</td><td>Vietbando API</td><td>Xác minh địa chỉ buyer/seller theo chuẩn ĐVHC VN</td><td class="c">✅</td></tr>
+      <tr><td>Giao vận</td><td>GiaoHangTietKiem + Ahamove</td><td>Phí ship, vận đơn, tracking</td><td class="c">✅</td></tr>
+      <tr><td>Tin nhắn thương hiệu</td><td>ZaloOA (ưu tiên) + SMS</td><td>OTP, thông báo đơn hàng, HH, thuế</td><td class="c">✅</td></tr>
+      <tr><td>Hóa đơn điện tử</td><td>MatBao</td><td>Phát hành HĐDT, liên thông thuế</td><td class="c">✅</td></tr>
+      <tr><td>Thanh toán</td><td>VietinBank (đang tích hợp)</td><td>Card, QR, CK; hiện chỉ CoD</td><td class="c">🔄</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">1.4 Cấu trúc phân quyền admin.hathyo.com</h3>
+  <table>
+    <thead><tr><th>Role</th><th>Quyền</th><th>Modules chính</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Admin Hệ thống</strong></td><td>Full access</td><td>Dashboard, Người dùng, Sản phẩm, Đơn hàng, <strong>MLAM Affiliate (mới)</strong>, Cài đặt</td></tr>
+      <tr><td>Nhân viên nội bộ</td><td>Partial – theo phân công</td><td>Tùy cấu hình từng nhân viên</td></tr>
+      <tr><td>Người bán (Seller)</td><td>Chỉ gian hàng mình</td><td>Sản phẩm, Đơn hàng, Khuyến mãi, Doanh thu shop</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══ 2. MÔ HÌNH MLAM ══ -->
+  <h2 class="sec" id="s2"><span class="sec-num">2</span> Mô Hình MLAM – Vô Hạn Cấp, 5 Slot AC <span class="badge-new">MỚI</span></h2>
+
+  <h3 class="sub">2.1 Bối cảnh &amp; So sánh thị trường</h3>
+  <table>
+    <thead><tr><th>Chỉ số</th><th>Shopee</th><th>TikTok Shop</th><th>Hathyo (Claude3)</th></tr></thead>
+    <tbody>
+      <tr><td>Tổng phí người bán chịu</td><td>~40%</td><td>~46%</td><td><strong>≤ 30%</strong></td></tr>
+      <tr><td>Pool affiliate cho người dùng</td><td>Unknown</td><td>Unknown</td><td><strong>10% (5 AC slot)</strong></td></tr>
+      <tr><td>Số cấp mạng lưới</td><td>N/A</td><td>N/A</td><td><strong>Vô hạn (L0→Ln)</strong></td></tr>
+      <tr><td>Ví ảo người mua cấp thấp</td><td>Không</td><td>Không</td><td><strong>alfco (cấp &lt;5)</strong></td></tr>
+      <tr><td>CAC ước tính</td><td>200K–500K/khách</td><td>150K–400K</td><td>10K–50K (referral)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">2.2 Nguyên tắc thiết kế (cập nhật Claude3)</h3>
+  <ol>
+    <li><strong>HH chỉ phát sinh từ giao dịch thực</strong> (order DELIVERED/COMPLETED) – không phải từ tuyển dụng.</li>
+    <li><strong>Vô hạn cấp:</strong> Mạng lưới phát triển L0 → L1 → L2 → ... → Ln, không giới hạn depth.</li>
+    <li><strong>5 slot AC tính từ người mua ngược lên:</strong> L(n-1) nhận ac1=5%, L(n-2) nhận ac2=2%, ..., L(n-5) nhận ac5=0.5%. Tổng = 10%.</li>
+    <li><strong>alfco:</strong> Khi người mua ở cấp n&lt;5 (không đủ 5 upline), phần pool dư alfco được hoàn vào ví ảo người mua.</li>
+    <li><strong>1.000 Founders</strong> là nút gốc (L0), không có parent, được tạo bởi Admin.</li>
+    <li><strong>Không còn self-purchase bonus</strong> (khác Claude2): người tự mua không nhận thêm HH. Chỉ nhận alfco nếu n&lt;5.</li>
+    <li><strong>Thuế TNCN 10%</strong> khấu trừ tại nguồn khi chi HH ≥ 2 triệu/lần. alfco miễn thuế.</li>
+  </ol>
+
+  <h3 class="sub">2.3 Cấu trúc 5 Slot Hoa Hồng</h3>
+  <div class="note">
+    <strong>Ký hiệu:</strong> n = cấp của người mua · ac1 là AC slot gần người mua nhất (cao nhất) · ac5 là xa nhất (thấp nhất) · alfc = min(n, 5) · alfco = 10% − Σ(aci, i=1..alfc)
+  </div>
+  <table>
+    <thead><tr><th>Slot</th><th>Người nhận</th><th class="r">Tỷ lệ</th><th class="r">HH/1tr đơn</th><th>Lý do</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:#ef4444">ac1</strong></td><td>L(n-1) – upline trực tiếp</td><td class="r"><strong>5%</strong></td><td class="r">50.000đ</td><td>Có công trực tiếp đưa người mua vào mạng lưới</td></tr>
+      <tr><td><strong style="color:#f97316">ac2</strong></td><td>L(n-2) – cách 2 bậc</td><td class="r"><strong>2%</strong></td><td class="r">20.000đ</td><td>Đã xây dựng được L(n-1) – quan hệ sâu hơn</td></tr>
+      <tr><td><strong style="color:#f59e0b">ac3</strong></td><td>L(n-3) – cách 3 bậc</td><td class="r"><strong>1.5%</strong></td><td class="r">15.000đ</td><td>Nền tảng trung gian trong chuỗi</td></tr>
+      <tr><td><strong style="color:#22c55e">ac4</strong></td><td>L(n-4) – cách 4 bậc</td><td class="r"><strong>1%</strong></td><td class="r">10.000đ</td><td>Đóng góp vào cấu trúc sâu hơn</td></tr>
+      <tr><td><strong style="color:#3b82f6">ac5</strong></td><td>L(n-5) – cách 5 bậc</td><td class="r"><strong>0.5%</strong></td><td class="r">5.000đ</td><td>Giới hạn cuối của chuỗi HH, nhận ít nhưng từ cả cây lớn</td></tr>
+      <tr class="head2"><td colspan="2">sum_ac – Tổng pool</td><td class="r"><strong>10%</strong></td><td class="r">100.000đ</td><td>= pool phân bổ cho 5 upline</td></tr>
+      <tr><td colspan="2" style="color:#14b8a6"><strong>alfco</strong> – Ví ảo người mua</td><td class="r" style="color:#14b8a6"><strong>biến động</strong></td><td class="r" style="color:#14b8a6">0–50.000đ</td><td style="color:#0f766e">Chỉ khi n&lt;5. alfco = 10% − Σ(aci, i=1..n)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">2.4 Phân tích tính hợp lý Pool 10%</h3>
+  <table>
+    <thead><tr><th>Hạng mục</th><th class="r">% tổng 30%</th><th class="r">Giá trị/1tr đơn</th><th>Ghi chú</th></tr></thead>
+    <tbody>
+      <tr><td>MLAM affiliate pool (ac1..ac5)</td><td class="r">10%</td><td class="r">100.000đ</td><td>Phân bổ tối đa 5 upline + alfco ví ảo</td></tr>
+      <tr><td>VAT (thuế GTGT trên phí dịch vụ)</td><td class="r">~5–6%</td><td class="r">50–60.000đ</td><td>Nghĩa vụ pháp lý</td></tr>
+      <tr><td>Chi phí vận hành (logistics, tech, CS)</td><td class="r">~8–9%</td><td class="r">80–90.000đ</td><td>AWS + nhân sự + giao vận + ops</td></tr>
+      <tr><td>Lợi nhuận ròng sàn</td><td class="r">~5–7%</td><td class="r">50–70.000đ</td><td>Bền vững dài hạn</td></tr>
+      <tr class="head2"><td>Tổng phí người bán chịu</td><td class="r">≤ 30%</td><td class="r">≤ 300.000đ</td><td>vs Shopee 40%, TikTok 46% ✓</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══ 3. FOUNDERS ══ -->
+  <h2 class="sec" id="s3"><span class="sec-num">3</span> Hệ Thống 1.000 Founders (Nút Gốc)</h2>
+
+  <h3 class="sub">3.1 Định nghĩa và Phân loại</h3>
+  <p>Founders là 1.000 tài khoản đặc biệt được Admin tạo thủ công, là nút gốc L0 (depth_from_root = 0), không có parent. Họ có mã giới thiệu riêng để phát triển cây mạng lưới bên dưới.</p>
+  <table>
+    <thead><tr><th>Nhóm</th><th class="r">Số lượng</th><th>Đối tượng</th><th>Quyền lợi đặc biệt</th></tr></thead>
+    <tbody>
+      <tr><td>Nội bộ (Internal)</td><td class="r">~20</td><td>Những người góp công phát triển từ đầu</td><td>Cổ phần hoặc quyền lợi tương đương + HH không giới hạn</td></tr>
+      <tr><td>Đại diện tỉnh thành</td><td class="r">~50</td><td>1–2 người/tỉnh theo 34 ĐVHC mới</td><td>Ưu tiên phát triển mạng địa phương</td></tr>
+      <tr><td>KOL / Đối tác / Đầu tư</td><td class="r">~930</td><td>KOL, KOC, nhà đầu tư, đối tác quốc tế</td><td>Bán slot, quy đổi đầu tư, phân phối tương đương</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">3.2 Đặc quyền Founder</h3>
+  <ul>
+    <li><strong>Mã định danh:</strong> HAT-F0001 → HAT-F1000, badge 🏆 FOUNDER trên mọi màn hình.</li>
+    <li><strong>Nhận HH từ ngày 1:</strong> Nhận ac5=0.5% khi cháu ở L5 mua hàng; ac4, ac3 từ những cháu gần hơn trong đúng vị trí chuỗi.</li>
+    <li><strong>Không giới hạn HH/tháng:</strong> Founder không bị cap tháng.</li>
+    <li><strong>Không bị downgrade:</strong> Trừ khi Admin thu hồi (is_founder không tự mất).</li>
+    <li><strong>Hỗ trợ ưu tiên:</strong> Dedicated support channel, onboarding riêng.</li>
+  </ul>
+
+  <h3 class="sub">3.3 Mô phỏng tăng trưởng – Số Dunbar k=16</h3>
+  <p>Theo lý thuyết Dunbar: mỗi người duy trì ~16 mối quan hệ có ảnh hưởng thực sự. Hệ thống thiết kế với k=16 (trung bình mỗi nút phát triển 16 nút trực tiếp).</p>
+  <table>
+    <thead><tr><th>Cấp</th><th class="r">Số lý thuyết (k=16)</th><th class="r">Số thực (50% activation)</th><th>Ghi chú</th></tr></thead>
+    <tbody>
+      <tr><td>L0 – Founder</td><td class="r">1.000</td><td class="r">1.000</td><td>Admin tạo thủ công</td></tr>
+      <tr><td>L1</td><td class="r">16.000</td><td class="r">8.000</td><td></td></tr>
+      <tr><td>L2</td><td class="r">256.000</td><td class="r">40.000</td><td></td></tr>
+      <tr><td>L3</td><td class="r">4.096.000</td><td class="r">200.000</td><td>Bắt đầu chạm ngưỡng thị trường VN</td></tr>
+      <tr><td>L4</td><td class="r">65.536.000</td><td class="r">500.000</td><td>Plateau, thị trường bão hòa</td></tr>
+      <tr><td>L5+</td><td class="r">∞ (lý thuyết)</td><td class="r">~1.000.000</td><td>Vô hạn cấp – mạng vẫn hoạt động</td></tr>
+    </tbody>
+  </table>
+  <div class="note">Tổng dân số VN ~100M, người dùng internet ~78M → các cấp 3–5 sẽ đến điểm bão hòa sau 12–24 tháng. Hệ thống vô hạn cấp vẫn hoạt động tốt vì HH phụ thuộc vào GMV, không chỉ số lượng node.</div>
+
+  <!-- ══ 4. QUY TẮC NGHIỆP VỤ ══ -->
+  <h2 class="sec" id="s4"><span class="sec-num">4</span> Quy Tắc Nghiệp Vụ Chi Tiết <span class="badge-new">MỚI</span></h2>
+
+  <h3 class="sub">4.1 Tính toán commission_base</h3>
+  <div class="code-block">commission_base = order.subtotal − order.discount_amount
+-- KHÔNG bao gồm: phí vận chuyển, VAT
+-- Ví dụ: Đơn 1.200.000đ − voucher 200.000đ − ship 30.000đ
+-- commission_base = 1.000.000đ
+-- affiliate pool   = 1.000.000 × 10% = 100.000đ</div>
+
+  <h3 class="sub">4.2 Quy tắc phân bổ AC – Công thức tổng quát</h3>
+  <div class="note">
+    Người mua ở cấp n → alfc = min(n, 5) → Phân bổ ac1..ac(alfc) cho L(n-1)..L(n-alfc).<br>
+    Nếu alfc &lt; 5: alfco = 10% − Σ(aci, i=1..alfc) → hoàn vào ví ảo người mua.
+  </div>
+
+  <h3 class="sub">4.3 Các ví dụ phân bổ theo cấp người mua</h3>
+  <div class="grid-2">
+    <div class="info-card">
+      <h4 style="color:#ef4444">Người mua ở L10 (n≥5)</h4>
+      <div style="font-size:11px;color:#64748b;margin-bottom:10px">alfc=5, không alfco</div>
+      <div class="ex-row"><span>L9 (ac1=5%)</span><span>50.000đ</span></div>
+      <div class="ex-row"><span>L8 (ac2=2%)</span><span>20.000đ</span></div>
+      <div class="ex-row"><span>L7 (ac3=1.5%)</span><span>15.000đ</span></div>
+      <div class="ex-row"><span>L6 (ac4=1%)</span><span>10.000đ</span></div>
+      <div class="ex-row"><span>L5 (ac5=0.5%)</span><span>5.000đ</span></div>
+      <div class="ex-row"><span>alfco ví ảo</span><span>0đ</span></div>
+      <div class="ex-row"><span>Tổng pool 10%</span><span>100.000đ</span></div>
+    </div>
+    <div class="info-card">
+      <h4 style="color:#22c55e">Người mua ở L5 (n=5)</h4>
+      <div style="font-size:11px;color:#64748b;margin-bottom:10px">alfc=5, không alfco</div>
+      <div class="ex-row"><span>L4 (ac1=5%)</span><span>50.000đ</span></div>
+      <div class="ex-row"><span>L3 (ac2=2%)</span><span>20.000đ</span></div>
+      <div class="ex-row"><span>L2 (ac3=1.5%)</span><span>15.000đ</span></div>
+      <div class="ex-row"><span>L1 (ac4=1%)</span><span>10.000đ</span></div>
+      <div class="ex-row"><span>L0 Founder (ac5=0.5%)</span><span>5.000đ</span></div>
+      <div class="ex-row"><span>alfco ví ảo</span><span>0đ</span></div>
+      <div class="ex-row"><span>Tổng pool 10%</span><span>100.000đ</span></div>
+    </div>
+    <div class="info-card">
+      <h4 style="color:#f97316">Người mua ở L3 (n=3&lt;5)</h4>
+      <div style="font-size:11px;color:#d97706;margin-bottom:10px">alfc=3, có alfco!</div>
+      <div class="ex-row"><span>L2 (ac1=5%)</span><span>50.000đ</span></div>
+      <div class="ex-row"><span>L1 (ac2=2%)</span><span>20.000đ</span></div>
+      <div class="ex-row"><span>L0 Founder (ac3=1.5%)</span><span>15.000đ</span></div>
+      <div class="ex-row ex-alfco"><span>alfco ví ảo (1.5%)</span><span>15.000đ!</span></div>
+      <div class="ex-row"><span>Tổng pool 10%</span><span>100.000đ ✓</span></div>
+    </div>
+    <div class="info-card">
+      <h4 style="color:#3b82f6">Người mua ở L1 (n=1&lt;5)</h4>
+      <div style="font-size:11px;color:#d97706;margin-bottom:10px">alfc=1, alfco lớn nhất!</div>
+      <div class="ex-row"><span>L0 Founder (ac1=5%)</span><span>50.000đ</span></div>
+      <div class="ex-row"><span style="color:#94a3b8">ac2,ac3,ac4,ac5 (không upline)</span><span style="color:#94a3b8">—</span></div>
+      <div class="ex-row ex-alfco"><span>alfco ví ảo (5%)</span><span>50.000đ!</span></div>
+      <div class="ex-row"><span>Tổng pool 10%</span><span>100.000đ ✓</span></div>
+    </div>
+  </div>
+
+  <h3 class="sub">4.4 Bảng alfco đầy đủ theo cấp người mua</h3>
+  <table>
+    <thead><tr><th>Cấp người mua</th><th class="c">alfc</th><th class="r">Upline tổng nhận</th><th class="r">alfco %</th><th class="r">alfco/đơn 1tr</th><th>Ghi chú</th></tr></thead>
+    <tbody>
+      <tr><td>L1</td><td class="c">1</td><td class="r">5%</td><td class="r" style="color:#14b8a6"><strong>5%</strong></td><td class="r" style="color:#14b8a6">50.000đ</td><td>Founder nhận ac1; 5% còn lại → ví ảo</td></tr>
+      <tr><td>L2</td><td class="c">2</td><td class="r">7%</td><td class="r" style="color:#14b8a6"><strong>3%</strong></td><td class="r" style="color:#14b8a6">30.000đ</td><td>L1 ac1, L0 ac2</td></tr>
+      <tr><td>L3</td><td class="c">3</td><td class="r">8.5%</td><td class="r" style="color:#14b8a6"><strong>1.5%</strong></td><td class="r" style="color:#14b8a6">15.000đ</td><td>L2 ac1, L1 ac2, L0 ac3</td></tr>
+      <tr><td>L4</td><td class="c">4</td><td class="r">9.5%</td><td class="r" style="color:#14b8a6"><strong>0.5%</strong></td><td class="r" style="color:#14b8a6">5.000đ</td><td>L3 ac1, L2 ac2, L1 ac3, L0 ac4</td></tr>
+      <tr style="background:#f0fdf4"><td>L5+</td><td class="c">5</td><td class="r">10%</td><td class="r">0</td><td class="r">—</td><td>Đủ 5 upline, pool phân bổ hết</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">4.5 Các trường hợp ngoại lệ (Edge Cases)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Kịch bản</th><th>Xử lý</th><th>Field DB</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Người mua không có affiliate node</td><td>Toàn bộ 10% → platform pool</td><td>skip_reason = NO_NODE</td></tr>
+      <tr><td>2</td><td>Chain ngắn (buyer ở L2, chỉ có 2 upline)</td><td>Phân bổ đến hết chain; alfco → ví ảo</td><td>alfc_actual &lt; 5</td></tr>
+      <tr><td>3</td><td>Thành viên bị suspend trong chain</td><td>Skip level đó; cấp trên vẫn nhận</td><td>skip_reason = ACCOUNT_SUSPENDED</td></tr>
+      <tr><td>4</td><td>Đơn hàng bị hoàn trả (REFUNDED)</td><td>Reverse toàn bộ commission + alfco records</td><td>status = REVERSED</td></tr>
+      <tr><td>5</td><td>Đơn test / internal</td><td>Return sớm, không tạo bất kỳ record nào</td><td>is_test_order = true</td></tr>
+      <tr><td>6</td><td>Đơn CoD chưa xác nhận giao</td><td>HH chỉ tạo khi order.status = DELIVERED</td><td>Async event after DELIVERED</td></tr>
+      <tr><td>7</td><td>alfco chưa dùng khi đơn bị hoàn</td><td>alfco_wallet.status → REVERSED, số dư trừ lại</td><td>alfco_status = REVERSED</td></tr>
+      <tr><td>8</td><td>HH &lt; 2.000.000đ/lần chi</td><td>Không khấu trừ TNCN cho lần đó</td><td>pit_amount = 0</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">4.6 Timeline xử lý HH &amp; alfco</h3>
+  <table>
+    <thead><tr><th>Bước</th><th>Sự kiện</th><th>Order Status</th><th>HH Status</th><th>Hành động</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Buyer đặt hàng</td><td>PENDING</td><td>—</td><td>Tạo order; chưa làm gì với HH</td></tr>
+      <tr><td>2</td><td>Seller xác nhận</td><td>CONFIRMED</td><td>—</td><td>—</td></tr>
+      <tr><td>3</td><td>Đang giao hàng</td><td>SHIPPING</td><td>—</td><td>—</td></tr>
+      <tr><td>4</td><td>Giao hàng thành công</td><td>DELIVERED</td><td>PENDING (tạo)</td><td>Async job tạo commission records; tạo alfco_pending; cộng pending_balance</td></tr>
+      <tr><td>5</td><td>Buyer xác nhận (hoặc auto 3 ngày)</td><td>COMPLETED</td><td>APPROVED</td><td>HH → APPROVED; cộng available_balance; alfco → AVAILABLE</td></tr>
+      <tr><td>6</td><td>User yêu cầu rút / cuối tháng</td><td>COMPLETED</td><td>PAID</td><td>Admin duyệt → chuyển tiền; khấu trừ thuế TNCN</td></tr>
+      <tr><td>7</td><td>Đơn bị hoàn trả</td><td>REFUNDED</td><td>REVERSED</td><td>Reverse job; trừ lại balance + alfco</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══ 5. THUẾ TNCN ══ -->
+  <h2 class="sec" id="s5"><span class="sec-num">5</span> Thuế TNCN &amp; Khung Tuân Thủ Pháp Lý</h2>
+
+  <h3 class="sub">5.1 Cơ sở pháp lý</h3>
+  <ul>
+    <li>Luật Thuế TNCN 2007 (sửa đổi 2012, 2014)</li>
+    <li><strong>Thông tư 111/2013/TT-BTC</strong>: Hướng dẫn thuế TNCN – khấu trừ 10% tại nguồn</li>
+    <li>Nghị định 126/2020/NĐ-CP: Quản lý thuế</li>
+    <li><strong>Luật Thương mại điện tử 2025 (122/2025/QH15)</strong>: Hiệu lực 01/07/2026 – sàn khấu trừ và kê khai thuế thay người bán</li>
+    <li>Thông tư 40/2021/TT-BTC: Hướng dẫn thuế hộ kinh doanh, cá nhân kinh doanh</li>
+  </ul>
+
+  <h3 class="sub">5.2 Nghĩa vụ khấu trừ thuế của sàn Hathyo</h3>
+  <table>
+    <thead><tr><th>Quy định</th><th>Chi tiết</th></tr></thead>
+    <tbody>
+      <tr><td>Tỷ lệ khấu trừ</td><td><strong>10% TNCN</strong> trên mỗi khoản HH chi trả (KHÔNG áp dụng cho alfco)</td></tr>
+      <tr><td>Ngưỡng áp dụng</td><td>Chi trả <strong>≥ 2.000.000đ/lần</strong> → bắt buộc khấu trừ</td></tr>
+      <tr><td>Kỳ kê khai</td><td>Hàng tháng – Tờ khai <strong>05/KK-TNCN</strong>, nộp trước ngày 20 tháng tiếp theo</td></tr>
+      <tr><td>Nộp tiền thuế</td><td>Nộp vào KBNN cùng kỳ với kê khai, trước ngày 20 tháng tiếp theo</td></tr>
+      <tr><td>Chứng từ cho thành viên</td><td>Biên lai khấu trừ TNCN (Mẫu 03/BL), cấp cuối năm hoặc khi yêu cầu</td></tr>
+      <tr><td>alfco (ví ảo)</td><td><strong>MIỄN thuế TNCN</strong> – là khoản tặng người mua (discount/cashback), không phải hoa hồng</td></tr>
+      <tr><td>Khai quyết toán năm</td><td>Tờ khai 05/QTT-TNCN, nộp trước 31/3 năm sau</td></tr>
+      <tr><td>Liên thông GDT</td><td>Qua cổng etax.gdt.gov.vn</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">5.3 Ví dụ tính thuế thực tế</h3>
+  <table>
+    <thead><tr><th>Khoản HH chi trả</th><th class="r">Thuế TNCN 10%</th><th class="r">Thực nhận (net)</th><th>Hành động hệ thống</th></tr></thead>
+    <tbody>
+      <tr><td>1.500.000đ</td><td class="r" style="color:#94a3b8">Không KT (&lt;2tr)</td><td class="r">1.500.000đ</td><td>Chuyển full vào ví</td></tr>
+      <tr><td>2.000.000đ</td><td class="r" style="color:#f97316">200.000đ</td><td class="r">1.800.000đ</td><td>Tạo pit_transaction; cộng ví net</td></tr>
+      <tr><td>5.000.000đ</td><td class="r" style="color:#f97316">500.000đ</td><td class="r">4.500.000đ</td><td>Tạo pit_transaction; báo cáo GDT</td></tr>
+      <tr><td>50.000.000đ</td><td class="r" style="color:#ef4444">5.000.000đ</td><td class="r">45.000.000đ</td><td>Bắt buộc KYC MST cá nhân trước khi chi</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">5.4 Quy trình hàng tháng</h3>
+  <ol>
+    <li><strong>Ngày 1–5 tháng M+1:</strong> Tổng hợp toàn bộ HH đã chi trả trong tháng M theo từng thành viên.</li>
+    <li><strong>Ngày 6–10:</strong> Tạo tờ khai XML theo chuẩn GDT, review nội bộ. alfco không đưa vào tờ khai.</li>
+    <li><strong>Ngày 11–19:</strong> Submit lên etax.gdt.gov.vn và nộp tiền thuế vào KBNN.</li>
+    <li><strong>Ngày 20 (hạn cuối):</strong> Hoàn tất nghĩa vụ khai và nộp thuế.</li>
+    <li><strong>Cuối năm:</strong> Tổng hợp quyết toán; cấp biên lai 03/BL cho từng thành viên.</li>
+  </ol>
+
+  <!-- ══ 6. DB SCHEMA ══ -->
+  <h2 class="sec" id="s6"><span class="sec-num">6</span> Thiết Kế Cơ Sở Dữ Liệu PostgreSQL <span class="badge-new">MỚI</span></h2>
+
+  <h3 class="sub">6.1 Mở rộng bảng users (ALTER TABLE)</h3>
+  <div class="code-block">ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS affiliate_node_id UUID REFERENCES affiliate_nodes(node_id),
+  ADD COLUMN IF NOT EXISTS is_affiliate_member BOOLEAN NOT NULL DEFAULT false;</div>
+
+  <h3 class="sub">6.2 Bảng affiliate_nodes – Nút trong mạng lưới</h3>
+  <div class="code-block">CREATE TABLE affiliate_nodes (
+  node_id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id          UUID NOT NULL UNIQUE REFERENCES users(user_id),
+  parent_node_id   UUID REFERENCES affiliate_nodes(node_id), -- NULL = Founder L0
+  referral_code    VARCHAR(20) NOT NULL UNIQUE,               -- HAT-F#### hoặc HAT-#-#####
+  is_founder       BOOLEAN NOT NULL DEFAULT false,
+  founder_category VARCHAR(20),          -- INTERNAL, PROVINCE, PARTNER, INTERNATIONAL
+  province_note    TEXT,                 -- tỉnh/khu vực đại diện
+  depth_from_root  INTEGER NOT NULL DEFAULT 0, -- 0=Founder, 1,2,3...N (vô hạn)
+  status           VARCHAR(20) NOT NULL DEFAULT 'ACTIVE', -- ACTIVE/SUSPENDED/TERMINATED
+  joined_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_by_admin UUID,
+  CONSTRAINT chk_founder_no_parent CHECK (NOT is_founder OR parent_node_id IS NULL)
+);
+-- Lưu ý: Bỏ CONSTRAINT chk_depth – hệ thống vô hạn cấp, không giới hạn depth
+CREATE INDEX idx_anode_user   ON affiliate_nodes(user_id);
+CREATE INDEX idx_anode_parent ON affiliate_nodes(parent_node_id);
+CREATE INDEX idx_anode_code   ON affiliate_nodes(referral_code);
+CREATE INDEX idx_anode_depth  ON affiliate_nodes(depth_from_root);</div>
+
+  <h3 class="sub">6.3 Bảng affiliate_tree_closure – Closure Table (query O(1))</h3>
+  <div class="code-block">-- Closure table: lưu tất cả quan hệ ancestor-descendant
+-- Cho phép query 5 upline gần nhất trong O(1) không cần CTE đệ quy
+CREATE TABLE affiliate_tree_closure (
+  ancestor_id   UUID NOT NULL REFERENCES affiliate_nodes(node_id),
+  descendant_id UUID NOT NULL REFERENCES affiliate_nodes(node_id),
+  depth         INTEGER NOT NULL, -- 0=self, 1=parent, 2=grandparent... (không giới hạn)
+  PRIMARY KEY (ancestor_id, descendant_id)
+);
+CREATE INDEX idx_closure_desc ON affiliate_tree_closure(descendant_id, depth);
+CREATE INDEX idx_closure_anc  ON affiliate_tree_closure(ancestor_id, depth);
+
+-- Khi thêm node B (child) với parent A:
+INSERT INTO affiliate_tree_closure(ancestor_id, descendant_id, depth)
+  SELECT :b, :b, 0  -- self
+  UNION ALL
+  SELECT ancestor_id, :b, depth + 1
+    FROM affiliate_tree_closure WHERE descendant_id = :a; -- ancestors của A
+
+-- Query 5 upline gần nhất của buyer X (cho commission engine):
+SELECT n.*, c.depth FROM affiliate_tree_closure c
+JOIN affiliate_nodes n ON n.node_id = c.ancestor_id
+WHERE c.descendant_id = :buyerNodeId
+  AND c.depth BETWEEN 1 AND 5
+ORDER BY c.depth ASC;</div>
+
+  <h3 class="sub">6.4 Bảng commission_config – Cấu hình tỷ lệ AC</h3>
+  <div class="code-block">CREATE TABLE commission_config (
+  config_id      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  ac_index       SMALLINT NOT NULL,       -- 1..5 (ac1..ac5)
+  ac_code        VARCHAR(10) NOT NULL,    -- 'ac1'..'ac5'
+  rate_percent   DECIMAL(5,2) NOT NULL,   -- VD: 5.00, 2.00, 1.50, 1.00, 0.50
+  effective_from TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  effective_to   TIMESTAMPTZ,             -- NULL = hiện hành
+  created_by     UUID,
+  CONSTRAINT chk_ac_index CHECK (ac_index BETWEEN 1 AND 5)
+);
+-- Seed data mặc định (Claude3):
+INSERT INTO commission_config(ac_index, ac_code, rate_percent) VALUES
+  (1,'ac1',5.00),(2,'ac2',2.00),(3,'ac3',1.50),(4,'ac4',1.00),(5,'ac5',0.50);
+-- sum_ac = 10.00%</div>
+
+  <h3 class="sub">6.5 Bảng commission_transactions – Giao dịch HH</h3>
+  <div class="code-block">CREATE TABLE commission_transactions (
+  tx_id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id           UUID NOT NULL REFERENCES orders(order_id),
+  buyer_node_id      UUID NOT NULL REFERENCES affiliate_nodes(node_id),
+  beneficiary_node_id UUID REFERENCES affiliate_nodes(node_id), -- NULL = platform pool
+  buyer_level        INTEGER NOT NULL,   -- depth_from_root của người mua
+  ac_index           SMALLINT,           -- 1..5 slot nhận; NULL nếu platform pool
+  distance           SMALLINT,           -- khoảng cách upline-buyer (=ac_index)
+  commission_base_vnd BIGINT NOT NULL,   -- subtotal - discount
+  rate_snapshot      DECIMAL(5,2) NOT NULL, -- tỷ lệ tại thời điểm tạo
+  gross_amount_vnd   BIGINT NOT NULL,    -- base * rate / 100
+  pit_rate           DECIMAL(5,2) DEFAULT 10.00,
+  pit_amount_vnd     BIGINT NOT NULL DEFAULT 0,
+  net_amount_vnd     BIGINT NOT NULL,    -- gross - pit
+  status             VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+  skip_reason        VARCHAR(50),
+  period_month       CHAR(7) NOT NULL,   -- 'YYYY-MM'
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  approved_at        TIMESTAMPTZ,
+  paid_at            TIMESTAMPTZ,
+  reversed_at        TIMESTAMPTZ,
+  CONSTRAINT chk_status CHECK (status IN
+    ('PENDING','APPROVED','PAID','SKIPPED','REVERSED','PLATFORM_POOL'))
+);
+CREATE INDEX idx_ctx_order       ON commission_transactions(order_id);
+CREATE INDEX idx_ctx_beneficiary ON commission_transactions(beneficiary_node_id, status);
+CREATE INDEX idx_ctx_period      ON commission_transactions(period_month, status);</div>
+
+  <h3 class="sub">6.6 Bảng alfco_wallet – Ví ảo người mua <span class="badge-new">MỚI</span></h3>
+  <div class="code-block">CREATE TABLE alfco_wallet (
+  alfco_id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id         UUID NOT NULL REFERENCES orders(order_id),
+  buyer_node_id    UUID NOT NULL REFERENCES affiliate_nodes(node_id),
+  buyer_level      INTEGER NOT NULL,
+  alfc_actual      SMALLINT NOT NULL,    -- min(buyer_level, 5)
+  alfco_percent    DECIMAL(5,2) NOT NULL, -- % dư = 10 - sum(aci, i=1..alfc)
+  alfco_amount_vnd BIGINT NOT NULL,      -- base * alfco_percent / 100
+  status           VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+  -- PENDING → AVAILABLE (sau COMPLETED) → USED → REVERSED
+  available_at     TIMESTAMPTZ,          -- khi order COMPLETED
+  used_order_id    UUID,                 -- đơn hàng được áp dụng alfco
+  used_at          TIMESTAMPTZ,
+  reversed_at      TIMESTAMPTZ,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_alfco_buyer ON alfco_wallet(buyer_node_id, status);
+CREATE INDEX idx_alfco_order ON alfco_wallet(order_id);</div>
+
+  <h3 class="sub">6.7 Bảng commission_wallets – Ví HH thành viên</h3>
+  <div class="code-block">CREATE TABLE commission_wallets (
+  node_id              UUID PRIMARY KEY REFERENCES affiliate_nodes(node_id),
+  available_balance    BIGINT NOT NULL DEFAULT 0, -- sẵn sàng rút
+  pending_balance      BIGINT NOT NULL DEFAULT 0, -- chờ order COMPLETED
+  total_earned_gross   BIGINT NOT NULL DEFAULT 0,
+  total_pit_withheld   BIGINT NOT NULL DEFAULT 0,
+  total_paid_out       BIGINT NOT NULL DEFAULT 0,
+  current_month_gross  BIGINT NOT NULL DEFAULT 0, -- reset đầu tháng
+  alfco_available      BIGINT NOT NULL DEFAULT 0, -- ví ảo sẵn dùng (không rút được)
+  alfco_pending        BIGINT NOT NULL DEFAULT 0,
+  alfco_total_received BIGINT NOT NULL DEFAULT 0,
+  updated_at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);</div>
+
+  <h3 class="sub">6.8 Bảng pit_declarations &amp; payout_requests</h3>
+  <div class="code-block">CREATE TABLE pit_declarations (
+  declaration_id    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  period_month      CHAR(7) NOT NULL,
+  node_id           UUID NOT NULL REFERENCES affiliate_nodes(node_id),
+  total_gross_vnd   BIGINT NOT NULL,
+  total_pit_vnd     BIGINT NOT NULL,
+  total_net_vnd     BIGINT NOT NULL,
+  tx_count          INTEGER NOT NULL DEFAULT 0,
+  declaration_status VARCHAR(20) DEFAULT 'DRAFT', -- DRAFT→SUBMITTED→ACCEPTED→PAID
+  submitted_at      TIMESTAMPTZ,
+  gdt_reference     VARCHAR(100),
+  UNIQUE (period_month, node_id)
+);
+
+CREATE TABLE payout_requests (
+  payout_id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  node_id          UUID NOT NULL REFERENCES affiliate_nodes(node_id),
+  requested_amount BIGINT NOT NULL,
+  pit_amount       BIGINT NOT NULL DEFAULT 0,
+  net_amount       BIGINT NOT NULL,
+  payment_method   VARCHAR(20) NOT NULL,   -- MOMO/ZALOPAY/VIETINBANK
+  payment_account  VARCHAR(50) NOT NULL,
+  bank_name        VARCHAR(100),
+  account_holder   VARCHAR(200),
+  status           VARCHAR(20) DEFAULT 'PENDING',
+  admin_note       TEXT,
+  requested_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  processed_at     TIMESTAMPTZ,
+  processed_by     UUID
+);</div>
+
+  <!-- ══ 7. API ══ -->
+  <h2 class="sec" id="s7"><span class="sec-num">7</span> API Design – Java Spring Boot <span class="badge-new">MỚI</span></h2>
+  <p>Base URL: <code>/api/v1</code> | Auth: Bearer JWT | Content-Type: application/json</p>
+
+  <h3 class="sub">7.1 Affiliate Member APIs (User đã đăng nhập)</h3>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Mô tả</th><th>Response chính</th></tr></thead>
+    <tbody>
+      <tr><td>POST</td><td><code>/affiliate/join</code></td><td>User tham gia MLAM (tạo node)</td><td>node_id, referral_code, depth</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/me</code></td><td>Thông tin MLAM của tôi</td><td>node, depth, wallet, upline_count</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/my-code</code></td><td>Referral code + QR + link</td><td>code, link, qr_data</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/my-network</code></td><td>Stats mạng lưới theo cấp</td><td>per_level: {count, orders, gmv, my_ac}</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/my-upline</code></td><td>Chuỗi upline đến Founder</td><td>[{level, name, code, ac_slot}]</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/my-commissions</code></td><td>Lịch sử HH (filter ac_index/status/month)</td><td>paginated, incl pit</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/my-wallet</code></td><td>Số dư ví HH</td><td>available, pending, total_earned, pit_withheld</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/my-alfco</code></td><td>Ví ảo alfco</td><td>alfco_available, alfco_pending, history</td></tr>
+      <tr><td>POST</td><td><code>/affiliate/request-payout</code></td><td>Yêu cầu rút tiền HH</td><td>payout_id, estimated_at</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/tax/my-certificate</code></td><td>Biên lai khấu trừ TNCN</td><td>PDF stream</td></tr>
+      <tr><td>GET</td><td><code>/affiliate/ac-rates</code></td><td>Xem cấu hình AC hiện tại</td><td>[{ac_index, rate, effective_from}]</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">7.2 Registration with Referral Code</h3>
+  <div class="code-block">POST /api/v1/auth/register
+{
+  "phone": "0901234567",
+  "password": "...",
+  "full_name": "Nguyễn Văn A",
+  "referral_code": "HAT-3-00042"  // optional
+}
+→ Response:
+{
+  "user_id": "uuid",
+  "access_token": "...",
+  "affiliate_node_created": true,
+  "my_referral_code": "HAT-4-01234",
+  "depth_in_tree": 4,
+  "alfc_if_buy_now": 4,
+  "alfco_pct_if_buy_now": 0.5
+}</div>
+
+  <h3 class="sub">7.3 Admin APIs (PLATFORM_ADMIN)</h3>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td>POST</td><td><code>/admin/affiliate/founders</code></td><td>Tạo Founder mới (1.000 slot max)</td></tr>
+      <tr><td>GET</td><td><code>/admin/affiliate/founders</code></td><td>Danh sách Founders với filter</td></tr>
+      <tr><td>PUT</td><td><code>/admin/affiliate/founders/{id}/status</code></td><td>Suspend/Activate Founder</td></tr>
+      <tr><td>GET</td><td><code>/admin/affiliate/network/{nodeId}</code></td><td>Xem cây mạng lưới từ 1 node (max 5 cấp sâu)</td></tr>
+      <tr><td>GET</td><td><code>/admin/affiliate/transactions</code></td><td>Tất cả commission transactions với filter</td></tr>
+      <tr><td>POST</td><td><code>/admin/affiliate/transactions/approve-batch</code></td><td>Duyệt nhiều transactions</td></tr>
+      <tr><td>GET</td><td><code>/admin/affiliate/alfco/summary</code></td><td>Tổng hợp alfco theo cấp và kỳ</td></tr>
+      <tr><td>GET</td><td><code>/admin/affiliate/payouts/pending</code></td><td>Danh sách payout chờ duyệt</td></tr>
+      <tr><td>POST</td><td><code>/admin/affiliate/payouts/{id}/approve</code></td><td>Duyệt payout</td></tr>
+      <tr><td>PUT</td><td><code>/admin/affiliate/commission-config</code></td><td>Cập nhật AC rates (validate sum = 10%)</td></tr>
+      <tr><td>GET</td><td><code>/admin/affiliate/tax/monthly-summary</code></td><td>Tổng hợp thuế TNCN theo tháng</td></tr>
+      <tr><td>POST</td><td><code>/admin/affiliate/tax/submit-gdt</code></td><td>Nộp kê khai lên GDT API</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══ 8. COMMISSION ENGINE ══ -->
+  <h2 class="sec" id="s8"><span class="sec-num">8</span> Commission Engine – Thuật Toán &amp; Triển Khai <span class="badge-new">MỚI</span></h2>
+
+  <h3 class="sub">8.1 Tổng quan luồng xử lý</h3>
+  <p>Commission Engine chạy ASYNC sau khi <code>OrderDeliveredEvent</code> được publish. Không block checkout flow. Spring <code>@Async</code> + <code>@Transactional</code> đảm bảo atomicity.</p>
+
+  <h3 class="sub">8.2 Pseudocode Java Spring Boot</h3>
+  <div class="code-block">@Service
+public class CommissionEngineService {
+
+    // AC rates: index 0 = ac1 (5%), index 4 = ac5 (0.5%)
+    private static final double[] AC_RATES = {5.0, 2.0, 1.5, 1.0, 0.5};
+    private static final double SUM_AC = 10.0;
+
+    @EventListener
+    @Async("commissionPool")
+    public void onOrderDelivered(OrderDeliveredEvent e) {
+        processCommission(e.getOrderId());
+    }
+
+    @Transactional
+    public void processCommission(UUID orderId) {
+        Order order = orderRepo.findById(orderId).orElseThrow();
+        if (order.isTestOrder()) return;
+
+        long base = order.getSubtotal() - order.getDiscountAmount();
+        if (base <= 0) return;
+
+        Optional&lt;AffiliateNode&gt; buyerNodeOpt = nodeRepo.findByUserId(order.getBuyerUserId());
+        if (buyerNodeOpt.isEmpty()) {
+            platformPool.add(base * SUM_AC / 100, orderId, "NO_NODE"); return;
+        }
+        AffiliateNode buyerNode = buyerNodeOpt.get();
+        int n = buyerNode.getDepthFromRoot();  // buyer's level
+        int alfc = Math.min(n, 5);
+
+        // Query up to 5 closest ancestors via closure table
+        List&lt;UplineInfo&gt; ancestors = closureRepo.findAncestors(buyerNode.getNodeId(), 1, alfc);
+
+        List&lt;CommissionConfig&gt; acConfigs = configService.getActiveConfigs(); // ac1..ac5
+        long totalPaid = 0;
+
+        for (int i = 0; i &lt; alfc; i++) {
+            if (i >= ancestors.size()) break;
+            UplineInfo upline = ancestors.get(i);
+            if (upline.getStatus() != ACTIVE) {
+                logSkip(orderId, upline, "ACCOUNT_SUSPENDED"); continue;
+            }
+            double rate = acConfigs.get(i).getRatePercent();  // AC_RATES[i]
+            long gross = (long)(base * rate / 100);
+            long pit   = gross >= 2_000_000 ? (long)(gross * 0.10) : 0;
+            long net   = gross - pit;
+            saveCommissionTx(orderId, buyerNode, upline.getNode(), i+1, base, gross, pit, net);
+            walletService.addPending(upline.getNode(), net);
+            totalPaid += gross;
+        }
+
+        // alfco – ví ảo người mua
+        long poolTotal = (long)(base * SUM_AC / 100);
+        long alfco = poolTotal - totalPaid;
+        if (alfco > 0) {
+            double alfcoPct = SUM_AC - sumAcRates(alfc);
+            saveAlfcoPending(orderId, buyerNode, n, alfc, alfcoPct, alfco);
+            walletService.addAlfcoPending(buyerNode, alfco);
+        }
+
+        // Phần còn lại do skip → platform pool
+        // (đã xử lý trong từng skip case)
+    }
+
+    private double sumAcRates(int alfc) {
+        double sum = 0;
+        for (int i = 0; i &lt; alfc; i++) sum += AC_RATES[i];
+        return sum;
+    }
+
+    // Khi order COMPLETED: approve HH + alfco
+    @EventListener
+    @Async("commissionPool")
+    public void onOrderCompleted(OrderCompletedEvent e) {
+        commissionRepo.approveByOrder(e.getOrderId());    // PENDING → APPROVED
+        alfcoRepo.approveByOrder(e.getOrderId());          // PENDING → AVAILABLE
+        walletService.movePendingToAvailable(e.getOrderId());
+    }
+}</div>
+
+  <h3 class="sub">8.3 Áp dụng alfco vào đơn hàng kế tiếp</h3>
+  <div class="code-block">// Khi buyer checkout, tự động đề nghị dùng alfco:
+GET /affiliate/my-alfco
+→ { "alfco_available_vnd": 45000, "source_orders": [...] }
+
+// Apply alfco vào đơn mới:
+POST /orders/{orderId}/apply-alfco
+{ "alfco_amount": 45000 }
+→ Trừ alfco_wallet, giảm subtotal tương ứng; không ảnh hưởng commission_base của đơn mới
+   (commission_base tính trên giá gốc, không trừ alfco)</div>
+
+  <h3 class="sub">8.4 Daily/Monthly Jobs</h3>
+  <table>
+    <thead><tr><th>Job</th><th>Schedule</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td>Commission Auto-Approve</td><td>Daily 03:00</td><td>Order DELIVERED &gt;3 ngày → COMPLETED → HH PENDING → APPROVED; alfco PENDING → AVAILABLE</td></tr>
+      <tr><td>Monthly PIT Summary</td><td>1st/month 01:00</td><td>Tổng hợp PIT theo từng node cho tháng trước → INSERT pit_declarations</td></tr>
+      <tr><td>Wallet Monthly Reset</td><td>1st/month 01:00</td><td>Reset current_month_gross = 0 cho tất cả wallets</td></tr>
+      <tr><td>Payout Processing</td><td>Daily 09:00</td><td>Xử lý payout đã APPROVED → gọi MoMo/VietinBank API; retry on fail; alert nếu fail &gt;3 lần</td></tr>
+      <tr><td>alfco Expiry Check</td><td>Weekly</td><td>alfco AVAILABLE &gt;90 ngày chưa dùng → thông báo qua ZaloOA</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══ 9. SPRINT PLAN ══ -->
+  <h2 class="sec" id="s9"><span class="sec-num">9</span> Hướng Dẫn Triển Khai – Sprint Plan</h2>
+
+  <h3 class="sub">9.1 Lộ trình tổng thể (8 tuần)</h3>
+  <table>
+    <thead><tr><th>Sprint</th><th>Tuần</th><th>Focus</th><th>Deliverable</th></tr></thead>
+    <tbody>
+      <tr><td>Sprint 1</td><td>1–2</td><td>Database + Core Services</td><td>8 bảng mới; ReferralTreeService (closure table); CommissionEngine; AlfcoService</td></tr>
+      <tr><td>Sprint 2</td><td>3–4</td><td>APIs + Founder Management</td><td>25+ REST APIs; Admin Founder management; Order event hook; PIT calculation; alfco API</td></tr>
+      <tr><td>Sprint 3</td><td>5–6</td><td>Frontend Web (ReactJS)</td><td>affiliate-landing + affiliate-admin (Claude3 files); tích hợp admin.hathyo.com</td></tr>
+      <tr><td>Sprint 4</td><td>7–8</td><td>Mobile App + Go-Live</td><td>React Native: tab Affiliate + alfco + payout + deep link; soft launch 10% user</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">9.2 Chi tiết Sprint 1 – Database &amp; Core Services</h3>
+  <table>
+    <thead><tr><th>Task</th><th>Mô tả</th><th>Người làm</th><th class="c">Estimate</th><th class="c">Priority</th></tr></thead>
+    <tbody>
+      <tr><td>DB-01</td><td>Viết migration SQL tạo 8 bảng mới (incl. alfco_wallet); seed commission_config AC1-AC5</td><td>Backend #1</td><td class="c">3 ngày</td><td class="c">P0</td></tr>
+      <tr><td>DB-02</td><td>Tạo indexes; ENUM types; constraints; triggers trên closure table</td><td>Backend #1</td><td class="c">1 ngày</td><td class="c">P0</td></tr>
+      <tr><td>BE-01</td><td>AffiliateNodeService: create node, gen referral code, calc depth, JOIN affiliate</td><td>Backend #1</td><td class="c">2 ngày</td><td class="c">P0</td></tr>
+      <tr><td>BE-02</td><td>ReferralTreeService: insert closure table khi join; findAncestors(nodeId, 1, 5)</td><td>Backend #2</td><td class="c">2 ngày</td><td class="c">P0</td></tr>
+      <tr><td>BE-03</td><td>CommissionEngineService: full implementation incl. AC distribution + PIT + alfco</td><td>Backend #2</td><td class="c">3 ngày</td><td class="c">P0</td></tr>
+      <tr><td>BE-04</td><td>AlfcoService: pending/available/used/reversed; apply-alfco vào đơn mới</td><td>Backend #1</td><td class="c">2 ngày</td><td class="c">P0</td></tr>
+      <tr><td>BE-05</td><td>WalletService: pending/available balance; PIT tracking; monthly reset job</td><td>Backend #1</td><td class="c">1 ngày</td><td class="c">P0</td></tr>
+      <tr><td>QA-01</td><td>Unit test: tree insert, AC calc (n&lt;5 + n≥5), alfco, edge cases, reverse</td><td>QA</td><td class="c">2 ngày</td><td class="c">P0</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">9.3 Checklist Frontend – Màn hình cần xây</h3>
+  <table>
+    <thead><tr><th>Màn hình</th><th>Platform</th><th class="c">Priority</th></tr></thead>
+    <tbody>
+      <tr><td>Affiliate Landing – tổng quan, AC rates, mạng lưới, alfco</td><td>Web + App</td><td class="c">P0</td></tr>
+      <tr><td>Affiliate Admin – toàn bộ quản trị MLAM</td><td>Web admin</td><td class="c">P0</td></tr>
+      <tr><td>Trang share referral code + QR</td><td>Web + App</td><td class="c">P0</td></tr>
+      <tr><td>Dashboard HH + mạng lưới + AC breakdown</td><td>Web + App</td><td class="c">P0</td></tr>
+      <tr><td>Ví HH + Rút tiền (min 200K)</td><td>Web + App</td><td class="c">P0</td></tr>
+      <tr><td>Ví ảo alfco + lịch sử nhận + áp dụng vào đơn</td><td>Web + App</td><td class="c">P0</td></tr>
+      <tr><td>Thuế TNCN + Chứng từ 03/BL</td><td>Web + App</td><td class="c">P0</td></tr>
+      <tr><td>Admin: Founder management (tạo, khóa, phân loại)</td><td>Web admin</td><td class="c">P0</td></tr>
+      <tr><td>Admin: AC Config + bảng alfco simulation</td><td>Web admin</td><td class="c">P0</td></tr>
+      <tr><td>Admin: Payout approval + PIT</td><td>Web admin</td><td class="c">P0</td></tr>
+      <tr><td>Admin: Tax declarations + GDT submit</td><td>Web admin</td><td class="c">P1</td></tr>
+      <tr><td>Admin: Audit Log đầy đủ (alfco, AC config, payout)</td><td>Web admin</td><td class="c">P1</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">9.4 Lưu ý bảo mật</h3>
+  <ul>
+    <li><strong>Referral code:</strong> dùng base62 nanoid (20 ký tự) để tránh brute-force đoán mã.</li>
+    <li><strong>Rate limiting:</strong> API validate referral code giới hạn 10 request/phút/IP.</li>
+    <li><strong>AC calculation:</strong> server-side hoàn toàn, không tin vào client.</li>
+    <li><strong>Payout OTP:</strong> Xác nhận qua ZaloOA/SMS trước khi tạo payout request.</li>
+    <li><strong>Dual-control:</strong> Payout &gt;10 triệu cần 2 admin duyệt.</li>
+    <li><strong>Audit log:</strong> Mọi thay đổi AC config, Founder create, payout approve đều có audit trail.</li>
+    <li><strong>Anti-circular:</strong> Closure table constraint tự động ngăn A→B→A (circular referral).</li>
+    <li><strong>alfco fraud:</strong> Phát hiện khi alfco_total_received &gt;50% tổng doanh thu của node → alert admin.</li>
+    <li><strong>Depth bombing:</strong> cfgMaxDepth mặc định 20 trong commission engine để tránh vô tận loop.</li>
+  </ul>
+
+  <h3 class="sub">9.5 Tích hợp với hệ thống hiện có</h3>
+  <table>
+    <thead><tr><th>Tích hợp</th><th>Mô tả</th><th>Cách thực hiện</th></tr></thead>
+    <tbody>
+      <tr><td>MatBao (HĐDT)</td><td>HH của sàn → doanh thu → phát hành HĐDT qua MatBao</td><td>CommissionEngineService sau khi platform pool confirmed → trigger MatBao API</td></tr>
+      <tr><td>VietinBank</td><td>Payout tự động qua VietinBank API</td><td>PayoutService gọi VietinBank disbursement API; fallback manual</td></tr>
+      <tr><td>ZaloOA + SMS</td><td>Thông báo HH nhận, alfco available, payout, OTP rút tiền</td><td>NotificationService.sendCommissionAlert() + sendAlfcoAlert()</td></tr>
+      <tr><td>PostgreSQL hiện có</td><td>Thêm 8 bảng mới vào schema hiện tại; FK đến users và orders</td><td>Migration script Flyway; backward compatible</td></tr>
+      <tr><td>React Web</td><td>Thêm Affiliate section vào admin.hathyo.com; standalone landing</td><td>New React module; lazy loaded; tham khảo Claude3 HTML files</td></tr>
+      <tr><td>React Native App</td><td>Thêm tab Affiliate vào app buyer (screen stack mới)</td><td>New screen stack trong existing app; deep link ref code</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══ 10. PHỤ LỤC ══ -->
+  <h2 class="sec" id="s10"><span class="sec-num">10</span> Phụ Lục – Từ Điển Nghiệp Vụ</h2>
+  <table>
+    <thead><tr><th>Thuật ngữ</th><th>Định nghĩa</th></tr></thead>
+    <tbody>
+      <tr><td><strong>MLAM</strong></td><td>Multi-Level Affiliate Marketing – Tiếp Thị Liên Kết Đa Tầng. Hệ thống phân phối hoa hồng qua mạng lưới giới thiệu nhiều cấp.</td></tr>
+      <tr><td><strong>Founder (L0)</strong></td><td>1.000 nút gốc được Admin tạo; depth_from_root = 0; không có parent; tham gia nhận HH từ chuỗi 5 cấp bên dưới khi đứng đúng vị trí.</td></tr>
+      <tr><td><strong>Cấp n (Ln)</strong></td><td>Vị trí trong cây: L0=Founder, L1 do Founder giới thiệu, L2 do L1 giới thiệu, ... Ln không giới hạn.</td></tr>
+      <tr><td><strong>ac1..ac5</strong></td><td>5 slot hoa hồng tính từ người mua ngược lên: ac1=5% (gần nhất), ac5=0.5% (xa nhất, tối đa 5 bậc). Tổng = 10%.</td></tr>
+      <tr><td><strong>alfc</strong></td><td>Affiliate Levels for Commission = min(n, 5). Số cấp upline thực sự nhận HH khi người mua ở cấp n.</td></tr>
+      <tr><td><strong>alfco</strong></td><td>Affiliate Level Commission Offset = 10% − Σ(aci, i=1..alfc). Phần pool dư khi n&lt;5; hoàn vào ví ảo người mua sau khi đơn COMPLETED.</td></tr>
+      <tr><td><strong>Ví ảo (alfco wallet)</strong></td><td>Số dư alfco của người mua. Dùng để giảm giá đơn hàng kế tiếp. Không rút được thành tiền mặt. Miễn thuế TNCN.</td></tr>
+      <tr><td><strong>commission_base</strong></td><td>subtotal − discount_amount (không tính ship, VAT). Dùng để tính affiliate pool.</td></tr>
+      <tr><td><strong>affiliate pool</strong></td><td>10% của commission_base. Tổng phân bổ cho tối đa 5 upline + alfco.</td></tr>
+      <tr><td><strong>platform_pool</strong></td><td>Phần HH bị skip (không có upline, account suspended) quay về sàn.</td></tr>
+      <tr><td><strong>PIT</strong></td><td>Personal Income Tax – Thuế Thu Nhập Cá Nhân. 10% khấu trừ tại nguồn khi chi HH ≥ 2 triệu/lần.</td></tr>
+      <tr><td><strong>Closure Table</strong></td><td>Bảng lưu tất cả quan hệ ancestor-descendant để query upline chain trong O(1), không cần CTE đệ quy mỗi lần.</td></tr>
+      <tr><td><strong>pending_balance</strong></td><td>HH đang chờ order COMPLETED; chưa rút được.</td></tr>
+      <tr><td><strong>available_balance</strong></td><td>HH đã APPROVED; sẵn sàng rút (tối thiểu 200K).</td></tr>
+      <tr><td><strong>GDT</strong></td><td>Tổng Cục Thuế – cổng nộp khai thuế etax.gdt.gov.vn.</td></tr>
+      <tr><td><strong>KBNN</strong></td><td>Kho Bạc Nhà Nước – nơi nộp tiền thuế hàng tháng.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="doc-footer">
+    <p><strong>Hathyo MLAM – Claude3 Solution Document</strong></p>
+    <p>Ngày tạo: 2026-05-17 &nbsp;|&nbsp; Phiên bản: 3.0 &nbsp;|&nbsp; Phân tích bởi Claude (Anthropic)</p>
+    <p>Thực hiện: Nguyễn Quốc Trọng + Nguyễn Minh Duy &nbsp;|&nbsp; Liên hệ: admin@hathyo.com</p>
+  </div>
+</div><!-- /page -->
+</div><!-- /doc-body -->
+</body>
+</html>
