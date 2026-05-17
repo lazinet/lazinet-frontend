@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HATHYO - Đội Ngũ | Cùng Bạn Vui Khỏe Hơn!</title>
+<meta name="description" content="Danh thiếp số đội ngũ HATHYO — Cùng Bạn Vui Khỏe Hơn! Nền tảng thương mại điện tử sức khỏe hàng đầu Việt Nam.">
+<meta name="theme-color" content="#0a703f">
+<link rel="icon" href="https://lazinet.com/assets/img/Logo_Hathyo/favicon_io/favicon.ico">
+<meta property="og:title" content="HATHYO - Đội Ngũ Của Chúng Tôi">
+<meta property="og:description" content="Danh thiếp số đội ngũ HATHYO — Cùng Bạn Vui Khỏe Hơn!">
+<meta property="og:image" content="https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #0a703f;
+    --primary-dark: #064e2b;
+    --primary-light: #14a35b;
+    --secondary: #ff6302;
+    --bg: #051a0d;
+    --glass: rgba(5,25,10,0.82);
+    --surface: rgba(10,112,63,0.12);
+    --border: rgba(10,112,63,0.28);
+    --text: #e8f5ee;
+    --muted: #8fbea0;
+    --r: 14px;
+    --font: 'Inter', 'Arial', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hidden { display: none !important; }
+
+  /* ─── BACKGROUND ─── */
+  #page-bg {
+    position: fixed; inset: 0; z-index: -1; overflow: hidden;
+    background: linear-gradient(135deg, #020e05 0%, #051a0d 50%, #0a2c15 100%);
+  }
+  #page-bg img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0.18; pointer-events: none;
+  }
+  #page-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(10,112,63,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,99,2,0.06) 0%, transparent 50%);
+  }
+
+  /* ─── TOAST ─── */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: rgba(5,25,10,0.97); backdrop-filter: blur(20px);
+    color: #fff; padding: 12px 24px; border-radius: 50px;
+    border: 1px solid var(--primary); font-size: 14px; font-weight: 600;
+    transition: transform .4s cubic-bezier(.175,.885,.32,1.275);
+    z-index: 9999; pointer-events: none; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── PAGE WRAPPER ─── */
+  .page { max-width: 1000px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ─── PASSWORD WALL ─── */
+  #pw-wall {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  }
+  .pw-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 20px; backdrop-filter: blur(24px);
+    padding: 44px 36px; max-width: 380px; width: 100%; text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(10,112,63,0.2);
+  }
+  .pw-logo { height: 72px; margin-bottom: 20px; filter: drop-shadow(0 0 16px rgba(10,112,63,0.5)); }
+  .pw-title { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .pw-sub { font-size: .85rem; color: var(--muted); margin-bottom: 28px; }
+  .pw-input-wrap { position: relative; margin-bottom: 10px; }
+  .pw-input-wrap input {
+    width: 100%; padding: 13px 46px 13px 18px;
+    border-radius: 12px; border: 1px solid var(--border);
+    background: rgba(255,255,255,0.06); color: var(--text);
+    font-size: 1rem; outline: none; font-family: var(--font);
+    transition: .3s;
+  }
+  .pw-input-wrap input:focus { border-color: var(--primary); background: rgba(10,112,63,0.1); box-shadow: 0 0 0 3px rgba(10,112,63,0.15); }
+  .pw-eye { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--muted); font-size: 16px; }
+  .pw-err { color: #f87171; font-size: .82rem; min-height: 18px; margin-bottom: 12px; }
+  .pw-btn {
+    width: 100%; padding: 13px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer;
+    font-family: var(--font); transition: .3s; letter-spacing: .5px;
+    box-shadow: 0 6px 20px rgba(10,112,63,0.4);
+  }
+  .pw-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(10,112,63,0.5); }
+  .pw-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  /* ─── LISTING VIEW ─── */
+  .list-header { text-align: center; padding: 36px 0 28px; }
+  .list-logo { height: 64px; margin-bottom: 14px; filter: drop-shadow(0 0 18px rgba(10,112,63,0.5)); }
+  .list-title { font-size: clamp(18px,4vw,32px); font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+  .list-sub { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .list-count { display: inline-block; background: rgba(10,112,63,0.25); border: 1px solid var(--border); color: var(--primary-light); font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-top: 8px; }
+
+  .toolbar {
+    display: flex; gap: 12px; margin-bottom: 18px;
+    background: var(--surface); backdrop-filter: blur(20px);
+    padding: 14px 18px; border-radius: var(--r); border: 1px solid var(--border);
+    align-items: center;
+  }
+  .search-wrap { flex: 1; min-width: 180px; position: relative; }
+  .search-wrap i { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+  .search-wrap input {
+    width: 100%; padding: 10px 13px 10px 38px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); font-size: 14px; outline: none;
+    transition: .3s; font-family: var(--font);
+  }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-wrap input:focus { border-color: var(--primary); background: rgba(10,112,63,0.1); box-shadow: 0 0 0 3px rgba(10,112,63,0.12); }
+
+  .members-grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  @media(max-width:900px){ .members-grid{ grid-template-columns: repeat(4,1fr); } }
+  @media(max-width:640px){ .members-grid{ grid-template-columns: repeat(3,1fr); } }
+  @media(max-width:380px){ .members-grid{ grid-template-columns: repeat(2,1fr); } }
+
+  .mc {
+    background: var(--surface); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 10px 12px; text-align: center; cursor: pointer;
+    transition: all .3s; display: flex; flex-direction: column; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .mc::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+    opacity: 0; transition: .3s;
+  }
+  .mc:hover { transform: translateY(-5px); border-color: rgba(10,112,63,0.5); box-shadow: 0 16px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(10,112,63,0.2); }
+  .mc:hover::before { opacity: 1; }
+  .mc-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; border: 2px solid rgba(255,255,255,.12); transition: border-color .3s; flex-shrink: 0; }
+  .mc:hover .mc-avatar { border-color: var(--secondary); }
+  .mc-badge { display: inline-block; background: rgba(10,112,63,0.25); border: 1px solid rgba(10,112,63,0.45); color: var(--primary-light); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-bottom: 4px; white-space: nowrap; }
+  .mc-name { font-size: 12px; color: #fff; font-weight: 700; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; width: 100%; }
+  .mc-pos { font-size: 10px; color: var(--muted); margin-top: 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 100%; }
+
+  .pgn-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .pgn-row select { padding: 8px 12px; background: rgba(10,112,63,0.15); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer; outline: none; font-family: var(--font); }
+  .pagination { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+  .pgn-btn { min-width: 34px; height: 34px; padding: 0 8px; border: 1px solid var(--border); background: var(--surface); backdrop-filter: blur(10px); color: var(--muted); cursor: pointer; border-radius: 8px; font-family: var(--font); font-weight: 600; font-size: 13px; transition: .2s; }
+  .pgn-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary-light); }
+  .pgn-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(10,112,63,0.4); }
+  .pgn-btn:disabled { opacity: .4; cursor: default; }
+
+  /* ─── DETAIL VIEW ─── */
+  .dt-header { text-align: center; padding: 28px 0 18px; }
+  .dt-logo { height: 56px; filter: drop-shadow(0 0 18px rgba(10,112,63,0.45)); margin-bottom: 10px; }
+  .dt-name { font-size: clamp(16px,3vw,24px); font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+  .dt-pos { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* ─── CARD SCALING ENGINE ─── */
+  .cards-wrapper { display: flex; flex-direction: row; gap: 16px; justify-content: center; align-items: flex-start; margin-bottom: 8px; }
+  @media(max-width:680px){ .cards-wrapper { flex-direction: column; align-items: center; gap: 10px; } }
+
+  .card-scaler-wrap {
+    display: flex; justify-content: center; align-items: flex-start;
+    padding: 0; margin: 0; overflow: visible;
+  }
+  .bizcard-frame {
+    width: 500px; height: 300px;
+    position: relative; transform-origin: top center;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    border-radius: 0;
+    background: #0a2c15;
+  }
+  .bizcard {
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    overflow: hidden;
+  }
+
+  /* ─── FRONT CARD LAYOUT ─── */
+  .card-front-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: row;
+    position: relative;
+  }
+  .cf-left {
+    width: 42%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 14px 10px; gap: 8px;
+    position: relative; z-index: 1;
+  }
+  .cf-logo { width: 140px; height: auto; max-height: 70px; object-fit: contain; background: rgba(240,248,240,0.95); padding: 8px 10px; border-radius: 8px; }
+  .cf-photo { width: 96px; height: 96px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+  .cf-socials { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-top: 2px; }
+  .cf-soc-btn {
+    display: flex; align-items: center; gap: 3px;
+    background: rgba(255,255,255,0.88); border-radius: 4px;
+    padding: 3px 6px; font-size: 9px; font-weight: 700;
+    color: #333; text-decoration: none; transition: .2s; white-space: nowrap;
+  }
+  .cf-soc-btn:hover { opacity: 0.8; }
+  .cf-soc-btn i { font-size: 10px; }
+
+  .cf-right {
+    width: 58%; height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 14px 14px 10px;
+    position: relative; z-index: 1;
+  }
+  .cf-top {}
+  .cf-name { font-size: 22px; font-weight: 900; color: #ff6302; line-height: 1.1; font-family: var(--font); text-transform: uppercase; }
+  .cf-name-divider { width: 100%; height: 2px; background: linear-gradient(90deg, #ff6302, transparent); margin: 5px 0; }
+  .cf-position { font-size: 13px; color: #0a703f; font-weight: 700; }
+  .cf-dept { font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 1px; font-style: italic; }
+  .cf-contacts { display: flex; flex-direction: column; gap: 3px; margin-top: 8px; }
+  .cf-contact-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.88); text-decoration: none; }
+  .cf-contact-item i { color: #ff6302; font-size: 11px; width: 12px; flex-shrink: 0; }
+  .cf-contact-item:hover { color: #ff6302; }
+
+  .cf-bottom { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 4px; }
+  .cf-qr {
+    width: 82px; height: 82px;
+    background: #fff; border-radius: 6px; padding: 3px;
+    border: 2px solid #0a703f;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+  .cf-qr img, .cf-qr canvas { width: 100% !important; height: 100% !important; }
+  .cf-company-info { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; padding-right: 8px; }
+  .cf-company-name { font-size: 10px; font-weight: 800; color: #fff; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ─── BACK CARD LAYOUT ─── */
+  .card-back-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    position: relative; z-index: 1;
+  }
+  .cb-header { padding: 12px 20px 8px; display: flex; align-items: center; justify-content: center; }
+  .cb-logo { height: 60px; max-width: 220px; object-fit: contain; background: rgba(240,248,240,0.92); padding: 6px 14px; border-radius: 8px; }
+
+  .cb-body { flex: 1; padding: 4px 16px 0; }
+  .cb-biz-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #ff6302; border-bottom: 1px solid rgba(255,99,2,0.4); padding-bottom: 3px; margin-bottom: 6px; letter-spacing: 1px; }
+  .cb-services { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
+  .cb-service-item { display: flex; align-items: flex-start; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.9); line-height: 1.3; }
+  .cb-service-item i { color: #ff6302; font-size: 9px; margin-top: 2px; flex-shrink: 0; }
+
+  .cb-footer {
+    background: rgba(10,112,63,0.75); backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding: 7px 14px 8px;
+  }
+  .cb-co-name { font-size: 10px; font-weight: 800; color: #fff; text-transform: uppercase; text-align: center; margin-bottom: 4px; letter-spacing: 0.5px; }
+  .cb-contact-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 3px; flex-wrap: wrap; }
+  .cb-contact-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: rgba(255,255,255,0.9); text-decoration: none; white-space: nowrap; }
+  .cb-contact-item i { color: #ff6302; font-size: 10px; }
+  .cb-addr { display: flex; align-items: flex-start; gap: 4px; font-size: 9.5px; color: rgba(255,255,255,0.8); text-decoration: none; justify-content: center; }
+  .cb-addr i { color: #ff6302; font-size: 9px; margin-top: 2px; flex-shrink: 0; }
+
+  /* ─── ACTION BUTTONS ─── */
+  .action-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    max-width: 860px; margin: 20px auto 0; justify-content: center;
+    padding: 0 8px;
+  }
+  .act-btn {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 11px 18px; border-radius: 50px;
+    font-weight: 700; font-size: 13px; border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer; color: #fff; transition: all .25s; font-family: var(--font);
+    white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .act-btn:hover { transform: translateY(-3px); filter: brightness(1.15); border-color: rgba(255,255,255,0.55); }
+  .act-btn-chat  { background: linear-gradient(135deg, #1565c0, #0d47a1); flex: 0 0 auto; min-width: 180px; }
+  .act-btn-contact { background: linear-gradient(135deg, var(--secondary), #e55400); }
+  .act-btn-share { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+  .act-btn-vcard { background: linear-gradient(135deg, #7b1fa2, #4a0072); }
+  .act-btn-png   { background: linear-gradient(135deg, #6a1b9a, #38006b); }
+  .act-btn-pdf   { background: linear-gradient(135deg, #b71c1c, #7f0000); }
+  @media(max-width:600px){ .act-btn { font-size: 12px; padding: 9px 14px; } .act-btn-chat { min-width: 160px; } }
+
+  /* ─── PANELS (chat & contact) ─── */
+  .panel-wrap {
+    background: var(--glass); backdrop-filter: blur(24px);
+    border: 1px solid var(--border); border-radius: var(--r);
+    overflow: hidden; margin: 16px 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    background: rgba(10,112,63,0.2);
+  }
+  .panel-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; color: #fff; }
+  .panel-title i { color: var(--secondary); }
+  .panel-close {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 18px; transition: .2s; padding: 4px 8px; border-radius: 6px;
+  }
+  .panel-close:hover { color: #f87171; background: rgba(255,0,0,0.1); }
+
+  /* Chat Panel */
+  .chat-bot-info {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px; border-bottom: 1px solid var(--border);
+    background: rgba(10,112,63,0.1);
+  }
+  .chat-bot-avatar { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; flex-shrink: 0; }
+  .chat-bot-name { font-weight: 700; color: #fff; font-size: 14px; }
+  .chat-bot-pos { font-size: 11px; color: var(--muted); }
+  .online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; margin-left: 6px; box-shadow: 0 0 0 2px rgba(34,197,94,0.3); animation: pulse-dot 1.8s ease-in-out infinite; vertical-align: middle; }
+  @keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 2px rgba(34,197,94,.3)}50%{box-shadow:0 0 0 5px rgba(34,197,94,.05),0 0 8px rgba(34,197,94,.5)} }
+
+  .chat-history {
+    height: 340px; overflow-y: auto; padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    scrollbar-width: thin; scrollbar-color: var(--primary) transparent;
+  }
+  .chat-history::-webkit-scrollbar { width: 3px; }
+  .chat-history::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+  .chat-msg {
+    max-width: 82%; padding: 10px 14px; border-radius: 16px;
+    font-size: 14px; line-height: 1.55; animation: msgIn .3s ease;
+  }
+  @keyframes msgIn { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)} }
+  .chat-msg.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 4px; }
+  .chat-msg.bot { align-self: flex-start; background: rgba(255,255,255,0.07); color: var(--text); border-bottom-left-radius: 4px; border: 1px solid var(--border); }
+  .chat-msg.bot p { margin: 0; }
+  .chat-msg.bot p + p { margin-top: 6px; }
+  .chat-msg.typing { font-style: italic; color: var(--muted); font-size: 13px; }
+
+  .chat-input-row {
+    display: flex; gap: 10px; padding: 12px 16px;
+    border-top: 1px solid var(--border); background: rgba(0,0,0,0.2);
+  }
+  .chat-input-row input {
+    flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border); border-radius: 50px; color: var(--text);
+    font-size: 14px; outline: none; transition: .3s; font-family: var(--font);
+  }
+  .chat-input-row input::placeholder { color: rgba(255,255,255,0.4); }
+  .chat-input-row input:focus { border-color: var(--primary); background: rgba(10,112,63,0.1); }
+  .chat-send-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--primary); color: #fff; border: none;
+    cursor: pointer; font-size: 15px; transition: .2s; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chat-send-btn:hover { background: var(--primary-light); transform: scale(1.08); }
+
+  /* Contact Form Panel */
+  .contact-form { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width:500px){ .form-row-2 { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 12px; font-weight: 600; color: var(--primary-light); }
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 10px 14px; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    font-size: 13px; outline: none; transition: .3s; font-family: var(--font);
+  }
+  .form-group select option { background: #062010; color: #fff; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: rgba(10,112,63,0.08); box-shadow: 0 0 0 3px rgba(10,112,63,0.12); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; border: none; padding: 13px; border-radius: 10px;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: .3s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: var(--font); box-shadow: 0 6px 20px rgba(10,112,63,0.35);
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(10,112,63,0.45); }
+  .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .form-success { text-align: center; padding: 30px 20px; }
+  .form-success .check-icon { font-size: 48px; color: var(--primary-light); margin-bottom: 12px; }
+  .form-success h3 { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+  .form-success p { font-size: 13px; color: var(--muted); }
+
+  /* ─── FOOTER ─── */
+  .site-footer { text-align: center; padding: 3rem 16px 16px; font-size: 12px; color: var(--muted); line-height: 2; }
+  .site-footer a { color: var(--primary-light); text-decoration: none; }
+  .site-footer a:hover { text-decoration: underline; }
+  .ft-badge { display: inline-block; padding: 2px 10px; border-radius: 4px; margin: 2px; }
+  .ft-hathyo { background: var(--primary); color: #fff; }
+  .ft-lazinet { background: #1565c0; color: #fff; }
+
+  /* Google Translate */
+  .goog-te-gadget-simple { background: rgba(0,0,0,0.4) !important; border: none !important; padding: 4px 12px !important; border-radius: 20px; }
+  .goog-te-gadget-simple span { color: white !important; font-weight: bold; }
+  .goog-te-gadget img { display: none; }
+  body { top: 0 !important; }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div id="page-bg">
+  <img src="https://lazinet.com/assets/img/background/HATHYO_TransBG_032.png" alt="" loading="lazy">
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     PASSWORD WALL
+═══════════════════════════════════════════════════ -->
+<div id="pw-wall" class="hidden">
+  <div class="pw-card">
+    <img src="https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png" class="pw-logo" alt="HATHYO" onerror="this.style.display='none'">
+    <div class="pw-title">HATHYO - Đội Ngũ</div>
+    <div class="pw-sub">Cùng Bạn Vui Khỏe Hơn!</div>
+    <div class="pw-input-wrap">
+      <input id="pw-input" type="password" placeholder="Nhập mật khẩu truy cập..."
+        onkeydown="if(event.key==='Enter') doVerifyPw()">
+      <i class="fa fa-eye pw-eye" id="pw-eye" onclick="togglePwEye()"></i>
+    </div>
+    <div id="pw-err" class="pw-err"></div>
+    <button id="pw-btn" class="pw-btn" onclick="doVerifyPw()">
+      <i class="fa fa-lock"></i> Truy cập
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     LISTING VIEW
+═══════════════════════════════════════════════════ -->
+<div id="listing-view" class="hidden">
+<div class="page">
+  <div class="list-header">
+    <img class="list-logo" src="https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png" alt="HATHYO" onerror="this.style.display='none'">
+    <div class="list-title" id="list-title-text">HATHYO - Đội Ngũ</div>
+    <div class="list-sub" id="list-sub-text">Cùng Bạn Vui Khỏe Hơn!</div>
+    <div class="list-count" id="list-count-badge"></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <i class="fa fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Tìm kiếm tên, mã ID, chức vụ...">
+    </div>
+  </div>
+
+  <div id="members-grid" class="members-grid"></div>
+
+  <div class="pgn-row">
+    <select id="perPage">
+      <option value="10">10 thẻ</option>
+      <option value="20" selected>20 thẻ</option>
+      <option value="50">50 thẻ</option>
+      <option value="0">Tất cả</option>
+    </select>
+    <div id="pagination" class="pagination"></div>
+  </div>
+
+  <footer class="site-footer">
+    <div><span class="ft-badge ft-hathyo">© 2026 <a href="https://hathyo.com" target="_blank">HATHYO</a> — Cùng Bạn Vui Khỏe Hơn!</span></div>
+    <div><span class="ft-badge ft-lazinet"><a href="https://lazinet.com" target="_blank">Hệ thống danh thiếp số bởi LAZINET Technologies</a></span></div>
+  </footer>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     DETAIL VIEW
+═══════════════════════════════════════════════════ -->
+<div id="detail-view" class="hidden">
+<div class="page" style="max-width:960px">
+
+  <!-- Header -->
+  <div class="dt-header">
+    <img id="dt-logo" class="dt-logo" src="https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png" alt="HATHYO">
+    <div id="dt-name" class="dt-name"></div>
+    <div id="dt-pos" class="dt-pos"></div>
+    <div id="google_translate_element" style="margin-top:10px;display:inline-block"></div>
+  </div>
+
+  <!-- BIZCARDS -->
+  <div id="capture-area" class="cards-wrapper">
+
+    <!-- FRONT CARD -->
+    <div class="card-scaler-wrap" id="wrap-front">
+      <div class="bizcard-frame" id="frame-front">
+        <div id="card-front" class="bizcard">
+          <div class="card-front-inner">
+            <!-- Left -->
+            <div class="cf-left">
+              <a id="link-logo-f" href="#" target="_blank">
+                <img id="logo-f" src="" class="cf-logo" alt="Logo">
+              </a>
+              <a id="link-photo-f" href="#" target="_blank">
+                <img id="photo-f" src="" class="cf-photo" alt="Photo">
+              </a>
+              <div id="socials-f" class="cf-socials"></div>
+            </div>
+            <!-- Right -->
+            <div class="cf-right">
+              <div class="cf-top">
+                <div id="name-f" class="cf-name"></div>
+                <div class="cf-name-divider"></div>
+                <div id="pos-f" class="cf-position"></div>
+                <div id="dept-f" class="cf-dept"></div>
+                <div class="cf-contacts" id="contacts-f"></div>
+              </div>
+              <div class="cf-bottom">
+                <div>
+                  <div id="co-name-f" class="cf-company-name"></div>
+                  <div id="co-info-f" class="cf-company-info"></div>
+                </div>
+                <a id="qr-link-f" href="#" target="_blank">
+                  <div id="qr-f" class="cf-qr"></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACK CARD -->
+    <div class="card-scaler-wrap" id="wrap-back">
+      <div class="bizcard-frame" id="frame-back">
+        <div id="card-back" class="bizcard">
+          <div class="card-back-inner">
+            <!-- Header -->
+            <div class="cb-header">
+              <a id="link-logo-b" href="#" target="_blank">
+                <img id="logo-b" src="" class="cb-logo" alt="Logo">
+              </a>
+            </div>
+            <!-- Body -->
+            <div class="cb-body">
+              <div class="cb-biz-title">Lĩnh vực hoạt động</div>
+              <div id="services-b" class="cb-services"></div>
+            </div>
+            <!-- Footer -->
+            <div class="cb-footer">
+              <div id="co-name-b" class="cb-co-name"></div>
+              <div class="cb-contact-row" id="contacts-b"></div>
+              <a id="addr-b" href="#" target="_blank" class="cb-addr">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="addr-text-b"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /capture-area -->
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-row">
+    <button id="chat-btn" class="act-btn act-btn-chat" onclick="toggleChat()">
+      <i class="fas fa-robot"></i> TƯ VẤN AI
+    </button>
+    <button class="act-btn act-btn-contact" onclick="toggleContact()">
+      <i class="fas fa-envelope"></i> Nhắn tin
+    </button>
+    <button class="act-btn act-btn-share" onclick="shareCard()">
+      <i class="fas fa-share-nodes"></i> Chia sẻ
+    </button>
+    <button class="act-btn act-btn-vcard" onclick="downloadVCard()">
+      <i class="fas fa-address-book"></i> Danh bạ
+    </button>
+    <button class="act-btn act-btn-png" onclick="exportPNG()">
+      <i class="fas fa-image"></i> PNG
+    </button>
+    <button class="act-btn act-btn-pdf" onclick="exportPDF()">
+      <i class="fas fa-file-pdf"></i> PDF
+    </button>
+  </div>
+
+  <!-- CHAT PANEL -->
+  <div id="chat-panel" class="panel-wrap hidden">
+    <div class="panel-header">
+      <div class="panel-title">
+        <i class="fas fa-robot"></i>
+        <span id="chat-panel-title">Tư vấn AI</span>
+        <span class="online-dot"></span>
+      </div>
+      <button class="panel-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-bot-info">
+      <img id="bot-avatar" src="" class="chat-bot-avatar" alt="Bot">
+      <div>
+        <div id="bot-name" class="chat-bot-name"></div>
+        <div id="bot-pos-el" class="chat-bot-pos"></div>
+      </div>
+    </div>
+    <div id="chat-history" class="chat-history"></div>
+    <div class="chat-input-row">
+      <input id="chat-input" type="text" placeholder="Nhập câu hỏi của bạn...">
+      <button class="chat-send-btn" onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- CONTACT PANEL -->
+  <div id="contact-panel" class="panel-wrap hidden">
+    <div class="panel-header">
+      <div class="panel-title">
+        <i class="fas fa-envelope-open-text"></i>
+        <span id="contact-panel-title">Gửi tin nhắn</span>
+      </div>
+      <button class="panel-close" onclick="toggleContact()"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="contact-form-wrap">
+      <form id="contact-form" class="contact-form" onsubmit="submitContact(event)">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Quý danh *</label>
+            <input type="text" id="cf-name" placeholder="Họ và tên đầy đủ" required>
+          </div>
+          <div class="form-group">
+            <label>Mục đích *</label>
+            <select id="cf-purpose" required>
+              <option value="" disabled selected>Chọn mục đích...</option>
+              <option>Mua hàng / Sản phẩm</option>
+              <option>Tư vấn sức khỏe</option>
+              <option>Hợp tác kinh doanh</option>
+              <option>Tìm hiểu dịch vụ</option>
+              <option>Cơ hội việc làm</option>
+              <option>Phản hồi / Góp ý</option>
+              <option>Khác</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Số điện thoại *</label>
+            <input type="tel" id="cf-mobile" placeholder="(+84) 09xx xxx xxx" required>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="cf-email" placeholder="email@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tiêu đề</label>
+          <input type="text" id="cf-title" placeholder="Tiêu đề ngắn gọn về yêu cầu của bạn">
+        </div>
+        <div class="form-group">
+          <label>Nội dung *</label>
+          <textarea id="cf-message" placeholder="Mô tả chi tiết yêu cầu của bạn..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="cf-submit-btn">
+          <i class="fas fa-paper-plane"></i> Gửi tin nhắn
+        </button>
+      </form>
+      <div id="contact-success" class="form-success hidden">
+        <div class="check-icon"><i class="fas fa-check-circle"></i></div>
+        <h3>Đã gửi thành công!</h3>
+        <p id="contact-success-msg">Chúng tôi sẽ liên hệ bạn trong thời gian sớm nhất.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div><span class="ft-badge ft-hathyo">© 2026 <a href="https://hathyo.com" target="_blank">HATHYO</a> — Cùng Bạn Vui Khỏe Hơn!</span></div>
+    <div><span class="ft-badge ft-lazinet"><a href="https://lazinet.com" target="_blank">Hệ thống danh thiếp số bởi LAZINET Technologies</a></span></div>
+  </footer>
+
+</div>
+</div><!-- /detail-view -->
+
+<!-- Google Translate -->
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'vi', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false,
+      includedLanguages: 'en,zh-CN,hi,ja,ko,fr,de,es,ru,ar,id,ms,th' },
+    'google_translate_element'
+  );
+}
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+// ═══════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycby6cLDQW3gBYs_yUWzYsc3JmJlSGHRkLsmb27w6sT7-Kfca37gKh_FiHdt9o2B7bJW8jw/exec'; // TODO: Dán URL GAS sau khi deploy
+
+let memberData   = null;
+let configData   = null;
+let allMembers   = [];
+let filteredList = [];
+let currentPage  = 1;
+let chatHistory  = [];
+let sessionId    = generateSessionId();
+
+// ─── GAS HELPER ─────────────────────────────────────
+// Tất cả request (list, detail, chat, contact, password) đều dùng POST
+// Content-Type: text/plain → "simple request" → không cần CORS preflight
+// GAS doPost() xử lý tất cả dựa vào field "action" trong body
+function gasPost(data) {
+  return fetch(GAS_URL, {
+    method:  'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body:    JSON.stringify(data)
+  }).then(r => r.json());
+}
+// ────────────────────────────────────────────────────
+
+function generateSessionId() {
+  const stored = sessionStorage.getItem('hathyo_sid');
+  if (stored) return stored;
+  const sid = 'hthyo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+  sessionStorage.setItem('hathyo_sid', sid);
+  return sid;
+}
+
+// ═══════════════════════════════════════════════════
+// INIT — URL ROUTING
+// ═══════════════════════════════════════════════════
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const code   = params.get('c') || params.get('id');
+
+  if (code) {
+    // Direct namecard link — no password needed
+    show('detail-view');
+    await loadDetail(code);
+  } else {
+    // List view — check password
+    const authed = sessionStorage.getItem('hathyo_auth') === '1';
+    if (authed) {
+      show('listing-view');
+      await loadList();
+    } else {
+      show('pw-wall');
+    }
+  }
+}
+
+function show(id) {
+  ['pw-wall','listing-view','detail-view'].forEach(v => {
+    const el = document.getElementById(v);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(id);
+  if (target) target.classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════
+// PASSWORD
+// ═══════════════════════════════════════════════════
+async function doVerifyPw() {
+  const pw  = document.getElementById('pw-input').value.trim();
+  const err = document.getElementById('pw-err');
+  const btn = document.getElementById('pw-btn');
+  if (!pw) { err.textContent = 'Vui lòng nhập mật khẩu.'; return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang kiểm tra...';
+  err.textContent = '';
+
+  try {
+    const data = await gasPost({ action: 'verifyPassword', password: pw });
+    if (data.success) {
+      sessionStorage.setItem('hathyo_auth', '1');
+      show('listing-view');
+      await loadList();
+    } else {
+      err.textContent = data.message || 'Mật khẩu không đúng.';
+    }
+  } catch (e) {
+    err.textContent = 'Lỗi kết nối. Vui lòng thử lại.';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-lock"></i> Truy cập';
+  }
+}
+
+function togglePwEye() {
+  const inp = document.getElementById('pw-input');
+  const eye = document.getElementById('pw-eye');
+  if (inp.type === 'password') { inp.type = 'text'; eye.className = 'fa fa-eye-slash pw-eye'; }
+  else { inp.type = 'password'; eye.className = 'fa fa-eye pw-eye'; }
+}
+
+// ═══════════════════════════════════════════════════
+// LISTING
+// ═══════════════════════════════════════════════════
+async function loadList() {
+  const grid = document.getElementById('members-grid');
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></div>';
+
+  try {
+    const data = await gasPost({ action: 'list' });
+    if (data.status !== 'success') throw new Error(data.message || 'Lỗi tải dữ liệu');
+
+    allMembers = data.data.members || [];
+    configData = data.configs;
+    applyListConfigs();
+    filteredList = [...allMembers];
+    currentPage  = 1;
+    renderMembers();
+  } catch (e) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#f87171"><i class="fas fa-exclamation-circle" style="font-size:24px"></i><p style="margin-top:12px">${e.message}</p></div>`;
+  }
+}
+
+function applyListConfigs() {
+  if (!configData) return;
+  const title = document.getElementById('list-title-text');
+  const sub   = document.getElementById('list-sub-text');
+  if (configData.App_Title && title) title.textContent = configData.App_Title;
+  if (configData.App_Subtitle && sub) sub.textContent  = configData.App_Subtitle;
+}
+
+function renderMembers() {
+  const grid    = document.getElementById('members-grid');
+  const search  = document.getElementById('searchInput').value.toLowerCase().trim();
+  const perPage = parseInt(document.getElementById('perPage').value) || 0;
+
+  filteredList = allMembers.filter(m => {
+    if (!search) return true;
+    return (
+      (m.Member_Name || '').toLowerCase().includes(search) ||
+      (m.Member_ID   || '').toLowerCase().includes(search) ||
+      (m.Member_Position || '').toLowerCase().includes(search) ||
+      (m.Company_Name || '').toLowerCase().includes(search) ||
+      (m.Member_Department || '').toLowerCase().includes(search)
+    );
+  });
+
+  const total = filteredList.length;
+  document.getElementById('list-count-badge').textContent = total + ' thành viên';
+
+  const totalPages = perPage > 0 ? Math.ceil(total / perPage) : 1;
+  if (currentPage > totalPages) currentPage = 1;
+  const start = perPage > 0 ? (currentPage - 1) * perPage : 0;
+  const slice = perPage > 0 ? filteredList.slice(start, start + perPage) : filteredList;
+
+  grid.innerHTML = '';
+  if (!slice.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">Không tìm thấy nhân viên nào.</div>';
+  } else {
+    slice.forEach(m => {
+      const url    = '?c=' + encodeURIComponent(m.Member_ID);
+      const avatar = m.Member_Avatar_Small || 'https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png';
+      const card   = document.createElement('div');
+      card.className = 'mc';
+      card.onclick   = () => window.location.href = url;
+      card.innerHTML = `
+        <img class="mc-avatar" src="${escHtml(avatar)}" alt="${escHtml(m.Member_Name)}" onerror="this.src='https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png'">
+        <div class="mc-badge">${escHtml(m.Member_ID)}</div>
+        <div class="mc-name">${escHtml(m.Member_Title ? m.Member_Title + ' ' : '') + escHtml(m.Member_Name || '')}</div>
+        <div class="mc-pos">${escHtml(m.Member_Position || m.Member_Department || '')}</div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const pgn = document.getElementById('pagination');
+  pgn.innerHTML = '';
+  if (totalPages <= 1) return;
+
+  const makeBtn = (label, page, active, disabled) => {
+    const btn = document.createElement('button');
+    btn.className = 'pgn-btn' + (active ? ' active' : '');
+    btn.textContent = label;
+    btn.disabled = disabled;
+    if (!disabled && !active) btn.onclick = () => { currentPage = page; renderMembers(); };
+    return btn;
+  };
+
+  pgn.appendChild(makeBtn('«', 1, false, currentPage === 1));
+  pgn.appendChild(makeBtn('‹', currentPage - 1, false, currentPage === 1));
+
+  const range = 2;
+  let start = Math.max(1, currentPage - range);
+  let end   = Math.min(totalPages, currentPage + range);
+  if (start > 1) { pgn.appendChild(makeBtn('1', 1, false, false)); if (start > 2) { const sp = document.createElement('span'); sp.textContent='…'; sp.style.cssText='color:var(--muted);padding:0 4px;line-height:34px'; pgn.appendChild(sp); } }
+  for (let p = start; p <= end; p++) pgn.appendChild(makeBtn(p, p, p === currentPage, false));
+  if (end < totalPages) { if (end < totalPages - 1) { const sp = document.createElement('span'); sp.textContent='…'; sp.style.cssText='color:var(--muted);padding:0 4px;line-height:34px'; pgn.appendChild(sp); } pgn.appendChild(makeBtn(totalPages, totalPages, false, false)); }
+
+  pgn.appendChild(makeBtn('›', currentPage + 1, false, currentPage === totalPages));
+  pgn.appendChild(makeBtn('»', totalPages, false, currentPage === totalPages));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const si = document.getElementById('searchInput');
+  if (si) si.addEventListener('input', () => { currentPage = 1; renderMembers(); });
+  const pp = document.getElementById('perPage');
+  if (pp) pp.addEventListener('change', () => { currentPage = 1; renderMembers(); });
+});
+
+// ═══════════════════════════════════════════════════
+// DETAIL — LOAD & RENDER
+// ═══════════════════════════════════════════════════
+async function loadDetail(code) {
+  try {
+    const data = await gasPost({ action: 'detail', c: code });
+    if (data.status !== 'success') throw new Error(data.message || 'Không tìm thấy nhân viên: ' + code);
+    memberData = data.member;
+    configData = data.configs;
+    applyCardData();
+  } catch (e) {
+    document.getElementById('detail-view').innerHTML =
+      `<div style="text-align:center;padding:60px 20px;color:#f87171">
+        <i class="fas fa-exclamation-circle" style="font-size:48px;margin-bottom:16px;display:block"></i>
+        <h2>${e.message}</h2>
+        <a href="." style="color:var(--primary-light);margin-top:12px;display:block">← Về trang chính</a>
+       </div>`;
+  }
+}
+
+function applyCardData() {
+  const m = memberData;
+  const c = configData || {};
+
+  // Page meta
+  const fullName = (m.Member_Title ? m.Member_Title + ' ' : '') + (m.Member_Name || '');
+  document.title = `${fullName} — HATHYO | Danh thiếp số`;
+  document.getElementById('dt-name').textContent = m.Member_Name || '';
+  document.getElementById('dt-pos').textContent  = [m.Member_Position, m.Member_Department].filter(Boolean).join(' | ');
+
+  // Card backgrounds
+  const bgFront = m.Card_BG_Front || c.Card_BG_Front || 'https://lazinet.com/assets/img/background/HATHYO_TransBG_032.png';
+  const bgBack  = m.Card_BG_Back  || c.Card_BG_Back  || 'https://lazinet.com/assets/img/background/HATHYO_TransBG_011.png';
+  document.getElementById('card-front').style.backgroundImage = `url('${bgFront}')`;
+  document.getElementById('card-back').style.backgroundImage  = `url('${bgBack}')`;
+
+  // — FRONT CARD —
+  const logoUrl = c.App_Logo || 'https://lazinet.com/assets/img/Logo_Hathyo/Dark_Green%20(Main)/HathyoV1_Square_Full.png';
+  setSrc('logo-f', logoUrl);
+  setHref('link-logo-f', m.Website || c.Company_Website || 'https://hathyo.com');
+  setSrc('photo-f', m.Member_Avatar || '');
+  setHref('link-photo-f', m.Website || 'https://hathyo.com');
+
+  setText('name-f', m.Member_Name || '');
+  setText('pos-f',  m.Member_Position || '');
+  setText('dept-f', m.Member_Department || '');
+
+  // Contact items
+  const contactsEl = document.getElementById('contacts-f');
+  contactsEl.innerHTML = '';
+  const contactItems = [
+    { icon: 'fa-map-marker-alt', text: m.Company_Address || c.Company_Address, href: m.Company_Address_URL || c.Company_Address_URL },
+    { icon: 'fa-phone',          text: m.Mobile || c.Company_Phone,             href: 'tel:' + (m.Mobile || '') },
+    { icon: 'fa-envelope',       text: m.Email  || c.Company_Email,             href: 'mailto:' + (m.Email || '') },
+    { icon: 'fa-globe',          text: (m.Website || c.Company_Website || '').replace('https://',''), href: m.Website || c.Company_Website },
+  ];
+  contactItems.forEach(it => {
+    if (!it.text) return;
+    const a = document.createElement('a');
+    a.className = 'cf-contact-item';
+    a.href = it.href || '#';
+    if (it.icon === 'fa-globe' || it.icon === 'fa-map-marker-alt') a.target = '_blank';
+    a.innerHTML = `<i class="fas ${it.icon}"></i> ${escHtml(it.text)}`;
+    contactsEl.appendChild(a);
+  });
+
+  // Social buttons
+  const socialsEl = document.getElementById('socials-f');
+  socialsEl.innerHTML = '';
+  const socials = [
+    { url: m.Zalo_Link   || m.Mobile_Zalo, icon: 'fas fa-comment-dots', label: 'Zalo',    color: '#0068FF' },
+    { url: m.Facebook,                      icon: 'fab fa-facebook',     label: 'FB',      color: '#1877F2' },
+    { url: m.LinkedIn,                      icon: 'fab fa-linkedin-in',  label: 'LinkedIn',color: '#0A66C2' },
+    { url: m.Whatsapp_Link,                 icon: 'fab fa-whatsapp',     label: 'WA',      color: '#25D366' },
+    { url: m.Wechat_Image,                  icon: 'fab fa-weixin',       label: 'WeChat',  color: '#7BB32E' },
+  ];
+  socials.forEach(s => {
+    if (!s.url) return;
+    const a = document.createElement('a');
+    a.href = s.url; a.target = '_blank'; a.className = 'cf-soc-btn';
+    a.innerHTML = `<i class="${s.icon}" style="color:${s.color}"></i> ${s.label}`;
+    socialsEl.appendChild(a);
+  });
+
+  // Company info (bottom-left of front)
+  setText('co-name-f', m.Company_Short || m.Company_Name?.split(' - ')[0] || 'HATHYO');
+  setText('co-info-f', m.Slogan || c.App_Subtitle || '');
+
+  // QR
+  const qrUrl = m.Card_QR_URL || m.Website || c.Company_Website || window.location.href;
+  generateQR('qr-f', qrUrl);
+  setHref('qr-link-f', qrUrl);
+
+  // — BACK CARD —
+  const logoLong = c.App_Logo_Long || logoUrl;
+  setSrc('logo-b', logoLong);
+  setHref('link-logo-b', m.Website || c.Company_Website || 'https://hathyo.com');
+
+  // Services
+  const servEl = document.getElementById('services-b');
+  servEl.innerHTML = '';
+  const biIcons = ['fa-heart-pulse','fa-book-half','fa-shield-check','fa-bar-chart','fa-bag-heart','fa-person-check','fa-box-arrow-up-right','fa-people-group'];
+  for (let i = 1; i <= 6; i++) {
+    const val = m['Business' + i];
+    if (!val) continue;
+    const div = document.createElement('div');
+    div.className = 'cb-service-item';
+    div.innerHTML = `<i class="fas fa-check-circle"></i> ${escHtml(val)}`;
+    servEl.appendChild(div);
+  }
+
+  // Back footer
+  setText('co-name-b', m.Company_Name || c.Company_Name || 'HATHYO');
+  const contactsB = document.getElementById('contacts-b');
+  contactsB.innerHTML = '';
+  const bContacts = [
+    { icon: 'fa-phone',    text: m.Mobile || c.Company_Phone, href: 'tel:' + (m.Mobile || '') },
+    { icon: 'fa-envelope', text: m.Email  || c.Company_Email, href: 'mailto:' + (m.Email || '') },
+    { icon: 'fa-globe',    text: (m.Website || c.Company_Website || '').replace('https://',''), href: m.Website || c.Company_Website },
+  ];
+  bContacts.forEach(it => {
+    if (!it.text) return;
+    const a = document.createElement('a');
+    a.className = 'cb-contact-item'; a.href = it.href || '#';
+    if (it.icon === 'fa-globe') a.target = '_blank';
+    a.innerHTML = `<i class="fas ${it.icon}"></i> ${escHtml(it.text)}`;
+    contactsB.appendChild(a);
+  });
+  setText('addr-text-b', m.Company_Address || c.Company_Address || '');
+  setHref('addr-b', m.Company_Address_URL || c.Company_Address_URL || '#');
+
+  // Chatbot
+  const botName   = m.Assistant_Name     || c.Chatbot_Name   || 'Trợ lý HATHYO';
+  const botAvatar = m.Assistant_Avatar   || c.Chatbot_Avatar  || logoUrl;
+  const botPos    = m.Assistant_Position || 'Trợ lý AI HATHYO';
+  setSrc('bot-avatar', botAvatar);
+  setText('bot-name',   botName);
+  setText('bot-pos-el', botPos);
+  setText('chat-panel-title', `Tư vấn — ${botName}`);
+
+  // Contact panel title
+  const pTitle = document.getElementById('contact-panel-title');
+  if (pTitle) pTitle.textContent = `Gửi tin nhắn đến ${m.Member_Name || 'HATHYO'}`;
+
+  // Initial chat greeting
+  chatHistory = [];
+  appendMsg('bot', `Xin chào! 👋 Em là **${botName}** — trợ lý ảo của ${m.Member_Title || ''} **${m.Member_Name || 'HATHYO'}**. Anh/chị cần em hỗ trợ gì ạ?`);
+
+  // Scale cards
+  setTimeout(resizeCards, 80);
+}
+
+// ═══════════════════════════════════════════════════
+// SCALING ENGINE
+// ═══════════════════════════════════════════════════
+function resizeCards() {
+  const isDesktop = window.innerWidth >= 681;
+  const gap       = 16;
+  let availW;
+
+  if (isDesktop) {
+    // Two cards side-by-side → each gets (availableWidth - gap) / 2
+    const pageW = Math.min(window.innerWidth - 32, 960);
+    availW = (pageW - gap) / 2;
+  } else {
+    // Single column → full width minus page padding
+    availW = window.innerWidth - 32;
+  }
+
+  const scale  = Math.min(availW / 500, 1);
+  const frames = document.querySelectorAll('.bizcard-frame');
+  frames.forEach(frame => {
+    frame.style.transform = `scale(${scale})`;
+    frame.parentElement.style.height = `${300 * scale}px`;
+    frame.parentElement.style.width  = `${500 * scale}px`;
+  });
+}
+window.addEventListener('resize', resizeCards);
+
+// ═══════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════
+async function captureCards(type) {
+  const frames   = document.querySelectorAll('.bizcard-frame');
+  const origTransforms = [];
+  frames.forEach(f => { origTransforms.push(f.style.transform); f.style.transform = 'scale(1)'; });
+  const captureEl = document.getElementById('capture-area');
+
+  try {
+    const canvas = await html2canvas(captureEl, {
+      scale: 4, useCORS: true, backgroundColor: null, windowWidth: 1200
+    });
+
+    const personName = memberData ? (memberData.Member_Name || 'HATHYO') : 'HATHYO';
+
+    if (type === 'png') {
+      const link     = document.createElement('a');
+      link.download  = `${personName}_HATHYO_Bizcard.png`;
+      link.href      = canvas.toDataURL('image/png');
+      link.click();
+    } else {
+      const { jsPDF }  = window.jspdf;
+      const imgData    = canvas.toDataURL('image/jpeg', 1.0);
+      const pdf        = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [90, 54] });
+      // Fit 2 cards (each 500×300) into A6-landscape (90×54mm)
+      const pdfW = pdf.internal.pageSize.getWidth();
+      const pdfH = pdf.internal.pageSize.getHeight();
+      const imgAspect = canvas.width / canvas.height;
+      let rW = pdfW - 4, rH = rW / imgAspect;
+      if (rH > pdfH - 4) { rH = pdfH - 4; rW = rH * imgAspect; }
+      const x = (pdfW - rW) / 2, y = (pdfH - rH) / 2;
+      pdf.addImage(imgData, 'JPEG', x, y, rW, rH);
+      pdf.save(`${personName}_HATHYO_Bizcard.pdf`);
+    }
+  } catch (err) {
+    showToast('Lỗi xuất file: ' + err.message);
+  } finally {
+    frames.forEach((f, i) => { f.style.transform = origTransforms[i]; });
+  }
+}
+
+function exportPNG() { showToast('Đang tạo ảnh độ phân giải cao...'); captureCards('png'); }
+function exportPDF() { showToast('Đang tạo file PDF...'); captureCards('pdf'); }
+
+function downloadVCard() {
+  if (!memberData) return;
+  const m = memberData;
+  const c = configData || {};
+  const vcf = `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${m.Member_Name || ''}\r\nN:${(m.Member_Name || '').split(' ').reverse().join(';')}\r\nORG:${m.Company_Name || c.Company_Name || 'HATHYO'}\r\nTITLE:${m.Member_Position || ''}\r\nTEL;TYPE=WORK,VOICE:${m.Mobile || c.Company_Phone || ''}\r\nEMAIL;TYPE=WORK:${m.Email || c.Company_Email || ''}\r\nURL:${m.Website || c.Company_Website || 'https://hathyo.com'}\r\nADR;TYPE=WORK:;;${m.Company_Address || c.Company_Address || ''}\r\nNOTE:${m.Slogan || 'Cùng Bạn Vui Khỏe Hơn!'}\r\nEND:VCARD`;
+  const blob = new Blob([vcf], { type: 'text/vcard' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `${m.Member_Name || 'HATHYO'}.vcf`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('Đã tải danh bạ!');
+}
+
+function shareCard() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: document.title, url });
+  } else {
+    navigator.clipboard?.writeText(url).then(() => showToast('Đã sao chép link!'))
+      .catch(() => prompt('Copy link danh thiếp:', url));
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// QR CODE
+// ═══════════════════════════════════════════════════
+function generateQR(containerId, text) {
+  const box = document.getElementById(containerId);
+  if (!box) return;
+  box.innerHTML = '';
+  new QRCode(box, {
+    text: text || 'https://hathyo.com',
+    width: 76, height: 76,
+    colorDark: '#0a703f', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// CHAT
+// ═══════════════════════════════════════════════════
+function toggleChat() {
+  const panel = document.getElementById('chat-panel');
+  const btn   = document.getElementById('chat-btn');
+  panel.classList.toggle('hidden');
+  if (!panel.classList.contains('hidden')) {
+    document.getElementById('contact-panel').classList.add('hidden');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('chat-input').focus();
+    btn.innerHTML = '<i class="fas fa-times"></i> Đóng';
+  } else {
+    btn.innerHTML = '<i class="fas fa-robot"></i> TƯ VẤN AI';
+  }
+}
+
+function toggleContact() {
+  const panel = document.getElementById('contact-panel');
+  panel.classList.toggle('hidden');
+  if (!panel.classList.contains('hidden')) {
+    document.getElementById('chat-panel').classList.add('hidden');
+    document.getElementById('chat-btn').innerHTML = '<i class="fas fa-robot"></i> TƯ VẤN AI';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function appendMsg(role, text) {
+  const box  = document.getElementById('chat-history');
+  const div  = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = role === 'bot' ? marked.parse(text) : escHtml(text);
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  if (role !== 'typing') {
+    chatHistory.push({ role: role === 'user' ? 'user' : 'assistant', content: text });
+  }
+}
+
+async function sendChatMsg() {
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = '';
+  appendMsg('user', txt);
+
+  const box     = document.getElementById('chat-history');
+  const typing  = document.createElement('div');
+  typing.id     = 'typing-indicator';
+  typing.className = 'chat-msg bot typing';
+  const botName = document.getElementById('bot-name')?.textContent || 'Trợ lý';
+  typing.textContent = `${botName} đang soạn...`;
+  box.appendChild(typing); box.scrollTop = box.scrollHeight;
+
+  try {
+    const data = await gasPost({
+      action:    'chat',
+      source:    memberData?.Member_ID || '',
+      sessionId: sessionId,
+      messages:  chatHistory
+    });
+    typing.remove();
+    appendMsg('bot', data.response || 'Xin lỗi, em không thể phản hồi lúc này.');
+  } catch (e) {
+    typing.remove();
+    appendMsg('bot', 'Mất kết nối. Vui lòng thử lại sau.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ci = document.getElementById('chat-input');
+  if (ci) ci.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMsg(); } });
+});
+
+// ═══════════════════════════════════════════════════
+// CONTACT FORM
+// ═══════════════════════════════════════════════════
+async function submitContact(e) {
+  e.preventDefault();
+  const btn = document.getElementById('cf-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+
+  const payload = {
+    action:    'submitContact',
+    source:    memberData?.Member_ID || 'unknown',
+    sessionId: sessionId,
+    name:      document.getElementById('cf-name').value,
+    purpose:   document.getElementById('cf-purpose').value,
+    mobile:    document.getElementById('cf-mobile').value,
+    email:     document.getElementById('cf-email').value,
+    title:     document.getElementById('cf-title').value,
+    message:   document.getElementById('cf-message').value,
+  };
+
+  try {
+    const data = await gasPost(payload);
+
+    if (data.success) {
+      document.getElementById('contact-form').classList.add('hidden');
+      document.getElementById('contact-success').classList.remove('hidden');
+      const msgEl = document.getElementById('contact-success-msg');
+      if (msgEl) msgEl.textContent = data.message || 'Chúng tôi sẽ liên hệ bạn sớm nhất có thể.';
+      showToast('Gửi thành công!');
+    } else {
+      showToast(data.message || 'Có lỗi xảy ra.');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi tin nhắn';
+    }
+  } catch (err) {
+    showToast('Lỗi kết nối. Vui lòng thử lại.');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi tin nhắn';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════
+function setText(id, t) { const el = document.getElementById(id); if (el) el.textContent = t || ''; }
+function setSrc(id, s)  { const el = document.getElementById(id); if (el) el.src = s || ''; }
+function setHref(id, h) { const el = document.getElementById(id); if (el) el.href = h || '#'; }
+
+function escHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg, duration = 3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ═══════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════
+init();
+</script>
+</body>
+</html>
