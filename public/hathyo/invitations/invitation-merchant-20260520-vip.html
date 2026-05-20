@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thư Ngỏ Hợp Tác VIP – HATHYO Happy Healthy You</title>
+  <meta name="description" content="Thư Ngỏ Hợp Tác Kinh Doanh (Đích danh) – HATHYO – Cùng Bạn Vui Khỏe Hơn!">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../assets/logos/favicon_io/favicon.ico">
+  <link rel="apple-touch-icon" href="../assets/logos/favicon_io/apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --g: #0A703F; --gm: #1cb870; --gl: #e8f5ee;
+      --o: #FF6300; --om: #ff8c42; --ol: #fff5ee;
+      --txt: #2a2a2a; --txt2: #5a5a5a; --bdr: #dde8e0;
+    }
+    @page { size: A4 portrait; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-image: url('../assets/bg/HATHYO_TransBG_056e.jpg');
+      background-size: cover; background-attachment: fixed; background-position: center;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; font-family: 'Montserrat', sans-serif;
+      opacity: 0; animation: fadeIn 0.6s ease forwards;
+      padding-bottom: 90px;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* ─── LAYOUT ─── */
+    .layout-wrapper { display:flex; flex-direction:row; align-items:flex-start; gap:24px; padding:20px; width:100%; max-width:1200px; justify-content:center; }
+    .pages-column { display:flex; flex-direction:column; gap:20px; align-items:center; flex-shrink:0; }
+
+    /* ─── A4 PAGE ─── */
+    .page {
+      width:210mm; min-width:210mm; height:297mm;
+      background:#fff; position:relative;
+      box-shadow:0 15px 50px rgba(0,0,0,0.3);
+      overflow:hidden; transform-origin:top center;
+      display:flex; flex-direction:column;
+      padding:13mm 15mm 0 15mm;
+    }
+    .page::before { content:''; position:absolute; top:0; left:0; right:0; height:7px; background:linear-gradient(90deg,var(--g) 0%,var(--gm) 45%,var(--o) 100%); }
+    .page::after  { content:''; position:absolute; bottom:0; left:0; right:0; height:7px; background:linear-gradient(90deg,var(--o) 0%,var(--om) 45%,var(--g) 100%); }
+    .corner { position:absolute; width:32px; height:32px; opacity:0.6; }
+    .c-tl { top:14px; left:14px;  border-top:2px solid var(--g); border-left:2px solid var(--g); }
+    .c-tr { top:14px; right:14px; border-top:2px solid var(--o); border-right:2px solid var(--o); }
+    .c-bl { bottom:14px; left:14px;  border-bottom:2px solid var(--o); border-left:2px solid var(--o); }
+    .c-br { bottom:14px; right:14px; border-bottom:2px solid var(--g); border-right:2px solid var(--g); }
+
+    /* ─── PAGE HEAD ─── */
+    .page-head { display:flex; align-items:center; justify-content:space-between; flex-shrink:0; margin-bottom:8px; }
+    .page-head-logo { line-height:0; }
+    .page-head-logo img { height:60px; display:block; margin:0; }
+    .page-head-meta { text-align:right; font-size:12px; color:var(--txt2); line-height:1.6; }
+    .page-head-meta strong { color:var(--g); font-weight:700; font-size:12.5px; }
+
+    .divider { height:2px; background:linear-gradient(90deg,var(--g) 0%,var(--o) 100%); border-radius:2px; flex-shrink:0; margin:7px 0; }
+
+    /* ─── TITLE ─── */
+    .letter-title { text-align:center; flex-shrink:0; margin:5px 0; }
+    .letter-title h1 { font-family:'Playfair Display',serif; font-size:24px; color:var(--g); font-weight:700; letter-spacing:2px; text-transform:uppercase; line-height:1.2; }
+    .letter-title .subtitle { font-size:13px; color:var(--o); font-style:italic; font-weight:600; margin-top:5px; }
+
+    /* ─── VIP RECIPIENT SECTION ─── */
+    .recipient-section { display:flex; align-items:center; gap:14px; padding:11px 14px; background:linear-gradient(135deg,var(--gl) 0%,var(--ol) 100%); border-radius:10px; border:1.5px solid var(--bdr); flex-shrink:0; }
+    .recipient-logo-wrap { flex-shrink:0; width:76px; height:76px; border:2px solid var(--bdr); border-radius:8px; background:white; display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; transition:border-color 0.2s; }
+    .recipient-logo-wrap:hover { border-color:var(--g); }
+    .recipient-logo-wrap img { max-width:100%; max-height:100%; object-fit:contain; }
+    .logo-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; color:#ccc; font-size:9px; text-align:center; gap:2px; padding:4px; }
+    .logo-placeholder i { font-size:28px; }
+    .recipient-info { flex:1; }
+    .ri-kinhgui  { font-size:11px; font-weight:700; color:var(--g); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.5px; }
+    .ri-name     { font-size:17px; font-weight:800; color:var(--g); line-height:1.2; }
+    .ri-name.placeholder { color:#bbb; font-weight:500; font-size:14px; }
+    .ri-position { font-size:12.5px; color:var(--o); font-weight:600; margin-top:1px; }
+    .ri-position.placeholder { color:#ccc; font-weight:400; }
+    .ri-company  { font-size:13px; font-weight:700; color:var(--txt2); margin-top:2px; }
+    .ri-company.placeholder { color:#ccc; font-weight:400; }
+
+    /* ─── LETTER BODY ─── */
+    .letter-body { flex:1; display:flex; flex-direction:column; gap:11px; }
+    .salutation { font-size:14px; font-weight:600; color:var(--txt); margin-top:6px; }
+    .salutation .kg  { color:var(--g); font-weight:700; }
+    .salutation .rcp { color:var(--o); font-weight:700; font-size:15px; }
+    .body-para { font-size:14px; color:var(--txt); line-height:1.82; text-align:justify; margin-top:5px; }
+    .intro-box { background:linear-gradient(135deg,var(--gl) 0%,var(--ol) 100%); border-left:4px solid var(--g); border-radius:0 8px 8px 0; padding:12px 16px; }
+    .intro-box .body-para { margin:0; }
+
+    /* ─── BENEFITS ─── */
+    .section-head { font-size:13.5px; font-weight:700; color:var(--g); text-align:center; padding-bottom:2px; letter-spacing:0.4px; margin-top:6px; }
+    .benefits-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    .benefit-card { background:white; border:1px solid var(--bdr); border-top:3px solid var(--g); border-radius:0 0 8px 8px; padding:9px 12px; box-shadow:0 2px 8px rgba(10,112,63,0.07); }
+    .benefit-card:nth-child(even) { border-top-color:var(--o); }
+    .benefit-title { font-size:12.5px; font-weight:700; color:var(--g); margin-bottom:4px; display:flex; align-items:flex-start; gap:5px; line-height:1.3; }
+    .benefit-card:nth-child(even) .benefit-title { color:var(--o); }
+    .benefit-desc { font-size:12px; color:var(--txt2); line-height:1.6; }
+
+    /* ─── METRICS BAR ─── */
+    .metrics-bar { display:flex; align-items:stretch; background:linear-gradient(135deg,var(--g) 0%,var(--gm) 100%); border-radius:10px; padding:16px 10px; color:white; }
+    .metric-item { flex:1; text-align:center; padding:0 8px; }
+    .metric-val { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; line-height:1.15; }
+    .metric-lbl { font-size:11.5px; opacity:0.88; margin-top:4px; line-height:1.4; }
+    .metric-sep { width:1px; background:rgba(255,255,255,0.3); flex-shrink:0; margin:4px 0; }
+
+    /* ─── TARGET BOX ─── */
+    .target-box { background:linear-gradient(135deg,var(--g) 0%,var(--gm) 100%); border-radius:10px; padding:12px 16px; color:white; flex-shrink:0; }
+    .target-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; opacity:0.8; margin-bottom:4px; }
+    .target-stat { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; line-height:1.25; }
+    .target-text { font-size:12.5px; line-height:1.7; opacity:0.95; margin-top:5px; }
+
+    /* ─── CONTACT ─── */
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .contact-item { display:flex; gap:9px; align-items:center; padding:10px 12px; background:var(--gl); border-radius:8px; }
+    .member-photo { width:56px; height:56px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
+    .ci-name   { font-size:12px; font-weight:700; color:var(--txt); }
+    .ci-role   { font-size:11px; color:var(--txt2); margin-bottom:1px; }
+    .ci-detail { font-size:11px; }
+    .ci-detail a { color:var(--g); text-decoration:none; font-weight:600; }
+    .ci-detail a:hover { color:var(--o); }
+
+    .contact-general { display:flex; flex-wrap:wrap; gap:6px 16px; padding:8px 12px; background:var(--ol); border-radius:7px; border-left:3px solid var(--o); justify-content:center; }
+    .cg-item { display:flex; align-items:center; gap:5px; font-size:12px; }
+    .cg-item i { color:var(--o); }
+    .cg-item a { color:var(--g); text-decoration:none; font-weight:600; }
+
+    /* ─── SIGNATURE (right-aligned) ─── */
+    .sig-area { display:flex; justify-content:flex-end; flex-shrink:0; margin-top:8px; }
+    .sig-block { text-align:center; }
+    .sig-header { font-size:13px; font-weight:700; color:var(--g); text-transform:uppercase; letter-spacing:0.5px; }
+    .sig-role   { font-size:11px; color:var(--txt2); font-style:italic; margin-bottom:2px; }
+    .sig-imgs   { position:relative; width:270px; height:170px; margin:0 auto; overflow:visible; }
+    .sig-sign   { position:absolute; bottom:15px; right:0; height:90px; object-fit:contain; transform:rotate(-15deg); transform-origin:center bottom; }
+    .sig-seal   { position:absolute; bottom:-5px; left:5px; height:170px; object-fit:contain; opacity:0.88; }
+    .sig-labels { text-align:center; transform:translateX(-22px); display:block; }
+    .sig-name   { font-size:14px; font-weight:700; color:var(--g); margin-top:4px; }
+
+    /* ─── PAGE FOOTER (anchored, outside letter-body) ─── */
+    .page-footer { display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--bdr); padding:8px 0 11mm 0; flex-shrink:0; }
+    .footer-company { font-size:12px; color:var(--txt2); line-height:1.7; }
+    .footer-company strong { color:var(--g); font-size:13px; }
+    .footer-company a { color:var(--g); text-decoration:none; }
+    .footer-qr { text-align:center; flex-shrink:0; }
+    .footer-qr img { width:80px; height:80px; border:1px solid var(--bdr); border-radius:6px; padding:3px; background:white; }
+    .footer-qr span { display:block; font-size:11px; color:var(--g); font-weight:600; margin-top:3px; }
+
+    /* ─── SIDE PANEL ─── */
+    .side-panel { position:sticky; top:20px; width:285px; min-width:285px; background:rgba(255,255,255,0.88); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-radius:16px; padding:20px; box-shadow:0 8px 32px rgba(10,112,63,0.18); border:1px solid rgba(10,112,63,0.15); display:flex; flex-direction:column; gap:10px; }
+    .panel-title { font-size:14px; font-weight:800; color:var(--g); text-align:center; padding-bottom:10px; border-bottom:2px solid var(--g); display:flex; align-items:center; justify-content:center; gap:6px; }
+    .panel-lbl { font-size:11px; font-weight:700; color:var(--txt2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:-4px; }
+    .guest-input { width:100%; padding:9px 12px; border:1.5px solid var(--bdr); border-radius:8px; font-family:'Montserrat',sans-serif; font-size:12px; color:var(--txt); outline:none; transition:border-color 0.2s; background:white; }
+    .guest-input:focus { border-color:var(--g); box-shadow:0 0 0 3px rgba(10,112,63,0.1); }
+    .guest-input::placeholder { color:#bbb; }
+    .logo-upload-btn { width:100%; padding:9px 12px; background:var(--gl); color:var(--g); border:1.5px dashed var(--g); border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:600; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .logo-upload-btn:hover { background:var(--g); color:white; }
+    .logo-preview-panel { width:100%; height:70px; background:white; border:1.5px solid var(--bdr); border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .logo-preview-panel img { max-width:100%; max-height:100%; object-fit:contain; }
+    .panel-sep { height:1px; background:var(--bdr); }
+    .panel-btn { width:100%; padding:11px 16px; background:var(--g); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:13px; box-shadow:0 3px 10px rgba(10,112,63,0.25); transition:all 0.25s ease; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .panel-btn:hover { background:var(--o); transform:translateY(-1px); }
+    .panel-btn.btn-o { background:var(--o); }
+    .panel-btn.btn-o:hover { background:var(--g); }
+    .panel-btn.btn-pdf { background:linear-gradient(135deg,var(--g),var(--gm)); font-size:14px; padding:13px; }
+    .panel-btn.btn-ghost { background:transparent; color:var(--g); border:1px solid var(--g); box-shadow:none; font-size:12px; padding:8px; }
+    .panel-btn.btn-ghost:hover { background:var(--gl); transform:none; }
+    .panel-btn.btn-clear { background:transparent; color:var(--txt2); border:1px solid var(--bdr); box-shadow:none; font-size:12px; padding:8px; }
+    .panel-btn.btn-clear:hover { background:#fef0f0; color:#c0392b; border-color:#c0392b; transform:none; }
+
+    /* ─── MOBILE BAR ─── */
+    .mobile-export-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:200; background:rgba(255,255,255,0.6); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); box-shadow:0 -4px 24px rgba(0,0,0,0.18); padding:12px; flex-direction:column; gap:8px; }
+    .mob-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .mob-row button { padding:10px; background:var(--g); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:12px; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:5px; }
+    .mob-row button:hover { background:var(--o); }
+    .mob-row button.btn-o { background:var(--o); }
+    .mob-row button.btn-o:hover { background:var(--g); }
+    .mob-full { width:100%; padding:12px; background:linear-gradient(135deg,var(--g),var(--gm)); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .mob-inputs { display:flex; flex-direction:column; gap:7px; padding:10px; background:rgba(255,255,255,0.8); border-radius:10px; border:1px solid var(--bdr); }
+    .mob-inputs label { font-size:10px; font-weight:700; color:var(--txt2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:-5px; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:1100px) { .layout-wrapper { max-width:100%; } .page { transform:scale(0.88); margin-bottom:-36mm; } }
+    @media (max-width:900px)  { .layout-wrapper { flex-direction:column; align-items:center; } .side-panel { position:static; width:100%; max-width:500px; } .page { transform:scale(0.78); margin-bottom:-65mm; } }
+    @media (max-width:768px)  { .side-panel { display:none; } .mobile-export-bar { display:flex; } .page { transform:scale(0.63); margin-bottom:-110mm; } body { padding-bottom:340px; } }
+    @media (max-width:576px)  { .page { transform:scale(0.48); margin-bottom:-154mm; } body { padding-bottom:370px; } }
+    @media (max-width:420px)  { .page { transform:scale(0.42); margin-bottom:-172mm; } .mob-row { grid-template-columns:1fr; } }
+    @media print {
+      body { background:none !important; padding-bottom:0 !important; }
+      .page { transform:scale(1) !important; margin-bottom:0 !important; box-shadow:none !important; page-break-after:always; }
+      .page:last-child { page-break-after:auto; }
+      .side-panel, .mobile-export-bar { display:none !important; }
+      .layout-wrapper { padding:0 !important; }
+      .pages-column { gap:0; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout-wrapper">
+
+  <!-- ─── PAGES ─── -->
+  <div class="pages-column">
+
+    <!-- ════════ TRANG 1 ════════ -->
+    <div class="page" id="page-1">
+      <div class="corner c-tl"></div><div class="corner c-tr"></div>
+      <div class="corner c-bl"></div><div class="corner c-br"></div>
+
+      <div class="page-head">
+        <div class="page-head-logo">
+          <a href="https://hathyo.com" target="_blank" rel="noopener">
+            <img src="../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.svg"
+                 onerror="this.src='../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.png'"
+                 alt="HATHYO">
+          </a>
+        </div>
+        <div class="page-head-meta">
+          <strong>CÔNG TY TNHH CUỘC SỐNG VUI KHỎE</strong><br>
+          MST: 0318170229<br>
+          TP.HCM, ngày 20 tháng 05 năm 2026
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="letter-title">
+        <h1>Thư Ngỏ Hợp Tác Kinh Doanh</h1>
+        <div class="subtitle">V/v: Hợp tác phân phối &amp; tăng trưởng bền vững trên Sàn HATHYO</div>
+      </div>
+      <div class="divider" style="margin-top:6px;"></div>
+
+      <!-- VIP: Khung người nhận -->
+      <div class="recipient-section">
+        <div class="recipient-logo-wrap" id="logoWrap" onclick="document.getElementById('logoFileInput').click()">
+          <div class="logo-placeholder" id="logoPlaceholder">
+            <i class="bi bi-building"></i>
+            <span>Logo<br>công ty</span>
+          </div>
+          <img id="companyLogoPreview" src="" alt="" style="display:none; max-width:100%; max-height:100%; object-fit:contain;">
+        </div>
+        <div class="recipient-info">
+          <div class="ri-kinhgui"><i class="bi bi-envelope-open-heart-fill"></i>&nbsp; Kính gửi:</div>
+          <div class="ri-name placeholder" id="riName">Quý Lãnh đạo / Anh – Chị</div>
+          <div class="ri-position placeholder" id="riPosition">Chức vụ / Vai trò</div>
+          <div class="ri-company placeholder" id="riCompany">Tên Công ty / Doanh nghiệp</div>
+        </div>
+      </div>
+      <input type="file" id="logoFileInput" accept="image/*" style="display:none;">
+
+      <div class="letter-body">
+        <p class="body-para">
+          Chúng tôi hiểu rõ những thách thức lớn nhất mà Quý vị đang gặp phải trên các sàn TMĐT hiện nay:
+          chi phí quảng cáo tăng cao nhưng chuyển đổi không ổn định, sản phẩm dễ bị chìm nghỉm,
+          cuộc chiến giá cả làm bào mòn lợi nhuận, và doanh số phụ thuộc quá nhiều vào traffic trả phí.
+        </p>
+
+        <div class="intro-box">
+          <p class="body-para">
+            <strong style="color:var(--g)">HATHYO – Happy Healthy You!</strong>
+            <em style="color:var(--o)"> (Cùng Bạn Vui Khỏe Hơn!)</em> được xây dựng để giải quyết triệt để những vấn đề này.
+            Với mô hình <strong>Sàn TMĐT Cộng Sinh</strong>, chúng tôi tạo ra một hệ thống phân phối chủ động –
+            nơi sản phẩm chất lượng được mạng lưới cộng đồng mạnh mẽ giới thiệu và tư vấn tận tâm đến đúng khách hàng.
+          </p>
+        </div>
+
+        <div class="section-head">
+          <i class="bi bi-stars" style="color:var(--o);margin-right:6px;"></i>
+          NHỮNG LỢI THẾ THỰC SỰ MÀ QUÝ VỊ SẼ NHẬN ĐƯỢC
+        </div>
+
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <div class="benefit-title"><span style="color:var(--g);font-size:14px;">✔</span> Tăng trưởng doanh số bền vững</div>
+            <div class="benefit-desc">Mạng lưới cộng đồng rộng lớn giúp sản phẩm được lan tỏa tự nhiên và liên tục, thay vì chỉ phụ thuộc vào quảng cáo nhất thời.</div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-title"><span style="color:var(--o);font-size:14px;">✔</span> Lợi nhuận cao hơn, chi phí thấp hơn</div>
+            <div class="benefit-desc">Chỉ trả phí khi có đơn hàng thực tế. Phần chi phí chuyển thành chiết khấu hấp dẫn, giúp sản phẩm cạnh tranh và chuyển đổi cao hơn.</div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-title"><span style="color:var(--g);font-size:14px;">✔</span> Doanh thu ổn định lâu dài</div>
+            <div class="benefit-desc">Tập trung vào nhóm hàng thiết yếu, sức khỏe và tiêu dùng hàng ngày nên khách hàng quay lại mua lặp lại với tỷ lệ cao.</div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-title"><span style="color:var(--o);font-size:14px;">✔</span> Thương hiệu được nâng tầm giá trị</div>
+            <div class="benefit-desc">Môi trường minh bạch, giá đồng nhất và chất lượng được kiểm soát giúp xây dựng lòng tin và vị thế lâu dài.</div>
+          </div>
+        </div>
+
+        <div class="metrics-bar">
+          <div class="metric-item"><div class="metric-val">2M+</div><div class="metric-lbl">Người dùng<br>mục tiêu 2030</div></div>
+          <div class="metric-sep"></div>
+          <div class="metric-item"><div class="metric-val">2.500 tỷ</div><div class="metric-lbl">GMV mục tiêu<br>vào năm 2030</div></div>
+          <div class="metric-sep"></div>
+          <div class="metric-item"><div class="metric-val">Cộng Sinh</div><div class="metric-lbl">Mô hình<br>Win-Win độc đáo</div></div>
+        </div>
+
+        <div class="target-box">
+          <div class="target-label"><i class="bi bi-bullseye"></i>&nbsp; Mục tiêu chiến lược</div>
+          <div class="target-stat">2 triệu người dùng &amp; GMV 2.500 tỷ đồng vào năm 2030</div>
+          <div class="target-text">Đây là cơ hội lớn cho những đối tác chiến lược đi đầu cùng HATHYO – một hệ sinh thái thương mại điện tử sức khỏe đang trên đà phát triển mạnh mẽ tại Việt Nam.</div>
+        </div>
+      </div>
+    </div><!-- /page-1 -->
+
+
+    <!-- ════════ TRANG 2 ════════ -->
+    <div class="page" id="page-2">
+      <div class="corner c-tl"></div><div class="corner c-tr"></div>
+      <div class="corner c-bl"></div><div class="corner c-br"></div>
+
+      <div class="page-head" style="margin-bottom:3px;">
+        <div class="page-head-logo">
+          <img src="../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.svg"
+               onerror="this.src='../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.png'"
+               alt="HATHYO" style="height:60px;">
+        </div>
+        <div class="page-head-meta">Thư Ngỏ Hợp Tác Kinh Doanh &nbsp;&middot;&nbsp; Trang 2/2</div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="letter-body">
+        <p class="body-para">
+          Chúng tôi tin rằng những sản phẩm Quý vị đã dày công tạo dựng xứng đáng được nhiều người Việt
+          tin dùng hơn. HATHYO sẵn sàng trở thành đối tác giúp Quý vị tập trung vào việc phát triển sản
+          phẩm xuất sắc, trong khi chúng tôi lo hiệu quả phân phối và tăng trưởng.
+        </p>
+        <p class="body-para">
+          Nếu Quý vị đang tìm kiếm một kênh bán hàng
+          <strong style="color:var(--g)">hiệu quả hơn, bền vững hơn</strong>, chúng tôi rất mong được
+          đồng hành cùng Quý vị. <em>Trân trọng cảm ơn và hy vọng sớm được trao đổi trực tiếp!</em>
+        </p>
+
+        <div class="section-head">
+          <i class="bi bi-person-lines-fill" style="color:var(--o);margin-right:6px;"></i>
+          THÔNG TIN LIÊN HỆ
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-item">
+            <img class="member-photo" src="../assets/team/Phung-Hoang.png" alt="Hoàng Minh Phụng">
+            <div><div class="ci-name">Mr. Hoàng Minh Phụng</div><div class="ci-role">Người sáng lập</div><div class="ci-detail"><a href="tel:+840908556220">0908 556 220</a> &nbsp;·&nbsp; <a href="mailto:email@hathyo.com">email@hathyo.com</a></div></div>
+          </div>
+          <div class="contact-item">
+            <img class="member-photo" src="../assets/team/Vuong.png" alt="Lê Hữu Vương">
+            <div><div class="ci-name">Mr. Lê Hữu Vương</div><div class="ci-role">Điều hành dự án</div><div class="ci-detail"><a href="tel:+840965652727">0965 652 727</a> &nbsp;·&nbsp; <a href="mailto:vuonglh@hathyo.com">vuonglh@hathyo.com</a></div></div>
+          </div>
+          <div class="contact-item">
+            <img class="member-photo" src="../assets/team/Hoa-2-White.png" alt="Võ Văn Hoà">
+            <div><div class="ci-name">Mr. Võ Văn Hoà</div><div class="ci-role">Phát triển hệ thống</div><div class="ci-detail"><a href="tel:+840903696816">0903 696 816</a> &nbsp;·&nbsp; <a href="mailto:hoavv@hathyo.com">hoavv@hathyo.com</a></div></div>
+          </div>
+          <div class="contact-item">
+            <img class="member-photo" src="../assets/team/Sang.jpg" alt="Lê Minh Sang">
+            <div><div class="ci-name">Mr. Lê Minh Sang</div><div class="ci-role">Vận hành</div><div class="ci-detail"><a href="tel:+840935868239">0935 868 239</a> &nbsp;·&nbsp; <a href="mailto:sanglm@hathyo.com">sanglm@hathyo.com</a></div></div>
+          </div>
+          <div class="contact-item">
+            <img class="member-photo" src="../assets/team/Anh-Van-41-RB1.png" alt="Văn Thị Ngọc Ánh">
+            <div><div class="ci-name">Ms. Văn Thị Ngọc Ánh</div><div class="ci-role">Vận hành</div><div class="ci-detail"><a href="tel:+840973022327">0973 022 327</a> &nbsp;·&nbsp; <a href="mailto:operations@hathyo.com">operations@hathyo.com</a></div></div>
+          </div>
+          <div class="contact-item">
+            <img class="member-photo" src="../assets/team/Lan-Hoang-2.jpg" alt="Hoàng Thị Hương Lan">
+            <div><div class="ci-name">Ms. Hoàng Thị Hương Lan</div><div class="ci-role">Logistics</div><div class="ci-detail"><a href="tel:+840907426857">0907 426 857</a> &nbsp;·&nbsp; <a href="mailto:logistics@hathyo.com">logistics@hathyo.com</a></div></div>
+          </div>
+        </div>
+
+        <div class="contact-general">
+          <div class="cg-item"><i class="bi bi-envelope-fill"></i><a href="mailto:email@hathyo.com">email@hathyo.com</a></div>
+          <div class="cg-item"><i class="bi bi-globe2"></i><a href="https://hathyo.com" target="_blank" rel="noopener">hathyo.com</a></div>
+          <div class="cg-item"><i class="bi bi-telephone-fill"></i><a href="tel:+840827000248">0827 000 248</a></div>
+          <div class="cg-item"><i class="bi bi-geo-alt-fill"></i><a href="https://maps.app.goo.gl/sWvzUx1DTjEfT5wS6" target="_blank" rel="noopener">82 Phan Đăng Lưu, Phường Đức Nhuận, TP. HCM</a></div>
+          <div class="cg-item">
+            <a href="http://online.gov.vn/Website/chi-tiet-132045" target="_blank" rel="noopener">
+              <img src="../assets/registration/dkbct.png" alt="Đã đăng ký Bộ Công Thương" style="height:34px;display:block;">
+            </a>
+          </div>
+        </div>
+
+        <div class="sig-area">
+          <div class="sig-block">
+            <div class="sig-labels">
+              <div class="sig-header">TM. Lãnh Đạo HATHYO</div>
+              <div class="sig-role">Người điều hành</div>
+            </div>
+            <div class="sig-imgs">
+              <img class="sig-sign" src="../assets/sign-seal/Vuong-Signature-Transparent.png" alt="Chữ ký">
+              <img class="sig-seal" src="../assets/sign-seal/HATHYO-Seal-Transparent.png" alt="Dấu công ty">
+            </div>
+            <div class="sig-name">LÊ HỮU VƯƠNG</div>
+          </div>
+        </div>
+      </div><!-- /letter-body -->
+
+      <!-- Footer anchored at page bottom -->
+      <div class="page-footer">
+        <div class="footer-company">
+          <strong>CÔNG TY TNHH CUỘC SỐNG VUI KHỎE</strong><br>
+          MST: 0318170229 &nbsp;|&nbsp;
+          <a href="https://maps.app.goo.gl/sWvzUx1DTjEfT5wS6" target="_blank" rel="noopener">82 Phan Đăng Lưu, P. Đức Nhuận, TP. HCM</a><br>
+          ĐT: <a href="tel:+840827000248">0827 000 248</a> &nbsp;|&nbsp;
+          Email: <a href="mailto:email@hathyo.com">email@hathyo.com</a><br>
+          GP Sàn TMĐT: <strong style="color:var(--g)">BCT 2025-0737/ĐK/TMĐT</strong> &nbsp;|&nbsp;
+          ĐD: Ông Hoàng Minh Phụng – Giám đốc
+        </div>
+        <div class="footer-qr">
+          <img src="../assets/qr/hathyo.com-QR512.png" alt="QR hathyo.com">
+          <span>hathyo.com</span>
+        </div>
+      </div>
+    </div><!-- /page-2 -->
+
+  </div><!-- /pages-column -->
+
+
+  <!-- ─── SIDE PANEL ─── -->
+  <div class="side-panel">
+    <div class="panel-title"><i class="bi bi-pencil-square"></i> Cá nhân hóa thư</div>
+
+    <span class="panel-lbl">Người nhận</span>
+    <input type="text" id="sp-name"     class="guest-input" placeholder="Họ và tên người nhận">
+    <input type="text" id="sp-position" class="guest-input" placeholder="Chức vụ / Vai trò">
+    <input type="text" id="sp-company"  class="guest-input" placeholder="Tên công ty / Doanh nghiệp">
+
+    <span class="panel-lbl">Logo công ty</span>
+    <button class="logo-upload-btn" onclick="document.getElementById('logoFileInput').click()">
+      <i class="bi bi-upload"></i> Tải lên logo công ty
+    </button>
+    <div class="logo-preview-panel" id="logoPanelPreview" style="display:none;">
+      <img id="logoPanelImg" src="" alt="Logo preview">
+    </div>
+
+    <div class="panel-sep"></div>
+
+    <button class="panel-btn btn-pdf"   onclick="exportToPDF()"><i class="bi bi-file-earmark-pdf-fill"></i> Xuất PDF</button>
+    <button class="panel-btn"           onclick="exportToPNG()"><i class="bi bi-images"></i> Xuất ảnh (2 trang)</button>
+    <button class="panel-btn"           onclick="shareInvite()"><i class="bi bi-share-fill"></i> Chia sẻ</button>
+    <button class="panel-btn btn-o"     onclick="window.open('../contact-hathyo.html','_blank','noopener,noreferrer')"><i class="bi bi-chat-dots-fill"></i> Liên hệ HATHYO</button>
+    <button class="panel-btn btn-ghost" onclick="window.open('invitation-merchant-20260520.html','_blank','noopener,noreferrer')"><i class="bi bi-file-earmark-text"></i> Xem bản phổ quát</button>
+    <button class="panel-btn btn-clear" onclick="clearForm()"><i class="bi bi-arrow-counterclockwise"></i> Xóa nội dung</button>
+  </div>
+
+</div><!-- /layout-wrapper -->
+
+
+<!-- ─── MOBILE BAR ─── -->
+<div class="mobile-export-bar">
+  <div class="mob-inputs">
+    <label>Tên người nhận</label>
+    <input type="text" id="mob-name"     class="guest-input" placeholder="Nhập tên người nhận">
+    <label>Chức vụ</label>
+    <input type="text" id="mob-position" class="guest-input" placeholder="Chức vụ">
+    <label>Tên công ty</label>
+    <input type="text" id="mob-company"  class="guest-input" placeholder="Tên công ty">
+  </div>
+  <div class="mob-row">
+    <button onclick="document.getElementById('logoFileInput').click()"><i class="bi bi-upload"></i> Logo</button>
+    <button onclick="shareInvite()"><i class="bi bi-share-fill"></i> Chia sẻ</button>
+    <button onclick="exportToPNG()"><i class="bi bi-images"></i> Xuất ảnh</button>
+    <button class="btn-o" onclick="window.open('../contact-hathyo.html','_blank','noopener,noreferrer')"><i class="bi bi-chat-dots-fill"></i> Liên hệ</button>
+  </div>
+  <button class="mob-full" onclick="exportToPDF()"><i class="bi bi-file-earmark-pdf-fill"></i> Xuất PDF</button>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  const { jsPDF } = window.jspdf;
+  const HC = ['#0A703F','#FF6300','#1cb870','#ff8c42','#e8f5ee','#ffffff'];
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('button,a,input,select,textarea,.recipient-logo-wrap')) return;
+    confetti({ particleCount:55, spread:100, origin:{x:e.clientX/window.innerWidth,y:e.clientY/window.innerHeight}, colors:HC, ticks:200 });
+  });
+
+  function syncInputs(src, dst, field) {
+    [src, dst].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', function() {
+        const other = id===src ? dst : src;
+        const el = document.getElementById(other);
+        if (el) el.value = this.value;
+        updateCard(field, this.value);
+      });
+    });
+  }
+  syncInputs('sp-name','mob-name','name');
+  syncInputs('sp-position','mob-position','position');
+  syncInputs('sp-company','mob-company','company');
+
+  const DEFAULTS = { name:'Quý Lãnh đạo / Anh – Chị', position:'Chức vụ / Vai trò', company:'Tên Công ty / Doanh nghiệp' };
+  const MAP = { name:'riName', position:'riPosition', company:'riCompany' };
+  function updateCard(field, val) {
+    const el = document.getElementById(MAP[field]);
+    if (!el) return;
+    if (val.trim()) { el.textContent=val; el.classList.remove('placeholder'); }
+    else { el.textContent=DEFAULTS[field]; el.classList.add('placeholder'); }
+  }
+
+  document.getElementById('logoFileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const src = ev.target.result;
+      const cl = document.getElementById('companyLogoPreview');
+      const ph = document.getElementById('logoPlaceholder');
+      if (cl) { cl.src=src; cl.style.display='block'; }
+      if (ph) ph.style.display='none';
+      const pi = document.getElementById('logoPanelImg');
+      const pw = document.getElementById('logoPanelPreview');
+      if (pi) pi.src=src;
+      if (pw) pw.style.display='flex';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function clearForm() {
+    ['sp-name','sp-position','sp-company','mob-name','mob-position','mob-company'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    Object.keys(DEFAULTS).forEach(f => updateCard(f,''));
+    const cl=document.getElementById('companyLogoPreview'); const ph=document.getElementById('logoPlaceholder');
+    if(cl){cl.src='';cl.style.display='none';} if(ph) ph.style.display='flex';
+    const pw=document.getElementById('logoPanelPreview'); if(pw) pw.style.display='none';
+    document.getElementById('logoFileInput').value='';
+  }
+
+  function lockStyles() {
+    const s=document.createElement('style'); s.id='__exp';
+    s.innerHTML='* { animation:none !important; transition:none !important; } .page { transform:none !important; margin-bottom:0 !important; box-shadow:none !important; }';
+    document.head.appendChild(s); return s;
+  }
+  function unlockStyles(s) { s?.parentNode?.removeChild(s); }
+
+  async function capturePages() {
+    const s=lockStyles();
+    await new Promise(r=>setTimeout(r,500));
+    const cs=[];
+    for (const pg of document.querySelectorAll('.page')) {
+      cs.push(await html2canvas(pg,{scale:4,useCORS:true,allowTaint:true,backgroundColor:'#ffffff',logging:false}));
+    }
+    unlockStyles(s); return cs;
+  }
+
+  async function exportToPNG() {
+    try {
+      const cs=await capturePages();
+      const name=(document.getElementById('sp-name')?.value||document.getElementById('mob-name')?.value||'').trim();
+      const sfx=name?'_'+name.replace(/\s+/g,'_'):'';
+      cs.forEach((c,i)=>setTimeout(()=>{ const a=document.createElement('a'); a.download=`HATHYO_ThuNgo_VIP${sfx}_Trang${i+1}.png`; a.href=c.toDataURL('image/png',1.0); a.click(); },i*700));
+    } catch(e){console.error(e);}
+  }
+
+  async function exportToPDF() {
+    try {
+      const cs=await capturePages();
+      const name=(document.getElementById('sp-name')?.value||document.getElementById('mob-name')?.value||'').trim();
+      const sfx=name?'_'+name.replace(/\s+/g,'_'):'';
+      const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+      cs.forEach((c,i)=>{ if(i>0) pdf.addPage('a4','portrait'); pdf.addImage(c.toDataURL('image/jpeg',0.95),'JPEG',0,0,210,Math.min((c.height*210)/c.width,297)); });
+      pdf.save(`HATHYO_ThuNgo_VIP${sfx}_20260520.pdf`);
+    } catch(e){console.error(e);}
+  }
+
+  function shareInvite() {
+    const d={title:'Thư Ngỏ Hợp Tác Kinh Doanh – HATHYO',text:'Hợp tác phân phối & tăng trưởng bền vững trên Sàn TMĐT Cộng Sinh HATHYO – Happy Healthy You!',url:window.location.href};
+    if(navigator.share) navigator.share(d).catch(()=>{});
+    else navigator.clipboard?.writeText(window.location.href).then(()=>alert('Đã sao chép link!')).catch(()=>alert('Link: '+window.location.href));
+  }
+</script>
+</body>
+</html>
