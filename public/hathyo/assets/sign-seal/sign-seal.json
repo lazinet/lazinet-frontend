@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Hoàng Minh Phụng",
+    "title": "Giám đốc",
+    "type": "GĐ",
+    "seal": "HATHYO-Seal-Transparent.png",
+    "signature": "Phung-Signature-Transparent.png",
+    "password": "HATHYO@2030",
+    "rotation": 0
+  },
+  {
+    "name": "Lê Hữu Vương",
+    "title": "Giám đốc Điều hành",
+    "type": "TUQ.GĐ",
+    "seal": "HATHYO-Seal-Transparent.png",
+    "signature": "Vuong-Signature-Transparent.png",
+    "password": "DeVuongA2",
+    "rotation": -5
+  },
+  {
+    "name": "Lê Minh Sang",
+    "title": "Giám đốc Vận hành",
+    "type": "TUQ.GĐ",
+    "seal": "HATHYO-Seal-Transparent.png",
+    "signature": "Sang-Signature-Transparent.png",
+    "password": "SangTrongA4",
+    "rotation": -15
+  },
+  {
+    "name": "Võ Văn Hòa",
+    "title": "Giám đốc Phát triển",
+    "type": "TUQ.GĐ",
+    "seal": "HATHYO-Seal-Transparent.png",
+    "signature": "Hoa-Signature-Transparent.png",
+    "password": "HoaThuangA4",
+    "rotation": 0
+  },
+  {
+    "name": "Văn Thị Ngọc Ánh",
+    "title": "Trưởng ban Nội chính",
+    "type": "TUQ.GĐ",
+    "seal": "HATHYO-Seal-Transparent.png",
+    "signature": "Anh-Signature-Transparent.png",
+    "password": "AnhNgocA6",
+    "rotation": 0
+  }
+]

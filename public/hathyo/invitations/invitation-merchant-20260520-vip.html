@@ -422,8 +422,9 @@
     <input type="text" id="sp-company"  class="guest-input" placeholder="Tên công ty / Doanh nghiệp">
 
     <span class="panel-lbl">Logo công ty</span>
+    <input type="url" id="sp-logoUrl" class="guest-input" placeholder="URL hình logo (https://...)" style="margin-bottom:6px;">
     <button class="logo-upload-btn" onclick="document.getElementById('logoFileInput').click()">
-      <i class="bi bi-upload"></i> Tải lên logo công ty
+      <i class="bi bi-upload"></i> Hoặc tải lên logo từ máy
     </button>
     <div class="logo-preview-panel" id="logoPanelPreview" style="display:none;">
       <img id="logoPanelImg" src="" alt="Logo preview">
@@ -451,6 +452,10 @@
     <input type="text" id="mob-position" class="guest-input" placeholder="Chức vụ">
     <label>Tên công ty</label>
     <input type="text" id="mob-company"  class="guest-input" placeholder="Tên công ty">
+  </div>
+  <div class="mob-inputs" style="margin-top:4px;">
+    <label>URL logo</label>
+    <input type="url" id="mob-logoUrl" class="guest-input" placeholder="https://... (URL hình logo)">
   </div>
   <div class="mob-row">
     <button onclick="document.getElementById('logoFileInput').click()"><i class="bi bi-upload"></i> Logo</button>
@@ -497,26 +502,41 @@
     else { el.textContent=DEFAULTS[field]; el.classList.add('placeholder'); }
   }
 
+  function applyLogoSrc(src) {
+    const cl = document.getElementById('companyLogoPreview');
+    const ph = document.getElementById('logoPlaceholder');
+    if (cl) { cl.src=src; cl.style.display='block'; }
+    if (ph) ph.style.display='none';
+    const pi = document.getElementById('logoPanelImg');
+    const pw = document.getElementById('logoPanelPreview');
+    if (pi) pi.src=src;
+    if (pw) pw.style.display='flex';
+  }
+
   document.getElementById('logoFileInput').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
-      const src = ev.target.result;
-      const cl = document.getElementById('companyLogoPreview');
-      const ph = document.getElementById('logoPlaceholder');
-      if (cl) { cl.src=src; cl.style.display='block'; }
-      if (ph) ph.style.display='none';
-      const pi = document.getElementById('logoPanelImg');
-      const pw = document.getElementById('logoPanelPreview');
-      if (pi) pi.src=src;
-      if (pw) pw.style.display='flex';
+      applyLogoSrc(ev.target.result);
+      // clear URL inputs when file is chosen
+      ['sp-logoUrl','mob-logoUrl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
     };
     reader.readAsDataURL(file);
   });
 
+  function handleLogoUrl(val) {
+    if (!val || !val.startsWith('http')) return;
+    applyLogoSrc(val);
+    ['sp-logoUrl','mob-logoUrl'].forEach(id=>{ const el=document.getElementById(id); if(el&&el.value!==val) el.value=val; });
+    document.getElementById('logoFileInput').value='';
+  }
+
+  document.getElementById('sp-logoUrl').addEventListener('change', function(){ handleLogoUrl(this.value.trim()); });
+  document.getElementById('mob-logoUrl').addEventListener('change', function(){ handleLogoUrl(this.value.trim()); });
+
   function clearForm() {
-    ['sp-name','sp-position','sp-company','mob-name','mob-position','mob-company'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    ['sp-name','sp-position','sp-company','mob-name','mob-position','mob-company','sp-logoUrl','mob-logoUrl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
     Object.keys(DEFAULTS).forEach(f => updateCard(f,''));
     const cl=document.getElementById('companyLogoPreview'); const ph=document.getElementById('logoPlaceholder');
     if(cl){cl.src='';cl.style.display='none';} if(ph) ph.style.display='flex';
