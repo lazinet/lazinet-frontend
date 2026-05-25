@@ -133,7 +133,7 @@
     .sig-header { font-size:13px; font-weight:700; color:var(--g); text-transform:uppercase; letter-spacing:0.5px; }
     .sig-role   { font-size:11px; color:var(--txt2); font-style:italic; margin-bottom:2px; }
     .sig-imgs   { position:relative; width:270px; height:170px; margin:0 auto; overflow:visible; }
-    .sig-sign   { position:absolute; bottom:30px; right:0; height:90px; object-fit:contain; transform:rotate(-5deg); transform-origin:center bottom; }
+    .sig-sign   { position:absolute; bottom:30px; right:0; height:90px; object-fit:contain; transform:rotate(0deg); transform-origin:center bottom; }
     .sig-seal   { position:absolute; bottom:-5px; left:-30px; height:170px; object-fit:contain; opacity:0.88; }
     .sig-labels { text-align:center; transform:translateX(-22px); display:block; }
     .sig-name   { font-size:14px; font-weight:700; color:var(--g); margin-top:4px; }
@@ -259,7 +259,7 @@
           <p class="body-para">
             <strong style="color:var(--g)">HATHYO – Happy Healthy You!</strong>
             <em style="color:var(--o)"> (Cùng Bạn Vui Khỏe Hơn!)</em> được xây dựng để giải quyết triệt để những vấn đề này.
-            Với mô hình <strong>Sàn TMĐT Cộng Sinh</strong>, chúng tôi tạo ra một hệ thống phân phối chủ động –
+            Với mô hình <strong>Cộng Sinh - Cùng thắng</strong>, chúng tôi tạo ra một hệ thống phân phối chủ động –
             nơi sản phẩm chất lượng được mạng lưới cộng đồng mạnh mẽ giới thiệu và tư vấn tận tâm đến đúng khách hàng.
           </p>
         </div>
@@ -340,11 +340,11 @@
         <div class="contact-grid">
           <div class="contact-item">
             <img class="member-photo" src="../assets/team/Phung-Hoang.png" alt="Hoàng Minh Phụng">
-            <div><div class="ci-name">Mr. Hoàng Minh Phụng</div><div class="ci-role">Sáng lập - CTO</div><div class="ci-detail"><a href="tel:+840908556220">0908 556 220</a> &nbsp;·&nbsp; <a href="mailto:email@hathyo.com">email@hathyo.com</a></div></div>
+            <div><div class="ci-name">Mr. Hoàng Minh Phụng</div><div class="ci-role">Giám đốc Công ty</div><div class="ci-detail"><a href="tel:+840908556220">0908 556 220</a> &nbsp;·&nbsp; <a href="mailto:email@hathyo.com">email@hathyo.com</a></div></div>
           </div>
           <div class="contact-item">
             <img class="member-photo" src="../assets/team/Vuong.png" alt="Lê Hữu Vương">
-            <div><div class="ci-name">Mr. Lê Hữu Vương</div><div class="ci-role">Giám đốc Diều hành - CEO</div><div class="ci-detail"><a href="tel:+840965652727">0965 652 727</a> &nbsp;·&nbsp; <a href="mailto:vuonglh@hathyo.com">vuonglh@hathyo.com</a></div></div>
+            <div><div class="ci-name">Mr. Lê Hữu Vương</div><div class="ci-role">Giám đốc Dự án</div><div class="ci-detail"><a href="tel:+840965652727">0965 652 727</a> &nbsp;·&nbsp; <a href="mailto:vuonglh@hathyo.com">vuonglh@hathyo.com</a></div></div>
           </div>
           <div class="contact-item">
             <img class="member-photo" src="../assets/team/Hoa-2-White.png" alt="Võ Văn Hoà">
@@ -360,7 +360,7 @@
           </div>
           <div class="contact-item">
             <img class="member-photo" src="../assets/team/Lan-Hoang-2.jpg" alt="Hoàng Thị Hương Lan">
-            <div><div class="ci-name">Ms. Hoàng Thị Hương Lan</div><div class="ci-role">Logistics</div><div class="ci-detail"><a href="tel:+840907426857">0907 426 857</a> &nbsp;·&nbsp; <a href="mailto:logistics@hathyo.com">logistics@hathyo.com</a></div></div>
+            <div><div class="ci-name">Ms. Hoàng Thị Hương Lan</div><div class="ci-role">Kho vận & XNK</div><div class="ci-detail"><a href="tel:+840907426857">0907 426 857</a> &nbsp;·&nbsp; <a href="mailto:logistics@hathyo.com">logistics@hathyo.com</a></div></div>
           </div>
         </div>
 
@@ -383,10 +383,10 @@
               <div class="sig-role">GĐ Điều Hành</div>
             </div>
             <div class="sig-imgs">
-              <img class="sig-sign" src="../assets/sign-seal/Vuong-Signature-Transparent.png" alt="Chữ ký">
+              <img class="sig-sign" src="../assets/sign-seal/Phung-Signature-Transparent.png" alt="Chữ ký">
               <img class="sig-seal" src="../assets/sign-seal/HATHYO-Seal-Transparent.png" alt="Dấu công ty">
             </div>
-            <div class="sig-name">LÊ HỮU VƯƠNG</div>
+            <div class="sig-name">HOÀNG MINH PHỤNG</div>
           </div>
         </div>
       </div><!-- /letter-body -->
@@ -582,7 +582,7 @@
   }
 
   function shareInvite() {
-    const d={title:'Thư Ngỏ Hợp Tác Kinh Doanh – HATHYO',text:'Hợp tác phân phối & tăng trưởng bền vững trên Sàn TMĐT Cộng Sinh HATHYO – Happy Healthy You!',url:window.location.href};
+    const d={title:'Thư Ngỏ Hợp Tác Kinh Doanh – HATHYO',text:'Hợp tác phân phối & tăng trưởng bền vững trên Sàn TMĐT HATHYO Cộng Sinh & Cùng thắng – Happy Healthy You!',url:window.location.href};
     if(navigator.share) navigator.share(d).catch(()=>{});
     else navigator.clipboard?.writeText(window.location.href).then(()=>alert('Đã sao chép link!')).catch(()=>alert('Link: '+window.location.href));
   }
