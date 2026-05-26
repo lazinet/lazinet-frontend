@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HATHYO – Mô hình Giá & Thanh toán</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --buyer:   #f59e0b;
+  --seller:  #10b981;
+  --platform:#6366f1;
+  --sd:      #f97316;
+  --pd:      #3b82f6;
+  --pc:      #8b5cf6;
+  --p4:      #059669;
+  --p3:      #d97706;
+  --p0:      #9ca3af;
+  --p1:      #1f2937;
+  --bg:      #0f172a;
+  --card:    #1e293b;
+  --border:  #334155;
+  --text:    #e2e8f0;
+  --muted:   #94a3b8;
+  --radius:  12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #064e3b 100%);
+  padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
+header h1 span { color: #a78bfa; }
+.badges { display: flex; gap: 8px; }
+.badge {
+  font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 99px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.badge-a { background: #312e81; color: #a5b4fc; }
+.badge-b { background: #064e3b; color: #6ee7b7; }
+.badge-m { background: #78350f; color: #fcd34d; }
+
+/* ── LAYOUT ── */
+.app { display: grid; grid-template-columns: 360px 1fr; gap: 0; min-height: calc(100vh - 65px); }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100vh - 65px);
+  position: sticky; top: 65px;
+}
+.sidebar h2 { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; margin-top: 20px; }
+.sidebar h2:first-child { margin-top: 0; }
+
+/* Presets */
+.presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.preset-btn {
+  font-size: 0.7rem; font-weight: 600; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: #0f172a; color: var(--muted); cursor: pointer; transition: all .2s;
+}
+.preset-btn:hover, .preset-btn.active { background: #312e81; border-color: #6366f1; color: #a5b4fc; }
+
+/* Input group */
+.inp-group {
+  background: #0f172a; border-radius: 10px; padding: 14px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+}
+.inp-group label {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+.sym { font-size: 0.9rem; font-weight: 800; color: #a5b4fc; font-style: italic; }
+.inp-row { display: flex; align-items: center; gap: 8px; }
+input[type=range] {
+  flex: 1; height: 4px; cursor: pointer; appearance: none;
+  background: linear-gradient(to right, #6366f1 0%, #6366f1 var(--pct,50%), #334155 var(--pct,50%));
+  border-radius: 99px; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: #6366f1; border: 2px solid #a5b4fc; cursor: pointer;
+}
+.num-inp {
+  width: 90px; background: #1e293b; border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text); font-size: 0.82rem; padding: 4px 8px; text-align: right; outline: none;
+  transition: border-color .2s;
+}
+.num-inp:focus { border-color: #6366f1; }
+.unit { font-size: 0.7rem; color: var(--muted); min-width: 28px; }
+
+/* Toggle switch */
+.toggle-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.toggle-label { font-size: 0.78rem; color: var(--muted); }
+.toggle-group { display: flex; background: #0f172a; border-radius: 6px; padding: 2px; gap: 2px; }
+.toggle-opt {
+  font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 4px;
+  cursor: pointer; color: var(--muted); transition: all .15s; border: none; background: none;
+}
+.toggle-opt.on { background: #6366f1; color: white; }
+
+/* Optional badge */
+.opt-tag { font-size: 0.62rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
+.req-tag { font-size: 0.62rem; color: #f59e0b; border: 1px solid #92400e; border-radius: 4px; padding: 1px 5px; }
+
+/* Disabled state */
+.disabled { opacity: 0.35; pointer-events: none; }
+
+/* ── MAIN CONTENT ── */
+.main { padding: 20px 24px; overflow-y: auto; }
+
+/* Result cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px; margin-bottom: 20px;
+}
+.card {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 14px;
+  position: relative; overflow: hidden; transition: transform .2s;
+}
+.card:hover { transform: translateY(-2px); }
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.card-p0::before { background: var(--p0); }
+.card-p1::before { background: var(--p1); background: #64748b; }
+.card-sd::before { background: var(--sd); }
+.card-pd::before { background: var(--pd); }
+.card-p2::before { background: var(--seller); }
+.card-p3::before { background: var(--buyer); }
+.card-pc::before { background: var(--pc); }
+.card-p4::before { background: var(--p4); }
+.card-net::before { background: linear-gradient(90deg,var(--platform),var(--pd)); }
+.card-delta::before { background: #ec4899; }
+.card-sym { font-size: 1.5rem; font-weight: 900; font-style: italic; opacity: 0.3; position: absolute; right: 10px; top: 6px; }
+.card-name { font-size: 0.68rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.card-val { font-size: 1.35rem; font-weight: 800; }
+.card-sub { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+.card-label { font-size: 0.7rem; font-weight: 600; margin-top: 5px; }
+.col-buyer  { color: var(--buyer); }
+.col-seller { color: var(--seller); }
+.col-plat   { color: #a5b4fc; }
+.col-sd     { color: var(--sd); }
+.col-pd     { color: var(--pd); }
+.col-pc     { color: #c4b5fd; }
+.col-p4     { color: #34d399; }
+.col-delta  { color: #f472b6; }
+
+/* ── FLOW DIAGRAM ── */
+.flow-wrap {
+  background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 24px; margin-bottom: 20px;
+}
+.flow-wrap h3 { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.flow-svg-wrap { overflow-x: auto; }
+
+/* ── CHARTS ── */
+.charts-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+}
+.chart-box {
+  background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 18px;
+}
+.chart-box h3 { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+.chart-box canvas { max-height: 240px; }
+
+/* ── PARTY SUMMARY ── */
+.parties { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.party-card {
+  border-radius: var(--radius); padding: 16px; border: 1px solid;
+  position: relative; overflow: hidden;
+}
+.party-buyer  { background: #1c1204; border-color: #92400e; }
+.party-seller { background: #022c22; border-color: #064e3b; }
+.party-plat   { background: #1e1b4b; border-color: #312e81; }
+.party-card h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; margin-bottom: 10px; }
+.party-buyer h3  { color: var(--buyer); }
+.party-seller h3 { color: var(--seller); }
+.party-plat h3   { color: #a5b4fc; }
+.party-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.party-row span:first-child { font-size: 0.72rem; color: var(--muted); }
+.party-row span:last-child  { font-size: 0.82rem; font-weight: 700; }
+.party-big { font-size: 1.3rem; font-weight: 900; margin-top: 8px; display: block; }
+
+/* ── FORMULA PANEL ── */
+.formula-box {
+  background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 18px; margin-bottom: 20px;
+}
+.formula-box h3 { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+.formulas { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 8px; }
+.f-row {
+  background: #0f172a; border-radius: 8px; padding: 10px 14px;
+  border-left: 3px solid #334155; display: flex; flex-direction: column; gap: 2px;
+}
+.f-eq { font-size: 0.82rem; font-family: 'Consolas', monospace; color: #e2e8f0; }
+.f-desc { font-size: 0.7rem; color: var(--muted); }
+.f-active { border-left-color: #6366f1; background: #1e1b4b; }
+
+/* ── WATERFALL ── */
+#wf-svg text { font-family: 'Segoe UI', sans-serif; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+
+/* alert */
+.alert {
+  font-size: 0.75rem; border-radius: 8px; padding: 8px 12px; margin-top: 8px;
+  display: none;
+}
+.alert-warn { background: #451a03; border: 1px solid #92400e; color: #fed7aa; }
+.alert-err  { background: #450a0a; border: 1px solid #991b1b; color: #fecaca; }
+.alert-ok   { background: #022c22; border: 1px solid #064e3b; color: #6ee7b7; }
+
+/* responsive */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .charts-grid, .parties { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🛒 HATHYO <span>Pricing Model</span> – Công cụ Đào tạo Nội bộ</h1>
+  <div class="badges">
+    <span class="badge badge-a">Bên A · Sàn</span>
+    <span class="badge badge-b">Bên B · Nhà bán</span>
+    <span class="badge badge-m">Người mua</span>
+  </div>
+</header>
+
+<div class="app">
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar">
+
+  <h2>⚡ Kịch bản nhanh</h2>
+  <div class="presets">
+    <button class="preset-btn active" onclick="applyPreset('normal')">Thông thường</button>
+    <button class="preset-btn" onclick="applyPreset('flash')">Flash Sale</button>
+    <button class="preset-btn" onclick="applyPreset('mass')">Mass Sale</button>
+    <button class="preset-btn" onclick="applyPreset('both')">Cả hai giảm</button>
+    <button class="preset-btn" onclick="applyPreset('loss')">Bán lỗ xả kho</button>
+    <button class="preset-btn" onclick="applyPreset('premium')">Hàng cao cấp</button>
+  </div>
+
+  <!-- P1 -->
+  <h2>🏷️ Giá bán cơ sở</h2>
+  <div class="inp-group">
+    <label><span>Giá niêm yết bán <span class="req-tag">Bắt buộc</span></span><span class="sym">P1</span></label>
+    <div class="inp-row">
+      <input type="range" id="s_p1" min="5000" max="5000000" step="1000" value="200000" oninput="syncInp('p1',this.value)">
+      <input type="number" class="num-inp" id="i_p1" value="200000" oninput="syncSlider('p1',this.value)">
+      <span class="unit">đ</span>
+    </div>
+  </div>
+
+  <!-- P0 -->
+  <h2>💰 Giá niêm yết gốc (tham chiếu)</h2>
+  <div class="inp-group">
+    <label><span>Giá gốc P0 <span class="opt-tag">Tùy chọn</span></span><span class="sym">P0</span></label>
+    <div class="toggle-row">
+      <span class="toggle-label">Sử dụng P0?</span>
+      <div class="toggle-group">
+        <button class="toggle-opt on" id="p0_on" onclick="toggleP0(true)">Có</button>
+        <button class="toggle-opt" id="p0_off" onclick="toggleP0(false)">Không</button>
+      </div>
+    </div>
+    <div id="p0_wrap">
+      <div class="inp-row">
+        <input type="range" id="s_p0" min="5000" max="10000000" step="1000" value="250000" oninput="syncInp('p0',this.value)">
+        <input type="number" class="num-inp" id="i_p0" value="250000" oninput="syncSlider('p0',this.value)">
+        <span class="unit">đ</span>
+      </div>
+    </div>
+    <div class="inp-group" style="margin-top:8px;margin-bottom:0">
+      <label><span>Giá trần thị trường PMF <span class="opt-tag">Tùy chọn</span></span><span class="sym">PMF</span></label>
+      <div class="toggle-row">
+        <span class="toggle-label">Dùng PMF?</span>
+        <div class="toggle-group">
+          <button class="toggle-opt" id="pmf_on" onclick="togglePMF(true)">Có</button>
+          <button class="toggle-opt on" id="pmf_off" onclick="togglePMF(false)">Không</button>
+        </div>
+      </div>
+      <div id="pmf_wrap" class="disabled">
+        <div class="inp-row">
+          <input type="range" id="s_pmf" min="5000" max="10000000" step="1000" value="300000" oninput="syncInp('pmf',this.value)">
+          <input type="number" class="num-inp" id="i_pmf" value="300000" oninput="syncSlider('pmf',this.value)">
+          <span class="unit">đ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lambda -->
+  <h2>📊 Phí hoa hồng sàn</h2>
+  <div class="inp-group">
+    <label><span>Tỷ lệ hoa hồng <span class="req-tag">Bắt buộc</span></span><span class="sym">λ</span></label>
+    <div class="inp-row">
+      <input type="range" id="s_lam" min="0" max="30" step="0.5" value="8" oninput="syncInp('lam',this.value)">
+      <input type="number" class="num-inp" id="i_lam" value="8" oninput="syncSlider('lam',this.value)">
+      <span class="unit">%</span>
+    </div>
+    <div id="pc_min_note" style="font-size:.68rem;color:var(--muted);margin-top:6px">Tối thiểu: 2.000đ / đơn hàng</div>
+  </div>
+
+  <!-- Seller Discount -->
+  <h2>🟠 Chiết khấu Nhà bán (Bên B)</h2>
+  <div class="inp-group">
+    <label><span>Bên B giảm giá? <span class="opt-tag">Tùy chọn</span></span><span class="sym">SD</span></label>
+    <div class="toggle-row">
+      <div class="toggle-group">
+        <button class="toggle-opt on" id="sd_on" onclick="toggleSD(true)">Có</button>
+        <button class="toggle-opt" id="sd_off" onclick="toggleSD(false)">Không</button>
+      </div>
+    </div>
+    <div id="sd_wrap">
+      <div class="toggle-row" style="margin-bottom:8px">
+        <span class="toggle-label">Loại giảm</span>
+        <div class="toggle-group">
+          <button class="toggle-opt on" id="sdt_pct" onclick="setSDT('pct')">% Phần trăm</button>
+          <button class="toggle-opt" id="sdt_mon" onclick="setSDT('mon')">Số tiền</button>
+        </div>
+      </div>
+      <div id="sd_pct_wrap">
+        <div class="inp-row">
+          <input type="range" id="s_sdp" min="0" max="80" step="1" value="10" oninput="syncInp('sdp',this.value)">
+          <input type="number" class="num-inp" id="i_sdp" value="10" oninput="syncSlider('sdp',this.value)">
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div id="sd_mon_wrap" class="disabled" style="display:none">
+        <div class="inp-row">
+          <input type="range" id="s_sdm" min="0" max="2000000" step="1000" value="20000" oninput="syncInp('sdm',this.value)">
+          <input type="number" class="num-inp" id="i_sdm" value="20000" oninput="syncSlider('sdm',this.value)">
+          <span class="unit">đ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform Discount -->
+  <h2>🔵 Chiết khấu Sàn (Bên A)</h2>
+  <div class="inp-group">
+    <label><span>Sàn tổ chức giảm giá? <span class="opt-tag">Tùy chọn</span></span><span class="sym">PD</span></label>
+    <div class="toggle-row">
+      <div class="toggle-group">
+        <button class="toggle-opt" id="pd_on" onclick="togglePD(true)">Có</button>
+        <button class="toggle-opt on" id="pd_off" onclick="togglePD(false)">Không</button>
+      </div>
+    </div>
+    <div id="pd_wrap" class="disabled">
+      <div class="toggle-row" style="margin-bottom:8px">
+        <span class="toggle-label">Loại giảm</span>
+        <div class="toggle-group">
+          <button class="toggle-opt on" id="pdt_pct" onclick="setPDT('pct')">% Phần trăm</button>
+          <button class="toggle-opt" id="pdt_mon" onclick="setPDT('mon')">Số tiền</button>
+        </div>
+      </div>
+      <div id="pd_pct_wrap">
+        <div class="inp-row">
+          <input type="range" id="s_pdp" min="0" max="30" step="0.5" value="5" oninput="syncInp('pdp',this.value)">
+          <input type="number" class="num-inp" id="i_pdp" value="5" oninput="syncSlider('pdp',this.value)">
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div id="pd_mon_wrap" class="disabled" style="display:none">
+        <div class="inp-row">
+          <input type="range" id="s_pdm" min="0" max="1000000" step="1000" value="10000" oninput="syncInp('pdm',this.value)">
+          <input type="number" class="num-inp" id="i_pdm" value="10000" oninput="syncSlider('pdm',this.value)">
+          <span class="unit">đ</span>
+        </div>
+      </div>
+      <div id="pd_warn" class="alert alert-warn">⚠️ Điều kiện: PD% phải &lt; λ (hoa hồng) để sàn không lỗ!</div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ═══════ MAIN ═══════ -->
+<main class="main">
+
+  <!-- ALERTS -->
+  <div id="alert_p4neg" class="alert alert-warn" style="display:none;margin-bottom:12px">
+    ⚠️ <strong>P4 &lt; 0:</strong> Bên B đang bán lỗ! Chiết khấu SD vượt quá (P1 - PC). Thường dùng để xả kho.
+  </div>
+  <div id="alert_p4zero" class="alert alert-err" style="display:none;margin-bottom:12px">
+    🚨 <strong>P4 = 0 hoặc rất thấp:</strong> Bên B không nhận được tiền! Kiểm tra lại SD và λ.
+  </div>
+
+  <!-- RESULT CARDS -->
+  <div class="cards-grid">
+    <div class="card card-p0">
+      <div class="card-sym">P0</div>
+      <div class="card-name">Giá niêm yết gốc</div>
+      <div class="card-val col-p0" id="v_pp0">–</div>
+      <div class="card-sub">(PP0 hiệu đính bởi sàn)</div>
+      <div class="card-label col-p0">Strikethrough trên trang mua</div>
+    </div>
+    <div class="card card-p1">
+      <div class="card-sym">P1</div>
+      <div class="card-name">Giá bán cơ sở</div>
+      <div class="card-val" id="v_p1" style="color:#94a3b8">–</div>
+      <div class="card-sub">Căn cứ tính PC</div>
+      <div class="card-label" style="color:#64748b">Không hiển thị công khai</div>
+    </div>
+    <div class="card card-sd">
+      <div class="card-sym">SD</div>
+      <div class="card-name">Chiết khấu nhà bán</div>
+      <div class="card-val col-sd" id="v_sd">–</div>
+      <div class="card-sub" id="v_sd_pct">–</div>
+      <div class="card-label col-sd">🏪 Bên B tự chịu</div>
+    </div>
+    <div class="card card-pd">
+      <div class="card-sym">PD</div>
+      <div class="card-name">Chiết khấu sàn</div>
+      <div class="card-val col-pd" id="v_pd">–</div>
+      <div class="card-sub" id="v_pd_pct">–</div>
+      <div class="card-label col-pd">🏬 Bên A tự chịu</div>
+    </div>
+    <div class="card card-p3">
+      <div class="card-sym">P3</div>
+      <div class="card-name">Giá người mua trả</div>
+      <div class="card-val col-buyer" id="v_p3">–</div>
+      <div class="card-sub" id="v_delta">–</div>
+      <div class="card-label col-buyer">👤 Hiển thị công khai</div>
+    </div>
+    <div class="card card-pc">
+      <div class="card-sym">PC</div>
+      <div class="card-name">Phí dịch vụ sàn</div>
+      <div class="card-val col-pc" id="v_pc">–</div>
+      <div class="card-sub" id="v_pc_pct">–</div>
+      <div class="card-label col-pc">🔒 Sàn giữ lại từ P2</div>
+    </div>
+    <div class="card card-p4">
+      <div class="card-sym">P4</div>
+      <div class="card-name">Bên B nhận được</div>
+      <div class="card-val col-p4" id="v_p4">–</div>
+      <div class="card-sub" id="v_p4_pct">–</div>
+      <div class="card-label col-p4">💚 Thanh toán cho Bên B</div>
+    </div>
+    <div class="card card-net">
+      <div class="card-sym">∑</div>
+      <div class="card-name">Sàn thu thuần</div>
+      <div class="card-val col-plat" id="v_net">–</div>
+      <div class="card-sub" id="v_net_pct">PC − PD</div>
+      <div class="card-label col-plat">🏛️ Doanh thu thực Bên A</div>
+    </div>
+    <div class="card card-delta">
+      <div class="card-sym">Δ%</div>
+      <div class="card-name">Tỷ lệ giảm hiển thị</div>
+      <div class="card-val col-delta" id="v_deltapct">–</div>
+      <div class="card-sub">(PP0 – P3) / PP0</div>
+      <div class="card-label col-delta">📣 Kích thích mua hàng</div>
+    </div>
+    <div class="card card-p2">
+      <div class="card-sym">P2</div>
+      <div class="card-name">Giá thực bán (P1−SD)</div>
+      <div class="card-val col-seller" id="v_p2">–</div>
+      <div class="card-sub">Căn cứ tính P4</div>
+      <div class="card-label col-seller">Không hiển thị trực tiếp</div>
+    </div>
+  </div>
+
+  <!-- PARTY SUMMARY -->
+  <div class="parties">
+    <div class="party-card party-buyer">
+      <h3>👤 Người mua nhìn thấy</h3>
+      <div class="party-row"><span>Giá gốc gạch ngang</span><span class="col-p0" id="s_pp0">–</span></div>
+      <div class="party-row"><span>Giá phải trả (P3)</span><span class="col-buyer" id="s_p3">–</span></div>
+      <div class="party-row"><span>Tiết kiệm được</span><span class="col-delta" id="s_save">–</span></div>
+      <div class="party-row"><span>Tỷ lệ giảm</span><span class="col-delta" id="s_dpct">–</span></div>
+      <span class="party-big col-buyer" id="s_p3b">–</span>
+    </div>
+    <div class="party-card party-seller">
+      <h3>🏪 Bên B (Nhà bán) nhận</h3>
+      <div class="party-row"><span>Giá đặt ban đầu (P1)</span><span id="ss_p1">–</span></div>
+      <div class="party-row"><span>Bên B tự giảm (SD)</span><span class="col-sd" id="ss_sd">–</span></div>
+      <div class="party-row"><span>Phí sàn (PC)</span><span class="col-pc" id="ss_pc">–</span></div>
+      <div class="party-row"><span style="font-weight:600;color:var(--seller)">Thực nhận (P4)</span><span class="col-p4" id="ss_p4">–</span></div>
+      <span class="party-big col-p4" id="ss_p4b">–</span>
+    </div>
+    <div class="party-card party-plat">
+      <h3>🏛️ Bên A (Sàn HATHYO)</h3>
+      <div class="party-row"><span>Phí hoa hồng (PC)</span><span class="col-pc" id="sp_pc">–</span></div>
+      <div class="party-row"><span>Sàn tự giảm (PD)</span><span class="col-pd" id="sp_pd">–</span></div>
+      <div class="party-row"><span style="font-weight:600;color:#a5b4fc">Thu thuần (PC−PD)</span><span class="col-plat" id="sp_net">–</span></div>
+      <div class="party-row"><span>Tỷ lệ thu / P1</span><span class="col-plat" id="sp_pct">–</span></div>
+      <span class="party-big col-plat" id="sp_netb">–</span>
+    </div>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="flow-wrap">
+    <h3>🔄 Luồng tiền – Từ P1 đến các bên nhận</h3>
+    <div class="flow-svg-wrap">
+      <svg id="wf-svg" width="100%" height="200" viewBox="0 0 900 200" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts-grid">
+    <div class="chart-box">
+      <h3>🍩 Phân bổ P1 – Ai nhận phần nào?</h3>
+      <canvas id="donut-chart"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 So sánh các mức giá</h3>
+      <canvas id="bar-chart"></canvas>
+    </div>
+  </div>
+
+  <!-- FORMULA PANEL -->
+  <div class="formula-box">
+    <h3>📐 Công thức tính toán</h3>
+    <div class="formulas" id="formula-grid"></div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const S = {
+  p1: 200000, p0: 250000, pmf: 300000,
+  lam: 8,
+  useP0: true, usePMF: false,
+  useSD: true, sdt: 'pct', sdp: 10, sdm: 20000,
+  usePD: false, pdt: 'pct', pdp: 5, pdm: 10000
+};
+
+// ── PRESETS ──
+const PRESETS = {
+  normal:  { p1:200000, p0:250000, lam:8, useP0:true, usePMF:false, useSD:true,  sdt:'pct', sdp:10, useSD_:true,  usePD:false, pdt:'pct', pdp:5  },
+  flash:   { p1:150000, p0:200000, lam:8, useP0:true, usePMF:false, useSD:true,  sdt:'pct', sdp:30, useSD_:true,  usePD:false, pdt:'pct', pdp:5  },
+  mass:    { p1:180000, p0:220000, lam:8, useP0:true, usePMF:false, useSD:false, sdt:'pct', sdp:0,  useSD_:false, usePD:true,  pdt:'pct', pdp:7  },
+  both:    { p1:300000, p0:400000, lam:8, useP0:true, usePMF:false, useSD:true,  sdt:'pct', sdp:15, useSD_:true,  usePD:true,  pdt:'pct', pdp:5  },
+  loss:    { p1:100000, p0:130000, lam:8, useP0:true, usePMF:false, useSD:true,  sdt:'pct', sdp:70, useSD_:true,  usePD:false, pdt:'pct', pdp:0  },
+  premium: { p1:2000000,p0:2800000,lam:5, useP0:true, usePMF:false, useSD:true,  sdt:'pct', sdp:5,  useSD_:true,  usePD:false, pdt:'pct', pdp:3  },
+};
+
+function applyPreset(name) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const p = PRESETS[name];
+  S.p1 = p.p1; S.p0 = p.p0; S.lam = p.lam;
+  S.useP0 = p.useP0; S.usePMF = p.usePMF;
+  S.useSD = p.useSD; S.sdt = p.sdt; S.sdp = p.sdp;
+  S.usePD = p.usePD; S.pdt = p.pdt; S.pdp = p.pdp;
+  refreshAllInputs(); calc();
+}
+
+function refreshAllInputs() {
+  setVal('p1', S.p1); setVal('p0', S.p0); setVal('lam', S.lam);
+  setVal('sdp', S.sdp); setVal('sdm', S.sdm || 20000);
+  setVal('pdp', S.pdp); setVal('pdm', S.pdm || 10000);
+  toggleP0(S.useP0); togglePMF(S.usePMF);
+  toggleSD(S.useSD); setSDT(S.sdt);
+  togglePD(S.usePD); setPDT(S.pdt);
+}
+
+// ── SYNC helpers ──
+function syncInp(k, v) { S[k]=+v; setInputVal(k,+v); calc(); }
+function syncSlider(k, v) { S[k]=+v; setSliderVal(k,+v); calc(); }
+function setVal(k, v) { setInputVal(k,v); setSliderVal(k,v); }
+
+function setInputVal(k, v) {
+  const el = document.getElementById('i_'+k);
+  if (el) el.value = v;
+}
+function setSliderVal(k, v) {
+  const el = document.getElementById('s_'+k);
+  if (!el) return;
+  el.value = v;
+  const min=+el.min, max=+el.max;
+  const pct = ((v-min)/(max-min)*100).toFixed(1);
+  el.style.setProperty('--pct', pct+'%');
+}
+
+// ── Toggle states ──
+function toggleP0(on) {
+  S.useP0 = on;
+  document.getElementById('p0_on').classList.toggle('on', on);
+  document.getElementById('p0_off').classList.toggle('on', !on);
+  document.getElementById('p0_wrap').classList.toggle('disabled', !on);
+  calc();
+}
+function togglePMF(on) {
+  S.usePMF = on;
+  document.getElementById('pmf_on').classList.toggle('on', on);
+  document.getElementById('pmf_off').classList.toggle('on', !on);
+  document.getElementById('pmf_wrap').classList.toggle('disabled', !on);
+  calc();
+}
+function toggleSD(on) {
+  S.useSD = on;
+  document.getElementById('sd_on').classList.toggle('on', on);
+  document.getElementById('sd_off').classList.toggle('on', !on);
+  document.getElementById('sd_wrap').classList.toggle('disabled', !on);
+  calc();
+}
+function setSDT(t) {
+  S.sdt = t;
+  document.getElementById('sdt_pct').classList.toggle('on', t==='pct');
+  document.getElementById('sdt_mon').classList.toggle('on', t==='mon');
+  document.getElementById('sd_pct_wrap').style.display = t==='pct' ? '' : 'none';
+  document.getElementById('sd_mon_wrap').style.display = t==='mon' ? '' : 'none';
+  document.getElementById('sd_pct_wrap').classList.toggle('disabled', t!=='pct');
+  document.getElementById('sd_mon_wrap').classList.toggle('disabled', t!=='mon');
+  calc();
+}
+function togglePD(on) {
+  S.usePD = on;
+  document.getElementById('pd_on').classList.toggle('on', on);
+  document.getElementById('pd_off').classList.toggle('on', !on);
+  document.getElementById('pd_wrap').classList.toggle('disabled', !on);
+  calc();
+}
+function setPDT(t) {
+  S.pdt = t;
+  document.getElementById('pdt_pct').classList.toggle('on', t==='pct');
+  document.getElementById('pdt_mon').classList.toggle('on', t==='mon');
+  document.getElementById('pd_pct_wrap').style.display = t==='pct' ? '' : 'none';
+  document.getElementById('pd_mon_wrap').style.display = t==='mon' ? '' : 'none';
+  document.getElementById('pd_pct_wrap').classList.toggle('disabled', t!=='pct');
+  document.getElementById('pd_mon_wrap').classList.toggle('disabled', t!=='mon');
+  calc();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CALCULATION ENGINE
+// ═══════════════════════════════════════════════════════════
+let donutChart, barChart;
+
+function fmt(n, decimals=0) {
+  if (n === null || n === undefined) return '–';
+  return n.toLocaleString('vi-VN', {maximumFractionDigits: decimals}) + 'đ';
+}
+function pct(n, decimals=1) { return n.toFixed(decimals)+'%'; }
+
+function calc() {
+  const p1 = S.p1;
+  const lam = S.lam / 100;
+
+  // PC
+  const pc = Math.max(p1 * lam, 2000);
+
+  // SD
+  let sd = 0;
+  if (S.useSD) {
+    if (S.sdt === 'pct') sd = p1 * S.sdp / 100;
+    else sd = Math.min(S.sdm, p1);
+  }
+
+  // PD
+  let pd = 0;
+  if (S.usePD) {
+    if (S.pdt === 'pct') pd = p1 * S.pdp / 100;
+    else pd = Math.min(S.pdm, p1);
+  }
+
+  // PP0 calculation
+  let pp0 = null;
+  if (S.useP0 && S.usePMF) {
+    pp0 = Math.min(S.p0, S.pmf);
+  } else if (S.useP0) {
+    pp0 = S.p0;
+  } else {
+    // no P0: max(105%*P1, PMF)
+    if (S.usePMF) pp0 = Math.max(1.05 * p1, S.pmf);
+    else pp0 = 1.05 * p1;
+  }
+  if (pp0 < p1) pp0 = p1; // PP0 must >= P1
+
+  // P2, P3, P4, net
+  const p2 = p1 - sd;
+  const p3 = p1 - sd - pd;
+  const p4 = p2 - pc;
+  const net = pc - pd;
+  const delta = pp0 > 0 ? (pp0 - p3) / pp0 * 100 : 0;
+
+  // Warn PD > PC
+  const pdWarn = document.getElementById('pd_warn');
+  if (S.usePD && pd >= pc) {
+    pdWarn.style.display = 'block';
+  } else {
+    pdWarn.style.display = 'none';
+  }
+
+  // Alerts
+  document.getElementById('alert_p4neg').style.display  = (p4 < 0) ? 'block' : 'none';
+  document.getElementById('alert_p4zero').style.display = (p4 >= 0 && p4 < pc * 0.1 && p4 >= 0) ? 'block' : 'none';
+
+  // ── UPDATE CARDS ──
+  setText('v_pp0', fmt(pp0));
+  setText('v_p1',  fmt(p1));
+  setText('v_sd',  fmt(sd));
+  setText('v_sd_pct', sd > 0 ? pct(sd/p1*100) + ' của P1' : 'Không giảm giá');
+  setText('v_pd',  fmt(pd));
+  setText('v_pd_pct', pd > 0 ? pct(pd/p1*100) + ' của P1' : 'Không giảm giá');
+  setText('v_p2',  fmt(p2));
+  setText('v_p3',  fmt(p3));
+  setText('v_delta', delta > 0 ? `Giảm ${pct(delta)} so với P0` : 'Không hiển thị giảm');
+  setText('v_pc',  fmt(pc));
+  setText('v_pc_pct', pct(pc/p1*100) + ' của P1');
+  setText('v_p4',  fmt(p4));
+  setText('v_p4_pct', pct(p4/p1*100) + ' của P1');
+  setText('v_net', fmt(net));
+  setText('v_net_pct', `PC−PD = ${pct(net/p1*100)} P1`);
+  setText('v_deltapct', pct(delta));
+
+  // ── PARTY CARDS ──
+  setText('s_pp0',  fmt(pp0));
+  setText('s_p3',   fmt(p3));
+  setText('s_save',  fmt(pp0 - p3));
+  setText('s_dpct',  pct(delta));
+  setText('s_p3b',  fmt(p3));
+  setText('ss_p1',  fmt(p1));
+  setText('ss_sd',  sd > 0 ? '-' + fmt(sd) : '0đ');
+  setText('ss_pc',  '-' + fmt(pc));
+  setText('ss_p4',  fmt(p4));
+  setText('ss_p4b', fmt(p4));
+  setText('sp_pc',  fmt(pc));
+  setText('sp_pd',  pd > 0 ? '-' + fmt(pd) : '0đ');
+  setText('sp_net', fmt(net));
+  setText('sp_pct', pct(net/p1*100) + ' của P1');
+  setText('sp_netb', fmt(net));
+
+  // ── FORMULAS ──
+  renderFormulas(p1, lam, sd, pd, pc, p2, p3, p4, pp0, net, delta);
+
+  // ── WATERFALL ──
+  drawWaterfall(p1, sd, pd, pc, p2, p3, p4);
+
+  // ── CHARTS ──
+  updateDonut(sd, pd, pc, p4);
+  updateBar(pp0, p1, p2, p3, p4, pc);
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// ═══════════════════════════════════════════════════════════
+// FORMULA GRID
+// ═══════════════════════════════════════════════════════════
+function renderFormulas(p1, lam, sd, pd, pc, p2, p3, p4, pp0, net, delta) {
+  const p4neg = p4 < 0;
+  const rows = [
+    { eq:`PC = max(P1 × λ, 2.000đ)`, val:`= max(${fmt(p1)} × ${(lam*100).toFixed(1)}%, 2.000đ) = ${fmt(pc)}`, active:true },
+    { eq:`SD = P1 × SDP%  (hoặc SDM)`, val:`= ${fmt(sd)}`, active: S.useSD },
+    { eq:`PD = P1 × PDP%  (hoặc PDM)`, val:`= ${fmt(pd)}`, active: S.usePD },
+    { eq:`P2 = P1 − SD`, val:`= ${fmt(p1)} − ${fmt(sd)} = ${fmt(p2)}`, active:true },
+    { eq:`P3 = P1 − SD − PD`, val:`= ${fmt(p3)}  ← Người mua trả`, active:true },
+    { eq:`P4 = P2 − PC = P1 − SD − PC`, val:`= ${fmt(p2)} − ${fmt(pc)} = ${fmt(p4)}${p4neg?' ⚠️ Bán lỗ!':''}`, active:true },
+    { eq:`NET Sàn = PC − PD`, val:`= ${fmt(pc)} − ${fmt(pd)} = ${fmt(net)}`, active:true },
+    { eq:`ΔP% = (PP0 − P3) / PP0`, val:`= (${fmt(pp0)} − ${fmt(p3)}) / ${fmt(pp0)} = ${delta.toFixed(1)}%`, active: pp0>0 },
+    { eq:`Điều kiện PD < PC`, val:`PD = ${fmt(pd)} ${pd < pc ? '< ✅' : '>= ⚠️'} PC = ${fmt(pc)}`, active: S.usePD },
+    { eq:`Điều kiện PP0 ≥ P1`, val:`PP0 = ${fmt(pp0)} ${pp0>=p1?'≥ ✅':'< ❌'} P1 = ${fmt(p1)}`, active:true },
+  ];
+  const grid = document.getElementById('formula-grid');
+  grid.innerHTML = rows.filter(r=>r.active).map(r => `
+    <div class="f-row ${r.active?'f-active':''}">
+      <div class="f-eq">${r.eq}</div>
+      <div class="f-desc">${r.val}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// WATERFALL SVG
+// ═══════════════════════════════════════════════════════════
+function drawWaterfall(p1, sd, pd, pc, p2, p3, p4) {
+  const svg = document.getElementById('wf-svg');
+  const W = 900, H = 200, PAD = 40, BOTTOM = 160;
+  const maxVal = p1;
+  const scale = (BOTTOM - 50) / maxVal;
+
+  const segs = [
+    { label:'P1\n(Giá gốc)', val:p1, color:'#475569', type:'base' },
+    { label:'SD\n(Bên B\ngiảm)',  val:sd,  color:'#f97316', type:'down' },
+    { label:'P2\n(Sau SD)', val:p2, color:'#10b981', type:'level' },
+    { label:'PD\n(Sàn\ngiảm)',   val:pd,  color:'#3b82f6', type:'down' },
+    { label:'P3\n(Người\nmua trả)', val:p3, color:'#f59e0b', type:'level' },
+    { label:'PC\n(Phí\nsàn)',   val:pc,  color:'#8b5cf6', type:'down' },
+    { label:'P4\n(Bên B\nnhận)',  val:p4, color:'#059669', type:'final', neg: p4<0 },
+  ];
+
+  const colW = (W - PAD * 2) / segs.length;
+  let svgContent = '';
+  let cursor = p1;
+
+  segs.forEach((seg, i) => {
+    const x = PAD + i * colW + colW * 0.1;
+    const bw = colW * 0.8;
+    let y, h;
+
+    if (seg.type === 'base') {
+      h = Math.max(1, seg.val * scale);
+      y = BOTTOM - h;
+    } else if (seg.type === 'down') {
+      if (seg.val === 0) {
+        y = BOTTOM - cursor * scale; h = 1;
+      } else {
+        h = Math.max(1, seg.val * scale);
+        y = BOTTOM - cursor * scale;
+        cursor -= seg.val;
+      }
+    } else if (seg.type === 'level') {
+      h = Math.max(1, cursor * scale);
+      y = BOTTOM - h;
+    } else { // final
+      h = Math.max(1, Math.abs(seg.val) * scale);
+      y = seg.val >= 0 ? (BOTTOM - h) : BOTTOM;
+    }
+
+    // Bar
+    svgContent += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${seg.color}" rx="4" opacity="${seg.val===0?0.2:0.9}"/>`;
+
+    // Connector line to next
+    if (i < segs.length - 1 && seg.type !== 'level') {
+      const nextX = PAD + (i+1) * colW + colW * 0.1;
+      const lineY = BOTTOM - cursor * scale;
+      svgContent += `<line x1="${x+bw}" y1="${lineY}" x2="${nextX}" y2="${lineY}" stroke="#334155" stroke-dasharray="4,3" stroke-width="1.5"/>`;
+    }
+
+    // Value label
+    const valY = seg.type === 'down' ? y - 5 : y - 5;
+    if (seg.val !== 0 || seg.type === 'final') {
+      svgContent += `<text x="${x+bw/2}" y="${Math.max(valY,12)}" text-anchor="middle" fill="${seg.color}" font-size="10" font-weight="700">${fmtK(seg.val)}</text>`;
+    }
+
+    // Label below
+    const lines = seg.label.split('\n');
+    lines.forEach((ln, li) => {
+      svgContent += `<text x="${x+bw/2}" y="${BOTTOM + 14 + li*13}" text-anchor="middle" fill="#94a3b8" font-size="10">${ln}</text>`;
+    });
+
+    // Down arrow for discount bars
+    if (seg.type === 'down' && seg.val > 0) {
+      const ax = x + bw/2;
+      svgContent += `<text x="${ax}" y="${y+h/2+4}" text-anchor="middle" fill="white" font-size="11">▼</text>`;
+    }
+  });
+
+  // Baseline
+  svgContent += `<line x1="${PAD}" y1="${BOTTOM}" x2="${W-PAD}" y2="${BOTTOM}" stroke="#334155" stroke-width="1"/>`;
+
+  svg.innerHTML = svgContent;
+}
+
+function fmtK(v) {
+  if (Math.abs(v) >= 1000000) return (v/1000000).toFixed(1)+'M';
+  if (Math.abs(v) >= 1000)    return (v/1000).toFixed(0)+'K';
+  return v.toFixed(0);
+}
+
+// ═══════════════════════════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════════════════════════
+function updateDonut(sd, pd, pc, p4) {
+  const data = {
+    labels: ['P4 – Bên B nhận', 'PC – Phí sàn', 'SD – Bên B tự giảm', 'PD – Sàn tự giảm'],
+    datasets: [{
+      data: [Math.max(0,p4), pc, sd, pd],
+      backgroundColor: ['#059669','#8b5cf6','#f97316','#3b82f6'],
+      borderColor: '#1e293b', borderWidth: 3,
+    }]
+  };
+  if (!donutChart) {
+    const ctx = document.getElementById('donut-chart').getContext('2d');
+    donutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data,
+      options: {
+        responsive: true,
+        cutout: '60%',
+        plugins: {
+          legend: { position:'bottom', labels:{ color:'#94a3b8', font:{size:11}, boxWidth:12 } },
+          tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw.toLocaleString('vi-VN')}đ` } }
+        }
+      }
+    });
+  } else {
+    donutChart.data = data;
+    donutChart.update('none');
+  }
+}
+
+function updateBar(pp0, p1, p2, p3, p4, pc) {
+  const labels = ['PP0\n(Gốc)', 'P1\n(Cơ sở)', 'P2\n(Sau SD)', 'P3\n(Người mua)', 'PC\n(Phí sàn)', 'P4\n(Bên B nhận)'];
+  const values = [pp0, p1, p2, p3, pc, Math.max(0,p4)];
+  const colors = ['#6b7280','#475569','#10b981','#f59e0b','#8b5cf6','#059669'];
+
+  const data = {
+    labels,
+    datasets: [{
+      label: 'Giá trị (đồng)',
+      data: values,
+      backgroundColor: colors.map(c => c + 'bb'),
+      borderColor: colors,
+      borderWidth: 2,
+      borderRadius: 6,
+    }]
+  };
+  if (!barChart) {
+    const ctx = document.getElementById('bar-chart').getContext('2d');
+    barChart = new Chart(ctx, {
+      type: 'bar',
+      data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: (c) => ` ${c.raw.toLocaleString('vi-VN')}đ` } }
+        },
+        scales: {
+          x: { ticks:{ color:'#94a3b8', font:{size:10} }, grid:{ color:'#1e293b' } },
+          y: { ticks:{ color:'#94a3b8', callback: v => fmtK(v)+'đ', font:{size:10} }, grid:{ color:'#334155' } }
+        }
+      }
+    });
+  } else {
+    barChart.data = data;
+    barChart.update('none');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+refreshAllInputs();
+calc();
+</script>
+</body>
+</html>
