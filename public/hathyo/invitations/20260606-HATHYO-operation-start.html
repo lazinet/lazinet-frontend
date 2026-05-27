@@ -329,12 +329,12 @@
       font-family: 'Playfair Display', serif;
       font-size: 17px; font-weight: 700; color: var(--g);
       text-decoration: underline; text-underline-offset: 4px;
-      text-align: center; margin-bottom: 1mm; margin-top: 3mm;
+      text-align: center; margin-bottom: 1mm; margin-top: 0mm;
       position: relative; z-index: 1;
     }
     .program-date-line {
       font-size: 11.5px; color: var(--txt2);
-      text-align: center; margin-top: 4mm; margin-bottom: 10mm; font-weight: 500;
+      text-align: center; margin-top: 3mm; margin-bottom: 4mm; font-weight: 500;
       position: relative; z-index: 1;
     }
 
@@ -837,14 +837,17 @@ let signatories = [];
 let mapQrDataUrl = null;
 
 const PROGRAM = [
-  { time:'16:30', name:'Đón tiếp đại biểu',           desc:'Ban Tổ chức tiếp đón khách mời, hướng dẫn vị trí' },
-  { time:'17:00', name:'Khai mạc & Tuyên bố lý do',   desc:'MC điều phối, giới thiệu đại biểu tham dự' },
-  { time:'17:10', name:'Diễn văn khai mạc',            desc:'Ông Hoàng Minh Phụng – Giám đốc Công ty' },
-  { time:'17:25', name:'Giới thiệu Sàn TMĐT HATHYO',  desc:'Demo nền tảng, mô hình kinh doanh & cơ hội hợp tác' },
-  { time:'17:45', name:'Lễ Ra Mắt Chính thức',       desc:'Cắt băng khánh thành · Khởi động hệ thống HATHYO', highlight:true },
-  { time:'18:00', name:'Phát biểu & Chúc mừng',        desc:'Đại diện đối tác, cơ quan quản lý Nhà nước' },
-  { time:'18:20', name:'Tiệc giao lưu & Kết nối',      desc:'Gặp gỡ trực tiếp đội ngũ HATHYO & đối tác' },
-  { time:'19:30', name:'Kết thúc chương trình',         desc:'Ban Tổ chức gửi lời cảm ơn & quà tặng lưu niệm' },
+  { time:'16:30', name:'Checkin',           desc:'Tiếp đón khách mời · Hướng dẫn cài app · Vị trí ngồi' },
+  { time:'17:00', name:'Khai mạc & Giới thiệu',   desc:'MC tuyên bố lý do · Giới thiệu khách mời · Giới thiệu đội ngũ' },
+  { time:'17:05', name:'Giới thiệu Nền tảng TMĐT HATHYO',  desc:'Demo nền tảng · Mô hình kinh doanh · Cơ hội hợp tác' },
+  { time:'17:30', name:'Vấn đề Thực tại & Giải pháp HATHYO',  desc:'Lắng nghe nỗi đau · Thấu hiểu vấn đề · Giải pháp HATHYO' },
+  { time:'17:45', name:'Lễ Ra Mắt Chính thức',       desc:'Bấm nút khởi động · Kích hoạt hệ thống HATHYO', highlight:true },
+  { time:'17:50', name:'Ký kết Hợp đồng với Đối tác',        desc:'HATHYO & Đối tác chiến lược · Nhà bán hàng tiêu biểu' },
+  { time:'18:10', name:'Chương trình Live Flash Sale',        desc:'Cùng Khách mời trải nghiệm mua sắm trên HATHYO' },
+  { time:'18:30', name:'Phát biểu & Chúc mừng',        desc:'Chia sẻ từ Đại biểu · Đối tác · Khách mời' },
+  { time:'18:35', name:'Chính sách đồng hành HATHYO Q2-2026',       desc:'Đồng hành phát triển · Nhà bán · Người mua'},
+  { time:'18:40', name:'Tiệc giao lưu & Kết nối',      desc:'Gặp gỡ trực tiếp đội ngũ HATHYO & Đối tác' },
+  { time:'21:00', name:'Kết thúc Chương trình',         desc:'Ban tổ chức gửi lời cảm ơn & quà tặng lưu niệm' },
 ];
 
 document.addEventListener('DOMContentLoaded', async () => {
