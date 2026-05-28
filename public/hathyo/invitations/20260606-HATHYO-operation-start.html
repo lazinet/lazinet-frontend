@@ -593,6 +593,7 @@
   <button class="btn btn-secondary" onclick="saveVCard()"><i class="bi bi-person-lines-fill"></i> Danh bạ</button>
   <button class="btn btn-secondary" onclick="addToCalendar()"><i class="bi bi-calendar-plus"></i> Thêm vào Lịch</button>
   <a href="../contact-hathyo.html" class="btn btn-orange"><i class="bi bi-chat-dots"></i> Liên hệ HATHYO</a>
+  <a href="20260606-HATHYO-operation-start2.html" class="btn btn-secondary" title="Quản lý & xuất ảnh hàng loạt"><i class="bi bi-people-fill"></i> Xuất hàng loạt</a>
 </div>
 
 <!-- ══ VIP PANEL (DESKTOP) ══ -->
@@ -852,6 +853,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   startClock();
   generateMapQr();
   await loadSignatories();
+  applyUrlParams();
   setTimeout(launchConfetti, 600);
 });
 
@@ -1125,6 +1127,14 @@ function saveVCard() {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([vc],{type:'text/vcard'}));
   a.download = 'HATHYO-LienHe.vcf'; a.click();
+}
+
+function applyUrlParams() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('name'))  syncAndUpdate('name',    decodeURIComponent(p.get('name')));
+  if (p.get('pos'))   syncAndUpdate('position', decodeURIComponent(p.get('pos')));
+  if (p.get('co'))    syncAndUpdate('company',  decodeURIComponent(p.get('co')));
+  if (p.get('logo'))  syncAndUpdate('logoUrl',  decodeURIComponent(p.get('logo')));
 }
 
 function addToCalendar() {
