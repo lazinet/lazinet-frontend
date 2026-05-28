@@ -190,6 +190,14 @@ body {
 .log-info { color:#888; }
 
 .export-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.fmt-toggle { display:flex; border:2px solid var(--bdr); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+.fmt-btn {
+  flex:1; padding:8px 0; text-align:center; cursor:pointer;
+  font-size:12px; font-weight:700; font-family:'Montserrat',sans-serif;
+  border:none; background:#f8f8f8; color:var(--txt2); transition:all .18s;
+}
+.fmt-btn.active { background:var(--g); color:#fff; }
+.fmt-btn:first-child { border-right:2px solid var(--bdr); }
 .btn-lg {
   padding:11px 20px; font-size:13px; border-radius:8px;
   display:inline-flex; align-items:center; gap:8px;
@@ -305,19 +313,21 @@ body {
           </div>
 
           <div>
-            <div class="step-label">Bước 2 · Chạy xuất ảnh</div>
+            <div class="step-label">Bước 2 · Định dạng & Xuất</div>
+            <div class="fmt-toggle">
+              <button class="fmt-btn active" id="fmtPng" onclick="setFmt('png')">
+                <i class="bi bi-images"></i> PNG · Trang 1
+              </button>
+              <button class="fmt-btn" id="fmtPdf" onclick="setFmt('pdf')">
+                <i class="bi bi-file-earmark-pdf-fill"></i> PDF · 2 trang
+              </button>
+            </div>
             <div class="export-btns">
-              <button class="btn-lg btn-lg-green" id="btnBatchAll" onclick="batchExportAll('png')" disabled>
-                <i class="bi bi-images"></i> PNG tất cả (<span id="btnCount">100</span>)
+              <button class="btn-lg btn-lg-green" id="btnBatchAll" onclick="batchExportAll(currentFmt)" disabled>
+                <i class="bi bi-play-circle-fill"></i> Xuất tất cả (<span id="btnCount">100</span>)
               </button>
-              <button class="btn-lg" style="background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;border-radius:8px;" id="btnBatchAllPdf" onclick="batchExportAll('pdf')" disabled>
-                <i class="bi bi-file-earmark-pdf-fill"></i> PDF tất cả
-              </button>
-              <button class="btn-lg btn-lg-orange" id="btnBatchSelected" onclick="batchExportSelected('png')" disabled>
-                <i class="bi bi-person-check"></i> PNG 1 đã chọn
-              </button>
-              <button class="btn-lg" style="background:#e67e22;color:#fff;border-radius:8px;" id="btnBatchSelectedPdf" onclick="batchExportSelected('pdf')" disabled>
-                <i class="bi bi-file-pdf"></i> PDF 1 đã chọn
+              <button class="btn-lg btn-lg-orange" id="btnBatchSelected" onclick="batchExportSelected(currentFmt)" disabled>
+                <i class="bi bi-person-check"></i> Xuất 1 đã chọn
               </button>
             </div>
           </div>
@@ -475,6 +485,7 @@ const LIST = [
 let selectedIdx = -1;
 let dirHandle = null;
 let batchAbort = false;
+let currentFmt = 'png';
 const doneSet = new Set();
 
 /* ══════════════════════════════════════════════════════
@@ -623,9 +634,7 @@ async function runBatch(indices, mode='png') {
   batchAbort = false;
   document.getElementById('progressWrap').classList.add('show');
   document.getElementById('btnBatchAll').disabled = true;
-  document.getElementById('btnBatchAllPdf').disabled = true;
   document.getElementById('btnBatchSelected').disabled = true;
-  document.getElementById('btnBatchSelectedPdf').disabled = true;
   document.getElementById('progressLog').innerHTML = '';
   appendLog('info', `Bắt đầu xuất ${indices.length} thiệp...`);
 
@@ -728,13 +737,17 @@ async function runBatch(indices, mode='png') {
 
 function abortBatch() { batchAbort = true; }
 
+function setFmt(fmt) {
+  currentFmt = fmt;
+  document.getElementById('fmtPng').classList.toggle('active', fmt === 'png');
+  document.getElementById('fmtPdf').classList.toggle('active', fmt === 'pdf');
+}
+
 function resetBtns() {
-  const hasSel = selectedIdx >= 0;
   const hasDir = !!dirHandle;
-  document.getElementById('btnBatchAll').disabled        = !hasDir;
-  document.getElementById('btnBatchAllPdf').disabled     = !hasDir;
-  document.getElementById('btnBatchSelected').disabled   = !(hasDir && hasSel);
-  document.getElementById('btnBatchSelectedPdf').disabled= !(hasDir && hasSel);
+  const hasSel = selectedIdx >= 0;
+  document.getElementById('btnBatchAll').disabled      = !hasDir;
+  document.getElementById('btnBatchSelected').disabled = !(hasDir && hasSel);
 }
 
 /* ══════════════════════════════════════════════════════
