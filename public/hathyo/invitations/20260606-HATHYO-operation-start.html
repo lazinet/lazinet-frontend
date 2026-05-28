@@ -1162,6 +1162,25 @@ async function capturePage1Only() {
   }
 }
 
+/* Dùng cho batch PDF: capture cả 2 trang, trả về JSON string array */
+async function captureBothPagesForBatch() {
+  const s = lockStyles();
+  await new Promise(r => setTimeout(r, 250));
+  try {
+    const urls = [];
+    for (const pg of document.querySelectorAll('.page')) {
+      const canvas = await html2canvas(pg, {
+        scale: 2, useCORS: true, allowTaint: true,
+        backgroundColor: '#ffffff', logging: false
+      });
+      urls.push(canvas.toDataURL('image/png'));
+    }
+    return JSON.stringify(urls);
+  } finally {
+    unlockStyles(s);
+  }
+}
+
 function applyUrlParams() {
   const p = new URLSearchParams(window.location.search);
   if (p.get('name'))  syncAndUpdate('name',    decodeURIComponent(p.get('name')));

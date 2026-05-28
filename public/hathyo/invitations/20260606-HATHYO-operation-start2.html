@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
   --g:    #0A703F;
@@ -306,11 +307,17 @@ body {
           <div>
             <div class="step-label">Bước 2 · Chạy xuất ảnh</div>
             <div class="export-btns">
-              <button class="btn-lg btn-lg-green" id="btnBatchAll" onclick="batchExportAll()" disabled>
-                <i class="bi bi-play-circle-fill"></i> Xuất tất cả (<span id="btnCount">100</span>)
+              <button class="btn-lg btn-lg-green" id="btnBatchAll" onclick="batchExportAll('png')" disabled>
+                <i class="bi bi-images"></i> PNG tất cả (<span id="btnCount">100</span>)
               </button>
-              <button class="btn-lg btn-lg-orange" id="btnBatchSelected" onclick="batchExportSelected()" disabled>
-                <i class="bi bi-person-check"></i> Xuất 1 thiệp đã chọn
+              <button class="btn-lg" style="background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;border-radius:8px;" id="btnBatchAllPdf" onclick="batchExportAll('pdf')" disabled>
+                <i class="bi bi-file-earmark-pdf-fill"></i> PDF tất cả
+              </button>
+              <button class="btn-lg btn-lg-orange" id="btnBatchSelected" onclick="batchExportSelected('png')" disabled>
+                <i class="bi bi-person-check"></i> PNG 1 đã chọn
+              </button>
+              <button class="btn-lg" style="background:#e67e22;color:#fff;border-radius:8px;" id="btnBatchSelectedPdf" onclick="batchExportSelected('pdf')" disabled>
+                <i class="bi bi-file-pdf"></i> PDF 1 đã chọn
               </button>
             </div>
           </div>
@@ -534,7 +541,7 @@ function selectInvitee(idx) {
     : '🏢';
 
   document.getElementById('infoCard').classList.add('show');
-  document.getElementById('btnBatchSelected').disabled = !dirHandle;
+  if (dirHandle) resetBtns();
 
   // highlight in list
   document.querySelectorAll('.list-item').forEach(el => el.classList.remove('selected'));
@@ -591,8 +598,7 @@ async function pickFolder() {
   try {
     dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
     document.getElementById('folderName').textContent = dirHandle.name;
-    document.getElementById('btnBatchAll').disabled = false;
-    if (selectedIdx >= 0) document.getElementById('btnBatchSelected').disabled = false;
+    resetBtns();
     toast('Đã chọn thư mục: ' + dirHandle.name);
   } catch(e) {
     if (e.name !== 'AbortError') toast('Lỗi chọn thư mục: ' + e.message, 4000);
@@ -602,22 +608,24 @@ async function pickFolder() {
 /* ══════════════════════════════════════════════════════
    BATCH EXPORT
 ══════════════════════════════════════════════════════ */
-async function batchExportAll() {
-  await runBatch(LIST.map((_,i)=>i));
+async function batchExportAll(mode='png') {
+  await runBatch(LIST.map((_,i)=>i), mode);
 }
 
-async function batchExportSelected() {
+async function batchExportSelected(mode='png') {
   if (selectedIdx < 0) { toast('Chưa chọn khách mời nào.'); return; }
-  await runBatch([selectedIdx]);
+  await runBatch([selectedIdx], mode);
 }
 
-async function runBatch(indices) {
+async function runBatch(indices, mode='png') {
   if (!dirHandle) { toast('Vui lòng chọn thư mục trước.'); return; }
 
   batchAbort = false;
   document.getElementById('progressWrap').classList.add('show');
   document.getElementById('btnBatchAll').disabled = true;
+  document.getElementById('btnBatchAllPdf').disabled = true;
   document.getElementById('btnBatchSelected').disabled = true;
+  document.getElementById('btnBatchSelectedPdf').disabled = true;
   document.getElementById('progressLog').innerHTML = '';
   appendLog('info', `Bắt đầu xuất ${indices.length} thiệp...`);
 
@@ -635,14 +643,16 @@ async function runBatch(indices) {
   }
 
   const ciw = iframe.contentWindow;
-  if (!ciw.capturePage1Only) {
-    appendLog('err', 'Lỗi: capturePage1Only không có. Reload lại trang và thử lại.');
-    document.getElementById('btnBatchAll').disabled = false;
-    document.getElementById('btnBatchSelected').disabled = false;
-    return;
+  const needFn = mode === 'pdf' ? 'captureBothPagesForBatch' : 'capturePage1Only';
+  if (!ciw[needFn]) {
+    appendLog('err', `Lỗi: ${needFn} không có. Reload lại trang và thử lại.`);
+    resetBtns(); return;
   }
 
-  // Ẩn Google Maps iframe 1 lần cho toàn bộ batch (tránh re-init 100 lần)
+  const isPdf = mode === 'pdf';
+  appendLog('info', `Chế độ: ${isPdf ? 'PDF (2 trang)' : 'PNG (trang 1)'}`);
+
+  // Ẩn Google Maps 1 lần cho toàn bộ batch
   const mapState = ciw.prepareMapForExport();
   await new Promise(r => setTimeout(r, 600));
   appendLog('info', 'Bản đồ đã ẩn. Bắt đầu capture...');
@@ -653,41 +663,54 @@ async function runBatch(indices) {
   for (const idx of indices) {
     if (batchAbort) { appendLog('info', 'Đã dừng.'); break; }
     const inv = LIST[idx];
-    updateProgress(done, total, `Đang xử lý [${done+1}/${total}]: ${inv.name}…`);
+    updateProgress(done, total, `[${done+1}/${total}] ${inv.name}…`);
 
     try {
-      // Apply data
       ciw.syncAndUpdate('name',     inv.name);
       ciw.syncAndUpdate('position', inv.title);
       ciw.syncAndUpdate('company',  inv.company);
       if (inv.logo) ciw.applyLogo(inv.logo);
       else ciw.clearLogo();
 
-      // Chờ logo load
       await new Promise(r => setTimeout(r, 800));
 
-      // Capture page1 (map đã ẩn sẵn)
-      const dataUrl = await ciw.capturePage1Only();
-      if (!dataUrl || !dataUrl.startsWith('data:')) throw new Error('capturePage1Only trả về rỗng');
-
-      // data URL → Blob → ghi file
-      const base64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
-      const bytes   = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-      const blob    = new Blob([bytes], { type: 'image/png' });
-
       const safeName = inv.name.replace(/[^\p{L}0-9]/gu, '_').replace(/__+/g,'_').slice(0, 48);
-      const filename = `${String(idx+1).padStart(3,'0')}_${safeName}.png`;
-      const fh = await dirHandle.getFileHandle(filename, { create: true });
-      const wr = await fh.createWritable();
-      await wr.write(blob);
-      await wr.close();
+
+      if (isPdf) {
+        /* ── PDF: 2 trang ── */
+        const json = await ciw.captureBothPagesForBatch();
+        const dataUrls = JSON.parse(json);
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+        dataUrls.forEach((du, i) => {
+          if (i > 0) pdf.addPage('a4','portrait');
+          pdf.addImage(du, 'PNG', 0, 0, 210, 297);
+        });
+        const pdfBytes = pdf.output('arraybuffer');
+        const blob = new Blob([pdfBytes], { type:'application/pdf' });
+        const filename = `${String(idx+1).padStart(3,'0')}_${safeName}.pdf`;
+        const fh = await dirHandle.getFileHandle(filename, { create:true });
+        const wr = await fh.createWritable();
+        await wr.write(blob); await wr.close();
+        appendLog('ok', `✓ ${filename}`);
+      } else {
+        /* ── PNG: trang 1 ── */
+        const dataUrl = await ciw.capturePage1Only();
+        if (!dataUrl || !dataUrl.startsWith('data:')) throw new Error('capture trả về rỗng');
+        const base64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+        const bytes  = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+        const blob   = new Blob([bytes], { type:'image/png' });
+        const filename = `${String(idx+1).padStart(3,'0')}_${safeName}.png`;
+        const fh = await dirHandle.getFileHandle(filename, { create:true });
+        const wr = await fh.createWritable();
+        await wr.write(blob); await wr.close();
+        appendLog('ok', `✓ ${filename}`);
+      }
 
       doneSet.add(idx);
       const liEl = document.querySelector(`.list-item[data-idx="${idx}"] .li-done`);
       if (liEl) liEl.classList.add('show');
-
       done++;
-      appendLog('ok', `✓ ${filename}`);
     } catch(e) {
       done++;
       appendLog('err', `✗ #${idx+1} ${inv.name}: ${e.message || e}`);
@@ -696,16 +719,23 @@ async function runBatch(indices) {
     updateProgress(done, total, done < total ? `Tiếp theo: ${LIST[indices[done]]?.name || ''}` : 'Hoàn thành!');
   }
 
-  // Restore map sau khi xong toàn bộ batch
   ciw.restoreMap(mapState);
 
-  document.getElementById('btnBatchAll').disabled = false;
-  document.getElementById('btnBatchSelected').disabled = selectedIdx < 0;
-  appendLog('info', `Xong. Đã xuất ${done}/${total} thiệp vào thư mục "${dirHandle.name}".`);
-  toast(`Hoàn thành! Đã xuất ${done}/${total} thiệp.`, 4000);
+  resetBtns();
+  appendLog('info', `Xong. ${done}/${total} file ${mode.toUpperCase()} → "${dirHandle.name}".`);
+  toast(`Hoàn thành! ${done}/${total} file ${mode.toUpperCase()}.`, 4000);
 }
 
 function abortBatch() { batchAbort = true; }
+
+function resetBtns() {
+  const hasSel = selectedIdx >= 0;
+  const hasDir = !!dirHandle;
+  document.getElementById('btnBatchAll').disabled        = !hasDir;
+  document.getElementById('btnBatchAllPdf').disabled     = !hasDir;
+  document.getElementById('btnBatchSelected').disabled   = !(hasDir && hasSel);
+  document.getElementById('btnBatchSelectedPdf').disabled= !(hasDir && hasSel);
+}
 
 /* ══════════════════════════════════════════════════════
    PROGRESS UI
