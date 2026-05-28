@@ -846,7 +846,6 @@ const PROGRAM = [
   { time:'17:50', name:'Ký kết Hợp đồng với Đối tác',        desc:'HATHYO & Đối tác chiến lược · Nhà bán hàng tiêu biểu' },
   { time:'18:10', name:'Chương trình Live Flash Sale',        desc:'Cùng Khách mời trải nghiệm mua sắm trên HATHYO' },
   { time:'18:30', name:'Phát biểu & Chúc mừng',        desc:'Chia sẻ từ Đại biểu · Đối tác · Khách mời' },
-  { time:'18:35', name:'Chính sách đồng hành HATHYO Q2-2026',       desc:'Đồng hành phát triển · Nhà bán · Người mua'},
   { time:'18:40', name:'Tiệc giao lưu & Kết nối',      desc:'Gặp gỡ trực tiếp đội ngũ HATHYO & Đối tác' },
   { time:'21:00', name:'Kết thúc Chương trình',         desc:'Ban tổ chức gửi lời cảm ơn & quà tặng lưu niệm' },
 ];
@@ -1130,6 +1129,37 @@ function saveVCard() {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([vc],{type:'text/vcard'}));
   a.download = 'HATHYO-LienHe.vcf'; a.click();
+}
+
+async function capturePageForBatch() {
+  const s = lockStyles();
+  const mapState = prepareMapForExport();
+  await new Promise(r => setTimeout(r, 400));
+  try {
+    const canvas = await html2canvas(document.getElementById('page1'), {
+      scale: 2, useCORS: true, allowTaint: true,
+      backgroundColor: '#ffffff', logging: false
+    });
+    return canvas.toDataURL('image/png');
+  } finally {
+    restoreMap(mapState);
+    unlockStyles(s);
+  }
+}
+
+/* Dùng cho batch: map đã được ẩn bên ngoài, chỉ capture page1 */
+async function capturePage1Only() {
+  const s = lockStyles();
+  await new Promise(r => setTimeout(r, 250));
+  try {
+    const canvas = await html2canvas(document.getElementById('page1'), {
+      scale: 2, useCORS: true, allowTaint: true,
+      backgroundColor: '#ffffff', logging: false
+    });
+    return canvas.toDataURL('image/png');
+  } finally {
+    unlockStyles(s);
+  }
 }
 
 function applyUrlParams() {
