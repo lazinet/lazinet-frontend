@@ -42,8 +42,9 @@ public/temp/
 # generated invitation exports – không commit lên git
 public/hathyo/invitations/*.png
 public/hathyo/invitations/*.pdf
-public/hathyo/invitations/20260606-HATHYO-operation-start/*.png
-public/hathyo/invitations/20260606-HATHYO-operation-start/*.pdf
+public/hathyo/invitations/**/*.png
+public/hathyo/invitations/**/*.pdf
 public/hathyo/invitations/20260606-HATHYO-operation-start/Hoa/
 public/hathyo/invitations/20260606-HATHYO-operation-start/Sang/
 public/hathyo/invitations/20260606-HATHYO-operation-start/Vuong/
+public/hathyo/invitations/New folder/
