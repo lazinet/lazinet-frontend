@@ -38,6 +38,7 @@ next-env.d.ts
 # large non-production folders
 public/wedding/
 public/temp/
+public/hathyo/members/
 
 # generated invitation exports – không commit lên git
 public/hathyo/invitations/*.png
