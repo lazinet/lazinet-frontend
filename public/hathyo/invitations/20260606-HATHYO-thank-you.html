@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thư Cảm Ơn – HATHYO 06/06/2026</title>
+  <link rel="icon" href="../assets/logos/favicon_io/favicon.ico">
+  <link rel="apple-touch-icon" href="../assets/logos/favicon_io/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+  <style>
+    :root {
+      --g:    #0A703F;
+      --gd:   #065a30;
+      --gm:   #1cb870;
+      --gl:   #e8f5ee;
+      --gl2:  #f2faf5;
+      --o:    #FF6300;
+      --om:   #ff8c42;
+      --gold: #c8973a;
+      --gold2:#e8c06e;
+      --gold3:#f7e7bb;
+      --cream:#fdf8f0;
+      --txt:  #1a1a1a;
+      --txt2: #4a4a4a;
+      --bdr:  #ccd9cc;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background: #e8ede8;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--txt);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    /* ══ ACTION BAR ══════════════════════════════════════════════ */
+    .action-bar {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(10,112,63,0.97);
+      backdrop-filter: blur(8px);
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 8px; padding: 10px 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .action-bar .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 6px;
+      font-family: 'Montserrat',sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: none; transition: all .18s;
+      text-decoration: none; white-space: nowrap;
+    }
+    .btn-primary   { background:#fff; color:var(--g); }
+    .btn-primary:hover { background:var(--gold3); color:var(--gd); }
+    .btn-secondary { background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.3); }
+    .btn-secondary:hover { background:rgba(255,255,255,0.28); }
+    .btn-orange    { background:var(--o); color:#fff; }
+    .btn-orange:hover { background:#e05500; }
+
+    /* ══ VIP PANEL (DESKTOP) ═════════════════════════════════════ */
+    .vip-panel {
+      position: fixed; top: 56px; right: 0;
+      width: 290px; height: calc(100vh - 56px);
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-left: 3px solid var(--g);
+      box-shadow: -4px 0 24px rgba(0,0,0,0.18);
+      display: flex; flex-direction: column; z-index: 150;
+      transition: transform .3s ease;
+    }
+    .vip-panel.collapsed { transform: translateX(290px); }
+    .vip-panel-header {
+      background: linear-gradient(135deg, var(--g), var(--gd));
+      color: #fff; padding: 14px 16px 12px;
+      font-size: 13px; font-weight: 700;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-shrink: 0;
+    }
+    .vip-panel-toggle {
+      position: fixed; top: 66px; right: 0;
+      background: var(--g); color: #fff; border: none;
+      border-radius: 6px 0 0 6px; padding: 8px 10px;
+      cursor: pointer; z-index: 160; font-size: 16px;
+      transition: right .3s;
+    }
+    .vip-panel-toggle.shifted { right: 290px; }
+    .vip-panel-body { flex: 1; overflow-y: auto; padding: 14px; }
+    .vip-section { margin-bottom: 16px; }
+    .vip-section-title {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      color: var(--g); border-bottom: 1px solid var(--gl);
+      padding-bottom: 5px; margin-bottom: 10px;
+    }
+    .vip-label { font-size: 11px; font-weight: 600; color: var(--txt2); margin-bottom: 4px; }
+    .vip-input {
+      width: 100%; padding: 7px 10px;
+      border: 1.5px solid var(--bdr); border-radius: 6px;
+      font-size: 12px; font-family: 'Montserrat',sans-serif;
+      margin-bottom: 9px; transition: border-color .18s; background: #fff;
+    }
+    .vip-input:focus { outline: none; border-color: var(--g); }
+    .vip-logo-row { display: flex; gap: 8px; align-items: stretch; }
+    .vip-logo-row .vip-input { margin-bottom: 0; flex: 1; }
+    .btn-upload {
+      padding: 7px 10px; background: var(--gl);
+      border: 1.5px solid var(--bdr); border-radius: 6px;
+      cursor: pointer; font-size: 18px; color: var(--g);
+      transition: background .18s; white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-upload:hover { background: var(--gl2); }
+    .logo-preview-wrap { margin-top: 8px; text-align: center; }
+    .logo-preview-wrap img { max-height: 50px; max-width: 200px; border-radius: 4px; }
+    .sig-select-row select {
+      width: 100%; padding: 7px 8px;
+      border: 1.5px solid var(--bdr); border-radius: 6px;
+      font-size: 11px; font-family: 'Montserrat',sans-serif;
+      background: #fff; margin-bottom: 6px;
+    }
+    .sig-select-row select:focus { outline: none; border-color: var(--g); }
+    .sig-pw-row { display: flex; gap: 6px; }
+    .sig-pw-row .vip-input { margin-bottom: 0; }
+    .btn-sig-unlock {
+      padding: 7px 12px; background: var(--g); color: #fff;
+      border: none; border-radius: 6px;
+      font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .btn-sig-unlock:hover { background: var(--gd); }
+    .sig-status {
+      margin-top: 5px; font-size: 10px; font-weight: 600;
+      padding: 4px 8px; border-radius: 4px; display: none;
+    }
+    .sig-status.ok  { display:block; background:var(--gl); color:var(--g); }
+    .sig-status.err { display:block; background:#fde8e8; color:#c0392b; }
+
+    /* ══ MOBILE BAR ══════════════════════════════════════════════ */
+    .mobile-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
+      box-shadow: 0 -3px 16px rgba(0,0,0,0.15); border-top: 2px solid var(--g);
+    }
+    .mobile-bar-toggle {
+      width: 100%; background: var(--g); color: #fff; border: none;
+      padding: 10px; font-size: 12px; font-weight: 700;
+      font-family: 'Montserrat',sans-serif; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .mobile-bar-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .mobile-bar-body.open { max-height: 520px; overflow-y: auto; }
+    .mobile-bar-inner { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+
+    /* ══ PAGES WRAPPER ═══════════════════════════════════════════ */
+    .pages-wrapper {
+      margin: 24px auto;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 32px; padding-right: 310px;
+    }
+    @media (max-width: 900px) { .pages-wrapper { padding-right: 0; } }
+
+    /* ══ A4 PAGE ═════════════════════════════════════════════════ */
+    .page {
+      width: 210mm; min-width: 210mm; height: 297mm;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.28);
+      overflow: hidden; transform-origin: top center; position: relative;
+    }
+
+    /* Fold indicator */
+    .fold-line {
+      position: absolute; top: 148.5mm; left: 0; right: 0;
+      height: 0; border-top: 1px dashed rgba(0,0,0,0.1);
+      z-index: 5; pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════
+       PAGE 1 — INSIDE (MẶT TRONG)
+       Nền toàn A4: background image HATHYO
+    ══════════════════════════════════════════════ */
+    #page1 {
+      background: url('../assets/bg/HATHYO_TransBG_056e.jpg') center/cover;
+    }
+
+    /* ── A5 TOP: Lời tri ân + Người nhận ── */
+    .p1-top {
+      height: 148.5mm;
+      background: transparent;
+      display: flex; flex-direction: column;
+      padding: 9mm 13mm 6mm 13mm;
+      position: relative; overflow: hidden;
+    }
+    .p1-top::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 32mm; height: 32mm;
+      background: linear-gradient(135deg, var(--g) 0%, transparent 60%);
+      opacity: .10; pointer-events: none;
+    }
+    .p1-top::after {
+      content: ''; position: absolute; bottom: 0; right: 0;
+      width: 26mm; height: 26mm;
+      background: linear-gradient(315deg, var(--o) 0%, transparent 55%);
+      opacity: .09; pointer-events: none;
+    }
+    .p1-top-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 4mm; position: relative; z-index: 1;
+    }
+    .p1-company-block { display: flex; flex-direction: column; gap: 2px; }
+    .p1-company-name {
+      font-size: 13px; font-weight: 700; color: var(--g);
+      text-transform: uppercase; letter-spacing: .8px; line-height: 1.35;
+    }
+    .p1-company-sub { font-size: 10.5px; color: var(--txt2); font-weight: 500; }
+    .p1-company-contact {
+      display: flex; gap: 9px; flex-wrap: wrap; margin-top: 3px;
+      font-size: 9.5px; color: var(--txt2); font-weight: 500;
+    }
+    .p1-company-contact span { display: flex; align-items: center; gap: 3px; }
+    .p1-company-contact i { color: var(--g); font-size: 13px; }
+    .p1-logo { height: 80px; display: block; }
+
+    .p1-divider {
+      height: 2px;
+      background: linear-gradient(90deg, var(--g) 0%, var(--gm) 45%, var(--o) 100%);
+      border-radius: 2px; margin-bottom: 4mm;
+      position: relative; z-index: 2;
+    }
+
+    .p1-invite-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-style: italic; color: var(--o);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      text-align: center; margin-top: 2mm; margin-bottom: 3mm;
+      position: relative; z-index: 2;
+    }
+
+    /* Recipient block – centered, width: fit-content */
+    .recipient-wrapper {
+      display: flex; justify-content: center; margin-bottom: 4.5mm;
+      position: relative; z-index: 2;
+    }
+    .recipient-block {
+      border: 2px solid var(--o); border-radius: 10px;
+      padding: 5mm 7mm;
+      background: linear-gradient(135deg, rgba(255,99,0,0.06), rgba(10,112,63,0.04));
+      display: flex; align-items: center; gap: 5mm;
+      width: fit-content; min-width: 62%;
+    }
+    .ri-logo-slot {
+      width: 74px; height: 74px; border-radius: 8px;
+      border: 1px solid var(--o);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0; background: var(--ol);
+    }
+    .ri-logo-slot img { width:100%; height:100%; object-fit:contain; }
+    .ri-logo-placeholder { font-size: 32px; color: var(--o); }
+    .ri-info { flex: 1; }
+    #riName {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: var(--g); line-height: 1.2;
+    }
+    #riPosition { font-size: 13px; font-weight: 600; color: var(--txt2); margin-top: 2px; }
+    #riCompany  { font-size: 12px; color: var(--txt2); margin-top: 1px; font-style: italic; }
+
+    /* Event / Tri ân info box */
+    .p1-event-box {
+      text-align: center;
+      background: linear-gradient(135deg, var(--g) 0%, #03301a 100%);
+      border-radius: 10px; padding: 5.5mm 7mm;
+      position: relative; overflow: hidden; z-index: 2;
+    }
+    .p1-event-box::before {
+      content: ''; position: absolute; top:-22px; right:-22px;
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .p1-event-box::after {
+      content: ''; position: absolute; bottom:-15px; left:-15px;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .p1-event-title-pre {
+      font-size: 11px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold2); margin-bottom: 2mm;
+    }
+    .p1-event-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px; font-weight: 700; color: #fff;
+      line-height: 1.4; margin-bottom: 3mm;
+    }
+    .p1-event-title em   { display:block; font-size: 28px; font-style: normal; font-weight: 700; letter-spacing: 1.2px; color: rgba(255,255,255,0.95); text-transform: uppercase; margin-top: 2px; }
+    .p1-event-title span { display:block; font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; font-weight:400; color:var(--gold2); margin-top:3px; }
+    .p1-event-meta {
+      display: flex; justify-content: center; gap: 7mm;
+      font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600;
+    }
+    .p1-event-meta span { display:flex; align-items:center; gap:5px; }
+    .p1-event-meta i { color: var(--om); font-size: 13px; }
+
+    /* ── A5 BOTTOM: Tri ân – Sản phẩm / MLAM / Ảnh chủ nhân / Chữ ký ── */
+    .p1-bottom {
+      height: 148.5mm;
+      background: transparent;
+      display: flex; flex-direction: column;
+      padding: 7mm 13mm 7mm 13mm;
+      position: relative; overflow: hidden;
+      isolation: isolate; /* tạo stacking context riêng để z-index hoạt động đúng */
+    }
+    .p1-bottom::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: linear-gradient(90deg, var(--g), var(--gm), var(--o));
+      z-index: 2;
+    }
+    /* watermark chống mạo danh – phủ mờ toàn bộ khu vực */
+    .p1-bottom-deco {
+      position: absolute; inset: 0;
+      background: url('../assets/bg/pngwing_023.png') center/42% no-repeat;
+      opacity: 0.045; pointer-events: none; z-index: 0;
+    }
+
+    /* Lưới tri ân chính: trái 60% / phải 40% */
+    .thanks-grid {
+      flex: 1; min-height: 0;
+      display: flex; gap: 4mm;
+      position: relative; z-index: 1;
+    }
+    .thanks-left, .thanks-right {
+      display: flex; flex-direction: column; gap: 3mm;
+      min-width: 0; height: 100%;
+    }
+    .thanks-left  { flex: 0 0 60%; }
+    .thanks-right { flex: 0 0 calc(40% - 4mm); }
+
+    /* ── Trái trên (80%): Lưới ảnh sản phẩm tiêu biểu ── */
+    .gallery-box {
+      flex: 4; min-height: 0; position: relative;
+      border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--bdr);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+    .gallery-label {
+      position: absolute; top: 0; left: 0; z-index: 2;
+      background: linear-gradient(90deg, var(--g), var(--gm));
+      color: #fff; font-size: 10px; font-weight: 700;
+      letter-spacing: .4px; padding: 4px 11px 4px 9px;
+      border-radius: 0 0 8px 0;
+      display: flex; align-items: center; gap: 5px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.12);
+    }
+    .gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; color: var(--g); text-align: center; padding: 2px;
+      background: linear-gradient(135deg, var(--gl2), var(--gl));
+    }
+    .gallery-placeholder i { font-size: 22px; color: var(--gm); }
+    .gallery-placeholder span { font-size: 8.5px; font-weight: 700; line-height: 1.2; }
+
+    /* ── Trái dưới (20%): QR Tri ân lan tỏa – MLAM ── */
+    .mlam-box {
+      flex: 1; min-height: 0;
+      display: flex; align-items: center; gap: 3.5mm;
+      background: linear-gradient(135deg, var(--o) 0%, #c44e00 100%);
+      border-radius: 8px; padding: 3mm 4.5mm;
+      color: #fff; position: relative; overflow: hidden;
+    }
+    .mlam-box::before {
+      content:''; position:absolute; top:-20px; right:-20px;
+      width:70px; height:70px; border-radius:50%;
+      background:rgba(255,255,255,0.08);
+    }
+    .mlam-qr {
+      flex-shrink: 0; background: #fff; border-radius: 6px;
+      padding: 2px; line-height: 0; position: relative; z-index: 1;
+      width: 19mm; height: 19mm;
+    }
+    .mlam-qr img, .mlam-qr canvas, .mlam-qr svg {
+      width: 100% !important; height: 100% !important; display: block; border-radius: 3px;
+    }
+    .mlam-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
+    .mlam-title {
+      font-size: 10.5px; font-weight: 800; letter-spacing: .6px;
+      margin-bottom: 1mm; text-transform: uppercase;
+    }
+    .mlam-desc { font-size: 8.7px; line-height: 1.4; opacity: .96; }
+
+    /* ── Phải trên (80%): Ảnh đối tác – 2 ảnh landscape xếp trên/dưới ── */
+    .photo-box {
+      flex: 4; min-height: 0; position: relative;
+      border-radius: 8px; overflow: hidden;
+      border: 3px solid var(--gold2);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+      display: flex; flex-direction: column; gap: 1.5px;
+      background: var(--bdr);
+    }
+    .photo-ribbon {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      color: #5a3d00; font-size: 9.5px; font-weight: 800;
+      text-align: center; padding: 3px; letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .ri-photo-slot {
+      flex: 1; min-height: 0; position: relative;
+      background: linear-gradient(135deg, var(--gl), var(--gl2));
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .ri-photo-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ri-photo-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      color: var(--g); opacity: .4;
+    }
+    .ri-photo-placeholder i { font-size: 48px; }
+    .ri-photo-placeholder small { font-size: 10px; font-weight: 700; letter-spacing: .5px; }
+
+    /* ── Phải dưới (20%): Chữ ký ── */
+    .sig-area {
+      flex: 1; min-height: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+    }
+    .sig-block  { text-align: center; }
+    .sig-labels { text-align: center; }
+    .sig-header { font-size: 9.5px; font-weight: 700; color: var(--g); text-transform: uppercase; letter-spacing: .5px; }
+    .sig-role   { font-size: 8.5px; color: var(--txt2); font-style: italic; margin-bottom: 2px; }
+    .sig-thanks { font-size: 9.5px; color: var(--txt2); font-style: italic; margin-bottom: 2px; }
+    .sig-imgs   { position: relative; width: 100%; height: 50px; margin: 2px auto 0; display: flex; align-items: center; justify-content: center; overflow: visible; }
+    .sig-sign   { height: 46px; object-fit: contain; transform-origin: center bottom; }
+    .sig-name   { font-size: 11px; font-weight: 700; color: var(--g); margin-top: 2px; }
+
+    /* ══════════════════════════════════════════════
+       PAGE 2 — OUTSIDE COVER (MẶT BÌA)
+    ══════════════════════════════════════════════ */
+
+    /* ── A5 TOP: Cover – nền bg image HATHYO ── */
+    .p2-top {
+      height: 148.5mm;
+      background: url('../assets/bg/HATHYO_TransBG_054.jpg') center/cover;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 10mm 14mm; position: relative; overflow: hidden; text-align: center;
+    }
+    .p2-top::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.10);
+      pointer-events: none; z-index: 1;
+    }
+
+    /* Decorative rings – orange tones */
+    .cover-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(255,99,0,0.20); pointer-events: none;
+    }
+    .cover-ring-1 { width: 180px; height: 180px; top: -40px; left: -50px; }
+    .cover-ring-2 { width: 280px; height: 280px; top: -80px; left: -100px; border-color: rgba(255,99,0,0.12); }
+    .cover-ring-3 { width: 140px; height: 140px; bottom: -30px; right: -30px; border-color: rgba(255,99,0,0.16); }
+    .cover-ring-4 { width: 220px; height: 220px; bottom: -70px; right: -70px; border-color: rgba(255,99,0,0.09); }
+
+    .cover-dots { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .cover-dots::before {
+      content: '✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦';
+      position: absolute; top: 18mm; left: 0; right: 0;
+      text-align: center; font-size: 6px;
+      color: rgba(255,99,0,0.18); letter-spacing: 4px;
+    }
+    .cover-dots::after {
+      content: '✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦';
+      position: absolute; bottom: 18mm; left: 0; right: 0;
+      text-align: center; font-size: 6px;
+      color: rgba(255,99,0,0.18); letter-spacing: 4px;
+    }
+
+    .cover-logo-wrap { position: relative; z-index: 2; margin-bottom: 5mm; }
+    .cover-logo { height: 100px; display: block; margin: 0 auto; }
+
+    .cover-divider {
+      width: 60mm; height: 12px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 2; margin: 0 auto 4mm;
+    }
+    .cover-divider::before {
+      content: ''; position: absolute; top: 50%; left: 0; right: 0;
+      height: 1.5px; transform: translateY(-50%);
+      background: linear-gradient(90deg, transparent, var(--o), transparent);
+    }
+    .cover-divider-diamond {
+      position: relative; z-index: 1;
+      width: 10px; height: 10px; background: var(--o);
+      transform: rotate(45deg); flex-shrink: 0;
+    }
+
+    .cover-event-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 3.5px;
+      text-transform: uppercase; color: var(--o);
+      margin-bottom: 4mm; position: relative; z-index: 2;
+    }
+    .cover-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 700; color: var(--g);
+      line-height: 1.5; margin-bottom: 7mm; position: relative; z-index: 2;
+    }
+    .cover-title em   { display:block; font-size:30px; font-style:normal; font-weight:700; letter-spacing:1.5px; color:var(--g); text-transform:uppercase; margin-top:2px; }
+    .cover-title span { display:block; font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; font-weight:400; color:var(--o); margin-top:4px; }
+
+    .cover-meta-strip {
+      display: flex; gap: 8mm; align-items: center;
+      position: relative; z-index: 2;
+    }
+    .cover-meta-item { display: flex; flex-direction: column; align-items: center; }
+    .cover-meta-item-label {
+      font-size: 9.5px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--g); margin-bottom: 3px;
+    }
+    .cover-meta-item-val { font-size: 15px; font-weight: 700; color: var(--txt); }
+    .cover-meta-sep { color: var(--bdr); font-size: 22px; }
+
+    /* ── A5 BOTTOM: Ảnh kỷ niệm sự kiện (landscape 7008x4672) ── */
+    .p2-bottom {
+      height: 148.5mm;
+      background: linear-gradient(135deg, var(--g) 0%, #03301a 100%);
+      position: relative; overflow: hidden;
+    }
+    .p2-photo {
+      position: absolute; inset: 0; z-index: 1;
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .p2-photo-caption {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+      background: linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+      color: #fff; font-size: 12px; font-weight: 600;
+      padding: 16px 18px 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .p2-photo-caption i { color: var(--om); font-size: 15px; }
+
+    /* ══ RESPONSIVE SCALING ══════════════════════════════════════ */
+    @media (max-width: 1200px) { .page { transform: scale(0.88); margin-bottom: -36mm; } }
+    @media (max-width: 992px)  { .page { transform: scale(0.78); margin-bottom: -65mm; } }
+    @media (max-width: 768px)  {
+      .page { transform: scale(0.63); margin-bottom: -110mm; }
+      .vip-panel, .vip-panel-toggle { display: none; }
+      .mobile-bar { display: block; }
+      .pages-wrapper { padding-bottom: 100px; }
+    }
+    @media (max-width: 576px) { .page { transform: scale(0.48); margin-bottom: -154mm; } }
+    @media (max-width: 420px) { .page { transform: scale(0.42); margin-bottom: -172mm; } }
+
+    /* ══ CONFETTI ════════════════════════════════════════════════ */
+    #confetti-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* ══ LOADING ═════════════════════════════════════════════════ */
+    .loading-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .loading-overlay.show { display: flex; }
+    .loading-box {
+      background: #fff; border-radius: 12px;
+      padding: 28px 36px; text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .loading-spinner {
+      width: 42px; height: 42px;
+      border: 4px solid var(--gl); border-top-color: var(--g);
+      border-radius: 50%; animation: spin .8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 13px; font-weight: 600; color: var(--g); }
+    .loading-sub  { font-size: 11px; color: var(--txt2); margin-top: 4px; }
+
+    @media print {
+      body { background: #fff !important; padding: 0; }
+      .action-bar, .vip-panel, .vip-panel-toggle, .mobile-bar, .fold-line { display: none !important; }
+      .pages-wrapper { padding: 0; margin: 0; gap: 0; }
+      .page { box-shadow: none; transform: none !important; margin: 0 !important; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Đang xử lý...</div>
+    <div class="loading-sub" id="loadingSub">Vui lòng chờ</div>
+  </div>
+</div>
+
+<!-- ══ ACTION BAR ══ -->
+<div class="action-bar">
+  <button class="btn btn-primary"   onclick="shareInvite()"><i class="bi bi-share"></i> Chia sẻ</button>
+  <button class="btn btn-secondary" onclick="exportPNG()"><i class="bi bi-images"></i> Xuất ảnh</button>
+  <button class="btn btn-secondary" onclick="exportPDF()"><i class="bi bi-file-earmark-pdf"></i> Xuất PDF</button>
+  <button class="btn btn-secondary" onclick="saveVCard()"><i class="bi bi-person-lines-fill"></i> Danh bạ</button>
+  <a href="https://hathyo.com" target="_blank" class="btn btn-secondary"><i class="bi bi-shop-window"></i> Mua sắm tại HATHYO</a>
+  <a href="../contact-hathyo.html" class="btn btn-orange"><i class="bi bi-chat-dots"></i> Liên hệ HATHYO</a>
+</div>
+
+<!-- ══ VIP PANEL (DESKTOP) ══ -->
+<button class="vip-panel-toggle shifted" id="panelToggleBtn" onclick="togglePanel()">✏</button>
+<div class="vip-panel" id="vipPanel">
+  <div class="vip-panel-header">
+    <span><i class="bi bi-pencil-square"></i> Thông tin VIP</span>
+    <button onclick="togglePanel()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:16px;">×</button>
+  </div>
+  <div class="vip-panel-body">
+
+    <div class="vip-section">
+      <div class="vip-section-title">Thông tin người nhận</div>
+      <div class="vip-label">Quý danh:</div>
+      <input class="vip-input" id="d_name"     type="text" placeholder="Nguyễn Văn A"       oninput="syncAndUpdate('name',this.value)">
+      <div class="vip-label">Chức vụ:</div>
+      <input class="vip-input" id="d_position" type="text" placeholder="Giám đốc / CEO"      oninput="syncAndUpdate('position',this.value)">
+      <div class="vip-label">Công ty / Tổ chức:</div>
+      <input class="vip-input" id="d_company"  type="text" placeholder="Tên doanh nghiệp"   oninput="syncAndUpdate('company',this.value)">
+      <div class="vip-label">Lời tri ân:</div>
+      <input class="vip-input" id="d_greeting" type="text" placeholder="Đã đến dự và chúc mừng" oninput="syncAndUpdate('greeting',this.value)">
+    </div>
+
+    <div class="vip-section">
+      <div class="vip-section-title">Logo người nhận</div>
+      <div class="vip-label">URL hình (tuỳ chọn):</div>
+      <input class="vip-input" id="d_logoUrl" type="url" placeholder="https://..." oninput="syncAndUpdate('logoUrl',this.value)">
+      <div class="vip-label">Hoặc tải lên:</div>
+      <div class="vip-logo-row">
+        <input type="file" id="d_logoFile" accept="image/*" style="display:none" onchange="handleLogoFile(this)">
+        <button class="btn-upload" onclick="document.getElementById('d_logoFile').click()" title="Tải ảnh lên">📁</button>
+        <button class="btn-upload" onclick="clearLogo()" title="Xoá logo">🗑</button>
+      </div>
+      <div class="logo-preview-wrap" id="d_logoPreview" style="display:none">
+        <img id="d_logoPreviewImg" src="" alt="Logo preview">
+      </div>
+    </div>
+
+    <div class="vip-section">
+      <div class="vip-section-title">Ảnh đối tác (trên / dưới)</div>
+      <div class="vip-label">Ảnh 1 – URL (tuỳ chọn):</div>
+      <input class="vip-input" id="d_photoUrl" type="url" placeholder="https://..." oninput="syncAndUpdate('photoUrl',this.value)">
+      <div class="vip-label">Hoặc tải lên:</div>
+      <div class="vip-logo-row">
+        <input type="file" id="d_photoFile" accept="image/*" style="display:none" onchange="handlePhotoFile(1,this)">
+        <button class="btn-upload" onclick="document.getElementById('d_photoFile').click()" title="Tải ảnh lên">📁</button>
+        <button class="btn-upload" onclick="clearPhoto(1)" title="Xoá ảnh">🗑</button>
+      </div>
+      <div class="logo-preview-wrap" id="d_photoPreview" style="display:none">
+        <img id="d_photoPreviewImg" src="" alt="Photo 1 preview">
+      </div>
+
+      <div class="vip-label" style="margin-top:9px">Ảnh 2 – URL (tuỳ chọn):</div>
+      <input class="vip-input" id="d_photo2Url" type="url" placeholder="https://..." oninput="syncAndUpdate('photo2Url',this.value)">
+      <div class="vip-label">Hoặc tải lên:</div>
+      <div class="vip-logo-row">
+        <input type="file" id="d_photo2File" accept="image/*" style="display:none" onchange="handlePhotoFile(2,this)">
+        <button class="btn-upload" onclick="document.getElementById('d_photo2File').click()" title="Tải ảnh lên">📁</button>
+        <button class="btn-upload" onclick="clearPhoto(2)" title="Xoá ảnh">🗑</button>
+      </div>
+      <div class="logo-preview-wrap" id="d_photo2Preview" style="display:none">
+        <img id="d_photo2PreviewImg" src="" alt="Photo 2 preview">
+      </div>
+    </div>
+
+    <div class="vip-section">
+      <div class="vip-section-title">QR Tri ân lan tỏa (MLAM)</div>
+      <div class="vip-label">Đường dẫn tạo mã QR:</div>
+      <input class="vip-input" id="d_mlamUrl" type="url" placeholder="https://hathyo.com/..." oninput="syncAndUpdate('mlamUrl',this.value)">
+    </div>
+
+    <div class="vip-section">
+      <div class="vip-section-title">Chữ ký &amp; Con dấu</div>
+      <div class="vip-label">Người ký:</div>
+      <div class="sig-select-row">
+        <select id="d_sigSelect" onchange="syncInput('sigSelect',this.value)">
+          <option value="">— Chọn người ký —</option>
+        </select>
+      </div>
+      <div class="sig-pw-row">
+        <input class="vip-input" id="d_sigPw" type="password" placeholder="Mật khẩu xác nhận" oninput="syncInput('sigPw',this.value)">
+        <button class="btn-sig-unlock" onclick="unlockSig()">Xác nhận</button>
+      </div>
+      <div class="sig-status" id="d_sigStatus"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MOBILE BAR ══ -->
+<div class="mobile-bar" id="mobileBar">
+  <button class="mobile-bar-toggle" onclick="toggleMobileBar()">
+    <i class="bi bi-pencil-square"></i> Điền thông tin người nhận
+    <i class="bi bi-chevron-up" id="mobileChevron"></i>
+  </button>
+  <div class="mobile-bar-body" id="mobileBarBody">
+    <div class="mobile-bar-inner">
+      <input class="vip-input" id="m_name"     type="text" placeholder="Quý danh"            oninput="syncAndUpdate('name',this.value)">
+      <input class="vip-input" id="m_position" type="text" placeholder="Chức vụ"             oninput="syncAndUpdate('position',this.value)">
+      <input class="vip-input" id="m_company"  type="text" placeholder="Công ty / Tổ chức"   oninput="syncAndUpdate('company',this.value)">
+      <input class="vip-input" id="m_greeting" type="text" placeholder="Lời tri ân (VD: Đã đến dự và chúc mừng)" oninput="syncAndUpdate('greeting',this.value)">
+      <input class="vip-input" id="m_logoUrl"  type="url"  placeholder="URL logo"            oninput="syncAndUpdate('logoUrl',this.value)">
+      <div class="vip-logo-row" style="margin-top:-4px">
+        <input type="file" id="m_logoFile" accept="image/*" style="display:none" onchange="handleLogoFile(this)">
+        <button class="btn-upload" onclick="document.getElementById('m_logoFile').click()">📁 Tải logo</button>
+        <button class="btn-upload" onclick="clearLogo()">🗑</button>
+      </div>
+      <input class="vip-input" id="m_photoUrl" type="url" placeholder="URL ảnh đối tác 1" oninput="syncAndUpdate('photoUrl',this.value)">
+      <div class="vip-logo-row" style="margin-top:-4px">
+        <input type="file" id="m_photoFile" accept="image/*" style="display:none" onchange="handlePhotoFile(1,this)">
+        <button class="btn-upload" onclick="document.getElementById('m_photoFile').click()">📁 Tải ảnh 1</button>
+        <button class="btn-upload" onclick="clearPhoto(1)">🗑</button>
+      </div>
+      <input class="vip-input" id="m_photo2Url" type="url" placeholder="URL ảnh đối tác 2" oninput="syncAndUpdate('photo2Url',this.value)">
+      <div class="vip-logo-row" style="margin-top:-4px">
+        <input type="file" id="m_photo2File" accept="image/*" style="display:none" onchange="handlePhotoFile(2,this)">
+        <button class="btn-upload" onclick="document.getElementById('m_photo2File').click()">📁 Tải ảnh 2</button>
+        <button class="btn-upload" onclick="clearPhoto(2)">🗑</button>
+      </div>
+      <input class="vip-input" id="m_mlamUrl" type="url" placeholder="URL tạo mã QR (MLAM)" oninput="syncAndUpdate('mlamUrl',this.value)">
+      <select class="vip-input" id="m_sigSelect" style="margin-bottom:4px" onchange="syncInput('sigSelect',this.value)">
+        <option value="">— Người ký —</option>
+      </select>
+      <div class="vip-logo-row">
+        <input class="vip-input" id="m_sigPw" type="password" placeholder="Mật khẩu" oninput="syncInput('sigPw',this.value)" style="margin-bottom:0">
+        <button class="btn-sig-unlock" onclick="unlockSig()">Xác nhận</button>
+      </div>
+      <div class="sig-status" id="m_sigStatus"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGES ══ -->
+<div class="pages-wrapper">
+
+  <!-- PAGE 1: INSIDE / MẶT TRONG -->
+  <div class="page" id="page1">
+    <div class="fold-line"></div>
+
+    <!-- A5 trên: Lời tri ân & Người nhận -->
+    <div class="p1-top">
+      <div class="p1-top-header">
+        <div class="p1-company-block">
+          <div class="p1-company-name">Công ty TNHH Cuộc Sống Vui Khỏe</div>
+          <div class="p1-company-sub">MST: 0318170229 · GP TMĐT: BCT 2025-0737/ĐK/TMĐT</div>
+          <div class="p1-company-contact">
+            <span><i class="bi bi-telephone-fill"></i> 0827 000 248</span>
+            <span><i class="bi bi-envelope-fill"></i> email@hathyo.com</span>
+            <span><i class="bi bi-globe"></i> hathyo.com</span>
+          </div>
+        </div>
+        <picture>
+          <source srcset="../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.svg" type="image/svg+xml">
+          <img class="p1-logo" src="../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.png" alt="HATHYO">
+        </picture>
+      </div>
+
+      <div class="p1-divider"></div>
+
+      <div class="p1-invite-label">✦ &nbsp; Trân trọng kính gửi &nbsp; ✦</div>
+
+      <!-- Recipient block – centered -->
+      <div class="recipient-wrapper">
+        <div class="recipient-block">
+          <div class="ri-logo-slot" id="riLogoSlot">
+            <span class="ri-logo-placeholder">🏢</span>
+          </div>
+          <div class="ri-info">
+            <div id="riName">Quý Đại biểu</div>
+            <div id="riPosition">Quý Vị Khách mời</div>
+            <div id="riCompany"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p1-event-box">
+        <div class="p1-event-title-pre">✦ &nbsp; Lời Tri Ân &nbsp; ✦</div>
+        <div class="p1-event-title">
+          Chân Thành Cảm Ơn
+          <em id="riGreeting">Đã đến dự và chúc mừng</em>
+          <span>Cùng HATHYO làm nên một dấu mốc đáng nhớ</span>
+        </div>
+        <div class="p1-event-meta">
+          <span><i class="bi bi-patch-check-fill"></i> Đã thành công</span>
+          <span><i class="bi bi-calendar3"></i> 06 / 06 / 2026</span>
+          <span><i class="bi bi-geo-alt"></i> Hoa viên Tri Kỷ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A5 dưới: Tri ân – Sản phẩm / MLAM / Ảnh chủ nhân / Chữ ký -->
+    <div class="p1-bottom">
+      <div class="p1-bottom-deco"></div>
+
+      <div class="thanks-grid">
+        <!-- TRÁI 60% -->
+        <div class="thanks-left">
+
+          <!-- Trên 80%: Lưới ảnh sản phẩm tiêu biểu -->
+          <div class="gallery-box">
+            <div class="gallery-label"><i class="bi bi-bag-heart-fill"></i> Sản phẩm nổi bật trên HATHYO</div>
+            <img class="gallery-img" src="../products.png" alt="Sản phẩm HATHYO" onerror="imgFallback(this,'bi-bag-heart-fill','Sản phẩm HATHYO')">
+          </div>
+
+          <!-- Dưới 20%: QR Tri ân lan tỏa – MLAM -->
+          <div class="mlam-box">
+            <div class="mlam-qr" id="mlamQr"></div>
+            <div class="mlam-text">
+              <div class="mlam-title">✦ Tri ân lan tỏa – Cùng HATHYO ✦</div>
+              <div class="mlam-desc">Quét mã QR để khám phá HATHYO &amp; tận hưởng mua sắm cũng như đón nhận những món quà tri ân đặc biệt từ chúng tôi. HATHYO - Nơi hội tụ Vui Khỏe &amp; Thịnh Vượng của quý khách hàng!</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PHẢI 40% -->
+        <div class="thanks-right">
+
+          <!-- Trên 80%: Ảnh đối tác (2 ảnh landscape xếp trên/dưới) -->
+          <div class="photo-box">
+            <div class="photo-ribbon">Quý đối tác đồng hành</div>
+            <div class="ri-photo-slot" id="riPhotoSlot">
+              <span class="ri-photo-placeholder">
+                <i class="bi bi-person-bounding-box"></i>
+                <small>Ảnh đối tác 1</small>
+              </span>
+            </div>
+            <div class="ri-photo-slot" id="riPhoto2Slot">
+              <span class="ri-photo-placeholder">
+                <i class="bi bi-person-bounding-box"></i>
+                <small>Ảnh đối tác 2</small>
+              </span>
+            </div>
+          </div>
+
+          <!-- Dưới 20%: Chữ ký -->
+          <div class="sig-area" id="sigArea" style="display:none">
+            <div class="sig-block">
+              <div class="sig-labels">
+                <div class="sig-thanks">Trân trọng,</div>
+                <div class="sig-header" id="sigType">TUQ. GIÁM ĐỐC</div>
+              </div>
+              <div class="sig-imgs">
+                <img class="sig-sign" id="sigSignImg" src="" alt="chữ ký">
+              </div>
+              <div class="sig-name" id="sigSignerName"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: OUTSIDE COVER / MẶT BÌA -->
+  <div class="page" id="page2">
+    <div class="fold-line"></div>
+
+    <!-- A5 trên: Bìa thư – nền vàng nhạt / xanh nhạt -->
+    <div class="p2-top">
+      <div class="cover-ring cover-ring-1"></div>
+      <div class="cover-ring cover-ring-2"></div>
+      <div class="cover-dots"></div>
+
+      <div class="cover-logo-wrap">
+        <picture>
+          <source srcset="../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.svg" type="image/svg+xml">
+          <img class="cover-logo" src="../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Rectangle_Full.png" alt="HATHYO">
+        </picture>
+      </div>
+
+      <div class="cover-divider">
+        <div class="cover-divider-diamond"></div>
+      </div>
+
+      <div class="cover-event-label">Trân trọng tri ân Quý Đối tác</div>
+
+      <div class="cover-title">
+        Lời Tri Ân
+        <em>TỪ HATHYO</em>
+        <span>Sau Lễ Ra mắt Chính thức Sàn TMĐT HATHYO – 06/06/2026</span>
+      </div>
+
+      <div class="cover-meta-strip">
+        <div class="cover-meta-item">
+          <div class="cover-meta-item-label">Đã diễn ra</div>
+          <div class="cover-meta-item-val">17:00 · 06/06/2026</div>
+        </div>
+        <div class="cover-meta-sep">|</div>
+        <div class="cover-meta-item">
+          <div class="cover-meta-item-label">Địa điểm</div>
+          <div class="cover-meta-item-val">Hoa viên Tri Kỷ</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- A5 dưới: Ảnh kỷ niệm sự kiện (landscape 7008x4672) -->
+    <div class="p2-bottom">
+      <img class="p2-photo" src="../event-photo.jpg" alt="Khoảnh khắc HATHYO 06/06/2026" onerror="this.style.display='none'">
+      <div class="p2-photo-caption">
+        <i class="bi bi-geo-alt-fill"></i> Hoa viên Tri Kỷ, TP. Hồ Chí Minh — Nơi ghi dấu thành công của HATHYO, 06/06/2026
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SIGN_SEAL_URL = '../assets/sign-seal/sign-seal.json';
+const MLAM_LOGO = '../assets/logos/Dark_Green%20%28Main%29/HathyoV1_Square_LogoOnly_NarrowBufffer.png';
+const MLAM_DEFAULT_URL = 'https://hathyo.com';
+let signatories = [];
+let mlamQrCode = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  startClock();
+  updateMlamQr(MLAM_DEFAULT_URL);
+  await loadSignatories();
+  applyUrlParams();
+  setTimeout(launchConfetti, 600);
+});
+
+function startClock() {
+  function tick() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    const dd = String(now.getDate()).padStart(2,'0');
+    const mo = String(now.getMonth()+1).padStart(2,'0');
+    const yyyy = now.getFullYear();
+    const el = document.getElementById('sigClock');
+    if (el) el.textContent = `TP. Hồ Chí Minh, ${hh}:${mm}:${ss} ${dd}/${mo}/${yyyy}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* Ảnh sản phẩm chưa có – thay bằng placeholder minh hoạ theo nhóm hàng */
+function imgFallback(img, icon, label) {
+  const ph = document.createElement('div');
+  ph.className = 'gallery-placeholder';
+  ph.innerHTML = `<i class="bi ${icon}"></i><span>${label}</span>`;
+  img.replaceWith(ph);
+}
+
+/* QR Tri ân lan tỏa (MLAM) – sinh QR theo URL, logo HATHYO ở giữa */
+function updateMlamQr(url) {
+  const data = (url && url.trim()) ? url.trim() : MLAM_DEFAULT_URL;
+  const options = {
+    width: 240, height: 240, margin: 4,
+    data: data,
+    qrOptions: { errorCorrectionLevel: 'H' },
+    image: MLAM_LOGO,
+    dotsOptions: { color: '#0A703F', type: 'rounded' },
+    backgroundOptions: { color: '#ffffff' },
+    imageOptions: { crossOrigin: 'anonymous', margin: 4, imageSize: 0.4 },
+    cornersSquareOptions: { color: '#0A703F', type: 'extra-rounded' },
+    cornersDotOptions: { color: '#FF6300', type: 'dot' }
+  };
+  if (mlamQrCode) {
+    mlamQrCode.update(options);
+  } else {
+    mlamQrCode = new QRCodeStyling(options);
+    mlamQrCode.append(document.getElementById('mlamQr'));
+  }
+}
+
+async function loadSignatories() {
+  try {
+    const r = await fetch(SIGN_SEAL_URL);
+    signatories = await r.json();
+    const opts = ['<option value="">— Chọn người ký —</option>',
+      ...signatories.map((s,i)=>`<option value="${i}">${s.name} – ${s.title}</option>`)
+    ].join('');
+    document.getElementById('d_sigSelect').innerHTML = opts;
+    document.getElementById('m_sigSelect').innerHTML = opts;
+    applySignatoryByIndex(0); // mặc định: Hoàng Minh Phụng
+  } catch(e) { console.warn('Could not load sign-seal.json', e); }
+}
+
+function applySignatoryByIndex(idx) {
+  const s = signatories[idx];
+  if (!s) return;
+  const base = '../assets/sign-seal/';
+  const rotation = s.rotation !== undefined ? s.rotation : 0;
+  document.getElementById('sigSignImg').src = base + s.signature;
+  document.getElementById('sigSignImg').style.transform = `rotate(${rotation}deg)`;
+  document.getElementById('sigSignerName').textContent = s.name.toUpperCase();
+  document.getElementById('sigType').textContent = s.type === 'GĐ' ? 'GIÁM ĐỐC' : 'TUQ. GIÁM ĐỐC';
+  document.getElementById('sigArea').style.display = 'flex';
+  document.getElementById('d_sigSelect').value = String(idx);
+  document.getElementById('m_sigSelect').value = String(idx);
+}
+
+/* Panel toggle */
+function togglePanel() {
+  document.getElementById('vipPanel').classList.toggle('collapsed');
+  document.getElementById('panelToggleBtn').classList.toggle('shifted');
+}
+function toggleMobileBar() {
+  const body = document.getElementById('mobileBarBody');
+  const chev = document.getElementById('mobileChevron');
+  body.classList.toggle('open');
+  chev.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+/* Input sync */
+function syncAndUpdate(field, val) {
+  if (field === 'name') {
+    ['d_name','m_name'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    document.getElementById('riName').textContent = val || 'Quý Đại biểu';
+  } else if (field === 'position') {
+    ['d_position','m_position'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    document.getElementById('riPosition').textContent = val || 'Quý Vị Khách mời';
+  } else if (field === 'company') {
+    ['d_company','m_company'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    document.getElementById('riCompany').textContent = val;
+  } else if (field === 'greeting') {
+    ['d_greeting','m_greeting'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    document.getElementById('riGreeting').textContent = val || 'Đã đến dự và chúc mừng';
+  } else if (field === 'logoUrl') {
+    ['d_logoUrl','m_logoUrl'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    if (val && val.startsWith('http')) applyLogo(val);
+  } else if (field === 'photoUrl') {
+    ['d_photoUrl','m_photoUrl'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    if (val && val.startsWith('http')) applyPhoto(1, val);
+  } else if (field === 'photo2Url') {
+    ['d_photo2Url','m_photo2Url'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    if (val && val.startsWith('http')) applyPhoto(2, val);
+  } else if (field === 'mlamUrl') {
+    ['d_mlamUrl','m_mlamUrl'].forEach(id=>{if(document.getElementById(id).value!==val) document.getElementById(id).value=val;});
+    updateMlamQr(val);
+  }
+}
+function syncInput(field, val) {
+  if (field === 'sigSelect') { document.getElementById('d_sigSelect').value=val; document.getElementById('m_sigSelect').value=val; }
+  if (field === 'sigPw')     { document.getElementById('d_sigPw').value=val;     document.getElementById('m_sigPw').value=val; }
+}
+
+function applyLogo(src) {
+  const slot = document.getElementById('riLogoSlot');
+  slot.innerHTML = `<img src="${src}" alt="Logo" style="width:100%;height:100%;object-fit:contain;"
+    onerror="this.parentElement.innerHTML='<span class=ri-logo-placeholder>🏢</span>'">`;
+  const prev = document.getElementById('d_logoPreview');
+  const prevImg = document.getElementById('d_logoPreviewImg');
+  if (prev && prevImg) { prevImg.src=src; prev.style.display='block'; }
+}
+function clearLogo() {
+  document.getElementById('riLogoSlot').innerHTML = '<span class="ri-logo-placeholder">🏢</span>';
+  ['d_logoUrl','m_logoUrl'].forEach(id=>{ document.getElementById(id).value=''; });
+  const prev = document.getElementById('d_logoPreview');
+  if (prev) prev.style.display = 'none';
+}
+function handleLogoFile(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    applyLogo(e.target.result);
+    ['d_logoUrl','m_logoUrl'].forEach(id=>{ document.getElementById(id).value=''; });
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+/* Ảnh đối tác – 2 ảnh landscape (trên/dưới) */
+function applyPhoto(n, src) {
+  const slot = document.getElementById(n===2 ? 'riPhoto2Slot' : 'riPhotoSlot');
+  slot.innerHTML = `<img src="${src}" alt="Ảnh đối tác" style="width:100%;height:100%;object-fit:cover;"
+    onerror="this.parentElement.innerHTML='<span class=\\'ri-photo-placeholder\\'><i class=\\'bi bi-person-bounding-box\\'></i><small>Ảnh đối tác ${n}</small></span>'">`;
+  const prev = document.getElementById(n===2 ? 'd_photo2Preview' : 'd_photoPreview');
+  const prevImg = document.getElementById(n===2 ? 'd_photo2PreviewImg' : 'd_photoPreviewImg');
+  if (prev && prevImg) { prevImg.src=src; prev.style.display='block'; }
+}
+function clearPhoto(n) {
+  const slot = document.getElementById(n===2 ? 'riPhoto2Slot' : 'riPhotoSlot');
+  slot.innerHTML = `<span class="ri-photo-placeholder"><i class="bi bi-person-bounding-box"></i><small>Ảnh đối tác ${n}</small></span>`;
+  const urlIds = n===2 ? ['d_photo2Url','m_photo2Url'] : ['d_photoUrl','m_photoUrl'];
+  urlIds.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  const prev = document.getElementById(n===2 ? 'd_photo2Preview' : 'd_photoPreview');
+  if (prev) prev.style.display = 'none';
+}
+function handlePhotoFile(n, input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    applyPhoto(n, e.target.result);
+    const urlIds = n===2 ? ['d_photo2Url','m_photo2Url'] : ['d_photoUrl','m_photoUrl'];
+    urlIds.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+/* Signature unlock */
+function unlockSig() {
+  const idx = document.getElementById('d_sigSelect').value;
+  const pw  = document.getElementById('d_sigPw').value;
+  if (!idx)  { showSigStatus('Vui lòng chọn người ký.', false); return; }
+  const s = signatories[parseInt(idx)];
+  if (!s)    { showSigStatus('Không tìm thấy người ký.', false); return; }
+  if (pw !== s.password) { showSigStatus('Mật khẩu không đúng!', false); return; }
+
+  const base = '../assets/sign-seal/';
+  const rotation = s.rotation !== undefined ? s.rotation : -15;
+  document.getElementById('sigSignImg').src   = base + s.signature;
+  document.getElementById('sigSignImg').style.transform = `rotate(${rotation}deg)`;
+  document.getElementById('sigSignerName').textContent = s.name.toUpperCase();
+  document.getElementById('sigType').textContent = (s.type === 'GĐ') ? 'GIÁM ĐỐC' : 'TUQ. GIÁM ĐỐC';
+  document.getElementById('sigArea').style.display = 'flex';
+
+  showSigStatus(`✓ Đã xác nhận: ${s.name} – ${s.title}`, true);
+  ['d_sigPw','m_sigPw'].forEach(id=>{ document.getElementById(id).value=''; });
+}
+
+function showSigStatus(msg, ok) {
+  ['d_sigStatus','m_sigStatus'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'sig-status ' + (ok ? 'ok' : 'err');
+  });
+  setTimeout(()=>{ document.querySelectorAll('.sig-status').forEach(el=>{ el.className='sig-status'; }); }, 4000);
+}
+
+/* Export */
+function lockStyles() {
+  const s = document.createElement('style'); s.id='export-lock';
+  s.innerHTML = `* { animation:none !important; transition:none !important; }
+    .page { transform:none !important; margin-bottom:0 !important; box-shadow:none !important; }
+    .fold-line { display:none !important; }`;
+  document.head.appendChild(s); return s;
+}
+function unlockStyles(s) { if(s) s.remove(); }
+
+async function capturePages() {
+  const s = lockStyles();
+  await new Promise(r=>setTimeout(r,600));
+  const canvases = [];
+  for (const pg of document.querySelectorAll('.page')) {
+    canvases.push(await html2canvas(pg, { scale:4, useCORS:true, allowTaint:true, backgroundColor:'#ffffff', logging:false }));
+  }
+  unlockStyles(s);
+  return canvases;
+}
+
+function showLoading(msg, sub) {
+  document.getElementById('loadingOverlay').classList.add('show');
+  document.querySelector('.loading-text').textContent = msg||'Đang xử lý...';
+  document.getElementById('loadingSub').textContent = sub||'Vui lòng chờ';
+}
+function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+
+const recipientName = () =>
+  document.getElementById('riName').textContent.trim()
+    .replace(/[^a-zA-Z0-9_\-À-ɏḀ-ỿ ]/g,'').trim().replace(/\s+/g,'_') || 'KHACH_MOI';
+
+async function exportPNG() {
+  showLoading('Đang xuất ảnh PNG...', 'Quá trình này có thể mất 10-15 giây');
+  try {
+    const cs = await capturePages();
+    cs.forEach((c,i)=>{
+      const a = document.createElement('a');
+      a.download = `HATHYO_ThuCamOn_Trang${i+1}_${recipientName()}.png`;
+      a.href = c.toDataURL('image/png'); a.click();
+    });
+  } catch(e) { alert('Lỗi xuất ảnh: '+e.message); }
+  finally { hideLoading(); }
+}
+
+async function exportPDF() {
+  showLoading('Đang xuất PDF...', 'Quá trình này có thể mất 15-20 giây');
+  try {
+    const { jsPDF } = window.jspdf;
+    const cs = await capturePages();
+    const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    cs.forEach((c,i) => {
+      if (i>0) pdf.addPage('a4','portrait');
+      const h = (c.height * 210) / c.width;
+      pdf.addImage(c.toDataURL('image/jpeg',0.95), 'JPEG', 0, 0, 210, Math.min(h,297));
+    });
+    pdf.save(`HATHYO_ThuCamOn_${recipientName()}.pdf`);
+  } catch(e) { alert('Lỗi xuất PDF: '+e.message); }
+  finally { hideLoading(); }
+}
+
+async function shareInvite() {
+  const url = window.location.href;
+  if (navigator.share) {
+    try { await navigator.share({ title:'Thư Cảm Ơn – HATHYO 06/06/2026', url }); } catch(e) {}
+  } else {
+    await navigator.clipboard.writeText(url);
+    alert('Đã sao chép đường dẫn vào clipboard!');
+  }
+}
+
+function saveVCard() {
+  const vc = `BEGIN:VCARD\nVERSION:3.0\nFN:HATHYO - Sàn Thương mại Điện tử\nORG:Công ty TNHH Cuộc Sống Vui Khỏe\nTEL;TYPE=CELL:+84827000248\nEMAIL:email@hathyo.com\nURL:https://hathyo.com\nADR:;;82 Phan Đăng Lưu;TP. Hồ Chí Minh;;;VN\nNOTE:Trân trọng cảm ơn Quý Đối tác đã đồng hành cùng Lễ Ra Mắt Chính thức HATHYO ngày 06/06/2026 tại Hoa viên Tri Kỷ, TP. Hồ Chí Minh.\nEND:VCARD`;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([vc],{type:'text/vcard'}));
+  a.download = 'HATHYO-LienHe.vcf'; a.click();
+}
+
+async function capturePageForBatch() {
+  const s = lockStyles();
+  await new Promise(r => setTimeout(r, 400));
+  try {
+    const canvas = await html2canvas(document.getElementById('page1'), {
+      scale: 2, useCORS: true, allowTaint: true,
+      backgroundColor: '#ffffff', logging: false
+    });
+    return canvas.toDataURL('image/png');
+  } finally {
+    unlockStyles(s);
+  }
+}
+
+/* Dùng cho batch: chỉ capture page1 */
+async function capturePage1Only() {
+  const s = lockStyles();
+  await new Promise(r => setTimeout(r, 250));
+  try {
+    const canvas = await html2canvas(document.getElementById('page1'), {
+      scale: 2, useCORS: true, allowTaint: true,
+      backgroundColor: '#ffffff', logging: false
+    });
+    return canvas.toDataURL('image/png');
+  } finally {
+    unlockStyles(s);
+  }
+}
+
+/* Dùng cho batch PDF: capture cả 2 trang, trả về JSON string array */
+async function captureBothPagesForBatch() {
+  const s = lockStyles();
+  await new Promise(r => setTimeout(r, 250));
+  try {
+    const urls = [];
+    for (const pg of document.querySelectorAll('.page')) {
+      const canvas = await html2canvas(pg, {
+        scale: 2, useCORS: true, allowTaint: true,
+        backgroundColor: '#ffffff', logging: false
+      });
+      urls.push(canvas.toDataURL('image/png'));
+    }
+    return JSON.stringify(urls);
+  } finally {
+    unlockStyles(s);
+  }
+}
+
+function applyUrlParams() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('name'))  syncAndUpdate('name',    decodeURIComponent(p.get('name')));
+  if (p.get('pos'))   syncAndUpdate('position', decodeURIComponent(p.get('pos')));
+  if (p.get('co'))    syncAndUpdate('company',  decodeURIComponent(p.get('co')));
+  if (p.get('greeting')) syncAndUpdate('greeting', decodeURIComponent(p.get('greeting')));
+  if (p.get('logo'))   syncAndUpdate('logoUrl',  decodeURIComponent(p.get('logo')));
+  if (p.get('photo'))  syncAndUpdate('photoUrl',  decodeURIComponent(p.get('photo')));
+  if (p.get('photo2')) syncAndUpdate('photo2Url', decodeURIComponent(p.get('photo2')));
+  if (p.get('mlam'))   syncAndUpdate('mlamUrl',   decodeURIComponent(p.get('mlam')));
+}
+
+/* Confetti */
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const colors = ['#0A703F','#FF6300','#1cb870','#ff8c42','#c8973a','#e8c06e','#fff'];
+  const particles = Array.from({length:100}, ()=>({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height - canvas.height,
+    r: Math.random()*5+3, color: colors[Math.floor(Math.random()*colors.length)],
+    speed: Math.random()*3+1, angle: Math.random()*Math.PI*2,
+    spin: (Math.random()-.5)*.1, drift: (Math.random()-.5)*1.5, opacity:1
+  }));
+  let frame = 0;
+  (function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.y+=p.speed; p.x+=p.drift; p.angle+=p.spin;
+      p.opacity = Math.max(0, 1 - p.y/(canvas.height*1.2));
+      ctx.save(); ctx.globalAlpha=p.opacity;
+      ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.5);
+      ctx.restore();
+    });
+    if(++frame < 130) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  })();
+  canvas.addEventListener('click',()=>{
+    frame=0; particles.forEach(p=>{p.y=Math.random()*-canvas.height;p.opacity=1;});
+  });
+}
+</script>
+</body>
+</html>
