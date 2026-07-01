@@ -39,6 +39,12 @@ next-env.d.ts
 public/wedding/
 public/temp/
 public/hathyo/members/
+public/projects/
+
+# large binary files – vượt giới hạn 25MB Cloudflare Pages hoặc gây bloat
+*.mp4
+*.zip
+public/assets/img/Events/Original/
 
 # generated invitation exports – không commit lên git
 public/hathyo/invitations/*.png
