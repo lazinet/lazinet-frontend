@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HATHYO Logo Library V2 — 2026</title>
+<link rel="icon" href="hathyo-logo-v2-2026/favicon/favicon.ico">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+/* HEADER */
+header{background:#F5FFF5;color:#1a1a2e;padding:18px 32px;display:flex;align-items:center;gap:16px;border-bottom:2px solid #BAFFC9}
+.hd-logo{height:96px;flex-shrink:0}
+.hd-center{flex:1;text-align:center}
+.hd-title{font-size:1.7rem;font-weight:800;line-height:1.2;color:#ff4500}
+.hd-sub{font-size:.9rem;color:#006636;margin-top:5px;font-weight:600}
+.hd-right{flex-shrink:0}
+@keyframes zip-pulse{
+  0%,100%{box-shadow:0 2px 8px rgba(255,69,0,.35),0 0 0 0 rgba(255,69,0,.75),0 0 0 0 rgba(0,102,54,.5)}
+  55%{box-shadow:0 2px 8px rgba(255,69,0,.35),0 0 0 8px rgba(255,69,0,0),0 0 0 15px rgba(0,102,54,0)}
+}
+.btn-zip{background:#ff4500;color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;animation:zip-pulse 2.2s ease-in-out infinite;transition:background .2s,transform .15s}
+.btn-zip:hover{background:#d43c00;animation:none;transform:scale(1.04);box-shadow:0 4px 18px rgba(255,69,0,.5)}
+
+/* BRAND DESCRIPTION */
+.brand-desc{background:#fff;border-bottom:2px solid #e5e7eb;padding:24px 32px}
+.bd-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start}
+.bd-badge{display:inline-flex;align-items:center;gap:6px;background:#fff7ed;border:1.5px solid #ff4500;color:#ff4500;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+.bd-title{font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#9ca3af;margin-bottom:6px}
+.bd-desc-block{margin-bottom:10px}
+.bd-desc-block p{font-size:.8rem;line-height:1.65;color:#374151}
+.bd-desc-block p + p{margin-top:6px}
+.bd-part{font-weight:700;color:#1f2937}
+.bd-side{background:#F5FFF5;border:1.5px solid #BAFFC9;border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.bd-spec-block{display:flex;flex-direction:column}
+.bd-spec-label{font-size:.64rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:7px}
+.bd-color-chips{display:flex;flex-direction:column;gap:6px}
+.bd-chip{display:flex;align-items:center;gap:9px}
+.bd-chip-dot{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(0,0,0,.12);flex-shrink:0}
+.bd-chip-info{font-size:.74rem;line-height:1.3}
+.bd-chip-name{font-weight:700;color:#1f2937}
+.bd-chip-hex{font-family:monospace;color:#6b7280;font-size:.68rem}
+.bd-font-row{display:flex;flex-direction:column;gap:5px}
+.bd-font-item{font-size:.76rem;color:#374151}
+.bd-font-item b{color:#1f2937}
+@media(max-width:820px){.bd-inner{grid-template-columns:1fr}.bd-side{order:-1}}
+@media(max-width:600px){.brand-desc{padding:16px 12px}}
+
+/* FEATURED */
+.feat-section{background:#fff;border-bottom:2px solid #e5e7eb;padding:20px 32px 24px;display:flex;flex-direction:column;align-items:center}
+.feat-label{font-size:.67rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#ff4500;margin-bottom:14px;text-align:center}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;width:100%;max-width:920px}
+.feat-card{border:2px solid #ff4500;border-radius:10px;overflow:hidden;position:relative;background:#fff}
+.feat-badge{position:absolute;top:7px;left:7px;background:#ff4500;color:#fff;font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:4px;z-index:1;letter-spacing:.03em}
+.feat-preview{min-height:120px;display:flex;align-items:center;justify-content:center;padding:18px}
+.feat-foot{padding:8px 12px 10px;border-top:1px solid #fde8e0}
+.feat-name{font-size:.76rem;font-weight:600;color:#374151}
+.feat-dl{display:flex;gap:5px;margin-top:6px}
+
+/* TOOLBAR */
+.toolbar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 32px;display:flex;flex-direction:column;align-items:center;gap:7px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.tb-row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.tb-lbl{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#9ca3af;min-width:76px;flex-shrink:0}
+.fb{border:1.5px solid #d1d5db;background:#fff;color:#374151;padding:3px 11px;border-radius:20px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .15s}
+.fb:hover{border-color:#006636;color:#006636}
+.fb.on{background:#006636;border-color:#006636;color:#fff}
+.fb.on-orange{background:#ff4500;border-color:#ff4500;color:#fff}
+.sep{width:1px;height:18px;background:#e5e7eb;margin:0 4px;display:inline-block}
+
+
+/* BG SWATCHES */
+.sw-palette{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.swatch{width:21px;height:21px;border-radius:4px;border:none;cursor:pointer;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.18);transition:outline .1s}
+.swatch.on{outline:2.5px solid #ff4500;outline-offset:1.5px}
+.swatch:hover{outline:2px solid #006636;outline-offset:1.5px}
+.sw-checker{width:26px;height:26px;border-radius:5px;cursor:pointer;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.18);transition:outline .1s}
+.sw-checker.on{outline:2.5px solid #ff4500;outline-offset:1.5px}
+.sw-checker:hover{outline:2px solid #006636;outline-offset:1.5px}
+.clr-input{padding:3px 7px;border:1.5px solid #d1d5db;border-radius:5px;font-size:.74rem;font-family:monospace;text-transform:uppercase;width:82px;outline:none}
+.clr-input:focus{border-color:#006636}
+#clr-picker{width:26px;height:26px;padding:1px 2px;border:1.5px solid #d1d5db;border-radius:5px;cursor:pointer;background:none}
+
+/* GRID */
+main{max-width:1400px;margin:0 auto;padding:22px 32px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+.sec-hdr{grid-column:1/-1;font-size:.9rem;font-weight:800;color:#006636;padding:6px 0 5px;border-bottom:2px solid #006636;letter-spacing:.01em}
+.card{border-radius:10px;border:1px solid #e5e7eb;overflow:hidden;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);display:flex;flex-direction:column;transition:box-shadow .2s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card.hide{display:none}
+
+/* PREVIEW */
+.preview{display:flex;align-items:center;justify-content:center;min-height:150px;padding:22px;transition:background .25s}
+.preview img{max-width:100%;max-height:120px;object-fit:contain}
+
+.bg-checker{
+  background-image:linear-gradient(45deg,#FFFFBA 25%,transparent 25%),linear-gradient(-45deg,#FFFFBA 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#FFFFBA 75%),linear-gradient(-45deg,transparent 75%,#FFFFBA 75%);
+  background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;background-color:#fff}
+
+/* CARD INFO */
+.cinfo{padding:9px 13px 11px;border-top:1px solid #f3f4f6;flex:1;display:flex;flex-direction:column;gap:5px}
+.cname{font-size:.78rem;font-weight:600;color:#1f2937;line-height:1.4}
+.cfile{font-size:.65rem;color:#9ca3af;font-family:monospace;word-break:break-all}
+.tags{display:flex;gap:3px;flex-wrap:wrap}
+.tag{font-size:.61rem;font-weight:700;padding:1px 6px;border-radius:3px;letter-spacing:.03em}
+.t-shape{background:#e0f2fe;color:#0369a1}
+.t-type{background:#fff7ed;color:#c2410c}
+.t-lang{background:#f0fdf4;color:#15803d}
+.t-bg{background:#faf5ff;color:#7e22ce}
+.t-spec{background:#fef9c3;color:#854d0e}
+.dl-row{display:flex;gap:5px;margin-top:3px}
+.bdl{flex:1;text-align:center;padding:4px 8px;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;border:1.5px solid;transition:all .15s;cursor:pointer}
+.bpng{border-color:#3b82f6;color:#3b82f6}.bpng:hover{background:#3b82f6;color:#fff}
+.bsvg{border-color:#8b5cf6;color:#8b5cf6}.bsvg:hover{background:#8b5cf6;color:#fff}
+
+/* FOOTER */
+footer{background:#000040;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:10px}
+footer img{height:160px;width:auto;max-width:90vw;object-fit:contain}
+footer p{font-size:.72rem;color:rgba(255,255,255,.5);text-align:center}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  main{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));padding:16px 20px 40px}
+  .toolbar{padding:10px 20px}
+  header,.feat-section{padding-left:20px;padding-right:20px}
+}
+@media(max-width:600px){
+  header{padding:14px 16px;gap:10px;flex-wrap:wrap}
+  .hd-logo{height:48px}
+  .hd-center{width:100%;order:3;text-align:center}
+  .hd-right{margin-left:auto}
+  .hd-title{font-size:1.2rem}
+  .hd-sub{font-size:.78rem}
+  .feat-section,main{padding-left:12px;padding-right:12px}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  main{grid-template-columns:1fr 1fr;gap:10px}
+  /* Toolbar mobile: mỗi row cuộn ngang, không wrap */
+  .toolbar{padding:8px 0;gap:4px;align-items:stretch}
+  .tb-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:3px 14px;scrollbar-width:none;justify-content:flex-start}
+  .tb-row::-webkit-scrollbar{display:none}
+  .tb-lbl{display:none}
+  .fb{font-size:.72rem;padding:4px 10px;flex-shrink:0;white-space:nowrap}
+  /* Nền xem row: cuộn ngang toàn bộ */
+  .tb-row .sw-palette{flex-wrap:nowrap}
+  .swatch{flex-shrink:0;width:20px;height:20px}
+  .sw-checker{flex-shrink:0}
+  .clr-input{width:70px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img class="hd-logo" src="hathyo-logo-v2-2026/svg-re/hathyo_v2_full_re_en_trans.svg" alt="HATHYO">
+  <div class="hd-center">
+    <div class="hd-title">HATHYO Logo Library V2 (2026)</div>
+    <div class="hd-sub">HATHYO E-COMMERCE &nbsp;·&nbsp; Bộ nhận diện thương hiệu 2026</div>
+  </div>
+  <div class="hd-right">
+    <a class="btn-zip" href="hathyo-logo-v2-2026/hathyo-logo-2026.zip" download>⬇ Tải toàn bộ (ZIP)</a>
+  </div>
+</header>
+
+<section class="brand-desc">
+  <div class="bd-inner">
+    <div class="bd-main">
+      <div class="bd-badge">® Nhãn hiệu đã đăng ký bảo hộ</div>
+      <div class="bd-desc-block">
+        <p><span class="bd-part">Mô tả:</span> Nhãn hiệu bao gồm phần hình và phần chữ.</p>
+        <p><span class="bd-part">Phần hình:</span> Hình chữ H được thiết kế cách điệu từ hai nét đậm tròn màu xanh lục, thể hiện sức sống tràn đầy và sự lành mạnh, gần gũi với thiên nhiên. Hai nét được bo tròn hai đầu trên dưới gợi nhớ đến viên nhộng thuốc bổ dễ thương, cũng như là hai con người tràn đầy năng lượng. Nét ngang trái ngắn hơn thể hiện người nữ, được chỉnh giữa theo trục dọc với nét phải thể hiện là người nam. Phần trên của hai nét có hình tròn màu cam viền trắng, tượng trưng cho đôi mắt của hai người đang hướng nhìn nhau. Nét ngang của chữ H là cung lõm trên, tựa như tay của đôi hình nhân đang nắm tay nhau tung tăng và hạnh phúc. Hai hình tròn và nét cung ngang cũng gợi nhớ một biểu tượng mặt cười vui vẻ.</p>
+        <p><span class="bd-part">Phần chữ:</span> Chữ "HATHYO" viết in hoa, màu cam, được ghép từ <b>HA</b> (trong HAPPY), <b>THY</b> (trong HEALTHY) và <b>O</b> (trong YOU). Câu khẩu hiệu "Happy Healthy You!" màu xanh lục, viết in hoa các chữ cái đầu, cỡ chữ nhỏ hơn để đặt cân đối dưới chữ HATHYO. Các biến thể được sắp xếp theo vị trí tương đối giữa phần hình và phần chữ, có hoặc không có khẩu hiệu.</p>
+        <p style="font-size:.73rem;color:#9ca3af;margin-top:4px">Nhãn hiệu yêu cầu bảo hộ tổng thể.</p>
+      </div>
+    </div>
+    <div class="bd-side">
+      <div class="bd-spec-block">
+        <div class="bd-spec-label">Màu sắc chính</div>
+        <div class="bd-color-chips">
+          <div class="bd-chip">
+            <div class="bd-chip-dot" style="background:#ff4500"></div>
+            <div class="bd-chip-info">
+              <div class="bd-chip-name">Cam</div>
+              <div class="bd-chip-hex">#FF4500 &nbsp; RGB(255, 69, 0)</div>
+            </div>
+          </div>
+          <div class="bd-chip">
+            <div class="bd-chip-dot" style="background:#006636"></div>
+            <div class="bd-chip-info">
+              <div class="bd-chip-name">Xanh lục</div>
+              <div class="bd-chip-hex">#006636 &nbsp; RGB(0, 102, 54)</div>
+            </div>
+          </div>
+          <div class="bd-chip">
+            <div class="bd-chip-dot" style="background:#ffffff;border:1.5px solid #d1d5db"></div>
+            <div class="bd-chip-info">
+              <div class="bd-chip-name">Trắng</div>
+              <div class="bd-chip-hex">#FFFFFF &nbsp; RGB(255, 255, 255)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bd-spec-block">
+        <div class="bd-spec-label">Font thiết kế</div>
+        <div class="bd-font-row">
+          <div class="bd-font-item"><b>Văn bản:</b> Open Sans</div>
+          <div class="bd-font-item" style="font-size:.68rem;color:#9ca3af;padding-left:10px;border-left:2px solid #e5e7eb;margin-top:1px">Tương đương: <b style="color:#6b7280">Inter</b>, <b style="color:#6b7280">Lato</b>, <b style="color:#6b7280">Source Sans Pro</b><br>Hệ thống (không cần tải): <b style="color:#6b7280">Segoe UI</b> (Windows) · <b style="color:#6b7280">SF Pro</b> (macOS/iOS) · <b style="color:#6b7280">Roboto</b> (Android)</div>
+          <div class="bd-font-item" style="margin-top:4px"><b>Tiêu đề / Cách điệu:</b> Baloo</div>
+          <div class="bd-font-item" style="font-size:.68rem;color:#9ca3af;padding-left:10px;border-left:2px solid #e5e7eb;margin-top:1px">Tương đương: <b style="color:#6b7280">Nunito</b>, <b style="color:#6b7280">Poppins</b>, <b style="color:#6b7280">Fredoka One</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="feat-section">
+  <div class="feat-label">★ Logo khuyên dùng</div>
+  <div class="feat-grid" id="feat-grid"></div>
+</div>
+
+<div class="toolbar">
+  <div class="tb-row">
+    <span class="tb-lbl">Khung</span>
+    <button class="fb on" data-g="shape" data-v="">Tất cả</button>
+    <button class="fb" data-g="shape" data-v="ss">_ss Vuông</button>
+    <button class="fb" data-g="shape" data-v="rs">_rs Bo tròn</button>
+    <button class="fb" data-g="shape" data-v="re">_re Ngang</button>
+    <button class="fb" data-g="shape" data-v="tx">_tx Chỉ chữ</button>
+  </div>
+  <div class="tb-row">
+    <span class="tb-lbl">Nội dung</span>
+    <button class="fb on" data-g="content" data-v="">Tất cả</button>
+    <button class="fb" data-g="content" data-v="icon">Biểu tượng</button>
+    <button class="fb" data-g="content" data-v="full">_full Đầy đủ</button>
+    <button class="fb" data-g="content" data-v="name">Chỉ tên</button>
+    <button class="fb" data-g="content" data-v="ecom">_ecom TMĐT</button>
+  </div>
+  <div class="tb-row">
+    <span class="tb-lbl">Ngôn ngữ</span>
+    <button class="fb on" data-g="lang" data-v="">Tất cả</button>
+    <button class="fb" data-g="lang" data-v="en">_en Tiếng Anh</button>
+    <button class="fb" data-g="lang" data-v="vi">_vi Tiếng Việt</button>
+    <button class="fb" data-g="lang" data-v="—">Không ngôn ngữ</button>
+  </div>
+  <div class="tb-row">
+    <span class="tb-lbl">Nền logo</span>
+    <button class="fb on" data-g="bg" data-v="">Tất cả</button>
+    <button class="fb" data-g="bg" data-v="trans">_trans Trong suốt</button>
+    <button class="fb" data-g="bg" data-v="color">_color Nền màu</button>
+    <span class="sep"></span>
+    <button class="fb" id="btn-tel" onclick="toggleTel(this)">_tel Có SĐT</button>
+  </div>
+  <div class="tb-row">
+    <span class="tb-lbl" style="padding-top:2px;align-self:flex-start">Nền xem</span>
+    <div style="display:flex;flex-direction:column;gap:5px;flex:1;align-items:center">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center">
+        <div class="sw-checker on bg-checker" id="sw-checker" title="Checker Trắng + Vàng nhạt (mặc định)" onclick="pickChecker()"></div>
+        <span style="font-size:.7rem;color:#d1d5db">|</span>
+        <input type="color" id="clr-picker" value="#ffffff" title="Bộ chọn màu" oninput="onPick(this.value)" onchange="onPick(this.value)">
+        <input type="text" id="clr-hex" class="clr-input" placeholder="#RRGGBB" maxlength="7" oninput="onHex(this.value)">
+        <span id="clr-rgb" style="font-size:.68rem;color:#9ca3af;font-family:monospace"></span>
+      </div>
+      <div class="sw-palette">
+        <div class="swatch" style="background:#FFFF00" title="Vàng #FFFF00" onclick="pickColor('#FFFF00',this)"></div>
+        <div class="swatch" style="background:#FFFFFF" title="Trắng #FFFFFF" onclick="pickColor('#FFFFFF',this)"></div>
+        <div class="swatch" style="background:#FFFFBA" title="Vàng NHẠT #FFFFBA" onclick="pickColor('#FFFFBA',this)"></div>
+        <div class="swatch" style="background:#BAFFC9" title="Xanh lá NHẠT #BAFFC9" onclick="pickColor('#BAFFC9',this)"></div>
+        <div class="swatch" style="background:#FFE0E5" title="Hồng NHẠT #FFE0E5" onclick="pickColor('#FFE0E5',this)"></div>
+        <div class="swatch" style="background:#FFF5F5" title="Đỏ SIÊU NHẠT #FFF5F5" onclick="pickColor('#FFF5F5',this)"></div>
+        <div class="swatch" style="background:#FFF8F0" title="Cam SIÊU NHẠT #FFF8F0" onclick="pickColor('#FFF8F0',this)"></div>
+        <div class="swatch" style="background:#FFFFF5" title="Vàng SIÊU NHẠT #FFFFF5" onclick="pickColor('#FFFFF5',this)"></div>
+        <div class="swatch" style="background:#F5FFF5" title="Xanh lá SIÊU NHẠT #F5FFF5" onclick="pickColor('#F5FFF5',this)"></div>
+        <div class="swatch" style="background:#F5F8FF" title="Xanh dương SIÊU NHẠT #F5F8FF" onclick="pickColor('#F5F8FF',this)"></div>
+        <div class="swatch" style="background:#FDF0FD" title="Tím SIÊU NHẠT #FDF0FD" onclick="pickColor('#FDF0FD',this)"></div>
+        <div class="swatch" style="background:#FFF8FA" title="Hồng SIÊU NHẠT #FFF8FA" onclick="pickColor('#FFF8FA',this)"></div>
+        <div class="swatch" style="background:#F7EDE8" title="Nâu SIÊU NHẠT #F7EDE8" onclick="pickColor('#F7EDE8',this)"></div>
+        <div class="swatch" style="background:#F0F0F0" title="Xám SIÊU NHẠT #F0F0F0" onclick="pickColor('#F0F0F0',this)"></div>
+        <div class="swatch" style="background:#00FF00" title="Xanh lá #00FF00" onclick="pickColor('#00FF00',this)"></div>
+        <div class="swatch" style="background:#FFC0CB" title="Hồng #FFC0CB" onclick="pickColor('#FFC0CB',this)"></div>
+        <div class="swatch" style="background:#000000" title="Đen #000000" onclick="pickColor('#000000',this)"></div>
+        <div class="swatch" style="background:#FFB3BA" title="Đỏ NHẠT #FFB3BA" onclick="pickColor('#FFB3BA',this)"></div>
+        <div class="swatch" style="background:#FFDFBA" title="Cam NHẠT #FFDFBA" onclick="pickColor('#FFDFBA',this)"></div>
+        <div class="swatch" style="background:#BAE1FF" title="Xanh dương NHẠT #BAE1FF" onclick="pickColor('#BAE1FF',this)"></div>
+        <div class="swatch" style="background:#E6B0E6" title="Tím NHẠT #E6B0E6" onclick="pickColor('#E6B0E6',this)"></div>
+        <div class="swatch" style="background:#E8C4B8" title="Nâu NHẠT #E8C4B8" onclick="pickColor('#E8C4B8',this)"></div>
+        <div class="swatch" style="background:#D3D3D3" title="Xám NHẠT #D3D3D3" onclick="pickColor('#D3D3D3',this)"></div>
+        <div class="swatch" style="background:#000080" title="Navy Blue #000080" onclick="pickColor('#000080',this)"></div>
+        <div class="swatch" style="background:#000040" title="Dark Navy #000040" onclick="pickColor('#000040',this)"></div>
+        <div class="swatch" style="background:#00001A" title="Super Dark Navy #00001A" onclick="pickColor('#00001A',this)"></div>
+        <div class="swatch" style="background:#1A0500" title="Nâu siêu đậm #1A0500" onclick="pickColor('#1A0500',this)"></div>
+        <div class="swatch" style="background:#141414" title="Xám siêu đậm #141414" onclick="pickColor('#141414',this)"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="grid"></main>
+
+<footer>
+  <img src="hathyo-logo-v2-2026/svg-re/hathyo_v2_ecom_re_full_vi_trans.svg" alt="HATHYO E-COMMERCE">
+  <p>Bộ logo HATHYO V2 2026 &nbsp;·&nbsp; Nhãn hiệu đã đăng ký bảo hộ &nbsp;·&nbsp; Màu Cam #ff4500 · Xanh lục #006636</p>
+</footer>
+
+<script>
+const B = 'hathyo-logo-v2-2026/';
+
+// content values: icon | full | name | ecom
+// bg values: trans | color
+// lang: en | vi | — (none)
+// special array may include: tel, full (ecom-full variant), circle, 512, 1024, 266px
+const LOGOS = [
+  // ── SQUARE ss ─────────────────────────────────────
+  {p:'png-ss/hathyo_v2_logo_ss_trans.png',     s:'svg-ss/hathyo_v2_logo_ss_trans.svg',     shape:'ss',content:'icon',lang:'—',bg:'trans',sp:[],        label:'Biểu tượng vuông — trong suốt', feat:'★ Logo trong suốt chính'},
+  {p:'png-ss/hathyo_v2_logo_ss_white.png',     s:'svg-ss/hathyo_v2_logo_ss_white.svg',     shape:'ss',content:'icon',lang:'—',bg:'color',sp:[],        label:'Biểu tượng vuông — nền trắng'},
+  {p:'png-ss/hathyo_v2_logo_ss_white_512.png', s:null,                                      shape:'ss',content:'icon',lang:'—',bg:'color',sp:['512px'], label:'Biểu tượng vuông — 512px'},
+  {p:'png-ss/hathyo_v2_logo_ss_white_1024.png',s:null,                                      shape:'ss',content:'icon',lang:'—',bg:'color',sp:['1024px'],label:'Biểu tượng vuông — 1024px', feat:'★ Logo vuông chính (1024px)'},
+  {p:'png-ss/hathyo_v2_full_ss_trans_en.png',  s:'svg-ss/hathyo_v2_full_ss_en_trans.svg',  shape:'ss',content:'full',lang:'en',bg:'trans',sp:[],       label:'Đầy đủ vuông — EN — trong suốt'},
+  {p:'png-ss/hathyo_v2_full_ss_trans_vi.png',  s:'svg-ss/hathyo_v2_full_ss_vi_trans.svg',  shape:'ss',content:'full',lang:'vi',bg:'trans',sp:[],       label:'Đầy đủ vuông — VI — trong suốt'},
+  {p:'png-ss/hathyo_v2_full_ss_white_en.png',  s:'svg-ss/hathyo_v2_full_ss_en_white.svg',  shape:'ss',content:'full',lang:'en',bg:'color',sp:[],       label:'Đầy đủ vuông — EN — nền trắng'},
+  {p:'png-ss/hathyo_v2_full_ss_white_vi.png',  s:'svg-ss/hathyo_v2_full_ss_vi_white.svg',  shape:'ss',content:'full',lang:'vi',bg:'color',sp:[],       label:'Đầy đủ vuông — VI — nền trắng'},
+  {p:'png-ss/hathyo_v2_name_ss_trans.png',     s:'svg-ss/hathyo_v2_name_ss_trans.svg',     shape:'ss',content:'name',lang:'—',bg:'trans',sp:[],        label:'Chỉ tên vuông — trong suốt'},
+  {p:'png-ss/hathyo_v2_name_ss_white.png',     s:'svg-ss/hathyo_v2_name_ss_white.svg',     shape:'ss',content:'name',lang:'—',bg:'color',sp:[],        label:'Chỉ tên vuông — nền trắng'},
+  // ── ROUNDABLE SQUARE rs ───────────────────────────
+  {p:'png-rs/hathyo_v2_logo_rs_trans_white.png',    s:'svg-rs/hathyo_v2_logo_rs_trans_white.svg',    shape:'rs',content:'icon',lang:'—',bg:'trans',sp:[],         label:'Biểu tượng bo tròn — trong suốt'},
+  {p:'png-rs/hathyo_v2_logo_rs_trans_white_266.png',s:null,                                           shape:'rs',content:'icon',lang:'—',bg:'trans',sp:['266px'],   label:'Biểu tượng bo tròn — 266px'},
+  {p:'png-rs/hathyo_v2_logo_rs_trans_white_512.png',s:null,                                           shape:'rs',content:'icon',lang:'—',bg:'trans',sp:['512px'],   label:'Biểu tượng bo tròn — 512px'},
+  {p:'png-rs/hathyo_v2_logo_rs_lightblue_circle.png',  s:'svg-rs/hathyo_v2_logo_rs_lightblue_circle.svg',   shape:'rs',content:'icon',lang:'—',bg:'color',sp:['circle'],label:'Bo tròn — khung tròn xanh dương'},
+  {p:'png-rs/hathyo_v2_logo_rs_lightgreen_circle.png', s:'svg-rs/hathyo_v2_logo_rs_lightgreen_circle.svg',  shape:'rs',content:'icon',lang:'—',bg:'color',sp:['circle'],label:'Bo tròn — khung tròn xanh lá'},
+  {p:'png-rs/hathyo_v2_logo_rs_lightorange_circle.png',s:'svg-rs/hathyo_v2_logo_rs_lightorange_circle.svg', shape:'rs',content:'icon',lang:'—',bg:'color',sp:['circle'],label:'Bo tròn — khung tròn cam nhạt'},
+  {p:'png-rs/hathyo_v2_ecom_rs_en_trans.png',      s:'svg-rs/hathyo_v2_ecom_rs_en_trans.svg',      shape:'rs',content:'ecom',lang:'en',bg:'trans',sp:[],        label:'TMĐT bo tròn — EN — trong suốt'},
+  {p:'png-rs/hathyo_v2_ecom_rs_en_white.png',      s:'svg-rs/hathyo_v2_ecom_rs_en_white.svg',      shape:'rs',content:'ecom',lang:'en',bg:'color',sp:[],        label:'TMĐT bo tròn — EN — nền trắng'},
+  {p:'png-rs/hathyo_v2_ecom_rs_full_en_trans.png', s:'svg-rs/hathyo_v2_ecom_rs_full_en_trans.svg', shape:'rs',content:'ecom',lang:'en',bg:'trans',sp:['full'],   label:'TMĐT đầy đủ bo tròn — EN — trong suốt'},
+  {p:'png-rs/hathyo_v2_ecom_rs_full_en_white.png', s:'svg-rs/hathyo_v2_ecom_rs_full_en_white.svg', shape:'rs',content:'ecom',lang:'en',bg:'color',sp:['full'],   label:'TMĐT đầy đủ bo tròn — EN — nền trắng'},
+  {p:'png-rs/hathyo_v2_ecom_rs_full_vi_trans.png', s:'svg-rs/hathyo_v2_ecom_rs_full_vi_trans.svg', shape:'rs',content:'ecom',lang:'vi',bg:'trans',sp:['full'],   label:'TMĐT đầy đủ bo tròn — VI — trong suốt'},
+  {p:'png-rs/hathyo_v2_ecom_rs_vi_white_full.png', s:'svg-rs/hathyo_v2_ecom_rs_vi_white_full.svg', shape:'rs',content:'ecom',lang:'vi',bg:'color',sp:['full'],   label:'TMĐT đầy đủ bo tròn — VI — nền trắng'},
+  {p:'png-rs/hathyo_v2_name_rs_trans.png',         s:'svg-rs/hathyo_v2_name_rs_trans.svg',         shape:'rs',content:'name',lang:'—',bg:'trans',sp:[],          label:'Chỉ tên bo tròn — trong suốt'},
+  {p:'png-rs/hathyo_v2_name_rs_white.png',         s:'svg-rs/hathyo_v2_name_rs_white.svg',         shape:'rs',content:'name',lang:'—',bg:'color',sp:[],          label:'Chỉ tên bo tròn — nền trắng'},
+  // ── RECTANGLE re ─────────────────────────────────
+  {p:'png-re/hathyo_v2_full_re_en_trans.png',          s:'svg-re/hathyo_v2_full_re_en_trans.svg',          shape:'re',content:'full',lang:'en',bg:'trans',sp:[],            label:'Đầy đủ ngang — EN — trong suốt', feat:'★ Logo đầu trang'},
+  {p:'png-re/hathyo_v2_full_re_en_white.png',          s:'svg-re/hathyo_v2_full_re_en_white.svg',          shape:'re',content:'full',lang:'en',bg:'color',sp:[],            label:'Đầy đủ ngang — EN — nền trắng'},
+  {p:'png-re/hathyo_v2_full_re_vi_trans.png',          s:'svg-re/hathyo_v2_full_re_vi_trans.svg',          shape:'re',content:'full',lang:'vi',bg:'trans',sp:[],            label:'Đầy đủ ngang — VI — trong suốt'},
+  {p:'png-re/hathyo_v2_full_re_vi_white.png',          s:'svg-re/hathyo_v2_full_re_vi_white.svg',          shape:'re',content:'full',lang:'vi',bg:'color',sp:[],            label:'Đầy đủ ngang — VI — nền trắng'},
+  {p:'png-re/hathyo_v2_ecom_re_full_en_trans.png',     s:'svg-re/hathyo_v2_ecom_re_full_en_trans.svg',     shape:'re',content:'ecom',lang:'en',bg:'trans',sp:['full'],       label:'TMĐT đầy đủ ngang — EN — trong suốt'},
+  {p:'png-re/hathyo_v2_ecom_re_full_en_white.png',     s:'svg-re/hathyo_v2_ecom_re_full_en_white.svg',     shape:'re',content:'ecom',lang:'en',bg:'color',sp:['full'],       label:'TMĐT đầy đủ ngang — EN — nền trắng'},
+  {p:'png-re/hathyo_v2_ecom_re_full_tel_en_trans.png', s:'svg-re/hathyo_v2_ecom_re_full_tel_en_trans.svg', shape:'re',content:'ecom',lang:'en',bg:'trans',sp:['full','tel'], label:'TMĐT + SĐT ngang — EN — trong suốt'},
+  {p:'png-re/hathyo_v2_ecom_re_full_tel_en_white.png', s:'svg-re/hathyo_v2_ecom_re_full_tel_en_white.svg', shape:'re',content:'ecom',lang:'en',bg:'color',sp:['full','tel'], label:'TMĐT + SĐT ngang — EN — nền trắng'},
+  {p:'png-re/hathyo_v2_ecom_re_full_tel_vi_trans.png', s:'svg-re/hathyo_v2_ecom_re_full_tel_vi_trans.svg', shape:'re',content:'ecom',lang:'vi',bg:'trans',sp:['full','tel'], label:'TMĐT + SĐT ngang — VI — trong suốt'},
+  {p:'png-re/hathyo_v2_ecom_re_full_tel_vi_white.png', s:'svg-re/hathyo_v2_ecom_re_full_tel_vi_white.svg', shape:'re',content:'ecom',lang:'vi',bg:'color',sp:['full','tel'], label:'TMĐT + SĐT ngang — VI — nền trắng'},
+  {p:'png-re/hathyo_v2_ecom_re_full_vi_trans.png',     s:'svg-re/hathyo_v2_ecom_re_full_vi_trans.svg',     shape:'re',content:'ecom',lang:'vi',bg:'trans',sp:['full'],       label:'TMĐT đầy đủ ngang — VI — trong suốt', feat:'★ Logo chân trang'},
+  {p:'png-re/hathyo_v2_ecom_re_full_vi_white.png',     s:'svg-re/hathyo_v2_ecom_re_full_vi_white.svg',     shape:'re',content:'ecom',lang:'vi',bg:'color',sp:['full'],       label:'TMĐT đầy đủ ngang — VI — nền trắng'},
+  {p:'png-re/hathyo_v2_name_re_trans.png',             s:'svg-re/hathyo_v2_name_re_trans.svg',             shape:'re',content:'name',lang:'—',bg:'trans',sp:[],              label:'Chỉ tên ngang — trong suốt'},
+  {p:'png-re/hathyo_v2_name_re_white.png',             s:'svg-re/hathyo_v2_name_re_white.svg',             shape:'re',content:'name',lang:'—',bg:'color',sp:[],              label:'Chỉ tên ngang — nền trắng'},
+  // ── TEXT ONLY tx ─────────────────────────────────
+  {p:'png-tx/hathyo_v2_full_tx_en_trans.png',     s:'svg-tx/hathyo_v2_full_tx_en_trans.svg',     shape:'tx',content:'full',lang:'en',bg:'trans',sp:[],      label:'Chỉ chữ đầy đủ — EN — trong suốt'},
+  {p:'png-tx/hathyo_v2_full_tx_en_white.png',     s:'svg-tx/hathyo_v2_full_tx_en_white.svg',     shape:'tx',content:'full',lang:'en',bg:'color',sp:[],      label:'Chỉ chữ đầy đủ — EN — nền trắng'},
+  {p:'png-tx/hathyo_v2_full_tx_vi_trans.png',     s:'svg-tx/hathyo_v2_full_tx_vi_trans.svg',     shape:'tx',content:'full',lang:'vi',bg:'trans',sp:[],      label:'Chỉ chữ đầy đủ — VI — trong suốt'},
+  {p:'png-tx/hathyo_v2_full_tx_vi_white.png',     s:'svg-tx/hathyo_v2_full_tx_vi_white.svg',     shape:'tx',content:'full',lang:'vi',bg:'color',sp:[],      label:'Chỉ chữ đầy đủ — VI — nền trắng'},
+  {p:'png-tx/hathyo_v2_ecom_tx_full_en_trans.png',s:'svg-tx/hathyo_v2_ecom_tx_full_en_trans.svg',shape:'tx',content:'ecom',lang:'en',bg:'trans',sp:['full'], label:'TMĐT chỉ chữ — EN — trong suốt'},
+  {p:'png-tx/hathyo_v2_ecom_tx_full_en_white.png',s:'svg-tx/hathyo_v2_ecom_tx_full_en_white.svg',shape:'tx',content:'ecom',lang:'en',bg:'color',sp:['full'], label:'TMĐT chỉ chữ — EN — nền trắng'},
+];
+
+const FAVICONS = [
+  {f:'favicon/favicon.ico',              label:'Favicon ICO (đa kích thước)'},
+  {f:'favicon/favicon-16x16.png',        label:'Favicon 16×16 PNG'},
+  {f:'favicon/favicon-32x32.png',        label:'Favicon 32×32 PNG'},
+  {f:'favicon/apple-touch-icon.png',     label:'Apple Touch Icon 180px'},
+  {f:'favicon/android-chrome-192x192.png',label:'Android Chrome 192px'},
+  {f:'favicon/android-chrome-512x512.png',label:'Android Chrome 512px'},
+];
+
+const SHAPE_LABELS = {ss:'_ss Vuông',rs:'_rs Bo tròn',re:'_re Ngang',tx:'_tx Chỉ chữ'};
+const CONTENT_LABELS = {icon:'Biểu tượng',full:'_full Đầy đủ',name:'Chỉ tên',ecom:'_ecom TMĐT'};
+
+let curBg = 'bg-checker', telOnly = false;
+const F = {shape:'',content:'',lang:'',bg:''};
+
+function dlBtn(url, ext, cls) {
+  return `<a class="bdl ${cls}" href="${url}" download>${ext} ↓</a>`;
+}
+
+function cardTags(L) {
+  const t = [];
+  t.push(`<span class="tag t-shape">${SHAPE_LABELS[L.shape]||L.shape}</span>`);
+  t.push(`<span class="tag t-type">${CONTENT_LABELS[L.content]||L.content}</span>`);
+  if (L.lang !== '—') t.push(`<span class="tag t-lang">_${L.lang}</span>`);
+  t.push(`<span class="tag t-bg">${L.bg==='trans'?'_trans':'_color'}</span>`);
+  if (L.sp.includes('tel')) t.push(`<span class="tag t-spec">_tel</span>`);
+  for (const x of L.sp) if (x!=='tel'&&x!=='full') t.push(`<span class="tag t-spec">${x}</span>`);
+  return t.join('');
+}
+
+function isFull(L) { return L.content==='full' || (L.content==='ecom' && L.sp.includes('full')); }
+
+function makeCard(L) {
+  const pu = B+L.p, su = L.s ? B+L.s : null;
+  const fname = L.p.split('/').pop();
+  const attrs = `data-shape="${L.shape}" data-content="${L.content}" data-lang="${L.lang}" data-bg="${L.bg}" data-full="${isFull(L)?1:0}" data-tel="${L.sp.includes('tel')?1:0}"`;
+  return `<div class="card" ${attrs}>
+    <div class="preview ${curBg}"><img src="${pu}" alt="${L.label}" loading="lazy"></div>
+    <div class="cinfo">
+      <div class="cname">${L.label}</div>
+      <div class="tags">${cardTags(L)}</div>
+      <div class="cfile">${fname}</div>
+      <div class="dl-row">${dlBtn(pu,'PNG','bpng')}${su?dlBtn(su,'SVG','bsvg'):''}</div>
+    </div>
+  </div>`;
+}
+
+function makeFavCard(fav) {
+  const url = B+fav.f, isIco = fav.f.endsWith('.ico');
+  const ext = isIco ? 'ICO' : 'PNG';
+  return `<div class="card" data-shape="fav" data-content="icon" data-lang="—" data-bg="color" data-full="0" data-tel="0">
+    <div class="preview bg-checker" style="min-height:100px">
+      ${isIco ? '<div style="font-size:2.5rem;text-align:center">🔖<div style="font-size:.6rem;color:#666;margin-top:4px">ICO</div></div>' : `<img src="${url}" alt="${fav.label}" loading="lazy">`}
+    </div>
+    <div class="cinfo">
+      <div class="cname">${fav.label}</div>
+      <div class="cfile">${fav.f.split('/').pop()}</div>
+      <div class="dl-row">${dlBtn(url,ext,'bpng')}</div>
+    </div>
+  </div>`;
+}
+
+function renderFeatured() {
+  document.getElementById('feat-grid').innerHTML = LOGOS.filter(L=>L.feat).map(L => {
+    const pu = B+L.p, su = L.s ? B+L.s : null;
+    return `<div class="feat-card">
+      <div class="feat-badge">${L.feat}</div>
+      <div class="feat-preview bg-checker"><img src="${pu}" alt="${L.label}" style="max-height:100px;max-width:100%;object-fit:contain"></div>
+      <div class="feat-foot">
+        <div class="feat-name">${L.label}</div>
+        <div class="feat-dl">${dlBtn(pu,'PNG','bdl bpng')}${su?dlBtn(su,'SVG','bdl bsvg'):''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderGrid() {
+  const sections = [
+    {key:'ss', label:'_ss &nbsp; Vuông trong khung vuông (Square)'},
+    {key:'rs', label:'_rs &nbsp; Vuông bo tròn trong khung tròn (Roundable Square)'},
+    {key:'re', label:'_re &nbsp; Chữ nhật ngang (Rectangle)'},
+    {key:'tx', label:'_tx &nbsp; Chỉ chữ (Text Only)'},
+  ];
+  let html = '';
+  for (const sec of sections) {
+    html += `<div class="sec-hdr" data-sec="${sec.key}">${sec.label}</div>`;
+    html += LOGOS.filter(L=>L.shape===sec.key).map(makeCard).join('');
+  }
+  html += `<div class="sec-hdr" data-sec="fav">Favicon &amp; App Icons</div>`;
+  html += FAVICONS.map(makeFavCard).join('');
+  document.getElementById('grid').innerHTML = html;
+  applyFilter();
+}
+
+function applyFilter() {
+  const cards = document.querySelectorAll('#grid .card');
+  let v = 0;
+  for (const c of cards) {
+    if (c.dataset.shape === 'fav') {
+      const hide = !!(F.shape||F.content||F.bg||(F.lang&&F.lang!=='—')||telOnly);
+      c.classList.toggle('hide', hide);
+      if (!hide) v++;
+      continue;
+    }
+    let show = true;
+    if (F.shape   && c.dataset.shape   !== F.shape)   show = false;
+    if (F.lang    && c.dataset.lang    !== F.lang)     show = false;
+    if (F.bg      && c.dataset.bg      !== F.bg)       show = false;
+    if (F.content) {
+      if (F.content === 'full' && c.dataset.full !== '1') show = false;
+      else if (F.content !== 'full' && c.dataset.content !== F.content) show = false;
+    }
+    if (telOnly && c.dataset.tel !== '1') show = false;
+    c.classList.toggle('hide', !show);
+    if (show) v++;
+  }
+  // hide empty section headers
+  document.querySelectorAll('#grid .sec-hdr').forEach(h => {
+    let next = h.nextElementSibling, any = false;
+    while (next && !next.classList.contains('sec-hdr')) {
+      if (!next.classList.contains('hide')) any = true;
+      next = next.nextElementSibling;
+    }
+    h.style.display = any ? '' : 'none';
+  });
+}
+
+// filter button clicks
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-g]');
+  if (!btn || btn.id === 'btn-tel') return;
+  const g = btn.dataset.g;
+  document.querySelectorAll(`[data-g="${g}"]`).forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  F[g] = btn.dataset.v;
+  applyFilter();
+});
+
+function toggleTel(btn) {
+  telOnly = !telOnly;
+  btn.classList.toggle('on-orange', telOnly);
+  applyFilter();
+}
+
+function hexToRgb(h) {
+  const n = parseInt(h.slice(1),16);
+  return `RGB(${(n>>16)&255}, ${(n>>8)&255}, ${n&255})`;
+}
+function clearSwatches() {
+  document.querySelectorAll('.swatch,.sw-checker').forEach(s => s.classList.remove('on'));
+}
+function applyPreviewColor(hex) {
+  document.querySelectorAll('#grid .preview').forEach(p => {
+    p.className = 'preview'; p.style.background = hex; p.style.backgroundImage = '';
+  });
+  document.getElementById('clr-picker').value = hex;
+  document.getElementById('clr-hex').value = hex.toUpperCase();
+  document.getElementById('clr-rgb').textContent = hexToRgb(hex);
+}
+function pickColor(hex, sw) {
+  clearSwatches(); if (sw) sw.classList.add('on');
+  applyPreviewColor(hex);
+}
+function pickChecker() {
+  clearSwatches(); document.getElementById('sw-checker').classList.add('on');
+  document.getElementById('clr-rgb').textContent = '';
+  document.getElementById('clr-hex').value = '';
+  document.querySelectorAll('#grid .preview').forEach(p => {
+    p.className = 'preview bg-checker'; p.style.background = ''; p.style.backgroundImage = '';
+  });
+}
+function onPick(hex) {
+  clearSwatches(); applyPreviewColor(hex);
+}
+function onHex(v) {
+  if (/^#[0-9a-f]{6}$/i.test(v)) onPick(v);
+}
+
+renderFeatured();
+renderGrid();
+</script>
+</body>
+</html>
