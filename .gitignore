@@ -53,3 +53,6 @@ public/hathyo/invitations/20260606-HATHYO-operation-start/Hoa/
 public/hathyo/invitations/20260606-HATHYO-operation-start/Sang/
 public/hathyo/invitations/20260606-HATHYO-operation-start/Vuong/
 public/hathyo/invitations/New folder/
+
+# Apps Script backend cho các tool nội bộ (chứa Spreadsheet ID) – không commit lên git
+/scripts/

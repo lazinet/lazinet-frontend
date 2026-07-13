@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LAZINET Task Manager</title>
+<style>
+  :root{
+    --bg:#f4f6f9;
+    --card-bg:#ffffff;
+    --border:#e2e6ec;
+    --text:#1f2733;
+    --muted:#6b7686;
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --green:#16a34a; --green-bg:#dcfce7;
+    --blue:#2563eb; --blue-bg:#dbeafe;
+    --amber:#b45309; --amber-bg:#fef3c7;
+    --purple:#7c3aed; --purple-bg:#ede9fe;
+    --red:#dc2626; --red-bg:#fee2e2;
+    --radius:12px;
+    --shadow:0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); font-size:14px;
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:16px;}
+
+  /* header */
+  header{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    gap:10px; margin-bottom:16px;
+  }
+  header h1{font-size:19px;margin:0;display:flex;align-items:center;gap:8px;}
+  header h1 .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;}
+  .actions{display:flex; gap:8px; flex-wrap:wrap;}
+  button{
+    font:inherit; cursor:pointer; border:1px solid var(--border); background:var(--card-bg);
+    color:var(--text); padding:8px 12px; border-radius:10px; display:inline-flex; align-items:center; gap:6px;
+    transition:background .15s, border-color .15s;
+  }
+  button:hover{border-color:#c7cedb;}
+  button.primary{background:var(--primary); border-color:var(--primary); color:#fff;}
+  button.primary:hover{background:var(--primary-dark);}
+  button.ghost{background:transparent;}
+  button.danger{color:var(--red); border-color:var(--red-bg);}
+  button.danger:hover{background:var(--red-bg);}
+  button:disabled{opacity:.5; cursor:not-allowed;}
+  button.small{padding:5px 9px; font-size:12px; border-radius:8px;}
+
+  /* config panel */
+  #configPanel{
+    display:none; background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+    padding:14px; margin-bottom:16px; box-shadow:var(--shadow);
+  }
+  #configPanel.open{display:block;}
+  #configPanel label{display:block; font-weight:600; margin-bottom:6px; font-size:13px;}
+  #configPanel .row{display:flex; gap:8px; flex-wrap:wrap;}
+  #configPanel input[type=text]{
+    flex:1; min-width:220px; padding:9px 10px; border:1px solid var(--border); border-radius:8px; font:inherit;
+  }
+  #configPanel p{color:var(--muted); font-size:12.5px; margin:8px 0 0;}
+
+  /* banner */
+  #banner{
+    display:none; padding:10px 14px; border-radius:10px; margin-bottom:14px; font-size:13px;
+  }
+  #banner.show{display:flex; align-items:center; gap:8px;}
+  #banner.info{background:var(--blue-bg); color:var(--primary-dark);}
+  #banner.error{background:var(--red-bg); color:var(--red);}
+
+  /* dashboard */
+  .dash-grid{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:16px;
+  }
+  .stat-card{
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+    padding:14px; box-shadow:var(--shadow);
+  }
+  .stat-card .label{font-size:12px; color:var(--muted); margin-bottom:4px;}
+  .stat-card .value{font-size:24px; font-weight:700;}
+  .stat-card.st-done .value{color:var(--green);}
+  .stat-card.st-wip .value{color:var(--blue);}
+  .stat-card.st-pending .value{color:var(--amber);}
+  .stat-card.st-wait .value{color:var(--purple);}
+
+  .panel{
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px; box-shadow:var(--shadow); margin-bottom:16px;
+  }
+  .panel h2{font-size:14px; margin:0 0 12px; color:var(--muted); text-transform:uppercase; letter-spacing:.03em;}
+  .proj-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13px;}
+  .proj-row .name{width:150px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .proj-row .bar-track{flex:1; height:8px; background:#eef1f6; border-radius:4px; overflow:hidden;}
+  .proj-row .bar-fill{height:100%; background:var(--primary); border-radius:4px;}
+  .proj-row .count{width:26px; text-align:right; color:var(--muted); flex-shrink:0;}
+  .empty-note{color:var(--muted); font-size:13px;}
+
+  /* filters */
+  .filters{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px;
+  }
+  .filters select{
+    padding:8px 10px; border:1px solid var(--border); border-radius:8px; font:inherit; background:var(--card-bg);
+  }
+  .chip-group{display:flex; gap:6px; flex-wrap:wrap;}
+  .chip{
+    padding:6px 12px; border-radius:999px; border:1px solid var(--border); cursor:pointer; font-size:12.5px;
+    background:var(--card-bg); user-select:none;
+  }
+  .chip[data-active="1"]{color:#fff; border-color:transparent;}
+  .chip[data-status="Done"][data-active="1"]{background:var(--green);}
+  .chip[data-status="WIP"][data-active="1"]{background:var(--blue);}
+  .chip[data-status="Pending"][data-active="1"]{background:var(--amber);}
+  .chip[data-status="Wait"][data-active="1"]{background:var(--purple);}
+  .spacer{flex:1;}
+
+  /* table */
+  .table-wrap{
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  table{width:100%; border-collapse:collapse;}
+  thead th{
+    text-align:left; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.02em;
+    padding:10px 12px; border-bottom:1px solid var(--border); background:#fafbfd;
+  }
+  tbody td{padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#fafbfd;}
+  td.col-stt{color:var(--muted); width:40px;}
+  td.col-task{max-width:340px;}
+  td.col-actions{white-space:nowrap; width:1%;}
+  .task-title{font-weight:500;}
+  .task-title.done{text-decoration:line-through; color:var(--muted); font-weight:400;}
+
+  .pill{
+    display:inline-block; padding:3px 9px; border-radius:999px; font-size:12px; font-weight:600;
+  }
+  .status-Done{background:var(--green-bg); color:var(--green);}
+  .status-WIP{background:var(--blue-bg); color:var(--blue);}
+  .status-Pending{background:var(--amber-bg); color:var(--amber);}
+  .status-Wait{background:var(--purple-bg); color:var(--purple);}
+
+  .deadline-pill{display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:999px; font-size:12.5px; font-weight:600;}
+  .deadline-past{background:var(--red-bg); color:var(--red);}
+  .deadline-this-week{background:var(--amber-bg); color:var(--amber);}
+  .deadline-future{background:var(--green-bg); color:var(--green);}
+  .deadline-done{background:#eef1f6; color:var(--muted);}
+  .deadline-none{color:var(--muted); font-style:italic;}
+
+  select.status-select{
+    padding:6px 8px; border-radius:8px; border:1px solid var(--border); font:inherit; font-size:12.5px;
+  }
+
+  .empty-state{padding:40px 20px; text-align:center; color:var(--muted);}
+
+  /* modal */
+  .overlay{
+    display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:50;
+    align-items:center; justify-content:center; padding:16px;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:#fff; border-radius:14px; width:100%; max-width:460px; padding:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25); max-height:90vh; overflow-y:auto;
+  }
+  .modal h3{margin:0 0 16px; font-size:16px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:12.5px; font-weight:600; margin-bottom:5px; color:var(--muted);}
+  .field input[type=text], .field input[type=date], .field select, .field textarea{
+    width:100%; padding:9px 10px; border:1px solid var(--border); border-radius:8px; font:inherit;
+  }
+  .field textarea{resize:vertical; min-height:56px;}
+  .quick-dates{display:flex; gap:6px; flex-wrap:wrap; margin-top:7px;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:18px;}
+
+  /* toast */
+  #toast{
+    position:fixed; bottom:18px; right:18px; z-index:100; display:flex; flex-direction:column; gap:8px;
+  }
+  .toast-item{
+    padding:10px 14px; border-radius:10px; box-shadow:var(--shadow); font-size:13px; color:#fff; min-width:200px;
+    animation:slideIn .2s ease;
+  }
+  .toast-item.success{background:var(--green);}
+  .toast-item.error{background:var(--red);}
+  @keyframes slideIn{from{transform:translateY(8px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+
+  .spinner{
+    width:14px; height:14px; border-radius:50%; border:2px solid rgba(255,255,255,.4); border-top-color:#fff;
+    animation:spin .7s linear infinite; display:inline-block;
+  }
+  .spinner.dark{border:2px solid rgba(37,99,235,.25); border-top-color:var(--primary);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* responsive */
+  @media (max-width:900px){
+    .dash-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:640px){
+    .dash-grid{grid-template-columns:repeat(2,1fr);}
+    .proj-row .name{width:90px;}
+    thead{display:none;}
+    table, tbody, tr, td{display:block; width:100%;}
+    tbody tr{
+      border-bottom:1px solid var(--border); padding:10px 12px; display:grid; grid-template-columns:1fr auto; gap:4px 10px;
+    }
+    tbody td{border-bottom:none; padding:3px 0;}
+    td.col-stt{display:none;}
+    td::before{content:attr(data-label); display:block; font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase;}
+    td.col-actions{grid-column:1 / -1; display:flex; gap:8px; margin-top:6px;}
+  }
+  @media (max-width:420px){
+    .dash-grid{grid-template-columns:repeat(2,1fr);}
+    header h1{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1><span class="dot"></span>LAZINET Task Manager</h1>
+    <div class="actions">
+      <button id="btnConfig" class="ghost" title="Cấu hình Google Sheet">⚙ Cấu hình</button>
+      <button id="btnRefresh" title="Tải lại dữ liệu">⟳ Tải lại</button>
+      <button id="btnAdd" class="primary">+ Thêm task</button>
+    </div>
+  </header>
+
+  <div id="configPanel">
+    <label for="webAppUrl">Google Apps Script Web App URL</label>
+    <div class="row">
+      <input type="text" id="webAppUrl" placeholder="https://script.google.com/macros/s/XXXXX/exec" />
+      <button id="btnSaveUrl" class="primary">Lưu &amp; tải dữ liệu</button>
+    </div>
+    <p>Deploy file <code>lazinet-task-manager.gs</code> trong Google Sheet (Extensions → Apps Script → Deploy → Web app, Execute as: Me, Who has access: Anyone), rồi dán URL /exec vào đây. URL được lưu trong trình duyệt (localStorage).</p>
+  </div>
+
+  <div id="banner"></div>
+
+  <div class="dash-grid">
+    <div class="stat-card">
+      <div class="label">Tổng số task</div>
+      <div class="value" id="statTotal">0</div>
+    </div>
+    <div class="stat-card st-done">
+      <div class="label">Done</div>
+      <div class="value" id="statDone">0</div>
+    </div>
+    <div class="stat-card st-wip">
+      <div class="label">WIP</div>
+      <div class="value" id="statWip">0</div>
+    </div>
+    <div class="stat-card st-pending">
+      <div class="label">Pending</div>
+      <div class="value" id="statPending">0</div>
+    </div>
+    <div class="stat-card st-wait">
+      <div class="label">Wait</div>
+      <div class="value" id="statWait">0</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Thống kê theo dự án (theo thang thời gian đang chọn)</h2>
+    <div id="projectStats"></div>
+  </div>
+
+  <div class="filters">
+    <select id="filterProject"></select>
+    <div class="chip-group" id="statusChips">
+      <span class="chip" data-status="Done" data-active="1">Done</span>
+      <span class="chip" data-status="WIP" data-active="1">WIP</span>
+      <span class="chip" data-status="Pending" data-active="1">Pending</span>
+      <span class="chip" data-status="Wait" data-active="1">Wait</span>
+    </div>
+    <div class="spacer"></div>
+    <select id="filterTimeframe">
+      <option value="this-week">Tuần này</option>
+      <option value="next-week">Tuần tới</option>
+      <option value="last-week">Tuần trước</option>
+      <option value="this-month">Tháng này</option>
+      <option value="next-month">Tháng tới</option>
+      <option value="last-month">Tháng trước</option>
+      <option value="all" selected>Tất cả</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-stt">STT</th>
+          <th>Dự án</th>
+          <th>Task</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="taskBody"></tbody>
+    </table>
+    <div id="emptyState" class="empty-state" style="display:none;">Chưa có task nào phù hợp bộ lọc.</div>
+  </div>
+
+</div>
+
+<datalist id="projectList"></datalist>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3 id="modalTitle">Thêm task mới</h3>
+    <form id="taskForm">
+      <div class="field">
+        <label for="fProject">Dự án</label>
+        <input type="text" id="fProject" list="projectList" placeholder="Nhập hoặc chọn dự án..." required />
+      </div>
+      <div class="field">
+        <label for="fTask">Task</label>
+        <textarea id="fTask" placeholder="Mô tả công việc..." required></textarea>
+      </div>
+      <div class="field">
+        <label for="fDeadline">Deadline</label>
+        <input type="date" id="fDeadline" required />
+        <div class="quick-dates">
+          <button type="button" class="small" data-quick="today">Hôm nay</button>
+          <button type="button" class="small" data-quick="tomorrow">Ngày mai</button>
+          <button type="button" class="small" data-quick="endweek">Cuối tuần này</button>
+          <button type="button" class="small" data-quick="nextweek">Đầu tuần sau</button>
+          <button type="button" class="small" data-quick="endmonth">Cuối tháng</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="fStatus">Status</label>
+        <select id="fStatus">
+          <option value="Pending">Pending</option>
+          <option value="WIP">WIP</option>
+          <option value="Wait">Wait</option>
+          <option value="Done">Done</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="btnCancel" class="ghost">Huỷ</button>
+        <button type="submit" id="btnSubmit" class="primary">Lưu</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CONFIG_KEY = 'lazinet_tm_webapp_url';
+  var CACHE_KEY = 'lazinet_tm_cache';
+
+  var state = {
+    url: localStorage.getItem(CONFIG_KEY) || '',
+    tasks: [],
+    projects: [],
+    filterProject: 'all',
+    filterStatuses: { Done: true, WIP: true, Pending: true, Wait: true },
+    timeframe: 'all',
+    editingRow: null,
+    loading: false
+  };
+
+  var el = {
+    configPanel: document.getElementById('configPanel'),
+    webAppUrl: document.getElementById('webAppUrl'),
+    btnConfig: document.getElementById('btnConfig'),
+    btnSaveUrl: document.getElementById('btnSaveUrl'),
+    btnRefresh: document.getElementById('btnRefresh'),
+    btnAdd: document.getElementById('btnAdd'),
+    banner: document.getElementById('banner'),
+    statTotal: document.getElementById('statTotal'),
+    statDone: document.getElementById('statDone'),
+    statWip: document.getElementById('statWip'),
+    statPending: document.getElementById('statPending'),
+    statWait: document.getElementById('statWait'),
+    projectStats: document.getElementById('projectStats'),
+    filterProject: document.getElementById('filterProject'),
+    statusChips: document.getElementById('statusChips'),
+    filterTimeframe: document.getElementById('filterTimeframe'),
+    taskBody: document.getElementById('taskBody'),
+    emptyState: document.getElementById('emptyState'),
+    projectList: document.getElementById('projectList'),
+    overlay: document.getElementById('overlay'),
+    modalTitle: document.getElementById('modalTitle'),
+    taskForm: document.getElementById('taskForm'),
+    fProject: document.getElementById('fProject'),
+    fTask: document.getElementById('fTask'),
+    fDeadline: document.getElementById('fDeadline'),
+    fStatus: document.getElementById('fStatus'),
+    btnCancel: document.getElementById('btnCancel'),
+    btnSubmit: document.getElementById('btnSubmit'),
+    toast: document.getElementById('toast')
+  };
+
+  // ---------- date helpers ----------
+  function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+  function toISODate(d){ return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function parseISODate(str){
+    if(!str) return null;
+    var p = str.split('-');
+    if(p.length !== 3) return null;
+    return new Date(parseInt(p[0],10), parseInt(p[1],10) - 1, parseInt(p[2],10));
+  }
+  function addDays(d, n){ var r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function addMonths(d, n){ return new Date(d.getFullYear(), d.getMonth() + n, 1); }
+  function startOfWeek(d){
+    var day = d.getDay();
+    var diff = day === 0 ? -6 : 1 - day;
+    var r = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+    return r;
+  }
+  function endOfWeek(d){ return addDays(startOfWeek(d), 6); }
+  function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth() + 1, 0); }
+  function stripTime(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+
+  function timeframeRange(key, today){
+    switch(key){
+      case 'this-week': return [startOfWeek(today), endOfWeek(today)];
+      case 'next-week': { var n = addDays(today, 7); return [startOfWeek(n), endOfWeek(n)]; }
+      case 'last-week': { var l = addDays(today, -7); return [startOfWeek(l), endOfWeek(l)]; }
+      case 'this-month': return [startOfMonth(today), endOfMonth(today)];
+      case 'next-month': { var nm = addMonths(today, 1); return [startOfMonth(nm), endOfMonth(nm)]; }
+      case 'last-month': { var lm = addMonths(today, -1); return [startOfMonth(lm), endOfMonth(lm)]; }
+      default: return null;
+    }
+  }
+
+  function deadlineClass(task){
+    if(!task.deadline) return 'deadline-none';
+    if(task.status === 'Done') return 'deadline-done';
+    var d = parseISODate(task.deadline);
+    if(!d) return 'deadline-none';
+    var today = stripTime(new Date());
+    if(d < startOfWeek(today)) return 'deadline-past';
+    if(d <= endOfWeek(today)) return 'deadline-this-week';
+    return 'deadline-future';
+  }
+
+  // ---------- networking (CORS-safe: GET plain, POST as text/plain) ----------
+  function apiGet(){
+    if(!state.url) return Promise.reject(new Error('Chưa cấu hình Web App URL'));
+    var sep = state.url.indexOf('?') >= 0 ? '&' : '?';
+    return fetch(state.url + sep + 'action=list&_=' + Date.now()).then(function(r){ return r.json(); });
+  }
+  function apiPost(payload){
+    if(!state.url) return Promise.reject(new Error('Chưa cấu hình Web App URL'));
+    return fetch(state.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.json(); });
+  }
+
+  // ---------- banner / toast ----------
+  function showBanner(type, msg){
+    el.banner.className = 'banner show ' + type;
+    el.banner.innerHTML = (type === 'info' ? '<span class="spinner dark"></span>' : '') + '<span>' + escapeHtml(msg) + '</span>';
+  }
+  function hideBanner(){ el.banner.className = 'banner'; el.banner.innerHTML = ''; }
+  function toast(type, msg){
+    var item = document.createElement('div');
+    item.className = 'toast-item ' + type;
+    item.textContent = msg;
+    el.toast.appendChild(item);
+    setTimeout(function(){ item.remove(); }, 3200);
+  }
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c];
+    });
+  }
+
+  // ---------- data load ----------
+  function loadCache(){
+    try{
+      var raw = localStorage.getItem(CACHE_KEY);
+      if(!raw) return;
+      var data = JSON.parse(raw);
+      state.tasks = data.tasks || [];
+      state.projects = data.projects || [];
+    }catch(e){}
+  }
+  function saveCache(){
+    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ tasks: state.tasks, projects: state.projects })); }catch(e){}
+  }
+
+  function refresh(){
+    if(!state.url){
+      el.configPanel.className = 'open';
+      showBanner('error', 'Vui lòng cấu hình Google Apps Script Web App URL trước.');
+      return;
+    }
+    state.loading = true;
+    showBanner('info', 'Đang tải dữ liệu từ Google Sheet...');
+    el.btnRefresh.disabled = true;
+    apiGet().then(function(res){
+      if(!res.success) throw new Error(res.error || 'Lỗi không xác định');
+      state.tasks = res.tasks || [];
+      state.projects = res.projects || [];
+      saveCache();
+      hideBanner();
+      renderAll();
+    }).catch(function(err){
+      showBanner('error', 'Không tải được dữ liệu: ' + err.message);
+    }).finally(function(){
+      state.loading = false;
+      el.btnRefresh.disabled = false;
+    });
+  }
+
+  // ---------- filtering ----------
+  function filterByTimeframe(tasks, key){
+    var range = timeframeRange(key, stripTime(new Date()));
+    if(!range) return tasks.slice();
+    return tasks.filter(function(t){
+      var d = parseISODate(t.deadline);
+      return d && d >= range[0] && d <= range[1];
+    });
+  }
+
+  function currentListTasks(){
+    var list = filterByTimeframe(state.tasks, state.timeframe);
+    if(state.filterProject !== 'all'){
+      list = list.filter(function(t){ return t.project === state.filterProject; });
+    }
+    list = list.filter(function(t){ return state.filterStatuses[t.status] !== false; });
+    list = list.slice().sort(function(a, b){
+      var da = parseISODate(a.deadline), db = parseISODate(b.deadline);
+      if(!da && !db) return 0;
+      if(!da) return 1;
+      if(!db) return -1;
+      return da - db;
+    });
+    return list;
+  }
+
+  // ---------- render ----------
+  function renderAll(){
+    renderProjectFilterOptions();
+    renderDashboard();
+    renderTable();
+  }
+
+  function renderProjectFilterOptions(){
+    var current = state.filterProject;
+    var html = '<option value="all">Tất cả dự án</option>';
+    state.projects.forEach(function(p){
+      html += '<option value="' + escapeHtml(p) + '"' + (p === current ? ' selected' : '') + '>' + escapeHtml(p) + '</option>';
+    });
+    el.filterProject.innerHTML = html;
+    if(!state.projects.includes(current) && current !== 'all') state.filterProject = 'all';
+
+    el.projectList.innerHTML = state.projects.map(function(p){
+      return '<option value="' + escapeHtml(p) + '"></option>';
+    }).join('');
+  }
+
+  function renderDashboard(){
+    var tf = filterByTimeframe(state.tasks, state.timeframe);
+    var counts = { Done: 0, WIP: 0, Pending: 0, Wait: 0 };
+    var byProject = {};
+    tf.forEach(function(t){
+      if(counts.hasOwnProperty(t.status)) counts[t.status]++;
+      byProject[t.project] = (byProject[t.project] || 0) + 1;
+    });
+    el.statTotal.textContent = tf.length;
+    el.statDone.textContent = counts.Done;
+    el.statWip.textContent = counts.WIP;
+    el.statPending.textContent = counts.Pending;
+    el.statWait.textContent = counts.Wait;
+
+    var projectEntries = Object.keys(byProject).map(function(k){ return [k, byProject[k]]; })
+      .sort(function(a, b){ return b[1] - a[1]; });
+
+    if(projectEntries.length === 0){
+      el.projectStats.innerHTML = '<div class="empty-note">Không có dữ liệu trong thang thời gian này.</div>';
+      return;
+    }
+    var max = projectEntries[0][1];
+    el.projectStats.innerHTML = projectEntries.slice(0, 10).map(function(entry){
+      var pct = Math.round((entry[1] / max) * 100);
+      return '<div class="proj-row">' +
+        '<div class="name" title="' + escapeHtml(entry[0]) + '">' + escapeHtml(entry[0]) + '</div>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
+        '<div class="count">' + entry[1] + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderTable(){
+    var list = currentListTasks();
+    if(list.length === 0){
+      el.taskBody.innerHTML = '';
+      el.emptyState.style.display = 'block';
+      return;
+    }
+    el.emptyState.style.display = 'none';
+    el.taskBody.innerHTML = list.map(function(t){
+      var dClass = deadlineClass(t);
+      var deadlineLabel = t.deadline ? formatDisplayDate(t.deadline) : 'Chưa đặt';
+      return '<tr>' +
+        '<td class="col-stt" data-label="STT">' + escapeHtml(t.stt) + '</td>' +
+        '<td data-label="Dự án">' + escapeHtml(t.project) + '</td>' +
+        '<td class="col-task" data-label="Task"><span class="task-title' + (t.status === 'Done' ? ' done' : '') + '">' + escapeHtml(t.task) + '</span></td>' +
+        '<td data-label="Deadline"><span class="deadline-pill ' + dClass + '">' + escapeHtml(deadlineLabel) + '</span></td>' +
+        '<td data-label="Status"><span class="pill status-' + escapeHtml(t.status) + '">' + escapeHtml(t.status) + '</span></td>' +
+        '<td class="col-actions" data-label="Thao tác">' +
+          '<button type="button" class="small" data-edit="' + t.row + '">Sửa</button>' +
+          '<button type="button" class="small danger" data-delete="' + t.row + '">Xoá</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function formatDisplayDate(iso){
+    var d = parseISODate(iso);
+    if(!d) return iso;
+    return pad2(d.getDate()) + '/' + pad2(d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+
+  // ---------- modal ----------
+  function openModal(task){
+    state.editingRow = task ? task.row : null;
+    el.modalTitle.textContent = task ? 'Sửa task' : 'Thêm task mới';
+    el.fProject.value = task ? task.project : '';
+    el.fTask.value = task ? task.task : '';
+    el.fDeadline.value = task ? task.deadline : '';
+    el.fStatus.value = task ? task.status : 'Pending';
+    el.overlay.className = 'overlay open';
+    setTimeout(function(){ el.fProject.focus(); }, 50);
+  }
+  function closeModal(){
+    el.overlay.className = 'overlay';
+    state.editingRow = null;
+    el.taskForm.reset();
+  }
+
+  function submitTask(ev){
+    ev.preventDefault();
+    var payload = {
+      project: el.fProject.value.trim(),
+      task: el.fTask.value.trim(),
+      deadline: el.fDeadline.value,
+      status: el.fStatus.value
+    };
+    if(!payload.project || !payload.task || !payload.deadline){
+      toast('error', 'Vui lòng nhập đủ Dự án, Task và Deadline.');
+      return;
+    }
+    el.btnSubmit.disabled = true;
+    el.btnSubmit.textContent = 'Đang lưu...';
+
+    var action = state.editingRow ? 'update' : 'add';
+    if(state.editingRow) payload.row = state.editingRow;
+    payload.action = action;
+
+    apiPost(payload).then(function(res){
+      if(!res.success) throw new Error(res.error || 'Lỗi không xác định');
+      state.tasks = res.tasks || [];
+      state.projects = res.projects || [];
+      saveCache();
+      renderAll();
+      closeModal();
+      toast('success', action === 'add' ? 'Đã thêm task.' : 'Đã cập nhật task.');
+    }).catch(function(err){
+      toast('error', 'Lưu thất bại: ' + err.message);
+    }).finally(function(){
+      el.btnSubmit.disabled = false;
+      el.btnSubmit.textContent = 'Lưu';
+    });
+  }
+
+  function deleteTask(row){
+    if(!confirm('Xoá task này khỏi Google Sheet?')) return;
+    apiPost({ action: 'delete', row: row }).then(function(res){
+      if(!res.success) throw new Error(res.error || 'Lỗi không xác định');
+      state.tasks = res.tasks || [];
+      state.projects = res.projects || [];
+      saveCache();
+      renderAll();
+      toast('success', 'Đã xoá task.');
+    }).catch(function(err){
+      toast('error', 'Xoá thất bại: ' + err.message);
+    });
+  }
+
+  // ---------- quick date buttons ----------
+  function quickDate(kind){
+    var today = stripTime(new Date());
+    var d;
+    switch(kind){
+      case 'today': d = today; break;
+      case 'tomorrow': d = addDays(today, 1); break;
+      case 'endweek': d = endOfWeek(today); break;
+      case 'nextweek': d = startOfWeek(addDays(today, 7)); break;
+      case 'endmonth': d = endOfMonth(today); break;
+      default: d = today;
+    }
+    el.fDeadline.value = toISODate(d);
+  }
+
+  // ---------- events ----------
+  el.btnConfig.addEventListener('click', function(){
+    el.configPanel.className = el.configPanel.className.indexOf('open') >= 0 ? '' : 'open';
+    el.webAppUrl.value = state.url;
+  });
+  el.btnSaveUrl.addEventListener('click', function(){
+    var v = el.webAppUrl.value.trim();
+    if(!v){ toast('error', 'Vui lòng nhập URL hợp lệ.'); return; }
+    state.url = v;
+    localStorage.setItem(CONFIG_KEY, v);
+    el.configPanel.className = '';
+    refresh();
+  });
+  el.btnRefresh.addEventListener('click', refresh);
+  el.btnAdd.addEventListener('click', function(){ openModal(null); });
+  el.btnCancel.addEventListener('click', closeModal);
+  el.overlay.addEventListener('click', function(ev){ if(ev.target === el.overlay) closeModal(); });
+  el.taskForm.addEventListener('submit', submitTask);
+
+  el.taskBody.addEventListener('click', function(ev){
+    var editRow = ev.target.getAttribute('data-edit');
+    var delRow = ev.target.getAttribute('data-delete');
+    if(editRow){
+      var task = state.tasks.find(function(t){ return String(t.row) === editRow; });
+      if(task) openModal(task);
+    }else if(delRow){
+      deleteTask(parseInt(delRow, 10));
+    }
+  });
+
+  el.filterProject.addEventListener('change', function(){
+    state.filterProject = el.filterProject.value;
+    renderTable();
+  });
+  el.filterTimeframe.addEventListener('change', function(){
+    state.timeframe = el.filterTimeframe.value;
+    renderDashboard();
+    renderTable();
+  });
+  el.statusChips.addEventListener('click', function(ev){
+    var chip = ev.target.closest('.chip');
+    if(!chip) return;
+    var status = chip.getAttribute('data-status');
+    state.filterStatuses[status] = !state.filterStatuses[status];
+    chip.setAttribute('data-active', state.filterStatuses[status] ? '1' : '0');
+    renderTable();
+  });
+  document.querySelectorAll('[data-quick]').forEach(function(btn){
+    btn.addEventListener('click', function(){ quickDate(btn.getAttribute('data-quick')); });
+  });
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape' && el.overlay.className.indexOf('open') >= 0) closeModal();
+  });
+
+  // ---------- init ----------
+  loadCache();
+  renderAll();
+  if(state.url){
+    el.webAppUrl.value = state.url;
+    refresh();
+  }else{
+    el.configPanel.className = 'open';
+    showBanner('error', 'Vui lòng cấu hình Google Apps Script Web App URL để bắt đầu.');
+  }
+})();
+</script>
+</body>
+</html>
