@@ -359,9 +359,10 @@
 
   var CONFIG_KEY = 'lazinet_tm_webapp_url';
   var CACHE_KEY = 'lazinet_tm_cache';
+  var DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbzxgzQkzzTxxNd5xB7szYp-d2idGgyizqjKbir3FDdiX6gIo9E8M1mopfeK1hNnkR-htA/exec';
 
   var state = {
-    url: localStorage.getItem(CONFIG_KEY) || '',
+    url: localStorage.getItem(CONFIG_KEY) || DEFAULT_URL,
     tasks: [],
     projects: [],
     filterProject: 'all',
