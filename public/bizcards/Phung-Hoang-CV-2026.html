@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoang Minh Phung - Executive CV 2026</title>
+  <meta name="description" content="Hoang Minh Phung - Technology Executive & Business Development Leader. AI-First Digital Transformation at Scale across Software, IoT/Electronics and Cloud.">
+  <meta name="author" content="Hoang Minh Phung">
+  <link rel="icon" href="../hathyo/assets/logos/favicon_io/favicon.ico">
+  <link rel="apple-touch-icon" href="../hathyo/assets/logos/favicon_io/apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy:#0F2544; --navy2:#1B3A63; --navy-dark:#0A1B32;
+      --teal:#053e8a; --teal-d:#ff6e39; --teal-l:#E3F5F3;
+      --amber:#ff6e39; --amber-l:#FBEED9;
+      --ink:#15171A; --ink2:#2e394b; --line:#E2E6EA; --paper:#ffffff;
+    }
+    @page { size: A4 portrait; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      padding-bottom: 112px;
+      background: #E7EAEE;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; font-family: 'Montserrat', sans-serif;
+      opacity: 0; animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { body { animation:none; opacity:1; } }
+
+    .pages-container { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 22px; width: 100%; }
+
+    /* ─── A4 PAGE ─── */
+    .page {
+      width: 210mm; min-width: 210mm; height: 297mm;
+      background: #fff; position: relative;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+      overflow: hidden; transform-origin: top center;
+      display: flex; flex-direction: column;
+    }
+    .page::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 50%,var(--amber) 100%); z-index:2; }
+
+    /* ─── HEADER (page 1) ─── */
+    .cv-header { display:flex; align-items:center; gap:16px; padding:12mm 14mm 5mm 30mm; flex-shrink:0; }
+    .cv-photo { width:30mm; height:30mm; border-radius:50%; object-fit:cover; object-position:center top; border:3px solid var(--teal); box-shadow:0 4px 14px rgba(15,37,68,0.25); flex-shrink:0; }
+    .cv-heading { flex:1; min-width:0; }
+    .cv-name { font-family:'Playfair Display',serif; font-size:28px; color:var(--navy); font-weight:700; letter-spacing:0.4px; line-height:1.15; }
+    .cv-tagline { font-size:13px; color:var(--teal-d); font-weight:700; margin-top:3px; }
+    .cv-subtagline { font-size:11px; color:var(--navy-dark); font-weight:600; margin-top:2px; }
+    .cv-contact-row { display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:7px; font-size:10.5px; color:var(--ink2); }
+    .cv-contact-row a { color:inherit; text-decoration:none; font-weight:700; }
+    .cv-contact-row i { color:var(--teal); margin-right:4px; }
+
+    /* ─── TARGET ROLES BAR ─── */
+    .target-bar { display:flex; margin:0 10mm; border-radius:8px; overflow:hidden; flex-shrink:0; background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); box-shadow:0 4px 14px rgba(15,37,68,0.18); }
+    .target-col { flex:1; padding:10px 10px; text-align:center; border-right:1px solid rgba(255,255,255,0.15); }
+    .target-col:last-child { border-right:none; }
+    .target-label { font-size:10.7px; letter-spacing:1.1px; color:var(--amber); font-weight:700; text-transform:uppercase; margin-bottom:3px; }
+    .target-val { font-size:10.3px; color:#fff; font-weight:600; line-height:1.35; }
+
+    /* ─── BODY: SIDEBAR + MAIN ─── */
+    .cv-body { flex:1; display:flex; margin-top:6mm; min-height:0; overflow:hidden; }
+    .sidebar { width:62mm; flex-shrink:0; background:linear-gradient(180deg,var(--navy) 0%,var(--navy-dark) 100%); color:#eef2f6; padding:8mm 8mm 6mm 10mm; }
+    .side-block { margin-bottom:8mm; }
+    .side-block:last-child { margin-bottom:0; }
+    .side-h { font-size:10.5px; letter-spacing:1.1px; color:var(--amber); font-weight:700; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.22); }
+    .tag-cloud { display:flex; flex-wrap:wrap; gap:5px; }
+    .tag { font-size:9.2px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28); border-radius:20px; padding:3px 9px; color:#fff; line-height:1.3; }
+    .side-line { font-size:10.3px; line-height:1.62; color:#dbe3ec; margin-bottom:5px; }
+    .side-line:last-child { margin-bottom:0; }
+    .side-line strong { color:#fff; }
+    .side-line em { color:var(--amber); font-style:normal; font-weight:600; }
+    .side-cert-group { margin-bottom:7px; }
+    .side-cert-group:last-child { margin-bottom:0; }
+    .side-cert-h { font-size:9.7px; font-weight:700; color:#fff; margin-bottom:2px; }
+    .side-cert-txt { font-size:9.3px; line-height:1.55; color:#c9d3de; }
+    .side-cert-txt a, .side-line a { color:inherit; text-decoration:none; font-weight:inherit; }
+
+    .main { flex:1; padding:7mm 14mm 0 8mm; min-width:0; }
+    .sec-h { display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin:0 0 6px 0; padding-bottom:4px; border-bottom:2px solid var(--teal); }
+    .sec-h i { color:var(--teal); }
+
+    .summary-text { font-size:10.6px; line-height:1.66; color:var(--ink); text-align:justify; margin-bottom:6mm; }
+
+    .metrics-bar { display:flex; background:var(--teal-l); border:1px solid #cdece8; border-radius:8px; padding:8px 4px; margin-bottom:6mm; }
+    .metric { flex:1; text-align:center; border-right:1px solid #cdece8; padding:0 4px; }
+    .metric:last-child { border-right:none; }
+    .metric-num { font-family:'Playfair Display',serif; font-weight:700; font-size:16px; color:var(--amber); }
+    .metric-lbl { font-size:8.5px; color:var(--ink2); margin-top:2px; line-height:1.3; }
+
+    .comp-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:6mm; }
+    .comp-card { background:#f7f8fa; border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:0 6px 6px 0; padding:8px 10px; }
+    .comp-card:nth-child(even) { border-left-color:var(--amber); }
+    .comp-title { font-size:10.3px; font-weight:700; color:var(--navy); margin-bottom:3px; }
+    .comp-desc { font-size:9.1px; color:var(--ink2); line-height:1.48; }
+
+    .exp-item { margin-bottom:6mm; }
+    .exp-item:last-child { margin-bottom:0; }
+    .exp-top { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px; }
+    .exp-company { font-size:11.5px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.3px; }
+    .exp-company a { color:inherit; text-decoration:none; font-weight:700; }
+    .exp-loc { font-size:9.3px; color:var(--ink2); font-style:italic; }
+    .exp-role-row { display:flex; justify-content:space-between; align-items:baseline; margin-top:1px; gap:8px; }
+    .exp-role { font-size:10.3px; font-weight:600; color:var(--teal-d); }
+    .exp-date { font-size:9px; color:#fff; background:var(--navy); border-radius:10px; padding:1px 9px; font-weight:600; white-space:nowrap; }
+    .exp-date.now { background:var(--amber); }
+    .exp-bullets { margin:4px 0 0 0; padding-left:14px; }
+    .exp-bullets li { font-size:9.6px; line-height:1.52; color:var(--ink); margin-bottom:2.5px; }
+    .exp-bullets li::marker { color:var(--teal); }
+    .exp-bullets li:last-child { margin-bottom:0; }
+    .exp-bullets a, .early-item a { color:inherit; text-decoration:none; font-weight:700; }
+
+    .early-career { background:#f7f8fa; border:1px solid var(--line); border-radius:6px; padding:9px 12px; }
+    .early-item { font-size:9.5px; line-height:1.55; color:var(--ink); margin-bottom:5px; }
+    .early-item:last-child { margin-bottom:0; }
+    .early-item strong { color:var(--navy); }
+
+    .closing-note { margin-top:6mm; padding:8px 12px; border-left:3px solid var(--amber); background:var(--amber-l); font-size:9.8px; font-style:italic; color:var(--navy); line-height:1.6; }
+
+    /* ─── PAGE 2 HEADER ─── */
+    .cv-header2 { display:flex; justify-content:space-between; align-items:center; padding:9mm 14mm 4mm 14mm; border-bottom:2px solid var(--teal); flex-shrink:0; }
+    .cv-header2-name { font-family:'Playfair Display',serif; font-size:15px; color:var(--navy); font-weight:700; }
+    .cv-header2-meta { font-size:10px; color:var(--ink2); }
+
+    /* ─── FOOTER ─── */
+    .page-footer { display:flex; justify-content:space-between; align-items:center; padding:5px 14mm 8mm 14mm; border-top:1px solid var(--line); font-size:8.8px; color:var(--ink2); flex-shrink:0; margin-top:4mm; }
+    .page-footer strong { color:var(--navy); }
+    .page-footer a { color:inherit; text-decoration:none; font-weight:700; }
+
+    /* ─── EXPORT BUTTONS ─── */
+    .export-bar { position:fixed; bottom:0; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 20px 12px; background:rgba(255,255,255,0.7); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); box-shadow:0 -4px 24px rgba(0,0,0,0.18); z-index:200; }
+    .export-hint { font-size:10.5px; color:var(--ink2); font-family:'Montserrat',sans-serif; text-align:center; }
+    .export-hint strong { color:var(--navy); }
+    .export-buttons { display:flex; flex-direction:row; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; }
+    .export-buttons button { padding:10px 18px; background:var(--navy); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:13px; min-width:110px; box-shadow:0 3px 10px rgba(15,37,68,0.25); transition:all 0.25s ease; display:flex; align-items:center; justify-content:center; gap:5px; }
+    .export-buttons button:hover { background:var(--teal-d); transform:translateY(-2px); box-shadow:0 5px 16px rgba(15,156,147,0.3); }
+    .export-buttons .btn-pdf { background:linear-gradient(135deg,var(--navy),var(--navy2)); font-size:14px; padding:12px 22px; }
+    .export-buttons .btn-amber { background:linear-gradient(135deg,var(--amber),#c07a1e); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:1200px) { .page { transform:scale(0.88); margin-bottom:-36mm; } }
+    @media (max-width:992px)  { .page { transform:scale(0.78); margin-bottom:-65mm; } }
+    @media (max-width:768px)  { .page { transform:scale(0.63); margin-bottom:-110mm; } body { padding-bottom:240px; } .export-buttons { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; } .export-buttons button { min-width:auto; width:100%; } }
+    @media (max-width:576px)  { .page { transform:scale(0.48); margin-bottom:-154mm; } body { padding-bottom:280px; } }
+    @media (max-width:420px)  { .page { transform:scale(0.42); margin-bottom:-172mm; } .export-buttons { grid-template-columns:1fr; } }
+    @media print {
+      body { background:none !important; padding-bottom:0 !important; }
+      .page { transform:scale(1) !important; margin-bottom:0 !important; box-shadow:none !important; page-break-after:always; }
+      .page:last-child { page-break-after:auto; }
+      .export-bar { display:none !important; }
+      .pages-container { padding:0 !important; gap:0 !important; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="pages-container">
+
+  <!-- ═══════════════════ PAGE 1 ═══════════════════ -->
+  <div class="page" id="page-1">
+    <div class="cv-header">
+      <img class="cv-photo" src="../hathyo/assets/team/PhungHM2-X1.jpg" alt="Hoang Minh Phung">
+      <div class="cv-heading">
+        <div class="cv-name">HOÀNG MINH PHỤNG</div>
+        <div class="cv-tagline">Technology Executive &amp; Business Development Leader</div>
+        <div class="cv-subtagline">AI-First Digital Transformation at Scale across Software · IoT / Data · Cloud</div>
+        <div class="cv-contact-row">
+          <span><i class="bi bi-telephone-fill"></i><a href="tel:+84908556220">+84 908 556 220</a></span>
+          <span><i class="bi bi-envelope-fill"></i><a href="mailto:phunghm@gmail.com">phunghm@gmail.com</a></span>
+          <span><i class="bi bi-linkedin"></i><a href="https://www.linkedin.com/in/phunghm" target="_blank" rel="noopener">linkedin.com/in/phunghm</a></span>
+          <span><i class="bi bi-geo-alt-fill"></i>Ho Chi Minh City, Vietnam</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="target-bar">
+      <div class="target-col">
+        <div class="target-label">Tech Leadership</div>
+        <div class="target-val">CTO · Technical Program Director · Digital Transformation Director</div>
+      </div>
+      <div class="target-col">
+        <div class="target-label">Product &amp; Delivery</div>
+        <div class="target-val">Product Manager · Solution Manager · Solution Architect · Technical PM</div>
+      </div>
+      <div class="target-col">
+        <div class="target-label">Business Growth</div>
+        <div class="target-val">Enterprise Sales Manager · Business Development · Business Owner</div>
+      </div>
+    </div>
+
+    <div class="cv-body">
+      <div class="sidebar">
+        <div class="side-block">
+          <div class="side-h">Key Expertise</div>
+          <div class="tag-cloud">
+            <span class="tag">AI &amp; Agentic AI</span>
+            <span class="tag">LLM/ RAG</span>
+            <span class="tag">Solution Architect/ PM</span>
+            <span class="tag">Network &amp; Cloud AWS/ GCP</span>
+            <span class="tag">IoT &amp; Embedded</span>
+            <span class="tag">ERP/ CRM/ MES, E-Commerce</span>
+            <span class="tag">Consultative Selling</span>
+            <span class="tag">Bid &amp; Tender Management</span>
+            <span class="tag">P&amp;L Ownership</span>
+            <span class="tag">Smart City/ Urban Plan/ GIS</span>
+            <span class="tag">Cross-Culture Leadership</span>
+          </div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Languages</div>
+          <div class="side-line"><strong>Vietnamese</strong> - Native</div>
+          <div class="side-line"><strong>English</strong> - Fluent, board-ready <em>(16+ yrs international)</em></div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Regions Worked</div>
+          <div class="side-line">Vietnam · SEA/APAC · MENA · South Asia · China</div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Interests</div>
+          <div class="side-line">E-commerce · Automotive · Maths · Guitar · Tech &amp; Arts · History · Travel · Triathlon &amp; MMA</div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="sec-h"><i class="bi bi-person-badge-fill"></i> Executive Profile</div>
+        <p class="summary-text">
+          Technology executive and innovation strategist with 16+ years leading digital transformation, R&amp;D and business growth across enterprise software, AI/IoT and network infrastructure. Owns the full value chain - business analysis, solution architecture, product development, executive presentation and consultative sales - for governments and Tier-1 enterprises across Vietnam, SEA/APAC, MENA and China. Currently deliver digital technologies with <strong>AI-First Digital Transformation</strong> into operating models and automation pipelines, with P&amp;L accountability for a multi-project regional office and a hands-on record as a technology founder. A trusted C-level advisor with a deep network of business leaders, industry associations and university/research partners, and board-ready English built from a genuinely multicultural career.
+        </p>
+
+        <div class="metrics-bar">
+          <div class="metric"><div class="metric-num">16+</div><div class="metric-lbl">Years Global<br>Tech Leadership</div></div>
+          <div class="metric"><div class="metric-num">10+</div><div class="metric-lbl">Concurrent Projects<br>Delivered</div></div>
+          <div class="metric"><div class="metric-num">₫30B+</div><div class="metric-lbl">Enterprise Deals<br>Closed</div></div>
+          <div class="metric"><div class="metric-num">120+</div><div class="metric-lbl">C-level &amp; Founder<br>Network</div></div>
+        </div>
+
+        <div class="sec-h"><i class="bi bi-grid-1x2-fill"></i> Core Competencies</div>
+        <div class="comp-grid">
+          <div class="comp-card">
+            <div class="comp-title">Strategic &amp; Executive Leadership</div>
+            <div class="comp-desc">Digital transformation strategy, regional P&amp;L ownership, cross-functional team leadership (Sales, Presales, SA, BA, PM, Engineering), board &amp; C-level communication, talent development.</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title">E2E Product &amp; Solution Management</div>
+            <div class="comp-desc">Market research &amp; business analysis, feature/system design, enterprise solution architecture (ERP/CRM/MES/DMS/LIMS), IoT hardware-to-mass-production, AI/agentic product delivery, MVP definition.</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title">Business Development &amp; Tech Sales</div>
+            <div class="comp-desc">Consultative/solution selling for B2B &amp; B2G, multi-million-dollar bid &amp; tender management, key account management, C-level negotiation, partner &amp; ecosystem development.</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title">Cross-Domain Technology Depth</div>
+            <div class="comp-desc">Telecom: 3G/4G/5G, OSS/BSS, planning &amp; optimization. Electronics/IoT: PCB/EDA, sensors, embedded. Software/AI-First: Cloud (AWS/GCP), LLM/Agentic AI, Computer Vision, data engineering, automation/RPA.</div>
+          </div>
+        </div>
+
+        <div class="sec-h"><i class="bi bi-briefcase-fill"></i> Professional Experience</div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="https://www.viettelsoftware.com/" target="_blank" rel="noopener">Viettel Software</a></div>
+            <div class="exp-loc">Ho Chi Minh City, Vietnam</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Head of Southern Representative Office / Head of Business Development & Project Delivery</div>
+            <div class="exp-date now">Nov 2024 – Present</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Lead a cross-functional Southern office spanning Solution Architects, Business Analysts, Sales, Presales, Project Managers and Senior Developers, aligned with Hanoi HQ.</li>
+            <li>Engage C-level and government stakeholders (B2B/B2G) through consultative selling; closed strategic contracts worth ~30B VND across ERP, DMS, LIMS, MES, Banking &amp; E-Commerce.</li>
+            <li>Oversee end-to-end delivery of 10+ concurrent outsourcing projects on Gitlab/ Jira/ Confluence &amp; my own tool PMO-Brain, aligning client expectations with company objectives.</li>
+            <li>Advise Group leadership on AI, IoT, Cloud and 3D GIS product strategy while driving recruitment and career growth for senior technical talent to scale regional capability.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div><strong>Hoàng Minh Phụng</strong> - Executive CV 2026</div>
+      <div><a href="mailto:phunghm@gmail.com">phunghm@gmail.com</a> · Page 1/2</div>
+    </div>
+  </div><!-- /page-1 -->
+
+
+  <!-- ═══════════════════ PAGE 2 ═══════════════════ -->
+  <div class="page" id="page-2">
+    <div class="cv-header2">
+      <div class="cv-header2-name">Hoàng Minh Phụng - Executive CV 2026</div>
+      <div class="cv-header2-meta">Technology Executive &amp; Business Development Leader &nbsp;·&nbsp; Page 2/2</div>
+    </div>
+
+    <div class="cv-body">
+      <div class="sidebar">
+        <div class="side-block">
+          <div class="side-h">Background</div>
+          <div class="side-line"><strong>B.Eng, Electronics &amp; Telecommunications</strong></div>
+          <div class="side-line"><a href="https://english.ptit.edu.vn/" target="_blank" rel="noopener">Posts &amp; Telecommunications Institute of Technology (PTIT)</a>, Ho Chi Minh City · 2001–2006</div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Certifications</div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Business &amp; Leadership</div>
+            <div class="side-cert-txt"><a href="https://www.coursera.org/account/accomplishments/certificate/M2YUW3G7CRY6" target="_blank" rel="noopener">Sales Strategies (Chicago Booth)</a> · Project Management (SHTP) · Product Management (Alberta) · Huawei EBG Strategy &amp; Ecosystem</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Data Engineering &amp; AI</div>
+            <div class="side-cert-txt"><a href="https://www.coursera.org/account/accomplishments/certificate/JTT9PD7PGGA8" target="_blank" rel="noopener">Business Analytics (Wharton, UPenn)</a> · <a href="https://www.coursera.org/account/accomplishments/certificate/9FJ4CN9TLPL7" target="_blank" rel="noopener">Machine Learning (Stanford)</a> · <a href="https://www.coursera.org/account/accomplishments/specialization/EHM3Y6SFMCN7" target="_blank" rel="noopener">Deep Learning (DeepLearning.AI)</a> · Data Engineering (Google Cloud) · <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/ZLV5U8KMKVWW" target="_blank" rel="noopener">Advanced ML on Google Cloud</a> · <a href="https://www.udemy.com/certificate/UC-075f1aa4-cd2d-4576-a844-5fd2d9098bce/" target="_blank" rel="noopener">TensorFlow</a> · <a href="https://courses.edx.org/certificates/4b536a7034634c2f8bbcc896eccaa2e0" target="_blank" rel="noopener">Data Science</a> &amp; <a href="https://courses.edx.org/certificates/d009f7614c124f76b46193fb82597d55" target="_blank" rel="noopener">Power BI</a> (Microsoft)</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Telco/ Cloud &amp; Smart System</div>
+            <div class="side-cert-txt">Huawei Future Star &amp; 5G Digital Delivery · Huawei C&amp;Q Level 4 Network Product + Planning and Optimization · <a href="https://courses.edx.org/certificates/587fae1ebf2245cf951fdd5894813c14" target="_blank" rel="noopener">Smart Cities Management (EPFL)</a> · <a href="https://www.futurelearn.com/certificates/sr92kqw" target="_blank" rel="noopener">IoT (King's College London)</a> · AWS IoT · Cisco CCNA</div>
+          </div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Networks &amp; Ecosystem</div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Business Community</div>
+            <div class="side-cert-txt">Founding/secretariat member, Business Clubs (<a href="https://qtbc.vn" target="_blank" rel="noopener">QTBC</a>, <a href="https://www.facebook.com/groups/bachkhoahanoi.tsn/" target="_blank" rel="noopener">BKHN-TSN</a>, <a href="https://huba.vn/" target="_blank" rel="noopener">HUBA</a>, <a href="https://hcm.bni.vn/" target="_blank" rel="noopener">BNI</a>) - Active network of 120+ C-level executives, entrepreneurs and investors across Southern Vietnam.</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Academic &amp; Research</div>
+            <div class="side-cert-txt">Strategic partner with <a href="https://huit.edu.vn/" target="_blank" rel="noopener">HCM University of Industrial &amp; Trade (HUIT)</a>; Alumni networks from <a href="https://english.ptit.edu.vn/" target="_blank" rel="noopener">PTIT</a>, HUST, <a href="https://hcmut.edu.vn/" target="_blank" rel="noopener">HCMUT</a>, <a href="https://hcmus.edu.vn/" target="_blank" rel="noopener">HCMUS</a>, <a href="https://www.sgu.edu.vn/" target="_blank" rel="noopener">SGU</a>, <a href="https://www.uit.edu.vn/" target="_blank" rel="noopener">UIT</a>; Adjunct lecturer for AI/Data Science, and AI Agent/Chatbot for E-Commerce.</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Public Speaking</div>
+            <div class="side-cert-txt">Conference speaker on AI for Enterprises, Data Analytics, Digital Automation with AIoT.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="sec-h"><i class="bi bi-briefcase-fill"></i> Professional Experience <span style="font-size:9.5px;font-weight:500;color:var(--ink2);text-transform:none;">(continued)</span></div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="https://lazinet.com" target="_blank" rel="noopener">LAZINET Applied Technologies</a> &amp; <a href="https://hathyo.com" target="_blank" rel="noopener">HATHYO</a></div>
+            <div class="exp-loc">Vietnam</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Technology Founder</div>
+            <div class="exp-date now">Nov 2023 – Present</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Lead R&amp;D and product delivery across AI, Computer Vision, IoT and Cloud for AgriTech, AquaTech and Well-being E-Commerce ventures.</li>
+            <li>Implement and commercialize <a href="https://www.hathyo.com/" target="_blank" rel="noopener">HATHYO</a> e-commerce: seller management, buyer development, smart systems, and support services (payment, shipping, tax invoicing, verification).</li>
+            <li>Shipped AI-enabled smart government portals, digital platforms for business associations in HCM (QTBC, BKHN-TSN), AI content/marketing automation (<a href="https://ingridintl.sg/" target="_blank" rel="noopener">Ingrid</a> Vietnam), NFC + AI-chatbot SmartCard product, IoT+AI environmental monitoring, and 3D-AI Showroom (<a href="https://qtbc.vn" target="_blank" rel="noopener">QTBC</a>).</li>
+            <li>Delivered automotive dealer technology (<a href="https://www.weavegrid.com/" target="_blank" rel="noopener">WeaveGrid</a> smart charging &amp; dealership management systems for Hyundai and KIA).</li>
+            <li>Built strategic ties with universities in HCM (<a href="https://huit.edu.vn/" target="_blank" rel="noopener">HUIT</a>, <a href="https://hcmut.edu.vn/" target="_blank" rel="noopener">HCMUT</a>, <a href="https://hcmus.edu.vn/" target="_blank" rel="noopener">HCMUS</a>, <a href="https://www.sgu.edu.vn/" target="_blank" rel="noopener">SGU</a>, <a href="https://www.uit.edu.vn/" target="_blank" rel="noopener">UIT</a>) for research and innovation projects; adjunct lecturer on AI and data science topics.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="https://encity.co/" target="_blank" rel="noopener">EnCity Urban Solutions</a> + <a href="https://enfarm.com" target="_blank" rel="noopener">enfarm</a> AgriTech</div>
+            <div class="exp-loc">Vietnam, Singapore</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Principal of Digital Technologies &amp; Product Development</div>
+            <div class="exp-date">Mar 2022 – May 2024</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Formed and led digital technology strategy for ICT planning and urban master planning, including Thu Duc Smart City and Ho Chi Minh City Masterplan 2060.</li>
+            <li>Solution-architected and built the product team for <a href="https://enfarm.com" target="_blank" rel="noopener">enfarm</a> AgriTech: IoT hardware R&amp;D from prototype to mass production (sensors, EDA/PCB, LoRa/BLE/WiFi).</li>
+            <li>Delivered AI (OCR, pricing models), GIS applications and Workspace/CRM/ERP automation (Python, Apps Script, PowerShell).</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="http://www.huawei.com/" target="_blank" rel="noopener">Huawei Technologies (China, Thailand)</a></div>
+            <div class="exp-loc">Shenzhen, SEA, South Asia, MENA</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Technical Director / SEA Regional Expert</div>
+            <div class="exp-date">Mar 2014 – Dec 2021</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Led technical delivery, network planning/design/optimization for RAN &amp; Transmission, presales and bid management for multi-million-dollar tenders with Tier-1 operators across SEA/APAC and global markets (<a href="https://www.telenor.com/media/newsroom/archive/uninor-becomes-telenor-india/" target="_blank" rel="noopener">Telenor</a>, <a href="https://www.dtac.co.th/" target="_blank" rel="noopener">DTAC</a>, <a href="https://vietteltelecom.vn/" target="_blank" rel="noopener">Viettel</a>, <a href="https://www.myvi.in/" target="_blank" rel="noopener">Vodafone</a>, <a href="http://www.truecorp.co.th" target="_blank" rel="noopener">True</a>, <a href="https://www.ncell.com.np/" target="_blank" rel="noopener">Ncell</a>, <a href="https://www.vietnamobile.com.vn" target="_blank" rel="noopener">Vietnamobile</a>, <a href="https://www.mpt.com.mm/" target="_blank" rel="noopener">MPT</a>, <a href="https://ooredoo.com.mm" target="_blank" rel="noopener">Ooredoo</a>, <a href="https://www.atom.com.mm/" target="_blank" rel="noopener">Atom</a>, <a href="https://mytel.com.mm" target="_blank" rel="noopener">Mytel</a>, <a href="https://amaragroupmyanmar.com" target="_blank" rel="noopener">Amara</a>, <a href="https://www.xlaxiata.co.id/" target="_blank" rel="noopener">XL</a>, <a href="https://tele2.kz/" target="_blank" rel="noopener">Tele2</a> and <a href="https://www.kcell.kz/" target="_blank" rel="noopener">Kcell</a>).</li>
+            <li>Technical service delivery and built global expert teams; earlier planning consultancy in Huawei HQ, Shenzhen for offshore projects (<a href="https://vivo.com.br/" target="_blank" rel="noopener">Vivo</a>, <a href="http://www.sky.com.br" target="_blank" rel="noopener">Sky TV</a>, <a href="https://irancell.ir" target="_blank" rel="noopener">Irancell</a>, <a href="https://www.mtn.ng/" target="_blank" rel="noopener">Visafone</a>).</li>
+            <li>Directed multicultural teams across 10+ countries, coordinating with Shenzhen R&amp;D to localize planning software for regional markets.</li>
+          </ul>
+        </div>
+
+        <div class="sec-h" style="margin-top:2mm;"><i class="bi bi-clock-history"></i> Early Career - Network Engineering & Planning <span style="font-size:9.5px;font-weight:500;color:var(--ink2);text-transform:none;">(2006–2013)</span></div>
+        <div class="early-career">
+          <div class="early-item"><strong><a href="https://en.wikipedia.org/wiki/Aircom_International" target="_blank" rel="noopener">Aircom International Singapore/ UAE</a> (<a href="https://www.teoco.com/2013/12/03/teoco-finalizes-acquisition-of-aircom-international/" target="_blank" rel="noopener">TEOCO</a>)</strong>, Senior Planning &amp; Optimization Expert - Vietnam, Sudan, Mauritania, Cambodia, UAE, Afghanistan, Bangladesh (2009–2013): strategic network planning, microwave network design expert, performance management and optimization for <a href="http://gmobile.vn/" target="_blank" rel="noopener">Beeline</a>, <a href="https://www.sudatel.sd" target="_blank" rel="noopener">Sudani</a>, <a href="https://www.chinguitel.mr" target="_blank" rel="noopener">Chinguitel</a>, <a href="http://www.metfone.com.kh" target="_blank" rel="noopener">Metfone</a>, <a href="http://www.etisalat.ae" target="_blank" rel="noopener">Etisalat</a>, <a href="http://www.mtn.com" target="_blank" rel="noopener">MTN</a>, <a href="https://robi.com.bd/en" target="_blank" rel="noopener">Robi</a> and <a href="https://mobifone.vn/" target="_blank" rel="noopener">Mobifone</a>.</div>
+          <div class="early-item"><strong>Mobile Network Planner &amp; Designer</strong> (2008–2009): planned and designed the <a href="https://www.vietnamobile.com.vn" target="_blank" rel="noopener">VIETNAMOBILE</a> turn-key EGSM transmission network (fiber &amp; microwave), Southern Vietnam.</div>
+          <div class="early-item"><strong><a href="http://vineco.vn" target="_blank" rel="noopener">VNPT-NEC Telecom Systems</a></strong>, Implementation Engineer (2007–2008): end-to-end NEC microwave  transmission network deployment for <a href="https://mobifone.vn/" target="_blank" rel="noopener">MobiFone</a>.</div>
+          <div class="early-item"><strong><a href="http://www.spt.vn" target="_blank" rel="noopener">S-Fone CDMA Mobile Center</a></strong>, Transmission OAM Engineer (2006–2007): network operations, administration and performance improvement.</div>
+        </div>
+
+        <div class="closing-note">
+          “Combining rigorous engineering logic with a humanistic business vision - building technology that genuinely serves people and enterprises.”
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div><strong>Hoàng Minh Phụng</strong> - References and detailed project records available upon request.</div>
+      <div><a href="https://www.linkedin.com/in/phunghm" target="_blank" rel="noopener">linkedin.com/in/phunghm</a> · Page 2/2</div>
+    </div>
+  </div><!-- /page-2 -->
+
+</div><!-- /pages-container -->
+
+<div class="export-bar">
+  <div class="export-hint">In the print dialog, choose destination <strong>“Save as PDF”</strong> - this keeps the text selectable and every link clickable.</div>
+  <div class="export-buttons">
+    <button class="btn-pdf" onclick="window.print()"><i class="bi bi-file-earmark-pdf-fill"></i> Print / Save as PDF</button>
+    <button onclick="exportToPNG()"><i class="bi bi-images"></i> Export PNG</button>
+    <button class="btn-amber" onclick="exportToVCard()"><i class="bi bi-person-vcard-fill"></i> Save Contact</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  function lockStyles() {
+    const s = document.createElement('style');
+    s.id = '__exp';
+    s.innerHTML = `* { animation:none !important; transition:none !important; }
+      .page { transform:none !important; margin-bottom:0 !important; box-shadow:none !important; }`;
+    document.head.appendChild(s);
+    return s;
+  }
+  function unlockStyles(s) { s?.parentNode?.removeChild(s); }
+
+  async function capturePages() {
+    const s = lockStyles();
+    await new Promise(r => setTimeout(r, 400));
+    const canvases = [];
+    for (const pg of document.querySelectorAll('.page')) {
+      canvases.push(await html2canvas(pg, { scale:4, useCORS:true, allowTaint:true, backgroundColor:'#ffffff', logging:false }));
+    }
+    unlockStyles(s);
+    return canvases;
+  }
+
+  async function exportToPNG() {
+    const btn = event.currentTarget; btn.disabled=true; btn.textContent='Exporting...';
+    try {
+      const cs = await capturePages();
+      cs.forEach((c,i) => setTimeout(() => { const a=document.createElement('a'); a.download=`Hoang-Minh-Phung-CV-2026_p${i+1}.png`; a.href=c.toDataURL('image/png',1.0); a.click(); }, i*700));
+    } finally { setTimeout(() => { btn.disabled=false; btn.innerHTML='<i class="bi bi-images"></i> Export PNG'; }, 1800); }
+  }
+
+  function exportToVCard() {
+    const v = 'BEGIN:VCARD\r\nVERSION:3.0\r\nFN:Hoang Minh Phung\r\nTITLE:Technology Executive & Business Development Leader\r\nTEL;TYPE=CELL:+84908556220\r\nEMAIL:phunghm@gmail.com\r\nURL:https://www.linkedin.com/in/phunghm\r\nADR;TYPE=WORK:;;;Ho Chi Minh City;;;Vietnam\r\nEND:VCARD';
+    const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard;charset=utf-8'})); a.download='Hoang-Minh-Phung.vcf'; a.click();
+  }
+</script>
+</body>
+</html>

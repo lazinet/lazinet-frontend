@@ -56,3 +56,6 @@ public/hathyo/invitations/New folder/
 
 # Apps Script backend cho các tool nội bộ (chứa Spreadsheet ID) – không commit lên git
 /scripts/
+
+# hồ sơ cá nhân riêng tư – không commit lên git
+public/bizcards/phunghoang/
