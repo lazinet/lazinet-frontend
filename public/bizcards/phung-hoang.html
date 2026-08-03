@@ -108,26 +108,28 @@
         }
         
         .bizcard-frame {
-            width: 500px; height: 300px;
+            width: 100%; max-width: 500px;
+            aspect-ratio: 5 / 3;
+            container-type: inline-size;
             position: relative;
-            transform-origin: top center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border-radius: 12px;
             background: #000;
             display: flex;
-            border: 1px solid rgba(255, 255, 255, 0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.5);
             box-sizing: border-box;
         }
 
-        /* --- BIZCARD LAYOUT --- */
+        /* --- BIZCARD LAYOUT (sized in cqw = % of the card's own width, so it scales
+             proportionally at any screen size without JS transform hacks) --- */
         .bizcard {
             width: 100%; height: 100%;
-            border-radius: 12px;
+            border-radius: 2.4cqw;
             background-size: cover; background-position: center;
-            padding: 16px 20px; 
+            padding: 3.2cqw 4cqw;
             color: white;
-            display: flex; flex-direction: column; 
-            justify-content: space-between; 
+            display: flex; flex-direction: column;
+            justify-content: space-between;
         }
         
         .bizcard a { color: inherit; text-decoration: none; cursor: pointer; }
@@ -135,24 +137,24 @@
 
         /* HEADER SECTION */
         .card-top {
-            flex: 0 0 auto; 
+            flex: 0 0 auto;
             display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 4cqw;
         }
-        
-        /* FIX #2: Logo Height = QR Height (70px) */
-        .card-logo { 
-            height: 70px; /* Tăng từ 42px lên 70px */
-            width: auto; max-width: 200px; /* Giới hạn chiều ngang để không đè QR */
-            object-fit: contain; 
-            background: rgba(240,240,255,0.95); 
-            padding: 10px; border-radius: 8px; 
-            backdrop-filter: blur(4px); 
+
+        /* FIX #2: Logo Height = QR Height */
+        .card-logo {
+            height: 14cqw;
+            width: auto; max-width: 40cqw; /* Giới hạn chiều ngang để không đè QR */
+            object-fit: contain;
+            background: rgba(240,240,255,0.95);
+            padding: 2cqw; border-radius: 1.6cqw;
+            backdrop-filter: blur(4px);
         }
-        
+
         .qr-area {
-            width: 70px; height: 70px;
-            background: white; padding: 3px; border-radius: 6px;
+            width: 14cqw; height: 14cqw;
+            background: white; padding: 0.6cqw; border-radius: 1.2cqw;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
@@ -160,81 +162,81 @@
 
         /* BODY SECTION */
         .card-body {
-            flex: 1 1 auto; 
+            flex: 1 1 auto;
             display: flex; flex-direction: column; justify-content: center;
-            min-height: 0; 
+            min-height: 0;
         }
 
-        .intro-text { text-align: center; margin-top: -10px; } 
-        .intro-text h2 { font-size: 24px; font-weight: 800; text-transform: uppercase; margin: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.2; }
-        .intro-text .pos { font-size: 14px; font-weight: 600; font-style: italic; opacity: 0.95; margin: 2px 0 0 0; }
+        .intro-text { text-align: center; margin-top: -2cqw; }
+        .intro-text h2 { font-size: 4.8cqw; font-weight: 800; text-transform: uppercase; margin: 0; text-shadow: 0.2cqw 0.2cqw 0.6cqw rgba(0,0,0,0.7); line-height: 1.2; }
+        .intro-text .pos { font-size: 2.8cqw; font-weight: 600; font-style: italic; opacity: 0.95; margin: 0.4cqw 0 0 0; }
 
         /* Back Services */
-        .services-wrapper { margin-top: 5px; }
-        .services-title { 
-            font-size: 11px; font-weight: 800; text-transform: uppercase; 
-            border-bottom: 1px solid rgba(255,255,255,0.4); 
-            padding-bottom: 2px; margin-bottom: 6px; display: inline-block; width: 100%;
+        .services-wrapper { margin-top: 1cqw; }
+        .services-title {
+            font-size: 2.2cqw; font-weight: 800; text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.4);
+            padding-bottom: 0.4cqw; margin-bottom: 1.2cqw; display: inline-block; width: 100%;
         }
         .service-grid {
-            display: grid; grid-template-columns: 1fr 1fr; 
-            column-gap: 10px; row-gap: 4px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            column-gap: 2cqw; row-gap: 0.8cqw;
         }
         .service-item {
-            font-size: 10px; line-height: 1.3;
+            font-size: 2cqw; line-height: 1.3;
             display: flex; align-items: flex-start; text-align: left;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
+            text-shadow: 0.2cqw 0.2cqw 0.4cqw rgba(0,0,0,0.9);
         }
-        .service-item i { color: #ff6302; margin-right: 5px; margin-top: 2px; flex-shrink: 0; font-size: 9px; }
+        .service-item i { color: #ff6302; margin-right: 1cqw; margin-top: 0.4cqw; flex-shrink: 0; font-size: 1.8cqw; }
 
         /* --- SOCIAL ICONS --- */
         .social-container {
             flex: 0 0 auto;
             display: flex; justify-content: center;
-            margin: 5px 0 8px 0;
+            margin: 1cqw 0 1.6cqw 0;
         }
         .social-icon {
-            width: 34px; height: 34px; 
+            width: 6.8cqw; height: 6.8cqw;
             background-color: #ffffff;
-            border-radius: 50%; 
-            margin: 0 6px;
+            border-radius: 50%;
+            margin: 0 1.2cqw;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.4); 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
             transition: transform 0.2s;
         }
         .social-icon:hover { transform: scale(1.1); }
-        .social-icon i { font-size: 18px; line-height: 0; display: inline-block; }
+        .social-icon i { font-size: 3.6cqw; line-height: 0; display: inline-block; }
 
         /* FOOTER SECTION */
         .card-footer {
-            flex: 0 0 auto; 
+            flex: 0 0 auto;
             background: rgba(0, 0, 0, 0.65);
-            border-radius: 8px;
-            padding: 8px 10px;
+            border-radius: 1.6cqw;
+            padding: 1.6cqw 2cqw;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255,255,255,0.15);
             text-align: center;
         }
 
-        .comp-name { 
-            font-size: 11px; font-weight: 800; text-transform: uppercase; 
-            color: #fff; letter-spacing: 0.5px; margin-bottom: 4px; display: block;
+        .comp-name {
+            font-size: 2.2cqw; font-weight: 800; text-transform: uppercase;
+            color: #fff; letter-spacing: 0.5px; margin-bottom: 0.8cqw; display: block;
         }
 
         .contact-links {
-            display: flex; justify-content: center; gap: 15px; 
-            margin-bottom: 4px;
+            display: flex; justify-content: center; gap: 3cqw;
+            margin-bottom: 0.8cqw;
             white-space: nowrap;
         }
-        .contact-link-item { font-size: 10px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
-        .contact-link-item i { color: #ff6302; font-size: 11px; }
+        .contact-link-item { font-size: 2cqw; font-weight: 500; display: flex; align-items: center; gap: 0.8cqw; }
+        .contact-link-item i { color: #ff6302; font-size: 2.2cqw; }
 
-        .address-lines { display: flex; flex-direction: column; gap: 2px; }
-        .addr-item { 
-            font-size: 10px; line-height: 1.3; text-align: left; 
-            display: flex; align-items: flex-start; justify-content: center; gap: 6px;
+        .address-lines { display: flex; flex-direction: column; gap: 0.4cqw; }
+        .addr-item {
+            font-size: 2cqw; line-height: 1.3; text-align: left;
+            display: flex; align-items: flex-start; justify-content: center; gap: 1.2cqw;
         }
-        .addr-item i { color: #ff6302; margin-top: 2px; flex-shrink: 0; font-size: 11px; }
+        .addr-item i { color: #ff6302; margin-top: 0.4cqw; flex-shrink: 0; font-size: 2.2cqw; }
 
         /* --- BUTTONS --- */
         .btn-action {
@@ -255,8 +257,8 @@
         /* Mobile Layout Buttons: 3 cols x 2 rows */
         @media (max-width: 767px) {
             .action-grid {
-                display: grid; grid-template-columns: repeat(3, 1fr);
-                gap: 8px; padding: 0 5px;
+                display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px; padding: 0;
             }
             .btn-item-main, .btn-item-sub {
                 width: 100%; font-size: 11px; padding: 10px 4px;
@@ -266,32 +268,26 @@
             .btn-item { width: auto; min-width: 120px; }
         }
 
-        /* --- CHAT PANEL --- */
+        /* --- CHAT & CONTACT FORM PANELS (always-visible side-by-side boxes) --- */
         .glass-panel {
             background: rgba(255, 255, 255, 0.98);
-            border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.45);
             overflow: hidden; border: 1px solid rgba(255,255,255,0.2);
-            display: flex; flex-direction: column;
-        }
-        @media (min-width: 768px) { .glass-panel { flex-direction: row; } }
-
-        .chat-sidebar {
-            background: linear-gradient(135deg, var(--primary) 0%, #064e3b 100%);
-            color: white; padding: 2rem;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-        }
-        
-        /* FIX #3: Increase Avatar Size */
-        .secretary-avatar {
-            width: 165px; height: 165px; /* Tăng từ 140px lên 165px */
-            border-radius: 50%; 
-            border: 4px solid white; object-fit: cover;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .chat-main { background: white; display: flex; flex-direction: column; height: 500px; }
-        
         .chat-bubble { max-width: 85%; padding: 8px 12px; margin-bottom: 6px; border-radius: 12px; font-size: 14px; }
+
+        /* Send button: bi kim loại + logo LAZINET, giống bản gốc ở namecards/m.html */
+        .send-btn {
+            width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+            background: radial-gradient(circle at 35% 35%, #fff 0%, #e8eef2 25%, #c0cdd6 55%, #8fa3b1 100%);
+            box-shadow: 0 0 8px 2px rgba(200,220,235,.6), 0 2px 6px rgba(0,0,0,.2);
+            border: none; cursor: pointer; transition: .2s;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; padding: 0;
+        }
+        .send-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .send-btn:hover { transform: scale(1.08); box-shadow: 0 0 14px 4px rgba(180,210,230,.8), 0 2px 10px rgba(0,0,0,.25); }
         .chat-bubble-user { background: var(--primary); color: white; align-self: flex-end; margin-left: 20%; }
         .chat-bubble-bot { background: #f3f4f6; color: #333; align-self: flex-start; margin-right: 20%; border: 1px solid #ddd; }
 
@@ -316,6 +312,40 @@
         }
         .cv-modal-close:hover { background: rgba(185,28,28,0.9); }
 
+        /* --- FOOTER: TỔ CHỨC / ĐỐI TÁC --- */
+        .footer-org-label {
+            color: rgba(255,255,255,0.65); font-size: 11px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            display: inline-block; margin-bottom: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 6px;
+        }
+        /* Grid (not flex) so repeat(N, minmax(0,1fr)) reliably forces exact row splits
+           (same technique as .action-grid): founders = 1 row of 3 always;
+           partners = 1 row of 5 on desktop, wraps to 3+2 on mobile. */
+        .footer-logo-row { display: grid; gap: 14px; }
+        .footer-logo-row a {
+            background: rgba(255,255,255,0.95); border-radius: 8px;
+            padding: 10px 14px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25); transition: transform 0.2s;
+        }
+        .footer-logo-row a:hover { transform: translateY(-3px); }
+        .footer-logo-row img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+        /* Thành lập: gấp 3 chiều cao gốc. Dùng aspect-ratio (tính từ tỉ lệ cột x chiều cao gốc
+           ở desktop) thay vì height cố định, để box co giãn đúng tỉ lệ ở mọi độ rộng màn hình
+           (mobile cột hẹp hơn nhiều nên height cố định làm box bị cao/vuông bất thường). */
+        .footer-logo-row-founders { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .footer-logo-row-founders a { aspect-ratio: 2.4 / 1; }
+
+        /* Chiến lược: gấp 1.5 chiều cao gốc */
+        .footer-logo-row-partners { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        .footer-logo-row-partners a { aspect-ratio: 2.8 / 1; }
+
+        @media (max-width: 767px) {
+            .footer-logo-row-partners { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
         .hidden { display: none !important; }
         .goog-te-gadget-simple { background: rgba(0,0,0,0.4) !important; border: none !important; padding: 4px 10px !important; border-radius: 20px; }
         .goog-te-gadget-simple span { color: white !important; font-weight: bold; }
@@ -328,7 +358,7 @@
         <source src="" type="video/mp4">
     </video>
 
-    <div class="w-full max-w-6xl px-0 md:px-4 flex flex-col items-center relative z-10">
+    <div class="w-full max-w-6xl px-[5px] md:px-4 flex flex-col items-center relative z-10">
 
         <header class="text-center mb-4 text-white w-full animate-fade-in-down px-2 mt-4 md:mt-0">
             <div id="google_translate_element" class="inline-block mb-2"></div>
@@ -336,7 +366,7 @@
             <p id="intro-pos" class="text-sm md:text-2xl opacity-90 font-light drop-shadow-md"></p>
         </header>
 
-        <div id="capture-area" class="w-full flex flex-col lg:flex-row gap-0 lg:gap-8 justify-center items-center mb-6">
+        <div id="capture-area" class="w-full max-w-[1032px] mx-auto flex flex-col lg:flex-row gap-0 lg:gap-8 justify-center items-center mb-6">
             
             <div class="card-scaler-wrap">
                 <div class="bizcard-frame">
@@ -421,9 +451,11 @@
         </div>
 
         <div class="action-grid mb-8">
+            <!-- Ẩn nút TƯ VẤN NGAY: chatbox giờ hiển thị trực tiếp bên dưới, không cần nút mở nữa
             <button id="chat-button" onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
                 <i class="fas fa-comments"></i> TƯ VẤN NGAY
             </button>
+            -->
             <button onclick="toggleCV()" class="btn-action bg-red-700 hover:bg-red-800 btn-item btn-item-sub">
                 <i class="fas fa-id-badge"></i> Mr. PHỤNG
             </button>
@@ -441,27 +473,40 @@
             </button>
         </div>
 
-        <div id="interaction-panel" class="hidden w-full max-w-5xl glass-panel animate-fade-in-up mb-10 mx-2">
-            <div class="chat-sidebar w-full md:w-1/3">
-                <button onclick="toggleChat()" class="absolute top-4 left-4 md:hidden text-white/80"><i class="fas fa-chevron-left"></i></button>
-                <div class="relative mb-4">
-                    <img id="bot-avatar" src="" class="secretary-avatar">
-                    <span class="absolute bottom-2 right-2 w-4 h-4 bg-green-500 border-2 border-white rounded-full animate-pulse"></span>
-                </div>
-                <h3 id="bot-name" class="text-xl font-bold">...</h3>
-                <p id="bot-pos" class="text-xs uppercase tracking-widest opacity-80 mb-2">...</p>
-                
-                <div class="bg-white/10 p-4 rounded-lg backdrop-blur-sm text-sm italic border border-white/20">
-                    "Chào anh/chị ❤️<br>Em luôn ở đây để hỗ trợ anh/chị kết nối với LAZINET nhanh nhất ạ!"
+        <!-- Dùng đúng cơ chế flex/gap/breakpoint như #capture-area ở trên (lg:flex-row, lg:gap-8,
+             mỗi ô cap max-width:500px) để cạnh trái/phải của chatbox và form khớp chính xác với
+             cạnh trái/phải của mặt trước/sau namecard phía trên. -->
+        <div id="interaction-panel" class="w-full max-w-[1032px] mx-auto flex flex-col lg:flex-row gap-0 lg:gap-8 justify-center items-stretch animate-fade-in-up mb-10">
+            <!-- CHAT BOX -->
+            <div class="w-full lg:max-w-[500px] flex">
+                <div class="glass-panel flex flex-col w-full">
+                    <div class="flex items-center gap-3 p-4" style="background: linear-gradient(135deg, var(--primary) 0%, #064e3b 100%)">
+                        <div class="relative flex-shrink-0">
+                            <img id="bot-avatar" src="" class="w-12 h-12 rounded-full border-2 border-white object-cover">
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full animate-pulse"></span>
+                        </div>
+                        <div class="text-white overflow-hidden">
+                            <h3 id="bot-name" class="font-bold text-sm truncate">...</h3>
+                            <p id="bot-pos" class="text-xs opacity-80 truncate">...</p>
+                        </div>
+                    </div>
+                    <div id="chat-history" class="flex-grow overflow-y-auto p-4 bg-slate-50 flex flex-col" style="height: 320px">
+                        <div class="chat-bubble chat-bubble-bot">Chào anh/chị ❤️<br>Em luôn ở đây để hỗ trợ anh/chị kết nối với LAZINET nhanh nhất ạ!</div>
+                    </div>
+                    <div class="p-3 bg-white border-t flex gap-2">
+                        <input id="chat-input" type="text" placeholder="Nhập tin nhắn..." class="flex-grow p-2 bg-gray-100 rounded-full text-sm outline-none">
+                        <button onclick="sendChatMessage()" class="send-btn"><img src="../assets/img/logo-lazinet/lazinet_LogoOnly.png" alt="Gửi"></button>
+                    </div>
                 </div>
             </div>
 
-            <div class="chat-main w-full md:w-2/3 relative">
-                <button onclick="toggleChat()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 hidden md:block z-20"><i class="fas fa-times text-xl"></i></button>
+            <div class="h-5 w-full lg:hidden"></div>
 
-                <div id="form-container" class="flex flex-col h-full p-6 overflow-y-auto">
+            <!-- CONTACT FORM -->
+            <div class="w-full lg:max-w-[500px] flex">
+                <div class="glass-panel p-6 w-full flex flex-col">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Gửi yêu cầu của bạn đến LAZINET</h3>
-                    <form id="lead-form" class="space-y-3 flex-grow">
+                    <form id="lead-form" class="space-y-3 flex-1 flex flex-col">
                         <div class="grid grid-cols-2 gap-3">
                             <input type="text" name="name" placeholder="Họ tên *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
                             <input type="text" name="company" placeholder="Công ty" class="w-full p-2 bg-gray-50 border rounded text-sm">
@@ -470,24 +515,49 @@
                             <input type="tel" name="phone" placeholder="SĐT *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
                             <input type="email" name="email" placeholder="Email *" required class="w-full p-2 bg-gray-50 border rounded text-sm">
                         </div>
-                        <textarea name="message" rows="3" placeholder="Lời nhắn *" required class="w-full p-2 bg-gray-50 border rounded text-sm"></textarea>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="wantChat" name="chat" checked class="accent-[#2F54A2] w-4 h-4">
-                            <label for="wantChat" class="text-xs text-gray-700 font-bold">Tôi muốn chat tư vấn thêm</label>
-                        </div>
-                        <button type="submit" class="w-full bg-[#2F54A2] text-white py-3 rounded font-bold uppercase text-sm mt-auto">Gửi & Bắt đầu</button>
+                        <textarea name="message" placeholder="Lời nhắn *" required class="w-full p-2 bg-gray-50 border rounded text-sm flex-1 resize-none"></textarea>
+                        <button type="submit" class="w-full bg-[#2F54A2] text-white py-3 rounded font-bold uppercase text-sm">Gửi Thông Tin <i class="fas fa-arrow-right ml-1"></i></button>
                     </form>
-                </div>
-
-                <div id="chat-window" class="hidden flex-col h-full">
-                    <div id="chat-history" class="flex-grow overflow-y-auto p-4 bg-slate-50 flex flex-col"></div>
-                    <div class="p-3 bg-white border-t flex gap-2">
-                        <input id="chat-input" type="text" placeholder="Nhập tin nhắn..." class="flex-grow p-2 bg-gray-100 rounded-full text-sm outline-none">
-                        <button onclick="sendChatMessage()" class="w-9 h-9 bg-green-600 text-white rounded-full flex items-center justify-center"><i class="fas fa-paper-plane text-xs"></i></button>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <footer class="w-full max-w-[1032px] mx-auto mt-2 mb-10 text-center">
+            <div class="mb-8">
+                <span class="footer-org-label">Tổ chức thành lập</span>
+                <div class="footer-logo-row footer-logo-row-founders">
+                    <a href="https://hathyo.com" target="_blank" rel="noopener" title="Sàn TMĐT HATHYO">
+                        <img src="../hathyo/assets/logos/hathyo-logo-v2-2026/png-re/hathyo_v2_ecom_re_full_tel_en_white.png" alt="HATHYO">
+                    </a>
+                    <a href="https://lazinet.com" target="_blank" rel="noopener" title="Công nghệ LAZINET">
+                        <img src="../assets/img/logo-lazinet/lazinet_LogoFullv2_vi_extending_loop_font.svg" alt="LAZINET">
+                    </a>
+                    <a href="https://chuyendong.vn" target="_blank" rel="noopener" title="Cổng thông tin ChuyenDong.VN">
+                        <img src="https://chuyendong.vn/logo-rectangle_H256.webp" alt="ChuyenDong.VN">
+                    </a>
+                </div>
+            </div>
+            <div>
+                <span class="footer-org-label">Đối tác chiến lược</span>
+                <div class="footer-logo-row footer-logo-row-partners">
+                    <a href="https://qtbc.vn" target="_blank" rel="noopener" title="CLB Doanh nhân QTBC">
+                        <img src="https://qtbc.vn/assets/logos/Logo-bgWhiteFull.png" alt="CLB Doanh nhân QTBC">
+                    </a>
+                    <a href="https://viettelsoftware.com/" target="_blank" rel="noopener" title="Viettel Software">
+                        <img src="https://viettelsoftware.com/images/logo-1-2x-1.png" alt="Viettel Software">
+                    </a>
+                    <a href="https://viettelidc.com.vn" target="_blank" rel="noopener" title="Viettel IDC">
+                        <img src="../assets/img/partners/viettel-idc.png" alt="Viettel IDC">
+                    </a>
+                    <a href="https://fit.huit.edu.vn/ket-noi-doanh-nghiep/cong-ty-tnhh-cong-nghe-ung-dung-lazinet-doi-tac-chien-luoc-trong-dao-tao-va-phat-trien-nhan-luc-cong-nghe-4-0" target="_blank" rel="noopener" title="Đại học HUIT">
+                        <img src="https://huit.edu.vn/images/tin-tuc-hoat-dong/truong-dai-hoc-cong-nghiep-thuc-pham-tp-hcm-hufi-chinh-thuc-doi-ten-thanh-truong-dai-hoc-cong-thuong-tp-hcm-huit-3.jpg" alt="Đại học HUIT">
+                    </a>
+                    <a href="https://ingridintl.sg/vi/" target="_blank" rel="noopener" title="Xúc tiến thương mại INGRID">
+                        <img src="https://ingridintl.sg/wp-content/uploads/2024/03/logo.png" alt="INGRID">
+                    </a>
+                </div>
+            </div>
+        </footer>
 
         <div id="cv-modal" class="cv-modal-overlay hidden">
             <div class="cv-modal-content">
@@ -516,52 +586,26 @@
 
     <script>
         // CONFIG
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwVgxa_WuzNACGTxtNdt2LAja9N1a4OLHZ_ic7qSYX3l2hTc5DvX-RSKmklxO8vvjWj_Q/exec'; 
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwVgxa_WuzNACGTxtNdt2LAja9N1a4OLHZ_ic7qSYX3l2hTc5DvX-RSKmklxO8vvjWj_Q/exec';
+        // Endpoint dùng chung với form liên hệ ở public/contact.html, để lead từ danh thiếp gom về cùng 1 hệ thống
+        const CONTACT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwn9zWu5PUjDcfN_XyvNpTtHSuSvATgl9NRCR_qFW-pQq6as9yMqVwbtpg708Sdu5LSQg/exec';
 
         let configData = null;
         let bizData = null;
         let chatHistory = [];
         let currentQRLink = "https://lazinet.com/bizcards/phung-hoang";
 
-        // --- 1. SUPER SCALE MOBILE (Fix: 100% Width) ---
-        function resizeCards() {
-            const isMobile = window.innerWidth < 768;
-            // FIX #1: Mobile padding = 0 tuyệt đối để full width
-            const padding = isMobile ? 0 : 32; 
-            const screenW = window.innerWidth - padding; 
-            const cardBaseW = 500; 
-            
-            // Tính toán tỷ lệ scale
-            let scale = Math.min(screenW / cardBaseW, 1);
-
-            const frames = document.querySelectorAll('.bizcard-frame');
-            frames.forEach(frame => {
-                frame.style.transform = `scale(${scale})`;
-                // Điều chỉnh height container cha để không bị khoảng trắng thừa
-                frame.parentElement.style.height = `${300 * scale}px`;
-                frame.parentElement.style.width = `${500 * scale}px`; 
-            });
-        }
-        window.addEventListener('resize', resizeCards);
-        window.addEventListener('load', resizeCards);
-
-        // --- 2. EXPORT (FORCE DESKTOP VIEW) ---
+        // --- EXPORT (html2canvas re-renders at windowWidth:1200, so the fluid
+        // .bizcard-frame{max-width:500px} naturally resolves to its full design size) ---
         async function captureCard(type) {
-            const frames = document.querySelectorAll('.bizcard-frame');
-            const originalStyles = [];
-            frames.forEach(f => {
-                originalStyles.push(f.style.transform);
-                f.style.transform = 'scale(1)'; 
-            });
-
             const captureElement = document.getElementById('capture-area');
-            
+
             try {
-                const canvas = await html2canvas(captureElement, { 
-                    scale: 4, 
-                    useCORS: true, 
+                const canvas = await html2canvas(captureElement, {
+                    scale: 4,
+                    useCORS: true,
                     backgroundColor: null,
-                    windowWidth: 1200 
+                    windowWidth: 1200
                 });
 
                 if (type === 'png') {
@@ -577,14 +621,13 @@
                     const pdfH = pdf.internal.pageSize.getHeight();
                     const imgProps = pdf.getImageProperties(imgData);
                     const ratio = imgProps.width / imgProps.height;
-                    const renderW = pdfW - 20; 
+                    const renderW = pdfW - 20;
                     const renderH = renderW / ratio;
                     const yPos = (renderH < (pdfH-20)) ? (pdfH - renderH) / 2 : 10;
                     pdf.addImage(imgData, 'JPEG', 10, yPos, renderW, renderH);
                     pdf.save(`${bizData.bizcardPersonName}_Bizcard.pdf`);
                 }
-            } catch (err) { alert("Lỗi xuất file!"); } 
-            finally { frames.forEach((f, index) => { f.style.transform = originalStyles[index]; }); }
+            } catch (err) { alert("Lỗi xuất file!"); }
         }
         function exportPNG() { captureCard('png'); }
         function exportPDF() { captureCard('pdf'); }
@@ -715,8 +758,6 @@
 
             currentQRLink = 'https://lazinet.com/bizcards/phung-hoang' // bizData.bizcardQRText || window.location.href;
             updateQR(currentQRLink, bizData.bizcardQRImage);
-
-            setTimeout(resizeCards, 100);
         }
 
         function setText(id, t) { const el = document.getElementById(id); if(el) el.innerText = t || ''; }
@@ -745,13 +786,9 @@
         }
 
         function toggleChat() {
-            const p = document.getElementById('interaction-panel');
-            const b = document.getElementById('chat-button');
-            p.classList.toggle('hidden');
-            if(!p.classList.contains('hidden')) {
-                p.scrollIntoView({behavior:'smooth'});
-                b.innerText = 'ẨN TƯ VẤN';
-            } else {b.innerText = 'TƯ VẤN NGAY';};
+            document.getElementById('interaction-panel').scrollIntoView({behavior:'smooth'});
+            const inp = document.getElementById('chat-input');
+            if (inp) setTimeout(() => inp.focus(), 400);
         }
 
         function toggleCV() {
@@ -788,46 +825,40 @@ END:VCARD`;
         document.getElementById('lead-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
-            const old = btn.innerText;
-            
-            // 1. Khóa nút và đặt trạng thái đầu tiên
-            btn.disabled = true; 
-            btn.innerText = "ĐANG GỬI ...";
+            const old = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = "ĐANG GỬI ...";
 
-            // 2. Lên lịch thay đổi trạng thái (chạy song song, không chặn fetch)
-            const timer1 = setTimeout(() => { btn.innerText = "ĐANG TRA CỨU ..."; }, 2000);
-            const timer2 = setTimeout(() => { btn.innerText = "ĐANG PHÂN CÔNG ..."; }, 4000);
-            
             const fd = new FormData(e.target);
+            const company = (fd.get('company') || '').trim();
+
+            // Payload theo đúng khuôn field của form liên hệ chính (public/contact.html)
+            // để lead từ danh thiếp gom chung vào cùng bảng dữ liệu.
             const payload = {
-                action: 'submitForm',
-                name: fd.get('name'), company: fd.get('company'),
-                phone: fd.get('phone'), email: fd.get('email'),
-                message: fd.get('message'), chat: document.getElementById('wantChat').checked
+                name: fd.get('name'),
+                userType: 'Liên hệ qua Danh thiếp số (Mr. Phụng)',
+                otherType: company,
+                phone: fd.get('phone'),
+                email: fd.get('email'),
+                subject: company ? `Liên hệ từ ${company}` : 'Liên hệ từ Danh thiếp số - Hoàng Minh Phụng',
+                message: fd.get('message'),
+                token_bot: btoa(Math.random() + Date.now() + navigator.userAgent).substring(0, 32),
+                form_start_time: Date.now(),
+                human_score: 5
             };
 
             try {
-                // 3. Thực hiện gửi dữ liệu
-                const res = await fetch(GAS_WEB_APP_URL, {method:'POST', body: JSON.stringify(payload)});
-                const data = await res.json();
-                
-                if(payload.chat) {
-                    document.getElementById('form-container').classList.add('hidden');
-                    document.getElementById('chat-window').classList.remove('hidden');
-                    document.getElementById('chat-window').classList.add('flex');
-                    appendMsg('user', payload.message || `Xin chào ${bizData.chatbotName}`);
-                    appendMsg('bot', data.botResponse || `Chào anh/chị ${payload.name}, em giúp gì được cho mình ạ?`);
-                } else {
-                    alert("Gửi thành công!"); toggleChat();
-                }
-            } catch(e) { 
-                alert("Lỗi kết nối!"); 
-            } finally { 
-                // 4. Dọn dẹp: Hủy các timer nếu mạng nhanh hơn dự kiến & trả lại nút bấm
-                clearTimeout(timer1);
-                clearTimeout(timer2);
-                btn.disabled = false; 
-                btn.innerText = old; 
+                await fetch(CONTACT_GAS_URL, {
+                    method: 'POST', mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                btn.innerHTML = "Đã gửi! Cảm ơn anh/chị.";
+                e.target.reset();
+            } catch (err) {
+                btn.innerHTML = "Lỗi kết nối!";
+            } finally {
+                setTimeout(() => { btn.disabled = false; btn.innerHTML = old; }, 4000);
             }
         };
 
