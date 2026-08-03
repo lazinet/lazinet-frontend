@@ -252,11 +252,15 @@
             width: 100%; max-width: 900px; padding: 0 10px; margin-bottom: 30px;
         }
         
-        /* Mobile Layout Buttons */
+        /* Mobile Layout Buttons: 3 cols x 2 rows */
         @media (max-width: 767px) {
-            .btn-item-main { width: 100%; } 
-            .btn-item-sub { width: 48%; font-size: 12px; padding: 10px; }   
-            .action-grid { gap: 8px; padding: 0 5px; }
+            .action-grid {
+                display: grid; grid-template-columns: repeat(3, 1fr);
+                gap: 8px; padding: 0 5px;
+            }
+            .btn-item-main, .btn-item-sub {
+                width: 100%; font-size: 11px; padding: 10px 4px;
+            }
         }
         @media (min-width: 768px) {
             .btn-item { width: auto; min-width: 120px; }
@@ -296,12 +300,12 @@
             position: fixed; inset: 0; z-index: 1000;
             background: rgba(0,0,0,0.85);
             display: flex; align-items: center; justify-content: center;
-            padding: 16px;
+            padding: 0;
         }
         .cv-modal-content {
-            position: relative; width: 100%; max-width: 900px; height: 92vh;
-            background: #fff; border-radius: 16px; overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            position: relative; width: 100vw; height: 100vh;
+            background: #fff; border-radius: 0; overflow: hidden;
+            box-shadow: none;
         }
         .cv-modal-content iframe { width: 100%; height: 100%; border: none; display: block; }
         .cv-modal-close {
@@ -311,10 +315,6 @@
             display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
         .cv-modal-close:hover { background: rgba(185,28,28,0.9); }
-        @media (max-width: 767px) {
-            .cv-modal-overlay { padding: 0; }
-            .cv-modal-content { max-width: 100%; height: 100vh; border-radius: 0; }
-        }
 
         .hidden { display: none !important; }
         .goog-te-gadget-simple { background: rgba(0,0,0,0.4) !important; border: none !important; padding: 4px 10px !important; border-radius: 20px; }
@@ -424,8 +424,8 @@
             <button id="chat-button" onclick="toggleChat()" class="btn-action bg-blue-700 hover:bg-blue-800 btn-item btn-item-main">
                 <i class="fas fa-comments"></i> TƯ VẤN NGAY
             </button>
-            <button onclick="toggleCV()" class="btn-action bg-indigo-600 hover:bg-indigo-700 btn-item btn-item-sub">
-                <i class="fas fa-id-badge"></i> HOÀNG MINH PHỤNG
+            <button onclick="toggleCV()" class="btn-action bg-red-700 hover:bg-red-800 btn-item btn-item-sub">
+                <i class="fas fa-id-badge"></i> Mr. PHỤNG
             </button>
             <button onclick="shareLink()" class="btn-action bg-green-600 hover:bg-green-700 btn-item btn-item-sub">
                 <i class="fas fa-share-nodes"></i> Chia sẻ
@@ -433,10 +433,10 @@
             <button onclick="downloadVCard()" class="btn-action bg-amber-600 hover:bg-amber-700 btn-item btn-item-sub">
                 <i class="fas fa-address-book"></i> Danh bạ
             </button>
-            <button onclick="exportPNG()" class="btn-action bg-purple-700 hover:bg-purple-800 btn-item btn-item-sub">
+            <button onclick="exportPNG()" class="btn-action bg-cyan-600 hover:bg-cyan-700 btn-item btn-item-sub">
                 <i class="fas fa-download"></i> Tải PNG
             </button>
-            <button onclick="exportPDF()" class="btn-action bg-red-700 hover:bg-red-800 btn-item btn-item-sub">
+            <button onclick="exportPDF()" class="btn-action bg-pink-600 hover:bg-pink-700 btn-item btn-item-sub">
                 <i class="fas fa-file-pdf"></i> Tải PDF
             </button>
         </div>
