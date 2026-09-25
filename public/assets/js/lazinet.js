@@ -65,7 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function openAIChat() {
     // Thay đường dẫn dưới đây bằng link thật của file bizcard của bạn
-    const bizcardUrl = "bizcards/hoangminhphung-lazinet.html?chat=true";
+    // const bizcardUrl = "bizcards/hoangminhphung-lazinet.html?chat=true";
+    const bizcardUrl = "bizcards/phung-hoang.html";
     window.open(bizcardUrl, "_blank");
 }
 
