@@ -1,0 +1,97 @@
+===========================================================================
+ GOI TICH HOP TRO LY AO LAZIBOT VAO CONG DICH VU CONG TINH QUANG TRI
+ Phien ban 1.0 - Ngay 28/09/2026 - Don vi cung cap: LAZINET
+===========================================================================
+
+TOM TAT TRONG 30 GIAY
+---------------------
+De dua tro ly ao len Cong, quy don vi chi can DAN MOT DOAN MA khoang 16
+dong vao mot Fragment HTML cua Liferay, giong het cach Cong da tung lam
+voi tro ly ao truoc day.
+
+  - Khong can lap trinh.
+  - Khong can cai dat gi tren may chu cua Cong.
+  - Khong can mo them cong (port), khong can cau hinh tuong lua.
+  - Go bo bat cu luc nao: chi can xoa doan ma da dan.
+
+Thoi gian du kien: 15-30 phut, bao gom ca kiem thu.
+
+
+NOI DUNG GOI
+------------
+  00-DOC-TRUOC-TIEN.txt        Tep nay.
+
+  01-doan-ma-nhung.html        DOAN MA CAN DAN LEN CONG.
+                               Mo bang Notepad, sao chep toan bo phan tu
+                               <script> den </script>, dan vao Fragment.
+                               Trong tep co chu thich day du tung tham so.
+
+  02-trang-thu-nghiem.html     Trang mo phong Cong de chay thu TRUOC khi
+                               dua len moi truong that. Co san danh muc
+                               12 muc kiem thu de danh dau.
+                               LUU Y: phai mo qua mot may chu web, khong
+                               mo bang cach nhap dup tep. Huong dan chi
+                               tiet nam ngay trong trang.
+
+  03-embed.js                  Ban sao ma nguon cua tep nap, danh cho bo
+                               phan an toan thong tin ra soat truoc khi
+                               phe duyet. Cong KHONG can chep tep nay len
+                               may chu; khi chay that, tep duoc tai truc
+                               tiep tu may chu LAZINET.
+
+  04-Huong-dan-tich-hop.docx   TAI LIEU CHINH (10 trang). Gom: cach thuc
+                               hoat dong, cac buoc tren Liferay, bang tham
+                               so, danh muc kiem thu nghiem thu, cam ket
+                               an toan thong tin va bao ve du lieu ca nhan,
+                               anh huong toi hieu nang Cong, xu ly su co,
+                               va phuong an nang cao giai doan sau.
+
+
+TRINH TU DE NGHI
+----------------
+  Buoc 1. Doc tep 04-Huong-dan-tich-hop.docx (muc 1 den muc 3).
+  Buoc 2. Chuyen 03-embed.js cho bo phan an toan thong tin ra soat.
+  Buoc 3. Chay thu bang 02-trang-thu-nghiem.html tren moi truong thu nghiem.
+  Buoc 4. Dan 01-doan-ma-nhung.html vao Fragment tren Cong that.
+  Buoc 5. Chay lai danh muc kiem thu o muc 6 cua tai lieu, lap bien ban.
+
+
+KHOA TEN MIEN - DOC KY MUC NAY
+------------------------------
+Trong doan ma co mot tham so "key". Day la khoa LAZINET cap rieng cho ten
+mien hcc.quangtri.gov.vn. Nho khoa nay, nguoi dan hoi tren Cong KHONG bi
+gioi han so cau hoi (trang tro ly ao cong khai co gioi han doi voi khach
+chua dang nhap, de kiem soat chi phi).
+
+  - Khoa nam trong ma nguon trang nen ai cung doc duoc. Dieu do la BINH
+    THUONG va dung thiet ke, giong site key cua reCAPTCHA.
+  - Khoa chi co hieu luc khi loi goi den tu dung ten mien da dang ky. Chep
+    sang website khac se khong dung duoc.
+  - Khi chay thu o may ca nhan (localhost) hoac moi truong thu nghiem co
+    ten mien khac, tro ly van chay nhung se bao HET LUOT HOI sau mot so
+    cau. Day la bieu hien DUNG, khong phai loi. Neu moi truong thu nghiem
+    cua Cong co ten mien rieng, de nghi bao LAZINET de cap them khoa.
+  - Tuyet doi khong sua tham so "key". Neu can cap lai khoa, LAZINET se
+    gui khoa moi va Cong cap nhat lai doan ma.
+
+Chi tiet o muc 5.1 cua tai lieu chinh.
+
+
+MOT LUU Y QUAN TRONG
+--------------------
+Tren trang chu cua Cong hien VAN CON doan ma nhung tro ly ao cua don vi
+cung cap truoc. Doan ma do van ve ra bong bong, nhung may chu phia don vi
+do da ngung phuc vu nen nguoi dan bam vao chi nhan duoc thong bao loi.
+
+De nghi go bo Fragment chua doan ma cu, de tranh hai bong bong cung nam o
+mot goc man hinh va tranh de nguoi dan bam vao mot chuc nang khong con
+hoat dong. Chi tiet o muc 4.4 cua tai lieu chinh.
+
+
+HO TRO
+------
+LAZINET san sang huong dan truc tiep tu xa trong lan dan ma dau tien,
+cung chay danh muc kiem thu va lap bien ban nghiem thu, cung nhu tra loi
+cac cau hoi cua bo phan an toan thong tin.
+
+===========================================================================

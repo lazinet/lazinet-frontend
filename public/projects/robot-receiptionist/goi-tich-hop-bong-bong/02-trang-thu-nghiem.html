@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trang thử nghiệm nhúng trợ lý ảo LAZIBOT</title>
+<style>
+  body { margin:0; font-family:"Segoe UI",system-ui,Arial,sans-serif; color:#222; background:#f4f6f9; }
+  .topbar { background:#0b5394; color:#fff; padding:14px 22px; font-size:18px; font-weight:600; }
+  .nav { background:#0a4a84; color:#cfe0f3; padding:9px 22px; font-size:14px; }
+  .wrap { max-width:960px; margin:24px auto; padding:0 18px 120px; }
+  .card { background:#fff; border:1px solid #dfe4ea; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+  h1 { font-size:21px; margin:0 0 12px; }
+  h2 { font-size:16px; margin:22px 0 8px; }
+  code { background:#eef1f5; padding:2px 5px; border-radius:4px; font-size:13px; }
+  ol, ul { line-height:1.8; padding-left:22px; }
+  .warn { background:#fff6e5; border-left:4px solid #e9a100; padding:12px 14px; border-radius:4px; }
+  .ok { background:#eaf7ec; border-left:4px solid #2e9e4f; padding:12px 14px; border-radius:4px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  th, td { border:1px solid #dfe4ea; padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:#f0f3f7; }
+</style>
+</head>
+<body>
+
+<div class="topbar">CỔNG DỊCH VỤ CÔNG - TRANG THỬ NGHIỆM</div>
+<div class="nav">Trang chủ &nbsp;|&nbsp; Thủ tục hành chính &nbsp;|&nbsp; Tra cứu hồ sơ &nbsp;|&nbsp; Tin tức</div>
+
+<div class="wrap">
+  <div class="card">
+    <h1>Trang mô phỏng cổng để kiểm thử trợ lý ảo LAZIBOT</h1>
+    <p>Trang này <b>không phải</b> sản phẩm bàn giao. Mục đích duy nhất là để bộ phận kỹ thuật
+      của cổng chạy thử đoạn mã nhúng trước khi đưa lên môi trường thật, xác nhận rằng
+      trợ lý ảo hoạt động đúng và không làm ảnh hưởng gì tới giao diện sẵn có.</p>
+
+    <div class="warn" style="border-left-color:#c0392b;background:#fdecea">
+      <b>Lưu ý về trang thử nghiệm này:</b> khoá tên miền chỉ có hiệu lực khi lời gọi đến từ
+      <code>hcc.quangtri.gov.vn</code>. Vì vậy khi chạy thử ở máy cá nhân (localhost), trợ lý vẫn hoạt động
+      bình thường nhưng sẽ bị áp hạn mức khách vãng lai (một số câu rồi phải chờ). Đó là biểu hiện <b>đúng</b>,
+      không phải lỗi. Hạn mức đầy đủ chỉ áp dụng sau khi đoạn mã được đặt trên Cổng thật.
+    </div>
+
+    <div class="warn">
+      <b>Phải mở qua máy chủ web, không mở bằng cách nhấp đúp tệp.</b><br />
+      Trình duyệt coi tệp mở trực tiếp (<code>file://</code>) là "không có tên miền", khiến
+      cơ chế trao đổi thông điệp an toàn giữa cổng và khung trò chuyện không dùng được.
+      Cách nhanh nhất để chạy thử trên máy cá nhân:
+      <ol style="margin:8px 0 0">
+        <li>Mở Command Prompt tại thư mục chứa tệp này</li>
+        <li>Chạy: <code>python -m http.server 8080</code></li>
+        <li>Mở trình duyệt: <code>http://localhost:8080/02-trang-thu-nghiem.html</code></li>
+      </ol>
+      Hoặc đơn giản hơn: chép tệp này lên một trang thử nghiệm bất kỳ của cổng.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Danh mục kiểm thử đề nghị</h2>
+    <table>
+      <tr><th style="width:38px">TT</th><th>Nội dung kiểm tra</th><th style="width:270px">Kết quả mong đợi</th></tr>
+      <tr><td>1</td><td>Tải lại trang, quan sát góc dưới bên phải</td><td>Bong bóng hiện sau 1-2 giây, đúng màu và logo của đơn vị</td></tr>
+      <tr><td>2</td><td>Nhấn bong bóng</td><td>Khung trò chuyện 400×620 bung ra, hiện đủ 4 thẻ: Tư vấn / Tra cứu / Yêu cầu / Góp ý</td></tr>
+      <tr><td>3</td><td>Thẻ Tư vấn: gõ một câu hỏi thủ tục</td><td>Trả lời kèm nguồn tham khảo và 3 câu hỏi gợi ý tiếp theo</td></tr>
+      <tr><td>4</td><td>Nhấn biểu tượng micro, nói một câu hỏi</td><td>Nhận dạng thành chữ rồi tự gửi (trình duyệt hỏi quyền micro lần đầu)</td></tr>
+      <tr><td>5</td><td>Thẻ Tra cứu: tìm một từ khoá, nhấn vào mã số thủ tục</td><td>Mở chi tiết ở tab mới của trình duyệt, không phá khung</td></tr>
+      <tr><td>6</td><td>Thẻ Yêu cầu: gửi thử một yêu cầu</td><td>Trả về mã số yêu cầu kèm mã QR</td></tr>
+      <tr><td>7</td><td>Thẻ Góp ý: gửi thử góp ý có chấm sao</td><td>Trả về mã tham chiếu</td></tr>
+      <tr><td>8</td><td>Nhấn phím Esc, hoặc nút X trên thanh tiêu đề</td><td>Khung đóng lại, bong bóng trở về trạng thái ban đầu</td></tr>
+      <tr><td>9</td><td>Thu nhỏ cửa sổ dưới 640px (hoặc mở trên điện thoại)</td><td>Khung chuyển sang tràn toàn màn hình, vẫn đóng được</td></tr>
+      <tr><td>9a</td><td>Trên màn hình lớn: nhấn nút phóng to ở thanh tiêu đề</td><td>Khung nở rộng tối đa 1040px và cao gần hết màn hình; nút đổi thành thu nhỏ</td></tr>
+      <tr><td>9b</td><td>Khi đang phóng to, mở thẻ Tra cứu</td><td>Bảng hiện đủ 7 cột (ở kích thước mặc định chỉ hiện Mã số / Tên / Hiệu lực)</td></tr>
+      <tr><td>9c</td><td>Rê chuột vào cạnh trên hoặc góc trên bên trái của khung rồi kéo</td><td>Con trỏ đổi thành mũi tên kéo; khung đổi kích thước theo; nút vẫn ở trạng thái thu nhỏ</td></tr>
+      <tr><td>9d</td><td>Nhấn nút thu nhỏ sau khi đã phóng to hoặc kéo tay</td><td>Khung trở về đúng kích thước mặc định 400×620</td></tr>
+      <tr><td>10</td><td>Mở Console (F12), lọc chữ lazibot</td><td>Không có lỗi đỏ; không có cảnh báo CSP hay chặn tài nguyên</td></tr>
+      <tr><td>11</td><td>Kiểm tra giao diện cổng khi chưa mở trợ lý</td><td>Không có phần tử nào của cổng bị xê dịch, đè hoặc đổi phông chữ</td></tr>
+      <tr><td>12</td><td>Chạy Lighthouse trước và sau khi nhúng</td><td>Chênh lệch điểm Performance không đáng kể (khung chat chỉ tải khi người dùng bấm)</td></tr>
+      <tr><td>13</td><td>Trên Cổng thật: hỏi liên tiếp hơn 6 câu trong vòng 1 giờ</td><td>Không bị chặn. Nếu bị báo hết lượt hỏi nghĩa là khoá tên miền chưa có hiệu lực - báo LAZINET</td></tr>
+    </table>
+
+    <div class="ok" style="margin-top:14px">
+      <b>Kiểm tra trường hợp máy chủ có sự cố:</b> mở Console và chạy
+      <code>window.__lazibotEmbedLoaded = false</code> rồi chặn tên miền
+      <code>dichvucong-lazibot.lazinet.com</code> trong tab Network (throttling → Offline), tải lại trang.
+      Kết quả đúng: <b>không có bong bóng nào được vẽ ra</b>, chỉ có một dòng cảnh báo trong
+      Console. Đây là điểm khác biệt có chủ đích so với widget của đơn vị trước - hiện vẫn còn
+      nút bấm trên cổng nhưng bấm vào chỉ trả về lỗi 404.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Điều khiển trợ lý từ chính trang cổng (tuỳ chọn)</h2>
+    <p>Sau khi trợ lý đã nạp xong, cổng có thể tự mở/đóng khung trò chuyện, ví dụ đặt một nút
+      "Hỏi trợ lý ảo" ngay trong bài viết hướng dẫn thủ tục:</p>
+    <p>
+      <button type="button" onclick="if(window.LazibotWidget)LazibotWidget.open()"
+        style="background:#0b5394;color:#fff;border:none;border-radius:6px;padding:10px 18px;font-size:14px;cursor:pointer">
+        Hỏi trợ lý ảo về thủ tục này
+      </button>
+      <button type="button" onclick="if(window.LazibotWidget)LazibotWidget.close()"
+        style="background:#fff;color:#0b5394;border:1px solid #0b5394;border-radius:6px;padding:10px 18px;font-size:14px;cursor:pointer;margin-left:8px">
+        Đóng trợ lý
+      </button>
+    </p>
+    <p style="font-size:13.5px;color:#555;margin:0">Hàm có sẵn:
+      <code>LazibotWidget.open()</code>, <code>LazibotWidget.close()</code>,
+      <code>LazibotWidget.toggle()</code>, <code>LazibotWidget.isOpen()</code>,
+      <code>LazibotWidget.expand()</code>, <code>LazibotWidget.restore()</code>,
+      <code>LazibotWidget.destroy()</code>.</p>
+    <p style="font-size:13.5px;color:#555;margin:8px 0 0"><b>Về kích thước khung:</b> mặc định là khung nhỏ
+      400×620 ở góc màn hình để không che nội dung của Cổng. Trên màn hình lớn, người dân có thể nhấn nút
+      phóng to trên thanh tiêu đề, hoặc kéo cạnh trên / cạnh trong / góc trên của khung để tự chọn kích thước.
+      Nhấn lại nút đó để về kích thước mặc định. Trên điện thoại khung luôn tràn màn hình nên không có hai nút này.</p>
+  </div>
+
+  <div class="card">
+    <p style="margin:0;font-size:13.5px;color:#555">Nội dung dưới đây chỉ để tạo chiều dài trang,
+      giúp kiểm tra bong bóng có bám đúng góc màn hình khi cuộn hay không.</p>
+    <p style="line-height:1.9">Cổng Dịch vụ công cung cấp thông tin về thủ tục hành chính thuộc thẩm quyền
+      giải quyết của các cơ quan trên địa bàn tỉnh. Người dân, doanh nghiệp có thể tra cứu thành phần hồ sơ,
+      trình tự thực hiện, thời hạn giải quyết, phí và lệ phí của từng thủ tục; nộp hồ sơ trực tuyến; theo dõi
+      tình trạng xử lý hồ sơ và nhận kết quả theo hình thức đã đăng ký. Trợ lý ảo được nhúng nhằm rút ngắn thời
+      gian tìm kiếm, trả lời tức thì các câu hỏi thường gặp và hướng dẫn người dân đến đúng thủ tục cần thực hiện.</p>
+    <p style="line-height:1.9">Trong trường hợp câu hỏi vượt quá phạm vi dữ liệu đã được nạp, trợ lý sẽ nói rõ
+      chưa có thông tin thay vì suy đoán, đồng thời hướng dẫn người dân liên hệ bộ phận một cửa. Mọi câu trả lời
+      đều kèm theo nguồn tham khảo là mã số thủ tục để người dân đối chiếu.</p>
+    <div style="height:520px"></div>
+  </div>
+</div>
+
+<!-- =========================================================
+     ĐOẠN MÃ NHÚNG - giống hệt tệp 01-doan-ma-nhung.html
+     ========================================================= -->
+<script>
+  window.LAZIBOT_EMBED = {
+    key: "lzb_site_jz-4uXAkFhZgkuSIfnVmuEIa",
+    title: "Trợ lý ảo Dịch vụ công Quảng Trị",
+    label: "Hỏi đáp thủ tục",
+    greeting: "",
+    position: "right",
+    offset: { x: 20, y: 20 },
+    autoOpen: false,
+    zIndex: 2147483000
+  };
+  var s = document.createElement('script');
+  s.src = "https://dichvucong-lazibot.lazinet.com/embed.js";
+  s.id = "lazibot-embed";
+  s.async = true;
+  document.body.appendChild(s);
+</script>
+
+</body>
+</html>

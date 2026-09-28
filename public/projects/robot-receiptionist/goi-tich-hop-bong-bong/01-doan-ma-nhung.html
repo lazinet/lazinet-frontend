@@ -1,0 +1,80 @@
+<!--
+  ===================================================================
+  LAZIBOT - ĐOẠN MÃ NHÚNG TRỢ LÝ ẢO VÀO CỔNG DỊCH VỤ CÔNG
+  ===================================================================
+  Đơn vị cung cấp : LAZINET
+  Áp dụng cho     : https://hcc.quangtri.gov.vn/ (Liferay Portal 7.4)
+  Phiên bản        : 1.0
+
+  CÁCH DÙNG
+  ---------
+  Sao chép TOÀN BỘ đoạn từ <script> đến </script> bên dưới và dán vào
+  MỘT trong hai vị trí (chỉ chọn một, không dán cả hai):
+
+    (A) Khuyến nghị - không cần đụng vào mã nguồn cổng:
+        Liferay > Site Builder > Pages > [trang chủ] > chỉnh sửa
+        > kéo thả một Fragment loại "HTML" vào cuối trang
+        > dán đoạn mã vào > Publish.
+        Đây đúng là cách đơn vị trước đã dùng, nên không có gì mới
+        về quy trình vận hành.
+
+    (B) Toàn site (hiện trên mọi trang):
+        Liferay > Control Panel > Site Settings > Advanced
+        > "Custom JavaScript" / portal_normal.ftl trước thẻ </body>.
+
+  LƯU Ý QUAN TRỌNG
+  ----------------
+  * Đoạn mã này KHÔNG chặn hiển thị trang. Script tải bất đồng bộ
+    (async), và trợ lý chỉ được vẽ ra sau khi đã kiểm tra máy chủ
+    LAZIBOT phản hồi bình thường. Nếu máy chủ có sự cố, cổng sẽ
+    KHÔNG hiện nút bấm nào - tuyệt đối không để lại nút bấm dẫn
+    đến màn hình lỗi.
+  * Không đặt cookie nào trên tên miền của cổng.
+  * Không nạp thư viện/phông chữ bên ngoài nào khác.
+  * Toàn bộ giao diện nằm trong Shadow DOM: CSS của cổng và CSS của
+    trợ lý không ảnh hưởng lẫn nhau.
+  ===================================================================
+-->
+
+<script>
+  window.LAZIBOT_EMBED = {
+    /* Khoá cấp riêng cho tên miền hcc.quangtri.gov.vn.
+       Nhờ khoá này, người dân hỏi trên Cổng KHÔNG bị áp hạn mức dành cho
+       khách vãng lai của trang trợ lý ảo công khai.
+       Khoá nằm trong mã nguồn trang nên ai cũng đọc được - điều này là
+       bình thường và đúng thiết kế, giống site key của reCAPTCHA. Khoá chỉ
+       có tác dụng khi lời gọi đến từ đúng tên miền đã đăng ký; chép sang
+       website khác sẽ không dùng được. */
+    key: "lzb_site_jz-4uXAkFhZgkuSIfnVmuEIa",
+
+    /* Tiêu đề hiện trên thanh trên cùng của khung trò chuyện */
+    title: "Trợ lý ảo Dịch vụ công Quảng Trị",
+
+    /* Chữ hiện cạnh bong bóng (ẩn tự động trên điện thoại) */
+    label: "Hỏi đáp thủ tục",
+
+    /* Lời chào đầu tiên. Bỏ trống = dùng lời chào mặc định do
+       quản trị viên LAZIBOT cấu hình trong trang quản trị. */
+    greeting: "",
+
+    /* Vị trí bong bóng: "right" (mặc định) hoặc "left" */
+    position: "right",
+
+    /* Khoảng cách tới mép màn hình, đơn vị pixel */
+    offset: { x: 20, y: 20 },
+
+    /* true = tự bung khung trò chuyện sau khi vào trang.
+       Khuyến nghị để false cho cổng nhà nước: không làm phiền
+       người dân đang đọc thông tin. */
+    autoOpen: false,
+
+    /* Lớp hiển thị. Chỉ đổi nếu cổng có phần tử khác đè lên. */
+    zIndex: 2147483000
+  };
+
+  var s = document.createElement('script');
+  s.src = "https://dichvucong-lazibot.lazinet.com/embed.js";
+  s.id = "lazibot-embed";
+  s.async = true;
+  document.body.appendChild(s);
+</script>
