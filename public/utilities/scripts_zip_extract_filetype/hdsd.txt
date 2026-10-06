@@ -1,0 +1,78 @@
+HƯỚNG DẪN SỬ DỤNG - ZIP EXTRACT BY FILE TYPE
+=============================================
+
+MỤC ĐÍCH
+--------
+Trong 1 thư mục (gọi là thư mục A) có nhiều file .zip. Mỗi zip chứa 1 loại file
+(vd: jpg). Script này mở lần lượt từng zip, lấy ra các file có đuôi mình chọn và
+đổ THẲNG vào thư mục A (không tạo thư mục con).
+
+FILE TRONG BỘ NÀY
+-----------------
+  zip_extract_filetype.py   - script chính (Python 3.8+, không cần cài thêm gì)
+  run_gui.bat               - bấm đúp để mở giao diện (Windows)
+  hdsd.txt                  - file này
+
+
+CÁCH 1: DÙNG GIAO DIỆN (dễ nhất, có dropdown)
+---------------------------------------------
+1. Bấm đúp vào  run_gui.bat
+   (hoặc mở cmd rồi chạy:  python zip_extract_filetype.py)
+2. Bấm "Chọn..." -> trỏ tới thư mục A chứa các file zip.
+3. Dropdown "Loại file" tự động liệt kê các đuôi tìm thấy kèm số lượng, ví dụ:
+        jpg  (120 file)
+        png  (8 file)
+        * (tat ca cac loai file)
+   Chọn loại cần lấy. Nếu muốn, có thể tự gõ đuôi vào ô này (vd: webp).
+4. Bấm "Extract ngay". Kết quả hiện ở khung log bên dưới.
+
+Các tuỳ chọn (checkbox):
+  - Thêm tên zip vào đầu tên file : file ra thành  khach1__anh.jpg
+                                    (rất nên bật khi các zip có file trùng tên)
+  - Ghi đè file trùng tên          : ghi đè thẳng. Nếu KHÔNG bật, file trùng tên
+                                     sẽ tự đổi thành  anh_1.jpg, anh_2.jpg ...
+  - Chạy thử (không ghi file)      : chỉ xem trước danh sách sẽ lấy ra.
+
+Nút "Mở thư mục" để mở thư mục A trong Explorer xem kết quả.
+
+
+CÁCH 2: DÙNG DÒNG LỆNH (CLI)
+----------------------------
+Mở cmd / PowerShell tại thư mục chứa script:
+
+  # Xem trong các zip có những loại file gì (không lấy gì ra)
+  python zip_extract_filetype.py --dir "D:\Anh\zips" --list
+
+  # Lấy toàn bộ file jpg
+  python zip_extract_filetype.py --dir "D:\Anh\zips" --ext jpg
+
+  # Xem trước, chưa ghi file
+  python zip_extract_filetype.py --dir "D:\Anh\zips" --ext jpg --dry-run
+
+  # Lấy tất cả loại file, thêm tên zip vào đầu tên file
+  python zip_extract_filetype.py --dir "D:\Anh\zips" --ext all --prefix
+
+  # Ghi đè khi trùng tên
+  python zip_extract_filetype.py --dir "D:\Anh\zips" --ext png --overwrite
+
+Tham số:
+  -d, --dir     thư mục A chứa các file .zip  (bắt buộc khi dùng CLI)
+  -e, --ext     đuôi cần lấy: jpg, png, pdf, mp4... hoặc "all" để lấy tất cả
+      --list    chỉ liệt kê các loại file có trong các zip
+      --prefix  thêm tên zip vào đầu tên file lấy ra
+      --overwrite  ghi đè file trùng tên (mặc định tự đổi tên _1, _2)
+      --dry-run chạy thử, không ghi file
+      --gui     mở giao diện
+
+Chạy không kèm tham số nào -> tự mở giao diện.
+
+
+LƯU Ý
+-----
+- File nằm trong thư mục con bên trong zip vẫn được lấy và đổ phẳng ra thư mục A.
+- Mặc định KHÔNG ghi đè: trùng tên thì tự thêm _1, _2 nên không mất file.
+- Tên file tiếng Việt trong zip được xử lý để không bị lỗi font.
+- Zip hỏng / zip có mật khẩu sẽ được báo lỗi và bỏ qua, các zip còn lại vẫn chạy.
+- Rác của macOS (__MACOSX, file ._xxx) tự động bỏ qua.
+- Script chỉ ĐỌC các file zip, không xoá hay sửa zip gốc.
+- Cần Python 3.8 trở lên (tải tại python.org, nhớ tick "Add Python to PATH").
