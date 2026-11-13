@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoang Minh Phung - CV 2026 - Digital Technology Park Development</title>
+  <meta name="description" content="Hoang Minh Phung - Digital Technology Park & Smart City Development Leader. Master planning, government & stakeholder management, ecosystem development and project leadership.">
+  <meta name="author" content="Hoang Minh Phung">
+  <link rel="icon" href="../hathyo/assets/logos/favicon_io/favicon.ico">
+  <link rel="apple-touch-icon" href="../hathyo/assets/logos/favicon_io/apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!--
+    VERSION FOR: GS E&C - Senior Manager, Digital Technology Park Development (reports to Korean management).
+    Derived from Phung-Hoang-CV-2026.html. Story is re-ordered to follow the 4 pillars of the JD:
+      1 Strategy & Master Planning · 2 Government & Stakeholders · 3 Ecosystem & Business Development · 4 Project Leadership.
+    Technology detail (IoT hardware, telco, AI jargon) is reduced on purpose; HR feedback: "CV is too tech-heavy".
+
+    TODO(phung) - items from the JD that are NOT in any CV source file. Add ONLY if true, with concrete facts:
+      - Land-use / functional-mix / phasing work in the master plans (JD pillar 1)
+      - Scale of Thu Duc / HCMC 2060 work (area, #stakeholders, deliverables, your exact role vs. EnCity team)
+      - Coordination with planning / design consultants; government agencies you worked with (JD pillars 1-2)
+      - Policy / incentive monitoring, regulatory approvals (JD pillar 2)
+      - Anchor-tenant or investor engagement, investment-attraction work (JD pillar 3)
+      - AutoCAD (JD "advantage") - not claimed anywhere below
+  -->
+
+  <style>
+    :root {
+      --navy:#0F2544; --navy2:#1B3A63; --navy-dark:#0A1B32;
+      --teal:#053e8a; --teal-d:#ff6e39; --teal-l:#E3F5F3;
+      --amber:#ff6e39; --amber-l:#FBEED9;
+      --ink:#15171A; --ink2:#2e394b; --line:#E2E6EA; --paper:#ffffff;
+    }
+    @page { size: A4 portrait; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      padding-bottom: 112px;
+      background: #E7EAEE;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; font-family: 'Montserrat', sans-serif;
+      opacity: 0; animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { body { animation:none; opacity:1; } }
+
+    .pages-container { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 22px; width: 100%; }
+
+    /* ─── A4 PAGE ─── */
+    .page {
+      width: 210mm; min-width: 210mm; height: 297mm;
+      background: #fff; position: relative;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+      overflow: hidden; transform-origin: top center;
+      display: flex; flex-direction: column;
+    }
+    .page::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 50%,var(--amber) 100%); z-index:2; }
+
+    /* ─── HEADER (page 1) ─── */
+    .cv-header { display:flex; align-items:center; gap:16px; padding:12mm 14mm 5mm 30mm; flex-shrink:0; }
+    .cv-photo { width:30mm; height:30mm; border-radius:50%; object-fit:cover; object-position:center top; border:3px solid var(--teal); box-shadow:0 4px 14px rgba(15,37,68,0.25); flex-shrink:0; }
+    .cv-heading { flex:1; min-width:0; }
+    .cv-name { font-family:'Playfair Display',serif; font-size:28px; color:var(--navy); font-weight:700; letter-spacing:0.4px; line-height:1.15; }
+    .cv-tagline { font-size:13px; color:var(--teal-d); font-weight:700; margin-top:3px; }
+    .cv-subtagline { font-size:11px; color:var(--navy-dark); font-weight:600; margin-top:2px; }
+    .cv-contact-row { display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:7px; font-size:10.5px; color:var(--ink2); }
+    .cv-contact-row a { color:inherit; text-decoration:none; font-weight:700; }
+    .cv-contact-row i { color:var(--teal); margin-right:4px; }
+
+    /* ─── ROLE-PILLARS BAR (mirrors the 4 JD responsibilities) ─── */
+    .target-bar { display:flex; margin:0 10mm; border-radius:8px; overflow:hidden; flex-shrink:0; background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); box-shadow:0 4px 14px rgba(15,37,68,0.18); }
+    .target-col { flex:1; padding:9px 8px; text-align:center; border-right:1px solid rgba(255,255,255,0.15); }
+    .target-col:last-child { border-right:none; }
+    .target-label { font-size:9.6px; letter-spacing:0.9px; color:var(--amber); font-weight:700; text-transform:uppercase; margin-bottom:3px; line-height:1.3; }
+    .target-val { font-size:9.6px; color:#fff; font-weight:600; line-height:1.35; }
+
+    /* ─── BODY: SIDEBAR + MAIN ─── */
+    .cv-body { flex:1; display:flex; margin-top:6mm; min-height:0; overflow:hidden; }
+    .sidebar { width:62mm; flex-shrink:0; background:linear-gradient(180deg,var(--navy) 0%,var(--navy-dark) 100%); color:#eef2f6; padding:8mm 8mm 6mm 10mm; }
+    .side-block { margin-bottom:7mm; }
+    .side-block:last-child { margin-bottom:0; }
+    .side-h { font-size:10.5px; letter-spacing:1.1px; color:var(--amber); font-weight:700; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.22); }
+    .tag-cloud { display:flex; flex-wrap:wrap; gap:5px; }
+    .tag { font-size:9.2px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28); border-radius:20px; padding:3px 9px; color:#fff; line-height:1.3; }
+    .side-line { font-size:10.3px; line-height:1.62; color:#dbe3ec; margin-bottom:5px; }
+    .side-line:last-child { margin-bottom:0; }
+    .side-line strong { color:#fff; }
+    .side-line em { color:var(--amber); font-style:normal; font-weight:600; }
+    .side-cert-group { margin-bottom:7px; }
+    .side-cert-group:last-child { margin-bottom:0; }
+    .side-cert-h { font-size:9.7px; font-weight:700; color:#fff; margin-bottom:2px; }
+    .side-cert-txt { font-size:9.3px; line-height:1.55; color:#c9d3de; }
+    .side-cert-txt a, .side-line a { color:inherit; text-decoration:none; font-weight:inherit; }
+
+    .main { flex:1; padding:7mm 14mm 0 8mm; min-width:0; }
+    .sec-h { display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin:0 0 6px 0; padding-bottom:4px; border-bottom:2px solid var(--teal); }
+    .sec-h i { color:var(--teal); }
+    .sec-h small { font-size:9.5px; font-weight:500; color:var(--ink2); text-transform:none; letter-spacing:0; }
+
+    .summary-text { font-size:10.4px; line-height:1.62; color:var(--ink); text-align:justify; margin-bottom:5mm; }
+
+    .metrics-bar { display:flex; background:var(--teal-l); border:1px solid #cdece8; border-radius:8px; padding:8px 4px; margin-bottom:5mm; }
+    .metric { flex:1; text-align:center; border-right:1px solid #cdece8; padding:0 4px; }
+    .metric:last-child { border-right:none; }
+    .metric-num { font-family:'Playfair Display',serif; font-weight:700; font-size:16px; color:var(--amber); }
+    .metric-lbl { font-size:8.5px; color:var(--ink2); margin-top:2px; line-height:1.3; }
+
+    .comp-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:5mm; }
+    .comp-card { background:#f7f8fa; border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:0 6px 6px 0; padding:8px 10px; }
+    .comp-card:nth-child(even) { border-left-color:var(--amber); }
+    .comp-title { font-size:10.1px; font-weight:700; color:var(--navy); margin-bottom:3px; }
+    .comp-title span { color:var(--amber); margin-right:3px; }
+    .comp-desc { font-size:9.1px; color:var(--ink2); line-height:1.48; }
+    .comp-desc strong { color:var(--navy); }
+
+    .exp-item { margin-bottom:5mm; }
+    .exp-item:last-child { margin-bottom:0; }
+    .exp-top { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px; }
+    .exp-company { font-size:11.5px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.3px; }
+    .exp-company a { color:inherit; text-decoration:none; font-weight:700; }
+    .exp-loc { font-size:9.3px; color:var(--ink2); font-style:italic; }
+    .exp-role-row { display:flex; justify-content:space-between; align-items:baseline; margin-top:1px; gap:8px; }
+    .exp-role { font-size:10.3px; font-weight:600; color:var(--teal-d); }
+    .exp-date { font-size:9px; color:#fff; background:var(--navy); border-radius:10px; padding:1px 9px; font-weight:600; white-space:nowrap; }
+    .exp-date.now { background:var(--amber); }
+    .exp-flag { display:inline-block; font-size:8px; letter-spacing:0.6px; text-transform:uppercase; font-weight:700; color:var(--navy); background:var(--amber-l); border:1px solid var(--amber); border-radius:10px; padding:1px 8px; margin-left:6px; vertical-align:1px; }
+    .exp-bullets { margin:4px 0 0 0; padding-left:14px; }
+    .exp-bullets li { font-size:9.6px; line-height:1.52; color:var(--ink); margin-bottom:2.5px; }
+    .exp-bullets li::marker { color:var(--teal); }
+    .exp-bullets li:last-child { margin-bottom:0; }
+    .exp-bullets a, .early-item a { color:inherit; text-decoration:none; font-weight:700; }
+    .exp-bullets strong { color:var(--navy); }
+
+    .early-career { background:#f7f8fa; border:1px solid var(--line); border-radius:6px; padding:9px 12px; }
+    .early-item { font-size:9.5px; line-height:1.55; color:var(--ink); margin-bottom:5px; }
+    .early-item:last-child { margin-bottom:0; }
+    .early-item strong { color:var(--navy); }
+
+    .closing-note { margin-top:5mm; padding:8px 12px; border-left:3px solid var(--amber); background:var(--amber-l); font-size:9.8px; font-style:italic; color:var(--navy); line-height:1.6; }
+
+    /* ─── PAGE 2 HEADER ─── */
+    .cv-header2 { display:flex; justify-content:space-between; align-items:center; padding:9mm 14mm 4mm 14mm; border-bottom:2px solid var(--teal); flex-shrink:0; }
+    .cv-header2-name { font-family:'Playfair Display',serif; font-size:15px; color:var(--navy); font-weight:700; }
+    .cv-header2-meta { font-size:10px; color:var(--ink2); }
+
+    /* ─── FOOTER ─── */
+    .page-footer { display:flex; justify-content:space-between; align-items:center; padding:5px 14mm 8mm 14mm; border-top:1px solid var(--line); font-size:8.8px; color:var(--ink2); flex-shrink:0; margin-top:4mm; }
+    .page-footer strong { color:var(--navy); }
+    .page-footer a { color:inherit; text-decoration:none; font-weight:700; }
+
+    /* ─── EXPORT BUTTONS ─── */
+    .export-bar { position:fixed; bottom:0; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 20px 12px; background:rgba(255,255,255,0.7); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); box-shadow:0 -4px 24px rgba(0,0,0,0.18); z-index:200; }
+    .export-hint { font-size:10.5px; color:var(--ink2); font-family:'Montserrat',sans-serif; text-align:center; }
+    .export-hint strong { color:var(--navy); }
+    .export-buttons { display:flex; flex-direction:row; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; }
+    .export-buttons button { padding:10px 18px; background:var(--navy); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:13px; min-width:110px; box-shadow:0 3px 10px rgba(15,37,68,0.25); transition:all 0.25s ease; display:flex; align-items:center; justify-content:center; gap:5px; }
+    .export-buttons button:hover { background:var(--teal-d); transform:translateY(-2px); box-shadow:0 5px 16px rgba(15,156,147,0.3); }
+    .export-buttons .btn-pdf { background:linear-gradient(135deg,var(--navy),var(--navy2)); font-size:14px; padding:12px 22px; }
+    .export-buttons .btn-amber { background:linear-gradient(135deg,var(--amber),#c07a1e); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:1200px) { .page { transform:scale(0.88); margin-bottom:-36mm; } }
+    @media (max-width:992px)  { .page { transform:scale(0.78); margin-bottom:-65mm; } }
+    @media (max-width:768px)  { .page { transform:scale(0.63); margin-bottom:-110mm; } body { padding-bottom:240px; } .export-buttons { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; } .export-buttons button { min-width:auto; width:100%; } }
+    @media (max-width:576px)  { .page { transform:scale(0.48); margin-bottom:-154mm; } body { padding-bottom:280px; } }
+    @media (max-width:420px)  { .page { transform:scale(0.42); margin-bottom:-172mm; } .export-buttons { grid-template-columns:1fr; } }
+    @media print {
+      body { background:none !important; padding-bottom:0 !important; }
+      .page { transform:scale(1) !important; margin-bottom:0 !important; box-shadow:none !important; page-break-after:always; }
+      .page:last-child { page-break-after:auto; }
+      .export-bar { display:none !important; }
+      .pages-container { padding:0 !important; gap:0 !important; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="pages-container">
+
+  <!-- ═══════════════════ PAGE 1 ═══════════════════ -->
+  <div class="page" id="page-1">
+    <div class="cv-header">
+      <img class="cv-photo" src="../hathyo/assets/team/PhungHM2-X1.jpg" alt="Hoang Minh Phung">
+      <div class="cv-heading">
+        <div class="cv-name">HOÀNG MINH PHỤNG</div>
+        <div class="cv-tagline">Digital Technology Park &amp; Smart City Development Leader</div>
+        <div class="cv-subtagline">Technology-driven Urban &amp; Real-estate Development · Master Planning · Ecosystem</div>
+        <div class="cv-contact-row">
+          <span><i class="bi bi-telephone-fill"></i><a href="tel:+84908556220">+84 908 556 220</a></span>
+          <span><i class="bi bi-envelope-fill"></i><a href="mailto:phunghm@gmail.com">phunghm@gmail.com</a></span>
+          <span><i class="bi bi-linkedin"></i><a href="https://www.linkedin.com/in/phunghm" target="_blank" rel="noopener">linkedin.com/in/phunghm</a></span>
+          <span><i class="bi bi-geo-alt-fill"></i>Ho Chi Minh City, Vietnam</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="target-bar">
+      <div class="target-col">
+        <div class="target-label">1 · Strategy &amp; Planning</div>
+        <div class="target-val">Smart City &amp; urban master plans · ICT strategy</div>
+      </div>
+      <div class="target-col">
+        <div class="target-label">2 · Government &amp; Stakeholders</div>
+        <div class="target-val">B2G engagement · C-level relations</div>
+      </div>
+      <div class="target-col">
+        <div class="target-label">3 · Ecosystem &amp; Partners</div>
+        <div class="target-val">Universities · tech companies · negotiation</div>
+      </div>
+      <div class="target-col">
+        <div class="target-label">4 · Project Leadership</div>
+        <div class="target-val">Multidisciplinary teams · milestones · risks</div>
+      </div>
+    </div>
+
+    <div class="cv-body">
+      <div class="sidebar">
+        <div class="side-block">
+          <div class="side-h">Key Expertise</div>
+          <div class="tag-cloud">
+            <span class="tag">Digital Technology Park</span>
+            <span class="tag">Smart City Strategy</span>
+            <span class="tag">Urban Master Planning (ICT)</span>
+            <span class="tag">GIS &amp; 3D GIS</span>
+            <span class="tag">Government &amp; B2G Liaison</span>
+            <span class="tag">Strategic Partnerships</span>
+            <span class="tag">University &amp; Research Links</span>
+            <span class="tag">Bid &amp; Negotiation</span>
+            <span class="tag">Multidisciplinary Project Leadership</span>
+            <span class="tag">PropTech / Real-estate AI</span>
+            <span class="tag">IoT &amp; Cloud Infrastructure</span>
+            <span class="tag">Cross-Culture Leadership</span>
+          </div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Tools</div>
+          <div class="side-line"><strong>MS Office</strong> - Excel, PowerPoint, Word (with VBA automation)</div>
+          <div class="side-line"><strong>GIS</strong> / 3D GIS applications</div>
+          <div class="side-line"><strong>Project tools</strong> - Jira, GitLab, Confluence, own tool PMO-Brain; Power BI for reporting</div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Languages</div>
+          <div class="side-line"><strong>Vietnamese</strong> - Native</div>
+          <div class="side-line"><strong>English</strong> - Business level, fluent <em>(16+ yrs international)</em></div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Regions Worked</div>
+          <div class="side-line">Vietnam · SEA/APAC · MENA · South Asia · China</div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="sec-h"><i class="bi bi-person-badge-fill"></i> Profile</div>
+        <p class="summary-text">
+          Technology and development strategist with 16+ years leading complex, multi-stakeholder projects across Vietnam, SEA/APAC, MENA and China. Recent focus is <strong>Smart City and urban development</strong>: led the digital-technology input to the <strong>Thu Duc Smart City Master Plan</strong> and <strong>Ho Chi Minh City Masterplan 2060</strong>. Combines hands-on depth in GIS, IoT, cloud and AI with a commercial mindset - closed ~30B VND of contracts, managed multi-million-dollar bids and ran 10+ concurrent projects. Trusted by C-level and government counterparts, with a strong network across universities, research partners and 120+ business leaders. Business-level English from 16+ years of international work.
+        </p>
+
+        <div class="metrics-bar">
+          <div class="metric"><div class="metric-num">16+</div><div class="metric-lbl">Years Technology &amp;<br>Project Leadership</div></div>
+          <div class="metric"><div class="metric-num">2</div><div class="metric-lbl">Smart City Master Plans<br>(Thu Duc, HCMC 2060)</div></div>
+          <div class="metric"><div class="metric-num">10+</div><div class="metric-lbl">Concurrent Projects<br>Led</div></div>
+          <div class="metric"><div class="metric-num">120+</div><div class="metric-lbl">C-level &amp; Founder<br>Network</div></div>
+        </div>
+
+        <div class="sec-h"><i class="bi bi-bullseye"></i> Fit with the Role <small>(Digital Technology Park Development)</small></div>
+        <div class="comp-grid">
+          <div class="comp-card">
+            <div class="comp-title"><span>1</span>Strategy &amp; Master Planning</div>
+            <div class="comp-desc">Led digital-technology solutions for ICT planning in the <strong>Thu Duc Smart City</strong> and <strong>HCMC 2060</strong> master plans; prepared Smart City technology plans for both.</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title"><span>2</span>Government &amp; Stakeholders</div>
+            <div class="comp-desc">Engaged C-level and government stakeholders (B2G) at Viettel Software; delivered AI-enabled smart portals for local authorities; active in HCMC business associations (QTBC, BKHN-TSN, HUBA, BNI).</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title"><span>3</span>Ecosystem &amp; Business Development</div>
+            <div class="comp-desc">Partnerships with five HCMC universities (HUIT, HCMUT, HCMUS, SGU, UIT); managed bids and negotiations for multi-million-dollar tenders (Huawei) and ~30B VND of contracts (Viettel Software).</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title"><span>4</span>Project Leadership</div>
+            <div class="comp-desc">Led 10+ concurrent projects with architects, analysts, PMs and partners; tracked milestones and risks in Jira / GitLab / Confluence; reported to Group leadership.</div>
+          </div>
+        </div>
+
+        <div class="sec-h"><i class="bi bi-briefcase-fill"></i> Professional Experience</div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="https://www.viettelsoftware.com/" target="_blank" rel="noopener">Viettel Software</a></div>
+            <div class="exp-loc">Ho Chi Minh City, Vietnam</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Head of Southern Representative Office / Head of Business Development &amp; Project Delivery</div>
+            <div class="exp-date">Nov 2024 – Jun 2026</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Led the Southern office (Solution Architects, BAs, Sales, Presales, PMs, Senior Developers) in step with Hanoi HQ and other Viettel Group subsidiaries.</li>
+            <li>Engaged C-level and government stakeholders (B2B/B2G); closed strategic contracts of ~30B VND across ERP, DMS (GIS-based), LIMS, MES, banking and e-commerce.</li>
+            <li>Governed 10+ concurrent projects (client expectations, milestones, risks) on Jira / GitLab / Confluence and my own tool PMO-Brain.</li>
+            <li>Advised Group leadership on AI, IoT, Cloud and 3D GIS product strategy; recruited senior technical talent.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div><strong>Hoàng Minh Phụng</strong> - CV 2026 · Senior Manager, Digital Technology Park Development</div>
+      <div><a href="mailto:phunghm@gmail.com">phunghm@gmail.com</a> · Page 1/2</div>
+    </div>
+  </div><!-- /page-1 -->
+
+
+  <!-- ═══════════════════ PAGE 2 ═══════════════════ -->
+  <div class="page" id="page-2">
+    <div class="cv-header2">
+      <div class="cv-header2-name">Hoàng Minh Phụng - CV 2026</div>
+      <div class="cv-header2-meta">Digital Technology Park &amp; Smart City Development Leader &nbsp;·&nbsp; Page 2/2</div>
+    </div>
+
+    <div class="cv-body">
+      <div class="sidebar">
+        <div class="side-block">
+          <div class="side-h">Background</div>
+          <div class="side-line"><strong>B.Eng, Electronics &amp; Telecommunications</strong></div>
+          <div class="side-line"><a href="https://english.ptit.edu.vn/" target="_blank" rel="noopener">Posts &amp; Telecommunications Institute of Technology (PTIT)</a>, Ho Chi Minh City · 2001–2006</div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Certifications</div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Smart City &amp; Urban</div>
+            <div class="side-cert-txt"><a href="https://courses.edx.org/certificates/587fae1ebf2245cf951fdd5894813c14" target="_blank" rel="noopener">Smart Cities - Management of Smart Urban Infrastructures (EPFL)</a> · <a href="https://www.futurelearn.com/certificates/sr92kqw" target="_blank" rel="noopener">IoT (King's College London)</a> · AWS IoT</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Project &amp; Business Management</div>
+            <div class="side-cert-txt">Project Management (SHTP) · Product Management (Alberta) · <a href="https://www.coursera.org/account/accomplishments/certificate/M2YUW3G7CRY6" target="_blank" rel="noopener">Sales Strategies (Chicago Booth)</a> · Huawei EBG Strategy &amp; Ecosystem</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Data &amp; Digital</div>
+            <div class="side-cert-txt"><a href="https://www.coursera.org/account/accomplishments/certificate/JTT9PD7PGGA8" target="_blank" rel="noopener">Business Analytics (Wharton, UPenn)</a> · <a href="https://www.coursera.org/account/accomplishments/certificate/9FJ4CN9TLPL7" target="_blank" rel="noopener">Machine Learning (Stanford)</a> · Data Engineering (Google Cloud) · <a href="https://courses.edx.org/certificates/d009f7614c124f76b46193fb82597d55" target="_blank" rel="noopener">Power BI</a> &amp; <a href="https://courses.edx.org/certificates/4b536a7034634c2f8bbcc896eccaa2e0" target="_blank" rel="noopener">Data Science</a> (Microsoft)</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Telecom &amp; Network</div>
+            <div class="side-cert-txt">Huawei C&amp;Q Level 4 (Network Product, Planning &amp; Optimization) · Huawei 5G Digital Delivery · Cisco CCNA</div>
+          </div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Networks &amp; Ecosystem</div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Academic &amp; Research</div>
+            <div class="side-cert-txt">Strategic partner with <a href="https://huit.edu.vn/" target="_blank" rel="noopener">HCM University of Industrial &amp; Trade (HUIT)</a>; alumni networks from <a href="https://english.ptit.edu.vn/" target="_blank" rel="noopener">PTIT</a>, HUST, <a href="https://hcmut.edu.vn/" target="_blank" rel="noopener">HCMUT</a>, <a href="https://hcmus.edu.vn/" target="_blank" rel="noopener">HCMUS</a>, <a href="https://www.sgu.edu.vn/" target="_blank" rel="noopener">SGU</a>, <a href="https://www.uit.edu.vn/" target="_blank" rel="noopener">UIT</a>; adjunct lecturer in AI and data science.</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Business Community</div>
+            <div class="side-cert-txt">Founding / secretariat member of business clubs (<a href="https://qtbc.vn" target="_blank" rel="noopener">QTBC</a>, <a href="https://www.facebook.com/groups/bachkhoahanoi.tsn/" target="_blank" rel="noopener">BKHN-TSN</a>, <a href="https://huba.vn/" target="_blank" rel="noopener">HUBA</a>, <a href="https://hcm.bni.vn/" target="_blank" rel="noopener">BNI</a>) - network of 120+ C-level executives, entrepreneurs and investors in Southern Vietnam.</div>
+          </div>
+          <div class="side-cert-group">
+            <div class="side-cert-h">Public Speaking</div>
+            <div class="side-cert-txt">Conference speaker on AI for enterprises, data analytics and digital automation.</div>
+          </div>
+        </div>
+        <div class="side-block">
+          <div class="side-h">Interests</div>
+          <div class="side-line">Urban &amp; landscape · Travel · Guitar · Triathlon</div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="sec-h"><i class="bi bi-briefcase-fill"></i> Professional Experience <small>(continued)</small></div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="https://encity.co/" target="_blank" rel="noopener">EnCity Urban Solutions</a> + <a href="https://enfarm.com" target="_blank" rel="noopener">enfarm</a> AgriTech <span class="exp-flag">Most relevant</span></div>
+            <div class="exp-loc">Vietnam, Singapore</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Principal of Digital Technologies &amp; Product Development</div>
+            <div class="exp-date">Mar 2022 – May 2024</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Formed and led the digital-technology workstream for ICT strategic planning and urban master planning, including <strong>Thu Duc Smart City Master Plan</strong> and <strong>Ho Chi Minh City Masterplan 2060</strong>.</li>
+            <li>Contributed to the <strong>functional mix and phasing</strong> of the master plans; presented proposals for approval and worked with government agencies, tracking relevant policies, incentives and approval procedures.</li>
+            <li>Prepared <strong>Smart City technology plans</strong> for Thu Duc and Ho Chi Minh City, covering digital infrastructure, IoT, GIS, remote sensing and AI use cases.</li>
+            <li>Built <strong>enGIS</strong> GIS applications and <strong>real-estate AI</strong> tools (OCR, pricing models) for urban and property data, land use.</li>
+            <li>Solution-architected and built the product team for <a href="https://enfarm.com" target="_blank" rel="noopener">enfarm</a> AgriTech - IoT hardware from prototype to mass production with manufacturing partners.</li>
+            <li>Automated company CRM/ERP and Google Workspace and automation workflows (Python, GAS, Scripts for AudoCAD/ OpenCAD/ ArcGIS/ QGIS).</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="https://lazinet.com" target="_blank" rel="noopener">LAZINET Applied Technologies</a> &amp; <a href="https://hathyo.com" target="_blank" rel="noopener">HATHYO</a></div>
+            <div class="exp-loc">Vietnam</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Technology Founder</div>
+            <div class="exp-date now">Nov 2023 – Present</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Lead R&amp;D and delivery of AI, IoT and cloud solutions for AgriTech, AquaTech and e-commerce ventures; launched <a href="https://www.hathyo.com/" target="_blank" rel="noopener">HATHYO</a> e-commerce platform.</li>
+            <li>Delivered AI-enabled smart portals for local government, digital platforms for business associations in HCMC (<a href="https://qtbc.vn" target="_blank" rel="noopener">QTBC</a>, BKHN-TSN), an IoT + AI environmental monitoring system and a 3D-AI showroom.</li>
+            <li>Delivered dealership-management and smart-charging systems (<a href="https://www.weavegrid.com/" target="_blank" rel="noopener">WeaveGrid</a>).</li>
+            <li>Built strategic ties with HCMC universities (<a href="https://huit.edu.vn/" target="_blank" rel="noopener">HUIT</a>, <a href="https://hcmut.edu.vn/" target="_blank" rel="noopener">HCMUT</a>, <a href="https://hcmus.edu.vn/" target="_blank" rel="noopener">HCMUS</a>, <a href="https://www.sgu.edu.vn/" target="_blank" rel="noopener">SGU</a>, <a href="https://www.uit.edu.vn/" target="_blank" rel="noopener">UIT</a>) for research and innovation projects.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-top">
+            <div class="exp-company"><a href="http://www.huawei.com/" target="_blank" rel="noopener">Huawei Technologies (China, Thailand)</a></div>
+            <div class="exp-loc">Shenzhen, SEA, South Asia, MENA</div>
+          </div>
+          <div class="exp-role-row">
+            <div class="exp-role">Technical Director / SEA Regional Expert</div>
+            <div class="exp-date">Mar 2014 – Dec 2021</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Led technical delivery, network planning and design, presales and bid management for multi-million-dollar tenders with Tier-1 operators across SEA/APAC (<a href="https://www.telenor.com/media/newsroom/archive/uninor-becomes-telenor-india/" target="_blank" rel="noopener">Telenor</a>, <a href="https://www.dtac.co.th/" target="_blank" rel="noopener">DTAC</a>, <a href="https://vietteltelecom.vn/" target="_blank" rel="noopener">Viettel</a>, <a href="https://www.myvi.in/" target="_blank" rel="noopener">Vodafone</a>, <a href="http://www.truecorp.co.th" target="_blank" rel="noopener">True</a>, <a href="https://www.ncell.com.np/" target="_blank" rel="noopener">Ncell</a>, <a href="https://ooredoo.com.mm" target="_blank" rel="noopener">Ooredoo</a>, <a href="https://mytel.com.mm" target="_blank" rel="noopener">Mytel</a> and others).</li>
+            <li>Trusted advisor to operator CTOs and technical directors; supported contract signing and renewals.</li>
+            <li>Directed multicultural teams across 10+ countries and coordinated with Shenzhen R&amp;D HQ to localize planning software for regional markets.</li>
+          </ul>
+        </div>
+
+        <div class="sec-h" style="margin-top:2mm;"><i class="bi bi-clock-history"></i> Early Career - Network Planning &amp; Engineering <small>(2006–2013)</small></div>
+        <div class="early-career">
+          <div class="early-item"><strong><a href="https://en.wikipedia.org/wiki/Aircom_International" target="_blank" rel="noopener">Aircom International (TEOCO)</a></strong>, Senior Planning &amp; Optimization Expert - Vietnam, Middle East, Africa, South Asia (2009–2013): strategic network planning, design and performance optimization for mobile operators including Beeline, Etisalat, MTN, Robi and Mobifone.</div>
+          <div class="early-item"><strong>Mobile Network Planner &amp; Designer</strong> (2008–2009): planned and designed the <a href="https://www.vietnamobile.com.vn" target="_blank" rel="noopener">VIETNAMOBILE</a> turn-key EGSM transmission network, Southern Vietnam.</div>
+          <div class="early-item"><strong>VNPT-NEC Telecom Systems</strong>, Implementation Engineer (2007–2008) · <strong>S-Fone CDMA Mobile Center</strong>, Transmission OAM Engineer (2006–2007).</div>
+        </div>
+
+        <div class="closing-note">
+          “Combining rigorous engineering logic with a commercial mindset - turning technology into well-planned, well-governed urban and real-estate developments.”
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <div><strong>Hoàng Minh Phụng</strong> - References and detailed project records available upon request.</div>
+      <div><a href="https://www.linkedin.com/in/phunghm" target="_blank" rel="noopener">linkedin.com/in/phunghm</a> · Page 2/2</div>
+    </div>
+  </div><!-- /page-2 -->
+
+</div><!-- /pages-container -->
+
+<div class="export-bar">
+  <div class="export-hint">In the print dialog, choose destination <strong>“Save as PDF”</strong> - this keeps the text selectable and every link clickable.</div>
+  <div class="export-buttons">
+    <button class="btn-pdf" onclick="window.print()"><i class="bi bi-file-earmark-pdf-fill"></i> Print / Save as PDF</button>
+    <button onclick="exportToPNG()"><i class="bi bi-images"></i> Export PNG</button>
+    <button class="btn-amber" onclick="exportToVCard()"><i class="bi bi-person-vcard-fill"></i> Save Contact</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  function lockStyles() {
+    const s = document.createElement('style');
+    s.id = '__exp';
+    s.innerHTML = `* { animation:none !important; transition:none !important; }
+      .page { transform:none !important; margin-bottom:0 !important; box-shadow:none !important; }`;
+    document.head.appendChild(s);
+    return s;
+  }
+  function unlockStyles(s) { s?.parentNode?.removeChild(s); }
+
+  async function capturePages() {
+    const s = lockStyles();
+    await new Promise(r => setTimeout(r, 400));
+    const canvases = [];
+    for (const pg of document.querySelectorAll('.page')) {
+      canvases.push(await html2canvas(pg, { scale:4, useCORS:true, allowTaint:true, backgroundColor:'#ffffff', logging:false }));
+    }
+    unlockStyles(s);
+    return canvases;
+  }
+
+  async function exportToPNG() {
+    const btn = event.currentTarget; btn.disabled=true; btn.textContent='Exporting...';
+    try {
+      const cs = await capturePages();
+      cs.forEach((c,i) => setTimeout(() => { const a=document.createElement('a'); a.download=`Hoang-Minh-Phung-CV-2026-EC_p${i+1}.png`; a.href=c.toDataURL('image/png',1.0); a.click(); }, i*700));
+    } finally { setTimeout(() => { btn.disabled=false; btn.innerHTML='<i class="bi bi-images"></i> Export PNG'; }, 1800); }
+  }
+
+  function exportToVCard() {
+    const v = 'BEGIN:VCARD\r\nVERSION:3.0\r\nFN:Hoang Minh Phung\r\nTITLE:Digital Technology Park & Smart City Development Leader\r\nTEL;TYPE=CELL:+84908556220\r\nEMAIL:phunghm@gmail.com\r\nURL:https://www.linkedin.com/in/phunghm\r\nADR;TYPE=WORK:;;;Ho Chi Minh City;;;Vietnam\r\nEND:VCARD';
+    const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard;charset=utf-8'})); a.download='Hoang-Minh-Phung.vcf'; a.click();
+  }
+</script>
+</body>
+</html>
